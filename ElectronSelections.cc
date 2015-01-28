@@ -5,7 +5,7 @@
 //Development Notes
   //Original Author: Alex (UCSB), who stole functions from Indara, Jason, Giuseppe
   //POG Electron IDs are defined in: 
-    //https://twiki.cern.ch/twiki/bin/viewauth/CMS/EgammaCutBasedIdentification#Electron_ID_Working_Points
+  //https://twiki.cern.ch/twiki/bin/viewauth/CMS/EgammaCutBasedIdentification#Electron_ID_Working_Points
 
 using namespace tas;
 
@@ -199,6 +199,13 @@ bool isTightElectron(unsigned int elIdx, analysis_t analysis){
   else return false;
 }
 
+float eleRelIso03(unsigned int elIdx, analysis_t analysis){
+  if (analysis == MT2) return eleRelIso03DB(elIdx);
+  if (analysis == STOP) return eleRelIso03DB(elIdx);
+  if (analysis == SS) return eleRelIso03EA(elIdx);
+  else return eleRelIso03EA(elIdx);
+}
+
 float eleRelIso03DB(unsigned int elIdx){
   float chiso     = els_pfChargedHadronIso().at(elIdx);
   float nhiso     = els_pfNeutralHadronIso().at(elIdx);
@@ -222,27 +229,18 @@ float eleRelIso03EA(unsigned int elIdx){
   return absiso/(els_p4().at(elIdx).pt());
 }
 
-float eleRelIso03(unsigned int elIdx, analysis_t analysis){
-  if (analysis == MT2) return eleRelIso03DB(elIdx);
-  if (analysis == STOP) return eleRelIso03DB(elIdx);
-  if (analysis == SS) return eleRelIso03EA(elIdx);
-  else return eleRelIso03EA(elIdx);
-}
-
-
-
 //Only used for SS analysis
 bool isGoodVetoElectron(unsigned int elidx){
   if (fabs(els_p4().at(elidx).eta())>2.4) return false;
-  if (els_p4().at(elidx).pt()<7.) return false;
-  if (isVetoElectron(elidx, SS)==0) return false;
-  if( eleRelIso03(elidx, SS) >= 0.5) return false; 
+  if (els_p4().at(elidx).pt()<7) return false;
+  if (!isVetoElectron(elidx, SS)) return false;
+  if (eleRelIso03(elidx, SS) >= 0.5) return false; 
   return true;
 }
 
 //Only used for SS analysis
 bool isFakableElectron(unsigned int elidx){
-  if (els_p4().at(elidx).pt()<10.) return false;
+  if (els_p4().at(elidx).pt()<10) return false;
   if (!isGoodVetoElectron(elidx)) return false;
   if (!isLooseElectron(elidx, SS)) return false;
   if (!threeChargeAgree(elidx)) return false;
@@ -252,7 +250,7 @@ bool isFakableElectron(unsigned int elidx){
 //Only used for SS analysis
 bool isGoodElectron(unsigned int elidx){
   if (!isFakableElectron(elidx)) return false;
-  if (isMediumElectron(elidx, SS)==0) return false;
+  if (!isMediumElectron(elidx, SS)) return false;
   if (fabs(els_ip3d().at(elidx))/els_ip3derr().at(elidx) >= 4) return false;
   if (fabs(els_dzPV().at(elidx)) >= 0.1) return false;
   return true;
