@@ -66,7 +66,7 @@ bool passesPFJetID(unsigned int pfJetIdx) {
   if (pfjet_nhf_ >= 0.99) return false;
   if (pfjet_mult_ < 2) return false;
 
-  if (fabs(cms3.pfjets_p4()[pfJetIdx].eta()) < 2.4){   
+  if (fabs(pfjets_p4()[pfJetIdx].eta()) < 2.4){   
     if (pfjet_chf_ < 1e-6) return false;
     if (pfjet_cm_ < 1) return false;
     if (pfjet_cef_ >= 0.99) return false;

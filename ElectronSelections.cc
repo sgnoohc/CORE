@@ -17,7 +17,7 @@ bool isVetoElectron(unsigned int elIdx, analysis_t analysis){
     if (fabs(els_dPhiIn().at(elIdx)) >= 0.8) return false; 
     if (els_sigmaIEtaIEta_full5x5().at(elIdx) >= 0.01) return false; 
     if (els_hOverE().at(elIdx) >= 0.15) return false; 
-    if (analysis == POG || analysis == MT2 || analysis == STOP){
+    if (analysis == POG || analysis == HAD || analysis == STOP){
       if (fabs(els_dxyPV().at(elIdx)) >= 0.04) return false;
       if (fabs(els_dzPV().at(elIdx)) >= 0.2) return false; 
       if (eleRelIso03(elIdx, analysis) >= 0.15) return false; 
@@ -34,7 +34,7 @@ bool isVetoElectron(unsigned int elIdx, analysis_t analysis){
     if (fabs(els_dEtaIn().at(elIdx)) >= 0.01) return false; 
     if (fabs(els_dPhiIn().at(elIdx)) >= 0.7) return false; 
     if (els_sigmaIEtaIEta_full5x5().at(elIdx) >= 0.03) return false; 
-    if (analysis == POG || analysis == MT2 || analysis == STOP){
+    if (analysis == POG || analysis == HAD || analysis == STOP){
       if (fabs(els_dxyPV().at(elIdx)) >= 0.04) return false;
       if (fabs(els_dzPV().at(elIdx)) >= 0.2) return false; 
       if (eleRelIso03(elIdx, analysis) >= 0.15) return false; 
@@ -67,7 +67,7 @@ bool isLooseElectron(unsigned int elIdx, analysis_t analysis){
       if (eleRelIso03(elIdx, analysis) >= 0.15 ) return false;
       if (els_exp_innerlayers().at(elIdx) > 1) return false;
     }
-    else if (analysis == MT2){
+    else if (analysis == HAD){
       if (fabs(els_dEtaIn().at(elIdx)) >= 0.007) return false;
       if (fabs(els_dPhiIn().at(elIdx)) >= 0.15) return false;
     }
@@ -94,7 +94,7 @@ bool isLooseElectron(unsigned int elIdx, analysis_t analysis){
       if (eleRelIso03(elIdx, analysis) >= 0.15 ) return false;
       if (els_exp_innerlayers().at(elIdx) > 1) return false;
     }
-    else if (analysis == MT2){
+    else if (analysis == HAD){
       if (fabs(els_dEtaIn().at(elIdx)) >= 0.009) return false;
       if (fabs(els_dPhiIn().at(elIdx)) >= 0.10) return false;
     }
@@ -200,7 +200,7 @@ bool isTightElectron(unsigned int elIdx, analysis_t analysis){
 }
 
 float eleRelIso03(unsigned int elIdx, analysis_t analysis){
-  if (analysis == MT2) return eleRelIso03DB(elIdx);
+  if (analysis == HAD) return eleRelIso03DB(elIdx);
   if (analysis == STOP) return eleRelIso03DB(elIdx);
   if (analysis == SS) return eleRelIso03EA(elIdx);
   else return eleRelIso03EA(elIdx);
@@ -227,6 +227,14 @@ float eleRelIso03EA(unsigned int elIdx){
   else if (fabs(els_p4().at(elIdx).eta())<=2.500) ea = 0.1530;
   float absiso = chiso + std::max(float(0.0), nhiso + emiso - evt_fixgrid_all_rho() * ea);
   return absiso/(els_p4().at(elIdx).pt());
+}
+
+int eleTightID(unsigned int elIdx, analysis_t analysis){
+  if (isTightElectron(elIdx, analysis))  return 3;
+  if (isMediumElectron(elIdx, analysis)) return 2;
+  if (isLooseElectron(elIdx, analysis))  return 1;
+  if (isVetoElectron(elIdx, analysis))   return 0;
+  return -1;
 }
 
 //Only used for SS analysis
