@@ -1,11 +1,11 @@
 #include "SSSelections.h"
 
+using namespace tas;
+
 //Development Notes
   //Original Author: Alex (UCSB), who stole functions from Indara, Jason, Giuseppe
   //Note: these functions are currently only for the SS analysis!
   //Be careful that IDs, etc. are OK before stealing for other analyses
-
-using namespace tas;
 
 bool makesExtraGammaStar(int iHyp){
 
@@ -150,4 +150,19 @@ bool isDenominatorLepton(int id, int idx){
   if (abs(id) == 11) return isFakableElectron(idx);
   else if (abs(id) == 13) return isFakableMuon(idx);
   else return false;
+}
+
+bool hypsFromFirstGoodVertex(size_t hypIdx, float dz_cut){
+
+  int lt_idx = hyp_lt_index()[hypIdx];
+  int ll_idx = hyp_ll_index()[hypIdx];
+
+  int lt_id = hyp_lt_id()[hypIdx];
+  int ll_id = hyp_ll_id()[hypIdx];
+
+  float lt_dz = abs(lt_id) == 11 ? tas::els_dzPV().at(lt_idx) : tas::mus_dzPV().at(lt_idx);
+  float ll_dz = abs(ll_id) == 11 ? tas::els_dzPV().at(ll_idx) : tas::mus_dzPV().at(ll_idx);
+
+  if (fabs(lt_dz) < dz_cut && fabs(ll_dz) < dz_cut) return true;    
+  return false;
 }

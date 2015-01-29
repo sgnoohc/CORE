@@ -87,33 +87,53 @@ int muTightID(unsigned int muIdx, analysis_t analysis){
   return -1;
 }
 
+//Only used for SS analysis, dummy
+bool isMuonFO(unsigned int muidx){
+  return isTightMuon(muidx, SS);
+}
+
 //Only used for SS analysis
-bool isGoodVetoMuon(unsigned int muidx){
-  if (fabs(mus_p4().at(muidx).eta())>2.4) return false;
-  if (mus_p4().at(muidx).pt()<5) return false;
+bool isGoodVetoMuonNoIso(unsigned int muidx){
+  if (fabs(mus_p4().at(muidx).eta()) > 2.4) return false;
+  if (mus_p4().at(muidx).pt() < 5.) return false;//fixme
   if (!isLooseMuon(muidx, SS)) return false;
-  if (muRelIso03(muidx, SS)>0.5) return false;
   if (fabs(mus_dxyPV().at(muidx)) >= 0.05) return false;
   if (fabs(mus_dzPV().at(muidx)) >= 0.1) return false;
   return true;
 }
 
 //Only used for SS analysis
-bool isFakableMuon(unsigned int muidx){
-  if (!isGoodVetoMuon(muidx)) return false;
+bool isGoodVetoMuon(unsigned int muidx){
+  if (!isGoodVetoMuonNoIso(muidx)) return false;
+  if (muRelIso03(muidx, SS) > 0.5) return false;
+  return true;
+}
+
+//Only used for SS analysis
+bool isFakableMuonNoIso(unsigned int muidx){
+  if (!isGoodVetoMuonNoIso(muidx)) return false;
   if (!isMuonFO(muidx)) return false;
   return true;
 }
 
 //Only used for SS analysis
-bool isGoodMuon(unsigned int muidx){
-  if (!isFakableMuon(muidx)) return false;
-  if (!isTightMuon(muidx, SS)) return false;
-  if (muRelIso03(muidx, SS)>0.1) return false;
+bool isFakableMuon(unsigned int muidx){
+  if (!isFakableMuonNoIso(muidx)) return false;
+  if (muRelIso03(muidx, SS) > 0.5) return false;
   return true;
 }
 
-//Only used for SS analysis, dummy
-bool isMuonFO(unsigned int muidx){
-  return isTightMuon(muidx, SS);
+//Only used for SS analysis
+bool isGoodMuonNoIso(unsigned int muidx){
+  if (!isFakableMuonNoIso(muidx)) return false;
+  if (!isTightMuon(muidx, SS)) return false;
+  if (fabs(mus_ip3d().at(muidx))/mus_ip3derr().at(muidx) >= 4) return false;
+  return true;
+}
+
+//Only used for SS analysis
+bool isGoodMuon(unsigned int muidx){
+  if (!isGoodMuonNoIso(muidx)) return false;
+  if (muRelIso03(muidx, SS) > 0.1) return false;
+  return true;
 }

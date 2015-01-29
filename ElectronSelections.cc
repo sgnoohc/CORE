@@ -238,11 +238,30 @@ int eleTightID(unsigned int elIdx, analysis_t analysis){
 }
 
 //Only used for SS analysis
+bool isGoodVetoElectronNoIso(unsigned int elidx){
+  if (fabs(els_p4().at(elidx).eta()) > 2.4) return false;
+  if (els_p4().at(elidx).pt() < 7.) return false;//fixme
+  if (!isVetoElectron(elidx, SS)) return false;
+  if (fabs(els_dxyPV().at(elidx)) >= 0.05) return false; //is this wrt the correct PV?
+  if (fabs(els_dzPV().at(elidx)) >= 0.1) return false; //is this wrt the correct PV?
+  return true;
+}
+
+//Only used for SS analysis
 bool isGoodVetoElectron(unsigned int elidx){
   if (fabs(els_p4().at(elidx).eta())>2.4) return false;
   if (els_p4().at(elidx).pt()<7) return false;
   if (!isVetoElectron(elidx, SS)) return false;
   if (eleRelIso03(elidx, SS) >= 0.5) return false; 
+  return true;
+}
+
+//Only used for SS analysis
+bool isFakableElectronNoIso(unsigned int elidx){
+  if (els_p4().at(elidx).pt() < 10.) return false;//fixme
+  if (isGoodVetoElectronNoIso(elidx) == 0) return false;
+  if (!isLooseElectron(elidx, SS)) return false;
+  if (threeChargeAgree(elidx) == 0) return false;
   return true;
 }
 
@@ -256,11 +275,17 @@ bool isFakableElectron(unsigned int elidx){
 }
 
 //Only used for SS analysis
-bool isGoodElectron(unsigned int elidx){
-  if (!isFakableElectron(elidx)) return false;
-  if (!isMediumElectron(elidx, SS)) return false;
+bool isGoodElectronNoIso(unsigned int elidx){
+  if (!isFakableElectronNoIso(elidx)) return false;
+  if (isMediumElectron(elidx, SS) == 0) return false;
   if (fabs(els_ip3d().at(elidx))/els_ip3derr().at(elidx) >= 4) return false;
-  if (fabs(els_dzPV().at(elidx)) >= 0.1) return false;
+  return true;
+}
+
+//Only used for SS analysis
+bool isGoodElectron(unsigned int elidx){
+  if (!isGoodElectronNoIso(elidx)) return false;
+  if (eleRelIso03(elidx, SS) >= 0.1) return false; 
   return true;
 }
 

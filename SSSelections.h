@@ -9,5 +9,6 @@ bool makesExtraZ(int);
 bool isIsolatedLepton(int, int);
 bool isGoodLepton(int, int);
 bool isDenominatorLepton(int, int);
+bool hypsFromFirstGoodVertex(size_t, float = 1.0);
 
 #endif
