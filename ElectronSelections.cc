@@ -249,8 +249,6 @@ bool isGoodVetoElectronNoIso(unsigned int elidx){
 
 //Only used for SS analysis
 bool isGoodVetoElectron(unsigned int elidx){
-  if (fabs(els_p4().at(elidx).eta())>2.4) return false;
-  if (els_p4().at(elidx).pt()<7) return false;
   if (!isVetoElectron(elidx, SS)) return false;
   if (eleRelIso03(elidx, SS) >= 0.5) return false; 
   return true;
@@ -259,7 +257,7 @@ bool isGoodVetoElectron(unsigned int elidx){
 //Only used for SS analysis
 bool isFakableElectronNoIso(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 10.) return false;//fixme
-  if (isGoodVetoElectronNoIso(elidx) == 0) return false;
+  if (!isGoodVetoElectronNoIso(elidx)) return false;
   if (!isLooseElectron(elidx, SS)) return false;
   if (threeChargeAgree(elidx) == 0) return false;
   return true;

@@ -96,7 +96,7 @@ bool makesExtraZ(int iHyp){
       }
       if (is_hyp_lep) continue;
       if (fabs(tas::els_p4().at(eidx).eta()) > 2.4) continue;
-      if (tas::els_p4().at(eidx).pt() < 10.) continue;
+      if (tas::els_p4().at(eidx).pt() < 10) continue;
 
       if (!isGoodVetoElectron(eidx)) continue;
 
