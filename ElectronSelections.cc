@@ -25,6 +25,9 @@ bool isVetoElectron(unsigned int elIdx, analysis_t analysis){
     else if (analysis == SS){
       if (els_conv_vtx_flag().at(elIdx)) return false;
       if (els_exp_innerlayers().at(elIdx) > 2) return false;
+      if (fabs(els_dxyPV().at(elIdx)) >= 0.05) return false;
+      if (fabs(els_dzPV().at(elIdx)) >= 0.1) return false; 
+      if (eleRelIso03(elIdx, analysis) >= 0.5) return false; 
     }
     return true;
   }
@@ -43,6 +46,9 @@ bool isVetoElectron(unsigned int elIdx, analysis_t analysis){
       if (fabs( (1.0/els_ecalEnergy().at(elIdx)) - (els_eOverPIn().at(elIdx)/els_ecalEnergy().at(elIdx)) ) >= 0.13) return false;
       if (els_conv_vtx_flag().at(elIdx)) return false;
       if (els_exp_innerlayers().at(elIdx) > 2) return false;
+      if (fabs(els_dxyPV().at(elIdx)) >= 0.05) return false;
+      if (fabs(els_dzPV().at(elIdx)) >= 0.1) return false; 
+      if (eleRelIso03(elIdx, analysis) >= 0.50) return false; 
     }
     return true;
   } 
