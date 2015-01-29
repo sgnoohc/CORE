@@ -249,6 +249,8 @@ bool isGoodVetoElectronNoIso(unsigned int elidx){
 
 //Only used for SS analysis
 bool isGoodVetoElectron(unsigned int elidx){
+  if (fabs(els_p4().at(elidx).eta())>2.4) return false;
+  if (els_p4().at(elidx).pt()<7) return false;//fixme
   if (!isVetoElectron(elidx, SS)) return false;
   if (eleRelIso03(elidx, SS) >= 0.5) return false; 
   return true;
