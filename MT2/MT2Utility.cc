@@ -249,7 +249,6 @@ void mt2::mt2_massless()
    { 
      //cout << "error: nsols_low=nsols_high=" << nsols_high << endl;
      //cout << "Deltasq_high=" << Deltasq_high << endl;
-     //cout << "Deltasq_low= "<< Deltasq_low << endl;
     
       mt2_b = sqrt(mnsq + Deltasq_low);
       return;
@@ -528,7 +527,6 @@ int mt2::scan_high(double & Deltasq_high)
    int nsols_high;
 
    
-   double Deltasq_low;
    double tempmass, maxmass;
    tempmass = mn + ma;
    maxmass  = sqrt(mnsq + Deltasq_high);
@@ -540,7 +538,6 @@ int mt2::scan_high(double & Deltasq_high)
       
       if( nsols_high > 0)
       {
-	 Deltasq_low = (mass-SCANSTEP)*(mass-SCANSTEP) - mnsq;
          foundhigh   = 1;
          break;
       }
