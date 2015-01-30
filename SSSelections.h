@@ -9,7 +9,7 @@
 const static float ptCutHigh = 25.;
 const static float ptCutLow = 10.;
 
-enum AnalysisBit { HighHigh = 0, HighLow = 1, LowLow = 2 };
+enum anal_type_t { HighHigh = 0, HighLow = 1, LowLow = 2 };
 
 bool makesExtraGammaStar(int);
 bool makesExtraZ(int);
