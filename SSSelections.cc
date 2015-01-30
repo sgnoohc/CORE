@@ -135,14 +135,20 @@ bool makesExtraZ(int iHyp){
 }
 
 bool isIsolatedLepton(int id, int idx){
-  if (abs(id) == 11) return eleRelIso03(idx, SS) < 0.18;
-  if (abs(id) == 13) return muRelIso03(idx, SS) < 0.15;
+  if (abs(id) == 11) return eleRelIso03(idx, SS) < 0.1;
+  if (abs(id) == 13) return muRelIso03(idx, SS) < 0.1;
   return false;
 }
 
 bool isGoodLepton(int id, int idx){
   if (abs(id) == 11) return isGoodElectron(idx);
   else if (abs(id) == 13) return isGoodMuon(idx);
+  return false;
+}
+
+bool isGoodLeptonNoIso(int id, int idx){
+  if (abs(id) == 11) return isGoodElectronNoIso(idx);
+  else if (abs(id) == 13) return isGoodMuonNoIso(idx);
   return false;
 }
 
@@ -165,4 +171,49 @@ bool hypsFromFirstGoodVertex(size_t hypIdx, float dz_cut){
 
   if (fabs(lt_dz) < dz_cut && fabs(ll_dz) < dz_cut) return true;    
   return false;
+}
+
+void passesBaselineCuts(int njets, int nbtag, float met, float ht, unsigned int& analysisBitMask) {
+  if (analysisBitMask & 1<<HighHigh) {
+    if (!(ht>80 && njets>=2 && (met>30 || ht>500)))  analysisBitMask &= ~(1<<HighHigh);
+  } 
+  //if (!(ht>250 && njets>=2 && (met>30 || ht>500))) {
+  if (!(ht>80 && njets>=2 && (met>30 || ht>500))) {//fixme
+    analysisBitMask &= ~(1<<HighLow);
+    analysisBitMask &= ~(1<<LowLow);
+  }
+}
+
+int baselineRegion(int nbtag) {
+  if (nbtag==0) return 0;
+  else if (nbtag==1) return 10;
+  else if (nbtag==2) return 20;
+  else return 30;
+}
+
+void passesSignalRegionCuts(float ht, float met, unsigned int& analysisBitMask) {
+  if (met<50.) {
+    analysisBitMask &= ~(1<<HighHigh);
+    analysisBitMask &= ~(1<<HighLow);
+    analysisBitMask &= ~(1<<LowLow);
+  }
+  if (analysisBitMask & 1<<HighHigh) {
+    if (ht<200.)  analysisBitMask &= ~(1<<HighHigh);
+  } 
+  if (ht<250.) {
+    analysisBitMask &= ~(1<<HighLow);
+    analysisBitMask &= ~(1<<LowLow);
+  }
+}
+
+//this assumes that the event has already passed all selections (including min ht and met)
+int signalRegion(int njets, int nbtag, float met, float ht, int njetscut, float metcut, float htcut) {
+  int result = 1;
+  if (nbtag==1) result+=10;
+  else if (nbtag==2) result+=20;
+  else if (nbtag>=3) result+=30;
+  if (met>metcut) result+=4;
+  if (njets>=njetscut) result+=2;
+  if (ht>htcut) result+=1;
+  return result;
 }

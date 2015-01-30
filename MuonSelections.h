@@ -19,4 +19,8 @@ bool isGoodVetoMuon(unsigned int);
 bool isFakableMuon(unsigned int);
 bool isGoodMuon(unsigned int);
 
+bool isGoodVetoMuonNoIso(unsigned int);
+bool isFakableMuonNoIso(unsigned int);
+bool isGoodMuonNoIso(unsigned int);
+
 #endif
