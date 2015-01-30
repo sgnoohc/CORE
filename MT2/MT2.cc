@@ -5,6 +5,14 @@
 
 using namespace std;
 
+// Constructor & Destructor
+TMt2::TMt2  (void) { 
+  grid_size_    = 500;
+  grid_spacing_ = 2;
+  mt2_          = -999.0;
+};
+TMt2::~TMt2 (void) { };
+
 ///////////////////////////////////////////////////////////////
 // MT2 Calculated with the Bisection method from Cheng & Han //
 ///////////////////////////////////////////////////////////////
