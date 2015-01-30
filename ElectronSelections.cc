@@ -128,7 +128,7 @@ bool isMediumElectron(unsigned int elIdx, analysis_t analysis){
     if (fabs( (1.0/els_ecalEnergy().at(elIdx)) - (els_eOverPIn().at(elIdx)/els_ecalEnergy().at(elIdx)) ) >= 0.05) return false;
     if (analysis == SS){
       if (els_conv_vtx_flag().at(elIdx)) return false;
-      if (els_exp_innerlayers().at(elIdx) > 1) return false;
+      if (els_exp_innerlayers().at(elIdx) > 0) return false;
     }
     if (analysis == POG || analysis == STOP){
       if (els_conv_vtx_flag().at(elIdx)) return false;
