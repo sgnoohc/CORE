@@ -4,6 +4,7 @@
 #include "TString.h"
 #include "Base.h"
 
+int  dumpDocLines();
 bool idIsCharm(int);
 bool idIsBeauty(int);
 bool isFromW(int, int);
