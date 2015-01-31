@@ -1,6 +1,71 @@
+#include "/home/users/cgeorge/devCORE/CORE/CMS3.h"
+#include "TDatabasePDG.h"
+#include "TFile.h"
+#include "TTree.h"
+
 #include "MCSelections.h"
 
 using namespace tas;
+
+int dumpDocLines(){
+
+  //nitialize particle database
+  TDatabasePDG *pdg = new TDatabasePDG();
+
+  //Print Header
+  cout << "                " << "   pt    " << "  phi  " << "      eta   " << "    mass  " << "status " << "Mother  " << endl;     
+  std::cout << "---------------------------------------------------------------------" << std::endl;
+
+  //Loop over gen particles
+  for (unsigned int j = 0; j < genps_id().size(); j++) {
+
+    //mass
+    float m2 = genps_p4().at(j).M2();
+    float m  = m2 >= 0 ? sqrt(m2) : 0.0;
+
+    //Print information about the jth gen particle
+    const char* particle = (abs(genps_id().at(j)) == 4124) ? "unknown" : pdg->GetParticle(genps_id().at(j))->GetName();
+    const char* mother_particle = (abs(genps_id_mother().at(j)) == 4124) ? "unknown" : pdg->GetParticle(genps_id_mother().at(j))->GetName();
+
+    cout << setw(4)  << left  <<                 << j                        << " "
+         << setw(10) << left  <<                    particle                 << " "
+         << setw(7)  << right << setprecision(4) << genps_p4().at(j).pt()    << "  "
+         << setw(7)  << right << setprecision(4) << genps_p4().at(j).phi()   << "  "
+         << setw(10) << right << setprecision(4) << genps_p4().at(j).eta()   << "  "
+         << setw(7)  << right << setprecision(4) << m                        << "  "
+         << setw(4)  << right <<                    genps_status().at(j)     << " "
+         << setw(10) << left  <<                    mother_particle          << " " 
+         << endl;
+
+    //epton daughters of the jth gen particle
+    if(genps_lepdaughter_id()[j].size() > 0) {
+      cout << endl;
+      cout << "  Daughters:" << endl;
+      for(unsigned int i = 0; i < genps_lepdaughter_id()[j].size(); i++) {
+
+        // mass
+        float m2_daught = genps_lepdaughter_p4().at(j).at(i).M2();
+        float m_daught  = m2_daught >= 0 ? sqrt(m2_daught) : 0.0;
+
+        //Print information about the daughters
+        const char* daughter_particle = abs(genps_lepdaughter_id().at(j).at(i)) == 4124 ? "unknown" : pdg->GetParticle(genps_lepdaughter_id().at(j).at(i))->GetName();
+        cout << genps_lepdaughter_id().at(j).at(i) << endl;
+          cout << setw(2)  << left  <<                    "    " << i << " "
+               << setw(10) << left  <<                    daughter_particle << " "
+               << setw(7)  << right << setprecision(4) << genps_lepdaughter_p4().at(j).at(i).pt()                         << "  "
+               << setw(7)  << right << setprecision(4) << genps_lepdaughter_p4().at(j).at(i).phi()                        << "  "
+               << setw(10) << right << setprecision(4) << genps_lepdaughter_p4().at(j).at(i).eta()                        << "  "
+               << setw(7)  << right << setprecision(4) << m_daught                                                             << "  " 
+             << endl;
+      
+      }//daughter-loop
+      cout << endl;
+    }
+  
+  }//gen-loop
+  delete pdg;
+  return 0;
+}
 
 bool isFromW(int id, int idx){
   int mc_id         = abs(id) == 11          ? els_mc_id().at(idx)         : mus_mc_id().at(idx);
