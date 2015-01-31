@@ -245,7 +245,7 @@ bool isGoodVetoMuon(unsigned int muidx){
 //Only used for SS analysis
 bool isFakableMuonNoIso(unsigned int muidx){
   if (!isGoodVetoMuonNoIso(muidx)) return false;
-  if (!isMuonFO(muidx)) return false;
+  if (!muonID(muidx, SS_loose_v1)) return false;
   return true;
 }
 
