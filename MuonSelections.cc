@@ -2,45 +2,167 @@
 
 using namespace tas;
 
-bool isLooseMuon(unsigned int muIdx, analysis_t analysis){
+bool muonID(unsigned int muIdx, id_level_t id_level){
 
-  //POG definition
-  if(!mus_pid_PFMuon().at(muIdx)) return false;    
-  bool isGlobal  = true;
-  bool isTracker = true;
-  if (((mus_type().at(muIdx)) & (1<<1)) == 0) isGlobal  = false;
-  if (((mus_type().at(muIdx)) & (1<<2)) == 0) isTracker = false;
-  if (!(isGlobal || isTracker)) return false;  
+  switch (id_level){
 
-  //HAD cuts (to suppress b->mu)
-  if (analysis == HAD){
-    if (fabs(mus_dxyPV().at(muIdx)) > 0.5) return false;
-    if (fabs(mus_dzPV().at(muIdx)) > 1.0)  return false;
-  }
-  return true;
-}
+   /////////////////
+   /// POG loose ///
+   /////////////////
+  
+    case(POG_loose):
+      {
+        if(!mus_pid_PFMuon().at(muIdx)) return false;    
+        bool isGlobal  = true;
+        bool isTracker = true;
+        if (((mus_type().at(muIdx)) & (1<<1)) == 0) isGlobal  = false;
+        if (((mus_type().at(muIdx)) & (1<<2)) == 0) isTracker = false;
+        if (!(isGlobal || isTracker)) return false;  
+        break;
+      }
+   
+   /////////////////////
+   /// stop loose v1 ///
+   /////////////////////
+  
+    case(STOP_loose_v1):
+      {
+        if(!mus_pid_PFMuon().at(muIdx)) return false;    
+        bool isGlobal  = true;
+        bool isTracker = true;
+        if (((mus_type().at(muIdx)) & (1<<1)) == 0) isGlobal  = false;
+        if (((mus_type().at(muIdx)) & (1<<2)) == 0) isTracker = false;
+        if (!(isGlobal || isTracker)) return false;  
+        break;
+      }
+  
+   ///////////////////
+   /// SS loose v1 ///
+   ///////////////////
+  
+    case(SS_loose_v1):
+      {
+        if(!mus_pid_PFMuon().at(muIdx)) return false;    
+        bool isGlobal  = true;
+        bool isTracker = true;
+        if (((mus_type().at(muIdx)) & (1<<1)) == 0) isGlobal  = false;
+        if (((mus_type().at(muIdx)) & (1<<2)) == 0) isTracker = false;
+        if (!(isGlobal || isTracker)) return false;  
+        break;
+      }
+  
+   ////////////////////
+   /// HAD loose v1 ///
+   ////////////////////
+  
+    case(HAD_loose_v1):
+      {
+        if(!mus_pid_PFMuon().at(muIdx)) return false;    
+        bool isGlobal  = true;
+        bool isTracker = true;
+        if (((mus_type().at(muIdx)) & (1<<1)) == 0) isGlobal  = false;
+        if (((mus_type().at(muIdx)) & (1<<2)) == 0) isTracker = false;
+        if (!(isGlobal || isTracker)) return false;  
+        if (fabs(mus_dxyPV().at(muIdx)) > 0.5) return false;
+        if (fabs(mus_dzPV().at(muIdx)) > 1.0)  return false;
+        break;
+      }
 
-bool isTightMuon(unsigned int muIdx, analysis_t analysis){
-  if (!isLooseMuon(muIdx, analysis)) return false;
-  if (mus_gfit_chi2().at(muIdx)/mus_gfit_ndof().at(muIdx) >= 10) return false; 
-  if (mus_gfit_validSTAHits().at(muIdx) == 0) return false; 
-  if (mus_numberOfMatchedStations().at(muIdx) < 2) return false;
-  if (mus_validPixelHits().at(muIdx) == 0) return false;
-  if (mus_nlayers().at(muIdx) < 6) return false;
+   /////////////////
+   /// POG tight ///
+   /////////////////
+  
+    case(POG_tight):
+      {
+        if(!mus_pid_PFMuon().at(muIdx)) return false;    
+        bool isGlobal  = true;
+        bool isTracker = true;
+        if (((mus_type().at(muIdx)) & (1<<1)) == 0) isGlobal  = false;
+        if (((mus_type().at(muIdx)) & (1<<2)) == 0) isTracker = false;
+        if (!(isGlobal || isTracker)) return false;  
+        if (mus_gfit_chi2().at(muIdx)/mus_gfit_ndof().at(muIdx) >= 10) return false; 
+        if (mus_gfit_validSTAHits().at(muIdx) == 0) return false; 
+        if (mus_numberOfMatchedStations().at(muIdx) < 2) return false;
+        if (mus_validPixelHits().at(muIdx) == 0) return false;
+        if (mus_nlayers().at(muIdx) < 6) return false;
+        if (fabs(mus_ip3d().at(muIdx))/mus_ip3derr().at(muIdx) >= 4) return false;
+        if (fabs(mus_dzPV().at(muIdx)) > 0.1) return false;
+        break;
+      }
 
-  if (analysis == POG || analysis == STOP){
-    if (fabs(mus_ip3d().at(muIdx))/mus_ip3derr().at(muIdx) >= 4) return false;
-    if (fabs(mus_dzPV().at(muIdx)) > 0.1) return false;
-  }
+   ///////////////////
+   /// SS tight v1 ///
+   ///////////////////
+  
+    case(SS_tight_v1):
+      {
+        if(!mus_pid_PFMuon().at(muIdx)) return false;    
+        bool isGlobal  = true;
+        bool isTracker = true;
+        if (((mus_type().at(muIdx)) & (1<<1)) == 0) isGlobal  = false;
+        if (((mus_type().at(muIdx)) & (1<<2)) == 0) isTracker = false;
+        if (!(isGlobal || isTracker)) return false;  
+        if (mus_gfit_chi2().at(muIdx)/mus_gfit_ndof().at(muIdx) >= 10) return false; 
+        if (mus_gfit_validSTAHits().at(muIdx) == 0) return false; 
+        if (mus_numberOfMatchedStations().at(muIdx) < 2) return false;
+        if (mus_validPixelHits().at(muIdx) == 0) return false;
+        if (mus_nlayers().at(muIdx) < 6) return false;
+        break;
+      }
 
-  else if (analysis == HAD){
-    bool isGlobal = true;
-    if (((mus_type().at(muIdx)) & (1<<1)) == 0) isGlobal = false;
-    if (!isGlobal) return false;
-    if (fabs(mus_dxyPV().at(muIdx)) > 0.2) return false;
-    if (fabs(mus_dzPV().at(muIdx)) > 0.5) return false;
-  }
+   /////////////////////
+   /// STOP tight v1 ///
+   /////////////////////
+  
+    case(STOP_tight_v1):
+      {
+        if(!mus_pid_PFMuon().at(muIdx)) return false;    
+        bool isGlobal  = true;
+        bool isTracker = true;
+        if (((mus_type().at(muIdx)) & (1<<1)) == 0) isGlobal  = false;
+        if (((mus_type().at(muIdx)) & (1<<2)) == 0) isTracker = false;
+        if (!(isGlobal || isTracker)) return false;  
+        if (mus_gfit_chi2().at(muIdx)/mus_gfit_ndof().at(muIdx) >= 10) return false; 
+        if (mus_gfit_validSTAHits().at(muIdx) == 0) return false; 
+        if (mus_numberOfMatchedStations().at(muIdx) < 2) return false;
+        if (mus_validPixelHits().at(muIdx) == 0) return false;
+        if (mus_nlayers().at(muIdx) < 6) return false;
+        if (fabs(mus_ip3d().at(muIdx))/mus_ip3derr().at(muIdx) >= 4) return false;
+        if (fabs(mus_dzPV().at(muIdx)) > 0.1) return false;
+        break;
+      }
 
+   ////////////////////
+   /// HAD tight v1 ///
+   ////////////////////
+  
+    case(HAD_tight_v1):
+      {
+        if(!mus_pid_PFMuon().at(muIdx)) return false;    
+        bool isGlobal  = true;
+        if (((mus_type().at(muIdx)) & (1<<1)) == 0) isGlobal = false;
+        if (!isGlobal) return false;
+        if (mus_gfit_chi2().at(muIdx)/mus_gfit_ndof().at(muIdx) >= 10) return false; 
+        if (mus_gfit_validSTAHits().at(muIdx) == 0) return false; 
+        if (mus_numberOfMatchedStations().at(muIdx) < 2) return false;
+        if (mus_validPixelHits().at(muIdx) == 0) return false;
+        if (mus_nlayers().at(muIdx) < 6) return false;
+        if (fabs(mus_dxyPV().at(muIdx)) > 0.2) return false;
+        if (fabs(mus_dzPV().at(muIdx)) > 0.5) return false;
+        break;
+      }
+
+   ///////////////
+   /// Default ///
+   ///////////////
+    default:
+      {
+        cout << "Warning! Muon ID not defined for this id_level!" << endl;
+        return false;
+      }
+   
+  
+  }//cases
   return true;
 }
 
@@ -82,21 +204,32 @@ float muRelIso03EA(unsigned int muIdx){
 }
 
 int muTightID(unsigned int muIdx, analysis_t analysis){
-  if (isTightMuon(muIdx, analysis)) return 1;
-  if (isLooseMuon(muIdx, analysis)) return 0;
+  switch (analysis){
+    case (POG):
+      if (muonID(muIdx, POG_tight)) return 1;
+      if (muonID(muIdx, POG_loose)) return 0;
+      break;
+    case (SS):
+      if (muonID(muIdx, SS_tight_v1)) return 1;
+      if (muonID(muIdx, SS_loose_v1)) return 0;
+      break;
+    case (HAD):
+      if (muonID(muIdx, HAD_tight_v1)) return 1;
+      if (muonID(muIdx, HAD_loose_v1)) return 0;
+      break;
+    case (STOP):
+      if (muonID(muIdx, STOP_tight_v1)) return 1;
+      if (muonID(muIdx, STOP_loose_v1)) return 0;
+      break;
+  }
   return -1;
-}
-
-//Only used for SS analysis, dummy
-bool isMuonFO(unsigned int muidx){
-  return isTightMuon(muidx, SS);
 }
 
 //Only used for SS analysis
 bool isGoodVetoMuonNoIso(unsigned int muidx){
   if (fabs(mus_p4().at(muidx).eta()) > 2.4) return false;
   if (mus_p4().at(muidx).pt() < 5.) return false;//fixme
-  if (!isLooseMuon(muidx, SS)) return false;
+  if (!muonID(muidx, SS_loose_v1)) return false;
   if (fabs(mus_dxyPV().at(muidx)) >= 0.05) return false;
   if (fabs(mus_dzPV().at(muidx)) >= 0.1) return false;
   return true;
@@ -126,7 +259,7 @@ bool isFakableMuon(unsigned int muidx){
 //Only used for SS analysis
 bool isGoodMuonNoIso(unsigned int muidx){
   if (!isFakableMuonNoIso(muidx)) return false;
-  if (!isTightMuon(muidx, SS)) return false;
+  if (!muonID(muidx, SS_tight_v1)) return false;
   if (fabs(mus_ip3d().at(muidx))/mus_ip3derr().at(muidx) >= 4) return false;
   return true;
 }

@@ -50,13 +50,12 @@ int dumpDocLines(){
         //Print information about the daughters
         const char* daughter_particle = abs(genps_lepdaughter_id().at(j).at(i)) == 4124 ? "unknown" : pdg->GetParticle(genps_lepdaughter_id().at(j).at(i))->GetName();
         cout << genps_lepdaughter_id().at(j).at(i) << endl;
-          cout << setw(2)  << left  <<                    "    " << i << " "
-               << setw(10) << left  <<                    daughter_particle << " "
-               << setw(7)  << right << setprecision(4) << genps_lepdaughter_p4().at(j).at(i).pt()                         << "  "
-               << setw(7)  << right << setprecision(4) << genps_lepdaughter_p4().at(j).at(i).phi()                        << "  "
-               << setw(10) << right << setprecision(4) << genps_lepdaughter_p4().at(j).at(i).eta()                        << "  "
-               << setw(7)  << right << setprecision(4) << m_daught                                                             << "  " 
-             << endl;
+        cout << setw(2)  << left  << "    "            << i                                                               << " "
+             << setw(10) << left  << daughter_particle                                                                    << " "
+             << setw(7)  << right << setprecision(4)   << genps_lepdaughter_p4().at(j).at(i).pt()                         << "  "
+             << setw(7)  << right << setprecision(4)   << genps_lepdaughter_p4().at(j).at(i).phi()                        << "  "
+             << setw(10) << right << setprecision(4)   << genps_lepdaughter_p4().at(j).at(i).eta()                        << "  "
+             << setw(7)  << right << setprecision(4)   << m_daught                                                        << "  "  << endl;
       
       }//daughter-loop
       cout << endl;
