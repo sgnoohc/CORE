@@ -27,7 +27,7 @@ int dumpDocLines(){
     const char* particle = (abs(genps_id().at(j)) == 4124) ? "unknown" : pdg->GetParticle(genps_id().at(j))->GetName();
     const char* mother_particle = (abs(genps_id_mother().at(j)) == 4124) ? "unknown" : pdg->GetParticle(genps_id_mother().at(j))->GetName();
 
-    cout << setw(4)  << left  <<                 << j                        << " "
+    cout << setw(4)  << left  <<                    j                        << " "
          << setw(10) << left  <<                    particle                 << " "
          << setw(7)  << right << setprecision(4) << genps_p4().at(j).pt()    << "  "
          << setw(7)  << right << setprecision(4) << genps_p4().at(j).phi()   << "  "
