@@ -2,155 +2,96 @@
 
 using namespace tas;
 
+bool isLooseMuonPOG(unsigned int muIdx){
+  if(!mus_pid_PFMuon().at(muIdx)) return false;    
+  bool isGlobal  = true;
+  bool isTracker = true;
+  if (((mus_type().at(muIdx)) & (1<<1)) == 0) isGlobal  = false;
+  if (((mus_type().at(muIdx)) & (1<<2)) == 0) isTracker = false;
+  if (!(isGlobal || isTracker)) return false;  
+  return true;
+}
+
+bool isTightMuonPOG(unsigned int muIdx){
+  if(!mus_pid_PFMuon().at(muIdx)) return false;    
+  bool isGlobal  = true;
+  bool isTracker = true;
+  if (((mus_type().at(muIdx)) & (1<<1)) == 0) isGlobal  = false;
+  if (((mus_type().at(muIdx)) & (1<<2)) == 0) isTracker = false;
+  if (!(isGlobal || isTracker)) return false;  
+  if (mus_gfit_chi2().at(muIdx)/mus_gfit_ndof().at(muIdx) >= 10) return false; 
+  if (mus_gfit_validSTAHits().at(muIdx) == 0) return false; 
+  if (mus_numberOfMatchedStations().at(muIdx) < 2) return false;
+  if (mus_validPixelHits().at(muIdx) == 0) return false;
+  if (mus_nlayers().at(muIdx) < 6) return false;
+  if (fabs(mus_ip3d().at(muIdx))/mus_ip3derr().at(muIdx) >= 4) return false;
+  if (fabs(mus_dzPV().at(muIdx)) > 0.1) return false;
+  return true;
+}
+
 bool muonID(unsigned int muIdx, id_level_t id_level){
 
   switch (id_level){
 
-   /////////////////
-   /// POG loose ///
-   /////////////////
-  
-    case(POG_loose):
-      {
-        if(!mus_pid_PFMuon().at(muIdx)) return false;    
-        bool isGlobal  = true;
-        bool isTracker = true;
-        if (((mus_type().at(muIdx)) & (1<<1)) == 0) isGlobal  = false;
-        if (((mus_type().at(muIdx)) & (1<<2)) == 0) isTracker = false;
-        if (!(isGlobal || isTracker)) return false;  
-        break;
-      }
-   
    /////////////////////
    /// stop loose v1 ///
    /////////////////////
   
     case(STOP_loose_v1):
-      {
-        if(!mus_pid_PFMuon().at(muIdx)) return false;    
-        bool isGlobal  = true;
-        bool isTracker = true;
-        if (((mus_type().at(muIdx)) & (1<<1)) == 0) isGlobal  = false;
-        if (((mus_type().at(muIdx)) & (1<<2)) == 0) isTracker = false;
-        if (!(isGlobal || isTracker)) return false;  
-        break;
-      }
-  
+      return isLooseMuonPOG(muIdx);
+      break;
+ 
    ///////////////////
    /// SS loose v1 ///
    ///////////////////
   
     case(SS_loose_v1):
-      {
-        if(!mus_pid_PFMuon().at(muIdx)) return false;    
-        bool isGlobal  = true;
-        bool isTracker = true;
-        if (((mus_type().at(muIdx)) & (1<<1)) == 0) isGlobal  = false;
-        if (((mus_type().at(muIdx)) & (1<<2)) == 0) isTracker = false;
-        if (!(isGlobal || isTracker)) return false;  
-        break;
-      }
+      return isLooseMuonPOG(muIdx);
+      break;
   
    ////////////////////
    /// HAD loose v1 ///
    ////////////////////
   
     case(HAD_loose_v1):
-      {
-        if(!mus_pid_PFMuon().at(muIdx)) return false;    
-        bool isGlobal  = true;
-        bool isTracker = true;
-        if (((mus_type().at(muIdx)) & (1<<1)) == 0) isGlobal  = false;
-        if (((mus_type().at(muIdx)) & (1<<2)) == 0) isTracker = false;
-        if (!(isGlobal || isTracker)) return false;  
-        if (fabs(mus_dxyPV().at(muIdx)) > 0.5) return false;
-        if (fabs(mus_dzPV().at(muIdx)) > 1.0)  return false;
-        break;
-      }
-
-   /////////////////
-   /// POG tight ///
-   /////////////////
-  
-    case(POG_tight):
-      {
-        if(!mus_pid_PFMuon().at(muIdx)) return false;    
-        bool isGlobal  = true;
-        bool isTracker = true;
-        if (((mus_type().at(muIdx)) & (1<<1)) == 0) isGlobal  = false;
-        if (((mus_type().at(muIdx)) & (1<<2)) == 0) isTracker = false;
-        if (!(isGlobal || isTracker)) return false;  
-        if (mus_gfit_chi2().at(muIdx)/mus_gfit_ndof().at(muIdx) >= 10) return false; 
-        if (mus_gfit_validSTAHits().at(muIdx) == 0) return false; 
-        if (mus_numberOfMatchedStations().at(muIdx) < 2) return false;
-        if (mus_validPixelHits().at(muIdx) == 0) return false;
-        if (mus_nlayers().at(muIdx) < 6) return false;
-        if (fabs(mus_ip3d().at(muIdx))/mus_ip3derr().at(muIdx) >= 4) return false;
-        if (fabs(mus_dzPV().at(muIdx)) > 0.1) return false;
-        break;
-      }
+      if (!isLooseMuonPOG(muIdx)) return false;
+      if (fabs(mus_dxyPV().at(muIdx)) > 0.5) return false;
+      if (fabs(mus_dzPV().at(muIdx)) > 1.0) return false;
+      break;
 
    ///////////////////
    /// SS tight v1 ///
    ///////////////////
   
     case(SS_tight_v1):
-      {
-        if(!mus_pid_PFMuon().at(muIdx)) return false;    
-        bool isGlobal  = true;
-        bool isTracker = true;
-        if (((mus_type().at(muIdx)) & (1<<1)) == 0) isGlobal  = false;
-        if (((mus_type().at(muIdx)) & (1<<2)) == 0) isTracker = false;
-        if (!(isGlobal || isTracker)) return false;  
-        if (mus_gfit_chi2().at(muIdx)/mus_gfit_ndof().at(muIdx) >= 10) return false; 
-        if (mus_gfit_validSTAHits().at(muIdx) == 0) return false; 
-        if (mus_numberOfMatchedStations().at(muIdx) < 2) return false;
-        if (mus_validPixelHits().at(muIdx) == 0) return false;
-        if (mus_nlayers().at(muIdx) < 6) return false;
-        break;
-      }
+      if (!isLooseMuonPOG(muIdx)) return false;
+      if (mus_gfit_chi2().at(muIdx)/mus_gfit_ndof().at(muIdx) >= 10) return false; 
+      if (mus_gfit_validSTAHits().at(muIdx) == 0) return false; 
+      if (mus_numberOfMatchedStations().at(muIdx) < 2) return false;
+      if (mus_validPixelHits().at(muIdx) == 0) return false;
+      if (mus_nlayers().at(muIdx) < 6) return false;
+      break;
 
    /////////////////////
    /// STOP tight v1 ///
    /////////////////////
   
     case(STOP_tight_v1):
-      {
-        if(!mus_pid_PFMuon().at(muIdx)) return false;    
-        bool isGlobal  = true;
-        bool isTracker = true;
-        if (((mus_type().at(muIdx)) & (1<<1)) == 0) isGlobal  = false;
-        if (((mus_type().at(muIdx)) & (1<<2)) == 0) isTracker = false;
-        if (!(isGlobal || isTracker)) return false;  
-        if (mus_gfit_chi2().at(muIdx)/mus_gfit_ndof().at(muIdx) >= 10) return false; 
-        if (mus_gfit_validSTAHits().at(muIdx) == 0) return false; 
-        if (mus_numberOfMatchedStations().at(muIdx) < 2) return false;
-        if (mus_validPixelHits().at(muIdx) == 0) return false;
-        if (mus_nlayers().at(muIdx) < 6) return false;
-        if (fabs(mus_ip3d().at(muIdx))/mus_ip3derr().at(muIdx) >= 4) return false;
-        if (fabs(mus_dzPV().at(muIdx)) > 0.1) return false;
-        break;
-      }
+      return isTightMuonPOG(muIdx);
+       break;
 
    ////////////////////
    /// HAD tight v1 ///
    ////////////////////
   
     case(HAD_tight_v1):
-      {
-        if(!mus_pid_PFMuon().at(muIdx)) return false;    
-        bool isGlobal  = true;
-        if (((mus_type().at(muIdx)) & (1<<1)) == 0) isGlobal = false;
-        if (!isGlobal) return false;
-        if (mus_gfit_chi2().at(muIdx)/mus_gfit_ndof().at(muIdx) >= 10) return false; 
-        if (mus_gfit_validSTAHits().at(muIdx) == 0) return false; 
-        if (mus_numberOfMatchedStations().at(muIdx) < 2) return false;
-        if (mus_validPixelHits().at(muIdx) == 0) return false;
-        if (mus_nlayers().at(muIdx) < 6) return false;
-        if (fabs(mus_dxyPV().at(muIdx)) > 0.2) return false;
-        if (fabs(mus_dzPV().at(muIdx)) > 0.5) return false;
-        break;
-      }
+      if (!isLooseMuonPOG(muIdx)) return false;
+      if (mus_gfit_chi2().at(muIdx)/mus_gfit_ndof().at(muIdx) >= 10) return false; 
+      if (mus_gfit_validSTAHits().at(muIdx) == 0) return false; 
+      if (mus_numberOfMatchedStations().at(muIdx) < 2) return false;
+      if (mus_validPixelHits().at(muIdx) == 0) return false;
+      if (mus_nlayers().at(muIdx) < 6) return false;
+      break;
 
    ///////////////
    /// Default ///
@@ -206,8 +147,8 @@ float muRelIso03EA(unsigned int muIdx){
 int muTightID(unsigned int muIdx, analysis_t analysis){
   switch (analysis){
     case (POG):
-      if (muonID(muIdx, POG_tight)) return 1;
-      if (muonID(muIdx, POG_loose)) return 0;
+      if (!isTightMuonPOG(muIdx)) return 1;
+      if (!isLooseMuonPOG(muIdx)) return 0;
       break;
     case (SS):
       if (muonID(muIdx, SS_tight_v1)) return 1;

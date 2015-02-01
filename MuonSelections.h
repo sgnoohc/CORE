@@ -10,6 +10,8 @@ float muRelIso03DB(unsigned int);
 float muRelIso04DB(unsigned int);
 
 bool muonID(unsigned int, id_level_t);
+bool isLooseMuonPOG(unsigned int muIdx);
+bool isTightMuonPOG(unsigned int muIdx);
 
 int muTightID(unsigned int, analysis_t);
 

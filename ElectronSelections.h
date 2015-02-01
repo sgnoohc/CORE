@@ -5,6 +5,10 @@
 #include "Base.h"
 
 bool electronID(unsigned int, id_level_t);
+bool isVetoElectronPOG(unsigned int elIdx);
+bool isLooseElectronPOG(unsigned int elIdx);
+bool isMediumElectronPOG(unsigned int elIdx);
+bool isTightElectronPOG(unsigned int elIdx);
 
 int eleTightID(unsigned int, analysis_t);
 

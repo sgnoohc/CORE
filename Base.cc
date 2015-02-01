@@ -4,12 +4,6 @@
 analysis_t whichAnalysis(id_level_t id_level){
 
   switch (id_level){
-    case (POG_veto):
-    case (POG_loose):
-    case (POG_medium):
-    case (POG_tight):
-      return POG;
-      break;
     case (SS_veto_v1):
     case (SS_loose_v1):
     case (SS_medium_v1):
