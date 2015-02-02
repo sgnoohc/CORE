@@ -24,7 +24,7 @@ analysis_t whichAnalysis(id_level_t id_level){
       break;
     default:
       std::cout << "Warning! Not sure which analysis you're doing!" << std::endl;
-      std::cout << "Update \"whichAnalysis\" in base.h with this id_level!" << std::endl;
+      std::cout << "Update \"whichAnalysis\" in base.cc with this id_level!" << std::endl;
       return POG;
   }
 

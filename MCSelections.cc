@@ -24,8 +24,8 @@ int dumpDocLines(){
     float m  = m2 >= 0 ? sqrt(m2) : 0.0;
 
     //Print information about the jth gen particle
-    const char* particle = (abs(genps_id().at(j)) == 4124) ? "unknown" : pdg->GetParticle(genps_id().at(j))->GetName();
-    const char* mother_particle = (abs(genps_id_mother().at(j)) == 4124) ? "unknown" : pdg->GetParticle(genps_id_mother().at(j))->GetName();
+    const char* particle = (abs(genps_id().at(j)) == 4124) ? "Lambda_c*" : pdg->GetParticle(genps_id().at(j))->GetName();
+    const char* mother_particle = (abs(genps_id_mother().at(j)) == 4124) ? "Lambda_c*" : pdg->GetParticle(genps_id_mother().at(j))->GetName();
 
     cout << setw(4)  << left  <<                    j                        << " "
          << setw(10) << left  <<                    particle                 << " "
@@ -48,7 +48,7 @@ int dumpDocLines(){
         float m_daught  = m2_daught >= 0 ? sqrt(m2_daught) : 0.0;
 
         //Print information about the daughters
-        const char* daughter_particle = abs(genps_lepdaughter_id().at(j).at(i)) == 4124 ? "unknown" : pdg->GetParticle(genps_lepdaughter_id().at(j).at(i))->GetName();
+        const char* daughter_particle = abs(genps_lepdaughter_id().at(j).at(i)) == 4124 ? "Lambda_c*" : pdg->GetParticle(genps_lepdaughter_id().at(j).at(i))->GetName();
         cout << genps_lepdaughter_id().at(j).at(i) << endl;
         cout << setw(2)  << left  << "    "            << i                                                               << " "
              << setw(10) << left  << daughter_particle                                                                    << " "
