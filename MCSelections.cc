@@ -1,4 +1,4 @@
-#include "/home/users/cgeorge/devCORE/CORE/CMS3.h"
+#include "CMS3.h"
 #include "TDatabasePDG.h"
 #include "TFile.h"
 #include "TTree.h"
