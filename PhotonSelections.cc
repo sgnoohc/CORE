@@ -22,15 +22,16 @@ bool isLoosePhoton(unsigned int phIdx, analysis_t analysis){
     } else return false;
   } else {
     std::cerr << "CORE::PhotonSelection -- Photon selection not implemented for analysis " << analysis << std::endl;
-    std::cerr << "CORE::PhotonSelection -- I will return true."
-    return true;
+    std::cerr << "CORE::PhotonSelection -- I will return true." << std::endl;
   }
+
+  return true;
 }
 
-bool isTightPhoton(unsigned int phIdx, analysis_t analysis_t){
+bool isTightPhoton(unsigned int phIdx, analysis_t analysis) {
     
   if (analysis == HAD) {
-    if (!isLoosePhoton(phIdx)) return false;
+    if (!isLoosePhoton(phIdx, HAD)) return false;
     
     if( fabs(photons_p4().at(phIdx).eta()) <= 1.479 ){
       if(photons_full5x5_sigmaIEtaIEta().at(phIdx) >= 0.010) return false; 
@@ -43,7 +44,8 @@ bool isTightPhoton(unsigned int phIdx, analysis_t analysis_t){
     } else return false;
   } else {
     std::cerr << "CORE::PhotonSelection -- Photon selection not implemented for analysis " << analysis << std::endl;
-    std::cerr << "CORE::PhotonSelection -- I will return true."
-    return true;
+    std::cerr << "CORE::PhotonSelection -- I will return true." << std::endl;
   } 
+
+  return true;
 }
