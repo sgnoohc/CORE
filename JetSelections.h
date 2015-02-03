@@ -9,7 +9,7 @@ bool isMediumPFJet(unsigned int pfJetIdx);
 bool isTightPFJet(unsigned int pfJetIdx);
 bool passesPFJetID(unsigned int pfJetIdx);
 
-bool JetIsElectron(LorentzVector);
-bool JetIsMuon(LorentzVector);
+bool JetIsElectron(LorentzVector pfJet);
+bool JetIsMuon(LorentzVector pfJet);
 
 #endif

@@ -2,9 +2,9 @@
 #define TRIGGERSELECTIONS_H
 #include "CMS3.h"
 
-bool passesTriggerVeryLowPt(int);
-bool passUnprescaledHLTTrigger(const char*);
-bool passUnprescaledHLTTriggerPattern(const char*);
-TString triggerName(TString);
+bool passesTriggerVeryLowPt(int hyp_type);
+bool passUnprescaledHLTTrigger(const char* arg);
+bool passUnprescaledHLTTriggerPattern(const char* arg);
+TString triggerName(TString triggerPattern);
 
 #endif

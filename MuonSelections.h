@@ -4,24 +4,28 @@
 #include "TString.h"
 #include "Base.h"
 
-float muRelIso03(unsigned int, analysis_t);
-float muRelIso03EA(unsigned int);
-float muRelIso03DB(unsigned int);
-float muRelIso04DB(unsigned int);
-
-bool muonID(unsigned int, id_level_t);
+//POG IDs
 bool isLooseMuonPOG(unsigned int muIdx);
 bool isTightMuonPOG(unsigned int muIdx);
 
-int muTightID(unsigned int, analysis_t);
+//Main Muon ID function
+bool muonID(unsigned int muIdx, id_level_t id_level);
 
-bool isMuonFO(unsigned int);
-bool isGoodVetoMuon(unsigned int);
-bool isFakableMuon(unsigned int);
-bool isGoodMuon(unsigned int);
+//Isolation
+float muRelIso03DB(unsigned int muIdx);
+float muRelIso04DB(unsigned int muIdx);
+float muRelIso03(unsigned int muIdx, analysis_t analysis);
+float muRelIso03EA(unsigned int muIdx);
 
-bool isGoodVetoMuonNoIso(unsigned int);
-bool isFakableMuonNoIso(unsigned int);
-bool isGoodMuonNoIso(unsigned int);
+//Tightest ID passed by muon
+int muTightID(unsigned int muIdx, analysis_t analysis);
+
+//Only used for SS analysis
+bool isGoodVetoMuonNoIso(unsigned int muidx);
+bool isGoodVetoMuon(unsigned int muidx);
+bool isFakableMuonNoIso(unsigned int muidx);
+bool isFakableMuon(unsigned int muidx);
+bool isGoodMuonNoIso(unsigned int muidx);
+bool isGoodMuon(unsigned int muidx);
 
 #endif
