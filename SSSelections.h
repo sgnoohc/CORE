@@ -5,6 +5,7 @@
 #include "MuonSelections.h"
 #include "MetSelections.h"
 #include "JetSelections.h"
+#include "VertexSelections.h"
 #include "MCSelections.h"
 
 const static float ptCutHigh = 25.;
@@ -30,10 +31,6 @@ struct Jet;
 template <typename T> int sgn(T val){
     return (T(0) < val) - (val < T(0));
 }
-
-//Generic selections
-bool isGoodVertex(size_t ivtx);
-int firstGoodVertex();
 
 //Object selections
 bool isIsolatedLepton(int id, int idx);
