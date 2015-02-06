@@ -23,4 +23,18 @@ int baselineRegion(int nbtag);
 void passesSignalRegionCuts(float ht, float met, unsigned int& analysisBitMask);
 int signalRegion(int njets, int nbtag, float met, float ht, int njetscut = 4, float metcut = 120, float htcut = 400);
 
+bool isGoodVetoElectronNoIso(unsigned int elidx);
+bool isGoodVetoElectron(unsigned int elidx);
+bool isFakableElectronNoIso(unsigned int elidx);
+bool isFakableElectron(unsigned int elidx);
+bool isGoodElectronNoIso(unsigned int elidx);
+bool isGoodElectron(unsigned int elidx);
+
+bool isGoodVetoMuonNoIso(unsigned int muidx);
+bool isGoodVetoMuon(unsigned int muidx);
+bool isFakableMuonNoIso(unsigned int muidx);
+bool isFakableMuon(unsigned int muidx);
+bool isGoodMuonNoIso(unsigned int muidx);
+bool isGoodMuon(unsigned int muidx);
+
 #endif

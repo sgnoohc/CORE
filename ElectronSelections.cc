@@ -121,30 +121,29 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
    // SS veto v1 ////
    //////////////////
 
-    case(SS_veto_v1):
+    case(SS_veto_noiso_v1):
       if (fabs(els_etaSC().at(elIdx)) <= 1.479){
         if (fabs(els_dEtaIn().at(elIdx)) >= 0.007) return false; 
         if (fabs(els_dPhiIn().at(elIdx)) >= 0.8) return false; 
         if (els_sigmaIEtaIEta_full5x5().at(elIdx) >= 0.01) return false; 
         if (els_hOverE().at(elIdx) >= 0.15) return false; 
-        if (els_conv_vtx_flag().at(elIdx)) return false;
-        if (els_exp_innerlayers().at(elIdx) > 2) return false;
-        if (fabs(els_dxyPV().at(elIdx)) >= 0.05) return false;
-        if (fabs(els_dzPV().at(elIdx)) >= 0.1) return false; 
-        if (eleRelIso03(elIdx, analysis) >= 0.5) return false; 
       }
       else if ((fabs(els_etaSC().at(elIdx)) > 1.479) && (fabs(els_etaSC().at(elIdx)) < 2.5)){
         if (fabs(els_dEtaIn().at(elIdx)) >= 0.01) return false; 
         if (fabs(els_dPhiIn().at(elIdx)) >= 0.7) return false; 
         if (els_sigmaIEtaIEta_full5x5().at(elIdx) >= 0.03) return false; 
-        if (fabs( (1.0/els_ecalEnergy().at(elIdx)) - (els_eOverPIn().at(elIdx)/els_ecalEnergy().at(elIdx)) ) >= 0.13) return false;
-        if (els_conv_vtx_flag().at(elIdx)) return false;
-        if (els_exp_innerlayers().at(elIdx) > 2) return false;
-        if (fabs(els_dxyPV().at(elIdx)) >= 0.05) return false;
-        if (fabs(els_dzPV().at(elIdx)) >= 0.1) return false; 
-        if (eleRelIso03(elIdx, analysis) >= 0.50) return false; 
       }
       else return false;
+      if (els_conv_vtx_flag().at(elIdx)) return false;
+      if (els_exp_innerlayers().at(elIdx) > 1) return false;
+      if (fabs(els_dxyPV().at(elIdx)) >= 0.05) return false;
+      if (fabs(els_dzPV().at(elIdx)) >= 0.1) return false; 
+      break;
+
+    case(SS_veto_v1):
+      if (electronID(elIdx, SS_veto_noiso_v1)==0) return false; 
+      if (eleRelIso03(elIdx, analysis) >= 0.50) return false; 
+      return true;
       break;
 
    ////////////////////
@@ -179,29 +178,35 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       break;
 
    ///////////////////
-   /// SS loose v1 ///
+   /// SS FO v1 /// same as medium, but no SIP3D cut and looser iso
    ///////////////////
 
-    case(SS_loose_v1):
+    case(SS_fo_noiso_v1):
       if (fabs(els_etaSC().at(elIdx)) <= 1.479){
-        if (els_sigmaIEtaIEta_full5x5().at(elIdx) >= 0.01) return false;
-        if (fabs( (1.0/els_ecalEnergy().at(elIdx)) - (els_eOverPIn().at(elIdx)/els_ecalEnergy().at(elIdx)) ) >= 0.05) return false;
-        if (els_hOverE().at(elIdx) >= 0.12) return false;
-        if (els_conv_vtx_flag().at(elIdx)) return false;
         if (fabs(els_dEtaIn().at(elIdx)) >= 0.004) return false;
         if (fabs(els_dPhiIn().at(elIdx)) >= 0.06) return false; 
-        if (els_exp_innerlayers().at(elIdx) > 0) return false;
+        if (els_sigmaIEtaIEta_full5x5().at(elIdx) >= 0.01) return false; 
+        if (els_hOverE().at(elIdx) >= 0.12) return false; 
+        if (fabs( (1.0/els_ecalEnergy().at(elIdx)) - (els_eOverPIn().at(elIdx)/els_ecalEnergy().at(elIdx)) ) >= 0.05) return false;
       }
       else if((fabs(els_etaSC().at(elIdx)) > 1.479) && (fabs(els_etaSC().at(elIdx)) < 2.5)){
-        if (els_sigmaIEtaIEta_full5x5().at(elIdx) >= 0.03) return false;
-        if (fabs( (1.0/els_ecalEnergy().at(elIdx)) - (els_eOverPIn().at(elIdx)/els_ecalEnergy().at(elIdx)) ) >= 0.05) return false;
-        if (els_hOverE().at(elIdx) >= 0.1) return false;
-        if (els_conv_vtx_flag().at(elIdx) ) return false;
         if (fabs(els_dEtaIn().at(elIdx)) >= 0.007) return false;
         if (fabs(els_dPhiIn().at(elIdx)) >= 0.03) return false; 
-        if (els_exp_innerlayers().at(elIdx) > 0) return false;
+        if (els_sigmaIEtaIEta_full5x5().at(elIdx) >= 0.03) return false; 
+        if (els_hOverE().at(elIdx) >= 0.1) return false; 
+        if (fabs( (1.0/els_ecalEnergy().at(elIdx)) - (els_eOverPIn().at(elIdx)/els_ecalEnergy().at(elIdx)) ) >= 0.05) return false;
       }
       else return false;
+      if (els_conv_vtx_flag().at(elIdx)) return false;
+      if (els_exp_innerlayers().at(elIdx) > 0) return false;
+      if (threeChargeAgree(elIdx)==0) return false;
+      if (fabs(els_dzPV().at(elIdx)) >= 0.1) return false;
+      break;
+
+    case(SS_fo_v1):
+      if (electronID(elIdx, SS_fo_noiso_v1)==0) return false; 
+      if (eleRelIso03(elIdx, analysis) >= 0.50) return false; 
+      return true;
       break;
 
    ////////////////////
@@ -262,19 +267,15 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
    /// SS medium v1 ///
    ////////////////////
 
-    case(SS_medium_v1):
+    case(SS_medium_noiso_v1):
       if (fabs(els_etaSC().at(elIdx)) <= 1.479){
         if (fabs(els_dEtaIn().at(elIdx)) >= 0.004) return false;
         if (fabs(els_dPhiIn().at(elIdx)) >= 0.06) return false; 
         if (els_sigmaIEtaIEta_full5x5().at(elIdx) >= 0.01) return false; 
         if (els_hOverE().at(elIdx) >= 0.12) return false; 
         if (fabs( (1.0/els_ecalEnergy().at(elIdx)) - (els_eOverPIn().at(elIdx)/els_ecalEnergy().at(elIdx)) ) >= 0.05) return false;
-        if (els_conv_vtx_flag().at(elIdx)) return false;
-        if (els_exp_innerlayers().at(elIdx) > 0) return false;
       }
       else if((fabs(els_etaSC().at(elIdx)) > 1.479) && (fabs(els_etaSC().at(elIdx)) < 2.5)){
-        if (els_conv_vtx_flag().at(elIdx)) return false;
-        if (els_exp_innerlayers().at(elIdx) > 0) return false;
         if (fabs(els_dEtaIn().at(elIdx)) >= 0.007) return false;
         if (fabs(els_dPhiIn().at(elIdx)) >= 0.03) return false; 
         if (els_sigmaIEtaIEta_full5x5().at(elIdx) >= 0.03) return false; 
@@ -282,6 +283,17 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
         if (fabs( (1.0/els_ecalEnergy().at(elIdx)) - (els_eOverPIn().at(elIdx)/els_ecalEnergy().at(elIdx)) ) >= 0.05) return false;
       }
       else return false;
+      if (els_conv_vtx_flag().at(elIdx)) return false;
+      if (els_exp_innerlayers().at(elIdx) > 0) return false;
+      if (threeChargeAgree(elIdx)==0) return false;
+      if (fabs(els_dzPV().at(elIdx)) >= 0.1) return false;
+      if (fabs(els_ip3d().at(elIdx))/els_ip3derr().at(elIdx) >= 4) return false;
+      break;
+
+    case(SS_medium_v1):
+      if (electronID(elIdx, SS_medium_noiso_v1)==0) return false; 
+      if (eleRelIso03(elIdx, analysis) >= 0.10) return false; 
+      return true;
       break;
 
    /////////////////////
@@ -292,28 +304,6 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       if (!isTightElectronPOG(elIdx)) return false;
       if (eleRelIso03(elIdx, POG) >= 0.10) return false; 
       return true;
-      break;
-
-   ///////////////////
-   /// SS tight v1 ///
-   ///////////////////
-
-    case(SS_tight_v1):
-      if (fabs(els_etaSC().at(elIdx)) <= 1.479){
-        if (fabs(els_dEtaIn().at(elIdx)) >= 0.004) return false;
-        if (fabs(els_dPhiIn().at(elIdx)) >= 0.03) return false; 
-        if (els_sigmaIEtaIEta_full5x5().at(elIdx) >= 0.01) return false; 
-        if (els_hOverE().at(elIdx) >= 0.12) return false; 
-        if (fabs((1.0/els_ecalEnergy().at(elIdx)) - (els_eOverPIn().at(elIdx)/els_ecalEnergy().at(elIdx)) ) >= 0.05) return false;
-      }
-      else if((fabs(els_etaSC().at(elIdx)) > 1.479) && (fabs(els_etaSC().at(elIdx)) < 2.5)){
-        if (fabs(els_dEtaIn().at(elIdx)) >= 0.005) return false;
-        if (fabs(els_dPhiIn().at(elIdx)) >= 0.02) return false; 
-        if (els_sigmaIEtaIEta_full5x5().at(elIdx) >= 0.03) return false; 
-        if (els_hOverE().at(elIdx) >= 0.1) return false; 
-        if (fabs( (1.0/els_ecalEnergy().at(elIdx)) - (els_eOverPIn().at(elIdx)/els_ecalEnergy().at(elIdx)) ) >= 0.05) return false;
-      }
-      else return false;
       break;
 
    ////////////////////
@@ -337,6 +327,15 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       }
       else return false;
       break;
+
+   ///////////////
+   /// Default ///
+   ///////////////
+    default:
+      {
+        cout << "Warning! Electron ID not defined for this id_level!" << endl;
+        return false;
+      }
 
   }//switch
   return true;
@@ -381,9 +380,8 @@ int eleTightID(unsigned int elIdx, analysis_t analysis){
       if (!isVetoElectronPOG(elIdx)) return 0;
       break;
     case (SS):
-      if (electronID(elIdx, SS_tight_v1)) return 3;
       if (electronID(elIdx, SS_medium_v1)) return 2;
-      if (electronID(elIdx, SS_loose_v1)) return 1;
+      if (electronID(elIdx, SS_fo_v1)) return 1;
       if (electronID(elIdx, SS_veto_v1)) return 0;
       break;
     case (HAD):
@@ -402,55 +400,6 @@ int eleTightID(unsigned int elIdx, analysis_t analysis){
   return -1;
 }
 
-//Only used for SS analysis
-bool isGoodVetoElectronNoIso(unsigned int elidx){
-  if (fabs(els_p4().at(elidx).eta()) > 2.4) return false;
-  if (els_p4().at(elidx).pt() < 7.) return false;
-  if (!electronID(elidx, SS_veto_v1)) return false;
-  if (fabs(els_dxyPV().at(elidx)) >= 0.05) return false;
-  if (fabs(els_dzPV().at(elidx)) >= 0.1) return false;
-  return true;
-}
-
-//Only used for SS analysis
-bool isGoodVetoElectron(unsigned int elidx){
-  if (!isGoodVetoElectronNoIso(elidx)) return false;
-  if (eleRelIso03(elidx, SS) >= 0.5) return false; 
-  return true;
-}
-
-//Only used for SS analysis
-bool isFakableElectronNoIso(unsigned int elidx){
-  if (els_p4().at(elidx).pt() < 10.) return false;
-  if (!isGoodVetoElectronNoIso(elidx)) return false;
-  if (!electronID(elidx, SS_loose_v1)) return false;
-  if (threeChargeAgree(elidx) == 0) return false;
-  return true;
-}
-
-//Only used for SS analysis
-bool isFakableElectron(unsigned int elidx){
-  if (!isFakableElectronNoIso(elidx)) return false;
-  if (eleRelIso03(elidx, SS) >= 0.5) return false; 
-  return true;
-}
-
-//Only used for SS analysis
-bool isGoodElectronNoIso(unsigned int elidx){
-  if (!isFakableElectronNoIso(elidx)) return false;
-  if (!electronID(elidx, SS_medium_v1)) return false;
-  if (fabs(els_ip3d().at(elidx))/els_ip3derr().at(elidx) >= 4) return false;
-  return true;
-}
-
-//Only used for SS analysis
-bool isGoodElectron(unsigned int elidx){
-  if (!isGoodElectronNoIso(elidx)) return false;
-  if (eleRelIso03(elidx, SS) >= 0.1) return false; 
-  return true;
-}
-
-//Only used for SS analysis
 bool threeChargeAgree(unsigned int elIdx){
   return els_isGsfCtfScPixChargeConsistent().at(elIdx);
 }

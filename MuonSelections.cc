@@ -24,8 +24,8 @@ bool isTightMuonPOG(unsigned int muIdx){
   if (mus_numberOfMatchedStations().at(muIdx) < 2) return false;
   if (mus_validPixelHits().at(muIdx) == 0) return false;
   if (mus_nlayers().at(muIdx) < 6) return false;
-  if (fabs(mus_ip3d().at(muIdx))/mus_ip3derr().at(muIdx) >= 4) return false;
-  if (fabs(mus_dzPV().at(muIdx)) > 0.1) return false;
+  if (fabs(mus_dxyPV().at(muIdx)) > 0.2) return false;
+  if (fabs(mus_dzPV().at(muIdx)) > 0.5) return false;
   return true;
 }
 
@@ -42,11 +42,18 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
       break;
  
    ///////////////////
-   /// SS loose v1 ///
+   /// SS veto v1 ///
    ///////////////////
   
-    case(SS_loose_v1):
+    case(SS_veto_noiso_v1):
+      if (fabs(mus_p4().at(muIdx).eta()) > 2.4) return false;
       return isLooseMuonPOG(muIdx);
+      break;
+
+    case(SS_veto_v1):
+      if (muonID(muIdx, SS_veto_noiso_v1)==0) return false;
+      if (muRelIso03(muIdx, SS) > 0.50) return false;
+      return true;
       break;
   
    ////////////////////
@@ -60,16 +67,47 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
       break;
 
    ///////////////////
-   /// SS tight v1 ///
+   /// SS FO v1 ///  same as medium, but no SIP3D cut and looser iso
    ///////////////////
   
-    case(SS_tight_v1):
+    case(SS_fo_noiso_v1):
+      if (fabs(mus_p4().at(muIdx).eta()) > 2.4) return false;
       if (!isLooseMuonPOG(muIdx)) return false;
       if (mus_gfit_chi2().at(muIdx)/mus_gfit_ndof().at(muIdx) >= 10) return false; 
       if (mus_gfit_validSTAHits().at(muIdx) == 0) return false; 
       if (mus_numberOfMatchedStations().at(muIdx) < 2) return false;
       if (mus_validPixelHits().at(muIdx) == 0) return false;
       if (mus_nlayers().at(muIdx) < 6) return false;
+      //if (fabs(mus_ip3d().at(muIdx))/mus_ip3derr().at(muIdx) >= 4) return false;
+      if (fabs(mus_dzPV().at(muIdx)) > 0.1) return false;
+      break;
+ 
+   case(SS_fo_v1):
+      if (muonID(muIdx, SS_fo_noiso_v1)==0) return false;
+      if (muRelIso03(muIdx, SS) > 0.50) return false;
+      return true;
+      break;
+
+   ///////////////////
+   /// SS tight v1 ///
+   ///////////////////
+  
+    case(SS_tight_noiso_v1):
+      if (fabs(mus_p4().at(muIdx).eta()) > 2.4) return false;
+      if (!isLooseMuonPOG(muIdx)) return false;
+      if (mus_gfit_chi2().at(muIdx)/mus_gfit_ndof().at(muIdx) >= 10) return false; 
+      if (mus_gfit_validSTAHits().at(muIdx) == 0) return false; 
+      if (mus_numberOfMatchedStations().at(muIdx) < 2) return false;
+      if (mus_validPixelHits().at(muIdx) == 0) return false;
+      if (mus_nlayers().at(muIdx) < 6) return false;
+      if (fabs(mus_ip3d().at(muIdx))/mus_ip3derr().at(muIdx) >= 4) return false;
+      if (fabs(mus_dzPV().at(muIdx)) > 0.1) return false;
+      break;
+ 
+   case(SS_tight_v1):
+      if (muonID(muIdx, SS_tight_noiso_v1)==0) return false;
+      if (muRelIso03(muIdx, SS) > 0.10) return false;
+      return true;
       break;
 
    /////////////////////
@@ -151,8 +189,9 @@ int muTightID(unsigned int muIdx, analysis_t analysis){
       if (!isLooseMuonPOG(muIdx)) return 0;
       break;
     case (SS):
-      if (muonID(muIdx, SS_tight_v1)) return 1;
-      if (muonID(muIdx, SS_loose_v1)) return 0;
+      if (muonID(muIdx, SS_tight_v1)) return 2;
+      if (muonID(muIdx, SS_fo_v1))    return 1;
+      if (muonID(muIdx, SS_veto_v1))  return 0;
       break;
     case (HAD):
       if (muonID(muIdx, HAD_tight_v1)) return 1;
@@ -164,50 +203,4 @@ int muTightID(unsigned int muIdx, analysis_t analysis){
       break;
   }
   return -1;
-}
-
-//Only used for SS analysis
-bool isGoodVetoMuonNoIso(unsigned int muidx){
-  if (fabs(mus_p4().at(muidx).eta()) > 2.4) return false;
-  if (mus_p4().at(muidx).pt() < 5.) return false;//fixme
-  if (!muonID(muidx, SS_loose_v1)) return false;
-  if (fabs(mus_dxyPV().at(muidx)) >= 0.05) return false;
-  if (fabs(mus_dzPV().at(muidx)) >= 0.1) return false;
-  return true;
-}
-
-//Only used for SS analysis
-bool isGoodVetoMuon(unsigned int muidx){
-  if (!isGoodVetoMuonNoIso(muidx)) return false;
-  if (muRelIso03(muidx, SS) > 0.5) return false;
-  return true;
-}
-
-//Only used for SS analysis
-bool isFakableMuonNoIso(unsigned int muidx){
-  if (!isGoodVetoMuonNoIso(muidx)) return false;
-  if (!muonID(muidx, SS_loose_v1)) return false;
-  return true;
-}
-
-//Only used for SS analysis
-bool isFakableMuon(unsigned int muidx){
-  if (!isFakableMuonNoIso(muidx)) return false;
-  if (muRelIso03(muidx, SS) > 0.5) return false;
-  return true;
-}
-
-//Only used for SS analysis
-bool isGoodMuonNoIso(unsigned int muidx){
-  if (!isFakableMuonNoIso(muidx)) return false;
-  if (!muonID(muidx, SS_tight_v1)) return false;
-  if (fabs(mus_ip3d().at(muidx))/mus_ip3derr().at(muidx) >= 4) return false;
-  return true;
-}
-
-//Only used for SS analysis
-bool isGoodMuon(unsigned int muidx){
-  if (!isGoodMuonNoIso(muidx)) return false;
-  if (muRelIso03(muidx, SS) > 0.1) return false;
-  return true;
 }

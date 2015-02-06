@@ -20,12 +20,4 @@ float muRelIso03EA(unsigned int muIdx);
 //Tightest ID passed by muon
 int muTightID(unsigned int muIdx, analysis_t analysis);
 
-//Only used for SS analysis
-bool isGoodVetoMuonNoIso(unsigned int muidx);
-bool isGoodVetoMuon(unsigned int muidx);
-bool isFakableMuonNoIso(unsigned int muidx);
-bool isFakableMuon(unsigned int muidx);
-bool isGoodMuonNoIso(unsigned int muidx);
-bool isGoodMuon(unsigned int muidx);
-
 #endif

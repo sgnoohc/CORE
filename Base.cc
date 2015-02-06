@@ -4,9 +4,13 @@
 analysis_t whichAnalysis(id_level_t id_level){
 
   switch (id_level){
+    case (SS_veto_noiso_v1):
     case (SS_veto_v1):
-    case (SS_loose_v1):
+    case (SS_fo_noiso_v1):
+    case (SS_fo_v1):
+    case (SS_medium_noiso_v1):
     case (SS_medium_v1):
+    case (SS_tight_noiso_v1):
     case (SS_tight_v1):
       return SS;
       break;

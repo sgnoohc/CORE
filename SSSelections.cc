@@ -217,3 +217,66 @@ int signalRegion(int njets, int nbtag, float met, float ht, int njetscut, float 
   if (ht>htcut) result+=1;
   return result;
 }
+
+bool isGoodVetoElectronNoIso(unsigned int elidx){
+  if (els_p4().at(elidx).pt() < 7.) return false;
+  if (!electronID(elidx, SS_veto_noiso_v1)) return false;
+  return true;
+}
+bool isGoodVetoElectron(unsigned int elidx){
+  if (els_p4().at(elidx).pt() < 7.) return false;
+  if (!electronID(elidx, SS_veto_v1)) return false;
+  return true;
+}
+bool isFakableElectronNoIso(unsigned int elidx){
+  if (els_p4().at(elidx).pt() < 10.) return false;
+  if (!electronID(elidx, SS_fo_noiso_v1)) return false;
+  return true;
+}
+bool isFakableElectron(unsigned int elidx){
+  if (els_p4().at(elidx).pt() < 10.) return false;
+  if (!electronID(elidx, SS_fo_v1)) return false;
+  return true;
+}
+bool isGoodElectronNoIso(unsigned int elidx){
+  if (els_p4().at(elidx).pt() < 10.) return false;
+  if (!electronID(elidx, SS_medium_noiso_v1)) return false;
+  return true;
+}
+bool isGoodElectron(unsigned int elidx){
+  if (els_p4().at(elidx).pt() < 10.) return false;
+  if (!electronID(elidx, SS_medium_v1)) return false;
+  return true;
+}
+
+bool isGoodVetoMuonNoIso(unsigned int muidx){
+  if (mus_p4().at(muidx).pt() < 5.)         return false;
+  if (!muonID(muidx, SS_veto_noiso_v1))     return false;
+  return true;
+}
+bool isGoodVetoMuon(unsigned int muidx){
+  if (mus_p4().at(muidx).pt() < 5.)         return false;
+  if (!muonID(muidx, SS_veto_v1))           return false;
+  return true;
+}
+bool isFakableMuonNoIso(unsigned int muidx){
+  if (mus_p4().at(muidx).pt() < 10.)        return false;
+  if (!muonID(muidx, SS_fo_noiso_v1))       return false;
+  return true;
+}
+bool isFakableMuon(unsigned int muidx){
+  if (mus_p4().at(muidx).pt() < 10.)        return false;
+  if (!muonID(muidx, SS_fo_v1))             return false;
+  return true;
+}
+bool isGoodMuonNoIso(unsigned int muidx){
+  if (mus_p4().at(muidx).pt() < 10.)        return false;
+  if (!muonID(muidx, SS_tight_noiso_v1))    return false;
+  return true;
+}
+bool isGoodMuon(unsigned int muidx){
+  if (mus_p4().at(muidx).pt() < 10.)        return false;
+  if (!muonID(muidx, SS_tight_v1))          return false;
+  return true;
+}
+
