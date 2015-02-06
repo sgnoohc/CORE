@@ -1,9 +1,10 @@
 #include "MuonSelections.h"
+#include "Math/VectorUtil.h"
 
 using namespace tas;
 
 bool isLooseMuonPOG(unsigned int muIdx){
-  if(!mus_pid_PFMuon().at(muIdx)) return false;    
+  if (!mus_pid_PFMuon().at(muIdx)) return false;    
   bool isGlobal  = true;
   bool isTracker = true;
   if (((mus_type().at(muIdx)) & (1<<1)) == 0) isGlobal  = false;
@@ -13,12 +14,8 @@ bool isLooseMuonPOG(unsigned int muIdx){
 }
 
 bool isTightMuonPOG(unsigned int muIdx){
-  if(!mus_pid_PFMuon().at(muIdx)) return false;    
-  bool isGlobal  = true;
-  bool isTracker = true;
-  if (((mus_type().at(muIdx)) & (1<<1)) == 0) isGlobal  = false;
-  if (((mus_type().at(muIdx)) & (1<<2)) == 0) isTracker = false;
-  if (!(isGlobal || isTracker)) return false;  
+  if (!mus_pid_PFMuon().at(muIdx)) return false;    
+  if (((mus_type().at(muIdx)) & (1<<1)) == 0) return false;//global muon
   if (mus_gfit_chi2().at(muIdx)/mus_gfit_ndof().at(muIdx) >= 10) return false; 
   if (mus_gfit_validSTAHits().at(muIdx) == 0) return false; 
   if (mus_numberOfMatchedStations().at(muIdx) < 2) return false;
@@ -72,7 +69,8 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
   
     case(SS_fo_noiso_v1):
       if (fabs(mus_p4().at(muIdx).eta()) > 2.4) return false;
-      if (!isLooseMuonPOG(muIdx)) return false;
+      if (!mus_pid_PFMuon().at(muIdx)) return false;    
+      if (((mus_type().at(muIdx)) & (1<<1)) == 0) return false;//global muon
       if (mus_gfit_chi2().at(muIdx)/mus_gfit_ndof().at(muIdx) >= 10) return false; 
       if (mus_gfit_validSTAHits().at(muIdx) == 0) return false; 
       if (mus_numberOfMatchedStations().at(muIdx) < 2) return false;
@@ -94,7 +92,8 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
   
     case(SS_tight_noiso_v1):
       if (fabs(mus_p4().at(muIdx).eta()) > 2.4) return false;
-      if (!isLooseMuonPOG(muIdx)) return false;
+      if (!mus_pid_PFMuon().at(muIdx)) return false;    
+      if (((mus_type().at(muIdx)) & (1<<1)) == 0) return false;//global muon
       if (mus_gfit_chi2().at(muIdx)/mus_gfit_ndof().at(muIdx) >= 10) return false; 
       if (mus_gfit_validSTAHits().at(muIdx) == 0) return false; 
       if (mus_numberOfMatchedStations().at(muIdx) < 2) return false;
@@ -180,6 +179,44 @@ float muRelIso03EA(unsigned int muIdx){
   else if (fabs(mus_p4().at(muIdx).eta())<=2.500) ea = 0.1177;
   float absiso = chiso + std::max(float(0.0), nhiso + emiso - evt_fixgrid_all_rho() * ea);
   return absiso/(mus_p4().at(muIdx).pt());
+}
+
+float muRelIsoCustomCone(unsigned int muIdx, float dr, float deltaZCut){
+  float chiso     = 0.;
+  float nhiso     = 0.;
+  float emiso     = 0.;
+  for (unsigned int i=0; i<pfcands_particleId().size(); ++i){
+    if ( fabs(ROOT::Math::VectorUtil::DeltaR(pfcands_p4().at(i),mus_p4().at(muIdx)))>dr ) continue;  
+    if ( fabs(pfcands_particleId().at(i))==211 && fabs(pfcands_dz().at(i)) < deltaZCut ) chiso+=pfcands_p4().at(i).pt();
+    if ( fabs(pfcands_particleId().at(i))==130 ) nhiso+=pfcands_p4().at(i).pt();
+    if ( fabs(pfcands_particleId().at(i))==22  ) emiso+=pfcands_p4().at(i).pt();
+  }
+  float absiso = chiso + std::max(float(0.0), nhiso + emiso);
+  return absiso/(mus_p4().at(muIdx).pt());
+}
+float muRelIsoCustomConeDB(unsigned int muIdx, float dr, float deltaZCut){
+  float chiso     = 0.;
+  float nhiso     = 0.;
+  float emiso     = 0.;
+  float deltaBeta = 0.;
+  for (unsigned int i=0; i<pfcands_particleId().size(); ++i){
+    if ( fabs(ROOT::Math::VectorUtil::DeltaR(pfcands_p4().at(i),mus_p4().at(muIdx)))>dr ) continue;  
+    if ( fabs(pfcands_particleId().at(i))==211 ) {
+      if (fabs(pfcands_dz().at(i)) < deltaZCut) chiso+=pfcands_p4().at(i).pt();
+      else deltaBeta+=pfcands_p4().at(i).pt();
+    }
+    if ( fabs(pfcands_particleId().at(i))==130 ) nhiso+=pfcands_p4().at(i).pt();
+    if ( fabs(pfcands_particleId().at(i))==22  ) emiso+=pfcands_p4().at(i).pt();
+  }
+  float absiso = chiso + std::max(0.0, nhiso + emiso - 0.5 * deltaBeta);
+  return absiso/(mus_p4().at(muIdx).pt());
+}
+float muMiniRelIso(unsigned int idx, float deltaZCut) {
+  float pt = mus_p4().at(idx).pt();
+  float dr = 0.2;
+  if (pt>50) dr = 10./pt;
+  if (pt>200) dr = 0.05;
+  return muRelIsoCustomCone(idx,dr,deltaZCut);
 }
 
 int muTightID(unsigned int muIdx, analysis_t analysis){

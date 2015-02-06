@@ -17,6 +17,9 @@ bool electronID(unsigned int elIdx, id_level_t id_level);
 float eleRelIso03(unsigned int elIdx, analysis_t analysis);
 float eleRelIso03DB(unsigned int elIdx);
 float eleRelIso03EA(unsigned int elIdx);
+float elRelIsoCustomCone(unsigned int idx, float dr, float deltaZCut=0.1);
+float elRelIsoCustomConeDB(unsigned int idx, float dr, float deltaZCut=0.1);
+float elMiniRelIso(unsigned int idx, float deltaZCut=0.1);
 
 //Tightest ID passed by electron
 int eleTightID(unsigned int elIdx, analysis_t analysis);
