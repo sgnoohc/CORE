@@ -28,6 +28,8 @@ bool isTightMuonPOG(unsigned int muIdx){
 
 bool muonID(unsigned int muIdx, id_level_t id_level){
 
+  analysis_t analysis = whichAnalysis(id_level);
+
   switch (id_level){
 
    /////////////////////
@@ -61,6 +63,7 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
       if (!isLooseMuonPOG(muIdx)) return false;
       if (fabs(mus_dxyPV().at(muIdx)) > 0.5) return false;
       if (fabs(mus_dzPV().at(muIdx)) > 1.0) return false;
+      if (muRelIso03(muIdx, analysis) >= 0.15) return false; 
       break;
 
    ///////////////////
@@ -122,12 +125,8 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
    ////////////////////
   
     case(HAD_tight_v1):
-      if (!isLooseMuonPOG(muIdx)) return false;
-      if (mus_gfit_chi2().at(muIdx)/mus_gfit_ndof().at(muIdx) >= 10) return false; 
-      if (mus_gfit_validSTAHits().at(muIdx) == 0) return false; 
-      if (mus_numberOfMatchedStations().at(muIdx) < 2) return false;
-      if (mus_validPixelHits().at(muIdx) == 0) return false;
-      if (mus_nlayers().at(muIdx) < 6) return false;
+      if (!isTightMuonPOG(muIdx)) return false;
+      if (muRelIso03(muIdx, analysis) >= 0.15) return false; 
       break;
 
    ///////////////
@@ -165,6 +164,10 @@ float muRelIso04DB(unsigned int muIdx){
 float muRelIso03(unsigned int muIdx, analysis_t analysis){
   if (analysis == SS) return muRelIso03EA(muIdx);
   return muRelIso03DB(muIdx);
+}
+
+float muRelIso04(unsigned int muIdx, analysis_t analysis){
+  return muRelIso04DB(muIdx);
 }
 
 float muRelIso03EA(unsigned int muIdx){
@@ -241,3 +244,9 @@ int muTightID(unsigned int muIdx, analysis_t analysis){
   }
   return -1;
 }
+
+int tightChargeMuon(unsigned int muIdx){
+  if ( mus_ptErr().at(muIdx) / mus_p4().at(muIdx).pt() < 0.2 )          return 2;
+  else                                                                  return 0;
+}
+

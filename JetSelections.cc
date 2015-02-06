@@ -53,6 +53,8 @@ bool isTightPFJet(unsigned int pfJetIdx){
   return true;
 }
 
+// this appears to be identical to isLoosePFJet above
+//  (just different ways of checking multiplicity)
 bool passesPFJetID(unsigned int pfJetIdx) {
 
   float pfjet_chf_  = cms3.pfjets_chargedHadronE()[pfJetIdx] / cms3.pfjets_p4()[pfJetIdx].energy();
@@ -73,6 +75,19 @@ bool passesPFJetID(unsigned int pfJetIdx) {
   }   
 
   return true;
+}
+
+bool loosePileupJetId(unsigned int pfJetIdx){
+
+  float eta = fabs(pfjets_p4().at(pfJetIdx).eta());
+  float value = pfjets_pileupJetId().at(pfJetIdx);
+
+  if( (eta >= 0   ) && (eta <= 2.5 ) && (value > -0.63) ) return true;
+  if( (eta > 2.5  ) && (eta <= 2.75) && (value > -0.60) ) return true;
+  if( (eta > 2.75 ) && (eta <= 3.0 ) && (value > -0.55) ) return true;
+  if( (eta > 3.0  ) && (eta <= 5.2 ) && (value > -0.45) ) return true;
+    
+  return false;
 }
 
 bool JetIsElectron(LorentzVector pfJet, id_level_t id_level, float ptcut, float deltaR){

@@ -17,4 +17,11 @@ bool isFromLightFake(int id, int idx);
 bool idIsCharm(int id);
 bool idIsBeauty(int id);
 
+// sourceId to match CERN/ETH
+int getSourceId(int genpIdx);
+bool useSourceId(int sourceId);
+bool terminateSourceId(int motherId);
+bool terminateMotherId(int motherId);
+
+
 #endif

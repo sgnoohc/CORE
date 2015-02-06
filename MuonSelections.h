@@ -15,6 +15,7 @@ bool muonID(unsigned int muIdx, id_level_t id_level);
 float muRelIso03DB(unsigned int muIdx);
 float muRelIso04DB(unsigned int muIdx);
 float muRelIso03(unsigned int muIdx, analysis_t analysis);
+float muRelIso04(unsigned int muIdx, analysis_t analysis);
 float muRelIso03EA(unsigned int muIdx);
 float muRelIsoCustomCone(unsigned int idx, float dr, float deltaZCut=0.1);
 float muRelIsoCustomConeDB(unsigned int idx, float dr, float deltaZCut=0.1);
@@ -22,5 +23,8 @@ float muMiniRelIso(unsigned int idx, float deltaZCut=0.1);
 
 //Tightest ID passed by muon
 int muTightID(unsigned int muIdx, analysis_t analysis);
+
+// tight charge requirement
+int tightChargeMuon(unsigned int muIdx);
 
 #endif

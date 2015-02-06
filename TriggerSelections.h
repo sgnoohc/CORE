@@ -5,6 +5,7 @@
 bool passesTriggerVeryLowPt(int hyp_type);
 bool passUnprescaledHLTTrigger(const char* arg);
 bool passUnprescaledHLTTriggerPattern(const char* arg);
+bool passHLTTriggerPattern(const char* arg);
 TString triggerName(TString triggerPattern);
 
 #endif

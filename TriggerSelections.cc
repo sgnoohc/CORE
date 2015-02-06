@@ -64,6 +64,12 @@ bool passUnprescaledHLTTriggerPattern(const char* arg){
   return passUnprescaledHLTTrigger( HLTTrigger );
 }
 
+bool passHLTTriggerPattern(const char* arg){
+  TString HLTTriggerPattern(arg);
+  TString HLTTrigger = triggerName( HLTTriggerPattern );
+  if( HLTTrigger.Contains("TRIGGER_NOT_FOUND")) return false;
+  return passHLTTrigger( HLTTrigger );
+}
 
 TString triggerName(TString triggerPattern){
 

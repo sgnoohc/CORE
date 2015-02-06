@@ -152,7 +152,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
 
     case(HAD_veto_v1):
       if (!isVetoElectronPOG(elIdx)) return false;
-      if (eleRelIso03(elIdx, POG) >= 0.15) return false; 
+      if (eleRelIso03(elIdx, analysis) >= 0.15) return false; 
       return true;
       break;
 
@@ -440,4 +440,10 @@ int eleTightID(unsigned int elIdx, analysis_t analysis){
 
 bool threeChargeAgree(unsigned int elIdx){
   return els_isGsfCtfScPixChargeConsistent().at(elIdx);
+}
+
+int tightChargeEle(unsigned int elIdx){
+  if (threeChargeAgree(elIdx))                                          return 2;
+  else if (els_trk_charge().at(elIdx) == els_sccharge().at(elIdx))      return 1;
+  else                                                                  return 0;
 }

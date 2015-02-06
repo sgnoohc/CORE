@@ -26,5 +26,6 @@ int eleTightID(unsigned int elIdx, analysis_t analysis);
 
 //Three charge agree
 bool threeChargeAgree(unsigned int elIdx); 
+int tightChargeEle(unsigned int elIdx); 
 
 #endif
