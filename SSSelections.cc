@@ -1,4 +1,5 @@
 #include "SSSelections.h"
+#include "Math/VectorUtil.h"
 
 using namespace tas;
 
@@ -158,6 +159,29 @@ bool isDenominatorLepton(int id, int idx){
   else return false;
 }
 
+float computePtRel(Lep lep, vector<Jet>& lepjets, bool subtractLep) {
+  if (abs(lep.pdgId())==13 && isGoodMuonNoIso(lep.idx())==0) return 0.;
+  if (abs(lep.pdgId())==11 && isGoodElectronNoIso(lep.idx())==0) return 0.;
+  if (lep.relIso03()<0.1) return 0.;//ok, this is inverted here
+  int lepjetidx = -1;
+  float mindr = 0.7;
+  for (unsigned int j=0;j<lepjets.size();++j) {
+    float dr = ROOT::Math::VectorUtil::DeltaR(lepjets[j].p4(),lep.p4());
+    if (dr<mindr) {
+      mindr = dr;
+      lepjetidx = j;
+    }
+  } 
+  if (lepjetidx>=0) {
+    LorentzVector jetp4 = lepjets[lepjetidx].p4();
+    if (subtractLep) jetp4-=lep.p4();
+    float dot = lep.p4().Vect().Dot( jetp4.Vect() );
+    float ptrel = lep.p4().P2() - dot*dot/jetp4.P2();
+    ptrel = ptrel>0 ? sqrt(ptrel) : 0.0;
+    return ptrel;
+  } else return 0.;
+}
+
 bool hypsFromFirstGoodVertex(size_t hypIdx, float dz_cut){
 
   int lt_idx = hyp_lt_index()[hypIdx];
@@ -171,6 +195,18 @@ bool hypsFromFirstGoodVertex(size_t hypIdx, float dz_cut){
 
   if (fabs(lt_dz) < dz_cut && fabs(ll_dz) < dz_cut) return true;    
   return false;
+}
+
+unsigned int analysisCategory(Lep lep1, Lep lep2) {
+  unsigned int result = 0;
+  if (lep1.pt()>ptCutHigh && lep2.pt()>ptCutHigh) {
+    result |= 1<<HighHigh;
+  } else if (lep1.pt()>ptCutHigh && lep2.pt()>ptCutLow) {
+    result |= 1<<HighLow;
+  } else if (lep1.pt()>ptCutLow && lep2.pt()>ptCutLow) {
+    result |= 1<<LowLow;
+  }
+  return result;
 }
 
 void passesBaselineCuts(int njets, int nbtag, float met, float ht, unsigned int& analysisBitMask) {
@@ -216,6 +252,28 @@ int signalRegion(int njets, int nbtag, float met, float ht, int njetscut, float 
   if (njets>=njetscut) result+=2;
   if (ht>htcut) result+=1;
   return result;
+}
+
+float computeLD(DilepHyp hyp, vector<Jet> alljets, float met, float minmt) {
+  //fixme: should variables be truncated?
+  int njets25 = 0;
+  float ht25 = 0;
+  float htratio25 = 0;
+  for (unsigned int j=0;j<alljets.size();j++) {
+    float jetpt = alljets[j].pt();
+    if (jetpt<25) continue;
+    njets25++;
+    ht25+=jetpt;
+    if (fabs(alljets[j].eta())<1.2) htratio25+=jetpt;
+  }
+  htratio25/=ht25;
+  ht25+=(hyp.leadLep().pt()+hyp.traiLep().pt());
+  float maxlepeta = std::max(fabs(hyp.leadLep().eta()),fabs(hyp.traiLep().eta()));
+  if (hyp.leadLep().pt()>ptCutHigh) {
+    return 0.147*met/100. + 0.178*ht25/1000. + 0.045*minmt/100. + 0.036*njets25 - 0.105*maxlepeta + 0.196*htratio25;
+  } else {
+    return 0.099*met/100. + 0.80*ht25/1000. + 0.004*njets25 - 0.046*maxlepeta + 0.094*htratio25 - 0.5;
+  }
 }
 
 bool isGoodVetoElectronNoIso(unsigned int elidx){
@@ -280,3 +338,376 @@ bool isGoodMuon(unsigned int muidx){
   return true;
 }
 
+bool isGoodVertex(size_t ivtx) {
+  if (vtxs_isFake()[ivtx]) return false;
+  if (vtxs_ndof()[ivtx] <= 4.) return false;
+  if (vtxs_position()[ivtx].Rho() > 2.0) return false;
+  if (fabs(vtxs_position()[ivtx].Z()) > 24.0) return false;
+  return true;
+}
+
+int firstGoodVertex () {
+    for (unsigned int vidx = 0; vidx < vtxs_position().size(); vidx++) {
+        if (isGoodVertex(vidx))
+            return vidx;
+    }
+    return -1;
+}
+
+std::vector<Lep> getBestSSLeps(std::vector<Lep> leps) {
+  vector<Lep> hypleps;
+  //select best hyp in case >3 good leps
+  if (leps.size()>2) {
+    vector<Lep> lepsp, lepsn;
+    for (unsigned int gl=0;gl<leps.size();++gl) {
+      if (leps[gl].pdgId()>0) lepsn.push_back(leps[gl]);
+      else lepsp.push_back(leps[gl]);
+    }
+    //sort leps by muon and then by pt
+    std::sort(lepsp.begin(),lepsp.end(),lepsort);
+    std::sort(lepsn.begin(),lepsn.end(),lepsort);
+    //take first SS hyp
+    if (lepsp.size()<2) {
+      hypleps.push_back(lepsn[0]);
+      hypleps.push_back(lepsn[1]);
+    } else if (lepsn.size()<2) {
+      hypleps.push_back(lepsp[0]);
+      hypleps.push_back(lepsp[1]);
+    } else {
+      if ( abs(lepsn[0].pdgId()+lepsn[1].pdgId())>abs(lepsp[0].pdgId()+lepsp[1].pdgId()) ) {
+	hypleps.push_back(lepsn[0]);
+	hypleps.push_back(lepsn[1]);
+      } else if ( abs(lepsn[0].pdgId()+lepsn[1].pdgId())<abs(lepsp[0].pdgId()+lepsp[1].pdgId()) ) {
+	hypleps.push_back(lepsp[0]);
+	hypleps.push_back(lepsp[1]);
+      } else if ( (lepsn[0].pt()+lepsn[1].pt())>(lepsp[0].pt()+lepsp[1].pt()) ) {
+	hypleps.push_back(lepsn[0]);
+	hypleps.push_back(lepsn[1]);
+      } else {
+	hypleps.push_back(lepsp[0]);
+	hypleps.push_back(lepsp[1]);
+      }
+    }
+  } else if (leps.size()==2) {
+    hypleps.push_back(leps[0]);
+    hypleps.push_back(leps[1]);	
+  }      
+  return hypleps;
+}
+
+
+int lepMotherID(Lep lep){
+  if (tas::evt_isRealData()) return 1;
+  else if (isFromZ(lep.pdgId(),lep.idx()) || isFromW(lep.pdgId(),lep.idx())){
+    if (sgn(lep.pdgId()) == sgn(lep.mc_id())) return 1;
+    else return 2;
+  }
+  else if (isFromB(lep.pdgId(),lep.idx())) return -1;
+  else if (isFromC(lep.pdgId(),lep.idx())) return -2;
+  return 0;
+}
+
+int isGoodHyp(int iHyp, int analType, bool verbose){
+
+  //Bunch o' variables
+  //bool isData = tas::evt_isRealData();
+  float pt_ll = tas::hyp_ll_p4().at(iHyp).pt(); 
+  float pt_lt = tas::hyp_lt_p4().at(iHyp).pt(); 
+  float eta_ll = tas::hyp_ll_p4().at(iHyp).eta();
+  float eta_lt = tas::hyp_lt_p4().at(iHyp).eta();
+  int idx_ll = tas::hyp_ll_index().at(iHyp);
+  int idx_lt = tas::hyp_lt_index().at(iHyp);
+  int id_ll = tas::hyp_ll_id().at(iHyp);
+  int id_lt = tas::hyp_lt_id().at(iHyp);
+  bool isss = false;
+  if (sgn(id_ll) == sgn(id_lt)) isss = true;  
+  bool passed_id_numer_ll = isGoodLepton(id_ll, idx_ll);
+  bool passed_id_numer_lt = isGoodLepton(id_lt, idx_lt);
+  bool passed_id_denom_ll = isDenominatorLepton(id_ll, idx_ll);
+  bool passed_id_denom_lt = isDenominatorLepton(id_lt, idx_lt);
+  bool extraZ = makesExtraZ(iHyp);
+  bool extraGammaStar = makesExtraGammaStar(iHyp);
+
+  //Verbose info:
+  if (verbose && pt_ll > ptCutLow && pt_lt > ptCutLow){
+    cout << "hyp " << iHyp << "leptons: " << id_ll << " " << pt_ll << " " << id_lt << " " << pt_lt << endl;
+    cout << "   isss: " << isss << endl;
+    cout << "   extraZ: " << extraZ << endl;
+    cout << "   extraG: " << extraGammaStar << endl;
+    cout << "   invt mass: " << (tas::hyp_ll_p4().at(iHyp) + tas::hyp_lt_p4().at(iHyp)).M() << endl;
+    cout << "   passes eta: " << (fabs(eta_ll) < 2.4 && fabs(eta_lt) < 2.4) << " etas are " << eta_ll << " and " << eta_lt << endl;
+    cout << "   passes hypsFromFirstGoodVertex: " << hypsFromFirstGoodVertex(iHyp) << endl;
+    //cout << "   passes triggers: " << passesTriggerVeryLowPt(tas::hyp_type().at(iHyp)) << endl; 
+    cout << "   lepton with pT " << pt_ll << " passes id: " << passed_id_numer_ll << endl;
+    cout << "   lepton with pT " << pt_lt << " passes id: " << passed_id_numer_lt << endl;
+    if (abs(id_ll) == 11) cout << "   lepton with pT " << pt_ll << " passes 3chg: " << threeChargeAgree(idx_ll) << endl;
+    if (abs(id_lt) == 11) cout << "   lepton with pT " << pt_lt << " passes 3chg: " << threeChargeAgree(idx_lt) << endl;
+  }
+
+  //Cuts:
+  if (analType == 0 && pt_ll < ptCutHigh) return 0;
+  else if (analType == 1 && pt_ll < ptCutLow) return 0;
+  else if (analType == 2 && abs(id_ll) == 11 && pt_ll < 7) return 0;
+  else if (analType == 2 && abs(id_ll) == 13 && pt_ll < 5) return 0;
+  if (analType == 0 && pt_lt < ptCutHigh) return 0;
+  else if (analType == 1 && pt_lt < ptCutLow) return 0;
+  else if (analType == 2 && abs(id_lt) == 11 && pt_lt < 7) return 0;
+  else if (analType == 2 && abs(id_lt) == 13 && pt_lt < 5) return 0;
+  if (fabs(eta_ll) > 2.4) return 0;
+  if (fabs(eta_lt) > 2.4) return 0;
+  if (extraZ) return 0;
+  if (extraGammaStar) return 0;
+  if ((tas::hyp_ll_p4().at(iHyp) + tas::hyp_lt_p4().at(iHyp)).M() < 8) return 0; 
+  if (!hypsFromFirstGoodVertex(iHyp)) return 0;
+  //if (isData == true && passesTriggerVeryLowPt(tas::hyp_type().at(iHyp)) == 0) return 0;
+
+  //Results
+  if (passed_id_numer_ll == 0 && passed_id_denom_ll == 0) return 0;      // 0 if ll fails
+  if (passed_id_numer_lt == 0 && passed_id_denom_lt == 0) return 0; // 0 if lt fails
+  else if (passed_id_numer_lt == 1 && passed_id_numer_ll == 1 && isss == 1) return 3;  // 3 if both high pass, SS
+  else if (passed_id_numer_lt == 1 && passed_id_numer_ll == 1 && isss == 0) return 4;  // 4 if both high pass, OS
+  else if (passed_id_numer_lt == 0 && passed_id_numer_ll == 0 && passed_id_denom_lt == 1 && passed_id_denom_ll == 1 && isss == true) return 1; // 1 if both low pass
+  else if (isss == true) return 2; //2 for lowpass/highpass
+  else return 0; //non-highpass OS
+}
+
+hyp_result_t chooseBestHyp(bool verbose){
+
+  //List of good hyps
+  vector <int> good_hyps_ss; 
+  vector <int> good_hyps_sf; 
+  vector <int> good_hyps_df; 
+  vector <int> good_hyps_os; 
+  for (unsigned int i = 0; i < tas::hyp_type().size(); i++){
+    int good_hyp_result = isGoodHyp(i, 2,verbose);
+    if (good_hyp_result == 3) good_hyps_ss.push_back(i); 
+    if (good_hyp_result == 2) good_hyps_sf.push_back(i); 
+    else if (good_hyp_result == 1) good_hyps_df.push_back(i); 
+    else if (good_hyp_result == 4) good_hyps_os.push_back(i); 
+  }
+
+  //hyp_class_ to track SS(3), SF(2), DF(1), OS(4), or none(0)
+  int hyp_class_;
+
+  //Load good hyps in, SS then SF then DF then OS
+  vector <int> good_hyps;
+  if (good_hyps_ss.size() != 0){
+     good_hyps = good_hyps_ss;
+     hyp_class_ = 3;
+  }
+  else if (good_hyps_sf.size() != 0){
+    good_hyps = good_hyps_sf;
+    hyp_class_ = 2;
+  }
+  else if (good_hyps_df.size() != 0){
+     good_hyps = good_hyps_df;
+     hyp_class_ = 1;
+  }
+  else if (good_hyps_os.size() != 0){
+    good_hyps = good_hyps_os;
+    hyp_class_ = 4;
+  }
+  else hyp_class_ = 0; 
+
+  //If no hyps or one hyps, know what to do
+  int best_hyp_ = -1;
+  if (good_hyps.size() == 1) best_hyp_ = good_hyps.at(0);
+
+  //Otherwise, pick ones with more muons, then highest pT  
+  if (good_hyps.size() > 1){
+    best_hyp_ = good_hyps.at(0); 
+    for (unsigned int i = 1; i < good_hyps.size(); i++){
+      int hyp = good_hyps.at(i);
+      if (tas::hyp_type().at(hyp) < tas::hyp_type().at(best_hyp_)) best_hyp_ = hyp;
+      else if (tas::hyp_type().at(hyp) == tas::hyp_type().at(best_hyp_) && (tas::hyp_ll_p4().at(hyp)+tas::hyp_lt_p4().at(hyp)).pt() > (tas::hyp_ll_p4().at(best_hyp_) + tas::hyp_lt_p4().at(best_hyp_)).pt()) best_hyp_ = hyp;
+    }
+  }
+
+  if (best_hyp_ < 0){
+    hyp_result_t null = { -1, -1 };
+    return null;
+  }
+
+  hyp_result_t temp;
+  temp.best_hyp = best_hyp_;
+  temp.hyp_class = hyp_class_; 
+  return temp;
+}
+
+vector <particle_t> getGenPair(bool verbose){
+
+  vector <particle_t> gen_particles;
+
+  //First get all gen leptons 
+  for (unsigned int gidx = 0; gidx < tas::genps_p4().size(); gidx++){
+    if (tas::genps_status().at(gidx) != 1) continue;
+    int id = tas::genps_id().at(gidx);
+    if (abs(id) != 11 && abs(id) != 13 && abs(id) != 15) continue;
+    float eta = tas::genps_p4().at(gidx).eta();
+    if (fabs(eta) > 2.4) continue;
+    int did = -1;
+    int didx = -1;
+    if (abs(id) == 15){  
+      float dpt = -1;
+      for (unsigned int didx_ = 0; didx_ < tas::genps_lepdaughter_id().at(gidx).size(); didx_++){
+        int did_ = tas::genps_lepdaughter_id().at(gidx).at(didx_);
+        if (abs(did_) != 11 && abs(did_) != 13) continue;
+        if (fabs(tas::genps_lepdaughter_p4().at(gidx).at(didx_).eta()) > 2.4) continue;
+        float dpt_ = tas::genps_lepdaughter_p4().at(gidx).at(didx_).pt();
+        if (dpt_ <= dpt) continue;
+        dpt = dpt_;
+        didx = didx_;
+        did = did_;
+      }
+    }
+    particle_t temp;
+    temp.id = abs(id) == 15 ? did : id;
+    if (abs(id) == 15 && didx < 0) continue;
+    temp.idx = abs(id) == 15 ? tas::genps_lepdaughter_idx().at(gidx).at(didx) : gidx;
+    temp.p4 = abs(id) == 15 ? tas::genps_lepdaughter_p4().at(gidx).at(didx) : tas::genps_p4().at(gidx);
+    if (temp.id != -1) gen_particles.push_back(temp);
+  }
+ 
+  if (gen_particles.size() < 2) return gen_particles;
+
+  //Now loop over gen hyps and pick the best
+  int gen_hyp_class = 5; 
+  int type = 5; 
+  particle_t lep1; 
+  particle_t lep2;
+  lep1.id = -1;
+  lep2.id = -1;
+  for (unsigned int idx1 = 0; idx1 < gen_particles.size(); idx1++){
+    if (verbose) cout << "gen lep " << idx1 << ": " << gen_particles.at(idx1).id << " " << gen_particles.at(idx1).p4.pt() << endl;
+    for (unsigned int idx2 = idx1+1; idx2 < gen_particles.size(); idx2++){
+      int id1 = gen_particles.at(idx1).id;
+      int id2 = gen_particles.at(idx2).id;
+      int gen_hyp_class_ = 5;
+      int type_ = 5;
+      LorentzVector p41 = gen_particles.at(idx1).p4;
+      LorentzVector p42 = gen_particles.at(idx2).p4;
+      if (id1*id2 < 0) gen_hyp_class_ = 4; 
+      if (id1*id2 > 0) gen_hyp_class_ = 3; 
+      if (min(p41.pt(), p42.pt()) < 5) continue;
+      if (max(p41.pt(), p42.pt()) < 5) continue;
+      if (abs(id1) == 11 && abs(id2) == 11) type_ = 3; 
+      if (abs(id1) == 13 && abs(id2) == 13) type_ = 0; 
+      if ((abs(id1) == 13 && abs(id2) == 11) || (abs(id1) == 11 && abs(id2) == 13)) type_ = 1; 
+      if (gen_hyp_class_ < gen_hyp_class){
+        gen_hyp_class = gen_hyp_class_;
+        type = type_;
+        lep1 = gen_particles.at(idx1);
+        lep2 = gen_particles.at(idx2);
+      }
+      else if (gen_hyp_class_ == gen_hyp_class && type_ < type){
+        gen_hyp_class = gen_hyp_class_;
+        type = type_;
+        lep1 = gen_particles.at(idx1);
+        lep2 = gen_particles.at(idx2);
+      } 
+      else if (gen_hyp_class_ == gen_hyp_class && type_ == type && p41.pt()+p42.pt() > lep1.p4.pt()+lep2.p4.pt()){
+        gen_hyp_class = gen_hyp_class_;
+        type = type_;
+        lep1 = gen_particles.at(idx1);
+        lep2 = gen_particles.at(idx2);
+      }
+    }
+  }
+  
+  //Return leptons you found
+  vector <particle_t> selected_gen_leptons;
+  if (lep1.p4.pt() > lep2.p4.pt()){
+    selected_gen_leptons.push_back(lep1);
+    selected_gen_leptons.push_back(lep2);
+  }
+  else{ 
+    selected_gen_leptons.push_back(lep2);
+    selected_gen_leptons.push_back(lep1);
+  }
+
+  return selected_gen_leptons;
+
+}
+
+pair<particle_t, int> getThirdLepton(int hyp){
+
+  //Selected Lepton Information
+  int ll_id = tas::hyp_ll_id().at(hyp);
+  int lt_id = tas::hyp_lt_id().at(hyp);
+  unsigned int ll_idx = tas::hyp_ll_index().at(hyp);
+  unsigned int lt_idx = tas::hyp_lt_index().at(hyp);
+
+  //Store best lepton
+  int lep3_id_ = -1;
+  int lep3_idx_ = -1;
+  int quality = 0;
+  LorentzVector lep3_p4_; 
+
+  //Electron Loop 
+  for (unsigned int i = 0; i < tas::els_p4().size(); i++){
+
+    //Remove electrons already selected
+    if (abs(ll_id) == 11 && ll_idx == i) continue; 
+    if (abs(lt_id) == 11 && lt_idx == i) continue; 
+
+    //Remove electrons that fail kinematically
+    if (tas::els_p4().at(i).pt() < 20) continue;
+    if (fabs(tas::els_p4().at(i).eta()) > 2.4) continue;
+
+    //Remove electrons that fail loosest ID, determine tighter IDs
+    int quality_ = 0;
+    if (!isGoodVetoElectron(i)) continue;
+    if (isFakableElectron(i)) quality_ = 1;
+    if (isGoodElectron(i)) quality_ = 2;
+
+    //Choose the highest-quality, highest-pT electron 
+    if (quality_ > quality || (quality_ == quality && tas::els_p4().at(i).pt() > lep3_p4_.pt())){
+       quality = quality_;
+       lep3_p4_ = tas::els_p4().at(i); 
+       lep3_id_ = -11*tas::els_charge().at(i);
+    } 
+  }
+  
+  //Muon Loop
+  for (unsigned int i = 0; i < tas::mus_p4().size(); i++){
+
+    //Remove electrons already selected
+    if (abs(ll_id) == 13 && ll_idx == i) continue; 
+    if (abs(lt_id) == 13 && lt_idx == i) continue; 
+   
+    //Remove electrons that fail kinematically
+    if (tas::mus_p4().at(i).pt() < 20) continue;
+    if (fabs(tas::mus_p4().at(i).eta()) > 2.4) continue;
+
+    //Remove muons that fail ID
+    int quality_ = 0; 
+    if (!isGoodVetoMuon(i)) continue;
+    if (isFakableMuon(i)) quality_ = 1;
+    if (isGoodMuon(i)) quality_ = 2;
+
+    //Choose the highest-quality, highest-pT electron 
+    if (quality_ > quality || (quality_ == quality && tas::mus_p4().at(i).pt() > lep3_p4_.pt())){
+       quality = quality_;
+       lep3_p4_ = tas::mus_p4().at(i); 
+       lep3_id_ = -11*tas::mus_charge().at(i);
+    } 
+
+  }//Muon loop
+
+  particle_t result;
+  result.id = lep3_id_;
+  result.p4 = lep3_p4_;
+  result.idx = lep3_idx_;
+
+  return pair<particle_t, int>(result, quality);
+
+}
+
+bool ptsort (int i,int j) { return (genps_p4()[i].pt()>genps_p4()[j].pt()); }
+
+bool lepsort (Lep i,Lep j) { 
+  if ( abs(i.pdgId())==abs(j.pdgId()) ) return ( i.pt()>j.pt() ); //sort by pt if same flavor
+  else return ( abs(i.pdgId())>abs(j.pdgId()) ); //prefer muons over electrons, but check that mu have pt>25//fixme, need to sync // && i.pt()>ptCutHigh
+}
+
+bool jetptsort (Jet i,Jet j) { return (i.pt()>j.pt()); }
