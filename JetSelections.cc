@@ -75,25 +75,25 @@ bool passesPFJetID(unsigned int pfJetIdx) {
   return true;
 }
 
-bool JetIsElectron(LorentzVector pfJet){
+bool JetIsElectron(LorentzVector pfJet, id_level_t id_level, float ptcut, float deltaR){
   bool jetIsLep = false;
   for (unsigned int eidx = 0; eidx < tas::els_p4().size(); eidx++){
     LorentzVector electron = tas::els_p4().at(eidx);
-    if (electron.pt() < 7) continue;
-    if (!isGoodVetoElectron(eidx)) continue;
-    if (ROOT::Math::VectorUtil::DeltaR(pfJet, electron) > 0.4) continue;
+    if (electron.pt() < ptcut) continue;
+    if (!electronID(eidx,id_level)) continue;
+    if (ROOT::Math::VectorUtil::DeltaR(pfJet, electron) > deltaR) continue;
     jetIsLep = true;
   }
   return jetIsLep;
 }
 
-bool JetIsMuon(LorentzVector pfJet){
+bool JetIsMuon(LorentzVector pfJet, id_level_t id_level, float ptcut, float deltaR){
   bool jetIsLep = false;
   for (unsigned int muidx = 0; muidx < tas::mus_p4().size(); muidx++){
     LorentzVector muon = tas::mus_p4().at(muidx);
-    if (muon.pt() < 5) continue;
-    if (!isGoodVetoMuon(muidx)) continue;
-    if (ROOT::Math::VectorUtil::DeltaR(pfJet, muon) > 0.4) continue;
+    if (muon.pt() < ptcut) continue;
+    if (!muonID(muidx,id_level)) continue;
+    if (ROOT::Math::VectorUtil::DeltaR(pfJet, muon) > deltaR) continue;
     jetIsLep = true;
   }
   return jetIsLep;
