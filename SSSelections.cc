@@ -163,23 +163,11 @@ float computePtRel(Lep lep, vector<Jet>& lepjets, bool subtractLep) {
   if (abs(lep.pdgId())==13 && isGoodMuonNoIso(lep.idx())==0) return 0.;
   if (abs(lep.pdgId())==11 && isGoodElectronNoIso(lep.idx())==0) return 0.;
   if (lep.relIso03()<0.1) return 0.;//ok, this is inverted here
-  int lepjetidx = -1;
-  float mindr = 0.7;
-  for (unsigned int j=0;j<lepjets.size();++j) {
-    float dr = ROOT::Math::VectorUtil::DeltaR(lepjets[j].p4(),lep.p4());
-    if (dr<mindr) {
-      mindr = dr;
-      lepjetidx = j;
-    }
-  } 
-  if (lepjetidx>=0) {
-    LorentzVector jetp4 = lepjets[lepjetidx].p4();
-    if (subtractLep) jetp4-=lep.p4();
-    float dot = lep.p4().Vect().Dot( jetp4.Vect() );
-    float ptrel = lep.p4().P2() - dot*dot/jetp4.P2();
-    ptrel = ptrel>0 ? sqrt(ptrel) : 0.0;
-    return ptrel;
-  } else return 0.;
+  vector<LorentzVector> jetp4s;
+  for (unsigned int ijet=0; ijet<lepjets.size(); ++ijet) {
+    jetp4s.push_back(lepjets[ijet].p4());
+  }
+  return ptRel(lep.p4(), jetp4s, subtractLep);
 }
 
 bool hypsFromFirstGoodVertex(size_t hypIdx, float dz_cut){

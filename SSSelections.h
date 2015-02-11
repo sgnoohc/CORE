@@ -7,6 +7,7 @@
 #include "JetSelections.h"
 #include "VertexSelections.h"
 #include "MCSelections.h"
+#include "IsolationTools.h"
 
 const static float ptCutHigh = 25.;
 const static float ptCutLow = 10.;
