@@ -82,7 +82,6 @@ bool isGoodMuon(unsigned int muidx);
 bool isIsolatedLepton(int id, int idx);
 bool isLooseIsolatedLepton(int id, int idx);
 bool passPtRel(int id, int idx, float cut, bool subtractLep);
-float computePtRel(Lep lep, vector<Jet>& lepjets, bool subtractLep);//fixme to be removed
 
 //MC truth functions
 int lepMotherID(Lep lep);

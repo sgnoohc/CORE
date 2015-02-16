@@ -215,17 +215,6 @@ bool passPtRel(int id, int idx, float cut, bool subtractLep) {
   return ptRel(lep.p4(), jetp4s, subtractLep) > cut;
 }
 
-float computePtRel(Lep lep, vector<Jet>& lepjets, bool subtractLep) {
-  if (abs(lep.pdgId())==13 && isGoodMuonNoIso(lep.idx())==0) return 0.;
-  if (abs(lep.pdgId())==11 && isGoodElectronNoIso(lep.idx())==0) return 0.;
-  if (lep.relIso03()<0.1) return 0.;//ok, this is inverted here
-  vector<LorentzVector> jetp4s;
-  for (unsigned int ijet=0; ijet<lepjets.size(); ++ijet) {
-    jetp4s.push_back(lepjets[ijet].p4());
-  }
-  return ptRel(lep.p4(), jetp4s, subtractLep);
-}
-
 bool hypsFromFirstGoodVertex(size_t hypIdx, float dz_cut){
 
   int lt_idx = hyp_lt_index()[hypIdx];
