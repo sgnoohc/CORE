@@ -147,21 +147,72 @@ bool isIsolatedLepton(int id, int idx){
 }
 
 bool isGoodLepton(int id, int idx){
-  if (abs(id) == 11) return isGoodElectron(idx);
-  else if (abs(id) == 13) return isGoodMuon(idx);
-  return false;
+  return isGoodLeptonIso(id,idx);
 }
-
 bool isGoodLeptonNoIso(int id, int idx){
   if (abs(id) == 11) return isGoodElectronNoIso(idx);
   else if (abs(id) == 13) return isGoodMuonNoIso(idx);
   return false;
 }
+bool isGoodLeptonIso(int id, int idx) {
+  if (isGoodLeptonNoIso(id,idx)==0) return false;
+  if (isIsolatedLepton(id,idx)==0) return false;
+  return true;
+}
+bool isGoodLeptonIsoOrPtRel(int id, int idx) {
+  if (isGoodLeptonNoIso(id,idx)==0) return false;
+  if (isIsolatedLepton(id,idx)==0 && passPtRel(id,idx,ptRelCut,true)==0) return false;
+  return true;
+}
 
 bool isDenominatorLepton(int id, int idx){
-  if (abs(id) == 11) return isFakableElectron(idx);
-  else if (abs(id) == 13) return isFakableMuon(idx);
+  return isDenominatorLeptonIso(id,idx);
+}
+bool isDenominatorLeptonNoIso(int id, int idx){
+  if (abs(id) == 11) return isFakableElectronNoIso(idx);
+  else if (abs(id) == 13) return isFakableMuonNoIso(idx);
   else return false;
+}
+bool isDenominatorLeptonIso(int id, int idx){
+  if (isDenominatorLeptonNoIso(id,idx)==0) return false;
+  if (isLooseIsolatedLepton(id,idx)==0) return false;
+  return true;
+}
+bool isDenominatorLeptonIsoOrPtRel(int id, int idx){
+  if (isDenominatorLeptonNoIso(id,idx)==0) return false;
+  if (isLooseIsolatedLepton(id,idx)==0 && passPtRel(id,idx,ptRelCut,true)==0) return false;
+  return true;
+}
+
+bool isVetoLepton(int id, int idx){
+  return isVetoLeptonIso(id,idx);
+}
+bool isVetoLeptonNoIso(int id, int idx){
+  if (abs(id) == 11) return isGoodVetoElectronNoIso(idx);
+  else if (abs(id) == 13) return isGoodVetoMuonNoIso(idx);
+  return false;
+}
+bool isVetoLeptonIso(int id, int idx) {
+  if (isVetoLeptonNoIso(id,idx)==0) return false;
+  if (isLooseIsolatedLepton(id,idx)==0) return false;
+  return true;
+}
+bool isVetoLeptonIsoOrPtRel(int id, int idx) {
+  if (isVetoLeptonNoIso(id,idx)==0) return false;
+  if (isLooseIsolatedLepton(id,idx)==0 && passPtRel(id,idx,ptRelCut,true)==0) return false;
+  return true;
+}
+
+bool passPtRel(int id, int idx, float cut, bool subtractLep) {
+  vector<LorentzVector> jetp4s;
+  for (unsigned int pfjidx=0;pfjidx<pfjets_p4().size();++pfjidx) {
+    Jet jet(pfjidx);
+    if (fabs(jet.eta())>2.4) continue;
+    if (isLoosePFJet(pfjidx)==false) continue;
+    jetp4s.push_back(jet.p4());
+  }
+  Lep lep = Lep(id,idx);
+  return ptRel(lep.p4(), jetp4s, subtractLep) > cut;
 }
 
 float computePtRel(Lep lep, vector<Jet>& lepjets, bool subtractLep) {

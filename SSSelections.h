@@ -11,6 +11,7 @@
 
 const static float ptCutHigh = 25.;
 const static float ptCutLow = 10.;
+const static float ptRelCut = 14.;
 
 //Enums
 enum anal_type_t { HighHigh = 0, HighLow = 1, LowLow = 2 };
@@ -33,13 +34,10 @@ template <typename T> int sgn(T val){
     return (T(0) < val) - (val < T(0));
 }
 
-//Object selections
-bool isLooseIsolatedLepton(int id, int idx);
-bool isIsolatedLepton(int id, int idx);
+//Main Object selections
 bool isGoodLepton(int id, int idx);
-bool isGoodLeptonNoIso(int id, int idx);
 bool isDenominatorLepton(int id, int idx);
-float computePtRel(Lep lep, vector<Jet>& lepjets, bool subtractLep);
+bool isVetoLepton(int id, int idx);
 
 //Hyp selections
 bool makesExtraGammaStar(int iHyp);
@@ -60,6 +58,15 @@ int signalRegion(int njets, int nbtag, float met, float ht, int njetscut = 4, fl
 float computeLD(DilepHyp hyp, vector<Jet> alljets, float met, float minmt);
 
 //More Lepton selections
+bool isGoodLeptonNoIso(int id, int idx);
+bool isGoodLeptonIso(int id, int idx);
+bool isGoodLeptonIsoOrPtRel(int id, int idx);
+bool isDenominatorLeptonNoIso(int id, int idx);
+bool isDenominatorLeptonIso(int id, int idx);
+bool isDenominatorLeptonIsoOrPtRel(int id, int idx);
+bool isVetoLeptonNoIso(int id, int idx);
+bool isVetoLeptonIso(int id, int idx);
+bool isVetoLeptonIsoOrPtRel(int id, int idx);
 bool isGoodVetoElectronNoIso(unsigned int elidx);
 bool isGoodVetoElectron(unsigned int elidx);
 bool isFakableElectronNoIso(unsigned int elidx);
@@ -72,6 +79,10 @@ bool isFakableMuonNoIso(unsigned int muidx);
 bool isFakableMuon(unsigned int muidx);
 bool isGoodMuonNoIso(unsigned int muidx);
 bool isGoodMuon(unsigned int muidx);
+bool isIsolatedLepton(int id, int idx);
+bool isLooseIsolatedLepton(int id, int idx);
+bool passPtRel(int id, int idx, float cut, bool subtractLep);
+float computePtRel(Lep lep, vector<Jet>& lepjets, bool subtractLep);//fixme to be removed
 
 //MC truth functions
 int lepMotherID(Lep lep);
