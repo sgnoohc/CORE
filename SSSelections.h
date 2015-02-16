@@ -34,6 +34,7 @@ template <typename T> int sgn(T val){
 }
 
 //Object selections
+bool isLooseIsolatedLepton(int id, int idx);
 bool isIsolatedLepton(int id, int idx);
 bool isGoodLepton(int id, int idx);
 bool isGoodLeptonNoIso(int id, int idx);

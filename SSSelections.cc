@@ -135,6 +135,11 @@ bool makesExtraZ(int iHyp){
   return false;
 }
 
+bool isLooseIsolatedLepton(int id, int idx){
+  if (abs(id) == 11) return eleRelIso03(idx, SS) < 0.5;
+  if (abs(id) == 13) return muRelIso03(idx, SS) < 0.5;
+  return false;
+}
 bool isIsolatedLepton(int id, int idx){
   if (abs(id) == 11) return eleRelIso03(idx, SS) < 0.1;
   if (abs(id) == 13) return muRelIso03(idx, SS) < 0.1;
@@ -224,7 +229,7 @@ void passesSignalRegionCuts(float ht, float met, unsigned int& analysisBitMask) 
   if (analysisBitMask & 1<<HighHigh) {
     if (ht<200.)  analysisBitMask &= ~(1<<HighHigh);
   } 
-  if (ht<250.) {
+  if (ht<200.) {//fixme
     analysisBitMask &= ~(1<<HighLow);
     analysisBitMask &= ~(1<<LowLow);
   }
@@ -342,9 +347,27 @@ std::vector<Lep> getBestSSLeps(std::vector<Lep> leps) {
     if (lepsp.size()<2) {
       hypleps.push_back(lepsn[0]);
       hypleps.push_back(lepsn[1]);
+      for (unsigned int ln1=0;ln1<lepsn.size();++ln1) {
+	for (unsigned int ln2=ln1;ln2<lepsn.size();++ln2) {
+	  if ( abs(lepsn[ln1].pdgId()+lepsn[ln2].pdgId())>=abs(hypleps[0].pdgId()+hypleps[1].pdgId()) && 
+	       (lepsn[ln1].p4()+lepsn[ln2].p4()).pt()>(hypleps[0].p4()+hypleps[1].p4()).pt() ) {
+	    hypleps[0] = lepsn[ln1];
+	    hypleps[1] = lepsn[ln2];  
+	  }
+	}
+      }
     } else if (lepsn.size()<2) {
       hypleps.push_back(lepsp[0]);
       hypleps.push_back(lepsp[1]);
+      for (unsigned int lp1=0;lp1<lepsp.size();++lp1) {
+	for (unsigned int lp2=lp1;lp2<lepsp.size();++lp2) {
+	  if ( abs(lepsp[lp1].pdgId()+lepsp[lp2].pdgId())>=abs(hypleps[0].pdgId()+hypleps[1].pdgId()) && 
+	       (lepsp[lp1].p4()+lepsp[lp2].p4()).pt()>(hypleps[0].p4()+hypleps[1].p4()).pt() ) {
+	    hypleps[0] = lepsp[lp1];
+	    hypleps[1] = lepsp[lp2];  
+	  }
+	}
+      }
     } else {
       if ( abs(lepsn[0].pdgId()+lepsn[1].pdgId())>abs(lepsp[0].pdgId()+lepsp[1].pdgId()) ) {
 	hypleps.push_back(lepsn[0]);
@@ -352,7 +375,7 @@ std::vector<Lep> getBestSSLeps(std::vector<Lep> leps) {
       } else if ( abs(lepsn[0].pdgId()+lepsn[1].pdgId())<abs(lepsp[0].pdgId()+lepsp[1].pdgId()) ) {
 	hypleps.push_back(lepsp[0]);
 	hypleps.push_back(lepsp[1]);
-      } else if ( (lepsn[0].pt()+lepsn[1].pt())>(lepsp[0].pt()+lepsp[1].pt()) ) {
+      } else if ( (lepsn[0].p4()+lepsn[1].p4()).pt()>(lepsp[0].p4()+lepsp[1].p4()).pt() ) {
 	hypleps.push_back(lepsn[0]);
 	hypleps.push_back(lepsn[1]);
       } else {
@@ -402,7 +425,7 @@ int isGoodHyp(int iHyp, int analType, bool verbose){
 
   //Verbose info:
   if (verbose && pt_ll > ptCutLow && pt_lt > ptCutLow){
-    cout << "hyp " << iHyp << "leptons: " << id_ll << " " << pt_ll << " " << id_lt << " " << pt_lt << endl;
+    cout << "hyp " << iHyp << " leptons: " << id_ll << " " << pt_ll << " " << id_lt << " " << pt_lt << endl;
     cout << "   isss: " << isss << endl;
     cout << "   extraZ: " << extraZ << endl;
     cout << "   extraG: " << extraGammaStar << endl;
@@ -434,24 +457,24 @@ int isGoodHyp(int iHyp, int analType, bool verbose){
   //if (isData == true && passesTriggerVeryLowPt(tas::hyp_type().at(iHyp)) == 0) return 0;
 
   //Results
-  if (passed_id_numer_ll == 0 && passed_id_denom_ll == 0) return 0;      // 0 if ll fails
-  if (passed_id_numer_lt == 0 && passed_id_denom_lt == 0) return 0; // 0 if lt fails
-  else if (passed_id_numer_lt == 1 && passed_id_numer_ll == 1 && isss == 1) return 3;  // 3 if both high pass, SS
-  else if (passed_id_numer_lt == 1 && passed_id_numer_ll == 1 && isss == 0) return 4;  // 4 if both high pass, OS
-  else if (passed_id_numer_lt == 0 && passed_id_numer_ll == 0 && passed_id_denom_lt == 1 && passed_id_denom_ll == 1 && isss == true) return 1; // 1 if both low pass
-  else if (isss == true) return 2; //2 for lowpass/highpass
+  if (passed_id_numer_ll == 0 && passed_id_denom_ll == 0) return 0; // 0 if ll fails denom
+  if (passed_id_numer_lt == 0 && passed_id_denom_lt == 0) return 0; // 0 if lt fails denom
+  else if (passed_id_numer_lt == 1 && passed_id_numer_ll == 1 && isss == 1) return 3;  // 3 if both numer pass, SS
+  else if (passed_id_numer_lt == 1 && passed_id_numer_ll == 1 && isss == 0) return 4;  // 4 if both numer pass, OS
+  else if (passed_id_numer_lt == 0 && passed_id_numer_ll == 0 && passed_id_denom_lt == 1 && passed_id_denom_ll == 1 && isss == true) return 1; // 1 SS, if both denom and no numer pass
+  else if (isss == true) return 2; //2 SS, one numer and one denom not numer
   else return 0; //non-highpass OS
 }
 
 hyp_result_t chooseBestHyp(bool verbose){
 
   //List of good hyps
-  vector <int> good_hyps_ss; 
-  vector <int> good_hyps_sf; 
-  vector <int> good_hyps_df; 
-  vector <int> good_hyps_os; 
+  vector <int> good_hyps_ss; //same sign, tight tight
+  vector <int> good_hyps_sf; //same sign, single fail
+  vector <int> good_hyps_df; //same sign, double fail
+  vector <int> good_hyps_os; //opposite sign, tight tight
   for (unsigned int i = 0; i < tas::hyp_type().size(); i++){
-    int good_hyp_result = isGoodHyp(i, 2,verbose);
+    int good_hyp_result = isGoodHyp(i, 1, verbose);
     if (good_hyp_result == 3) good_hyps_ss.push_back(i); 
     if (good_hyp_result == 2) good_hyps_sf.push_back(i); 
     else if (good_hyp_result == 1) good_hyps_df.push_back(i); 
