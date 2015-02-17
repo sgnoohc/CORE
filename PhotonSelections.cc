@@ -49,3 +49,44 @@ bool isTightPhoton(unsigned int phIdx, analysis_t analysis) {
 
   return true;
 }
+
+bool photonID(unsigned int phIdx, id_level_t id_level){
+    
+  // analysis_t analysis = whichAnalysis(id_level);
+
+  switch (id_level){
+
+	///////////////////
+	// MET Templates //
+	///////////////////
+
+  case(ZMET_photon_v1):
+
+	if( !isTemplatePhoton( phIdx ) ) return false;
+	// Following cuts done in analysis code.
+	// match to pfjet w/ neutral EM fraction > 70%
+	// reject photons within electron with pT > 10 within cone of dR < 0.2
+	// Reject photons aligned to MET within 0.14 radians in phi
+	break;
+
+	///////////////
+	/// Default ///
+	///////////////
+
+  default:
+	{
+	  cout << "Warning! Photon ID not defined for this id_level!" << endl;
+	  return false;
+	}
+
+  }//switch
+  return true;
+}
+
+bool isTemplatePhoton( unsigned int phIdx ) {
+	if( fabs(photons_p4().at(phIdx).pt())  <= 22.0 ) return false;
+	if( fabs(photons_p4().at(phIdx).eta()) >= 2.4  ) return false;
+	if(photons_full5x5_hOverEtowBC().at(phIdx) >= 0.1) return false; 
+	if(photons_haspixelSeed().at(phIdx)) return false;
+	return true;
+}

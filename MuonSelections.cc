@@ -129,6 +129,34 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
       if (muRelIso03(muIdx, analysis) >= 0.15) return false; 
       break;
 
+   /////////////////////
+   /// ZMET loose v1 ///
+   /////////////////////
+  
+    case(ZMET_loose_v1):
+      if (!isLooseMuonPOG(muIdx)) return false;
+      if (muRelIso03(muIdx, analysis) >= 0.15) return false; 
+      break;
+
+    case(ZMET_loose_noiso_v1):
+      if (!isLooseMuonPOG(muIdx)) return false;
+      // if (muRelIso03(muIdx, analysis) >= 0.15) return false; 
+      break;
+
+   /////////////////////
+   /// ZMET tight v1 ///
+   /////////////////////
+  
+    case(ZMET_tight_v1):
+      if (!isTightMuonPOG(muIdx)) return false;
+      if (muRelIso03(muIdx, analysis) >= 0.15) return false; 
+      break;
+
+    case(ZMET_tight_noiso_v1):
+      if (!isTightMuonPOG(muIdx)) return false;
+      // if (muRelIso03(muIdx, analysis) >= 0.15) return false; 
+      break;
+
    ///////////////
    /// Default ///
    ///////////////
@@ -162,7 +190,8 @@ float muRelIso04DB(unsigned int muIdx){
 }
 
 float muRelIso03(unsigned int muIdx, analysis_t analysis){
-  if (analysis == SS) return muRelIso03EA(muIdx);
+  if (analysis == SS  ) return muRelIso03EA(muIdx);
+  if (analysis == ZMET) return muRelIso03EA(muIdx);
   return muRelIso03DB(muIdx);
 }
 
@@ -241,6 +270,9 @@ int muTightID(unsigned int muIdx, analysis_t analysis){
       if (muonID(muIdx, STOP_tight_v1)) return 1;
       if (muonID(muIdx, STOP_loose_v1)) return 0;
       break;
+    case (ZMET):
+      if (muonID(muIdx, ZMET_tight_v1)) return 1;
+      if (muonID(muIdx, ZMET_loose_v1)) return 0;
   }
   return -1;
 }
