@@ -310,23 +310,49 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
    /// HAD tight v1 ///
    ////////////////////
 
-    case(HAD_tight_v1):
-      if (fabs(els_etaSC().at(elIdx)) <= 1.479){
-        if (fabs(els_dEtaIn().at(elIdx)) >= 0.004) return false;
-        if (fabs(els_dPhiIn().at(elIdx)) >= 0.03) return false; 
-        if (els_sigmaIEtaIEta_full5x5().at(elIdx) >= 0.01) return false; 
-        if (els_hOverE().at(elIdx) >= 0.12) return false; 
-        if (fabs((1.0/els_ecalEnergy().at(elIdx)) - (els_eOverPIn().at(elIdx)/els_ecalEnergy().at(elIdx)) ) >= 0.05) return false;
-      }
-      else if((fabs(els_etaSC().at(elIdx)) > 1.479) && (fabs(els_etaSC().at(elIdx)) < 2.5)){
-        if (fabs(els_dEtaIn().at(elIdx)) >= 0.005) return false;
-        if (fabs(els_dPhiIn().at(elIdx)) >= 0.02) return false; 
-        if (els_sigmaIEtaIEta_full5x5().at(elIdx) >= 0.03) return false; 
-        if (els_hOverE().at(elIdx) >= 0.1) return false; 
-        if (fabs( (1.0/els_ecalEnergy().at(elIdx)) - (els_eOverPIn().at(elIdx)/els_ecalEnergy().at(elIdx)) ) >= 0.05) return false;
-      }
-      else return false;
-      break;
+  case(HAD_tight_v1):
+	if (fabs(els_etaSC().at(elIdx)) <= 1.479){
+	  if (fabs(els_dEtaIn().at(elIdx)) >= 0.004) return false;
+	  if (fabs(els_dPhiIn().at(elIdx)) >= 0.03) return false; 
+	  if (els_sigmaIEtaIEta_full5x5().at(elIdx) >= 0.01) return false; 
+	  if (els_hOverE().at(elIdx) >= 0.12) return false; 
+	  if (fabs((1.0/els_ecalEnergy().at(elIdx)) - (els_eOverPIn().at(elIdx)/els_ecalEnergy().at(elIdx)) ) >= 0.05) return false;
+	}
+	else if((fabs(els_etaSC().at(elIdx)) > 1.479) && (fabs(els_etaSC().at(elIdx)) < 2.5)){
+	  if (fabs(els_dEtaIn().at(elIdx)) >= 0.005) return false;
+	  if (fabs(els_dPhiIn().at(elIdx)) >= 0.02) return false; 
+	  if (els_sigmaIEtaIEta_full5x5().at(elIdx) >= 0.03) return false; 
+	  if (els_hOverE().at(elIdx) >= 0.1) return false; 
+	  if (fabs( (1.0/els_ecalEnergy().at(elIdx)) - (els_eOverPIn().at(elIdx)/els_ecalEnergy().at(elIdx)) ) >= 0.05) return false;
+	}
+	else return false;
+	break;
+
+	/////////////////////
+	/// ZMET loose v1 ///
+	/////////////////////
+
+  case(ZMET_loose_v1):
+	if (!isLooseElectronPOGphys14noIso(elIdx)) return false;
+	if (fabs(els_etaSC().at(elIdx)) <= 1.479){
+      if (eleRelIso03(elIdx, analysis) >= 0.15) return false; 
+	}
+	else if((fabs(els_etaSC().at(elIdx)) > 1.479) && (fabs(els_etaSC().at(elIdx)) < 2.5)){
+      if (eleRelIso03(elIdx, analysis) >= 0.15) return false; 
+	}
+	else return false;
+	break;
+
+  case(ZMET_loose_noiso_v1):
+	if (!isLooseElectronPOGphys14noIso(elIdx)) return false;
+	// if (fabs(els_etaSC().at(elIdx)) <= 1.479){
+    //   if (eleRelIso03(elIdx, analysis) >= 0.15) return false; 
+	// }
+	// else if((fabs(els_etaSC().at(elIdx)) > 1.479) && (fabs(els_etaSC().at(elIdx)) < 2.5)){
+    //   if (eleRelIso03(elIdx, analysis) >= 0.15) return false; 
+	// }
+	else return false;
+	break;
 
    ///////////////
    /// Default ///
@@ -341,10 +367,260 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
   return true;
 }
 
+bool isVetoElectronPOGphys14(unsigned int elIdx){
+  if (fabs(els_etaSC().at(elIdx)) <= 1.479){                                                    // Barrel 
+    if (els_sigmaIEtaIEta_full5x5()                      .at(elIdx)   >= 0.011100) return false;// full5x5_sigmaIetaIeta   
+    if (fabs(els_dEtaIn()                                .at(elIdx))  >= 0.016315) return false;// abs(dEtaIn) 			   
+    if (fabs(els_dPhiIn()                                .at(elIdx))  >= 0.252044) return false;// abs(dPhiIn) 			   
+    if (els_hOverE()                                     .at(elIdx)   >= 0.345843) return false;// hOverE 				   	
+    if (eleRelIso03DB(elIdx)                                          >= 0.164369) return false;// PF isolation w/dBeta PU correction / pT (cone dR=0.3) 
+	if (fabs( (1.0/els_ecalEnergy()                      .at(elIdx)) - 							                           
+			  (els_eOverPIn().at(elIdx)/els_ecalEnergy() .at(elIdx))) >= 0.248070) return false;// ooEmooP				   
+    if (fabs(els_dxyPV()            .at(elIdx))                       >= 0.060279) return false;// abs(d0)				   
+    if (fabs(els_dzPV()             .at(elIdx))                       >= 0.800538) return false;// abs(dz) 				   
+	if (els_exp_innerlayers()       .at(elIdx)                        > 2        ) return false;// expectedMissingInnerHits 
+	if (els_conv_vtx_flag()         .at(elIdx)                                   ) return false;// pass conversion veto    
+  }
+  else if ((fabs(els_etaSC().at(elIdx)) > 1.479) && (fabs(els_etaSC().at(elIdx)) < 2.5)){       // Endcap
+    if (els_sigmaIEtaIEta_full5x5()                      .at(elIdx)   >= 0.033987) return false;// full5x5_sigmaIetaIeta   
+    if (fabs(els_dEtaIn()                                .at(elIdx))  >= 0.010671) return false;// abs(dEtaIn) 			    
+    if (fabs(els_dPhiIn()                                .at(elIdx))  >= 0.245263) return false;// abs(dPhiIn) 			    
+    if (els_hOverE()                                     .at(elIdx)   >= 0.134691) return false;// hOverE 				    
+    if (eleRelIso03DB(elIdx)                                          >= 0.212604) return false;// PF isolation w/dBeta PU correction / pT (cone dR=0.3) 
+	if (fabs( (1.0/els_ecalEnergy()                      .at(elIdx)) - 							                           
+			  (els_eOverPIn().at(elIdx)/els_ecalEnergy() .at(elIdx))) >= 0.157160) return false;// ooEmooP				   
+    if (fabs(els_dxyPV()            .at(elIdx))                       >= 0.273097) return false;// abs(d0)				   
+    if (fabs(els_dzPV()             .at(elIdx))                       >= 0.885860) return false;// abs(dz) 				    
+	if (els_exp_innerlayers()       .at(elIdx)                        > 3        ) return false;// expectedMissingInnerHits
+	if (els_conv_vtx_flag()         .at(elIdx)                                   ) return false;// pass conversion veto    
+  }
+  else return false;
+  return true;
+}
+
+bool isLooseElectronPOGphys14(unsigned int elIdx){
+  if (fabs(els_etaSC().at(elIdx)) <= 1.479){                                                    // Barrel 
+    if (els_sigmaIEtaIEta_full5x5()                      .at(elIdx)   >= 0.010557) return false;// full5x5_sigmaIetaIeta   
+    if (fabs(els_dEtaIn()                                .at(elIdx))  >= 0.012442) return false;// abs(dEtaIn) 			   
+    if (fabs(els_dPhiIn()                                .at(elIdx))  >= 0.072624) return false;// abs(dPhiIn) 			   
+    if (els_hOverE()                                     .at(elIdx)   >= 0.121476) return false;// hOverE 				   
+    if (eleRelIso03DB(elIdx)                                          >= 0.120026) return false;// PF isolation w/dBeta PU correction / pT (cone dR=0.3) 
+	if (fabs( (1.0/els_ecalEnergy()                      .at(elIdx)) - 							                           
+			  (els_eOverPIn().at(elIdx)/els_ecalEnergy() .at(elIdx))) >= 0.221803) return false;// ooEmooP				   
+    if (fabs(els_dxyPV()            .at(elIdx))                       >= 0.022664) return false;// abs(d0)				   
+    if (fabs(els_dzPV()             .at(elIdx))                       >= 0.173670) return false;// abs(dz) 				   
+	if (els_exp_innerlayers()       .at(elIdx)                        > 1        ) return false;// expectedMissingInnerHits 
+	if (els_conv_vtx_flag()         .at(elIdx)                                   ) return false;// pass conversion veto    
+  }
+  else if ((fabs(els_etaSC().at(elIdx)) > 1.479) && (fabs(els_etaSC().at(elIdx)) < 2.5)){       // Endcap
+    if (els_sigmaIEtaIEta_full5x5()                      .at(elIdx)   >= 0.032602) return false;// full5x5_sigmaIetaIeta   
+    if (fabs(els_dEtaIn()                                .at(elIdx))  >= 0.010654) return false;// abs(dEtaIn) 			    
+    if (fabs(els_dPhiIn()                                .at(elIdx))  >= 0.145129) return false;// abs(dPhiIn) 			    
+    if (els_hOverE()                                     .at(elIdx)   >= 0.131862) return false;// hOverE 				    
+    if (eleRelIso03DB(elIdx)                                          >= 0.162914) return false;// PF isolation w/dBeta PU correction / pT (cone dR=0.3) 
+	if (fabs( (1.0/els_ecalEnergy()                      .at(elIdx)) - 							                           
+			  (els_eOverPIn().at(elIdx)/els_ecalEnergy() .at(elIdx))) >= 0.142283) return false;// ooEmooP				   
+    if (fabs(els_dxyPV()            .at(elIdx))                       >= 0.097358) return false;// abs(d0)				   
+    if (fabs(els_dzPV()             .at(elIdx))                       >= 0.198444) return false;// abs(dz) 				    
+	if (els_exp_innerlayers()       .at(elIdx)                        > 1        ) return false;// expectedMissingInnerHits
+	if (els_conv_vtx_flag()         .at(elIdx)                                   ) return false;// pass conversion veto    
+  }
+  else return false;
+  return true;
+}
+
+bool isMediumElectronPOGphys14(unsigned int elIdx){
+  if (fabs(els_etaSC().at(elIdx)) <= 1.479){                                                    // Barrel 
+    if (els_sigmaIEtaIEta_full5x5()                      .at(elIdx)   >= 0.010399) return false;// full5x5_sigmaIetaIeta   
+    if (fabs(els_dEtaIn()                                .at(elIdx))  >= 0.007641) return false;// abs(dEtaIn) 			   
+    if (fabs(els_dPhiIn()                                .at(elIdx))  >= 0.032643) return false;// abs(dPhiIn) 			   
+    if (els_hOverE()                                     .at(elIdx)   >= 0.060662) return false;// hOverE 				   
+    if (eleRelIso03DB(elIdx)                                          >= 0.097213) return false;// PF isolation w/dBeta PU correction / pT (cone dR=0.3) 
+	if (fabs( (1.0/els_ecalEnergy()                      .at(elIdx)) - 							                           
+			  (els_eOverPIn().at(elIdx)/els_ecalEnergy() .at(elIdx))) >= 0.153897) return false;// ooEmooP				   
+    if (fabs(els_dxyPV()            .at(elIdx))                       >= 0.011811) return false;// abs(d0)				   
+    if (fabs(els_dzPV()             .at(elIdx))                       >= 0.070775) return false;// abs(dz) 				   
+	if (els_exp_innerlayers()       .at(elIdx)                        > 1        ) return false;// expectedMissingInnerHits 
+	if (els_conv_vtx_flag()         .at(elIdx)                                   ) return false;// pass conversion veto    
+  }
+  else if ((fabs(els_etaSC().at(elIdx)) > 1.479) && (fabs(els_etaSC().at(elIdx)) < 2.5)){       // Endcap
+    if (els_sigmaIEtaIEta_full5x5()                      .at(elIdx)   >= 0.029524) return false;// full5x5_sigmaIetaIeta   
+    if (fabs(els_dEtaIn()                                .at(elIdx))  >= 0.009285) return false;// abs(dEtaIn) 			    
+    if (fabs(els_dPhiIn()                                .at(elIdx))  >= 0.042447) return false;// abs(dPhiIn) 			    
+    if (els_hOverE()                                     .at(elIdx)   >= 0.104263) return false;// hOverE 				    
+    if (eleRelIso03DB(elIdx)                                          >= 0.116708) return false;// PF isolation w/dBeta PU correction / pT (cone dR=0.3) 
+	if (fabs( (1.0/els_ecalEnergy()                      .at(elIdx)) - 							                           
+			  (els_eOverPIn().at(elIdx)/els_ecalEnergy() .at(elIdx))) >= 0.137468) return false;// ooEmooP				   
+    if (fabs(els_dxyPV()            .at(elIdx))                       >= 0.051682) return false;// abs(d0)				   
+    if (fabs(els_dzPV()             .at(elIdx))                       >= 0.180720) return false;// abs(dz) 				    
+	if (els_exp_innerlayers()       .at(elIdx)                        > 1        ) return false;// expectedMissingInnerHits
+	if (els_conv_vtx_flag()         .at(elIdx)                                   ) return false;// pass conversion veto    
+  }
+  else return false;
+  return true;
+}
+
+bool isTightElectronPOGphys14(unsigned int elIdx){
+  if (fabs(els_etaSC().at(elIdx)) <= 1.479){                                                    // Barrel 
+    if (els_sigmaIEtaIEta_full5x5()                      .at(elIdx)   >= 0.010181) return false;// full5x5_sigmaIetaIeta   
+    if (fabs(els_dEtaIn()                                .at(elIdx))  >= 0.006574) return false;// abs(dEtaIn) 			   
+    if (fabs(els_dPhiIn()                                .at(elIdx))  >= 0.022868) return false;// abs(dPhiIn) 			   
+    if (els_hOverE()                                     .at(elIdx)   >= 0.037553) return false;// hOverE 				   
+    if (eleRelIso03DB(elIdx)                                          >= 0.074355) return false;// PF isolation w/dBeta PU correction / pT (cone dR=0.3) 
+	if (fabs( (1.0/els_ecalEnergy()                      .at(elIdx)) - 							                           
+			  (els_eOverPIn().at(elIdx)/els_ecalEnergy() .at(elIdx))) >= 0.131191) return false;// ooEmooP				   
+    if (fabs(els_dxyPV()            .at(elIdx))                       >= 0.009924) return false;// abs(d0)				   
+    if (fabs(els_dzPV()             .at(elIdx))                       >= 0.015310) return false;// abs(dz) 				   
+	if (els_exp_innerlayers()       .at(elIdx)                        > 1        ) return false;// expectedMissingInnerHits 
+	if (els_conv_vtx_flag()         .at(elIdx)                                   ) return false;// pass conversion veto    
+  }
+  else if ((fabs(els_etaSC().at(elIdx)) > 1.479) && (fabs(els_etaSC().at(elIdx)) < 2.5)){       // Endcap
+    if (els_sigmaIEtaIEta_full5x5()                      .at(elIdx)   >= 0.028766) return false;// full5x5_sigmaIetaIeta   
+    if (fabs(els_dEtaIn()                                .at(elIdx))  >= 0.005681) return false;// abs(dEtaIn) 			    
+    if (fabs(els_dPhiIn()                                .at(elIdx))  >= 0.032046) return false;// abs(dPhiIn) 			    
+    if (els_hOverE()                                     .at(elIdx)   >= 0.081902) return false;// hOverE 				    
+    if (eleRelIso03DB(elIdx)                                          >= 0.090185) return false;// PF isolation w/dBeta PU correction / pT (cone dR=0.3) 
+	if (fabs( (1.0/els_ecalEnergy()                      .at(elIdx)) - 							                           
+			  (els_eOverPIn().at(elIdx)/els_ecalEnergy() .at(elIdx))) >= 0.106055) return false;// ooEmooP				   
+    if (fabs(els_dxyPV()            .at(elIdx))                       >= 0.027261) return false;// abs(d0)				   
+    if (fabs(els_dzPV()             .at(elIdx))                       >= 0.147154) return false;// abs(dz) 				    
+	if (els_exp_innerlayers()       .at(elIdx)                        > 1        ) return false;// expectedMissingInnerHits
+	if (els_conv_vtx_flag()         .at(elIdx)                                   ) return false;// pass conversion veto    
+  }
+  else return false;
+  return true;
+}
+
+bool isVetoElectronPOGphys14noIso(unsigned int elIdx){
+  if (fabs(els_etaSC().at(elIdx)) <= 1.479){                                                    // Barrel 
+    if (els_sigmaIEtaIEta_full5x5()                      .at(elIdx)   >= 0.011100) return false;// full5x5_sigmaIetaIeta   
+    if (fabs(els_dEtaIn()                                .at(elIdx))  >= 0.016315) return false;// abs(dEtaIn) 			   
+    if (fabs(els_dPhiIn()                                .at(elIdx))  >= 0.252044) return false;// abs(dPhiIn) 			   
+    if (els_hOverE()                                     .at(elIdx)   >= 0.345843) return false;// hOverE 				   	
+    // if (eleRelIso03DB(elIdx)                                          >= 0.164369) return false;// PF isolation w/dBeta PU correction / pT (cone dR=0.3) 
+	if (fabs( (1.0/els_ecalEnergy()                      .at(elIdx)) - 							                           
+			  (els_eOverPIn().at(elIdx)/els_ecalEnergy() .at(elIdx))) >= 0.248070) return false;// ooEmooP				   
+    if (fabs(els_dxyPV()            .at(elIdx))                       >= 0.060279) return false;// abs(d0)				   
+    if (fabs(els_dzPV()             .at(elIdx))                       >= 0.800538) return false;// abs(dz) 				   
+	if (els_exp_innerlayers()       .at(elIdx)                        > 2        ) return false;// expectedMissingInnerHits 
+	if (els_conv_vtx_flag()         .at(elIdx)                                   ) return false;// pass conversion veto    
+  }
+  else if ((fabs(els_etaSC().at(elIdx)) > 1.479) && (fabs(els_etaSC().at(elIdx)) < 2.5)){       // Endcap
+    if (els_sigmaIEtaIEta_full5x5()                      .at(elIdx)   >= 0.033987) return false;// full5x5_sigmaIetaIeta   
+    if (fabs(els_dEtaIn()                                .at(elIdx))  >= 0.010671) return false;// abs(dEtaIn) 			    
+    if (fabs(els_dPhiIn()                                .at(elIdx))  >= 0.245263) return false;// abs(dPhiIn) 			    
+    if (els_hOverE()                                     .at(elIdx)   >= 0.134691) return false;// hOverE 				    
+    // if (eleRelIso03DB(elIdx)                                          >= 0.212604) return false;// PF isolation w/dBeta PU correction / pT (cone dR=0.3) 
+	if (fabs( (1.0/els_ecalEnergy()                      .at(elIdx)) - 							                           
+			  (els_eOverPIn().at(elIdx)/els_ecalEnergy() .at(elIdx))) >= 0.157160) return false;// ooEmooP				   
+    if (fabs(els_dxyPV()            .at(elIdx))                       >= 0.273097) return false;// abs(d0)				   
+    if (fabs(els_dzPV()             .at(elIdx))                       >= 0.885860) return false;// abs(dz) 				    
+	if (els_exp_innerlayers()       .at(elIdx)                        > 3        ) return false;// expectedMissingInnerHits
+	if (els_conv_vtx_flag()         .at(elIdx)                                   ) return false;// pass conversion veto    
+  }
+  else return false;
+  return true;
+}
+
+bool isLooseElectronPOGphys14noIso(unsigned int elIdx){
+  if (fabs(els_etaSC().at(elIdx)) <= 1.479){                                                    // Barrel 
+    if (els_sigmaIEtaIEta_full5x5()                      .at(elIdx)   >= 0.010557) return false;// full5x5_sigmaIetaIeta   
+    if (fabs(els_dEtaIn()                                .at(elIdx))  >= 0.012442) return false;// abs(dEtaIn) 			   
+    if (fabs(els_dPhiIn()                                .at(elIdx))  >= 0.072624) return false;// abs(dPhiIn) 			   
+    if (els_hOverE()                                     .at(elIdx)   >= 0.121476) return false;// hOverE 				   
+    // if (eleRelIso03DB(elIdx)                                          >= 0.120026) return false;// PF isolation w/dBeta PU correction / pT (cone dR=0.3) 
+	if (fabs( (1.0/els_ecalEnergy()                      .at(elIdx)) - 							                           
+			  (els_eOverPIn().at(elIdx)/els_ecalEnergy() .at(elIdx))) >= 0.221803) return false;// ooEmooP				   
+    if (fabs(els_dxyPV()            .at(elIdx))                       >= 0.022664) return false;// abs(d0)				   
+    if (fabs(els_dzPV()             .at(elIdx))                       >= 0.173670) return false;// abs(dz) 				   
+	if (els_exp_innerlayers()       .at(elIdx)                        > 1        ) return false;// expectedMissingInnerHits 
+	if (els_conv_vtx_flag()         .at(elIdx)                                   ) return false;// pass conversion veto    
+  }
+  else if ((fabs(els_etaSC().at(elIdx)) > 1.479) && (fabs(els_etaSC().at(elIdx)) < 2.5)){       // Endcap
+    if (els_sigmaIEtaIEta_full5x5()                      .at(elIdx)   >= 0.032602) return false;// full5x5_sigmaIetaIeta   
+    if (fabs(els_dEtaIn()                                .at(elIdx))  >= 0.010654) return false;// abs(dEtaIn) 			    
+    if (fabs(els_dPhiIn()                                .at(elIdx))  >= 0.145129) return false;// abs(dPhiIn) 			    
+    if (els_hOverE()                                     .at(elIdx)   >= 0.131862) return false;// hOverE 				    
+    // if (eleRelIso03DB(elIdx)                                          >= 0.162914) return false;// PF isolation w/dBeta PU correction / pT (cone dR=0.3) 
+	if (fabs( (1.0/els_ecalEnergy()                      .at(elIdx)) - 							                           
+			  (els_eOverPIn().at(elIdx)/els_ecalEnergy() .at(elIdx))) >= 0.142283) return false;// ooEmooP				   
+    if (fabs(els_dxyPV()            .at(elIdx))                       >= 0.097358) return false;// abs(d0)				   
+    if (fabs(els_dzPV()             .at(elIdx))                       >= 0.198444) return false;// abs(dz) 				    
+	if (els_exp_innerlayers()       .at(elIdx)                        > 1        ) return false;// expectedMissingInnerHits
+	if (els_conv_vtx_flag()         .at(elIdx)                                   ) return false;// pass conversion veto    
+  }
+  else return false;
+  return true;
+}
+
+bool isMediumElectronPOGphys14noIso(unsigned int elIdx){
+  if (fabs(els_etaSC().at(elIdx)) <= 1.479){                                                    // Barrel 
+    if (els_sigmaIEtaIEta_full5x5()                      .at(elIdx)   >= 0.010399) return false;// full5x5_sigmaIetaIeta   
+    if (fabs(els_dEtaIn()                                .at(elIdx))  >= 0.007641) return false;// abs(dEtaIn) 			   
+    if (fabs(els_dPhiIn()                                .at(elIdx))  >= 0.032643) return false;// abs(dPhiIn) 			   
+    if (els_hOverE()                                     .at(elIdx)   >= 0.060662) return false;// hOverE 				   
+    // if (eleRelIso03DB(elIdx)                                          >= 0.097213) return false;// PF isolation w/dBeta PU correction / pT (cone dR=0.3) 
+	if (fabs( (1.0/els_ecalEnergy()                      .at(elIdx)) - 							                           
+			  (els_eOverPIn().at(elIdx)/els_ecalEnergy() .at(elIdx))) >= 0.153897) return false;// ooEmooP				   
+    if (fabs(els_dxyPV()            .at(elIdx))                       >= 0.011811) return false;// abs(d0)				   
+    if (fabs(els_dzPV()             .at(elIdx))                       >= 0.070775) return false;// abs(dz) 				   
+	if (els_exp_innerlayers()       .at(elIdx)                        > 1        ) return false;// expectedMissingInnerHits 
+	if (els_conv_vtx_flag()         .at(elIdx)                                   ) return false;// pass conversion veto    
+  }
+  else if ((fabs(els_etaSC().at(elIdx)) > 1.479) && (fabs(els_etaSC().at(elIdx)) < 2.5)){       // Endcap
+    if (els_sigmaIEtaIEta_full5x5()                      .at(elIdx)   >= 0.029524) return false;// full5x5_sigmaIetaIeta   
+    if (fabs(els_dEtaIn()                                .at(elIdx))  >= 0.009285) return false;// abs(dEtaIn) 			    
+    if (fabs(els_dPhiIn()                                .at(elIdx))  >= 0.042447) return false;// abs(dPhiIn) 			    
+    if (els_hOverE()                                     .at(elIdx)   >= 0.104263) return false;// hOverE 				    
+    // if (eleRelIso03DB(elIdx)                                          >= 0.116708) return false;// PF isolation w/dBeta PU correction / pT (cone dR=0.3) 
+	if (fabs( (1.0/els_ecalEnergy()                      .at(elIdx)) - 							                           
+			  (els_eOverPIn().at(elIdx)/els_ecalEnergy() .at(elIdx))) >= 0.137468) return false;// ooEmooP				   
+    if (fabs(els_dxyPV()            .at(elIdx))                       >= 0.051682) return false;// abs(d0)				   
+    if (fabs(els_dzPV()             .at(elIdx))                       >= 0.180720) return false;// abs(dz) 				    
+	if (els_exp_innerlayers()       .at(elIdx)                        > 1        ) return false;// expectedMissingInnerHits
+	if (els_conv_vtx_flag()         .at(elIdx)                                   ) return false;// pass conversion veto    
+  }
+  else return false;
+  return true;
+}
+
+bool isTightElectronPOGphys14noIso(unsigned int elIdx){
+  if (fabs(els_etaSC().at(elIdx)) <= 1.479){                                                    // Barrel 
+    if (els_sigmaIEtaIEta_full5x5()                      .at(elIdx)   >= 0.010181) return false;// full5x5_sigmaIetaIeta   
+    if (fabs(els_dEtaIn()                                .at(elIdx))  >= 0.006574) return false;// abs(dEtaIn) 			   
+    if (fabs(els_dPhiIn()                                .at(elIdx))  >= 0.022868) return false;// abs(dPhiIn) 			   
+    if (els_hOverE()                                     .at(elIdx)   >= 0.037553) return false;// hOverE 				   
+    // if (eleRelIso03DB(elIdx)                                          >= 0.074355) return false;// PF isolation w/dBeta PU correction / pT (cone dR=0.3) 
+	if (fabs( (1.0/els_ecalEnergy()                      .at(elIdx)) - 							                           
+			  (els_eOverPIn().at(elIdx)/els_ecalEnergy() .at(elIdx))) >= 0.131191) return false;// ooEmooP				   
+    if (fabs(els_dxyPV()            .at(elIdx))                       >= 0.009924) return false;// abs(d0)				   
+    if (fabs(els_dzPV()             .at(elIdx))                       >= 0.015310) return false;// abs(dz) 				   
+	if (els_exp_innerlayers()       .at(elIdx)                        > 1        ) return false;// expectedMissingInnerHits 
+	if (els_conv_vtx_flag()         .at(elIdx)                                   ) return false;// pass conversion veto    
+  }
+  else if ((fabs(els_etaSC().at(elIdx)) > 1.479) && (fabs(els_etaSC().at(elIdx)) < 2.5)){       // Endcap
+    if (els_sigmaIEtaIEta_full5x5()                      .at(elIdx)   >= 0.028766) return false;// full5x5_sigmaIetaIeta   
+    if (fabs(els_dEtaIn()                                .at(elIdx))  >= 0.005681) return false;// abs(dEtaIn) 			    
+    if (fabs(els_dPhiIn()                                .at(elIdx))  >= 0.032046) return false;// abs(dPhiIn) 			    
+    if (els_hOverE()                                     .at(elIdx)   >= 0.081902) return false;// hOverE 				    
+    // if (eleRelIso03DB(elIdx)                                          >= 0.090185) return false;// PF isolation w/dBeta PU correction / pT (cone dR=0.3) 
+	if (fabs( (1.0/els_ecalEnergy()                      .at(elIdx)) - 							                           
+			  (els_eOverPIn().at(elIdx)/els_ecalEnergy() .at(elIdx))) >= 0.106055) return false;// ooEmooP				   
+    if (fabs(els_dxyPV()            .at(elIdx))                       >= 0.027261) return false;// abs(d0)				   
+    if (fabs(els_dzPV()             .at(elIdx))                       >= 0.147154) return false;// abs(dz) 				    
+	if (els_exp_innerlayers()       .at(elIdx)                        > 1        ) return false;// expectedMissingInnerHits
+	if (els_conv_vtx_flag()         .at(elIdx)                                   ) return false;// pass conversion veto    
+  }
+  else return false;
+  return true;
+}
+
 float eleRelIso03(unsigned int elIdx, analysis_t analysis){
-  if (analysis == HAD) return eleRelIso03DB(elIdx);
+  if (analysis == HAD ) return eleRelIso03DB(elIdx);
   if (analysis == STOP) return eleRelIso03DB(elIdx);
-  if (analysis == SS) return eleRelIso03EA(elIdx);
+  if (analysis == SS  ) return eleRelIso03EA(elIdx);
+  if (analysis == ZMET) return eleRelIso03EA(elIdx);
+
   else return eleRelIso03EA(elIdx);
 }
 
@@ -434,6 +710,8 @@ int eleTightID(unsigned int elIdx, analysis_t analysis){
       if (electronID(elIdx, STOP_loose_v1)) return 1;
       if (electronID(elIdx, STOP_veto_v1)) return 0;
       break;
+    case (ZMET):
+      if (electronID(elIdx, ZMET_loose_v1)) return 0;
   }
   return -1;
 }
