@@ -50,7 +50,7 @@ std::vector<particle_t> getGenPair(bool verbose=false);
 std::vector<Lep> getBestSSLeps(std::vector<Lep> leps);//to be remove/merged with above
 
 //Signal region selections
-unsigned int analysisCategory(Lep lep1, Lep lep2);
+unsigned int analysisCategory(float lep1pt, float lep2pt);
 void passesBaselineCuts(int njets, int nbtag, float met, float ht, unsigned int& analysisBitMask);
 int baselineRegion(int nbtag);
 void passesSignalRegionCuts(float ht, float met, unsigned int& analysisBitMask);

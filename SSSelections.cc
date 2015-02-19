@@ -230,13 +230,13 @@ bool hypsFromFirstGoodVertex(size_t hypIdx, float dz_cut){
   return false;
 }
 
-unsigned int analysisCategory(Lep lep1, Lep lep2) {
+unsigned int analysisCategory(float lep1pt, float lep2pt) {
   unsigned int result = 0;
-  if (lep1.pt()>ptCutHigh && lep2.pt()>ptCutHigh) {
+  if (lep1pt>ptCutHigh && lep2pt>ptCutHigh) {
     result |= 1<<HighHigh;
-  } else if (lep1.pt()>ptCutHigh && lep2.pt()>ptCutLow) {
+  } else if (lep1pt>ptCutHigh && lep2pt>ptCutLow) {
     result |= 1<<HighLow;
-  } else if (lep1.pt()>ptCutLow && lep2.pt()>ptCutLow) {
+  } else if (lep1pt>ptCutLow && lep2pt>ptCutLow) {
     result |= 1<<LowLow;
   }
   return result;
