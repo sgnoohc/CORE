@@ -14,15 +14,17 @@ bool isLooseMuonPOG(unsigned int muIdx){
 }
 
 bool isTightMuonPOG(unsigned int muIdx){
-  if (!mus_pid_PFMuon().at(muIdx)) return false;    
-  if (((mus_type().at(muIdx)) & (1<<1)) == 0) return false;//global muon
-  if (mus_gfit_chi2().at(muIdx)/mus_gfit_ndof().at(muIdx) >= 10) return false; 
-  if (mus_gfit_validSTAHits().at(muIdx) == 0) return false; 
-  if (mus_numberOfMatchedStations().at(muIdx) < 2) return false;
-  if (mus_validPixelHits().at(muIdx) == 0) return false;
-  if (mus_nlayers().at(muIdx) < 6) return false;
-  if (fabs(mus_dxyPV().at(muIdx)) > 0.2) return false;
-  if (fabs(mus_dzPV().at(muIdx)) > 0.5) return false;
+  if (!mus_pid_PFMuon()            .at(muIdx)         ) return false;    
+  if (((mus_type()                 .at(muIdx))
+	   & (1<<1)) == 0                                 ) return false;//global muon
+  if (mus_gfit_chi2()              .at(muIdx)		 
+	  /mus_gfit_ndof()             .at(muIdx)  >= 10  ) return false; 
+  if (mus_gfit_validSTAHits()      .at(muIdx)  == 0   ) return false; 
+  if (mus_numberOfMatchedStations().at(muIdx)  <  2   ) return false;
+  if (mus_validPixelHits()         .at(muIdx)  == 0   ) return false;
+  if (mus_nlayers()                .at(muIdx)  <  6   ) return false;
+  if (fabs(mus_dxyPV()             .at(muIdx)) >  0.2 ) return false;
+  if (fabs(mus_dzPV()              .at(muIdx)) >  0.5 ) return false;
   return true;
 }
 

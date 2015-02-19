@@ -84,9 +84,9 @@ bool photonID(unsigned int phIdx, id_level_t id_level){
 }
 
 bool isTemplatePhoton( unsigned int phIdx ) {
-	if( fabs(photons_p4().at(phIdx).pt())  <= 22.0 ) return false;
-	if( fabs(photons_p4().at(phIdx).eta()) >= 2.4  ) return false;
-	if(photons_full5x5_hOverEtowBC().at(phIdx) >= 0.1) return false; 
-	if(photons_haspixelSeed().at(phIdx)) return false;
-	return true;
+  if( fabs(photons_p4()            .at(phIdx).pt())  <= 22.0 ) return false; // photon pT > 22 GeV
+  if( fabs(photons_p4()            .at(phIdx).eta()) >= 2.4  ) return false; // photon eta < 2.4
+  if(photons_full5x5_hOverEtowBC() .at(phIdx)        >= 0.1  ) return false; // hOverE < 0.1
+  if(photons_haspixelSeed()        .at(phIdx)                ) return false; // veto pixel seed
+  return true;
 }

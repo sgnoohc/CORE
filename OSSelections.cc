@@ -1,6 +1,9 @@
+#include <stdexcept>
+
 #include "OSSelections.h"
 #include "MuonSelections.h"
 #include "ElectronSelections.h"
+#include "PhotonSelections.h"
 
 #include "Math/VectorUtil.h"
 
@@ -30,7 +33,7 @@ bool passElectronSelection_ZMET_v1_NoIso(int index, bool vetoTransition, bool et
 	  && fabs(cms3.els_p4()[index].eta()) > 2.4    ) return false; // eta < 2.4
   // if( overlapMuon_ZMet2012_v1(index,10.0)          ) return false; // overlap removal
   if( !electronID( index, ZMET_loose_noiso_v1 )    ) return false; // Electron ID  
-  return false;
+  return true;
 }
 
 bool passElectronSelection_ZMET_v1(int index, bool vetoTransition, bool eta24 ){
@@ -42,30 +45,41 @@ bool passElectronSelection_ZMET_v1(int index, bool vetoTransition, bool eta24 ){
 	  && fabs(cms3.els_p4()[index].eta()) > 2.4    ) return false; // eta < 2.4
   // if( overlapMuon_ZMet2012_v1(index,10.0)          ) return false; // overlap removal
   if( !electronID( index, ZMET_loose_v1 )          ) return false; // Electron ID  
-  return false;
+  return true;
 }
 
 //~-~-~-~-~-~-~-~//
 //Muon selections//
 //~-~-~-~-~-~-~-~//
 bool passMuonSelection_ZMET_v1_NoIso(int index, bool vetoTransition, bool eta24 ){
-  if( fabs(cms3.els_p4().at(index).pt()) < 10.0    ) return false; // pT > 10 GeV - Minimum pT cut
+  if( fabs(cms3.mus_p4().at(index).pt()) < 10.0       ) return false; // pT > 10 GeV - Minimum pT cut
   if( vetoTransition
-	  && fabs(cms3.els_etaSC().at(index)) > 1.4442
-	  && fabs(cms3.els_etaSC().at(index)) < 1.566  ) return false; // veto x-ition region
+	  && fabs(cms3.mus_p4().at(index).eta()) > 1.4442
+	  && fabs(cms3.mus_p4().at(index).eta()) < 1.566  ) return false; // veto x-ition region
   if( eta24
-	  && fabs(cms3.els_p4()[index].eta()) > 2.4    ) return false; // eta < 2.4
-  if( !muonID( index, ZMET_tight_noiso_v1 )    ) return false; // tight Muon ID  
-  return false;
+	  && fabs(cms3.mus_p4().at(index).eta()) > 2.4    ) return false; // eta < 2.4
+  if( !muonID( index, ZMET_tight_noiso_v1 )           ) return false; // tight Muon ID  
+  return true;
 }
 
 bool passMuonSelection_ZMET_v1(int index, bool vetoTransition, bool eta24 ){
-  if( fabs(cms3.els_p4().at(index).pt()) < 10.0    ) return false; // pT > 10 GeV - Minimum pT cut
+  if( fabs(cms3.mus_p4().at(index).pt()) < 10.0       ) return false; // pT > 10 GeV - Minimum pT cut
   if( vetoTransition
-	  && fabs(cms3.els_etaSC().at(index)) > 1.4442
-	  && fabs(cms3.els_etaSC().at(index)) < 1.566  ) return false; // veto x-ition region
+	  && fabs(cms3.mus_p4().at(index).eta()) > 1.4442
+	  && fabs(cms3.mus_p4().at(index).eta()) < 1.566  ) return false; // veto x-ition region
   if( eta24
-	  && fabs(cms3.els_p4()[index].eta()) > 2.4    ) return false; // eta < 2.4
-  if( !muonID( index, ZMET_tight_v1 )          ) return false; // tight Muon ID  
-  return false;
+	  && fabs(cms3.mus_p4().at(index).eta()) > 2.4    ) return false; // eta < 2.4
+  if( !muonID( index, ZMET_tight_v1 )                 ) return false; // tight Muon ID  
+  return true;
+}
+
+bool passPhotonSelection_ZMET_v1(int index, bool vetoTransition, bool eta24 ){
+  if( fabs(cms3.photons_p4().at(index).pt()) < 22.0       ) return false; // pT > 22 GeV - Minimum pT cut
+  if( vetoTransition
+	  && fabs(cms3.photons_p4().at(index).eta()) > 1.4442
+	  && fabs(cms3.photons_p4().at(index).eta()) < 1.566  ) return false; // veto x-ition region
+  if( eta24
+	  && fabs(cms3.photons_p4().at(index).eta()) > 2.4    ) return false; // eta < 2.4
+  if( !photonID(index, ZMET_photon_v1 ) ) return false;
+  return true;
 }
