@@ -6,5 +6,7 @@
 
 bool isLoosePhoton(unsigned int phIdx, analysis_t analysis);
 bool isTightPhoton(unsigned int phIdx, analysis_t analysis);
+bool photonID(unsigned int phIdx, id_level_t id_level);
+bool isTemplatePhoton( unsigned int phIdx );
 
 #endif

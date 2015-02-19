@@ -13,6 +13,18 @@ bool isTightElectronPOG(unsigned int elIdx);
 //Main Electron ID function
 bool electronID(unsigned int elIdx, id_level_t id_level);
 
+//POG IDs for phys14
+bool isVetoElectronPOGphys14(unsigned int elIdx);
+bool isLooseElectronPOGphys14(unsigned int elIdx);
+bool isMediumElectronPOGphys14(unsigned int elIdx);
+bool isTightElectronPOGphys14(unsigned int elIdx);
+
+//POG IDs for phys14 with no Iso requirement
+bool isVetoElectronPOGphys14noIso(unsigned int elIdx);
+bool isLooseElectronPOGphys14noIso(unsigned int elIdx);
+bool isMediumElectronPOGphys14noIso(unsigned int elIdx);
+bool isTightElectronPOGphys14noIso(unsigned int elIdx);
+
 //Isolation
 float eleRelIso03(unsigned int elIdx, analysis_t analysis);
 float eleRelIso03DB(unsigned int elIdx);

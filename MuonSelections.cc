@@ -14,15 +14,17 @@ bool isLooseMuonPOG(unsigned int muIdx){
 }
 
 bool isTightMuonPOG(unsigned int muIdx){
-  if (!mus_pid_PFMuon().at(muIdx)) return false;    
-  if (((mus_type().at(muIdx)) & (1<<1)) == 0) return false;//global muon
-  if (mus_gfit_chi2().at(muIdx)/mus_gfit_ndof().at(muIdx) >= 10) return false; 
-  if (mus_gfit_validSTAHits().at(muIdx) == 0) return false; 
-  if (mus_numberOfMatchedStations().at(muIdx) < 2) return false;
-  if (mus_validPixelHits().at(muIdx) == 0) return false;
-  if (mus_nlayers().at(muIdx) < 6) return false;
-  if (fabs(mus_dxyPV().at(muIdx)) > 0.2) return false;
-  if (fabs(mus_dzPV().at(muIdx)) > 0.5) return false;
+  if (!mus_pid_PFMuon()            .at(muIdx)         ) return false;    
+  if (((mus_type()                 .at(muIdx))
+	   & (1<<1)) == 0                                 ) return false;//global muon
+  if (mus_gfit_chi2()              .at(muIdx)		 
+	  /mus_gfit_ndof()             .at(muIdx)  >= 10  ) return false; 
+  if (mus_gfit_validSTAHits()      .at(muIdx)  == 0   ) return false; 
+  if (mus_numberOfMatchedStations().at(muIdx)  <  2   ) return false;
+  if (mus_validPixelHits()         .at(muIdx)  == 0   ) return false;
+  if (mus_nlayers()                .at(muIdx)  <  6   ) return false;
+  if (fabs(mus_dxyPV()             .at(muIdx)) >  0.2 ) return false;
+  if (fabs(mus_dzPV()              .at(muIdx)) >  0.5 ) return false;
   return true;
 }
 
@@ -129,6 +131,34 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
       if (muRelIso03(muIdx, analysis) >= 0.15) return false; 
       break;
 
+   /////////////////////
+   /// ZMET loose v1 ///
+   /////////////////////
+  
+    case(ZMET_loose_v1):
+      if (!isLooseMuonPOG(muIdx)) return false;
+      if (muRelIso03(muIdx, analysis) >= 0.15) return false; 
+      break;
+
+    case(ZMET_loose_noiso_v1):
+      if (!isLooseMuonPOG(muIdx)) return false;
+      // if (muRelIso03(muIdx, analysis) >= 0.15) return false; 
+      break;
+
+   /////////////////////
+   /// ZMET tight v1 ///
+   /////////////////////
+  
+    case(ZMET_tight_v1):
+      if (!isTightMuonPOG(muIdx)) return false;
+      if (muRelIso03(muIdx, analysis) >= 0.15) return false; 
+      break;
+
+    case(ZMET_tight_noiso_v1):
+      if (!isTightMuonPOG(muIdx)) return false;
+      // if (muRelIso03(muIdx, analysis) >= 0.15) return false; 
+      break;
+
    ///////////////
    /// Default ///
    ///////////////
@@ -162,7 +192,8 @@ float muRelIso04DB(unsigned int muIdx){
 }
 
 float muRelIso03(unsigned int muIdx, analysis_t analysis){
-  if (analysis == SS) return muRelIso03EA(muIdx);
+  if (analysis == SS  ) return muRelIso03EA(muIdx);
+  if (analysis == ZMET) return muRelIso03EA(muIdx);
   return muRelIso03DB(muIdx);
 }
 
@@ -241,6 +272,9 @@ int muTightID(unsigned int muIdx, analysis_t analysis){
       if (muonID(muIdx, STOP_tight_v1)) return 1;
       if (muonID(muIdx, STOP_loose_v1)) return 0;
       break;
+    case (ZMET):
+      if (muonID(muIdx, ZMET_tight_v1)) return 1;
+      if (muonID(muIdx, ZMET_loose_v1)) return 0;
   }
   return -1;
 }

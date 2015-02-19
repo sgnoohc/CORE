@@ -6,6 +6,7 @@
 #include "MetSelections.h"
 #include "JetSelections.h"
 #include "VertexSelections.h"
+#include "TriggerSelections.h"
 #include "MCSelections.h"
 #include "IsolationTools.h"
 
