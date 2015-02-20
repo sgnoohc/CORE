@@ -61,11 +61,17 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
    /// HAD loose v1 ///
    ////////////////////
   
-    case(HAD_loose_v1):
+    case(HAD_loose_noiso_v1):
       if (!isLooseMuonPOG(muIdx)) return false;
       if (fabs(mus_dxyPV().at(muIdx)) > 0.5) return false;
       if (fabs(mus_dzPV().at(muIdx)) > 1.0) return false;
+      return true;
+      break;
+
+    case(HAD_loose_v1):
+      if (muonID(muIdx, HAD_loose_noiso_v1)==0) return false;
       if (muRelIso03(muIdx, analysis) >= 0.15) return false; 
+      return true;
       break;
 
    ///////////////////
@@ -126,9 +132,15 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
    /// HAD tight v1 ///
    ////////////////////
   
-    case(HAD_tight_v1):
+    case(HAD_tight_noiso_v1):
       if (!isTightMuonPOG(muIdx)) return false;
+      return true;
+      break;
+
+    case(HAD_tight_v1):
+      if (muonID(muIdx, HAD_tight_noiso_v1)==0) return false;
       if (muRelIso03(muIdx, analysis) >= 0.15) return false; 
+      return true;
       break;
 
    /////////////////////

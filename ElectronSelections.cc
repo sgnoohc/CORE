@@ -150,8 +150,28 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
    /// HAD veto v1 ////
    ////////////////////
 
+      // same as POG veto, except using sigmaIEtaIEta (not _full5x5)
+    case(HAD_veto_noiso_v1):
+      if (fabs(els_etaSC().at(elIdx)) <= 1.479){
+	if (fabs(els_dEtaIn().at(elIdx)) >= 0.007) return false; 
+	if (fabs(els_dPhiIn().at(elIdx)) >= 0.8) return false; 
+	if (els_sigmaIEtaIEta().at(elIdx) >= 0.01) return false; 
+	if (els_hOverE().at(elIdx) >= 0.15) return false; 
+	if (fabs(els_dxyPV().at(elIdx)) >= 0.04) return false;
+	if (fabs(els_dzPV().at(elIdx)) >= 0.2) return false; 
+      }
+      else if ((fabs(els_etaSC().at(elIdx)) > 1.479) && (fabs(els_etaSC().at(elIdx)) < 2.5)){
+	if (fabs(els_dEtaIn().at(elIdx)) >= 0.01) return false; 
+	if (fabs(els_dPhiIn().at(elIdx)) >= 0.7) return false; 
+	if (els_sigmaIEtaIEta().at(elIdx) >= 0.03) return false; 
+	if (fabs(els_dxyPV().at(elIdx)) >= 0.04) return false;
+	if (fabs(els_dzPV().at(elIdx)) >= 0.2) return false; 
+      }
+      return true;
+      break;
+
     case(HAD_veto_v1):
-      if (!isVetoElectronPOG(elIdx)) return false;
+      if (electronID(elIdx, HAD_veto_noiso_v1)==0) return false;
       if (eleRelIso03(elIdx, analysis) >= 0.15) return false; 
       return true;
       break;
@@ -213,16 +233,17 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
    /// HAD loose v1 ///
    ////////////////////
 
+    case(HAD_loose_noiso_v1):
     case(HAD_loose_v1):
       if (fabs(els_etaSC().at(elIdx)) <= 1.479){
-        if (els_sigmaIEtaIEta_full5x5().at(elIdx) >= 0.01) return false;
+        if (els_sigmaIEtaIEta().at(elIdx) >= 0.01) return false;
         if (fabs( (1.0/els_ecalEnergy().at(elIdx)) - (els_eOverPIn().at(elIdx)/els_ecalEnergy().at(elIdx)) ) >= 0.05) return false;
         if (els_hOverE().at(elIdx) >= 0.12) return false;
         if (fabs(els_dEtaIn().at(elIdx)) >= 0.007) return false;
         if (fabs(els_dPhiIn().at(elIdx)) >= 0.15) return false;
       }
       else if((fabs(els_etaSC().at(elIdx)) > 1.479) && (fabs(els_etaSC().at(elIdx)) < 2.5)){
-        if (els_sigmaIEtaIEta_full5x5().at(elIdx) >= 0.03) return false;
+        if (els_sigmaIEtaIEta().at(elIdx) >= 0.03) return false;
         if (fabs( (1.0/els_ecalEnergy().at(elIdx)) - (els_eOverPIn().at(elIdx)/els_ecalEnergy().at(elIdx)) ) >= 0.05) return false;
         if (els_hOverE().at(elIdx) >= 0.1) return false;
         if (fabs(els_dEtaIn().at(elIdx)) >= 0.009) return false;
@@ -245,18 +266,19 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
    /// HAD medium v1 ///
    /////////////////////
 
+    case(HAD_medium_noiso_v1):
     case(HAD_medium_v1):
       if (fabs(els_etaSC().at(elIdx)) <= 1.479){
         if (fabs(els_dEtaIn().at(elIdx)) >= 0.004) return false;
         if (fabs(els_dPhiIn().at(elIdx)) >= 0.06) return false; 
-        if (els_sigmaIEtaIEta_full5x5().at(elIdx) >= 0.01) return false; 
+        if (els_sigmaIEtaIEta().at(elIdx) >= 0.01) return false; 
         if (els_hOverE().at(elIdx) >= 0.12) return false; 
         if (fabs( (1.0/els_ecalEnergy().at(elIdx)) - (els_eOverPIn().at(elIdx)/els_ecalEnergy().at(elIdx)) ) >= 0.05) return false;
       }
       else if((fabs(els_etaSC().at(elIdx)) > 1.479) && (fabs(els_etaSC().at(elIdx)) < 2.5)){
         if (fabs(els_dEtaIn().at(elIdx)) >= 0.007) return false;
         if (fabs(els_dPhiIn().at(elIdx)) >= 0.03) return false; 
-        if (els_sigmaIEtaIEta_full5x5().at(elIdx) >= 0.03) return false; 
+        if (els_sigmaIEtaIEta().at(elIdx) >= 0.03) return false; 
         if (els_hOverE().at(elIdx) >= 0.1) return false; 
         if (fabs( (1.0/els_ecalEnergy().at(elIdx)) - (els_eOverPIn().at(elIdx)/els_ecalEnergy().at(elIdx)) ) >= 0.05) return false;
       }
@@ -310,23 +332,24 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
    /// HAD tight v1 ///
    ////////////////////
 
-  case(HAD_tight_v1):
-	if (fabs(els_etaSC().at(elIdx)) <= 1.479){
-	  if (fabs(els_dEtaIn().at(elIdx)) >= 0.004) return false;
-	  if (fabs(els_dPhiIn().at(elIdx)) >= 0.03) return false; 
-	  if (els_sigmaIEtaIEta_full5x5().at(elIdx) >= 0.01) return false; 
-	  if (els_hOverE().at(elIdx) >= 0.12) return false; 
-	  if (fabs((1.0/els_ecalEnergy().at(elIdx)) - (els_eOverPIn().at(elIdx)/els_ecalEnergy().at(elIdx)) ) >= 0.05) return false;
-	}
-	else if((fabs(els_etaSC().at(elIdx)) > 1.479) && (fabs(els_etaSC().at(elIdx)) < 2.5)){
-	  if (fabs(els_dEtaIn().at(elIdx)) >= 0.005) return false;
-	  if (fabs(els_dPhiIn().at(elIdx)) >= 0.02) return false; 
-	  if (els_sigmaIEtaIEta_full5x5().at(elIdx) >= 0.03) return false; 
-	  if (els_hOverE().at(elIdx) >= 0.1) return false; 
-	  if (fabs( (1.0/els_ecalEnergy().at(elIdx)) - (els_eOverPIn().at(elIdx)/els_ecalEnergy().at(elIdx)) ) >= 0.05) return false;
-	}
-	else return false;
-	break;
+    case(HAD_tight_noiso_v1):
+    case(HAD_tight_v1):
+      if (fabs(els_etaSC().at(elIdx)) <= 1.479){
+        if (fabs(els_dEtaIn().at(elIdx)) >= 0.004) return false;
+        if (fabs(els_dPhiIn().at(elIdx)) >= 0.03) return false; 
+        if (els_sigmaIEtaIEta().at(elIdx) >= 0.01) return false; 
+        if (els_hOverE().at(elIdx) >= 0.12) return false; 
+        if (fabs((1.0/els_ecalEnergy().at(elIdx)) - (els_eOverPIn().at(elIdx)/els_ecalEnergy().at(elIdx)) ) >= 0.05) return false;
+      }
+      else if((fabs(els_etaSC().at(elIdx)) > 1.479) && (fabs(els_etaSC().at(elIdx)) < 2.5)){
+        if (fabs(els_dEtaIn().at(elIdx)) >= 0.005) return false;
+        if (fabs(els_dPhiIn().at(elIdx)) >= 0.02) return false; 
+        if (els_sigmaIEtaIEta().at(elIdx) >= 0.03) return false; 
+        if (els_hOverE().at(elIdx) >= 0.1) return false; 
+        if (fabs( (1.0/els_ecalEnergy().at(elIdx)) - (els_eOverPIn().at(elIdx)/els_ecalEnergy().at(elIdx)) ) >= 0.05) return false;
+      }
+      else return false;
+      break;
 
 	/////////////////////
 	/// ZMET loose v1 ///
