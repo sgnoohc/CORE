@@ -149,57 +149,84 @@ bool isIsolatedLepton(int id, int idx){
 bool isGoodLepton(int id, int idx){
   return isGoodLeptonIso(id,idx);
 }
+
 bool isGoodLeptonNoIso(int id, int idx){
   if (abs(id) == 11) return isGoodElectronNoIso(idx);
   else if (abs(id) == 13) return isGoodMuonNoIso(idx);
   return false;
 }
-bool isGoodLeptonIso(int id, int idx) {
+
+bool isGoodLeptonIso(int id, int idx){
   if (isGoodLeptonNoIso(id,idx)==0) return false;
   if (isIsolatedLepton(id,idx)==0) return false;
   return true;
 }
-bool isGoodLeptonIsoOrPtRel(int id, int idx) {
+
+bool isGoodLeptonIsoOrPtRel(int id, int idx){
   if (isGoodLeptonNoIso(id,idx)==0) return false;
   if (isIsolatedLepton(id,idx)==0 && passPtRel(id,idx,ptRelCut,true)==0) return false;
+  return true;
+}
+
+bool isGoodLeptonPtRel(int id, int idx){
+  if (isGoodLeptonNoIso(id,idx)==0) return false;
+  if (passPtRel(id,idx,ptRelCut,true)==0) return false;
   return true;
 }
 
 bool isDenominatorLepton(int id, int idx){
   return isDenominatorLeptonIso(id,idx);
 }
+
 bool isDenominatorLeptonNoIso(int id, int idx){
   if (abs(id) == 11) return isFakableElectronNoIso(idx);
   else if (abs(id) == 13) return isFakableMuonNoIso(idx);
   else return false;
 }
+
 bool isDenominatorLeptonIso(int id, int idx){
   if (isDenominatorLeptonNoIso(id,idx)==0) return false;
   if (isLooseIsolatedLepton(id,idx)==0) return false;
   return true;
 }
+
 bool isDenominatorLeptonIsoOrPtRel(int id, int idx){
   if (isDenominatorLeptonNoIso(id,idx)==0) return false;
   if (isLooseIsolatedLepton(id,idx)==0 && passPtRel(id,idx,ptRelCut,true)==0) return false;
   return true;
 }
 
+bool isDenominatorLeptonPtRel(int id, int idx){
+  if (!isDenominatorLeptonNoIso(id,idx)) return false;
+  if (!passPtRel(id,idx,ptRelCut,true)) return false;
+  return true;
+}
+
 bool isVetoLepton(int id, int idx){
   return isVetoLeptonIso(id,idx);
 }
+
 bool isVetoLeptonNoIso(int id, int idx){
   if (abs(id) == 11) return isGoodVetoElectronNoIso(idx);
   else if (abs(id) == 13) return isGoodVetoMuonNoIso(idx);
   return false;
 }
-bool isVetoLeptonIso(int id, int idx) {
+
+bool isVetoLeptonIso(int id, int idx){
   if (isVetoLeptonNoIso(id,idx)==0) return false;
   if (isLooseIsolatedLepton(id,idx)==0) return false;
   return true;
 }
-bool isVetoLeptonIsoOrPtRel(int id, int idx) {
+
+bool isVetoLeptonIsoOrPtRel(int id, int idx){
   if (isVetoLeptonNoIso(id,idx)==0) return false;
   if (isLooseIsolatedLepton(id,idx)==0 && passPtRel(id,idx,ptRelCut,true)==0) return false;
+  return true;
+}
+
+bool isVetoLeptonPtRel(int id, int idx){
+  if (!isVetoLeptonNoIso(id,idx)) return false;
+  if (!passPtRel(id,idx,ptRelCut,true)) return false;
   return true;
 }
 
@@ -442,10 +469,9 @@ int lepMotherID(Lep lep){
   return 0;
 }
 
-int isGoodHyp(int iHyp, int analType, bool verbose){
+int isGoodHyp(int iHyp, bool usePtRel, bool verbose){
 
   //Bunch o' variables
-  //bool isData = tas::evt_isRealData();
   float pt_ll = tas::hyp_ll_p4().at(iHyp).pt(); 
   float pt_lt = tas::hyp_lt_p4().at(iHyp).pt(); 
   float eta_ll = tas::hyp_ll_p4().at(iHyp).eta();
@@ -456,10 +482,10 @@ int isGoodHyp(int iHyp, int analType, bool verbose){
   int id_lt = tas::hyp_lt_id().at(iHyp);
   bool isss = false;
   if (sgn(id_ll) == sgn(id_lt)) isss = true;  
-  bool passed_id_numer_ll = isGoodLepton(id_ll, idx_ll);
-  bool passed_id_numer_lt = isGoodLepton(id_lt, idx_lt);
-  bool passed_id_denom_ll = isDenominatorLepton(id_ll, idx_ll);
-  bool passed_id_denom_lt = isDenominatorLepton(id_lt, idx_lt);
+  bool passed_id_numer_ll = usePtRel ? isGoodLeptonPtRel(id_ll, idx_ll) : isGoodLeptonIso(id_ll, idx_ll);
+  bool passed_id_numer_lt = usePtRel ? isGoodLeptonPtRel(id_lt, idx_lt) : isGoodLeptonIso(id_lt, idx_lt);
+  bool passed_id_denom_ll = usePtRel ? isDenominatorLeptonPtRel(id_ll, idx_ll) : isDenominatorLeptonIso(id_ll, idx_ll);
+  bool passed_id_denom_lt = usePtRel ? isDenominatorLeptonPtRel(id_lt, idx_lt) : isDenominatorLeptonIso(id_lt, idx_lt);
   bool extraZ = makesExtraZ(iHyp);
   bool extraGammaStar = makesExtraGammaStar(iHyp);
 
@@ -472,29 +498,25 @@ int isGoodHyp(int iHyp, int analType, bool verbose){
     cout << "   invt mass: " << (tas::hyp_ll_p4().at(iHyp) + tas::hyp_lt_p4().at(iHyp)).M() << endl;
     cout << "   passes eta: " << (fabs(eta_ll) < 2.4 && fabs(eta_lt) < 2.4) << " etas are " << eta_ll << " and " << eta_lt << endl;
     cout << "   passes hypsFromFirstGoodVertex: " << hypsFromFirstGoodVertex(iHyp) << endl;
-    //cout << "   passes triggers: " << passesTriggerVeryLowPt(tas::hyp_type().at(iHyp)) << endl; 
     cout << "   lepton with pT " << pt_ll << " passes id: " << passed_id_numer_ll << endl;
     cout << "   lepton with pT " << pt_lt << " passes id: " << passed_id_numer_lt << endl;
     if (abs(id_ll) == 11) cout << "   lepton with pT " << pt_ll << " passes 3chg: " << threeChargeAgree(idx_ll) << endl;
     if (abs(id_lt) == 11) cout << "   lepton with pT " << pt_lt << " passes 3chg: " << threeChargeAgree(idx_lt) << endl;
   }
 
-  //Cuts:
-  if (analType == 0 && pt_ll < ptCutHigh) return 0;
-  else if (analType == 1 && pt_ll < ptCutLow) return 0;
-  else if (analType == 2 && abs(id_ll) == 11 && pt_ll < 7) return 0;
-  else if (analType == 2 && abs(id_ll) == 13 && pt_ll < 5) return 0;
-  if (analType == 0 && pt_lt < ptCutHigh) return 0;
-  else if (analType == 1 && pt_lt < ptCutLow) return 0;
-  else if (analType == 2 && abs(id_lt) == 11 && pt_lt < 7) return 0;
-  else if (analType == 2 && abs(id_lt) == 13 && pt_lt < 5) return 0;
+  //Other Cuts
+  if      (abs(id_ll) == 11 && pt_ll < 7) return 0;
+  else if (abs(id_ll) == 13 && pt_ll < 5) return 0;
+  if      (abs(id_lt) == 11 && pt_lt < 7) return 0;
+  else if (abs(id_lt) == 13 && pt_lt < 5) return 0;
   if (fabs(eta_ll) > 2.4) return 0;
   if (fabs(eta_lt) > 2.4) return 0;
+
+  //Other cuts
   if (extraZ) return 0;
   if (extraGammaStar) return 0;
   if ((tas::hyp_ll_p4().at(iHyp) + tas::hyp_lt_p4().at(iHyp)).M() < 8) return 0; 
   if (!hypsFromFirstGoodVertex(iHyp)) return 0;
-  //if (isData == true && passesTriggerVeryLowPt(tas::hyp_type().at(iHyp)) == 0) return 0;
 
   //Results
   if (passed_id_numer_ll == 0 && passed_id_denom_ll == 0) return 0; // 0 if ll fails denom
@@ -506,7 +528,7 @@ int isGoodHyp(int iHyp, int analType, bool verbose){
   else return 0; //non-highpass OS
 }
 
-hyp_result_t chooseBestHyp(bool verbose){
+hyp_result_t chooseBestHyp(bool usePtRel, bool verbose){
 
   //List of good hyps
   vector <int> good_hyps_ss; //same sign, tight tight
@@ -514,7 +536,7 @@ hyp_result_t chooseBestHyp(bool verbose){
   vector <int> good_hyps_df; //same sign, double fail
   vector <int> good_hyps_os; //opposite sign, tight tight
   for (unsigned int i = 0; i < tas::hyp_type().size(); i++){
-    int good_hyp_result = isGoodHyp(i, 1, verbose);
+    int good_hyp_result = isGoodHyp(i, usePtRel, verbose);
     if (good_hyp_result == 3) good_hyps_ss.push_back(i); 
     if (good_hyp_result == 2) good_hyps_sf.push_back(i); 
     else if (good_hyp_result == 1) good_hyps_df.push_back(i); 
