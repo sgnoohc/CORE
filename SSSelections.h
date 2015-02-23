@@ -36,9 +36,9 @@ template <typename T> int sgn(T val){
 }
 
 //Main Object selections
-bool isGoodLepton(int id, int idx);
-bool isDenominatorLepton(int id, int idx);
-bool isVetoLepton(int id, int idx);
+bool isGoodLepton(int id, int idx, bool usePtRel);
+bool isDenominatorLepton(int id, int idx, bool usePtRel);
+bool isVetoLepton(int id, int idx, bool usePtRel);
 
 //Hyp selections
 bool makesExtraGammaStar(int iHyp);
@@ -62,15 +62,12 @@ float computeLD(DilepHyp hyp, vector<Jet> alljets, float met, float minmt);
 bool isGoodLeptonNoIso(int id, int idx);
 bool isGoodLeptonIso(int id, int idx);
 bool isGoodLeptonIsoOrPtRel(int id, int idx);
-bool isGoodLeptonPtRel(int id, int idx);
 bool isDenominatorLeptonNoIso(int id, int idx);
 bool isDenominatorLeptonIso(int id, int idx);
 bool isDenominatorLeptonIsoOrPtRel(int id, int idx);
-bool isDenominatorLeptonPtRel(int id, int idx);
 bool isVetoLeptonNoIso(int id, int idx);
 bool isVetoLeptonIso(int id, int idx);
 bool isVetoLeptonIsoOrPtRel(int id, int idx);
-bool isVetoLeptonPtRel(int id, int idx);
 bool isGoodVetoElectronNoIso(unsigned int elidx);
 bool isGoodVetoElectron(unsigned int elidx);
 bool isFakableElectronNoIso(unsigned int elidx);

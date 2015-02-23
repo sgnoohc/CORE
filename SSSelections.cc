@@ -146,8 +146,9 @@ bool isIsolatedLepton(int id, int idx){
   return false;
 }
 
-bool isGoodLepton(int id, int idx){
-  return isGoodLeptonIso(id,idx);
+bool isGoodLepton(int id, int idx, bool usePtRel){
+  if (usePtRel) return isGoodLeptonIsoOrPtRel(id,idx);
+  else return isGoodLeptonIso(id,idx);
 }
 
 bool isGoodLeptonNoIso(int id, int idx){
@@ -168,14 +169,9 @@ bool isGoodLeptonIsoOrPtRel(int id, int idx){
   return true;
 }
 
-bool isGoodLeptonPtRel(int id, int idx){
-  if (isGoodLeptonNoIso(id,idx)==0) return false;
-  if (passPtRel(id,idx,ptRelCut,true)==0) return false;
-  return true;
-}
-
-bool isDenominatorLepton(int id, int idx){
-  return isDenominatorLeptonIso(id,idx);
+bool isDenominatorLepton(int id, int idx, bool usePtRel){
+  if (usePtRel) return isDenominatorLeptonIsoOrPtRel(id,idx);
+  else return isDenominatorLeptonIso(id,idx);
 }
 
 bool isDenominatorLeptonNoIso(int id, int idx){
@@ -196,14 +192,9 @@ bool isDenominatorLeptonIsoOrPtRel(int id, int idx){
   return true;
 }
 
-bool isDenominatorLeptonPtRel(int id, int idx){
-  if (!isDenominatorLeptonNoIso(id,idx)) return false;
-  if (!passPtRel(id,idx,ptRelCut,true)) return false;
-  return true;
-}
-
-bool isVetoLepton(int id, int idx){
-  return isVetoLeptonIso(id,idx);
+bool isVetoLepton(int id, int idx, bool usePtRel){
+  if (usePtRel) return isVetoLeptonIsoOrPtRel(id,idx);
+  else return isVetoLeptonIso(id,idx);
 }
 
 bool isVetoLeptonNoIso(int id, int idx){
@@ -221,12 +212,6 @@ bool isVetoLeptonIso(int id, int idx){
 bool isVetoLeptonIsoOrPtRel(int id, int idx){
   if (isVetoLeptonNoIso(id,idx)==0) return false;
   if (isLooseIsolatedLepton(id,idx)==0 && passPtRel(id,idx,ptRelCut,true)==0) return false;
-  return true;
-}
-
-bool isVetoLeptonPtRel(int id, int idx){
-  if (!isVetoLeptonNoIso(id,idx)) return false;
-  if (!passPtRel(id,idx,ptRelCut,true)) return false;
   return true;
 }
 
@@ -482,10 +467,10 @@ int isGoodHyp(int iHyp, bool usePtRel, bool verbose){
   int id_lt = tas::hyp_lt_id().at(iHyp);
   bool isss = false;
   if (sgn(id_ll) == sgn(id_lt)) isss = true;  
-  bool passed_id_numer_ll = usePtRel ? isGoodLeptonPtRel(id_ll, idx_ll) : isGoodLeptonIso(id_ll, idx_ll);
-  bool passed_id_numer_lt = usePtRel ? isGoodLeptonPtRel(id_lt, idx_lt) : isGoodLeptonIso(id_lt, idx_lt);
-  bool passed_id_denom_ll = usePtRel ? isDenominatorLeptonPtRel(id_ll, idx_ll) : isDenominatorLeptonIso(id_ll, idx_ll);
-  bool passed_id_denom_lt = usePtRel ? isDenominatorLeptonPtRel(id_lt, idx_lt) : isDenominatorLeptonIso(id_lt, idx_lt);
+  bool passed_id_numer_ll = isGoodLepton(id_ll, idx_ll, usePtRel);
+  bool passed_id_numer_lt = isGoodLepton(id_lt, idx_lt, usePtRel);
+  bool passed_id_denom_ll = isDenominatorLepton(id_ll, idx_ll, usePtRel);
+  bool passed_id_denom_lt = isDenominatorLepton(id_lt, idx_lt, usePtRel);
   bool extraZ = makesExtraZ(iHyp);
   bool extraGammaStar = makesExtraGammaStar(iHyp);
 
