@@ -13,6 +13,7 @@
 const static float ptCutHigh = 25.;
 const static float ptCutLow = 10.;
 const static float ptRelCut = 14.;
+const static float ptRelCutLoose = 6.;
 
 //Enums
 enum anal_type_t { HighHigh = 0, HighLow = 1, LowLow = 2 };
@@ -83,6 +84,7 @@ bool isGoodMuon(unsigned int muidx);
 bool isIsolatedLepton(int id, int idx);
 bool isLooseIsolatedLepton(int id, int idx);
 bool passPtRel(int id, int idx, float cut, bool subtractLep);
+float getPtRel(int id, int idx, bool subtractLep);
 
 //MC truth functions
 int lepMotherID(Lep lep);

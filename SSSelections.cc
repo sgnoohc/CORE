@@ -188,7 +188,7 @@ bool isDenominatorLeptonIso(int id, int idx){
 
 bool isDenominatorLeptonIsoOrPtRel(int id, int idx){
   if (isDenominatorLeptonNoIso(id,idx)==0) return false;
-  if (isLooseIsolatedLepton(id,idx)==0 && passPtRel(id,idx,ptRelCut,true)==0) return false;
+  if (isLooseIsolatedLepton(id,idx)==0 && passPtRel(id,idx,ptRelCutLoose,true)==0) return false;
   return true;
 }
 
@@ -216,6 +216,10 @@ bool isVetoLeptonIsoOrPtRel(int id, int idx){
 }
 
 bool passPtRel(int id, int idx, float cut, bool subtractLep) {
+  return getPtRel(id, idx, subtractLep) > cut;
+}
+
+float getPtRel(int id, int idx, bool subtractLep) {
   vector<LorentzVector> jetp4s;
   for (unsigned int pfjidx=0;pfjidx<pfjets_p4().size();++pfjidx) {
     Jet jet(pfjidx);
@@ -224,7 +228,7 @@ bool passPtRel(int id, int idx, float cut, bool subtractLep) {
     jetp4s.push_back(jet.p4());
   }
   Lep lep = Lep(id,idx);
-  return ptRel(lep.p4(), jetp4s, subtractLep) > cut;
+  return ptRel(lep.p4(), jetp4s, subtractLep);
 }
 
 bool hypsFromFirstGoodVertex(size_t hypIdx, float dz_cut){
