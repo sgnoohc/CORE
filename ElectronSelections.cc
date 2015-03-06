@@ -670,42 +670,61 @@ float eleRelIso03EA(unsigned int elIdx){
   return absiso/(els_p4().at(elIdx).pt());
 }
 
-float elRelIsoCustomCone(unsigned int elIdx, float dr, float deltaZCut){
+float elRelIsoCustomCone(unsigned int elIdx, float dr, float deltaZCut, bool useVetoCones){
   float chiso     = 0.;
   float nhiso     = 0.;
   float emiso     = 0.;
+  float deadcone_ch = 0.;
+  float deadcone_ph = 0.;
+  // veto cones only in the endcap for electrons
+  if (useVetoCones && fabs(els_p4().at(elIdx).eta()) > 1.479) {
+    deadcone_ch = 0.015;
+    deadcone_ph = 0.08;
+  }
   for (unsigned int i=0; i<pfcands_particleId().size(); ++i){
-    if ( fabs(ROOT::Math::VectorUtil::DeltaR(pfcands_p4().at(i),els_p4().at(elIdx)))>dr ) continue;  
-    if ( fabs(pfcands_particleId().at(i))==211 && fabs(pfcands_dz().at(i)) < deltaZCut ) chiso+=pfcands_p4().at(i).pt();
+    float thisDR = fabs(ROOT::Math::VectorUtil::DeltaR(pfcands_p4().at(i),els_p4().at(elIdx)));
+    if ( thisDR>dr ) continue;  
+    if ( fabs(pfcands_particleId().at(i))==211 && fabs(pfcands_dz().at(i)) < deltaZCut && (!useVetoCones || thisDR > deadcone_ch) ) chiso+=pfcands_p4().at(i).pt();
     if ( fabs(pfcands_particleId().at(i))==130 ) nhiso+=pfcands_p4().at(i).pt();
-    if ( fabs(pfcands_particleId().at(i))==22  ) emiso+=pfcands_p4().at(i).pt();
+    if ( fabs(pfcands_particleId().at(i))==22 && (!useVetoCones || thisDR > deadcone_ph) ) emiso+=pfcands_p4().at(i).pt();
   }
   float absiso = chiso + std::max(float(0.0), nhiso + emiso);
   return absiso/(els_p4().at(elIdx).pt());
 }
-float elRelIsoCustomConeDB(unsigned int elIdx, float dr, float deltaZCut){
+float elRelIsoCustomConeDB(unsigned int elIdx, float dr, float deltaZCut, bool useVetoCones){
   float chiso     = 0.;
   float nhiso     = 0.;
   float emiso     = 0.;
   float deltaBeta = 0.;
+  float deadcone_ch = 0.;
+  float deadcone_pu = 0.;
+  float deadcone_ph = 0.;
+  // veto cones only in the endcap for electrons
+  if (useVetoCones && fabs(els_p4().at(elIdx).eta()) > 1.479) {
+    deadcone_ch = 0.015;
+    deadcone_pu = 0.015;
+    deadcone_ph = 0.08;
+  }
   for (unsigned int i=0; i<pfcands_particleId().size(); ++i){
-    if ( fabs(ROOT::Math::VectorUtil::DeltaR(pfcands_p4().at(i),els_p4().at(elIdx)))>dr ) continue;  
+    float thisDR = fabs(ROOT::Math::VectorUtil::DeltaR(pfcands_p4().at(i),els_p4().at(elIdx)));
+    if ( thisDR>dr ) continue;  
     if ( fabs(pfcands_particleId().at(i))==211 ) {
-      if (fabs(pfcands_dz().at(i)) < deltaZCut) chiso+=pfcands_p4().at(i).pt();
-      else deltaBeta+=pfcands_p4().at(i).pt();
+      if (fabs(pfcands_dz().at(i)) < deltaZCut && (!useVetoCones || thisDR > deadcone_ch) ) chiso+=pfcands_p4().at(i).pt();
+      else if (!useVetoCones || thisDR > deadcone_pu) deltaBeta+=pfcands_p4().at(i).pt();
     }
     if ( fabs(pfcands_particleId().at(i))==130 ) nhiso+=pfcands_p4().at(i).pt();
-    if ( fabs(pfcands_particleId().at(i))==22  ) emiso+=pfcands_p4().at(i).pt();
+    if ( fabs(pfcands_particleId().at(i))==22 && (!useVetoCones || thisDR > deadcone_ph) ) emiso+=pfcands_p4().at(i).pt();
   }
   float absiso = chiso + std::max(0.0, nhiso + emiso - 0.5 * deltaBeta);
   return absiso/(els_p4().at(elIdx).pt());
 }
-float elMiniRelIso(unsigned int idx, float deltaZCut){
+float elMiniRelIso(unsigned int idx, float deltaZCut, bool useVetoCones, bool useDBcor){
   float pt = els_p4().at(idx).pt();
   float dr = 0.2;
   if (pt>50) dr = 10./pt;
   if (pt>200) dr = 0.05;
-  return elRelIsoCustomCone(idx,dr,deltaZCut);
+  if (useDBcor) return elRelIsoCustomConeDB(idx,dr,deltaZCut,useVetoCones);
+  else return elRelIsoCustomCone(idx,dr,deltaZCut,useVetoCones);
 }
 
 int eleTightID(unsigned int elIdx, analysis_t analysis){
