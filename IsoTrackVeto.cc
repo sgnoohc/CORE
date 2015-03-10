@@ -12,7 +12,7 @@ float TrackIso(int thisPf, float coneR, float deltaZCut){
     if(cms3.pfcands_charge().at(ipf) == 0 ) continue; // skip neutrals
     double dr=ROOT::Math::VectorUtil::DeltaR( cms3.pfcands_p4().at(ipf) , cms3.pfcands_p4().at(thisPf) );
     if( dr > coneR ) continue; // skip pfcands outside the cone                                     
-    if( cms3.pfcands_p4().at(ipf).pt()>=0.0 && fabs(cms3.pfcands_dz().at(ipf)) <= deltaZCut) absIso += cms3.pfcands_p4().at(ipf).pt();
+    if( cms3.pfcands_p4().at(ipf).pt()>=0.0 && fabs(cms3.pfcands_dz().at(ipf)) < deltaZCut) absIso += cms3.pfcands_p4().at(ipf).pt();
 
   }
 
@@ -45,7 +45,7 @@ PFCandIsoResults PFCandPFIso(int thisPf, float coneR, float deltaZCut) {
     float pt = cms3.pfcands_p4().at(ipf).pt();
     int particleId = cms3.pfcands_particleId().at(ipf);
     if( abs(particleId) == 211 && pt>=0.0 ) {
-      if (fabs(cms3.pfcands_dz().at(ipf)) <= deltaZCut) res.chiso += pt;
+      if (fabs(cms3.pfcands_dz().at(ipf)) < deltaZCut) res.chiso += pt;
       else res.PUpt += pt;
     }
     else if (abs(particleId) == 130) res.nhiso += pt;
