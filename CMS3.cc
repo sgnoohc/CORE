@@ -5,6 +5,7 @@ namespace tas {
 	const vector<TString> &evt_CMS2tag() { return cms3.evt_CMS2tag(); }
 	const vector<TString> &evt_dataset() { return cms3.evt_dataset(); }
 	const vector<TString> &hlt_trigNames() { return cms3.hlt_trigNames(); }
+	const vector<TString> &taus_pf_IDnames() { return cms3.taus_pf_IDnames(); }
 	const vector<TString> &sparm_comment() { return cms3.sparm_comment(); }
 	const vector<TString> &sparm_names() { return cms3.sparm_names(); }
 	const bool &hcalnoise_HasBadRBXTS4TS5() { return cms3.hcalnoise_HasBadRBXTS4TS5(); }
@@ -580,6 +581,7 @@ namespace tas {
 	const vector<vector<float> > &mus_stationShowerSizeT() { return cms3.mus_stationShowerSizeT(); }
 	const vector<vector<float> > &puInfo_instLumi() { return cms3.puInfo_instLumi(); }
 	const vector<vector<float> > &vtxs_covMatrix() { return cms3.vtxs_covMatrix(); }
+	const vector<vector<float> > &taus_pf_IDs() { return cms3.taus_pf_IDs(); }
 	const int &evt_bsType() { return cms3.evt_bsType(); }
 	const int &evt_bunchCrossing() { return cms3.evt_bunchCrossing(); }
 	const int &evt_experimentType() { return cms3.evt_experimentType(); }
@@ -868,4 +870,5 @@ namespace tas {
 	const int &evt_nEvts() { return cms3.evt_nEvts(); }
 	const float &evt_filt_eff() { return cms3.evt_filt_eff(); }
 	bool passHLTTrigger(TString trigName) { return cms3.passHLTTrigger(trigName); }
+        bool passTauID(TString idName, u_int tauIndx) { return cms3.passTauID(idName, tauIndx); }
 }

@@ -29,6 +29,9 @@ protected:
 	vector<TString> hlt_trigNames_;
 	TBranch *hlt_trigNames_branch;
 	bool hlt_trigNames_isLoaded;
+	vector<TString> taus_pf_IDnames_;
+	TBranch *taus_pf_IDnames_branch;
+	bool taus_pf_IDnames_isLoaded;
 	vector<TString> sparm_comment_;
 	TBranch *sparm_comment_branch;
 	bool sparm_comment_isLoaded;
@@ -1754,6 +1757,9 @@ protected:
 	vector<vector<float> > vtxs_covMatrix_;
 	TBranch *vtxs_covMatrix_branch;
 	bool vtxs_covMatrix_isLoaded;
+	vector<vector<float> > taus_pf_IDs_;
+	TBranch *taus_pf_IDs_branch;
+	bool taus_pf_IDs_isLoaded;
 	int evt_bsType_;
 	TBranch *evt_bsType_branch;
 	bool evt_bsType_isLoaded;
@@ -2857,6 +2863,11 @@ void Init(TTree *tree) {
 	if (tree->GetAlias("hlt_trigNames") != 0) {
 		hlt_trigNames_branch = tree->GetBranch(tree->GetAlias("hlt_trigNames"));
 		if (hlt_trigNames_branch) {hlt_trigNames_branch->SetAddress(&hlt_trigNames_);}
+	}
+	taus_pf_IDnames_branch = 0;
+	if (tree->GetAlias("taus_pf_IDnames") != 0) {
+		taus_pf_IDnames_branch = tree->GetBranch(tree->GetAlias("taus_pf_IDnames"));
+		if (taus_pf_IDnames_branch) {taus_pf_IDnames_branch->SetAddress(&taus_pf_IDnames_);}
 	}
 	sparm_comment_branch = 0;
 	if (tree->GetAlias("sparm_comment") != 0) {
@@ -5513,6 +5524,11 @@ void Init(TTree *tree) {
 		vtxs_covMatrix_branch = tree->GetBranch(tree->GetAlias("vtxs_covMatrix"));
 		if (vtxs_covMatrix_branch) {vtxs_covMatrix_branch->SetAddress(&vtxs_covMatrix_);}
 	}
+	taus_pf_IDs_branch = 0;
+	if (tree->GetAlias("taus_pf_IDs") != 0) {
+		taus_pf_IDs_branch = tree->GetBranch(tree->GetAlias("taus_pf_IDs"));
+		if (taus_pf_IDs_branch) {taus_pf_IDs_branch->SetAddress(&taus_pf_IDs_);}
+	}
 	evt_bsType_branch = 0;
 	if (tree->GetAlias("evt_bsType") != 0) {
 		evt_bsType_branch = tree->GetBranch(tree->GetAlias("evt_bsType"));
@@ -6958,6 +6974,7 @@ void GetEntry(unsigned int idx)
 		evt_CMS2tag_isLoaded = false;
 		evt_dataset_isLoaded = false;
 		hlt_trigNames_isLoaded = false;
+		taus_pf_IDnames_isLoaded = false;
 		sparm_comment_isLoaded = false;
 		sparm_names_isLoaded = false;
 		hcalnoise_HasBadRBXTS4TS5_isLoaded = false;
@@ -7533,6 +7550,7 @@ void GetEntry(unsigned int idx)
 		mus_stationShowerSizeT_isLoaded = false;
 		puInfo_instLumi_isLoaded = false;
 		vtxs_covMatrix_isLoaded = false;
+		taus_pf_IDs_isLoaded = false;
 		evt_bsType_isLoaded = false;
 		evt_bunchCrossing_isLoaded = false;
 		evt_experimentType_isLoaded = false;
@@ -7829,6 +7847,7 @@ void LoadAllBranches()
 	if (evt_CMS2tag_branch != 0) evt_CMS2tag();
 	if (evt_dataset_branch != 0) evt_dataset();
 	if (hlt_trigNames_branch != 0) hlt_trigNames();
+	if (taus_pf_IDnames_branch != 0) taus_pf_IDnames();
 	if (sparm_comment_branch != 0) sparm_comment();
 	if (sparm_names_branch != 0) sparm_names();
 	if (hcalnoise_HasBadRBXTS4TS5_branch != 0) hcalnoise_HasBadRBXTS4TS5();
@@ -8404,6 +8423,7 @@ void LoadAllBranches()
 	if (mus_stationShowerSizeT_branch != 0) mus_stationShowerSizeT();
 	if (puInfo_instLumi_branch != 0) puInfo_instLumi();
 	if (vtxs_covMatrix_branch != 0) vtxs_covMatrix();
+	if (taus_pf_IDs_branch != 0) taus_pf_IDs();
 	if (evt_bsType_branch != 0) evt_bsType();
 	if (evt_bunchCrossing_branch != 0) evt_bunchCrossing();
 	if (evt_experimentType_branch != 0) evt_experimentType();
@@ -8744,6 +8764,19 @@ void LoadAllBranches()
 			hlt_trigNames_isLoaded = true;
 		}
 		return hlt_trigNames_;
+	}
+	const vector<TString> &taus_pf_IDnames()
+	{
+		if (not taus_pf_IDnames_isLoaded) {
+			if (taus_pf_IDnames_branch != 0) {
+				taus_pf_IDnames_branch->GetEntry(index);
+			} else { 
+				printf("branch taus_pf_IDnames_branch does not exist!\n");
+				exit(1);
+			}
+			taus_pf_IDnames_isLoaded = true;
+		}
+		return taus_pf_IDnames_;
 	}
 	const vector<TString> &sparm_comment()
 	{
@@ -16220,6 +16253,19 @@ void LoadAllBranches()
 		}
 		return vtxs_covMatrix_;
 	}
+	const vector<vector<float> > &taus_pf_IDs()
+	{
+		if (not taus_pf_IDs_isLoaded) {
+			if (taus_pf_IDs_branch != 0) {
+				taus_pf_IDs_branch->GetEntry(index);
+			} else { 
+				printf("branch taus_pf_IDs_branch does not exist!\n");
+				exit(1);
+			}
+			taus_pf_IDs_isLoaded = true;
+		}
+		return taus_pf_IDs_;
+	}
 	int &evt_bsType()
 	{
 		if (not evt_bsType_isLoaded) {
@@ -19965,6 +20011,24 @@ void LoadAllBranches()
 
 	return hlt_bits().TestBitNumber(trigIndx);
 	}
+        float passTauID(TString idName, u_int tauIndx) {
+		int idIndx;
+		vector<TString>::const_iterator begin_it = taus_pf_IDnames().begin();
+		vector<TString>::const_iterator end_it = taus_pf_IDnames().end();
+		vector<TString>::const_iterator found_it = find(begin_it, end_it, idName);
+		if(found_it != end_it)
+			idIndx = found_it - begin_it;
+		else {
+			cout << "Cannot find tau ID " << idName << endl; 
+			return 0;
+		}
+		if (tauIndx < taus_pf_IDs().size()) 
+		  return taus_pf_IDs().at(tauIndx).at(idIndx);
+		else {
+		  cout << "Cannot find tau # "<< tauIndx << endl;
+		  return 0;
+		}
+	}
 
   static void progress( int nEventsTotal, int nEventsChain ){
     int period = 1000;
@@ -19997,6 +20061,7 @@ namespace tas {
 	const vector<TString> &evt_CMS2tag();
 	const vector<TString> &evt_dataset();
 	const vector<TString> &hlt_trigNames();
+	const vector<TString> &taus_pf_IDnames();
 	const vector<TString> &sparm_comment();
 	const vector<TString> &sparm_names();
 	const bool &hcalnoise_HasBadRBXTS4TS5();
@@ -20572,6 +20637,7 @@ namespace tas {
 	const vector<vector<float> > &mus_stationShowerSizeT();
 	const vector<vector<float> > &puInfo_instLumi();
 	const vector<vector<float> > &vtxs_covMatrix();
+        const vector<vector<float> > &taus_pf_IDs();
 	const int &evt_bsType();
 	const int &evt_bunchCrossing();
 	const int &evt_experimentType();
