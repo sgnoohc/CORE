@@ -20011,7 +20011,7 @@ void LoadAllBranches()
 
 	return hlt_bits().TestBitNumber(trigIndx);
 	}
-        float passTauID(TString idName, u_int tauIndx) {
+        float passTauID(TString idName, unsigned int tauIndx) {
 		int idIndx;
 		vector<TString>::const_iterator begin_it = taus_pf_IDnames().begin();
 		vector<TString>::const_iterator end_it = taus_pf_IDnames().end();
