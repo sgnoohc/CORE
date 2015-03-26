@@ -870,5 +870,5 @@ namespace tas {
 	const int &evt_nEvts() { return cms3.evt_nEvts(); }
 	const float &evt_filt_eff() { return cms3.evt_filt_eff(); }
 	bool passHLTTrigger(TString trigName) { return cms3.passHLTTrigger(trigName); }
-        bool passTauID(TString idName, unsigned int tauIndx) { return cms3.passTauID(idName, tauIndx); }
+        float passTauID(TString idName, unsigned int tauIndx) { return cms3.passTauID(idName, tauIndx); }
 }

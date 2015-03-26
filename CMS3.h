@@ -20926,5 +20926,6 @@ namespace tas {
 	const int &evt_nEvts();
 	const float &evt_filt_eff();
 	bool passHLTTrigger(TString trigName);
+        float passTauID(TString idName, unsigned int tauIndx);
 }
 #endif
