@@ -9,6 +9,9 @@
 #include "TriggerSelections.h"
 #include "MCSelections.h"
 #include "IsolationTools.h"
+#include "Math/VectorUtil.h"
+#include "TMVA/Reader.h"
+#include "TMVA/Config.h"
 
 const static float ptCutHigh = 25.;
 const static float ptCutLow = 10.;
@@ -153,6 +156,44 @@ struct Jet {
   int idx() {return idx_;}
 private:
   int idx_;
+};
+
+class readMVA {
+  public:
+    void InitMVA();
+    float MVA(unsigned int index); 
+
+  private:
+    //the readers
+    vector <TMVA::Reader*> readers;
+  
+    //the list of BDT files
+    vector <string> files;
+    
+    //the variables
+    float ele_kfhits_;         
+    float ele_oldsigmaietaieta_;
+    float ele_oldsigmaiphiiphi_;
+    float ele_oldcircularity_; 
+    float ele_oldr9_;          
+    float ele_scletawidth_;    
+    float ele_sclphiwidth_;    
+    float ele_he_;             
+    float ele_kfchi2_;         
+    float ele_chi2_hits_;      
+    float ele_fbrem_;          
+    float ele_ep_;             
+    float ele_eelepout_;       
+    float ele_IoEmIop_;        
+    float ele_deltaetain_;     
+    float ele_deltaphiin_;     
+    float ele_deltaetaseed_;   
+    float ele_psEoverEraw_;    
+    float ele_pT_;             
+    float ele_isbarrel_;       
+    float ele_isendcap_;       
+    float scl_eta_;            
+
 };
 
 #endif
