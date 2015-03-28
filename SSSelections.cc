@@ -868,3 +868,28 @@ float readMVA::MVA(unsigned int index){
   return disc;
 
 }
+
+float readMVA::getEta(unsigned int index){
+  return scl_eta_;
+}
+
+float readMVA::getPt(unsigned int index){
+  return ele_pT_;
+}
+
+bool passesElectronMVAid(readMVA readMVA, unsigned int index, bool isTight){
+  float disc = readMVA.MVA(index); 
+  float aeta = fabs(readMVA.getEta(index));   
+  if (readMVA.getPt(index) < 10){
+    cout << "Warning: MVA id not enabled for pT < 10" << endl;
+    return false;
+  }
+  if (isTight && aeta < 0.8) return disc > 0.73;
+  if (!isTight && aeta < 0.8) return disc > 0.35;
+  if (isTight && (aeta >= 0.8 && aeta <= 1.479)) return disc > 0.57;
+  if (!isTight && (aeta >= 0.8 && aeta <= 1.479)) return disc > 0.20;
+  if (isTight && aeta > 1.479) return disc > 0.05;
+  if (!isTight && aeta > 1.479) return disc > -0.52;
+  return -99999;
+
+}
