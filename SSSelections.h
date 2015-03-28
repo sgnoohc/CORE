@@ -160,7 +160,7 @@ private:
 
 class readMVA {
   public:
-    void InitMVA();
+    void InitMVA(string path);
     float MVA(unsigned int index); 
 
   private:

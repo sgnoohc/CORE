@@ -757,7 +757,7 @@ bool lepsort (Lep i,Lep j) {
 
 bool jetptsort (Jet i,Jet j) { return (i.pt()>j.pt()); }
 
-void readMVA::InitMVA(){
+void readMVA::InitMVA(string path){
 
   //Declare all variables
   ele_kfhits_           = 0;  
@@ -794,9 +794,10 @@ void readMVA::InitMVA(){
   //Shut the hell up
   TMVA::gConfig().SetSilent( kTRUE );
 
-  files.push_back("data/EIDmva_EE_10_oldscenario2phys14_BDT.weights.xml");
-  files.push_back("data/EIDmva_EB1_10_oldscenario2phys14_BDT.weights.xml");
-  files.push_back("data/EIDmva_EB2_10_oldscenario2phys14_BDT.weights.xml");
+  //Find files
+  files.push_back(Form("%s/data/EIDmva_EE_10_oldscenario2phys14_BDT.weights.xml" , path.c_str()));
+  files.push_back(Form("%s/data/EIDmva_EB1_10_oldscenario2phys14_BDT.weights.xml", path.c_str()));
+  files.push_back(Form("%s/data/EIDmva_EB2_10_oldscenario2phys14_BDT.weights.xml", path.c_str()));
 
   //Loop over Files
   for (unsigned int i = 0; i < 3; i++){
@@ -867,5 +868,3 @@ float readMVA::MVA(unsigned int index){
   return disc;
 
 }
-
-
