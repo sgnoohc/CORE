@@ -767,3 +767,140 @@ int tightChargeEle(unsigned int elIdx){
   else if (els_trk_charge().at(elIdx) == els_sccharge().at(elIdx))      return 1;
   else                                                                  return 0;
 }
+
+void readMVA::InitMVA(string path){
+
+  //Declare all variables
+  ele_kfhits_           = 0;  
+  ele_oldsigmaietaieta_ = 0;  
+  ele_oldsigmaiphiiphi_ = 0;  
+  ele_oldcircularity_   = 0;  
+  ele_oldr9_            = 0;  
+  ele_scletawidth_      = 0;  
+  ele_sclphiwidth_      = 0;  
+  ele_he_               = 0;  
+  ele_kfchi2_           = 0;  
+  ele_chi2_hits_        = 0;  
+  ele_fbrem_            = 0;  
+  ele_ep_               = 0;  
+  ele_eelepout_         = 0;  
+  ele_IoEmIop_          = 0;  
+  ele_deltaetain_       = 0;  
+  ele_deltaphiin_       = 0;  
+  ele_deltaetaseed_     = 0;  
+  ele_psEoverEraw_      = 0;
+  ele_pT_               = 0; 
+  ele_isbarrel_         = 0; 
+  ele_isendcap_         = 0; 
+  scl_eta_              = 0; 
+
+  //Declare Reader
+  TMVA::Reader *reader1 = new TMVA::Reader();
+  TMVA::Reader *reader2 = new TMVA::Reader();
+  TMVA::Reader *reader3 = new TMVA::Reader();
+  readers.push_back(reader1);
+  readers.push_back(reader2);
+  readers.push_back(reader3);
+
+  //Shut the hell up
+  TMVA::gConfig().SetSilent( kTRUE );
+
+  //Find files
+  files.push_back(Form("%s/data/EIDmva_EE_10_oldscenario2phys14_BDT.weights.xml" , path.c_str()));
+  files.push_back(Form("%s/data/EIDmva_EB1_10_oldscenario2phys14_BDT.weights.xml", path.c_str()));
+  files.push_back(Form("%s/data/EIDmva_EB2_10_oldscenario2phys14_BDT.weights.xml", path.c_str()));
+
+  //Loop over Files
+  for (unsigned int i = 0; i < 3; i++){
+
+    //Add all variables to reader
+    readers[i]->AddVariable( "ele_kfhits"           , &ele_kfhits_           );
+    readers[i]->AddVariable( "ele_oldsigmaietaieta" , &ele_oldsigmaietaieta_ );
+    readers[i]->AddVariable( "ele_oldsigmaiphiiphi" , &ele_oldsigmaiphiiphi_ );
+    readers[i]->AddVariable( "ele_oldcircularity"   , &ele_oldcircularity_   );
+    readers[i]->AddVariable( "ele_oldr9"            , &ele_oldr9_            );
+    readers[i]->AddVariable( "ele_scletawidth"      , &ele_scletawidth_      );
+    readers[i]->AddVariable( "ele_sclphiwidth"      , &ele_sclphiwidth_      );
+    readers[i]->AddVariable( "ele_he"               , &ele_he_               );
+    if (i == 0){
+      readers[i]->AddVariable( "ele_psEoverEraw"      , &ele_psEoverEraw_      );
+    }
+    readers[i]->AddVariable( "ele_kfchi2"           , &ele_kfchi2_           );
+    readers[i]->AddVariable( "ele_chi2_hits"        , &ele_chi2_hits_        );
+    readers[i]->AddVariable( "ele_fbrem"            , &ele_fbrem_            );
+    readers[i]->AddVariable( "ele_ep"               , &ele_ep_               );
+    readers[i]->AddVariable( "ele_eelepout"         , &ele_eelepout_         );
+    readers[i]->AddVariable( "ele_IoEmIop"          , &ele_IoEmIop_          );
+    readers[i]->AddVariable( "ele_deltaetain"       , &ele_deltaetain_       );
+    readers[i]->AddVariable( "ele_deltaphiin"       , &ele_deltaphiin_       );
+    readers[i]->AddVariable( "ele_deltaetaseed"     , &ele_deltaetaseed_     );
+    readers[i]->AddSpectator("ele_pT"               , &ele_pT_               );
+    readers[i]->AddSpectator("ele_isbarrel"         , &ele_isbarrel_         );
+    readers[i]->AddSpectator("ele_isendcap"         , &ele_isendcap_         );
+    readers[i]->AddSpectator("scl_eta"              , &scl_eta_              );
+
+    //Book MVA
+    readers[i]->BookMVA("BDT", files[i]);
+  }
+
+}
+
+float readMVA::MVA(unsigned int index){
+
+  //Load all variables from tree
+  ele_kfhits_           = tas::els_ckf_laywithmeas().at(index);
+  ele_oldsigmaietaieta_ = tas::els_sigmaIEtaIEta_full5x5().at(index); 
+  ele_oldsigmaiphiiphi_ = tas::els_sigmaIPhiIPhi_full5x5().at(index);
+  ele_oldcircularity_   = 1.0 - tas::els_e1x5_full5x5().at(index)/tas::els_e5x5_full5x5().at(index); 
+  ele_oldr9_            = tas::els_r9_full5x5().at(index); 
+  ele_scletawidth_      = tas::els_etaSCwidth().at(index);
+  ele_sclphiwidth_      = tas::els_phiSCwidth().at(index);
+  ele_he_               = tas::els_hOverE().at(index);
+  ele_psEoverEraw_      = tas::els_eSCPresh().at(index)/tas::els_eSCRaw().at(index);
+  ele_kfchi2_           = tas::els_ckf_chi2().at(index)/tas::els_ckf_ndof().at(index);
+  ele_chi2_hits_        = tas::els_chi2().at(index)/tas::els_ndof().at(index);
+  ele_fbrem_            = tas::els_fbrem().at(index);
+  ele_ep_               = tas::els_eOverPIn().at(index);
+  ele_eelepout_         = tas::els_eOverPOut().at(index);
+  ele_IoEmIop_          = tas::els_ecalEnergy().at(index) != 0 ? 1.0/tas::els_ecalEnergy().at(index) - tas::els_eOverPIn().at(index)/tas::els_ecalEnergy().at(index) : 999999;
+  ele_deltaetain_       = tas::els_dEtaIn().at(index);
+  ele_deltaphiin_       = tas::els_dPhiIn().at(index);
+  ele_deltaetaseed_     = tas::els_dEtaOut().at(index);
+  ele_pT_               = tas::els_p4().at(index).pt(); 
+  ele_isbarrel_         = fabs(tas::els_etaSC().at(index)) < 1.479 ? 1 : 0; 
+  ele_isendcap_         = fabs(tas::els_etaSC().at(index)) > 1.479 ? 1 : 0; 
+  scl_eta_              = tas::els_etaSC().at(index); 
+
+  float disc = -1.0;
+  if      (fabs(scl_eta_) < 0.8) disc = readers[1]->EvaluateMVA( "BDT" );
+  else if (fabs(scl_eta_) <= 1.479 && fabs(scl_eta_) >= 0.8) disc = readers[2]->EvaluateMVA( "BDT" );
+  else  disc = readers[0]->EvaluateMVA( "BDT" );
+
+  return disc;
+
+}
+
+float readMVA::getEta(unsigned int index){
+  return scl_eta_;
+}
+
+float readMVA::getPt(unsigned int index){
+  return ele_pT_;
+}
+
+bool passesElectronMVAid(readMVA readMVA, unsigned int index, bool isTight){
+  float disc = readMVA.MVA(index); 
+  float aeta = fabs(readMVA.getEta(index));   
+  if (readMVA.getPt(index) < 10){
+    cout << "Warning: MVA id not enabled for pT < 10" << endl;
+    return false;
+  }
+  if (isTight && aeta < 0.8) return disc > 0.73;
+  if (!isTight && aeta < 0.8) return disc > 0.35;
+  if (isTight && (aeta >= 0.8 && aeta <= 1.479)) return disc > 0.57;
+  if (!isTight && (aeta >= 0.8 && aeta <= 1.479)) return disc > 0.20;
+  if (isTight && aeta > 1.479) return disc > 0.05;
+  if (!isTight && aeta > 1.479) return disc > -0.52;
+  return -99999;
+
+}

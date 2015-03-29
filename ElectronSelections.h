@@ -3,6 +3,8 @@
 #include "CMS3.h"
 #include "TString.h"
 #include "Base.h"
+#include "TMVA/Reader.h"
+#include "TMVA/Config.h"
 
 //POG IDs
 bool isVetoElectronPOG(unsigned int elIdx);
@@ -39,5 +41,48 @@ int eleTightID(unsigned int elIdx, analysis_t analysis);
 //Three charge agree
 bool threeChargeAgree(unsigned int elIdx); 
 int tightChargeEle(unsigned int elIdx); 
+
+//Electron MVA ID
+class readMVA {
+  public:
+    void InitMVA(string path);
+    float MVA(unsigned int index); 
+    float getEta(unsigned int index);
+    float getPt(unsigned int index);
+
+  private:
+    //the readers
+    vector <TMVA::Reader*> readers;
+  
+    //the list of BDT files
+    vector <string> files;
+    
+    //the variables
+    float ele_kfhits_;         
+    float ele_oldsigmaietaieta_;
+    float ele_oldsigmaiphiiphi_;
+    float ele_oldcircularity_; 
+    float ele_oldr9_;          
+    float ele_scletawidth_;    
+    float ele_sclphiwidth_;    
+    float ele_he_;             
+    float ele_kfchi2_;         
+    float ele_chi2_hits_;      
+    float ele_fbrem_;          
+    float ele_ep_;             
+    float ele_eelepout_;       
+    float ele_IoEmIop_;        
+    float ele_deltaetain_;     
+    float ele_deltaphiin_;     
+    float ele_deltaetaseed_;   
+    float ele_psEoverEraw_;    
+    float ele_pT_;             
+    float ele_isbarrel_;       
+    float ele_isendcap_;       
+    float scl_eta_;            
+
+};
+
+bool passesElectronMVAid(readMVA readMVA, unsigned int index, bool isTight);
 
 #endif
