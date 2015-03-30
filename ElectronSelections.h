@@ -84,5 +84,5 @@ class readMVA {
 };
 
 bool passesElectronMVAid(readMVA readMVA, unsigned int index, bool isTight);
-
+void createAndInitMVA(std::string pathToCORE);
 #endif

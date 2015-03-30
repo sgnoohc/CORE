@@ -7,6 +7,8 @@
   //POG Electron IDs are defined in: 
   //https://twiki.cern.ch/twiki/bin/viewauth/CMS/EgammaCutBasedIdentification#Electron_ID_Working_Points
 
+readMVA* globalEleMVAreader = 0;
+
 using namespace tas;
 
 bool isVetoElectronPOG(unsigned int elIdx){
@@ -145,6 +147,28 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       if (eleRelIso03(elIdx, analysis) >= 0.50) return false; 
       return true;
       break;
+
+   ////////////////////
+   /// SS veto v2 ///
+   ////////////////////
+
+    case(SS_veto_noiso_v2):
+      if (globalEleMVAreader==0) {
+	cout << "readMVA=0, please create and init it (e.g with createAndInitMVA function)" << endl;
+	return false;
+      }
+      if (fabs(els_etaSC().at(elIdx)) > 2.4) return false;
+      if (els_exp_innerlayers().at(elIdx) > 1) return false;
+      if (fabs(els_dxyPV().at(elIdx)) >= 0.05) return false;
+      if (fabs(els_dzPV().at(elIdx)) >= 0.1) return false; 
+      return passesElectronMVAid(*globalEleMVAreader, elIdx, false);
+
+    case(SS_veto_v2):
+      if (electronID(elIdx, SS_veto_noiso_v2)==0) return false; 
+      if (eleRelIso03(elIdx, analysis) >= 0.50) return false; 
+      return true;
+      break;
+
 
    ////////////////////
    /// HAD veto v1 ////
@@ -317,6 +341,25 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       if (eleRelIso03(elIdx, analysis) >= 0.10) return false; 
       return true;
       break;
+
+
+   ////////////////////
+   /// SS medium v1 ///
+   ////////////////////
+
+    case(SS_medium_noiso_v2):
+      if (globalEleMVAreader==0) {
+	cout << "readMVA=0, please create and init it (e.g with createAndInitMVA function)" << endl;
+	return false;
+      }
+      if (fabs(els_etaSC().at(elIdx)) > 2.4) return false;
+      if (els_conv_vtx_flag().at(elIdx)) return false;
+      if (els_exp_innerlayers().at(elIdx) > 0) return false;
+      if (threeChargeAgree(elIdx)==0) return false;
+      if (fabs(els_dzPV().at(elIdx)) >= 0.1) return false;
+      if (fabs(els_ip3d().at(elIdx))/els_ip3derr().at(elIdx) >= 4) return false;
+      return passesElectronMVAid(*globalEleMVAreader, elIdx, true);
+
 
    /////////////////////
    /// STOP tight v1 ///
@@ -903,4 +946,9 @@ bool passesElectronMVAid(readMVA readMVA, unsigned int index, bool isTight){
   if (!isTight && aeta > 1.479) return disc > -0.52;
   return -99999;
 
+}
+
+void createAndInitMVA(std::string pathToCORE){
+  globalEleMVAreader = new readMVA();
+  globalEleMVAreader->InitMVA(pathToCORE); 
 }

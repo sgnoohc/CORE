@@ -13,6 +13,16 @@ bool isLooseMuonPOG(unsigned int muIdx){
   return true;
 }
 
+bool isMediumMuonPOG(unsigned int muIdx){
+  bool isGlobal  = true;
+  if (((mus_type().at(muIdx)) & (1<<1)) == 0) isGlobal  = false;
+  bool goodGlb = isGlobal && mus_gfit_chi2().at(muIdx)/mus_gfit_ndof().at(muIdx)<3. && 
+                 mus_chi2LocalPosition().at(muIdx)<12. && mus_trkKink().at(muIdx)<20.;
+  double validFraction = mus_validHits().at(muIdx)/(double)(mus_validHits().at(muIdx)+mus_lostHits().at(muIdx)+mus_exp_innerlayers().at(muIdx)+mus_exp_outerlayers().at(muIdx));
+  bool good = validFraction >= 0.8 &&  mus_segmCompatibility().at(muIdx) >= (goodGlb ? 0.303 : 0.451);
+  return good;
+}
+
 bool isTightMuonPOG(unsigned int muIdx){
   if (!mus_pid_PFMuon()            .at(muIdx)         ) return false;    
   if (((mus_type()                 .at(muIdx))
@@ -118,6 +128,15 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
       if (muonID(muIdx, SS_tight_noiso_v1)==0) return false;
       if (muRelIso03(muIdx, SS) > 0.10) return false;
       return true;
+      break;
+
+   ///////////////////
+   /// SS tight v2 ///
+   ///////////////////
+  
+    case(SS_tight_noiso_v2):
+      if (muonID(muIdx, SS_veto_noiso_v1)==0) return false;
+      return isMediumMuonPOG(muIdx);
       break;
 
    /////////////////////
@@ -282,6 +301,7 @@ int muTightID(unsigned int muIdx, analysis_t analysis){
       if (!isLooseMuonPOG(muIdx)) return 0;
       break;
     case (SS):
+      if (muonID(muIdx, SS_tight_v2)) return 3;
       if (muonID(muIdx, SS_tight_v1)) return 2;
       if (muonID(muIdx, SS_fo_v1))    return 1;
       if (muonID(muIdx, SS_veto_v1))  return 0;

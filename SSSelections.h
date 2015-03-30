@@ -63,6 +63,7 @@ float computeLD(DilepHyp hyp, vector<Jet> alljets, float met, float minmt);
 //More Lepton selections
 bool isGoodLeptonNoIso(int id, int idx);
 bool isGoodLeptonIso(int id, int idx);
+bool isGoodLeptonMiniIso(int id, int idx);
 bool isGoodLeptonIsoOrPtRel(int id, int idx);
 bool isDenominatorLeptonNoIso(int id, int idx);
 bool isDenominatorLeptonIso(int id, int idx);
@@ -83,6 +84,7 @@ bool isFakableMuon(unsigned int muidx);
 bool isGoodMuonNoIso(unsigned int muidx);
 bool isGoodMuon(unsigned int muidx);
 bool isIsolatedLepton(int id, int idx);
+bool isMiniIsolatedLepton(int id, int idx);
 bool isLooseIsolatedLepton(int id, int idx);
 bool passPtRel(int id, int idx, float cut, bool subtractLep);
 float getPtRel(int id, int idx, bool subtractLep);

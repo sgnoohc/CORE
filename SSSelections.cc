@@ -144,6 +144,17 @@ bool isIsolatedLepton(int id, int idx){
   if (abs(id) == 13) return muRelIso03(idx, SS) < 0.1;
   return false;
 }
+bool isMiniIsolatedLepton(int id, int idx){
+  if (abs(id) == 11) {
+    if (getPtRel(id, idx, true)>10.) return elMiniRelIso(idx, 0.1, true) < 0.05;
+    return eleRelIso03(idx, SS) < 0.1;
+  }
+  if (abs(id) == 13) {
+    if (getPtRel(id, idx, true)>10.) return muMiniRelIso(idx, 0.1, true) < 0.05;
+    return muRelIso03(idx, SS) < 0.1;
+  }
+  return false;
+}
 
 bool isGoodLepton(int id, int idx, bool usePtRel){
   if (usePtRel) return isGoodLeptonIsoOrPtRel(id,idx);
@@ -159,6 +170,12 @@ bool isGoodLeptonNoIso(int id, int idx){
 bool isGoodLeptonIso(int id, int idx){
   if (isGoodLeptonNoIso(id,idx)==0) return false;
   if (isIsolatedLepton(id,idx)==0) return false;
+  return true;
+}
+
+bool isGoodLeptonMiniIso(int id, int idx){
+  if (isGoodLeptonNoIso(id,idx)==0) return false;
+  if (isMiniIsolatedLepton(id,idx)==0) return false;
   return true;
 }
 

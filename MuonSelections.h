@@ -6,6 +6,7 @@
 
 //POG IDs
 bool isLooseMuonPOG(unsigned int muIdx);
+bool isMediumMuonPOG(unsigned int muIdx);
 bool isTightMuonPOG(unsigned int muIdx);
 
 //Main Muon ID function
