@@ -24,6 +24,7 @@ enum LeptonCategories { Prompt = 0, PromptWS = 1, PromptWF = 2, PromptFSR = 2,
 			FakeLightTrue = 3, FakeC = 4, FakeB = 5, FakeLightFake = 6, FakeHiPtGamma = 7, 
 			FakeUnknown = 8, FakeLowPtGamma = 9, All9999 = 10,
 			Other = 11, End = 12};
+enum IsolationMethods { Standard = 0, PtRel = 1, MiniIso =2 };
 
 //Structs
 struct hyp_result_t { int best_hyp; int hyp_class; };
@@ -38,16 +39,16 @@ template <typename T> int sgn(T val){
 }
 
 //Main Object selections
-bool isGoodLepton(int id, int idx, bool usePtRel);
-bool isDenominatorLepton(int id, int idx, bool usePtRel);
-bool isVetoLepton(int id, int idx, bool usePtRel);
+bool isGoodLepton(int id, int idx, IsolationMethods isoCase);
+bool isDenominatorLepton(int id, int idx, IsolationMethods isoCase);
+bool isVetoLepton(int id, int idx, IsolationMethods isoCase);
 
 //Hyp selections
 bool makesExtraGammaStar(int iHyp);
 bool makesExtraZ(int iHyp);
 bool hypsFromFirstGoodVertex(size_t hypIdx, float dz_cut = 1.0);
-hyp_result_t chooseBestHyp(bool usePtRel, bool verbose=false);
-int isGoodHyp(int iHyp, bool usePtRel, bool verbose=false);
+hyp_result_t chooseBestHyp(IsolationMethods isoCase, bool verbose=false);
+int isGoodHyp(int iHyp, IsolationMethods isoCase, bool verbose=false);
 std::pair<particle_t, int> getThirdLepton(int hyp);
 std::vector<particle_t> getGenPair(bool verbose=false);
 std::vector<Lep> getBestSSLeps(std::vector<Lep> leps);//to be remove/merged with above
@@ -67,6 +68,7 @@ bool isGoodLeptonMiniIso(int id, int idx);
 bool isGoodLeptonIsoOrPtRel(int id, int idx);
 bool isDenominatorLeptonNoIso(int id, int idx);
 bool isDenominatorLeptonIso(int id, int idx);
+bool isDenominatorLeptonMiniIso(int id, int idx);
 bool isDenominatorLeptonIsoOrPtRel(int id, int idx);
 bool isVetoLeptonNoIso(int id, int idx);
 bool isVetoLeptonIso(int id, int idx);
@@ -86,6 +88,7 @@ bool isGoodMuon(unsigned int muidx);
 bool isIsolatedLepton(int id, int idx);
 bool isMiniIsolatedLepton(int id, int idx);
 bool isLooseIsolatedLepton(int id, int idx);
+bool isLooseMiniIsolatedLepton(int id, int idx);
 bool passPtRel(int id, int idx, float cut, bool subtractLep);
 float getPtRel(int id, int idx, bool subtractLep);
 

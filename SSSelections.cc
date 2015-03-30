@@ -144,20 +144,32 @@ bool isIsolatedLepton(int id, int idx){
   if (abs(id) == 13) return muRelIso03(idx, SS) < 0.1;
   return false;
 }
+bool isLooseMiniIsolatedLepton(int id, int idx){
+  if (abs(id) == 11) {
+    if (getPtRel(id, idx, true)>6.) return elMiniRelIso(idx, 0.1, true) < 0.5;
+    return eleRelIso03(idx, SS) < 0.5;
+  }
+  if (abs(id) == 13) {
+    if (getPtRel(id, idx, true)>6.) return muMiniRelIso(idx, 0.1, true) < 0.5;
+    return muRelIso03(idx, SS) < 0.5;
+  }
+  return false;
+}
 bool isMiniIsolatedLepton(int id, int idx){
   if (abs(id) == 11) {
-    if (getPtRel(id, idx, true)>10.) return elMiniRelIso(idx, 0.1, true) < 0.05;
+    if (getPtRel(id, idx, true)>6.) return elMiniRelIso(idx, 0.1, true) < 0.05;
     return eleRelIso03(idx, SS) < 0.1;
   }
   if (abs(id) == 13) {
-    if (getPtRel(id, idx, true)>10.) return muMiniRelIso(idx, 0.1, true) < 0.05;
+    if (getPtRel(id, idx, true)>6.) return muMiniRelIso(idx, 0.1, true) < 0.05;
     return muRelIso03(idx, SS) < 0.1;
   }
   return false;
 }
 
-bool isGoodLepton(int id, int idx, bool usePtRel){
-  if (usePtRel) return isGoodLeptonIsoOrPtRel(id,idx);
+bool isGoodLepton(int id, int idx, IsolationMethods isoCase){
+  if (isoCase == PtRel) return isGoodLeptonIsoOrPtRel(id,idx);
+  else if (isoCase == MiniIso) return isGoodLeptonMiniIso(id,idx); 
   else return isGoodLeptonIso(id,idx);
 }
 
@@ -185,8 +197,9 @@ bool isGoodLeptonIsoOrPtRel(int id, int idx){
   return true;
 }
 
-bool isDenominatorLepton(int id, int idx, bool usePtRel){
-  if (usePtRel) return isDenominatorLeptonIsoOrPtRel(id,idx);
+bool isDenominatorLepton(int id, int idx, IsolationMethods isoCase){
+  if (isoCase == PtRel) return isDenominatorLeptonIsoOrPtRel(id,idx);
+  else if (isoCase == MiniIso) return isDenominatorLeptonMiniIso(id,idx);
   else return isDenominatorLeptonIso(id,idx);
 }
 
@@ -202,14 +215,20 @@ bool isDenominatorLeptonIso(int id, int idx){
   return true;
 }
 
+bool isDenominatorLeptonMiniIso(int id, int idx){
+  if (isDenominatorLeptonNoIso(id,idx)==0) return false;
+  if (isLooseMiniIsolatedLepton(id,idx)==0) return false;
+  return true;
+}
+
 bool isDenominatorLeptonIsoOrPtRel(int id, int idx){
   if (isDenominatorLeptonNoIso(id,idx)==0) return false;
   if (isLooseIsolatedLepton(id,idx)==0 && passPtRel(id,idx,ptRelCutLoose,true)==0) return false;
   return true;
 }
 
-bool isVetoLepton(int id, int idx, bool usePtRel){
-  if (usePtRel) return isVetoLeptonIsoOrPtRel(id,idx);
+bool isVetoLepton(int id, int idx, IsolationMethods isoCase){
+  if (isoCase == PtRel) return isVetoLeptonIsoOrPtRel(id,idx);
   else return isVetoLeptonIso(id,idx);
 }
 
@@ -343,63 +362,63 @@ float computeLD(DilepHyp hyp, vector<Jet> alljets, float met, float minmt) {
 
 bool isGoodVetoElectronNoIso(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 7.) return false;
-  if (!electronID(elidx, SS_veto_noiso_v1)) return false;
+  if (!electronID(elidx, SS_veto_noiso_v2)) return false;
   return true;
 }
 bool isGoodVetoElectron(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 7.) return false;
-  if (!electronID(elidx, SS_veto_v1)) return false;
+  if (!electronID(elidx, SS_veto_v2)) return false;
   return true;
 }
 bool isFakableElectronNoIso(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 10.) return false;
-  if (!electronID(elidx, SS_fo_noiso_v1)) return false;
+  if (!electronID(elidx, SS_fo_noiso_v2)) return false;
   return true;
 }
 bool isFakableElectron(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 10.) return false;
-  if (!electronID(elidx, SS_fo_v1)) return false;
+  if (!electronID(elidx, SS_fo_v2)) return false;
   return true;
 }
 bool isGoodElectronNoIso(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 10.) return false;
-  if (!electronID(elidx, SS_medium_noiso_v1)) return false;
+  if (!electronID(elidx, SS_medium_noiso_v2)) return false;
   return true;
 }
 bool isGoodElectron(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 10.) return false;
-  if (!electronID(elidx, SS_medium_v1)) return false;
+  if (!electronID(elidx, SS_medium_v2)) return false;
   return true;
 }
 
 bool isGoodVetoMuonNoIso(unsigned int muidx){
   if (mus_p4().at(muidx).pt() < 5.)         return false;
-  if (!muonID(muidx, SS_veto_noiso_v1))     return false;
+  if (!muonID(muidx, SS_veto_noiso_v2))     return false;
   return true;
 }
 bool isGoodVetoMuon(unsigned int muidx){
   if (mus_p4().at(muidx).pt() < 5.)         return false;
-  if (!muonID(muidx, SS_veto_v1))           return false;
+  if (!muonID(muidx, SS_veto_v2))           return false;
   return true;
 }
 bool isFakableMuonNoIso(unsigned int muidx){
   if (mus_p4().at(muidx).pt() < 10.)        return false;
-  if (!muonID(muidx, SS_fo_noiso_v1))       return false;
+  if (!muonID(muidx, SS_fo_noiso_v2))       return false;
   return true;
 }
 bool isFakableMuon(unsigned int muidx){
   if (mus_p4().at(muidx).pt() < 10.)        return false;
-  if (!muonID(muidx, SS_fo_v1))             return false;
+  if (!muonID(muidx, SS_fo_v2))             return false;
   return true;
 }
 bool isGoodMuonNoIso(unsigned int muidx){
   if (mus_p4().at(muidx).pt() < 10.)        return false;
-  if (!muonID(muidx, SS_tight_noiso_v1))    return false;
+  if (!muonID(muidx, SS_tight_noiso_v2))    return false;
   return true;
 }
 bool isGoodMuon(unsigned int muidx){
   if (mus_p4().at(muidx).pt() < 10.)        return false;
-  if (!muonID(muidx, SS_tight_v1))          return false;
+  if (!muonID(muidx, SS_tight_v2))          return false;
   return true;
 }
 
@@ -474,7 +493,7 @@ int lepMotherID(Lep lep){
   return 0;
 }
 
-int isGoodHyp(int iHyp, bool usePtRel, bool verbose){
+int isGoodHyp(int iHyp, IsolationMethods isoCase, bool verbose){
 
   //Bunch o' variables
   float pt_ll = tas::hyp_ll_p4().at(iHyp).pt(); 
@@ -487,10 +506,10 @@ int isGoodHyp(int iHyp, bool usePtRel, bool verbose){
   int id_lt = tas::hyp_lt_id().at(iHyp);
   bool isss = false;
   if (sgn(id_ll) == sgn(id_lt)) isss = true;  
-  bool passed_id_numer_ll = isGoodLepton(id_ll, idx_ll, usePtRel);
-  bool passed_id_numer_lt = isGoodLepton(id_lt, idx_lt, usePtRel);
-  bool passed_id_denom_ll = isDenominatorLepton(id_ll, idx_ll, usePtRel);
-  bool passed_id_denom_lt = isDenominatorLepton(id_lt, idx_lt, usePtRel);
+  bool passed_id_numer_ll = isGoodLepton(id_ll, idx_ll, isoCase);
+  bool passed_id_numer_lt = isGoodLepton(id_lt, idx_lt, isoCase);
+  bool passed_id_denom_ll = isDenominatorLepton(id_ll, idx_ll, isoCase);
+  bool passed_id_denom_lt = isDenominatorLepton(id_lt, idx_lt, isoCase);
   bool extraZ = makesExtraZ(iHyp);
   bool extraGammaStar = makesExtraGammaStar(iHyp);
 
@@ -533,7 +552,7 @@ int isGoodHyp(int iHyp, bool usePtRel, bool verbose){
   else return 0; //non-highpass OS
 }
 
-hyp_result_t chooseBestHyp(bool usePtRel, bool verbose){
+hyp_result_t chooseBestHyp(IsolationMethods isoCase, bool verbose){
 
   //List of good hyps
   vector <int> good_hyps_ss; //same sign, tight tight
@@ -541,7 +560,7 @@ hyp_result_t chooseBestHyp(bool usePtRel, bool verbose){
   vector <int> good_hyps_df; //same sign, double fail
   vector <int> good_hyps_os; //opposite sign, tight tight
   for (unsigned int i = 0; i < tas::hyp_type().size(); i++){
-    int good_hyp_result = isGoodHyp(i, usePtRel, verbose);
+    int good_hyp_result = isGoodHyp(i, isoCase, verbose);
     if (good_hyp_result == 3) good_hyps_ss.push_back(i); 
     if (good_hyp_result == 2) good_hyps_sf.push_back(i); 
     else if (good_hyp_result == 1) good_hyps_df.push_back(i); 

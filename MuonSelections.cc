@@ -57,11 +57,13 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
    ///////////////////
   
     case(SS_veto_noiso_v1):
+    case(SS_veto_noiso_v2):
       if (fabs(mus_p4().at(muIdx).eta()) > 2.4) return false;
       return isLooseMuonPOG(muIdx);
       break;
 
     case(SS_veto_v1):
+    case(SS_veto_v2):
       if (muonID(muIdx, SS_veto_noiso_v1)==0) return false;
       if (muRelIso03(muIdx, SS) > 0.50) return false;
       return true;
@@ -85,7 +87,7 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
       break;
 
    ///////////////////
-   /// SS FO v1 ///  same as medium, but no SIP3D cut and looser iso
+   /// SS FO v1 ///  same as tight, but no SIP3D cut and looser iso
    ///////////////////
   
     case(SS_fo_noiso_v1):
@@ -103,6 +105,25 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
  
    case(SS_fo_v1):
       if (muonID(muIdx, SS_fo_noiso_v1)==0) return false;
+      if (muRelIso03(muIdx, SS) > 0.50) return false;
+      return true;
+      break;
+
+  
+   ///////////////////
+   /// SS FO v1 ///  same as tight, but no SIP3D cut and looser iso
+   ///////////////////
+
+    case(SS_fo_noiso_v2):
+      if (muonID(muIdx, SS_veto_noiso_v1)==0) return false;
+      //if (fabs(mus_ip3d().at(muIdx))/mus_ip3derr().at(muIdx) >= 4) return false;
+      if (fabs(mus_dzPV().at(muIdx)) > 0.1) return false;
+      if (mus_ptErr().at(muIdx)/mus_trk_p4().at(muIdx).pt() >= 0.2) return false;
+      return isMediumMuonPOG(muIdx);
+      break;
+
+   case(SS_fo_v2):
+      if (muonID(muIdx, SS_fo_noiso_v2)==0) return false;
       if (muRelIso03(muIdx, SS) > 0.50) return false;
       return true;
       break;
@@ -136,7 +157,16 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
   
     case(SS_tight_noiso_v2):
       if (muonID(muIdx, SS_veto_noiso_v1)==0) return false;
+      if (fabs(mus_ip3d().at(muIdx))/mus_ip3derr().at(muIdx) >= 4) return false;
+      if (fabs(mus_dzPV().at(muIdx)) > 0.1) return false;
+      if (mus_ptErr().at(muIdx)/mus_trk_p4().at(muIdx).pt() >= 0.2) return false;
       return isMediumMuonPOG(muIdx);
+      break;
+
+   case(SS_tight_v2):
+      if (muonID(muIdx, SS_tight_noiso_v2)==0) return false;
+      if (muRelIso03(muIdx, SS) > 0.10) return false;
+      return true;
       break;
 
    /////////////////////
