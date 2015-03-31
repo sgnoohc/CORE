@@ -879,9 +879,15 @@ void readMVA::InitMVA(string path){
   TMVA::Reader *reader1 = new TMVA::Reader();
   TMVA::Reader *reader2 = new TMVA::Reader();
   TMVA::Reader *reader3 = new TMVA::Reader();
+  TMVA::Reader *reader4 = new TMVA::Reader();
+  TMVA::Reader *reader5 = new TMVA::Reader();
+  TMVA::Reader *reader6 = new TMVA::Reader();
   readers.push_back(reader1);
   readers.push_back(reader2);
   readers.push_back(reader3);
+  readers.push_back(reader4);
+  readers.push_back(reader5);
+  readers.push_back(reader6);
 
   //Shut the hell up
   TMVA::gConfig().SetSilent( kTRUE );
@@ -890,9 +896,12 @@ void readMVA::InitMVA(string path){
   files.push_back(Form("%s/data/EIDmva_EE_10_oldscenario2phys14_BDT.weights.xml" , path.c_str()));
   files.push_back(Form("%s/data/EIDmva_EB1_10_oldscenario2phys14_BDT.weights.xml", path.c_str()));
   files.push_back(Form("%s/data/EIDmva_EB2_10_oldscenario2phys14_BDT.weights.xml", path.c_str()));
+  files.push_back(Form("%s/data/EIDmva_EE_5_oldscenario2phys14_BDT.weights.xml"  , path.c_str()));
+  files.push_back(Form("%s/data/EIDmva_EB1_5_oldscenario2phys14_BDT.weights.xml" , path.c_str()));
+  files.push_back(Form("%s/data/EIDmva_EB2_5_oldscenario2phys14_BDT.weights.xml" , path.c_str()));
 
   //Loop over Files
-  for (unsigned int i = 0; i < 3; i++){
+  for (unsigned int i = 0; i < 6; i++){
 
     //Add all variables to reader
     readers[i]->AddVariable( "ele_kfhits"           , &ele_kfhits_           );
@@ -903,7 +912,7 @@ void readMVA::InitMVA(string path){
     readers[i]->AddVariable( "ele_scletawidth"      , &ele_scletawidth_      );
     readers[i]->AddVariable( "ele_sclphiwidth"      , &ele_sclphiwidth_      );
     readers[i]->AddVariable( "ele_he"               , &ele_he_               );
-    if (i == 0){
+    if (i == 0 || i == 3){
       readers[i]->AddVariable( "ele_psEoverEraw"      , &ele_psEoverEraw_      );
     }
     readers[i]->AddVariable( "ele_kfchi2"           , &ele_kfchi2_           );
@@ -953,29 +962,24 @@ float readMVA::MVA(unsigned int index){
   scl_eta_              = tas::els_etaSC().at(index); 
 
   float disc = -1.0;
-  if      (fabs(scl_eta_) < 0.8) disc = readers[1]->EvaluateMVA( "BDT" );
-  else if (fabs(scl_eta_) <= 1.479 && fabs(scl_eta_) >= 0.8) disc = readers[2]->EvaluateMVA( "BDT" );
-  else  disc = readers[0]->EvaluateMVA( "BDT" );
+  if (ele_pT_ >= 10.0){
+    if      (fabs(scl_eta_) < 0.8) disc = readers[1]->EvaluateMVA( "BDT" );
+    else if (fabs(scl_eta_) <= 1.479 && fabs(scl_eta_) >= 0.8) disc = readers[2]->EvaluateMVA( "BDT" );
+    else  disc = readers[0]->EvaluateMVA( "BDT" );
+  }
+  else if (ele_pT_ >= 5.0){
+    if      (fabs(scl_eta_) < 0.8) disc = readers[4]->EvaluateMVA( "BDT" );
+    else if (fabs(scl_eta_) <= 1.479 && fabs(scl_eta_) >= 0.8) disc = readers[5]->EvaluateMVA( "BDT" );
+    else  disc = readers[3]->EvaluateMVA( "BDT" );
+  }
 
   return disc;
 
 }
 
-float readMVA::getEta(unsigned int index){
-  return scl_eta_;
-}
-
-float readMVA::getPt(unsigned int index){
-  return ele_pT_;
-}
-
-bool passesElectronMVAid(readMVA readMVA, unsigned int index, bool isTight){
-  float disc = readMVA.MVA(index); 
-  float aeta = fabs(readMVA.getEta(index));   
-  if (readMVA.getPt(index) < 10){
-    cout << "Warning: MVA id not enabled for pT < 10" << endl;
-    return false;
-  }
+bool readMVA::passesElectronMVAid(unsigned int index, bool isTight){
+  float disc = MVA(index); 
+  float aeta = fabs(scl_eta_);   
   if (isTight && aeta < 0.8) return disc > 0.73;
   if (!isTight && aeta < 0.8) return disc > 0.35;
   if (isTight && (aeta >= 0.8 && aeta <= 1.479)) return disc > 0.57;
@@ -990,3 +994,4 @@ void createAndInitMVA(std::string pathToCORE){
   globalEleMVAreader = new readMVA();
   globalEleMVAreader->InitMVA(pathToCORE); 
 }
+

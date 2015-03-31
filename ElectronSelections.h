@@ -47,8 +47,7 @@ class readMVA {
   public:
     void InitMVA(string path);
     float MVA(unsigned int index); 
-    float getEta(unsigned int index);
-    float getPt(unsigned int index);
+    bool passesElectronMVAid(unsigned int index, bool isTight);
 
   private:
     //the readers
@@ -83,6 +82,5 @@ class readMVA {
 
 };
 
-bool passesElectronMVAid(readMVA readMVA, unsigned int index, bool isTight);
 void createAndInitMVA(std::string pathToCORE);
 #endif
