@@ -275,7 +275,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       if (threeChargeAgree(elIdx)==0) return false;
       if (fabs(els_dzPV().at(elIdx)) >= 0.1) return false;
       //if (fabs(els_ip3d().at(elIdx))/els_ip3derr().at(elIdx) >= 4) return false;
-      return passesElectronMVAid(*globalEleMVAreader, elIdx, true);
+      return globalEleMVAreader->passesElectronMVAid(elIdx, true);
 
     case(SS_fo_v2):
       if (els_p4().at(elIdx).pt()<10) return electronID(elIdx, SS_fo_v1);
@@ -390,7 +390,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       if (threeChargeAgree(elIdx)==0) return false;
       if (fabs(els_dzPV().at(elIdx)) >= 0.1) return false;
       if (fabs(els_ip3d().at(elIdx))/els_ip3derr().at(elIdx) >= 4) return false;
-      return passesElectronMVAid(*globalEleMVAreader, elIdx, true);
+      return globalEleMVAreader->passesElectronMVAid(elIdx, true);
 
     case(SS_medium_v2):
       if (els_p4().at(elIdx).pt()<10) return electronID(elIdx, SS_medium_v1);
@@ -994,4 +994,3 @@ void createAndInitMVA(std::string pathToCORE){
   globalEleMVAreader = new readMVA();
   globalEleMVAreader->InitMVA(pathToCORE); 
 }
-
