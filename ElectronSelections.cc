@@ -206,6 +206,23 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       return true;
       break;
 
+   ////////////////////
+   /// HAD veto v2 ////
+   ////////////////////
+
+    // same as POG phys14 veto
+    case(HAD_veto_noiso_v2):
+      if (!isVetoElectronPOGphys14noIso(elIdx)) return false;
+      return true;
+      break;
+
+    // now using mini iso
+    case(HAD_veto_v2):
+      if (electronID(elIdx, HAD_veto_noiso_v2)==0) return false;
+      if (elMiniRelIso(elIdx, 0.1, true) > 0.1) return false; 
+      return true;
+      break;
+
    /////////////////////
    /// STOP veto v1 ////
    /////////////////////
@@ -307,6 +324,22 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       else return false;
       break;
 
+   /////////////////////
+   /// HAD loose v2 ////
+   /////////////////////
+
+    // same as POG phys14 loose
+    case(HAD_loose_noiso_v2):
+      if (!isLooseElectronPOGphys14noIso(elIdx)) return false;
+      return true;
+      break;
+
+    case(HAD_loose_v2):
+      if (electronID(elIdx, HAD_loose_noiso_v2)==0) return false;
+      if (elMiniRelIso(elIdx, 0.1, true) > 0.1) return false; 
+      return true;
+      break;
+
    //////////////////////
    /// STOP medium v1 ///
    //////////////////////
@@ -338,6 +371,22 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
         if (fabs( (1.0/els_ecalEnergy().at(elIdx)) - (els_eOverPIn().at(elIdx)/els_ecalEnergy().at(elIdx)) ) >= 0.05) return false;
       }
       else return false;
+      break;
+
+   //////////////////////
+   /// HAD medium v2 ////
+   //////////////////////
+
+    // same as POG phys14 medium
+    case(HAD_medium_noiso_v2):
+      if (!isMediumElectronPOGphys14noIso(elIdx)) return false;
+      return true;
+      break;
+
+    case(HAD_medium_v2):
+      if (electronID(elIdx, HAD_medium_noiso_v2)==0) return false;
+      if (elMiniRelIso(elIdx, 0.1, true) > 0.1) return false; 
+      return true;
       break;
 
    ////////////////////
@@ -430,6 +479,22 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
         if (fabs( (1.0/els_ecalEnergy().at(elIdx)) - (els_eOverPIn().at(elIdx)/els_ecalEnergy().at(elIdx)) ) >= 0.05) return false;
       }
       else return false;
+      break;
+
+   /////////////////////
+   /// HAD tight v2 ////
+   /////////////////////
+
+    // same as POG phys14 tight
+    case(HAD_tight_noiso_v2):
+      if (!isTightElectronPOGphys14noIso(elIdx)) return false;
+      return true;
+      break;
+
+    case(HAD_tight_v2):
+      if (electronID(elIdx, HAD_tight_noiso_v2)==0) return false;
+      if (elMiniRelIso(elIdx, 0.1, true) > 0.1) return false; 
+      return true;
       break;
 
 	/////////////////////
@@ -637,6 +702,7 @@ bool isTightElectronPOGphys14noIso(unsigned int elIdx){
 
 float eleRelIso03(unsigned int elIdx, analysis_t analysis){
   if (analysis == HAD ) return eleRelIso03DB(elIdx);
+  if (analysis == HADv2) return eleRelIso03DB(elIdx);
   if (analysis == STOP) return eleRelIso03DB(elIdx);
   if (analysis == SS  ) return eleRelIso03EA(elIdx);
   if (analysis == ZMET) return eleRelIso03EA(elIdx);
@@ -742,6 +808,12 @@ int eleTightID(unsigned int elIdx, analysis_t analysis){
       if (electronID(elIdx, HAD_medium_v1)) return 2;
       if (electronID(elIdx, HAD_loose_v1)) return 1;
       if (electronID(elIdx, HAD_veto_v1)) return 0;
+      break;
+    case (HADv2):
+      if (electronID(elIdx, HAD_tight_v2)) return 3;
+      if (electronID(elIdx, HAD_medium_v2)) return 2;
+      if (electronID(elIdx, HAD_loose_v2)) return 1;
+      if (electronID(elIdx, HAD_veto_v2)) return 0;
       break;
     case (STOP):
       if (electronID(elIdx, STOP_tight_v1)) return 3;

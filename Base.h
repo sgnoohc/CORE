@@ -1,7 +1,7 @@
 #ifndef BASE_H
 #define BASE_H
 
-enum analysis_t { POG, SS, HAD, STOP, ZMET };
+enum analysis_t { POG, SS, HAD, HADv2, STOP, ZMET };
 enum id_level_t { 
   SS_veto_noiso_v1, 
   SS_veto_v1, 
@@ -28,6 +28,14 @@ enum id_level_t {
   HAD_medium_v1, 
   HAD_tight_noiso_v1, 
   HAD_tight_v1, 
+  HAD_veto_noiso_v2,
+  HAD_veto_v2, 
+  HAD_loose_noiso_v2, 
+  HAD_loose_v2, 
+  HAD_medium_noiso_v2, 
+  HAD_medium_v2, 
+  HAD_tight_noiso_v2, 
+  HAD_tight_v2, 
 
   STOP_veto_v1, 
   STOP_loose_v1, 

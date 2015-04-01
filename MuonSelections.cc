@@ -74,6 +74,7 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
    ////////////////////
   
     case(HAD_loose_noiso_v1):
+    case(HAD_loose_noiso_v2):
       if (!isLooseMuonPOG(muIdx)) return false;
       if (fabs(mus_dxyPV().at(muIdx)) > 0.5) return false;
       if (fabs(mus_dzPV().at(muIdx)) > 1.0) return false;
@@ -83,6 +84,17 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
     case(HAD_loose_v1):
       if (muonID(muIdx, HAD_loose_noiso_v1)==0) return false;
       if (muRelIso03(muIdx, analysis) >= 0.15) return false; 
+      return true;
+      break;
+
+   ////////////////////
+   /// HAD loose v2 ///
+   ////////////////////
+  
+    // now using mini iso
+    case(HAD_loose_v2):
+      if (muonID(muIdx, HAD_loose_noiso_v2)==0) return false;
+      if (muMiniRelIso(muIdx, 0.1, true) > 0.2) return false;
       return true;
       break;
 
@@ -182,6 +194,7 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
    ////////////////////
   
     case(HAD_tight_noiso_v1):
+    case(HAD_tight_noiso_v2):
       if (!isTightMuonPOG(muIdx)) return false;
       return true;
       break;
@@ -189,6 +202,17 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
     case(HAD_tight_v1):
       if (muonID(muIdx, HAD_tight_noiso_v1)==0) return false;
       if (muRelIso03(muIdx, analysis) >= 0.15) return false; 
+      return true;
+      break;
+
+   ////////////////////
+   /// HAD tight v2 ///
+   ////////////////////
+  
+    // now using mini iso
+    case(HAD_tight_v2):
+      if (muonID(muIdx, HAD_tight_noiso_v2)==0) return false;
+      if (muMiniRelIso(muIdx, 0.1, true) > 0.2) return false;
       return true;
       break;
 
@@ -339,6 +363,10 @@ int muTightID(unsigned int muIdx, analysis_t analysis){
     case (HAD):
       if (muonID(muIdx, HAD_tight_v1)) return 1;
       if (muonID(muIdx, HAD_loose_v1)) return 0;
+      break;
+    case (HADv2):
+      if (muonID(muIdx, HAD_tight_v2)) return 1;
+      if (muonID(muIdx, HAD_loose_v2)) return 0;
       break;
     case (STOP):
       if (muonID(muIdx, STOP_tight_v1)) return 1;
