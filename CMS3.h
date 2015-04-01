@@ -2276,6 +2276,9 @@ protected:
 	vector<int> pfcands_particleId_;
 	TBranch *pfcands_particleId_branch;
 	bool pfcands_particleId_isLoaded;
+	vector<unsigned char> pfcands_fromPV_;
+	TBranch *pfcands_fromPV_branch;
+	bool pfcands_fromPV_isLoaded;
 	vector<int> pfjets_chargedHadronMultiplicity_;
 	TBranch *pfjets_chargedHadronMultiplicity_branch;
 	bool pfjets_chargedHadronMultiplicity_isLoaded;
@@ -6389,6 +6392,11 @@ void Init(TTree *tree) {
 		pfcands_particleId_branch = tree->GetBranch(tree->GetAlias("pfcands_particleId"));
 		if (pfcands_particleId_branch) {pfcands_particleId_branch->SetAddress(&pfcands_particleId_);}
 	}
+	pfcands_fromPV_branch = 0;
+	if (tree->GetAlias("pfcands_fromPV") != 0) {
+		pfcands_fromPV_branch = tree->GetBranch(tree->GetAlias("pfcands_fromPV"));
+		if (pfcands_fromPV_branch) {pfcands_fromPV_branch->SetAddress(&pfcands_fromPV_);}
+	}
 	pfjets_chargedHadronMultiplicity_branch = 0;
 	if (tree->GetAlias("pfjets_chargedHadronMultiplicity") != 0) {
 		pfjets_chargedHadronMultiplicity_branch = tree->GetBranch(tree->GetAlias("pfjets_chargedHadronMultiplicity"));
@@ -7723,6 +7731,7 @@ void GetEntry(unsigned int idx)
 		mus_validPixelHits_isLoaded = false;
 		pfcands_charge_isLoaded = false;
 		pfcands_particleId_isLoaded = false;
+		pfcands_fromPV_isLoaded = false;
 		pfjets_chargedHadronMultiplicity_isLoaded = false;
 		pfjets_chargedMultiplicity_isLoaded = false;
 		pfjets_electronMultiplicity_isLoaded = false;
@@ -8596,6 +8605,7 @@ void LoadAllBranches()
 	if (mus_validPixelHits_branch != 0) mus_validPixelHits();
 	if (pfcands_charge_branch != 0) pfcands_charge();
 	if (pfcands_particleId_branch != 0) pfcands_particleId();
+	if (pfcands_fromPV_branch != 0) pfcands_fromPV();
 	if (pfjets_chargedHadronMultiplicity_branch != 0) pfjets_chargedHadronMultiplicity();
 	if (pfjets_chargedMultiplicity_branch != 0) pfjets_chargedMultiplicity();
 	if (pfjets_electronMultiplicity_branch != 0) pfjets_electronMultiplicity();
@@ -18502,6 +18512,19 @@ void LoadAllBranches()
 		}
 		return pfcands_particleId_;
 	}
+        const vector<unsigned char> &pfcands_fromPV()
+        {
+                if (not pfcands_fromPV_isLoaded) {
+                        if (pfcands_fromPV_branch != 0) {
+                                pfcands_fromPV_branch->GetEntry(index);
+                        } else { 
+                                printf("branch pfcands_fromPV_branch does not exist!\n");
+                                exit(1);
+                        }
+                        pfcands_fromPV_isLoaded = true;
+                }
+                return pfcands_fromPV_;
+        }
 	const vector<int> &pfjets_chargedHadronMultiplicity()
 	{
 		if (not pfjets_chargedHadronMultiplicity_isLoaded) {
@@ -20810,6 +20833,7 @@ namespace tas {
 	const vector<int> &mus_validPixelHits();
 	const vector<int> &pfcands_charge();
 	const vector<int> &pfcands_particleId();
+        const vector<unsigned char> &pfcands_fromPV();
 	const vector<int> &pfjets_chargedHadronMultiplicity();
 	const vector<int> &pfjets_chargedMultiplicity();
 	const vector<int> &pfjets_electronMultiplicity();

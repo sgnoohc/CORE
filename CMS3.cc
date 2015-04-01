@@ -754,6 +754,7 @@ namespace tas {
 	const vector<int> &mus_validPixelHits() { return cms3.mus_validPixelHits(); }
 	const vector<int> &pfcands_charge() { return cms3.pfcands_charge(); }
 	const vector<int> &pfcands_particleId() { return cms3.pfcands_particleId(); }
+        const vector<unsigned char> &pfcands_fromPV() { return cms3.pfcands_fromPV(); }
 	const vector<int> &pfjets_chargedHadronMultiplicity() { return cms3.pfjets_chargedHadronMultiplicity(); }
 	const vector<int> &pfjets_chargedMultiplicity() { return cms3.pfjets_chargedMultiplicity(); }
 	const vector<int> &pfjets_electronMultiplicity() { return cms3.pfjets_electronMultiplicity(); }
