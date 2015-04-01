@@ -94,7 +94,7 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
     // now using mini iso
     case(HAD_loose_v2):
       if (muonID(muIdx, HAD_loose_noiso_v2)==0) return false;
-      if (muMiniRelIso(muIdx, 0.1, true) > 0.2) return false;
+      if (muMiniRelIso(muIdx) > 0.2) return false;
       return true;
       break;
 
@@ -212,7 +212,7 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
     // now using mini iso
     case(HAD_tight_v2):
       if (muonID(muIdx, HAD_tight_noiso_v2)==0) return false;
-      if (muMiniRelIso(muIdx, 0.1, true) > 0.2) return false;
+      if (muMiniRelIso(muIdx) > 0.2) return false;
       return true;
       break;
 
@@ -300,24 +300,7 @@ float muRelIso03EA(unsigned int muIdx){
   return absiso/(mus_p4().at(muIdx).pt());
 }
 
-float muRelIsoCustomCone(unsigned int muIdx, float dr, float deltaZCut, bool useVetoCones){
-  float chiso     = 0.;
-  float nhiso     = 0.;
-  float emiso     = 0.;
-  float deadcone_ch = 0.0001;
-  float deadcone_ph = 0.01;
-  float deadcone_nh = 0.01;
-  for (unsigned int i=0; i<pfcands_particleId().size(); ++i){
-    float thisDR = fabs(ROOT::Math::VectorUtil::DeltaR(pfcands_p4().at(i),mus_p4().at(muIdx)));
-    if ( thisDR>dr ) continue;  
-    if ( fabs(pfcands_particleId().at(i))==211 && fabs(pfcands_dz().at(i)) < deltaZCut && (!useVetoCones || thisDR > deadcone_ch) ) chiso+=pfcands_p4().at(i).pt();
-    if ( fabs(pfcands_particleId().at(i))==130 && (!useVetoCones || thisDR > deadcone_nh) ) nhiso+=pfcands_p4().at(i).pt();
-    if ( fabs(pfcands_particleId().at(i))==22 && (!useVetoCones || thisDR > deadcone_ph) ) emiso+=pfcands_p4().at(i).pt();
-  }
-  float absiso = chiso + std::max(float(0.0), nhiso + emiso);
-  return absiso/(mus_p4().at(muIdx).pt());
-}
-float muRelIsoCustomConeDB(unsigned int muIdx, float dr, float deltaZCut, bool useVetoCones){
+float muRelIsoCustomCone(unsigned int muIdx, float dr, bool useVetoCones, bool useDBcor){
   float chiso     = 0.;
   float nhiso     = 0.;
   float emiso     = 0.;
@@ -330,8 +313,8 @@ float muRelIsoCustomConeDB(unsigned int muIdx, float dr, float deltaZCut, bool u
     float thisDR = fabs(ROOT::Math::VectorUtil::DeltaR(pfcands_p4().at(i),mus_p4().at(muIdx)));
     if ( thisDR>dr ) continue;  
     if ( fabs(pfcands_particleId().at(i))==211 ) {
-      if (fabs(pfcands_dz().at(i)) < deltaZCut && (!useVetoCones || thisDR > deadcone_ch) ) chiso+=pfcands_p4().at(i).pt();
-      else if (!useVetoCones || thisDR > deadcone_pu) deltaBeta+=pfcands_p4().at(i).pt();
+      if (pfcands_fromPV().at(i) > 1 && (!useVetoCones || thisDR > deadcone_ch) ) chiso+=pfcands_p4().at(i).pt();
+      else if (useDBcor && pfcands_fromPV().at(i) <= 1 && (!useVetoCones || thisDR > deadcone_pu)) deltaBeta+=pfcands_p4().at(i).pt();
     }
     if ( fabs(pfcands_particleId().at(i))==130 && (!useVetoCones || thisDR > deadcone_nh) ) nhiso+=pfcands_p4().at(i).pt();
     if ( fabs(pfcands_particleId().at(i))==22 && (!useVetoCones || thisDR > deadcone_ph) ) emiso+=pfcands_p4().at(i).pt();
@@ -339,13 +322,12 @@ float muRelIsoCustomConeDB(unsigned int muIdx, float dr, float deltaZCut, bool u
   float absiso = chiso + std::max(0.0, nhiso + emiso - 0.5 * deltaBeta);
   return absiso/(mus_p4().at(muIdx).pt());
 }
-float muMiniRelIso(unsigned int idx, float deltaZCut, bool useVetoCones, bool useDBcor) {
+float muMiniRelIso(unsigned int idx, bool useVetoCones, bool useDBcor) {
   float pt = mus_p4().at(idx).pt();
   float dr = 0.2;
   if (pt>50) dr = 10./pt;
   if (pt>200) dr = 0.05;
-  if (useDBcor) return muRelIsoCustomConeDB(idx,dr,deltaZCut,useVetoCones);
-  else return muRelIsoCustomCone(idx,dr,deltaZCut,useVetoCones);
+  return muRelIsoCustomCone(idx,dr,useVetoCones,useDBcor);
 }
 
 int muTightID(unsigned int muIdx, analysis_t analysis){

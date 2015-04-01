@@ -219,7 +219,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
     // now using mini iso
     case(HAD_veto_v2):
       if (electronID(elIdx, HAD_veto_noiso_v2)==0) return false;
-      if (elMiniRelIso(elIdx, 0.1, true) > 0.1) return false; 
+      if (elMiniRelIso(elIdx) > 0.1) return false; 
       return true;
       break;
 
@@ -336,7 +336,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
 
     case(HAD_loose_v2):
       if (electronID(elIdx, HAD_loose_noiso_v2)==0) return false;
-      if (elMiniRelIso(elIdx, 0.1, true) > 0.1) return false; 
+      if (elMiniRelIso(elIdx) > 0.1) return false; 
       return true;
       break;
 
@@ -385,7 +385,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
 
     case(HAD_medium_v2):
       if (electronID(elIdx, HAD_medium_noiso_v2)==0) return false;
-      if (elMiniRelIso(elIdx, 0.1, true) > 0.1) return false; 
+      if (elMiniRelIso(elIdx) > 0.1) return false; 
       return true;
       break;
 
@@ -493,7 +493,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
 
     case(HAD_tight_v2):
       if (electronID(elIdx, HAD_tight_noiso_v2)==0) return false;
-      if (elMiniRelIso(elIdx, 0.1, true) > 0.1) return false; 
+      if (elMiniRelIso(elIdx) > 0.1) return false; 
       return true;
       break;
 
@@ -733,28 +733,7 @@ float eleRelIso03EA(unsigned int elIdx){
   return absiso/(els_p4().at(elIdx).pt());
 }
 
-float elRelIsoCustomCone(unsigned int elIdx, float dr, float deltaZCut, bool useVetoCones){
-  float chiso     = 0.;
-  float nhiso     = 0.;
-  float emiso     = 0.;
-  float deadcone_ch = 0.;
-  float deadcone_ph = 0.;
-  // veto cones only in the endcap for electrons
-  if (useVetoCones && fabs(els_p4().at(elIdx).eta()) > 1.479) {
-    deadcone_ch = 0.015;
-    deadcone_ph = 0.08;
-  }
-  for (unsigned int i=0; i<pfcands_particleId().size(); ++i){
-    float thisDR = fabs(ROOT::Math::VectorUtil::DeltaR(pfcands_p4().at(i),els_p4().at(elIdx)));
-    if ( thisDR>dr ) continue;  
-    if ( fabs(pfcands_particleId().at(i))==211 && fabs(pfcands_dz().at(i)) < deltaZCut && (!useVetoCones || thisDR > deadcone_ch) ) chiso+=pfcands_p4().at(i).pt();
-    if ( fabs(pfcands_particleId().at(i))==130 ) nhiso+=pfcands_p4().at(i).pt();
-    if ( fabs(pfcands_particleId().at(i))==22 && (!useVetoCones || thisDR > deadcone_ph) ) emiso+=pfcands_p4().at(i).pt();
-  }
-  float absiso = chiso + std::max(float(0.0), nhiso + emiso);
-  return absiso/(els_p4().at(elIdx).pt());
-}
-float elRelIsoCustomConeDB(unsigned int elIdx, float dr, float deltaZCut, bool useVetoCones){
+float elRelIsoCustomCone(unsigned int elIdx, float dr, bool useVetoCones, bool useDBcor){
   float chiso     = 0.;
   float nhiso     = 0.;
   float emiso     = 0.;
@@ -772,8 +751,8 @@ float elRelIsoCustomConeDB(unsigned int elIdx, float dr, float deltaZCut, bool u
     float thisDR = fabs(ROOT::Math::VectorUtil::DeltaR(pfcands_p4().at(i),els_p4().at(elIdx)));
     if ( thisDR>dr ) continue;  
     if ( fabs(pfcands_particleId().at(i))==211 ) {
-      if (fabs(pfcands_dz().at(i)) < deltaZCut && (!useVetoCones || thisDR > deadcone_ch) ) chiso+=pfcands_p4().at(i).pt();
-      else if (!useVetoCones || thisDR > deadcone_pu) deltaBeta+=pfcands_p4().at(i).pt();
+      if (pfcands_fromPV().at(i) > 1 && (!useVetoCones || thisDR > deadcone_ch) ) chiso+=pfcands_p4().at(i).pt();
+      else if (useDBcor && pfcands_fromPV().at(i) <= 1 && (!useVetoCones || thisDR > deadcone_pu)) deltaBeta+=pfcands_p4().at(i).pt();
     }
     if ( fabs(pfcands_particleId().at(i))==130 ) nhiso+=pfcands_p4().at(i).pt();
     if ( fabs(pfcands_particleId().at(i))==22 && (!useVetoCones || thisDR > deadcone_ph) ) emiso+=pfcands_p4().at(i).pt();
@@ -781,13 +760,12 @@ float elRelIsoCustomConeDB(unsigned int elIdx, float dr, float deltaZCut, bool u
   float absiso = chiso + std::max(0.0, nhiso + emiso - 0.5 * deltaBeta);
   return absiso/(els_p4().at(elIdx).pt());
 }
-float elMiniRelIso(unsigned int idx, float deltaZCut, bool useVetoCones, bool useDBcor){
+float elMiniRelIso(unsigned int idx, bool useVetoCones, bool useDBcor){
   float pt = els_p4().at(idx).pt();
   float dr = 0.2;
   if (pt>50) dr = 10./pt;
   if (pt>200) dr = 0.05;
-  if (useDBcor) return elRelIsoCustomConeDB(idx,dr,deltaZCut,useVetoCones);
-  else return elRelIsoCustomCone(idx,dr,deltaZCut,useVetoCones);
+  return elRelIsoCustomCone(idx,dr,useVetoCones,useDBcor);
 }
 
 int eleTightID(unsigned int elIdx, analysis_t analysis){
