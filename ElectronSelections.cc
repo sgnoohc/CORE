@@ -733,7 +733,7 @@ float eleRelIso03EA(unsigned int elIdx){
   return absiso/(els_p4().at(elIdx).pt());
 }
 
-float elRelIsoCustomCone(unsigned int elIdx, float dr, bool useVetoCones, bool useDBcor){
+float elRelIsoCustomCone(unsigned int elIdx, float dr, bool useVetoCones, float ptthresh, bool useDBcor){
   float chiso     = 0.;
   float nhiso     = 0.;
   float emiso     = 0.;
@@ -752,20 +752,20 @@ float elRelIsoCustomCone(unsigned int elIdx, float dr, bool useVetoCones, bool u
     if ( thisDR>dr ) continue;  
     if ( fabs(pfcands_particleId().at(i))==211 ) {
       if (pfcands_fromPV().at(i) > 1 && (!useVetoCones || thisDR > deadcone_ch) ) chiso+=pfcands_p4().at(i).pt();
-      else if (useDBcor && pfcands_fromPV().at(i) <= 1 && (!useVetoCones || thisDR > deadcone_pu)) deltaBeta+=pfcands_p4().at(i).pt();
+      else if (useDBcor && pfcands_fromPV().at(i) <= 1 && (pfcands_p4().at(i).pt() > ptthresh) && (!useVetoCones || thisDR > deadcone_pu)) deltaBeta+=pfcands_p4().at(i).pt();
     }
-    if ( fabs(pfcands_particleId().at(i))==130 ) nhiso+=pfcands_p4().at(i).pt();
-    if ( fabs(pfcands_particleId().at(i))==22 && (!useVetoCones || thisDR > deadcone_ph) ) emiso+=pfcands_p4().at(i).pt();
+    if ( fabs(pfcands_particleId().at(i))==130 && (pfcands_p4().at(i).pt() > ptthresh) ) nhiso+=pfcands_p4().at(i).pt();
+    if ( fabs(pfcands_particleId().at(i))==22 && (pfcands_p4().at(i).pt() > ptthresh) && (!useVetoCones || thisDR > deadcone_ph) ) emiso+=pfcands_p4().at(i).pt();
   }
   float absiso = chiso + std::max(0.0, nhiso + emiso - 0.5 * deltaBeta);
   return absiso/(els_p4().at(elIdx).pt());
 }
-float elMiniRelIso(unsigned int idx, bool useVetoCones, bool useDBcor){
+float elMiniRelIso(unsigned int idx, bool useVetoCones, float ptthresh, bool useDBcor){
   float pt = els_p4().at(idx).pt();
   float dr = 0.2;
   if (pt>50) dr = 10./pt;
   if (pt>200) dr = 0.05;
-  return elRelIsoCustomCone(idx,dr,useVetoCones,useDBcor);
+  return elRelIsoCustomCone(idx,dr,useVetoCones,ptthresh,useDBcor);
 }
 
 int eleTightID(unsigned int elIdx, analysis_t analysis){

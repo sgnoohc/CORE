@@ -31,8 +31,8 @@ bool isTightElectronPOGphys14noIso(unsigned int elIdx);
 float eleRelIso03(unsigned int elIdx, analysis_t analysis);
 float eleRelIso03DB(unsigned int elIdx);
 float eleRelIso03EA(unsigned int elIdx);
-float elRelIsoCustomCone(unsigned int idx, float dr, bool useVetoCones=true, bool useDBcor=false);
-float elMiniRelIso(unsigned int idx, bool useVetoCones=true, bool useDBcor=false);
+float elRelIsoCustomCone(unsigned int idx, float dr, bool useVetoCones=true, float ptthresh = 0.0, bool useDBcor=false);
+float elMiniRelIso(unsigned int idx, bool useVetoCones=true, float ptthresh = 0.0, bool useDBcor=false);
 
 //Tightest ID passed by electron
 int eleTightID(unsigned int elIdx, analysis_t analysis);

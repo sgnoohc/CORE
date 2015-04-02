@@ -300,7 +300,7 @@ float muRelIso03EA(unsigned int muIdx){
   return absiso/(mus_p4().at(muIdx).pt());
 }
 
-float muRelIsoCustomCone(unsigned int muIdx, float dr, bool useVetoCones, bool useDBcor){
+float muRelIsoCustomCone(unsigned int muIdx, float dr, bool useVetoCones, float ptthresh, bool useDBcor){
   float chiso     = 0.;
   float nhiso     = 0.;
   float emiso     = 0.;
@@ -309,25 +309,26 @@ float muRelIsoCustomCone(unsigned int muIdx, float dr, bool useVetoCones, bool u
   float deadcone_pu = 0.01;
   float deadcone_ph = 0.01;
   float deadcone_nh = 0.01;
+
   for (unsigned int i=0; i<pfcands_particleId().size(); ++i){
     float thisDR = fabs(ROOT::Math::VectorUtil::DeltaR(pfcands_p4().at(i),mus_p4().at(muIdx)));
     if ( thisDR>dr ) continue;  
     if ( fabs(pfcands_particleId().at(i))==211 ) {
       if (pfcands_fromPV().at(i) > 1 && (!useVetoCones || thisDR > deadcone_ch) ) chiso+=pfcands_p4().at(i).pt();
-      else if (useDBcor && pfcands_fromPV().at(i) <= 1 && (!useVetoCones || thisDR > deadcone_pu)) deltaBeta+=pfcands_p4().at(i).pt();
+      else if (useDBcor && pfcands_fromPV().at(i) <= 1 && (pfcands_p4().at(i).pt() > ptthresh) && (!useVetoCones || thisDR > deadcone_pu)) deltaBeta+=pfcands_p4().at(i).pt();
     }
-    if ( fabs(pfcands_particleId().at(i))==130 && (!useVetoCones || thisDR > deadcone_nh) ) nhiso+=pfcands_p4().at(i).pt();
-    if ( fabs(pfcands_particleId().at(i))==22 && (!useVetoCones || thisDR > deadcone_ph) ) emiso+=pfcands_p4().at(i).pt();
+    if ( fabs(pfcands_particleId().at(i))==130 && (pfcands_p4().at(i).pt() > ptthresh) && (!useVetoCones || thisDR > deadcone_nh) ) nhiso+=pfcands_p4().at(i).pt();
+    if ( fabs(pfcands_particleId().at(i))==22 && (pfcands_p4().at(i).pt() > ptthresh) && (!useVetoCones || thisDR > deadcone_ph) ) emiso+=pfcands_p4().at(i).pt();
   }
   float absiso = chiso + std::max(0.0, nhiso + emiso - 0.5 * deltaBeta);
   return absiso/(mus_p4().at(muIdx).pt());
 }
-float muMiniRelIso(unsigned int idx, bool useVetoCones, bool useDBcor) {
+float muMiniRelIso(unsigned int idx, bool useVetoCones, float ptthresh, bool useDBcor) {
   float pt = mus_p4().at(idx).pt();
   float dr = 0.2;
   if (pt>50) dr = 10./pt;
   if (pt>200) dr = 0.05;
-  return muRelIsoCustomCone(idx,dr,useVetoCones,useDBcor);
+  return muRelIsoCustomCone(idx,dr,useVetoCones,ptthresh,useDBcor);
 }
 
 int muTightID(unsigned int muIdx, analysis_t analysis){
