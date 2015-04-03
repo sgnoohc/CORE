@@ -2465,7 +2465,7 @@ protected:
 	unsigned int evt_detectorStatus_;
 	TBranch *evt_detectorStatus_branch;
 	bool evt_detectorStatus_isLoaded;
-	unsigned int evt_event_;
+	unsigned long long evt_event_;
 	TBranch *evt_event_branch;
 	bool evt_event_isLoaded;
 	unsigned int evt_lumiBlock_;
@@ -2618,7 +2618,7 @@ protected:
 	vector<unsigned int> mus_HLT_Mu8_Ele17_TrailingLeg_;
 	TBranch *mus_HLT_Mu8_Ele17_TrailingLeg_branch;
 	bool mus_HLT_Mu8_Ele17_TrailingLeg_isLoaded;
-	int	evt_nEvts_;
+	unsigned long long evt_nEvts_;
 	TBranch *evt_nEvts_branch;
 	bool evt_nEvts_isLoaded;
 	float	evt_filt_eff_;
@@ -19331,7 +19331,7 @@ void LoadAllBranches()
 		}
 		return evt_detectorStatus_;
 	}
-	unsigned int &evt_event()
+	unsigned long long &evt_event()
 	{
 		if (not evt_event_isLoaded) {
 			if (evt_event_branch != 0) {
@@ -19994,7 +19994,7 @@ void LoadAllBranches()
 		}
 		return mus_HLT_Mu8_Ele17_TrailingLeg_;
 	}
-	int &evt_nEvts()
+	unsigned long long &evt_nEvts()
 	{
 		if (not evt_nEvts_isLoaded) {
 			if (evt_nEvts_branch != 0) {
@@ -20896,7 +20896,7 @@ namespace tas {
 	const unsigned int &els_HLT_Mu8_Ele17_version();
 	const unsigned int &evt_nels();
 	const unsigned int &evt_detectorStatus();
-	const unsigned int &evt_event();
+	const unsigned long long &evt_event();
 	const unsigned int &evt_lumiBlock();
 	const unsigned int &evt_run();
 	const unsigned int &evt_ngenjetsNoMuNoNu();
@@ -20947,7 +20947,7 @@ namespace tas {
 	const vector<unsigned int> &mus_HLT_Mu17_TkMu8_TrailingLegTrkFiltered();
 	const vector<unsigned int> &mus_HLT_Mu8_Ele17();
 	const vector<unsigned int> &mus_HLT_Mu8_Ele17_TrailingLeg();
-	const int &evt_nEvts();
+	const unsigned long long &evt_nEvts();
 	const float &evt_filt_eff();
 	bool passHLTTrigger(TString trigName);
         float passTauID(TString idName, unsigned int tauIndx);
