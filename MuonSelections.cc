@@ -115,7 +115,7 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
    ///////////////////
 
     case(SS_fo_noiso_v2):
-      if (muonID(muIdx, SS_veto_noiso_v1)==0) return false;
+      if (muonID(muIdx, SS_veto_noiso_v2)==0) return false;//make sure it's tighter than veto
       //if (fabs(mus_ip3d().at(muIdx))/mus_ip3derr().at(muIdx) >= 4) return false;
       if (fabs(mus_dzPV().at(muIdx)) > 0.1) return false;
       if (mus_ptErr().at(muIdx)/mus_trk_p4().at(muIdx).pt() >= 0.2) return false;
@@ -156,7 +156,7 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
    ///////////////////
   
     case(SS_tight_noiso_v2):
-      if (muonID(muIdx, SS_veto_noiso_v1)==0) return false;
+      if (muonID(muIdx, SS_fo_noiso_v2)==0) return false;//make sure it's tighter than FO
       if (fabs(mus_ip3d().at(muIdx))/mus_ip3derr().at(muIdx) >= 4) return false;
       if (fabs(mus_dzPV().at(muIdx)) > 0.1) return false;
       if (mus_ptErr().at(muIdx)/mus_trk_p4().at(muIdx).pt() >= 0.2) return false;

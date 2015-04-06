@@ -24,7 +24,7 @@ enum LeptonCategories { Prompt = 0, PromptWS = 1, PromptWF = 2, PromptFSR = 2,
 			FakeLightTrue = 3, FakeC = 4, FakeB = 5, FakeLightFake = 6, FakeHiPtGamma = 7, 
 			FakeUnknown = 8, FakeLowPtGamma = 9, All9999 = 10,
 			Other = 11, End = 12};
-enum IsolationMethods { Standard = 0, PtRel = 1, MiniIso =2 };
+enum IsolationMethods { Standard = 0, PtRel = 1, MiniIso = 2 , NewMiniIso = 3 };
 
 //Structs
 struct hyp_result_t { int best_hyp; int hyp_class; };
@@ -65,10 +65,12 @@ float computeLD(DilepHyp hyp, vector<Jet> alljets, float met, float minmt);
 bool isGoodLeptonNoIso(int id, int idx);
 bool isGoodLeptonIso(int id, int idx);
 bool isGoodLeptonMiniIso(int id, int idx);
+bool isGoodLeptonNewMiniIso(int id, int idx);
 bool isGoodLeptonIsoOrPtRel(int id, int idx);
 bool isDenominatorLeptonNoIso(int id, int idx);
 bool isDenominatorLeptonIso(int id, int idx);
 bool isDenominatorLeptonMiniIso(int id, int idx);
+bool isDenominatorLeptonNewMiniIso(int id, int idx);
 bool isDenominatorLeptonIsoOrPtRel(int id, int idx);
 bool isVetoLeptonNoIso(int id, int idx);
 bool isVetoLeptonIso(int id, int idx);
@@ -86,11 +88,14 @@ bool isFakableMuon(unsigned int muidx);
 bool isGoodMuonNoIso(unsigned int muidx);
 bool isGoodMuon(unsigned int muidx);
 bool isIsolatedLepton(int id, int idx);
-bool isMiniIsolatedLepton(int id, int idx);
 bool isLooseIsolatedLepton(int id, int idx);
+bool isMiniIsolatedLepton(int id, int idx);
 bool isLooseMiniIsolatedLepton(int id, int idx);
+bool isNewMiniIsolatedLepton(int id, int idx);
+bool isLooseNewMiniIsolatedLepton(int id, int idx);
 bool passPtRel(int id, int idx, float cut, bool subtractLep);
 float getPtRel(int id, int idx, bool subtractLep);
+LorentzVector closestJet(LorentzVector lep_p4);
 
 //MC truth functions
 int lepMotherID(Lep lep);

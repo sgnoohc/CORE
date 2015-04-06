@@ -153,23 +153,35 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
    ////////////////////
 
     case(SS_veto_noiso_v2):
-      //fixme use this until we add the trigger cuts to the MVA preselection (or just stay as it is)
-      return electronID(elIdx, SS_veto_noiso_v1);
-      /*
-      if (els_p4().at(elIdx).pt()<10) return electronID(elIdx, SS_veto_noiso_v1);
+      //trigger match cuts
+      if (fabs(els_etaSC().at(elIdx)) <= 1.479){
+        if (fabs(els_dEtaIn().at(elIdx)) >= 0.01) return false; 
+        if (fabs(els_dPhiIn().at(elIdx)) >= 0.15) return false; 
+        if (fabs( (1.0/els_ecalEnergy().at(elIdx)) - (els_eOverPIn().at(elIdx)/els_ecalEnergy().at(elIdx)) ) >= 0.05) return false;
+        if (els_sigmaIEtaIEta_full5x5().at(elIdx) >= 0.011) return false; 
+        if (els_hOverE().at(elIdx) >= 0.12) return false; 
+      }
+      else if ((fabs(els_etaSC().at(elIdx)) > 1.479) && (fabs(els_etaSC().at(elIdx)) < 2.5)){
+        if (fabs(els_dEtaIn().at(elIdx)) >= 0.01) return false; 
+        if (fabs(els_dPhiIn().at(elIdx)) >= 0.1) return false; 
+        if (fabs( (1.0/els_ecalEnergy().at(elIdx)) - (els_eOverPIn().at(elIdx)/els_ecalEnergy().at(elIdx)) ) >= 0.05) return false;
+        if (els_sigmaIEtaIEta_full5x5().at(elIdx) >= 0.031) return false; 
+        if (els_hOverE().at(elIdx) >= 0.1) return false; 
+      }
+      else return false;
+      if (fabs(els_etaSC().at(elIdx)) > 2.4) return false;
+      if (els_conv_vtx_flag().at(elIdx)) return false;
+      if (els_exp_innerlayers().at(elIdx) > 1) return false;
+      if (fabs(els_dxyPV().at(elIdx)) >= 0.05) return false;
+      if (fabs(els_dzPV().at(elIdx)) >= 0.1) return false; 
       if (globalEleMVAreader==0) {
 	cout << "readMVA=0, please create and init it (e.g with createAndInitMVA function)" << endl;
 	return false;
       }
-      if (fabs(els_etaSC().at(elIdx)) > 2.4) return false;
-      if (els_exp_innerlayers().at(elIdx) > 1) return false;
-      if (fabs(els_dxyPV().at(elIdx)) >= 0.05) return false;
-      if (fabs(els_dzPV().at(elIdx)) >= 0.1) return false; 
-      return passesElectronMVAid(*globalEleMVAreader, elIdx, false);
-      */
+      return globalEleMVAreader->passesElectronMVAid(elIdx, false);
+      break;
 
     case(SS_veto_v2):
-      if (els_p4().at(elIdx).pt()<10) return electronID(elIdx, SS_veto_v1);
       if (electronID(elIdx, SS_veto_noiso_v2)==0) return false; 
       if (eleRelIso03(elIdx, analysis) >= 0.50) return false; 
       return true;
@@ -264,7 +276,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
    ///////////////////
 
     case(SS_fo_noiso_v2):
-      if (els_p4().at(elIdx).pt()<10) return electronID(elIdx, SS_fo_noiso_v1);
+      if (electronID(elIdx, SS_veto_noiso_v2)==0) return false;//make sure it's tighter than veto
       if (globalEleMVAreader==0) {
 	cout << "readMVA=0, please create and init it (e.g with createAndInitMVA function)" << endl;
 	return false;
@@ -278,7 +290,6 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       return globalEleMVAreader->passesElectronMVAid(elIdx, true);
 
     case(SS_fo_v2):
-      if (els_p4().at(elIdx).pt()<10) return electronID(elIdx, SS_fo_v1);
       if (electronID(elIdx, SS_fo_noiso_v2)==0) return false; 
       if (eleRelIso03(elIdx, analysis) >= 0.50) return false; 
       return true;
@@ -379,7 +390,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
    ////////////////////
 
     case(SS_medium_noiso_v2):
-      if (els_p4().at(elIdx).pt()<10) return electronID(elIdx, SS_medium_noiso_v1);
+      if (electronID(elIdx, SS_fo_noiso_v2)==0) return false;//make sure it's tighter than FO
       if (globalEleMVAreader==0) {
 	cout << "readMVA=0, please create and init it (e.g with createAndInitMVA function)" << endl;
 	return false;
@@ -393,7 +404,6 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       return globalEleMVAreader->passesElectronMVAid(elIdx, true);
 
     case(SS_medium_v2):
-      if (els_p4().at(elIdx).pt()<10) return electronID(elIdx, SS_medium_v1);
       if (electronID(elIdx, SS_medium_noiso_v2)==0) return false; 
       if (eleRelIso03(elIdx, analysis) >= 0.10) return false; 
       return true;

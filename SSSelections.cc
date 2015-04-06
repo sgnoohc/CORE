@@ -167,9 +167,33 @@ bool isMiniIsolatedLepton(int id, int idx){
   return false;
 }
 
+bool isLooseNewMiniIsolatedLepton(int id, int idx){
+  if (abs(id) == 11) {
+    return elMiniRelIso(idx, 0.1, true) < 0.4;
+  }
+  if (abs(id) == 13) {
+    return muMiniRelIso(idx, 0.1, true) < 0.4;
+  }
+  return false;
+}
+bool isNewMiniIsolatedLepton(int id, int idx){
+  if (abs(id) == 11) {
+    float closeJetPt = closestJet(els_p4().at(idx)).pt();
+    float ptratio = ( closeJetPt>0. ? els_p4().at(idx).pt()/closeJetPt : 1. );
+    return ( elMiniRelIso(idx, 0.1, true) < 0.075 && ( ptratio>0.725 || getPtRel(id, idx, true)>7.) );
+  }
+  if (abs(id) == 13) {
+    float closeJetPt = closestJet(mus_p4().at(idx)).pt();
+    float ptratio = ( closeJetPt>0. ? mus_p4().at(idx).pt()/closeJetPt : 1. );
+    return ( muMiniRelIso(idx, 0.1, true) < 0.10 && ( ptratio>0.70 || getPtRel(id, idx, true)>7.) );
+  }
+  return false;
+}
+
 bool isGoodLepton(int id, int idx, IsolationMethods isoCase){
   if (isoCase == PtRel) return isGoodLeptonIsoOrPtRel(id,idx);
   else if (isoCase == MiniIso) return isGoodLeptonMiniIso(id,idx); 
+  else if (isoCase == NewMiniIso) return isGoodLeptonNewMiniIso(id,idx); 
   else return isGoodLeptonIso(id,idx);
 }
 
@@ -191,6 +215,12 @@ bool isGoodLeptonMiniIso(int id, int idx){
   return true;
 }
 
+bool isGoodLeptonNewMiniIso(int id, int idx){
+  if (isGoodLeptonNoIso(id,idx)==0) return false;
+  if (isNewMiniIsolatedLepton(id,idx)==0) return false;
+  return true;
+}
+
 bool isGoodLeptonIsoOrPtRel(int id, int idx){
   if (isGoodLeptonNoIso(id,idx)==0) return false;
   if (isIsolatedLepton(id,idx)==0 && passPtRel(id,idx,ptRelCut,true)==0) return false;
@@ -200,6 +230,7 @@ bool isGoodLeptonIsoOrPtRel(int id, int idx){
 bool isDenominatorLepton(int id, int idx, IsolationMethods isoCase){
   if (isoCase == PtRel) return isDenominatorLeptonIsoOrPtRel(id,idx);
   else if (isoCase == MiniIso) return isDenominatorLeptonMiniIso(id,idx);
+  else if (isoCase == NewMiniIso) return isDenominatorLeptonNewMiniIso(id,idx);
   else return isDenominatorLeptonIso(id,idx);
 }
 
@@ -218,6 +249,12 @@ bool isDenominatorLeptonIso(int id, int idx){
 bool isDenominatorLeptonMiniIso(int id, int idx){
   if (isDenominatorLeptonNoIso(id,idx)==0) return false;
   if (isLooseMiniIsolatedLepton(id,idx)==0) return false;
+  return true;
+}
+
+bool isDenominatorLeptonNewMiniIso(int id, int idx){
+  if (isDenominatorLeptonNoIso(id,idx)==0) return false;
+  if (isLooseNewMiniIsolatedLepton(id,idx)==0) return false;
   return true;
 }
 
@@ -265,6 +302,24 @@ float getPtRel(int id, int idx, bool subtractLep) {
   Lep lep = Lep(id,idx);
   return ptRel(lep.p4(), jetp4s, subtractLep);
 }
+
+LorentzVector closestJet(LorentzVector lep_p4) {
+  float dRmin = 0.4;
+  int closestIdx = -1;
+  for (unsigned int pfjidx=0;pfjidx<pfjets_p4().size();++pfjidx) {
+    Jet jet(pfjidx);
+    if (fabs(jet.eta())>2.4) continue;
+    if (isLoosePFJet(pfjidx)==false) continue;
+    float tmp_dRmin = ROOT::Math::VectorUtil::DeltaR(jet.p4(), lep_p4);
+    if ( tmp_dRmin < dRmin) {
+      closestIdx = pfjidx;
+      dRmin = tmp_dRmin;
+    }
+  }
+  if (closestIdx>=0) return pfjets_p4().at(closestIdx);
+  else return LorentzVector();
+}
+
 
 bool hypsFromFirstGoodVertex(size_t hypIdx, float dz_cut){
 
