@@ -754,6 +754,7 @@ namespace tas {
 	const vector<int> &mus_validPixelHits() { return cms3.mus_validPixelHits(); }
 	const vector<int> &pfcands_charge() { return cms3.pfcands_charge(); }
 	const vector<int> &pfcands_particleId() { return cms3.pfcands_particleId(); }
+        const vector<unsigned char> &pfcands_fromPV() { return cms3.pfcands_fromPV(); }
 	const vector<int> &pfjets_chargedHadronMultiplicity() { return cms3.pfjets_chargedHadronMultiplicity(); }
 	const vector<int> &pfjets_chargedMultiplicity() { return cms3.pfjets_chargedMultiplicity(); }
 	const vector<int> &pfjets_electronMultiplicity() { return cms3.pfjets_electronMultiplicity(); }
@@ -816,7 +817,7 @@ namespace tas {
 	const unsigned int &els_HLT_Mu8_Ele17_version() { return cms3.els_HLT_Mu8_Ele17_version(); }
 	const unsigned int &evt_nels() { return cms3.evt_nels(); }
 	const unsigned int &evt_detectorStatus() { return cms3.evt_detectorStatus(); }
-	const unsigned int &evt_event() { return cms3.evt_event(); }
+	const unsigned long long &evt_event() { return cms3.evt_event(); }
 	const unsigned int &evt_lumiBlock() { return cms3.evt_lumiBlock(); }
 	const unsigned int &evt_run() { return cms3.evt_run(); }
 	const unsigned int &evt_ngenjetsNoMuNoNu() { return cms3.evt_ngenjetsNoMuNoNu(); }
@@ -867,7 +868,7 @@ namespace tas {
 	const vector<unsigned int> &mus_HLT_Mu17_TkMu8_TrailingLegTrkFiltered() { return cms3.mus_HLT_Mu17_TkMu8_TrailingLegTrkFiltered(); }
 	const vector<unsigned int> &mus_HLT_Mu8_Ele17() { return cms3.mus_HLT_Mu8_Ele17(); }
 	const vector<unsigned int> &mus_HLT_Mu8_Ele17_TrailingLeg() { return cms3.mus_HLT_Mu8_Ele17_TrailingLeg(); }
-	const int &evt_nEvts() { return cms3.evt_nEvts(); }
+	const unsigned long long &evt_nEvts() { return cms3.evt_nEvts(); }
 	const float &evt_filt_eff() { return cms3.evt_filt_eff(); }
 	bool passHLTTrigger(TString trigName) { return cms3.passHLTTrigger(trigName); }
         float passTauID(TString idName, unsigned int tauIndx) { return cms3.passTauID(idName, tauIndx); }

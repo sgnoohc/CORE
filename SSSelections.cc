@@ -146,22 +146,22 @@ bool isIsolatedLepton(int id, int idx){
 }
 bool isLooseMiniIsolatedLepton(int id, int idx){
   if (abs(id) == 11) {
-    if (getPtRel(id, idx, true)>6.) return elMiniRelIso(idx, 0.1, true) < 0.5;
+    if (getPtRel(id, idx, true)>6.) return elMiniRelIso(idx) < 0.5;
     return eleRelIso03(idx, SS) < 0.5;
   }
   if (abs(id) == 13) {
-    if (getPtRel(id, idx, true)>6.) return muMiniRelIso(idx, 0.1, true) < 0.5;
+    if (getPtRel(id, idx, true)>6.) return muMiniRelIso(idx) < 0.5;
     return muRelIso03(idx, SS) < 0.5;
   }
   return false;
 }
 bool isMiniIsolatedLepton(int id, int idx){
   if (abs(id) == 11) {
-    if (getPtRel(id, idx, true)>6.) return elMiniRelIso(idx, 0.1, true) < 0.05;
+    if (getPtRel(id, idx, true)>6.) return elMiniRelIso(idx) < 0.05;
     return eleRelIso03(idx, SS) < 0.1;
   }
   if (abs(id) == 13) {
-    if (getPtRel(id, idx, true)>6.) return muMiniRelIso(idx, 0.1, true) < 0.05;
+    if (getPtRel(id, idx, true)>6.) return muMiniRelIso(idx) < 0.05;
     return muRelIso03(idx, SS) < 0.1;
   }
   return false;
