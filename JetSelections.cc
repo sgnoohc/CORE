@@ -14,7 +14,7 @@ bool isLoosePFJet(unsigned int pfJetIdx){
   int   pfjet_cm_  = pfjets_chargedMultiplicity()[pfJetIdx];
   float pfjet_eta  = fabs(pfjets_p4()[pfJetIdx].eta());
 
-  if (pfjets_pfcandIndicies().size() < 2) return false;
+  if (pfjets_pfcandIndicies()[pfJetIdx].size() < 2) return false;
   if (pfjet_nef_ >= 0.99) return false;
   if (pfjet_nhf_ >= 0.99) return false;
 
