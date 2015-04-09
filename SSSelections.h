@@ -29,6 +29,7 @@ enum IsolationMethods { Standard = 0, PtRel = 1, MiniIso = 2 , NewMiniIso = 3 };
 //Structs
 struct hyp_result_t { int best_hyp; int hyp_class; };
 struct particle_t { int id; LorentzVector p4; int idx; };
+struct jet_result_t { vector <LorentzVector> jets; vector <float> jets_disc; vector <LorentzVector> btags; vector <float> btags_disc; }; 
 struct Lep;
 struct DilepHyp;
 struct Jet;
@@ -99,6 +100,9 @@ LorentzVector closestJet(LorentzVector lep_p4);
 
 //MC truth functions
 int lepMotherID(Lep lep);
+
+//Jet selection function
+jet_result_t SSJetsCalculator();
 
 //Sorting functions
 bool ptsort (int i,int j);

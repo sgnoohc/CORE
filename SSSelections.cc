@@ -134,6 +134,57 @@ bool makesExtraZ(int iHyp){
   return false;
 }
 
+jet_result_t SSJetsCalculator(){
+  jet_result_t result;
+
+  for (unsigned int i = 0; i < tas::pfjets_p4().size(); i++){
+    LorentzVector jet = tas::pfjets_p4().at(i);
+    
+    //Kinematic jet cuts
+    if (jet.pt() < 25.) continue;
+    if (fabs(jet.eta()) > 2.4) continue;
+    
+    //Require loose jet ID
+    if (!isLoosePFJet(i)) continue;
+    
+    //Jet cleaning -- electrons
+    bool jetIsLep = false;
+    for (unsigned int eidx = 0; eidx < tas::els_p4().size(); eidx++){
+      LorentzVector electron = tas::els_p4().at(eidx);
+      if (electron.pt() < 7) continue;
+      if (!isGoodVetoElectron(eidx)) continue;
+      if (ROOT::Math::VectorUtil::DeltaR(jet, electron) > 0.4) continue;
+      jetIsLep = true;
+    }
+    if (jetIsLep == true) continue;
+    
+    //Jet cleaning -- muons
+    for (unsigned int muidx = 0; muidx < tas::mus_p4().size(); muidx++){
+      LorentzVector muon = tas::mus_p4().at(muidx);
+      if (muon.pt() < 5) continue;
+      if (!isGoodVetoMuon(muidx)) continue;
+      if (ROOT::Math::VectorUtil::DeltaR(jet, muon) > 0.4) continue;
+      jetIsLep = true;
+    }
+    if (jetIsLep == true) continue;
+    
+    //Get discriminator
+    float disc = tas::pfjets_combinedInclusiveSecondaryVertexV2BJetTag().at(i);
+
+    //Save jets that make it this far
+    if (jet.pt() >= 40.) {
+      result.jets.push_back(jet);
+      result.jets_disc.push_back(disc);
+    }
+
+    //Save b-tags that make it this far
+    if (disc < 0.814) continue;
+    result.btags_disc.push_back(disc);
+    result.btags.push_back(tas::pfjets_p4().at(i));
+  }
+  return result;
+}
+
 bool isLooseIsolatedLepton(int id, int idx){
   if (abs(id) == 11) return eleRelIso03(idx, SS) < 0.5;
   if (abs(id) == 13) return muRelIso03(idx, SS) < 0.5;
