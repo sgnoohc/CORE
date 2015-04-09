@@ -134,8 +134,9 @@ bool makesExtraZ(int iHyp){
   return false;
 }
 
-jet_result_t SSJetsCalculator(){
-  jet_result_t result;
+std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(){
+  vector <Jet> result_jets;
+  vector <Jet> result_btags;
 
   for (unsigned int i = 0; i < tas::pfjets_p4().size(); i++){
     LorentzVector jet = tas::pfjets_p4().at(i);
@@ -173,15 +174,15 @@ jet_result_t SSJetsCalculator(){
 
     //Save jets that make it this far
     if (jet.pt() >= 40.) {
-      result.jets.push_back(jet);
-      result.jets_disc.push_back(disc);
+      result_jets.push_back(Jet(i));
     }
 
     //Save b-tags that make it this far
     if (disc < 0.814) continue;
-    result.btags_disc.push_back(disc);
-    result.btags.push_back(tas::pfjets_p4().at(i));
+    result_btags.push_back(Jet(i)); 
+
   }
+  std::pair <vector <Jet>, vector <Jet> > result = std::make_pair(result_jets, result_btags);
   return result;
 }
 
