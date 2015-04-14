@@ -32,6 +32,12 @@ protected:
 	vector<TString> taus_pf_IDnames_;
 	TBranch *taus_pf_IDnames_branch;
 	bool taus_pf_IDnames_isLoaded;
+	vector<TString> sparm_comment_;
+	TBranch *sparm_comment_branch;
+	bool sparm_comment_isLoaded;
+	vector<TString> sparm_names_;
+	TBranch *sparm_names_branch;
+	bool sparm_names_isLoaded;
 	bool hcalnoise_HasBadRBXTS4TS5_;
 	TBranch *hcalnoise_HasBadRBXTS4TS5_branch;
 	bool hcalnoise_HasBadRBXTS4TS5_isLoaded;
@@ -341,6 +347,24 @@ protected:
 	float gen_metPhi_;
 	TBranch *gen_metPhi_branch;
 	bool gen_metPhi_isLoaded;
+	float sparm_filterEfficiency_;
+	TBranch *sparm_filterEfficiency_branch;
+	bool sparm_filterEfficiency_isLoaded;
+	float sparm_pdfScale_;
+	TBranch *sparm_pdfScale_branch;
+	bool sparm_pdfScale_isLoaded;
+	float sparm_pdfWeight1_;
+	TBranch *sparm_pdfWeight1_branch;
+	bool sparm_pdfWeight1_isLoaded;
+	float sparm_pdfWeight2_;
+	TBranch *sparm_pdfWeight2_branch;
+	bool sparm_pdfWeight2_isLoaded;
+	float sparm_weight_;
+	TBranch *sparm_weight_branch;
+	bool sparm_weight_isLoaded;
+	float sparm_xsec_;
+	TBranch *sparm_xsec_branch;
+	bool sparm_xsec_isLoaded;
 	ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> >  evt_bsp4_;
 	TBranch *evt_bsp4_branch;
 	bool evt_bsp4_isLoaded;
@@ -1475,6 +1499,9 @@ protected:
 	vector<float> convs_ndof_;
 	TBranch *convs_ndof_branch;
 	bool convs_ndof_isLoaded;
+	vector<float> sparm_values_;
+	TBranch *sparm_values_branch;
+	bool sparm_values_isLoaded;
 	vector<float> svs_anglePV_;
 	TBranch *svs_anglePV_branch;
 	bool svs_anglePV_isLoaded;
@@ -1670,6 +1697,9 @@ protected:
 	int pdfinfo_id2_;
 	TBranch *pdfinfo_id2_branch;
 	bool pdfinfo_id2_isLoaded;
+	int sparm_subProcessId_;
+	TBranch *sparm_subProcessId_branch;
+	bool sparm_subProcessId_isLoaded;
 	vector<int> els_mc3_id_;
 	TBranch *els_mc3_id_branch;
 	bool els_mc3_id_isLoaded;
@@ -2647,6 +2677,16 @@ void Init(TTree *tree) {
 		taus_pf_IDnames_branch = tree->GetBranch(tree->GetAlias("taus_pf_IDnames"));
 		if (taus_pf_IDnames_branch) {taus_pf_IDnames_branch->SetAddress(&taus_pf_IDnames_);}
 	}
+	sparm_comment_branch = 0;
+	if (tree->GetAlias("sparm_comment") != 0) {
+		sparm_comment_branch = tree->GetBranch(tree->GetAlias("sparm_comment"));
+		if (sparm_comment_branch) {sparm_comment_branch->SetAddress(&sparm_comment_);}
+	}
+	sparm_names_branch = 0;
+	if (tree->GetAlias("sparm_names") != 0) {
+		sparm_names_branch = tree->GetBranch(tree->GetAlias("sparm_names"));
+		if (sparm_names_branch) {sparm_names_branch->SetAddress(&sparm_names_);}
+	}
 	hcalnoise_HasBadRBXTS4TS5_branch = 0;
 	if (tree->GetAlias("hcalnoise_HasBadRBXTS4TS5") != 0) {
 		hcalnoise_HasBadRBXTS4TS5_branch = tree->GetBranch(tree->GetAlias("hcalnoise_HasBadRBXTS4TS5"));
@@ -3161,6 +3201,36 @@ void Init(TTree *tree) {
 	if (tree->GetAlias("gen_metPhi") != 0) {
 		gen_metPhi_branch = tree->GetBranch(tree->GetAlias("gen_metPhi"));
 		if (gen_metPhi_branch) {gen_metPhi_branch->SetAddress(&gen_metPhi_);}
+	}
+	sparm_filterEfficiency_branch = 0;
+	if (tree->GetAlias("sparm_filterEfficiency") != 0) {
+		sparm_filterEfficiency_branch = tree->GetBranch(tree->GetAlias("sparm_filterEfficiency"));
+		if (sparm_filterEfficiency_branch) {sparm_filterEfficiency_branch->SetAddress(&sparm_filterEfficiency_);}
+	}
+	sparm_pdfScale_branch = 0;
+	if (tree->GetAlias("sparm_pdfScale") != 0) {
+		sparm_pdfScale_branch = tree->GetBranch(tree->GetAlias("sparm_pdfScale"));
+		if (sparm_pdfScale_branch) {sparm_pdfScale_branch->SetAddress(&sparm_pdfScale_);}
+	}
+	sparm_pdfWeight1_branch = 0;
+	if (tree->GetAlias("sparm_pdfWeight1") != 0) {
+		sparm_pdfWeight1_branch = tree->GetBranch(tree->GetAlias("sparm_pdfWeight1"));
+		if (sparm_pdfWeight1_branch) {sparm_pdfWeight1_branch->SetAddress(&sparm_pdfWeight1_);}
+	}
+	sparm_pdfWeight2_branch = 0;
+	if (tree->GetAlias("sparm_pdfWeight2") != 0) {
+		sparm_pdfWeight2_branch = tree->GetBranch(tree->GetAlias("sparm_pdfWeight2"));
+		if (sparm_pdfWeight2_branch) {sparm_pdfWeight2_branch->SetAddress(&sparm_pdfWeight2_);}
+	}
+	sparm_weight_branch = 0;
+	if (tree->GetAlias("sparm_weight") != 0) {
+		sparm_weight_branch = tree->GetBranch(tree->GetAlias("sparm_weight"));
+		if (sparm_weight_branch) {sparm_weight_branch->SetAddress(&sparm_weight_);}
+	}
+	sparm_xsec_branch = 0;
+	if (tree->GetAlias("sparm_xsec") != 0) {
+		sparm_xsec_branch = tree->GetBranch(tree->GetAlias("sparm_xsec"));
+		if (sparm_xsec_branch) {sparm_xsec_branch->SetAddress(&sparm_xsec_);}
 	}
 	genps_lepdaughter_p4_branch = 0;
 	if (tree->GetAlias("genps_lepdaughter_p4") != 0) {
@@ -4832,6 +4902,11 @@ void Init(TTree *tree) {
 		convs_ndof_branch = tree->GetBranch(tree->GetAlias("convs_ndof"));
 		if (convs_ndof_branch) {convs_ndof_branch->SetAddress(&convs_ndof_);}
 	}
+	sparm_values_branch = 0;
+	if (tree->GetAlias("sparm_values") != 0) {
+		sparm_values_branch = tree->GetBranch(tree->GetAlias("sparm_values"));
+		if (sparm_values_branch) {sparm_values_branch->SetAddress(&sparm_values_);}
+	}
 	svs_anglePV_branch = 0;
 	if (tree->GetAlias("svs_anglePV") != 0) {
 		svs_anglePV_branch = tree->GetBranch(tree->GetAlias("svs_anglePV"));
@@ -5156,6 +5231,11 @@ void Init(TTree *tree) {
 	if (tree->GetAlias("pdfinfo_id2") != 0) {
 		pdfinfo_id2_branch = tree->GetBranch(tree->GetAlias("pdfinfo_id2"));
 		if (pdfinfo_id2_branch) {pdfinfo_id2_branch->SetAddress(&pdfinfo_id2_);}
+	}
+	sparm_subProcessId_branch = 0;
+	if (tree->GetAlias("sparm_subProcessId") != 0) {
+		sparm_subProcessId_branch = tree->GetBranch(tree->GetAlias("sparm_subProcessId"));
+		if (sparm_subProcessId_branch) {sparm_subProcessId_branch->SetAddress(&sparm_subProcessId_);}
 	}
 	els_mc3_id_branch = 0;
 	if (tree->GetAlias("els_mc3_id") != 0) {
@@ -6383,6 +6463,8 @@ void GetEntry(unsigned int idx)
 		evt_dataset_isLoaded = false;
 		hlt_trigNames_isLoaded = false;
 		taus_pf_IDnames_isLoaded = false;
+		sparm_comment_isLoaded = false;
+		sparm_names_isLoaded = false;
 		hcalnoise_HasBadRBXTS4TS5_isLoaded = false;
 		evt_cscTightHaloId_isLoaded = false;
 		evt_hbheFilter_isLoaded = false;
@@ -6486,6 +6568,12 @@ void GetEntry(unsigned int idx)
 		evt_pfsumet_raw_isLoaded = false;
 		gen_met_isLoaded = false;
 		gen_metPhi_isLoaded = false;
+		sparm_filterEfficiency_isLoaded = false;
+		sparm_pdfScale_isLoaded = false;
+		sparm_pdfWeight1_isLoaded = false;
+		sparm_pdfWeight2_isLoaded = false;
+		sparm_weight_isLoaded = false;
+		sparm_xsec_isLoaded = false;
 		evt_bsp4_isLoaded = false;
 		els_mc_motherp4_isLoaded = false;
 		els_mc_p4_isLoaded = false;
@@ -6864,6 +6952,7 @@ void GetEntry(unsigned int idx)
 		convs_chi2_isLoaded = false;
 		convs_dl_isLoaded = false;
 		convs_ndof_isLoaded = false;
+		sparm_values_isLoaded = false;
 		svs_anglePV_isLoaded = false;
 		svs_chi2_isLoaded = false;
 		svs_dist3Dsig_isLoaded = false;
@@ -6929,6 +7018,7 @@ void GetEntry(unsigned int idx)
 		hcalnoise_passTightNoiseFilter_isLoaded = false;
 		pdfinfo_id1_isLoaded = false;
 		pdfinfo_id2_isLoaded = false;
+		sparm_subProcessId_isLoaded = false;
 		els_mc3_id_isLoaded = false;
 		els_mc3idx_isLoaded = false;
 		els_mc3_motherid_isLoaded = false;
@@ -7182,6 +7272,8 @@ void LoadAllBranches()
 	if (evt_dataset_branch != 0) evt_dataset();
 	if (hlt_trigNames_branch != 0) hlt_trigNames();
 	if (taus_pf_IDnames_branch != 0) taus_pf_IDnames();
+	if (sparm_comment_branch != 0) sparm_comment();
+	if (sparm_names_branch != 0) sparm_names();
 	if (hcalnoise_HasBadRBXTS4TS5_branch != 0) hcalnoise_HasBadRBXTS4TS5();
 	if (evt_cscTightHaloId_branch != 0) evt_cscTightHaloId();
 	if (evt_hbheFilter_branch != 0) evt_hbheFilter();
@@ -7285,6 +7377,12 @@ void LoadAllBranches()
 	if (evt_pfsumet_raw_branch != 0) evt_pfsumet_raw();
 	if (gen_met_branch != 0) gen_met();
 	if (gen_metPhi_branch != 0) gen_metPhi();
+	if (sparm_filterEfficiency_branch != 0) sparm_filterEfficiency();
+	if (sparm_pdfScale_branch != 0) sparm_pdfScale();
+	if (sparm_pdfWeight1_branch != 0) sparm_pdfWeight1();
+	if (sparm_pdfWeight2_branch != 0) sparm_pdfWeight2();
+	if (sparm_weight_branch != 0) sparm_weight();
+	if (sparm_xsec_branch != 0) sparm_xsec();
 	if (evt_bsp4_branch != 0) evt_bsp4();
 	if (els_mc_motherp4_branch != 0) els_mc_motherp4();
 	if (els_mc_p4_branch != 0) els_mc_p4();
@@ -7663,6 +7761,7 @@ void LoadAllBranches()
 	if (convs_chi2_branch != 0) convs_chi2();
 	if (convs_dl_branch != 0) convs_dl();
 	if (convs_ndof_branch != 0) convs_ndof();
+	if (sparm_values_branch != 0) sparm_values();
 	if (svs_anglePV_branch != 0) svs_anglePV();
 	if (svs_chi2_branch != 0) svs_chi2();
 	if (svs_dist3Dsig_branch != 0) svs_dist3Dsig();
@@ -7728,6 +7827,7 @@ void LoadAllBranches()
 	if (hcalnoise_passTightNoiseFilter_branch != 0) hcalnoise_passTightNoiseFilter();
 	if (pdfinfo_id1_branch != 0) pdfinfo_id1();
 	if (pdfinfo_id2_branch != 0) pdfinfo_id2();
+	if (sparm_subProcessId_branch != 0) sparm_subProcessId();
 	if (els_mc3_id_branch != 0) els_mc3_id();
 	if (els_mc3idx_branch != 0) els_mc3idx();
 	if (els_mc3_motherid_branch != 0) els_mc3_motherid();
@@ -8037,6 +8137,32 @@ void LoadAllBranches()
 			taus_pf_IDnames_isLoaded = true;
 		}
 		return taus_pf_IDnames_;
+	}
+	const vector<TString> &sparm_comment()
+	{
+		if (not sparm_comment_isLoaded) {
+			if (sparm_comment_branch != 0) {
+				sparm_comment_branch->GetEntry(index);
+			} else { 
+				printf("branch sparm_comment_branch does not exist!\n");
+				exit(1);
+			}
+			sparm_comment_isLoaded = true;
+		}
+		return sparm_comment_;
+	}
+	const vector<TString> &sparm_names()
+	{
+		if (not sparm_names_isLoaded) {
+			if (sparm_names_branch != 0) {
+				sparm_names_branch->GetEntry(index);
+			} else { 
+				printf("branch sparm_names_branch does not exist!\n");
+				exit(1);
+			}
+			sparm_names_isLoaded = true;
+		}
+		return sparm_names_;
 	}
 	bool &hcalnoise_HasBadRBXTS4TS5()
 	{
@@ -9376,6 +9502,84 @@ void LoadAllBranches()
 			gen_metPhi_isLoaded = true;
 		}
 		return gen_metPhi_;
+	}
+	float &sparm_filterEfficiency()
+	{
+		if (not sparm_filterEfficiency_isLoaded) {
+			if (sparm_filterEfficiency_branch != 0) {
+				sparm_filterEfficiency_branch->GetEntry(index);
+			} else { 
+				printf("branch sparm_filterEfficiency_branch does not exist!\n");
+				exit(1);
+			}
+			sparm_filterEfficiency_isLoaded = true;
+		}
+		return sparm_filterEfficiency_;
+	}
+	float &sparm_pdfScale()
+	{
+		if (not sparm_pdfScale_isLoaded) {
+			if (sparm_pdfScale_branch != 0) {
+				sparm_pdfScale_branch->GetEntry(index);
+			} else { 
+				printf("branch sparm_pdfScale_branch does not exist!\n");
+				exit(1);
+			}
+			sparm_pdfScale_isLoaded = true;
+		}
+		return sparm_pdfScale_;
+	}
+	float &sparm_pdfWeight1()
+	{
+		if (not sparm_pdfWeight1_isLoaded) {
+			if (sparm_pdfWeight1_branch != 0) {
+				sparm_pdfWeight1_branch->GetEntry(index);
+			} else { 
+				printf("branch sparm_pdfWeight1_branch does not exist!\n");
+				exit(1);
+			}
+			sparm_pdfWeight1_isLoaded = true;
+		}
+		return sparm_pdfWeight1_;
+	}
+	float &sparm_pdfWeight2()
+	{
+		if (not sparm_pdfWeight2_isLoaded) {
+			if (sparm_pdfWeight2_branch != 0) {
+				sparm_pdfWeight2_branch->GetEntry(index);
+			} else { 
+				printf("branch sparm_pdfWeight2_branch does not exist!\n");
+				exit(1);
+			}
+			sparm_pdfWeight2_isLoaded = true;
+		}
+		return sparm_pdfWeight2_;
+	}
+	float &sparm_weight()
+	{
+		if (not sparm_weight_isLoaded) {
+			if (sparm_weight_branch != 0) {
+				sparm_weight_branch->GetEntry(index);
+			} else { 
+				printf("branch sparm_weight_branch does not exist!\n");
+				exit(1);
+			}
+			sparm_weight_isLoaded = true;
+		}
+		return sparm_weight_;
+	}
+	float &sparm_xsec()
+	{
+		if (not sparm_xsec_isLoaded) {
+			if (sparm_xsec_branch != 0) {
+				sparm_xsec_branch->GetEntry(index);
+			} else { 
+				printf("branch sparm_xsec_branch does not exist!\n");
+				exit(1);
+			}
+			sparm_xsec_isLoaded = true;
+		}
+		return sparm_xsec_;
 	}
 	ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> >  &evt_bsp4()
 	{
@@ -14291,6 +14495,19 @@ void LoadAllBranches()
 		}
 		return convs_ndof_;
 	}
+	const vector<float> &sparm_values()
+	{
+		if (not sparm_values_isLoaded) {
+			if (sparm_values_branch != 0) {
+				sparm_values_branch->GetEntry(index);
+			} else { 
+				printf("branch sparm_values_branch does not exist!\n");
+				exit(1);
+			}
+			sparm_values_isLoaded = true;
+		}
+		return sparm_values_;
+	}
 	const vector<float> &svs_anglePV()
 	{
 		if (not svs_anglePV_isLoaded) {
@@ -15135,6 +15352,19 @@ void LoadAllBranches()
 			pdfinfo_id2_isLoaded = true;
 		}
 		return pdfinfo_id2_;
+	}
+	int &sparm_subProcessId()
+	{
+		if (not sparm_subProcessId_isLoaded) {
+			if (sparm_subProcessId_branch != 0) {
+				sparm_subProcessId_branch->GetEntry(index);
+			} else { 
+				printf("branch sparm_subProcessId_branch does not exist!\n");
+				exit(1);
+			}
+			sparm_subProcessId_isLoaded = true;
+		}
+		return sparm_subProcessId_;
 	}
 	const vector<int> &els_mc3_id()
 	{
@@ -18361,6 +18591,8 @@ namespace tas {
 	const vector<TString> &evt_dataset();
 	const vector<TString> &hlt_trigNames();
 	const vector<TString> &taus_pf_IDnames();
+	const vector<TString> &sparm_comment();
+	const vector<TString> &sparm_names();
 	const bool &hcalnoise_HasBadRBXTS4TS5();
 	const bool &evt_cscTightHaloId();
 	const bool &evt_hbheFilter();
@@ -18464,6 +18696,12 @@ namespace tas {
 	const float &evt_pfsumet_raw();
 	const float &gen_met();
 	const float &gen_metPhi();
+	const float &sparm_filterEfficiency();
+	const float &sparm_pdfScale();
+	const float &sparm_pdfWeight1();
+	const float &sparm_pdfWeight2();
+	const float &sparm_weight();
+	const float &sparm_xsec();
 	const ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> >  &evt_bsp4();
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &els_mc_motherp4();
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &els_mc_p4();
@@ -18842,6 +19080,7 @@ namespace tas {
 	const vector<float> &convs_chi2();
 	const vector<float> &convs_dl();
 	const vector<float> &convs_ndof();
+	const vector<float> &sparm_values();
 	const vector<float> &svs_anglePV();
 	const vector<float> &svs_chi2();
 	const vector<float> &svs_dist3Dsig();
@@ -18907,6 +19146,7 @@ namespace tas {
 	const int &hcalnoise_passTightNoiseFilter();
 	const int &pdfinfo_id1();
 	const int &pdfinfo_id2();
+	const int &sparm_subProcessId();
 	const vector<int> &els_mc3_id();
 	const vector<int> &els_mc3idx();
 	const vector<int> &els_mc3_motherid();

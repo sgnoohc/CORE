@@ -6,6 +6,8 @@ namespace tas {
 	const vector<TString> &evt_dataset() { return cms3.evt_dataset(); }
 	const vector<TString> &hlt_trigNames() { return cms3.hlt_trigNames(); }
 	const vector<TString> &taus_pf_IDnames() { return cms3.taus_pf_IDnames(); }
+	const vector<TString> &sparm_comment() { return cms3.sparm_comment(); }
+	const vector<TString> &sparm_names() { return cms3.sparm_names(); }
 	const bool &hcalnoise_HasBadRBXTS4TS5() { return cms3.hcalnoise_HasBadRBXTS4TS5(); }
 	const bool &evt_cscTightHaloId() { return cms3.evt_cscTightHaloId(); }
 	const bool &evt_hbheFilter() { return cms3.evt_hbheFilter(); }
@@ -109,6 +111,12 @@ namespace tas {
 	const float &evt_pfsumet_raw() { return cms3.evt_pfsumet_raw(); }
 	const float &gen_met() { return cms3.gen_met(); }
 	const float &gen_metPhi() { return cms3.gen_metPhi(); }
+	const float &sparm_filterEfficiency() { return cms3.sparm_filterEfficiency(); }
+	const float &sparm_pdfScale() { return cms3.sparm_pdfScale(); }
+	const float &sparm_pdfWeight1() { return cms3.sparm_pdfWeight1(); }
+	const float &sparm_pdfWeight2() { return cms3.sparm_pdfWeight2(); }
+	const float &sparm_weight() { return cms3.sparm_weight(); }
+	const float &sparm_xsec() { return cms3.sparm_xsec(); }
 	const ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> >  &evt_bsp4() { return cms3.evt_bsp4(); }
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &els_mc_motherp4() { return cms3.els_mc_motherp4(); }
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &els_mc_p4() { return cms3.els_mc_p4(); }
@@ -487,6 +495,7 @@ namespace tas {
 	const vector<float> &convs_chi2() { return cms3.convs_chi2(); }
 	const vector<float> &convs_dl() { return cms3.convs_dl(); }
 	const vector<float> &convs_ndof() { return cms3.convs_ndof(); }
+	const vector<float> &sparm_values() { return cms3.sparm_values(); }
 	const vector<float> &svs_anglePV() { return cms3.svs_anglePV(); }
 	const vector<float> &svs_chi2() { return cms3.svs_chi2(); }
 	const vector<float> &svs_dist3Dsig() { return cms3.svs_dist3Dsig(); }
@@ -552,6 +561,7 @@ namespace tas {
 	const int &hcalnoise_passTightNoiseFilter() { return cms3.hcalnoise_passTightNoiseFilter(); }
 	const int &pdfinfo_id1() { return cms3.pdfinfo_id1(); }
 	const int &pdfinfo_id2() { return cms3.pdfinfo_id2(); }
+	const int &sparm_subProcessId() { return cms3.sparm_subProcessId(); }
 	const vector<int> &els_mc3_id() { return cms3.els_mc3_id(); }
 	const vector<int> &els_mc3idx() { return cms3.els_mc3idx(); }
 	const vector<int> &els_mc3_motherid() { return cms3.els_mc3_motherid(); }
