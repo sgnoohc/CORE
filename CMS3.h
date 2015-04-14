@@ -2393,6 +2393,9 @@ protected:
 	vector<unsigned long long> evt_timestamp_;
 	TBranch *evt_timestamp_branch;
 	bool evt_timestamp_isLoaded;
+	unsigned long long	evt_nEvts_;
+	TBranch *evt_nEvts_branch;
+	bool evt_nEvts_isLoaded;
 	float	evt_filt_eff_;
 	TBranch *evt_filt_eff_branch;
 	bool evt_filt_eff_isLoaded;
@@ -6359,6 +6362,11 @@ void Init(TTree *tree) {
 		evt_timestamp_branch = tree->GetBranch(tree->GetAlias("evt_timestamp"));
 		if (evt_timestamp_branch) {evt_timestamp_branch->SetAddress(&evt_timestamp_);}
 	}
+	evt_nEvts_branch = 0;
+	if (tree->GetAlias("evt_nEvts") != 0) {
+		evt_nEvts_branch = tree->GetBranch(tree->GetAlias("evt_nEvts"));
+		if (evt_nEvts_branch) {evt_nEvts_branch->SetAddress(&evt_nEvts_);}
+	}
 	evt_filt_eff_branch = 0;
 	if (tree->GetAlias("evt_filt_eff") != 0) {
 		evt_filt_eff_branch = tree->GetBranch(tree->GetAlias("evt_filt_eff"));
@@ -7162,6 +7170,7 @@ void GetEntry(unsigned int idx)
 		mus_HLT_Mu8_Ele17_TrailingLeg_isLoaded = false;
 		evt_event_isLoaded = false;
 		evt_timestamp_isLoaded = false;
+		evt_nEvts_isLoaded = false;
 		evt_filt_eff_isLoaded = false;
 	}
 
@@ -7960,6 +7969,7 @@ void LoadAllBranches()
 	if (mus_HLT_Mu8_Ele17_TrailingLeg_branch != 0) mus_HLT_Mu8_Ele17_TrailingLeg();
 	if (evt_event_branch != 0) evt_event();
 	if (evt_timestamp_branch != 0) evt_timestamp();
+	if (evt_nEvts_branch != 0) evt_nEvts();
 	if (evt_filt_eff_branch != 0) evt_filt_eff();
 }
 
@@ -18259,6 +18269,19 @@ void LoadAllBranches()
 		}
 		return evt_timestamp_;
 	}
+	unsigned long long &evt_nEvts()
+	{
+		if (not evt_nEvts_isLoaded) {
+			if (evt_nEvts_branch != 0) {
+				evt_nEvts_branch->GetEntry(index);
+			} else { 
+				printf("branch evt_nEvts_branch does not exist!\n");
+				exit(1);
+			}
+			evt_nEvts_isLoaded = true;
+		}
+		return evt_nEvts_;
+	}
 	float &evt_filt_eff()
 	{
 		if (not evt_filt_eff_isLoaded) {
@@ -19125,6 +19148,7 @@ namespace tas {
 	const vector<unsigned int> &mus_HLT_Mu8_Ele17_TrailingLeg();
 	const unsigned long long &evt_event();
 	const vector<unsigned long long> &evt_timestamp();
+	const unsigned long long &evt_nEvts();
 	const float &evt_filt_eff();
 	bool passHLTTrigger(TString trigName);
 	float passTauID(TString idName, unsigned int tauIndx);

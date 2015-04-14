@@ -793,6 +793,7 @@ namespace tas {
 	const vector<unsigned int> &mus_HLT_Mu8_Ele17_TrailingLeg() { return cms3.mus_HLT_Mu8_Ele17_TrailingLeg(); }
 	const unsigned long long &evt_event() { return cms3.evt_event(); }
 	const vector<unsigned long long> &evt_timestamp() { return cms3.evt_timestamp(); }
+	const unsigned long long &evt_nEvts() { return cms3.evt_nEvts(); }
 	const float &evt_filt_eff() { return cms3.evt_filt_eff(); }
 	bool passHLTTrigger(TString trigName) { return cms3.passHLTTrigger(trigName); }
 	float passTauID(TString idName, unsigned int tauIndx) { return cms3.passTauID(idName, tauIndx); }
