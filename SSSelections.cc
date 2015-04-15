@@ -293,13 +293,9 @@ bool passPtRel(int id, int idx, float cut, bool subtractLep) {
 
 float getPtRel(int id, int idx, bool subtractLep) {
   vector<LorentzVector> jetp4s;
-  for (unsigned int pfjidx=0;pfjidx<pfjets_p4().size();++pfjidx) {
-    Jet jet(pfjidx);
-    if (fabs(jet.eta())>2.4) continue;
-    if (isLoosePFJet(pfjidx)==false) continue;
-    jetp4s.push_back(jet.p4());
-  }
   Lep lep = Lep(id,idx);
+  LorentzVector jet = closestJet(lep.p4());
+  if (jet.pt()>0.) jetp4s.push_back(jet);
   return ptRel(lep.p4(), jetp4s, subtractLep);
 }
 
