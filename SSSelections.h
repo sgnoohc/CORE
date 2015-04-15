@@ -100,6 +100,9 @@ LorentzVector closestJet(LorentzVector lep_p4);
 //MC truth functions
 int lepMotherID(Lep lep);
 
+//Jet selection function
+std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator();
+
 //Sorting functions
 bool ptsort (int i,int j);
 bool lepsort (Lep i,Lep j);

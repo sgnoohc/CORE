@@ -2,7 +2,7 @@
 CMS3 cms3;
 namespace tas {
 	const TBits &hlt_bits() { return cms3.hlt_bits(); }
-	const vector<TString> &evt_CMS2tag() { return cms3.evt_CMS2tag(); }
+	const vector<TString> &evt_CMS3tag() { return cms3.evt_CMS3tag(); }
 	const vector<TString> &evt_dataset() { return cms3.evt_dataset(); }
 	const vector<TString> &hlt_trigNames() { return cms3.hlt_trigNames(); }
 	const vector<TString> &taus_pf_IDnames() { return cms3.taus_pf_IDnames(); }
@@ -204,10 +204,8 @@ namespace tas {
 	const vector<float> &els_e1x5_full5x5() { return cms3.els_e1x5_full5x5(); }
 	const vector<float> &els_e2x5Max() { return cms3.els_e2x5Max(); }
 	const vector<float> &els_e2x5Max_full5x5() { return cms3.els_e2x5Max_full5x5(); }
-	const vector<float> &els_e3x3() { return cms3.els_e3x3(); }
 	const vector<float> &els_e5x5() { return cms3.els_e5x5(); }
 	const vector<float> &els_e5x5_full5x5() { return cms3.els_e5x5_full5x5(); }
-	const vector<float> &els_eMax() { return cms3.els_eMax(); }
 	const vector<float> &els_eOverPIn() { return cms3.els_eOverPIn(); }
 	const vector<float> &els_eOverPOut() { return cms3.els_eOverPOut(); }
 	const vector<float> &els_eSC() { return cms3.els_eSC(); }
@@ -238,27 +236,18 @@ namespace tas {
 	const vector<float> &els_ip2derr() { return cms3.els_ip2derr(); }
 	const vector<float> &els_ip3d() { return cms3.els_ip3d(); }
 	const vector<float> &els_ip3derr() { return cms3.els_ip3derr(); }
-	const vector<float> &els_iso03_pf() { return cms3.els_iso03_pf(); }
 	const vector<float> &els_iso03_pf2012_ch() { return cms3.els_iso03_pf2012_ch(); }
 	const vector<float> &els_iso03_pf2012_em() { return cms3.els_iso03_pf2012_em(); }
 	const vector<float> &els_iso03_pf2012ext_ch() { return cms3.els_iso03_pf2012ext_ch(); }
 	const vector<float> &els_iso03_pf2012ext_em() { return cms3.els_iso03_pf2012ext_em(); }
 	const vector<float> &els_iso03_pf2012ext_nh() { return cms3.els_iso03_pf2012ext_nh(); }
 	const vector<float> &els_iso03_pf2012_nh() { return cms3.els_iso03_pf2012_nh(); }
-	const vector<float> &els_iso03_pf_ch() { return cms3.els_iso03_pf_ch(); }
-	const vector<float> &els_iso03_pf_gamma05() { return cms3.els_iso03_pf_gamma05(); }
-	const vector<float> &els_iso03_pf_nhad05() { return cms3.els_iso03_pf_nhad05(); }
-	const vector<float> &els_iso04_pf() { return cms3.els_iso04_pf(); }
 	const vector<float> &els_iso04_pf2012_ch() { return cms3.els_iso04_pf2012_ch(); }
 	const vector<float> &els_iso04_pf2012_em() { return cms3.els_iso04_pf2012_em(); }
 	const vector<float> &els_iso04_pf2012ext_ch() { return cms3.els_iso04_pf2012ext_ch(); }
 	const vector<float> &els_iso04_pf2012ext_em() { return cms3.els_iso04_pf2012ext_em(); }
 	const vector<float> &els_iso04_pf2012ext_nh() { return cms3.els_iso04_pf2012ext_nh(); }
 	const vector<float> &els_iso04_pf2012_nh() { return cms3.els_iso04_pf2012_nh(); }
-	const vector<float> &els_iso04_pf_ch() { return cms3.els_iso04_pf_ch(); }
-	const vector<float> &els_iso04_pf_gamma05() { return cms3.els_iso04_pf_gamma05(); }
-	const vector<float> &els_iso04_pf_nhad05() { return cms3.els_iso04_pf_nhad05(); }
-	const vector<float> &els_layer1_charge() { return cms3.els_layer1_charge(); }
 	const vector<float> &els_mass() { return cms3.els_mass(); }
 	const vector<float> &els_mc_patMatch_dr() { return cms3.els_mc_patMatch_dr(); }
 	const vector<float> &els_mva() { return cms3.els_mva(); }
@@ -278,7 +267,6 @@ namespace tas {
 	const vector<float> &els_sigmaEtaEta_full5x5() { return cms3.els_sigmaEtaEta_full5x5(); }
 	const vector<float> &els_sigmaIEtaIEta() { return cms3.els_sigmaIEtaIEta(); }
 	const vector<float> &els_sigmaIEtaIEta_full5x5() { return cms3.els_sigmaIEtaIEta_full5x5(); }
-	const vector<float> &els_sigmaIEtaIPhi() { return cms3.els_sigmaIEtaIPhi(); }
 	const vector<float> &els_sigmaIPhiIPhi() { return cms3.els_sigmaIPhiIPhi(); }
 	const vector<float> &els_sigmaIPhiIPhi_full5x5() { return cms3.els_sigmaIPhiIPhi_full5x5(); }
 	const vector<float> &els_sigmaIphiIphi() { return cms3.els_sigmaIphiIphi(); }
@@ -294,8 +282,6 @@ namespace tas {
 	const vector<float> &genps_iso() { return cms3.genps_iso(); }
 	const vector<float> &genps_mass() { return cms3.genps_mass(); }
 	const vector<float> &mus_backToBackCompat() { return cms3.mus_backToBackCompat(); }
-	const vector<float> &mus_best_dxyPV() { return cms3.mus_best_dxyPV(); }
-	const vector<float> &mus_best_dzPV() { return cms3.mus_best_dzPV(); }
 	const vector<float> &mus_bs2d() { return cms3.mus_bs2d(); }
 	const vector<float> &mus_bs2derr() { return cms3.mus_bs2derr(); }
 	const vector<float> &mus_bs3d() { return cms3.mus_bs3d(); }
@@ -463,28 +449,6 @@ namespace tas {
 	const vector<float> &pfjets_trackCountingHighEffBJetTag() { return cms3.pfjets_trackCountingHighEffBJetTag(); }
 	const vector<float> &pfjets_trackCountingHighPurBJetTag() { return cms3.pfjets_trackCountingHighPurBJetTag(); }
 	const vector<float> &pfjets_undoJEC() { return cms3.pfjets_undoJEC(); }
-	const vector<float> &taus_pf_againstElectronDeadECAL() { return cms3.taus_pf_againstElectronDeadECAL(); }
-	const vector<float> &taus_pf_againstElectronLoose() { return cms3.taus_pf_againstElectronLoose(); }
-	const vector<float> &taus_pf_againstElectronMedium() { return cms3.taus_pf_againstElectronMedium(); }
-	const vector<float> &taus_pf_againstElectronTight() { return cms3.taus_pf_againstElectronTight(); }
-	const vector<float> &taus_pf_againstMuonLoose() { return cms3.taus_pf_againstMuonLoose(); }
-	const vector<float> &taus_pf_againstMuonLoose2() { return cms3.taus_pf_againstMuonLoose2(); }
-	const vector<float> &taus_pf_againstMuonLoose3() { return cms3.taus_pf_againstMuonLoose3(); }
-	const vector<float> &taus_pf_againstMuonMedium() { return cms3.taus_pf_againstMuonMedium(); }
-	const vector<float> &taus_pf_againstMuonMedium2() { return cms3.taus_pf_againstMuonMedium2(); }
-	const vector<float> &taus_pf_againstMuonTight() { return cms3.taus_pf_againstMuonTight(); }
-	const vector<float> &taus_pf_againstMuonTight2() { return cms3.taus_pf_againstMuonTight2(); }
-	const vector<float> &taus_pf_againstMuonTight3() { return cms3.taus_pf_againstMuonTight3(); }
-	const vector<float> &taus_pf_byCombinedIsolationDeltaBetaCorrRaw() { return cms3.taus_pf_byCombinedIsolationDeltaBetaCorrRaw(); }
-	const vector<float> &taus_pf_byCombinedIsolationDeltaBetaCorrRaw3Hits() { return cms3.taus_pf_byCombinedIsolationDeltaBetaCorrRaw3Hits(); }
-	const vector<float> &taus_pf_byDecayModeFinding() { return cms3.taus_pf_byDecayModeFinding(); }
-	const vector<float> &taus_pf_byLooseCombinedIsolationDeltaBetaCorr() { return cms3.taus_pf_byLooseCombinedIsolationDeltaBetaCorr(); }
-	const vector<float> &taus_pf_byLooseCombinedIsolationDeltaBetaCorr3Hits() { return cms3.taus_pf_byLooseCombinedIsolationDeltaBetaCorr3Hits(); }
-	const vector<float> &taus_pf_byMediumCombinedIsolationDeltaBetaCorr() { return cms3.taus_pf_byMediumCombinedIsolationDeltaBetaCorr(); }
-	const vector<float> &taus_pf_byMediumCombinedIsolationDeltaBetaCorr3Hits() { return cms3.taus_pf_byMediumCombinedIsolationDeltaBetaCorr3Hits(); }
-	const vector<float> &taus_pf_byTightCombinedIsolationDeltaBetaCorr() { return cms3.taus_pf_byTightCombinedIsolationDeltaBetaCorr(); }
-	const vector<float> &taus_pf_byTightCombinedIsolationDeltaBetaCorr3Hits() { return cms3.taus_pf_byTightCombinedIsolationDeltaBetaCorr3Hits(); }
-	const vector<float> &taus_pf_byVLooseCombinedIsolationDeltaBetaCorr() { return cms3.taus_pf_byVLooseCombinedIsolationDeltaBetaCorr(); }
 	const vector<float> &taus_pf_mass() { return cms3.taus_pf_mass(); }
 	const vector<float> &photons_chargedHadronIso() { return cms3.photons_chargedHadronIso(); }
 	const vector<float> &photons_e1x5() { return cms3.photons_e1x5(); }
@@ -544,29 +508,17 @@ namespace tas {
 	const vector<float> &svs_yError() { return cms3.svs_yError(); }
 	const vector<float> &svs_zError() { return cms3.svs_zError(); }
 	const vector<float> &ak8jets_area() { return cms3.ak8jets_area(); }
-	const vector<float> &ak8jets_chargedEmE() { return cms3.ak8jets_chargedEmE(); }
-	const vector<float> &ak8jets_chargedHadronE() { return cms3.ak8jets_chargedHadronE(); }
 	const vector<float> &ak8jets_combinedSecondaryVertexBJetTag() { return cms3.ak8jets_combinedSecondaryVertexBJetTag(); }
-	const vector<float> &ak8jets_electronE() { return cms3.ak8jets_electronE(); }
 	const vector<float> &ak8jets_filteredMass() { return cms3.ak8jets_filteredMass(); }
-	const vector<float> &ak8jets_hfEmE() { return cms3.ak8jets_hfEmE(); }
-	const vector<float> &ak8jets_hfHadronE() { return cms3.ak8jets_hfHadronE(); }
 	const vector<float> &ak8jets_jetBProbabilityBJetTag() { return cms3.ak8jets_jetBProbabilityBJetTag(); }
 	const vector<float> &ak8jets_jetProbabilityBJetTag() { return cms3.ak8jets_jetProbabilityBJetTag(); }
 	const vector<float> &ak8jets_mass() { return cms3.ak8jets_mass(); }
-	const vector<float> &ak8jets_muonE() { return cms3.ak8jets_muonE(); }
 	const vector<float> &ak8jets_nJettinessTau1() { return cms3.ak8jets_nJettinessTau1(); }
 	const vector<float> &ak8jets_nJettinessTau2() { return cms3.ak8jets_nJettinessTau2(); }
 	const vector<float> &ak8jets_nJettinessTau3() { return cms3.ak8jets_nJettinessTau3(); }
-	const vector<float> &ak8jets_neutralEmE() { return cms3.ak8jets_neutralEmE(); }
-	const vector<float> &ak8jets_neutralHadronE() { return cms3.ak8jets_neutralHadronE(); }
-	const vector<float> &ak8jets_photonE() { return cms3.ak8jets_photonE(); }
-	const vector<float> &ak8jets_pileupJetId() { return cms3.ak8jets_pileupJetId(); }
 	const vector<float> &ak8jets_prunedMass() { return cms3.ak8jets_prunedMass(); }
-	const vector<float> &ak8jets_qJetsVolatility() { return cms3.ak8jets_qJetsVolatility(); }
 	const vector<float> &ak8jets_simpleSecondaryVertexHighEffBJetTag() { return cms3.ak8jets_simpleSecondaryVertexHighEffBJetTag(); }
 	const vector<float> &ak8jets_simpleSecondaryVertexHighPurBJetTags() { return cms3.ak8jets_simpleSecondaryVertexHighPurBJetTags(); }
-	const vector<float> &ak8jets_topJetMass() { return cms3.ak8jets_topJetMass(); }
 	const vector<float> &ak8jets_trackCountingHighEffBJetTag() { return cms3.ak8jets_trackCountingHighEffBJetTag(); }
 	const vector<float> &ak8jets_trackCountingHighPurBJetTag() { return cms3.ak8jets_trackCountingHighPurBJetTag(); }
 	const vector<float> &ak8jets_trimmedMass() { return cms3.ak8jets_trimmedMass(); }
@@ -579,9 +531,9 @@ namespace tas {
 	const vector<float> &vtxs_zError() { return cms3.vtxs_zError(); }
 	const vector<vector<float> > &mus_stationShowerDeltaR() { return cms3.mus_stationShowerDeltaR(); }
 	const vector<vector<float> > &mus_stationShowerSizeT() { return cms3.mus_stationShowerSizeT(); }
+	const vector<vector<float> > &taus_pf_IDs() { return cms3.taus_pf_IDs(); }
 	const vector<vector<float> > &puInfo_instLumi() { return cms3.puInfo_instLumi(); }
 	const vector<vector<float> > &vtxs_covMatrix() { return cms3.vtxs_covMatrix(); }
-	const vector<vector<float> > &taus_pf_IDs() { return cms3.taus_pf_IDs(); }
 	const int &evt_bsType() { return cms3.evt_bsType(); }
 	const int &evt_bunchCrossing() { return cms3.evt_bunchCrossing(); }
 	const int &evt_experimentType() { return cms3.evt_experimentType(); }
@@ -645,11 +597,6 @@ namespace tas {
 	const vector<int> &els_exp_innerlayers() { return cms3.els_exp_innerlayers(); }
 	const vector<int> &els_exp_outerlayers() { return cms3.els_exp_outerlayers(); }
 	const vector<int> &els_fiduciality() { return cms3.els_fiduciality(); }
-	const vector<int> &els_gsftrkidx() { return cms3.els_gsftrkidx(); }
-	const vector<int> &els_layer1_det() { return cms3.els_layer1_det(); }
-	const vector<int> &els_layer1_layer() { return cms3.els_layer1_layer(); }
-	const vector<int> &els_layer1_sizerphi() { return cms3.els_layer1_sizerphi(); }
-	const vector<int> &els_layer1_sizerz() { return cms3.els_layer1_sizerz(); }
 	const vector<int> &els_lostHits() { return cms3.els_lostHits(); }
 	const vector<int> &els_lost_pixelhits() { return cms3.els_lost_pixelhits(); }
 	const vector<int> &els_mc_patMatch_id() { return cms3.els_mc_patMatch_id(); }
@@ -658,9 +605,7 @@ namespace tas {
 	const vector<int> &els_nlayers3D() { return cms3.els_nlayers3D(); }
 	const vector<int> &els_nlayersLost() { return cms3.els_nlayersLost(); }
 	const vector<int> &els_sccharge() { return cms3.els_sccharge(); }
-	const vector<int> &els_scindex() { return cms3.els_scindex(); }
 	const vector<int> &els_trk_charge() { return cms3.els_trk_charge(); }
-	const vector<int> &els_trkidx() { return cms3.els_trkidx(); }
 	const vector<int> &els_type() { return cms3.els_type(); }
 	const vector<int> &els_validHits() { return cms3.els_validHits(); }
 	const vector<int> &els_valid_pixelhits() { return cms3.els_valid_pixelhits(); }
@@ -754,12 +699,9 @@ namespace tas {
 	const vector<int> &mus_validPixelHits() { return cms3.mus_validPixelHits(); }
 	const vector<int> &pfcands_charge() { return cms3.pfcands_charge(); }
 	const vector<int> &pfcands_particleId() { return cms3.pfcands_particleId(); }
-        const vector<unsigned char> &pfcands_fromPV() { return cms3.pfcands_fromPV(); }
 	const vector<int> &pfjets_chargedHadronMultiplicity() { return cms3.pfjets_chargedHadronMultiplicity(); }
 	const vector<int> &pfjets_chargedMultiplicity() { return cms3.pfjets_chargedMultiplicity(); }
 	const vector<int> &pfjets_electronMultiplicity() { return cms3.pfjets_electronMultiplicity(); }
-	const vector<int> &pfjets_hfEmMultiplicity() { return cms3.pfjets_hfEmMultiplicity(); }
-	const vector<int> &pfjets_hfHadronMultiplicity() { return cms3.pfjets_hfHadronMultiplicity(); }
 	const vector<int> &pfjets_muonMultiplicity() { return cms3.pfjets_muonMultiplicity(); }
 	const vector<int> &pfjets_neutralHadronMultiplicity() { return cms3.pfjets_neutralHadronMultiplicity(); }
 	const vector<int> &pfjets_neutralMultiplicity() { return cms3.pfjets_neutralMultiplicity(); }
@@ -775,16 +717,7 @@ namespace tas {
 	const vector<int> &convs_isConverted() { return cms3.convs_isConverted(); }
 	const vector<int> &convs_quality() { return cms3.convs_quality(); }
 	const vector<int> &svs_nTrks() { return cms3.svs_nTrks(); }
-	const vector<int> &ak8jets_chargedHadronMultiplicity() { return cms3.ak8jets_chargedHadronMultiplicity(); }
-	const vector<int> &ak8jets_chargedMultiplicity() { return cms3.ak8jets_chargedMultiplicity(); }
-	const vector<int> &ak8jets_electronMultiplicity() { return cms3.ak8jets_electronMultiplicity(); }
-	const vector<int> &ak8jets_hfEmMultiplicity() { return cms3.ak8jets_hfEmMultiplicity(); }
-	const vector<int> &ak8jets_hfHadronMultiplicity() { return cms3.ak8jets_hfHadronMultiplicity(); }
-	const vector<int> &ak8jets_muonMultiplicity() { return cms3.ak8jets_muonMultiplicity(); }
-	const vector<int> &ak8jets_neutralHadronMultiplicity() { return cms3.ak8jets_neutralHadronMultiplicity(); }
-	const vector<int> &ak8jets_neutralMultiplicity() { return cms3.ak8jets_neutralMultiplicity(); }
 	const vector<int> &ak8jets_partonFlavour() { return cms3.ak8jets_partonFlavour(); }
-	const vector<int> &ak8jets_photonMultiplicity() { return cms3.ak8jets_photonMultiplicity(); }
 	const vector<int> &vtxs_isFake() { return cms3.vtxs_isFake(); }
 	const vector<int> &vtxs_isValid() { return cms3.vtxs_isValid(); }
 	const vector<int> &vtxs_tracksSize() { return cms3.vtxs_tracksSize(); }
@@ -800,6 +733,7 @@ namespace tas {
 	const vector<vector<int> > &convs_tkalgo() { return cms3.convs_tkalgo(); }
 	const vector<vector<int> > &convs_tkidx() { return cms3.convs_tkidx(); }
 	const vector<vector<int> > &ak8jets_pfcandIndicies() { return cms3.ak8jets_pfcandIndicies(); }
+	const vector<unsigned char> &pfcands_fromPV() { return cms3.pfcands_fromPV(); }
 	const unsigned int &els_HLT_Ele17_Ele8_L1sL1DoubleEG137_version() { return cms3.els_HLT_Ele17_Ele8_L1sL1DoubleEG137_version(); }
 	const unsigned int &els_HLT_Ele17_Ele8_LeadingLeg_version() { return cms3.els_HLT_Ele17_Ele8_LeadingLeg_version(); }
 	const unsigned int &els_HLT_Ele17_Ele8_Mass50_LeadingLeg_version() { return cms3.els_HLT_Ele17_Ele8_Mass50_LeadingLeg_version(); }
@@ -817,7 +751,6 @@ namespace tas {
 	const unsigned int &els_HLT_Mu8_Ele17_version() { return cms3.els_HLT_Mu8_Ele17_version(); }
 	const unsigned int &evt_nels() { return cms3.evt_nels(); }
 	const unsigned int &evt_detectorStatus() { return cms3.evt_detectorStatus(); }
-	const unsigned long long &evt_event() { return cms3.evt_event(); }
 	const unsigned int &evt_lumiBlock() { return cms3.evt_lumiBlock(); }
 	const unsigned int &evt_run() { return cms3.evt_run(); }
 	const unsigned int &evt_ngenjetsNoMuNoNu() { return cms3.evt_ngenjetsNoMuNoNu(); }
@@ -868,8 +801,10 @@ namespace tas {
 	const vector<unsigned int> &mus_HLT_Mu17_TkMu8_TrailingLegTrkFiltered() { return cms3.mus_HLT_Mu17_TkMu8_TrailingLegTrkFiltered(); }
 	const vector<unsigned int> &mus_HLT_Mu8_Ele17() { return cms3.mus_HLT_Mu8_Ele17(); }
 	const vector<unsigned int> &mus_HLT_Mu8_Ele17_TrailingLeg() { return cms3.mus_HLT_Mu8_Ele17_TrailingLeg(); }
+	const unsigned long long &evt_event() { return cms3.evt_event(); }
+	const vector<unsigned long long> &evt_timestamp() { return cms3.evt_timestamp(); }
 	const unsigned long long &evt_nEvts() { return cms3.evt_nEvts(); }
 	const float &evt_filt_eff() { return cms3.evt_filt_eff(); }
 	bool passHLTTrigger(TString trigName) { return cms3.passHLTTrigger(trigName); }
-        float passTauID(TString idName, unsigned int tauIndx) { return cms3.passTauID(idName, tauIndx); }
+	float passTauID(TString idName, unsigned int tauIndx) { return cms3.passTauID(idName, tauIndx); }
 }

@@ -123,7 +123,7 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
 
   
    ///////////////////
-   /// SS FO v1 ///  same as tight, but no SIP3D cut and looser iso
+   /// SS FO v2   ///  same as tight, but no SIP3D cut and looser iso
    ///////////////////
 
     case(SS_fo_noiso_v2):
