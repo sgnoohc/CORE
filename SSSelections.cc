@@ -231,12 +231,12 @@ bool isLooseNewMiniIsolatedLepton(int id, int idx){
 
 //level: 0 for default, 1 for L, 2 for T, 
 bool isNewMiniIsolatedLepton(int id, int idx, int level){
-  float elMiniRelIsoCuts[3] = { 0.075, 0.22, 0.10 }; 
-  float elptratioCuts[3] = {0.725, 0.63, 0.70 };
-  float elptRelCuts[3] = {7.0, 6.0, 7.0 };
-  float muMiniRelIsoCuts[3] = { 0.10, 0.22, 0.10 }; 
-  float muptratioCuts[3] = {0.70, 0.63, 0.70 };
-  float muptRelCuts[3] = {7.0, 6.0, 7.0 };
+  float elMiniRelIsoCuts[4] = { 0.075, 0.22, 0.14, 0.10 }; 
+  float elptratioCuts[4] = {0.725, 0.63, 0.68, 0.70 };
+  float elptRelCuts[4] = {7.0, 6.0, 6.7, 7.0 };
+  float muMiniRelIsoCuts[4] = { 0.10, 0.22, 0.14, 0.10 }; 
+  float muptratioCuts[4] = {0.70, 0.63, 0.68, 0.70 };
+  float muptRelCuts[4] = {7.0, 6.0, 6.7, 7.0 };
   if (abs(id) == 11) {
     float closeJetPt = closestJet(els_p4().at(idx)).pt();
     float ptratio = ( closeJetPt>0. ? els_p4().at(idx).pt()/closeJetPt : 1. );
@@ -255,7 +255,8 @@ bool isGoodLepton(int id, int idx, IsolationMethods isoCase){
   else if (isoCase == MiniIso) return isGoodLeptonMiniIso(id,idx); 
   else if (isoCase == NewMiniIso) return isGoodLeptonNewMiniIso(id,idx,0); 
   else if (isoCase == NewMiniIsoL) return isGoodLeptonNewMiniIso(id,idx,1); 
-  else if (isoCase == NewMiniIsoT) return isGoodLeptonNewMiniIso(id,idx,2); 
+  else if (isoCase == NewMiniIsoM) return isGoodLeptonNewMiniIso(id,idx,2); 
+  else if (isoCase == NewMiniIsoT) return isGoodLeptonNewMiniIso(id,idx,3); 
   else return isGoodLeptonIso(id,idx);
 }
 
