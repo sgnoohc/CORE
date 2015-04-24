@@ -24,7 +24,7 @@ enum LeptonCategories { Prompt = 0, PromptWS = 1, PromptWF = 2, PromptFSR = 2,
 			FakeLightTrue = 3, FakeC = 4, FakeB = 5, FakeLightFake = 6, FakeHiPtGamma = 7, 
 			FakeUnknown = 8, FakeLowPtGamma = 9, All9999 = 10,
 			Other = 11, End = 12};
-enum IsolationMethods { Standard = 0, PtRel = 1, MiniIso = 2 , NewMiniIso = 3 };
+enum IsolationMethods { Standard = 0, PtRel = 1, MiniIso = 2 , NewMiniIso = 3, NewMiniIsoL = 4, NewMiniIsoT = 5 };
 
 //Structs
 struct hyp_result_t { int best_hyp; int hyp_class; };
@@ -65,7 +65,7 @@ float computeLD(DilepHyp hyp, vector<Jet> alljets, float met, float minmt);
 bool isGoodLeptonNoIso(int id, int idx);
 bool isGoodLeptonIso(int id, int idx);
 bool isGoodLeptonMiniIso(int id, int idx);
-bool isGoodLeptonNewMiniIso(int id, int idx);
+bool isGoodLeptonNewMiniIso(int id, int idx, int level);
 bool isGoodLeptonIsoOrPtRel(int id, int idx);
 bool isDenominatorLeptonNoIso(int id, int idx);
 bool isDenominatorLeptonIso(int id, int idx);
