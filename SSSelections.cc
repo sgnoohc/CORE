@@ -228,16 +228,24 @@ bool isLooseNewMiniIsolatedLepton(int id, int idx){
   }
   return false;
 }
-bool isNewMiniIsolatedLepton(int id, int idx){
+
+//level: 0 for default, 1 for L, 2 for T, 
+bool isNewMiniIsolatedLepton(int id, int idx, int level){
+  float elMiniRelIsoCuts[3] = { 0.075, 0.22, 0.10 }; 
+  float elptratioCuts[3] = {0.725, 0.63, 0.70 };
+  float elptRelCuts[3] = {7.0, 6.0, 7.0 };
+  float muMiniRelIsoCuts[3] = { 0.10, 0.22, 0.10 }; 
+  float muptratioCuts[3] = {0.70, 0.63, 0.70 };
+  float muptRelCuts[3] = {7.0, 6.0, 7.0 };
   if (abs(id) == 11) {
     float closeJetPt = closestJet(els_p4().at(idx)).pt();
     float ptratio = ( closeJetPt>0. ? els_p4().at(idx).pt()/closeJetPt : 1. );
-    return ( elMiniRelIso(idx, 0.1, true) < 0.075 && ( ptratio>0.725 || getPtRel(id, idx, true)>7.) );
+    return ( elMiniRelIso(idx, 0.1, true) < elMiniRelIsoCuts[level] && (ptratio>elptratioCuts[level] || getPtRel(id, idx, true) > elptRelCuts[level]));
   }
   if (abs(id) == 13) {
     float closeJetPt = closestJet(mus_p4().at(idx)).pt();
     float ptratio = ( closeJetPt>0. ? mus_p4().at(idx).pt()/closeJetPt : 1. );
-    return ( muMiniRelIso(idx, 0.1, true) < 0.10 && ( ptratio>0.70 || getPtRel(id, idx, true)>7.) );
+    return ( muMiniRelIso(idx, 0.1, true) < muMiniRelIsoCuts[level] && (ptratio>muptratioCuts[level] || getPtRel(id, idx, true) > muptRelCuts[level]));
   }
   return false;
 }
@@ -245,7 +253,9 @@ bool isNewMiniIsolatedLepton(int id, int idx){
 bool isGoodLepton(int id, int idx, IsolationMethods isoCase){
   if (isoCase == PtRel) return isGoodLeptonIsoOrPtRel(id,idx);
   else if (isoCase == MiniIso) return isGoodLeptonMiniIso(id,idx); 
-  else if (isoCase == NewMiniIso) return isGoodLeptonNewMiniIso(id,idx); 
+  else if (isoCase == NewMiniIso) return isGoodLeptonNewMiniIso(id,idx,0); 
+  else if (isoCase == NewMiniIsoL) return isGoodLeptonNewMiniIso(id,idx,1); 
+  else if (isoCase == NewMiniIsoT) return isGoodLeptonNewMiniIso(id,idx,2); 
   else return isGoodLeptonIso(id,idx);
 }
 
@@ -267,9 +277,9 @@ bool isGoodLeptonMiniIso(int id, int idx){
   return true;
 }
 
-bool isGoodLeptonNewMiniIso(int id, int idx){
+bool isGoodLeptonNewMiniIso(int id, int idx, int level){
   if (isGoodLeptonNoIso(id,idx)==0) return false;
-  if (isNewMiniIsolatedLepton(id,idx)==0) return false;
+  if (isNewMiniIsolatedLepton(id,idx,level)==0) return false;
   return true;
 }
 
@@ -283,6 +293,8 @@ bool isDenominatorLepton(int id, int idx, IsolationMethods isoCase){
   if (isoCase == PtRel) return isDenominatorLeptonIsoOrPtRel(id,idx);
   else if (isoCase == MiniIso) return isDenominatorLeptonMiniIso(id,idx);
   else if (isoCase == NewMiniIso) return isDenominatorLeptonNewMiniIso(id,idx);
+  else if (isoCase == NewMiniIsoL) return isDenominatorLeptonNewMiniIso(id,idx);
+  else if (isoCase == NewMiniIsoT) return isDenominatorLeptonNewMiniIso(id,idx);
   else return isDenominatorLeptonIso(id,idx);
 }
 
