@@ -234,6 +234,11 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
    /// ZMET tight v1 ///
    /////////////////////
   
+    case(ZMET_tight_v2):
+      if (!isTightMuonPOG(muIdx)) return false;
+      if (muMiniRelIso(muIdx) >= 0.1) return false; 
+      break;
+  
     case(ZMET_tight_v1):
       if (!isTightMuonPOG(muIdx)) return false;
       if (muRelIso03(muIdx, analysis) >= 0.15) return false; 

@@ -44,7 +44,7 @@ bool passElectronSelection_ZMET_v1(int index, bool vetoTransition, bool eta24 ){
   if( eta24
 	  && fabs(cms3.els_p4()[index].eta()) > 2.4    ) return false; // eta < 2.4
   // if( overlapMuon_ZMet2012_v1(index,10.0)          ) return false; // overlap removal
-  if( !electronID( index, ZMET_loose_v1 )          ) return false; // Electron ID  
+  if( !electronID( index, ZMET_loose_v2 )          ) return false; // Electron ID  
   return true;
 }
 
@@ -69,7 +69,7 @@ bool passMuonSelection_ZMET_v1(int index, bool vetoTransition, bool eta24 ){
 	  && fabs(cms3.mus_p4().at(index).eta()) < 1.566  ) return false; // veto x-ition region
   if( eta24
 	  && fabs(cms3.mus_p4().at(index).eta()) > 2.4    ) return false; // eta < 2.4
-  if( !muonID( index, ZMET_tight_v1 )                 ) return false; // tight Muon ID  
+  if( !muonID( index, ZMET_tight_v2 )                 ) return false; // tight Muon ID  
   return true;
 }
 
