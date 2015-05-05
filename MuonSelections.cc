@@ -223,25 +223,35 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
     case(ZMET_loose_v1):
       if (!isLooseMuonPOG(muIdx)) return false;
       if (muRelIso03(muIdx, analysis) >= 0.15) return false; 
+	  return true;
       break;
 
     case(ZMET_loose_noiso_v1):
       if (!isLooseMuonPOG(muIdx)) return false;
       // if (muRelIso03(muIdx, analysis) >= 0.15) return false; 
+	  return true;
       break;
 
    /////////////////////
    /// ZMET tight v1 ///
    /////////////////////
   
+    case(ZMET_tight_v2):
+      if (!isTightMuonPOG(muIdx)) return false;
+      if (muMiniRelIso(muIdx) >= 0.1) return false; 
+	  return true;
+      break;
+  
     case(ZMET_tight_v1):
       if (!isTightMuonPOG(muIdx)) return false;
       if (muRelIso03(muIdx, analysis) >= 0.15) return false; 
+	  return true;
       break;
 
     case(ZMET_tight_noiso_v1):
       if (!isTightMuonPOG(muIdx)) return false;
       // if (muRelIso03(muIdx, analysis) >= 0.15) return false; 
+	  return true;
       break;
 
    ///////////////

@@ -511,26 +511,22 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
 	/// ZMET loose v1 ///
 	/////////////////////
 
+
+  case(ZMET_loose_v2):
+	if (!isLooseElectronPOGphys14noIso(elIdx)) return false;
+	if (elMiniRelIso(elIdx) >= 0.1) return false; 
+	else return true;
+	break;
+
   case(ZMET_loose_v1):
 	if (!isLooseElectronPOGphys14noIso(elIdx)) return false;
-	if (fabs(els_etaSC().at(elIdx)) <= 1.479){
-      if (eleRelIso03(elIdx, analysis) >= 0.15) return false; 
-	}
-	else if((fabs(els_etaSC().at(elIdx)) > 1.479) && (fabs(els_etaSC().at(elIdx)) < 2.5)){
-      if (eleRelIso03(elIdx, analysis) >= 0.15) return false; 
-	}
-	else return false;
+	if (eleRelIso03(elIdx, analysis) >= 0.15) return false; 
+	else return true;
 	break;
 
   case(ZMET_loose_noiso_v1):
 	if (!isLooseElectronPOGphys14noIso(elIdx)) return false;
-	// if (fabs(els_etaSC().at(elIdx)) <= 1.479){
-    //   if (eleRelIso03(elIdx, analysis) >= 0.15) return false; 
-	// }
-	// else if((fabs(els_etaSC().at(elIdx)) > 1.479) && (fabs(els_etaSC().at(elIdx)) < 2.5)){
-    //   if (eleRelIso03(elIdx, analysis) >= 0.15) return false; 
-	// }
-	else return false;
+	else return true;
 	break;
 
    ///////////////

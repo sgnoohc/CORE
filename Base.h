@@ -43,8 +43,10 @@ enum id_level_t {
   STOP_tight_v1,
 
   ZMET_loose_noiso_v1, 
+  ZMET_loose_v2, 
   ZMET_loose_v1, 
   ZMET_tight_noiso_v1, 
+  ZMET_tight_v2, 
   ZMET_tight_v1, 
   ZMET_photon_v1
 
