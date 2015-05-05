@@ -17,7 +17,7 @@ const static float ptRelCut = 14.;
 const static float ptRelCutLoose = 6.;
 
 //Enums
-enum anal_type_t { HighHigh = 0, HighLow = 1, LowLow = 2 };
+enum anal_type_t { HighHigh = 0, HighLow = 1, LowLow = 2, Undefined = -1 };
 enum hyp_type_t { EE, MM, EM, UNASSIGNED }; 
 //fixme: put WF and FSR in different categories
 enum LeptonCategories { Prompt = 0, PromptWS = 1, PromptWF = 2, PromptFSR = 2, 
@@ -35,7 +35,7 @@ struct Jet;
 
 //helper function for sign
 template <typename T> int sgn(T val){
-    return (T(0) < val) - (val < T(0));
+  return (T(0) < val) - (val < T(0));
 }
 
 //Main Object selections
@@ -44,22 +44,20 @@ bool isDenominatorLepton(int id, int idx, IsolationMethods isoCase);
 bool isVetoLepton(int id, int idx, IsolationMethods isoCase);
 
 //Hyp selections
+hyp_result_t chooseBestHyp(IsolationMethods isoCase, bool verbose=false);
+int isGoodHyp(int iHyp, IsolationMethods isoCase, bool verbose=false);
 bool makesExtraGammaStar(int iHyp);
 bool makesExtraZ(int iHyp);
 bool hypsFromFirstGoodVertex(size_t hypIdx, float dz_cut = 1.0);
-hyp_result_t chooseBestHyp(IsolationMethods isoCase, bool verbose=false);
-int isGoodHyp(int iHyp, IsolationMethods isoCase, bool verbose=false);
 std::pair<particle_t, int> getThirdLepton(int hyp);
 std::vector<particle_t> getGenPair(bool verbose=false);
-std::vector<Lep> getBestSSLeps(std::vector<Lep> leps);//to be remove/merged with above
 
 //Signal region selections
-unsigned int analysisCategory(float lep1pt, float lep2pt);
+anal_type_t analysisCategory(float lep1pt, float lep2pt);
 void passesBaselineCuts(int njets, int nbtag, float met, float ht, unsigned int& analysisBitMask);
-int baselineRegion(int nbtag);
+int baselineRegion(int njets, int nbtags, float met, float ht, float lep1pt, float lep2pt);
 void passesSignalRegionCuts(float ht, float met, unsigned int& analysisBitMask);
-int signalRegion(int njets, int nbtag, float met, float ht, int njetscut = 4, float metcut = 120, float htcut = 400);
-float computeLD(DilepHyp hyp, vector<Jet> alljets, float met, float minmt);
+int signalRegion(int njets, int nbtags, float met, float ht, float mt_min, float lep1pt, float lep2pt);
 
 //More Lepton selections
 bool isGoodLeptonNoIso(int id, int idx);
