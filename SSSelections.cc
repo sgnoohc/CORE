@@ -396,13 +396,9 @@ bool hypsFromFirstGoodVertex(size_t hypIdx, float dz_cut){
 
 unsigned int analysisCategory(float lep1pt, float lep2pt) {
   unsigned int result = 0;
-  if (lep1pt>ptCutHigh && lep2pt>ptCutHigh) {
-    result |= 1<<HighHigh;
-  } else if (lep1pt>ptCutHigh && lep2pt>ptCutLow) {
-    result |= 1<<HighLow;
-  } else if (lep1pt>ptCutLow && lep2pt>ptCutLow) {
-    result |= 1<<LowLow;
-  }
+  if      (lep1pt>ptCutHigh && lep2pt>ptCutHigh) result |= 1<<HighHigh;
+  else if (lep1pt>ptCutHigh && lep2pt>ptCutLow)  result |= 1<<HighLow;
+  else if (lep1pt>ptCutLow && lep2pt>ptCutLow)   result |= 1<<LowLow;
   return result;
 }
 
@@ -410,7 +406,6 @@ void passesBaselineCuts(int njets, int nbtag, float met, float ht, unsigned int&
   if (analysisBitMask & 1<<HighHigh) {
     if (!(ht>80 && njets>=2 && (met>30 || ht>500)))  analysisBitMask &= ~(1<<HighHigh);
   } 
-  //if (!(ht>250 && njets>=2 && (met>30 || ht>500))) {
   if (!(ht>80 && njets>=2 && (met>30 || ht>500))) {//fixme
     analysisBitMask &= ~(1<<HighLow);
     analysisBitMask &= ~(1<<LowLow);
@@ -439,16 +434,110 @@ void passesSignalRegionCuts(float ht, float met, unsigned int& analysisBitMask) 
   }
 }
 
-//this assumes that the event has already passed all selections (including min ht and met)
-int signalRegion(int njets, int nbtag, float met, float ht, int njetscut, float metcut, float htcut) {
-  int result = 1;
-  if (nbtag==1) result+=10;
-  else if (nbtag==2) result+=20;
-  else if (nbtag>=3) result+=30;
-  if (met>metcut) result+=4;
-  if (njets>=njetscut) result+=2;
-  if (ht>htcut) result+=1;
-  return result;
+int signalRegion(int njets, int nbtags, float met, float ht, float mt_min, anal_type_t lep_pt){
+  
+  //Reject events out of kinematic acceptance
+  if (met < 50) return 0; 
+  if (njets < 2) return 0; 
+  if (lep_pt != LowLow && met > 500 && ht < 300) return 0; 
+
+  //High-high
+  if (lep_pt == HighHigh){
+    if (met > 500) return 31;
+    if (ht > 1600) return 32; 
+    if (ht < 300){
+      if (nbtags == 0 && mt_min < 120 && met < 200 && njets <= 4) return 1; 
+      if (nbtags == 0) return 3; 
+      if (nbtags == 1 && mt_min < 120 && met < 200 && njets <= 4) return 9; 
+      if (nbtags == 1) return 11; 
+      if (nbtags == 2 && mt_min < 120 && met < 200 && njets <= 4) return 17; 
+      if (nbtags == 2) return 19; 
+      if (nbtags >= 3 && mt_min < 120 && met < 200) return 25; 
+      if (nbtags >= 3 && mt_min < 120 && met >= 200) return 27; 
+      if (nbtags >= 3) return 29;
+    }
+    if (ht > 300 && ht < 1600){
+      if (nbtags == 0){
+        if (mt_min < 120 && met < 200 && njets <= 4) return 2; 
+        if (mt_min < 120 && met < 200 && njets > 4) return 4; 
+        if (mt_min < 120 && met >= 200 && njets <= 4) return 5; 
+        if (mt_min < 120 && met >= 200 && njets > 4) return 6; 
+        if (mt_min >= 120 && met < 200 && njets <= 4) return 7;
+        return 8;
+      } 
+      if (nbtags == 1){
+        if (mt_min < 120 && met < 200 && njets <= 4) return 10; 
+        if (mt_min < 120 && met < 200 && njets > 4) return 12; 
+        if (mt_min < 120 && met >= 200 && njets <= 4) return 13; 
+        if (mt_min < 120 && met >= 200 && njets > 4) return 14; 
+        if (mt_min >= 120 && met < 200 && njets <= 4) return 15;
+        return 16;
+      } 
+      if (nbtags == 2){
+        if (mt_min < 120 && met < 200 && njets <= 4) return 18; 
+        if (mt_min < 120 && met < 200 && njets > 4) return 20; 
+        if (mt_min < 120 && met >= 200 && njets <= 4) return 21; 
+        if (mt_min < 120 && met >= 200 && njets > 4) return 22; 
+        if (mt_min >= 120 && met < 200 && njets <= 4) return 23;
+        return 24;
+      } 
+      if (nbtags >= 3){
+        if (mt_min < 120 && met < 200) return 26;
+        if (mt_min < 120 && met >= 200) return 28;
+        if (mt_min >= 120) return 30;
+      }
+    }
+  }
+  
+  //High-Low
+  if (lep_pt == HighLow){
+    if (met > 500) return 25;
+    if (ht > 1600) return 26;
+    if (ht < 300){ 
+      if (nbtags == 0 && met < 200 && njets <= 4) return 1; 
+      if (mt_min < 120 && nbtags == 0) return 3;
+      if (mt_min < 120 && nbtags == 1 && met < 200 && njets <= 4) return 7; 
+      if (mt_min < 120 && nbtags == 1) return 9;
+      if (mt_min < 120 && nbtags == 2 && met < 200 && njets <= 4) return 13; 
+      if (mt_min < 120 && nbtags == 2) return 15;
+      if (mt_min < 120 && nbtags >= 3 && met < 200) return 19; 
+      if (mt_min < 120 && nbtags >= 3) return 21;
+      if (mt_min >= 120) return 23; 
+    }  
+    if (ht > 300){
+      if (nbtags == 0 && mt_min < 120 && met < 200 && njets <= 4) return 2; 
+      if (nbtags == 0 && mt_min < 120 && met < 200 && njets > 4) return 4; 
+      if (nbtags == 0 && mt_min < 120 && met < 500 && njets <= 4) return 5; 
+      if (nbtags == 0 && mt_min < 120 && met < 500 && njets > 4) return 6; 
+      if (nbtags == 1 && mt_min < 120 && met < 200 && njets <= 4) return 8; 
+      if (nbtags == 1 && mt_min < 120 && met < 200 && njets > 4) return 10; 
+      if (nbtags == 1 && mt_min < 120 && met < 500 && njets <= 4) return 11; 
+      if (nbtags == 1 && mt_min < 120 && met < 500 && njets > 4) return 12; 
+      if (nbtags == 2 && mt_min < 120 && met < 200 && njets <= 4) return 14; 
+      if (nbtags == 2 && mt_min < 120 && met < 200 && njets > 4) return 16; 
+      if (nbtags == 2 && mt_min < 120 && met < 500 && njets <= 4) return 17; 
+      if (nbtags == 2 && mt_min < 120 && met < 500 && njets > 4) return 18; 
+      if (nbtags >= 3 && mt_min < 120 && met < 200) return 20; 
+      if (nbtags >= 3 && mt_min < 120 && met >= 200) return 22; 
+      if (mt_min >= 120) return 24;
+  }
+
+  //Low-Low
+  if (lep_pt == LowLow){
+    if (ht < 300) return 0; 
+    if (mt_min > 120) return 8; 
+    if (nbtags == 0 && met < 200) return 1;
+    if (nbtags == 0 && met >= 200) return 2;
+    if (nbtags == 1 && met < 200) return 3;
+    if (nbtags == 1 && met >= 200) return 4;
+    if (nbtags == 2 && met < 200) return 5;
+    if (nbtags == 2 && met >= 200) return 6;
+    if (nbtags >= 3) return 7;
+  }
+
+  //Otherwise undefined
+  cout << "WARNING: SR UNDEFINED (should never get here)" << endl;
+  return -1;
 }
 
 float computeLD(DilepHyp hyp, vector<Jet> alljets, float met, float minmt) {
