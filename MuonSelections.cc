@@ -1,5 +1,6 @@
 #include "MuonSelections.h"
 #include "Math/VectorUtil.h"
+#include "IsolationTools.h"
 
 using namespace tas;
 
@@ -53,7 +54,7 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
       break;
  
    ///////////////////
-   /// SS veto v1 ///
+   /// SS veto v1, v2 ///
    ///////////////////
   
     case(SS_veto_noiso_v1):
@@ -66,6 +67,23 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
     case(SS_veto_v2):
       if (muonID(muIdx, SS_veto_noiso_v1)==0) return false;
       if (muRelIso03(muIdx, SS) > 0.50) return false;
+      return true;
+      break;
+
+   ///////////////////
+   /// SS veto v3 ///
+   ///////////////////
+  
+    case(SS_veto_noiso_v3):
+      if (fabs(mus_p4().at(muIdx).eta()) > 2.4) return false;
+      if (fabs(mus_dxyPV().at(muIdx)) > 0.05) return false;
+      if (fabs(mus_dzPV().at(muIdx)) > 0.1) return false;
+      return isLooseMuonPOG(muIdx);
+      break;
+
+    case(SS_veto_v3):
+      if (muonID(muIdx, SS_veto_noiso_v3)==0) return false;
+      if (muMiniRelIso(muIdx, true, 0.5, false, true) > 0.40) return false;
       return true;
       break;
   
@@ -141,6 +159,24 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
       break;
 
    ///////////////////
+   /// SS FO v3   ///  same as tight, but no SIP3D cut and looser iso
+   ///////////////////
+
+    case(SS_fo_noiso_v3):
+      if (muonID(muIdx, SS_veto_noiso_v3)==0) return false;//make sure it's tighter than veto
+      if (fabs(mus_dxyPV().at(muIdx)) > 0.05) return false;
+      if (fabs(mus_dzPV().at(muIdx)) > 0.1) return false;
+      if (mus_ptErr().at(muIdx)/mus_trk_p4().at(muIdx).pt() >= 0.2) return false;
+      return isMediumMuonPOG(muIdx);
+      break;
+
+   case(SS_fo_v3):
+      if (muonID(muIdx, SS_fo_noiso_v3)==0) return false;
+      if (muMiniRelIso(muIdx, true, 0.5, false, true) > 0.40) return false;
+      return true;
+      break;
+
+   ///////////////////
    /// SS tight v1 ///
    ///////////////////
   
@@ -179,6 +215,23 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
       if (muonID(muIdx, SS_tight_noiso_v2)==0) return false;
       if (muRelIso03(muIdx, SS) > 0.10) return false;
       return true;
+      break;
+
+   ///////////////////
+   /// SS tight v3 ///
+   ///////////////////
+  
+    case(SS_tight_noiso_v3):
+      if (muonID(muIdx, SS_fo_noiso_v3)==0) return false;//make sure it's tighter than FO
+      if (fabs(mus_ip3d().at(muIdx))/mus_ip3derr().at(muIdx) >= 4) return false;
+      if (fabs(mus_dzPV().at(muIdx)) > 0.1) return false;
+      if (mus_ptErr().at(muIdx)/mus_trk_p4().at(muIdx).pt() >= 0.2) return false;
+      return isMediumMuonPOG(muIdx);
+      break;
+
+   case(SS_tight_v3):
+      if (muonID(muIdx, SS_tight_noiso_v3)==0) return false;
+      return passMultiIso(13, muIdx, 0.14, 0.68, 6.7);
       break;
 
    /////////////////////
@@ -296,24 +349,29 @@ float muRelIso04(unsigned int muIdx, analysis_t analysis){
   return muRelIso04DB(muIdx);
 }
 
-float muRelIso03EA(unsigned int muIdx){
-  float chiso     = mus_isoR03_pf_ChargedHadronPt().at(muIdx);
-  float nhiso     = mus_isoR03_pf_NeutralHadronEt().at(muIdx);
-  float emiso     = mus_isoR03_pf_PhotonEt().at(muIdx);
+float muEA03(unsigned int muIdx) {
   float ea = 0.;
   if      (fabs(mus_p4().at(muIdx).eta())<=0.800) ea = 0.0913;
   else if (fabs(mus_p4().at(muIdx).eta())<=1.300) ea = 0.0765;
   else if (fabs(mus_p4().at(muIdx).eta())<=2.000) ea = 0.0546;
   else if (fabs(mus_p4().at(muIdx).eta())<=2.200) ea = 0.0728;
   else if (fabs(mus_p4().at(muIdx).eta())<=2.500) ea = 0.1177;
+  return ea;
+}
+float muRelIso03EA(unsigned int muIdx){
+  float chiso     = mus_isoR03_pf_ChargedHadronPt().at(muIdx);
+  float nhiso     = mus_isoR03_pf_NeutralHadronEt().at(muIdx);
+  float emiso     = mus_isoR03_pf_PhotonEt().at(muIdx);
+  float ea = muEA03(muIdx);
   float absiso = chiso + std::max(float(0.0), nhiso + emiso - evt_fixgrid_all_rho() * ea);
   return absiso/(mus_p4().at(muIdx).pt());
 }
 
-float muRelIsoCustomCone(unsigned int muIdx, float dr, bool useVetoCones, float ptthresh, bool useDBcor){
+float muRelIsoCustomCone(unsigned int muIdx, float dr, bool useVetoCones, float ptthresh, bool useDBcor, bool useEAcor){
   float chiso     = 0.;
   float nhiso     = 0.;
   float emiso     = 0.;
+  float correction = 0.;
   float deltaBeta = 0.;
   float deadcone_ch = 0.0001;
   float deadcone_pu = 0.01;
@@ -330,15 +388,17 @@ float muRelIsoCustomCone(unsigned int muIdx, float dr, bool useVetoCones, float 
     if ( fabs(pfcands_particleId().at(i))==130 && (pfcands_p4().at(i).pt() > ptthresh) && (!useVetoCones || thisDR > deadcone_nh) ) nhiso+=pfcands_p4().at(i).pt();
     if ( fabs(pfcands_particleId().at(i))==22 && (pfcands_p4().at(i).pt() > ptthresh) && (!useVetoCones || thisDR > deadcone_ph) ) emiso+=pfcands_p4().at(i).pt();
   }
-  float absiso = chiso + std::max(0.0, nhiso + emiso - 0.5 * deltaBeta);
+  if (useDBcor) correction = 0.5 * deltaBeta;
+  else if (useEAcor) correction = evt_fixgrid_all_rho() * muEA03(muIdx) * (dr/0.3) * (dr/0.3);
+  float absiso = chiso + std::max(float(0.0), nhiso + emiso - correction);
   return absiso/(mus_p4().at(muIdx).pt());
 }
-float muMiniRelIso(unsigned int idx, bool useVetoCones, float ptthresh, bool useDBcor) {
+float muMiniRelIso(unsigned int idx, bool useVetoCones, float ptthresh, bool useDBcor, bool useEAcor) {
   float pt = mus_p4().at(idx).pt();
   float dr = 0.2;
   if (pt>50) dr = 10./pt;
   if (pt>200) dr = 0.05;
-  return muRelIsoCustomCone(idx,dr,useVetoCones,ptthresh,useDBcor);
+  return muRelIsoCustomCone(idx,dr,useVetoCones,ptthresh,useDBcor,useEAcor);
 }
 
 int muTightID(unsigned int muIdx, analysis_t analysis){
@@ -348,10 +408,9 @@ int muTightID(unsigned int muIdx, analysis_t analysis){
       if (!isLooseMuonPOG(muIdx)) return 0;
       break;
     case (SS):
-      if (muonID(muIdx, SS_tight_v2)) return 3;
-      if (muonID(muIdx, SS_tight_v1)) return 2;
-      if (muonID(muIdx, SS_fo_v1))    return 1;
-      if (muonID(muIdx, SS_veto_v1))  return 0;
+      if (muonID(muIdx, SS_tight_v3)) return 2;
+      if (muonID(muIdx, SS_fo_v3))    return 1;
+      if (muonID(muIdx, SS_veto_v3))  return 0;
       break;
     case (HAD):
       if (muonID(muIdx, HAD_tight_v1)) return 1;

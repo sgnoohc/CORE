@@ -238,14 +238,10 @@ bool isNewMiniIsolatedLepton(int id, int idx, int level){
   float muptratioCuts[4] = {0.70, 0.68 };
   float muptRelCuts[4] = {7.0, 6.7 };
   if (abs(id) == 11) {
-    float closeJetPt = closestJet(els_p4().at(idx)).pt();
-    float ptratio = ( closeJetPt>0. ? els_p4().at(idx).pt()/closeJetPt : 1. );
-    return ( elMiniRelIso(idx, 0.1, true) < elMiniRelIsoCuts[level] && (ptratio>elptratioCuts[level] || getPtRel(id, idx, true) > elptRelCuts[level]));
+    return passMultiIso(id, idx, elMiniRelIsoCuts[level], elptratioCuts[level], elptRelCuts[level]);
   }
   if (abs(id) == 13) {
-    float closeJetPt = closestJet(mus_p4().at(idx)).pt();
-    float ptratio = ( closeJetPt>0. ? mus_p4().at(idx).pt()/closeJetPt : 1. );
-    return ( muMiniRelIso(idx, 0.1, true) < muMiniRelIsoCuts[level] && (ptratio>muptratioCuts[level] || getPtRel(id, idx, true) > muptRelCuts[level]));
+    return passMultiIso(id, idx, muMiniRelIsoCuts[level], muptratioCuts[level], muptRelCuts[level]);
   }
   return false;
 }
@@ -349,36 +345,6 @@ bool isVetoLeptonIsoOrPtRel(int id, int idx){
   return true;
 }
 
-bool passPtRel(int id, int idx, float cut, bool subtractLep) {
-  return getPtRel(id, idx, subtractLep) > cut;
-}
-
-float getPtRel(int id, int idx, bool subtractLep) {
-  vector<LorentzVector> jetp4s;
-  Lep lep = Lep(id,idx);
-  LorentzVector jet = closestJet(lep.p4());
-  if (jet.pt()>0.) jetp4s.push_back(jet);
-  return ptRel(lep.p4(), jetp4s, subtractLep);
-}
-
-LorentzVector closestJet(LorentzVector lep_p4) {
-  float dRmin = 0.4;
-  int closestIdx = -1;
-  for (unsigned int pfjidx=0;pfjidx<pfjets_p4().size();++pfjidx) {
-    Jet jet(pfjidx);
-    if (fabs(jet.eta())>2.4) continue;
-    if (isLoosePFJet(pfjidx)==false) continue;
-    float tmp_dRmin = ROOT::Math::VectorUtil::DeltaR(jet.p4(), lep_p4);
-    if ( tmp_dRmin < dRmin) {
-      closestIdx = pfjidx;
-      dRmin = tmp_dRmin;
-    }
-  }
-  if (closestIdx>=0) return pfjets_p4().at(closestIdx);
-  else return LorentzVector();
-}
-
-
 bool hypsFromFirstGoodVertex(size_t hypIdx, float dz_cut){
 
   int lt_idx = hyp_lt_index()[hypIdx];
@@ -475,63 +441,63 @@ float computeLD(DilepHyp hyp, vector<Jet> alljets, float met, float minmt) {
 
 bool isGoodVetoElectronNoIso(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 7.) return false;
-  if (!electronID(elidx, SS_veto_noiso_v2)) return false;
+  if (!electronID(elidx, SS_veto_noiso_v3)) return false;
   return true;
 }
 bool isGoodVetoElectron(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 7.) return false;
-  if (!electronID(elidx, SS_veto_v2)) return false;
+  if (!electronID(elidx, SS_veto_v3)) return false;
   return true;
 }
 bool isFakableElectronNoIso(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 10.) return false;
-  if (!electronID(elidx, SS_fo_noiso_v2)) return false;
+  if (!electronID(elidx, SS_fo_noiso_v3)) return false;
   return true;
 }
 bool isFakableElectron(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 10.) return false;
-  if (!electronID(elidx, SS_fo_v2)) return false;
+  if (!electronID(elidx, SS_fo_v3)) return false;
   return true;
 }
 bool isGoodElectronNoIso(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 10.) return false;
-  if (!electronID(elidx, SS_medium_noiso_v2)) return false;
+  if (!electronID(elidx, SS_medium_noiso_v3)) return false;
   return true;
 }
 bool isGoodElectron(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 10.) return false;
-  if (!electronID(elidx, SS_medium_v2)) return false;
+  if (!electronID(elidx, SS_medium_v3)) return false;
   return true;
 }
 
 bool isGoodVetoMuonNoIso(unsigned int muidx){
   if (mus_p4().at(muidx).pt() < 5.)         return false;
-  if (!muonID(muidx, SS_veto_noiso_v2))     return false;
+  if (!muonID(muidx, SS_veto_noiso_v3))     return false;
   return true;
 }
 bool isGoodVetoMuon(unsigned int muidx){
   if (mus_p4().at(muidx).pt() < 5.)         return false;
-  if (!muonID(muidx, SS_veto_v2))           return false;
+  if (!muonID(muidx, SS_veto_v3))           return false;
   return true;
 }
 bool isFakableMuonNoIso(unsigned int muidx){
   if (mus_p4().at(muidx).pt() < 10.)        return false;
-  if (!muonID(muidx, SS_fo_noiso_v2))       return false;
+  if (!muonID(muidx, SS_fo_noiso_v3))       return false;
   return true;
 }
 bool isFakableMuon(unsigned int muidx){
   if (mus_p4().at(muidx).pt() < 10.)        return false;
-  if (!muonID(muidx, SS_fo_v2))             return false;
+  if (!muonID(muidx, SS_fo_v3))             return false;
   return true;
 }
 bool isGoodMuonNoIso(unsigned int muidx){
   if (mus_p4().at(muidx).pt() < 10.)        return false;
-  if (!muonID(muidx, SS_tight_noiso_v2))    return false;
+  if (!muonID(muidx, SS_tight_noiso_v3))    return false;
   return true;
 }
 bool isGoodMuon(unsigned int muidx){
   if (mus_p4().at(muidx).pt() < 10.)        return false;
-  if (!muonID(muidx, SS_tight_v2))          return false;
+  if (!muonID(muidx, SS_tight_v3))          return false;
   return true;
 }
 

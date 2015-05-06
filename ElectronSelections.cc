@@ -1,6 +1,7 @@
 #include "ElectronSelections.h"
 #include "Math/LorentzVector.h"
 #include "Math/VectorUtil.h"
+#include "IsolationTools.h"
 
 //Development Notes
   //Original Author: Alex (UCSB), who stole functions from Indara, Jason, Giuseppe
@@ -178,7 +179,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
 	cout << "readMVA=0, please create and init it (e.g with createAndInitMVA function)" << endl;
 	return false;
       }
-      return globalEleMVAreader->passesElectronMVAid(elIdx, false);
+      return globalEleMVAreader->passesElectronMVAid(elIdx, id_level);
       break;
 
     case(SS_veto_v2):
@@ -187,6 +188,46 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       return true;
       break;
 
+   ////////////////////
+   /// SS veto v3 ///
+   ////////////////////
+
+    case(SS_veto_noiso_v3):
+      //trigger match cuts fixme
+      /*
+      if (fabs(els_etaSC().at(elIdx)) <= 1.479){
+        if (fabs(els_dEtaIn().at(elIdx)) >= 0.01) return false; 
+        if (fabs(els_dPhiIn().at(elIdx)) >= 0.15) return false; 
+        if (fabs( (1.0/els_ecalEnergy().at(elIdx)) - (els_eOverPIn().at(elIdx)/els_ecalEnergy().at(elIdx)) ) >= 0.05) return false;
+        if (els_sigmaIEtaIEta_full5x5().at(elIdx) >= 0.011) return false; 
+        if (els_hOverE().at(elIdx) >= 0.12) return false; 
+      }
+      else if ((fabs(els_etaSC().at(elIdx)) > 1.479) && (fabs(els_etaSC().at(elIdx)) < 2.5)){
+        if (fabs(els_dEtaIn().at(elIdx)) >= 0.01) return false; 
+        if (fabs(els_dPhiIn().at(elIdx)) >= 0.1) return false; 
+        if (fabs( (1.0/els_ecalEnergy().at(elIdx)) - (els_eOverPIn().at(elIdx)/els_ecalEnergy().at(elIdx)) ) >= 0.05) return false;
+        if (els_sigmaIEtaIEta_full5x5().at(elIdx) >= 0.031) return false; 
+        if (els_hOverE().at(elIdx) >= 0.1) return false; 
+      }
+      else return false;
+      */
+      if (fabs(els_etaSC().at(elIdx)) > 2.5) return false;
+      if (els_conv_vtx_flag().at(elIdx)) return false;
+      if (els_exp_innerlayers().at(elIdx) > 1) return false;
+      if (fabs(els_dxyPV().at(elIdx)) >= 0.05) return false;
+      if (fabs(els_dzPV().at(elIdx)) >= 0.1) return false; 
+      if (globalEleMVAreader==0) {
+	cout << "readMVA=0, please create and init it (e.g with createAndInitMVA function)" << endl;
+	return false;
+      }
+      return globalEleMVAreader->passesElectronMVAid(elIdx, id_level);
+      break;
+
+    case(SS_veto_v3):
+      if (electronID(elIdx, SS_veto_noiso_v3)==0) return false; 
+      if (elMiniRelIso(elIdx, true, 0.0, false, true) >= 0.40) return false;
+      return true;
+      break;
 
    ////////////////////
    /// HAD veto v1 ////
@@ -304,11 +345,35 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       if (threeChargeAgree(elIdx)==0) return false;
       if (fabs(els_dzPV().at(elIdx)) >= 0.1) return false;
       //if (fabs(els_ip3d().at(elIdx))/els_ip3derr().at(elIdx) >= 4) return false;
-      return globalEleMVAreader->passesElectronMVAid(elIdx, true);
+      return globalEleMVAreader->passesElectronMVAid(elIdx, id_level);
 
     case(SS_fo_v2):
       if (electronID(elIdx, SS_fo_noiso_v2)==0) return false; 
       if (eleRelIso03(elIdx, analysis) >= 0.50) return false; 
+      return true;
+      break;
+
+   ///////////////////
+   /// SS FO v3 /// same as medium, but no SIP3D cut and looser iso
+   ///////////////////
+
+    case(SS_fo_noiso_v3):
+      if (electronID(elIdx, SS_veto_noiso_v3)==0) return false;//make sure it's tighter than veto
+      if (globalEleMVAreader==0) {
+	cout << "readMVA=0, please create and init it (e.g with createAndInitMVA function)" << endl;
+	return false;
+      }
+      if (fabs(els_etaSC().at(elIdx)) > 2.5) return false;
+      if (els_conv_vtx_flag().at(elIdx)) return false;
+      if (els_exp_innerlayers().at(elIdx) > 0) return false;
+      if (threeChargeAgree(elIdx)==0) return false;
+      if (fabs(els_dxyPV().at(elIdx)) > 0.05) return false;
+      if (fabs(els_dzPV().at(elIdx)) >= 0.1) return false;
+      return globalEleMVAreader->passesElectronMVAid(elIdx, id_level);
+
+    case(SS_fo_v3):
+      if (electronID(elIdx, SS_fo_noiso_v3)==0) return false; 
+      if (elMiniRelIso(elIdx, true, 0.0, false, true) >= 0.40) return false;
       return true;
       break;
 
@@ -433,7 +498,6 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       return true;
       break;
 
-
    ////////////////////
    /// SS medium v2 ///
    ////////////////////
@@ -450,12 +514,35 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       if (threeChargeAgree(elIdx)==0) return false;
       if (fabs(els_dzPV().at(elIdx)) >= 0.1) return false;
       if (fabs(els_ip3d().at(elIdx))/els_ip3derr().at(elIdx) >= 4) return false;
-      return globalEleMVAreader->passesElectronMVAid(elIdx, true);
+      return globalEleMVAreader->passesElectronMVAid(elIdx, id_level);
 
     case(SS_medium_v2):
       if (electronID(elIdx, SS_medium_noiso_v2)==0) return false; 
       if (eleRelIso03(elIdx, analysis) >= 0.10) return false; 
       return true;
+      break;
+
+   ////////////////////
+   /// SS medium v3 ///
+   ////////////////////
+
+    case(SS_medium_noiso_v3):
+      if (electronID(elIdx, SS_fo_noiso_v3)==0) return false;//make sure it's tighter than FO
+      if (globalEleMVAreader==0) {
+	cout << "readMVA=0, please create and init it (e.g with createAndInitMVA function)" << endl;
+	return false;
+      }
+      if (fabs(els_etaSC().at(elIdx)) > 2.5) return false;
+      if (els_conv_vtx_flag().at(elIdx)) return false;
+      if (els_exp_innerlayers().at(elIdx) > 0) return false;
+      if (threeChargeAgree(elIdx)==0) return false;
+      if (fabs(els_dzPV().at(elIdx)) >= 0.1) return false;
+      if (fabs(els_ip3d().at(elIdx))/els_ip3derr().at(elIdx) >= 4) return false;
+      return globalEleMVAreader->passesElectronMVAid(elIdx, id_level);
+
+    case(SS_medium_v3):
+      if (electronID(elIdx, SS_medium_noiso_v3)==0) return false; 
+      return passMultiIso(11, elIdx, 0.10, 0.70, 7.0);
       break;
 
    /////////////////////
@@ -725,24 +812,29 @@ float eleRelIso03DB(unsigned int elIdx){
   return absiso/(els_p4().at(elIdx).pt());
 }
 
-float eleRelIso03EA(unsigned int elIdx){
-  float chiso = els_pfChargedHadronIso().at(elIdx);
-  float nhiso = els_pfNeutralHadronIso().at(elIdx);
-  float emiso = els_pfPhotonIso().at(elIdx);
-  float ea    = 0;
+float elEA03(unsigned int elIdx) {
+  float ea = 0.;
   if      (fabs(els_p4().at(elIdx).eta())<=0.800) ea = 0.1013;
   else if (fabs(els_p4().at(elIdx).eta())<=1.300) ea = 0.0988;
   else if (fabs(els_p4().at(elIdx).eta())<=2.000) ea = 0.0572;
   else if (fabs(els_p4().at(elIdx).eta())<=2.200) ea = 0.0842;
   else if (fabs(els_p4().at(elIdx).eta())<=2.500) ea = 0.1530;
+  return ea;
+}
+float eleRelIso03EA(unsigned int elIdx){
+  float chiso = els_pfChargedHadronIso().at(elIdx);
+  float nhiso = els_pfNeutralHadronIso().at(elIdx);
+  float emiso = els_pfPhotonIso().at(elIdx);
+  float ea    = elEA03(elIdx);
   float absiso = chiso + std::max(float(0.0), nhiso + emiso - evt_fixgrid_all_rho() * ea);
   return absiso/(els_p4().at(elIdx).pt());
 }
 
-float elRelIsoCustomCone(unsigned int elIdx, float dr, bool useVetoCones, float ptthresh, bool useDBcor){
+float elRelIsoCustomCone(unsigned int elIdx, float dr, bool useVetoCones, float ptthresh, bool useDBcor, bool useEAcor){
   float chiso     = 0.;
   float nhiso     = 0.;
   float emiso     = 0.;
+  float correction = 0.;
   float deltaBeta = 0.;
   float deadcone_ch = 0.;
   float deadcone_pu = 0.;
@@ -763,15 +855,17 @@ float elRelIsoCustomCone(unsigned int elIdx, float dr, bool useVetoCones, float 
     if ( fabs(pfcands_particleId().at(i))==130 && (pfcands_p4().at(i).pt() > ptthresh) ) nhiso+=pfcands_p4().at(i).pt();
     if ( fabs(pfcands_particleId().at(i))==22 && (pfcands_p4().at(i).pt() > ptthresh) && (!useVetoCones || thisDR > deadcone_ph) ) emiso+=pfcands_p4().at(i).pt();
   }
-  float absiso = chiso + std::max(0.0, nhiso + emiso - 0.5 * deltaBeta);
+  if (useDBcor) correction = 0.5 * deltaBeta;
+  else if (useEAcor) correction = evt_fixgrid_all_rho() * elEA03(elIdx) * (dr/0.3) * (dr/0.3);
+  float absiso = chiso + std::max(float(0.0), nhiso + emiso - correction);
   return absiso/(els_p4().at(elIdx).pt());
 }
-float elMiniRelIso(unsigned int idx, bool useVetoCones, float ptthresh, bool useDBcor){
+float elMiniRelIso(unsigned int idx, bool useVetoCones, float ptthresh, bool useDBcor, bool useEAcor){
   float pt = els_p4().at(idx).pt();
   float dr = 0.2;
   if (pt>50) dr = 10./pt;
   if (pt>200) dr = 0.05;
-  return elRelIsoCustomCone(idx,dr,useVetoCones,ptthresh,useDBcor);
+  return elRelIsoCustomCone(idx,dr,useVetoCones,ptthresh,useDBcor,useEAcor);
 }
 
 int eleTightID(unsigned int elIdx, analysis_t analysis){
@@ -783,9 +877,9 @@ int eleTightID(unsigned int elIdx, analysis_t analysis){
       if (!isVetoElectronPOG(elIdx)) return 0;
       break;
     case (SS):
-      if (electronID(elIdx, SS_medium_v1)) return 2;
-      if (electronID(elIdx, SS_fo_v1)) return 1;
-      if (electronID(elIdx, SS_veto_v1)) return 0;
+      if (electronID(elIdx, SS_medium_v3)) return 2;
+      if (electronID(elIdx, SS_fo_v3)) return 1;
+      if (electronID(elIdx, SS_veto_v3)) return 0;
       break;
     case (HAD):
       if (electronID(elIdx, HAD_tight_v1)) return 3;
@@ -949,15 +1043,36 @@ float readMVA::MVA(unsigned int index){
 
 }
 
-bool readMVA::passesElectronMVAid(unsigned int index, bool isTight){
+bool readMVA::passesElectronMVAid(unsigned int index, id_level_t id_level){
   float disc = MVA(index); 
   float aeta = fabs(scl_eta_);   
-  if (isTight && aeta < 0.8) return disc > 0.73;
-  if (!isTight && aeta < 0.8) return disc > 0.35;
-  if (isTight && (aeta >= 0.8 && aeta <= 1.479)) return disc > 0.57;
-  if (!isTight && (aeta >= 0.8 && aeta <= 1.479)) return disc > 0.20;
-  if (isTight && aeta > 1.479) return disc > 0.05;
-  if (!isTight && aeta > 1.479) return disc > -0.52;
+
+  switch (id_level){
+  case(SS_veto_noiso_v2):
+    if (aeta < 0.8) return disc > 0.35;
+    if ((aeta >= 0.8 && aeta <= 1.479)) return disc > 0.20;
+    if (aeta > 1.479) return disc > -0.52;
+    break;
+
+  case(SS_veto_noiso_v3):
+    if (aeta < 0.8) return disc > -0.11;
+    if ((aeta >= 0.8 && aeta <= 1.479)) return disc > -0.35;
+    if (aeta > 1.479) return disc > -0.55;
+    break;
+
+  case(SS_fo_noiso_v2):
+  case(SS_medium_noiso_v2):
+  case(SS_fo_noiso_v3):
+  case(SS_medium_noiso_v3):
+    if (aeta < 0.8) return disc > 0.73;
+    if ((aeta >= 0.8 && aeta <= 1.479)) return disc > 0.57;
+    if (aeta > 1.479) return disc > 0.05;
+    break;
+
+  default:
+    cout << "WARNING: bad id level" << endl;
+    break;
+  }
   return -99999;
 
 }

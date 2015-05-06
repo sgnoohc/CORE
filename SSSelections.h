@@ -93,9 +93,6 @@ bool isMiniIsolatedLepton(int id, int idx);
 bool isLooseMiniIsolatedLepton(int id, int idx);
 bool isNewMiniIsolatedLepton(int id, int idx);
 bool isLooseNewMiniIsolatedLepton(int id, int idx);
-bool passPtRel(int id, int idx, float cut, bool subtractLep);
-float getPtRel(int id, int idx, bool subtractLep);
-LorentzVector closestJet(LorentzVector lep_p4);
 
 //MC truth functions
 int lepMotherID(Lep lep);
