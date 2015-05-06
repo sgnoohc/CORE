@@ -22,7 +22,7 @@ float muRelIsoCustomCone(unsigned int idx, float dr, bool useVetoCones=true, flo
 float muMiniRelIso(unsigned int idx, bool useVetoCones=true, float ptthresh = 0.5, bool useDBcor=false);
 
 //Tightest ID passed by muon
-int muTightID(unsigned int muIdx, analysis_t analysis);
+int muTightID(unsigned int muIdx, analysis_t analysis, int version = 1);
 
 // tight charge requirement
 int tightChargeMuon(unsigned int muIdx);

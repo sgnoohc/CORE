@@ -708,7 +708,6 @@ bool isTightElectronPOGphys14noIso(unsigned int elIdx){
 
 float eleRelIso03(unsigned int elIdx, analysis_t analysis){
   if (analysis == HAD ) return eleRelIso03DB(elIdx);
-  if (analysis == HADv2) return eleRelIso03DB(elIdx);
   if (analysis == STOP) return eleRelIso03DB(elIdx);
   if (analysis == SS  ) return eleRelIso03EA(elIdx);
   if (analysis == ZMET) return eleRelIso03EA(elIdx);
@@ -774,7 +773,7 @@ float elMiniRelIso(unsigned int idx, bool useVetoCones, float ptthresh, bool use
   return elRelIsoCustomCone(idx,dr,useVetoCones,ptthresh,useDBcor);
 }
 
-int eleTightID(unsigned int elIdx, analysis_t analysis){
+int eleTightID(unsigned int elIdx, analysis_t analysis, int version){
   switch (analysis){
     case (POG):
       if (!isTightElectronPOG(elIdx)) return 3;
@@ -788,16 +787,18 @@ int eleTightID(unsigned int elIdx, analysis_t analysis){
       if (electronID(elIdx, SS_veto_v1)) return 0;
       break;
     case (HAD):
-      if (electronID(elIdx, HAD_tight_v1)) return 3;
-      if (electronID(elIdx, HAD_medium_v1)) return 2;
-      if (electronID(elIdx, HAD_loose_v1)) return 1;
-      if (electronID(elIdx, HAD_veto_v1)) return 0;
-      break;
-    case (HADv2):
-      if (electronID(elIdx, HAD_tight_v2)) return 3;
-      if (electronID(elIdx, HAD_medium_v2)) return 2;
-      if (electronID(elIdx, HAD_loose_v2)) return 1;
-      if (electronID(elIdx, HAD_veto_v2)) return 0;
+      if (version == 1){
+        if (electronID(elIdx, HAD_tight_v1)) return 3;
+        if (electronID(elIdx, HAD_medium_v1)) return 2;
+        if (electronID(elIdx, HAD_loose_v1)) return 1;
+        if (electronID(elIdx, HAD_veto_v1)) return 0;
+      }
+      if (version == 2){
+        if (electronID(elIdx, HAD_tight_v2)) return 3;
+        if (electronID(elIdx, HAD_medium_v2)) return 2;
+        if (electronID(elIdx, HAD_loose_v2)) return 1;
+        if (electronID(elIdx, HAD_veto_v2)) return 0;
+      }
       break;
     case (STOP):
       if (electronID(elIdx, STOP_tight_v1)) return 3;

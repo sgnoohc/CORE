@@ -341,7 +341,7 @@ float muMiniRelIso(unsigned int idx, bool useVetoCones, float ptthresh, bool use
   return muRelIsoCustomCone(idx,dr,useVetoCones,ptthresh,useDBcor);
 }
 
-int muTightID(unsigned int muIdx, analysis_t analysis){
+int muTightID(unsigned int muIdx, analysis_t analysis, int version){
   switch (analysis){
     case (POG):
       if (!isTightMuonPOG(muIdx)) return 1;
@@ -354,12 +354,14 @@ int muTightID(unsigned int muIdx, analysis_t analysis){
       if (muonID(muIdx, SS_veto_v1))  return 0;
       break;
     case (HAD):
-      if (muonID(muIdx, HAD_tight_v1)) return 1;
-      if (muonID(muIdx, HAD_loose_v1)) return 0;
-      break;
-    case (HADv2):
-      if (muonID(muIdx, HAD_tight_v2)) return 1;
-      if (muonID(muIdx, HAD_loose_v2)) return 0;
+      if (version == 1){
+        if (muonID(muIdx, HAD_tight_v1)) return 1;
+        if (muonID(muIdx, HAD_loose_v1)) return 0;
+      }
+      if (version == 2){
+        if (muonID(muIdx, HAD_tight_v2)) return 1;
+        if (muonID(muIdx, HAD_loose_v2)) return 0;
+      }
       break;
     case (STOP):
       if (muonID(muIdx, STOP_tight_v1)) return 1;
