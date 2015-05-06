@@ -27,14 +27,6 @@ bool isLooseElectronPOGphys14noIso(unsigned int elIdx);
 bool isMediumElectronPOGphys14noIso(unsigned int elIdx);
 bool isTightElectronPOGphys14noIso(unsigned int elIdx);
 
-//Isolation
-float eleRelIso03(unsigned int elIdx, analysis_t analysis);
-float eleRelIso03DB(unsigned int elIdx);
-float elEA03(unsigned int elIdx);
-float eleRelIso03EA(unsigned int elIdx);
-float elRelIsoCustomCone(unsigned int idx, float dr, bool useVetoCones=true, float ptthresh = 0.0, bool useDBcor=false, bool useEAcor=false);
-float elMiniRelIso(unsigned int idx, bool useVetoCones=true, float ptthresh = 0.0, bool useDBcor=false, bool useEAcor=false);
-
 //Tightest ID passed by electron
 int eleTightID(unsigned int elIdx, analysis_t analysis);
 
