@@ -360,83 +360,134 @@ bool hypsFromFirstGoodVertex(size_t hypIdx, float dz_cut){
   return false;
 }
 
-unsigned int analysisCategory(float lep1pt, float lep2pt) {
-  unsigned int result = 0;
-  if (lep1pt>ptCutHigh && lep2pt>ptCutHigh) {
-    result |= 1<<HighHigh;
-  } else if (lep1pt>ptCutHigh && lep2pt>ptCutLow) {
-    result |= 1<<HighLow;
-  } else if (lep1pt>ptCutLow && lep2pt>ptCutLow) {
-    result |= 1<<LowLow;
-  }
-  return result;
+anal_type_t analysisCategory(float lep1pt, float lep2pt){
+  if      (lep1pt > ptCutHigh && lep2pt > ptCutHigh) return HighHigh;
+  else if (lep1pt > ptCutHigh && lep2pt > ptCutLow)  return HighLow;
+  else if (lep2pt > ptCutHigh && lep1pt > ptCutLow)  return HighLow;
+  else if (lep1pt > ptCutLow  && lep2pt > ptCutLow)  return LowLow;
+  return Undefined;
 }
 
-void passesBaselineCuts(int njets, int nbtag, float met, float ht, unsigned int& analysisBitMask) {
-  if (analysisBitMask & 1<<HighHigh) {
-    if (!(ht>80 && njets>=2 && (met>30 || ht>500)))  analysisBitMask &= ~(1<<HighHigh);
-  } 
-  //if (!(ht>250 && njets>=2 && (met>30 || ht>500))) {
-  if (!(ht>80 && njets>=2 && (met>30 || ht>500))) {//fixme
-    analysisBitMask &= ~(1<<HighLow);
-    analysisBitMask &= ~(1<<LowLow);
-  }
+int baselineRegion(int njets, int nbtags, float met, float ht, float lep1pt, float lep2pt){
+  //Kinematic cuts
+  if (njets < 2) return -1;
+  if (met < 30 && ht < 500) return -1;
+ 
+  //Return baseline region
+  if      (nbtags == 0) return 0;
+  else if (nbtags == 1) return 10;
+  else if (nbtags == 2) return 20;
+  else                  return 30;
 }
 
-int baselineRegion(int nbtag) {
-  if (nbtag==0) return 0;
-  else if (nbtag==1) return 10;
-  else if (nbtag==2) return 20;
-  else return 30;
-}
+int signalRegion(int njets, int nbtags, float met, float ht, float mt_min, float lep1pt, float lep2pt){
+  
+  //Calculate lep_pt
+  anal_type_t lep_pt = analysisCategory(lep1pt, lep2pt); 
 
-void passesSignalRegionCuts(float ht, float met, unsigned int& analysisBitMask) {
-  if (met<50.) {
-    analysisBitMask &= ~(1<<HighHigh);
-    analysisBitMask &= ~(1<<HighLow);
-    analysisBitMask &= ~(1<<LowLow);
-  }
-  if (analysisBitMask & 1<<HighHigh) {
-    if (ht<200.)  analysisBitMask &= ~(1<<HighHigh);
-  } 
-  if (ht<200.) {//fixme
-    analysisBitMask &= ~(1<<HighLow);
-    analysisBitMask &= ~(1<<LowLow);
-  }
-}
+  //Reject events out of kinematic acceptance
+  if (met < 50) return 0; 
+  if (njets < 2) return 0; 
+  if (lep_pt != LowLow && met > 500 && ht < 300) return 0; 
 
-//this assumes that the event has already passed all selections (including min ht and met)
-int signalRegion(int njets, int nbtag, float met, float ht, int njetscut, float metcut, float htcut) {
-  int result = 1;
-  if (nbtag==1) result+=10;
-  else if (nbtag==2) result+=20;
-  else if (nbtag>=3) result+=30;
-  if (met>metcut) result+=4;
-  if (njets>=njetscut) result+=2;
-  if (ht>htcut) result+=1;
-  return result;
-}
+  //High-high
+  if (lep_pt == HighHigh){
+    if (met > 500) return 31;
+    if (ht > 1600) return 32; 
+    if (ht < 300){
+      if (nbtags == 0 && mt_min < 120 && met < 200 && njets <= 4) return 1; 
+      if (nbtags == 0) return 3; 
+      if (nbtags == 1 && mt_min < 120 && met < 200 && njets <= 4) return 9; 
+      if (nbtags == 1) return 11; 
+      if (nbtags == 2 && mt_min < 120 && met < 200 && njets <= 4) return 17; 
+      if (nbtags == 2) return 19; 
+      if (nbtags >= 3 && mt_min < 120 && met < 200) return 25; 
+      if (nbtags >= 3 && mt_min < 120 && met >= 200) return 27; 
+      if (nbtags >= 3) return 29;
+    }
+    if (ht > 300 && ht < 1600){
+      if (nbtags == 0){
+        if (mt_min < 120 && met < 200 && njets <= 4) return 2; 
+        if (mt_min < 120 && met < 200 && njets > 4) return 4; 
+        if (mt_min < 120 && met >= 200 && njets <= 4) return 5; 
+        if (mt_min < 120 && met >= 200 && njets > 4) return 6; 
+        if (mt_min >= 120 && met < 200 && njets <= 4) return 7;
+        return 8;
+      } 
+      if (nbtags == 1){
+        if (mt_min < 120 && met < 200 && njets <= 4) return 10; 
+        if (mt_min < 120 && met < 200 && njets > 4) return 12; 
+        if (mt_min < 120 && met >= 200 && njets <= 4) return 13; 
+        if (mt_min < 120 && met >= 200 && njets > 4) return 14; 
+        if (mt_min >= 120 && met < 200 && njets <= 4) return 15;
+        return 16;
+      } 
+      if (nbtags == 2){
+        if (mt_min < 120 && met < 200 && njets <= 4) return 18; 
+        if (mt_min < 120 && met < 200 && njets > 4) return 20; 
+        if (mt_min < 120 && met >= 200 && njets <= 4) return 21; 
+        if (mt_min < 120 && met >= 200 && njets > 4) return 22; 
+        if (mt_min >= 120 && met < 200 && njets <= 4) return 23;
+        return 24;
+      } 
+      if (nbtags >= 3){
+        if (mt_min < 120 && met < 200) return 26;
+        if (mt_min < 120 && met >= 200) return 28;
+        if (mt_min >= 120) return 30;
+      }
+    }
+  }
+  
+  //High-Low
+  if (lep_pt == HighLow){
+    if (met > 500) return 25;
+    if (ht > 1600) return 26;
+    if (ht < 300){ 
+      if (nbtags == 0 && met < 200 && njets <= 4) return 1; 
+      if (mt_min < 120 && nbtags == 0) return 3;
+      if (mt_min < 120 && nbtags == 1 && met < 200 && njets <= 4) return 7; 
+      if (mt_min < 120 && nbtags == 1) return 9;
+      if (mt_min < 120 && nbtags == 2 && met < 200 && njets <= 4) return 13; 
+      if (mt_min < 120 && nbtags == 2) return 15;
+      if (mt_min < 120 && nbtags >= 3 && met < 200) return 19; 
+      if (mt_min < 120 && nbtags >= 3) return 21;
+      if (mt_min >= 120) return 23; 
+    }  
+    if (ht > 300){
+      if (nbtags == 0 && mt_min < 120 && met < 200 && njets <= 4) return 2; 
+      if (nbtags == 0 && mt_min < 120 && met < 200 && njets > 4) return 4; 
+      if (nbtags == 0 && mt_min < 120 && met < 500 && njets <= 4) return 5; 
+      if (nbtags == 0 && mt_min < 120 && met < 500 && njets > 4) return 6; 
+      if (nbtags == 1 && mt_min < 120 && met < 200 && njets <= 4) return 8; 
+      if (nbtags == 1 && mt_min < 120 && met < 200 && njets > 4) return 10; 
+      if (nbtags == 1 && mt_min < 120 && met < 500 && njets <= 4) return 11; 
+      if (nbtags == 1 && mt_min < 120 && met < 500 && njets > 4) return 12; 
+      if (nbtags == 2 && mt_min < 120 && met < 200 && njets <= 4) return 14; 
+      if (nbtags == 2 && mt_min < 120 && met < 200 && njets > 4) return 16; 
+      if (nbtags == 2 && mt_min < 120 && met < 500 && njets <= 4) return 17; 
+      if (nbtags == 2 && mt_min < 120 && met < 500 && njets > 4) return 18; 
+      if (nbtags >= 3 && mt_min < 120 && met < 200) return 20; 
+      if (nbtags >= 3 && mt_min < 120 && met >= 200) return 22; 
+      if (mt_min >= 120) return 24;
+    }
+  }
 
-float computeLD(DilepHyp hyp, vector<Jet> alljets, float met, float minmt) {
-  //fixme: should variables be truncated?
-  int njets25 = 0;
-  float ht25 = 0;
-  float htratio25 = 0;
-  for (unsigned int j=0;j<alljets.size();j++) {
-    float jetpt = alljets[j].pt();
-    if (jetpt<25) continue;
-    njets25++;
-    ht25+=jetpt;
-    if (fabs(alljets[j].eta())<1.2) htratio25+=jetpt;
+  //Low-Low
+  if (lep_pt == LowLow){
+    if (ht < 300) return 0; 
+    if (mt_min > 120) return 8; 
+    if (nbtags == 0 && met < 200) return 1;
+    if (nbtags == 0 && met >= 200) return 2;
+    if (nbtags == 1 && met < 200) return 3;
+    if (nbtags == 1 && met >= 200) return 4;
+    if (nbtags == 2 && met < 200) return 5;
+    if (nbtags == 2 && met >= 200) return 6;
+    if (nbtags >= 3) return 7;
   }
-  htratio25/=ht25;
-  ht25+=(hyp.leadLep().pt()+hyp.traiLep().pt());
-  float maxlepeta = std::max(fabs(hyp.leadLep().eta()),fabs(hyp.traiLep().eta()));
-  if (hyp.leadLep().pt()>ptCutHigh) {
-    return 0.147*met/100. + 0.178*ht25/1000. + 0.045*minmt/100. + 0.036*njets25 - 0.105*maxlepeta + 0.196*htratio25;
-  } else {
-    return 0.099*met/100. + 0.80*ht25/1000. + 0.004*njets25 - 0.046*maxlepeta + 0.094*htratio25 - 0.5;
-  }
+
+  //Otherwise undefined
+  cout << "WARNING: SR UNDEFINED (should never get here)" << endl;
+  return -1;
 }
 
 bool isGoodVetoElectronNoIso(unsigned int elidx){
@@ -444,26 +495,31 @@ bool isGoodVetoElectronNoIso(unsigned int elidx){
   if (!electronID(elidx, SS_veto_noiso_v3)) return false;
   return true;
 }
+
 bool isGoodVetoElectron(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 7.) return false;
   if (!electronID(elidx, SS_veto_v3)) return false;
   return true;
 }
+
 bool isFakableElectronNoIso(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 10.) return false;
   if (!electronID(elidx, SS_fo_noiso_v3)) return false;
   return true;
 }
+
 bool isFakableElectron(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 10.) return false;
   if (!electronID(elidx, SS_fo_v3)) return false;
   return true;
 }
+
 bool isGoodElectronNoIso(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 10.) return false;
   if (!electronID(elidx, SS_medium_noiso_v3)) return false;
   return true;
 }
+
 bool isGoodElectron(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 10.) return false;
   if (!electronID(elidx, SS_medium_v3)) return false;
@@ -475,91 +531,36 @@ bool isGoodVetoMuonNoIso(unsigned int muidx){
   if (!muonID(muidx, SS_veto_noiso_v3))     return false;
   return true;
 }
+
 bool isGoodVetoMuon(unsigned int muidx){
   if (mus_p4().at(muidx).pt() < 5.)         return false;
   if (!muonID(muidx, SS_veto_v3))           return false;
   return true;
 }
+
 bool isFakableMuonNoIso(unsigned int muidx){
   if (mus_p4().at(muidx).pt() < 10.)        return false;
   if (!muonID(muidx, SS_fo_noiso_v3))       return false;
   return true;
 }
+
 bool isFakableMuon(unsigned int muidx){
   if (mus_p4().at(muidx).pt() < 10.)        return false;
   if (!muonID(muidx, SS_fo_v3))             return false;
   return true;
 }
+
 bool isGoodMuonNoIso(unsigned int muidx){
   if (mus_p4().at(muidx).pt() < 10.)        return false;
   if (!muonID(muidx, SS_tight_noiso_v3))    return false;
   return true;
 }
+
 bool isGoodMuon(unsigned int muidx){
   if (mus_p4().at(muidx).pt() < 10.)        return false;
   if (!muonID(muidx, SS_tight_v3))          return false;
   return true;
 }
-
-std::vector<Lep> getBestSSLeps(std::vector<Lep> leps) {
-  vector<Lep> hypleps;
-  //select best hyp in case >3 good leps
-  if (leps.size()>2) {
-    vector<Lep> lepsp, lepsn;
-    for (unsigned int gl=0;gl<leps.size();++gl) {
-      if (leps[gl].pdgId()>0) lepsn.push_back(leps[gl]);
-      else lepsp.push_back(leps[gl]);
-    }
-    //sort leps by muon and then by pt
-    std::sort(lepsp.begin(),lepsp.end(),lepsort);
-    std::sort(lepsn.begin(),lepsn.end(),lepsort);
-    //take first SS hyp
-    if (lepsp.size()<2) {
-      hypleps.push_back(lepsn[0]);
-      hypleps.push_back(lepsn[1]);
-      for (unsigned int ln1=0;ln1<lepsn.size();++ln1) {
-	for (unsigned int ln2=ln1;ln2<lepsn.size();++ln2) {
-	  if ( abs(lepsn[ln1].pdgId()+lepsn[ln2].pdgId())>=abs(hypleps[0].pdgId()+hypleps[1].pdgId()) && 
-	       (lepsn[ln1].p4()+lepsn[ln2].p4()).pt()>(hypleps[0].p4()+hypleps[1].p4()).pt() ) {
-	    hypleps[0] = lepsn[ln1];
-	    hypleps[1] = lepsn[ln2];  
-	  }
-	}
-      }
-    } else if (lepsn.size()<2) {
-      hypleps.push_back(lepsp[0]);
-      hypleps.push_back(lepsp[1]);
-      for (unsigned int lp1=0;lp1<lepsp.size();++lp1) {
-	for (unsigned int lp2=lp1;lp2<lepsp.size();++lp2) {
-	  if ( abs(lepsp[lp1].pdgId()+lepsp[lp2].pdgId())>=abs(hypleps[0].pdgId()+hypleps[1].pdgId()) && 
-	       (lepsp[lp1].p4()+lepsp[lp2].p4()).pt()>(hypleps[0].p4()+hypleps[1].p4()).pt() ) {
-	    hypleps[0] = lepsp[lp1];
-	    hypleps[1] = lepsp[lp2];  
-	  }
-	}
-      }
-    } else {
-      if ( abs(lepsn[0].pdgId()+lepsn[1].pdgId())>abs(lepsp[0].pdgId()+lepsp[1].pdgId()) ) {
-	hypleps.push_back(lepsn[0]);
-	hypleps.push_back(lepsn[1]);
-      } else if ( abs(lepsn[0].pdgId()+lepsn[1].pdgId())<abs(lepsp[0].pdgId()+lepsp[1].pdgId()) ) {
-	hypleps.push_back(lepsp[0]);
-	hypleps.push_back(lepsp[1]);
-      } else if ( (lepsn[0].p4()+lepsn[1].p4()).pt()>(lepsp[0].p4()+lepsp[1].p4()).pt() ) {
-	hypleps.push_back(lepsn[0]);
-	hypleps.push_back(lepsn[1]);
-      } else {
-	hypleps.push_back(lepsp[0]);
-	hypleps.push_back(lepsp[1]);
-      }
-    }
-  } else if (leps.size()==2) {
-    hypleps.push_back(leps[0]);
-    hypleps.push_back(leps[1]);	
-  }      
-  return hypleps;
-}
-
 
 int lepMotherID(Lep lep){
   if (tas::evt_isRealData()) return 1;
