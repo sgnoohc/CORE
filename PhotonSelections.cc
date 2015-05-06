@@ -4,38 +4,41 @@
 
 using namespace tas;
 
-bool isLoosePhoton(unsigned int phIdx, analysis_t analysis){
+bool isLoosePhoton(unsigned int phIdx, analysis_t analysis, int version){
   // This is based on POG LOOSE, with an additional sieie sideband
-  if (analysis == HAD) {
-    if( fabs(photons_p4().at(phIdx).eta()) <= 1.479 ){
-      if(photons_full5x5_sigmaIEtaIEta().at(phIdx) >= 0.015) return false; // looser than POG (0.01) to get a sideband
-      if(photons_full5x5_hOverEtowBC().at(phIdx) >= 0.0559) return false; 
-      if(photons_haspixelSeed().at(phIdx)) return false;
-      return true;
-      
-    } else if( fabs(photons_p4().at(phIdx).eta()) > 1.479 && fabs(photons_p4().at(phIdx).eta())  < 2.5){
-      if(photons_full5x5_sigmaIEtaIEta().at(phIdx) >= 0.035) return false; // larger than POG (0.0321) to get a sideband
-      if(photons_full5x5_hOverEtowBC().at(phIdx) >= 0.049) return false; 
-      if(photons_haspixelSeed().at(phIdx)) return false;
-      return true;
-      
-    } else return false;
+  if (analysis == HAD){
+    if (version == 1){
+      if( fabs(photons_p4().at(phIdx).eta()) <= 1.479 ){
+        if(photons_full5x5_sigmaIEtaIEta().at(phIdx) >= 0.015) return false; // looser than POG (0.01) to get a sideband
+        if(photons_full5x5_hOverEtowBC().at(phIdx) >= 0.0559) return false; 
+        if(photons_haspixelSeed().at(phIdx)) return false;
+        return true;
+      } 
+      else if( fabs(photons_p4().at(phIdx).eta()) > 1.479 && fabs(photons_p4().at(phIdx).eta())  < 2.5){
+        if(photons_full5x5_sigmaIEtaIEta().at(phIdx) >= 0.035) return false; // larger than POG (0.0321) to get a sideband
+        if(photons_full5x5_hOverEtowBC().at(phIdx) >= 0.049) return false; 
+        if(photons_haspixelSeed().at(phIdx)) return false;
+        return true;
+      } 
+      else return false;
+    }
+    if (version == 2){
+      if( fabs(photons_p4().at(phIdx).eta()) <= 1.479 ){
+        if(photons_full5x5_sigmaIEtaIEta().at(phIdx) >= 0.015) return false; // looser than POG (0.01) to get a sideband
+        if(photons_full5x5_hOverEtowBC().at(phIdx) >= 0.048) return false; 
+        if(photons_haspixelSeed().at(phIdx)) return false;
+        return true;
+      } 
+      else if( fabs(photons_p4().at(phIdx).eta()) > 1.479 && fabs(photons_p4().at(phIdx).eta())  < 2.5){
+        if(photons_full5x5_sigmaIEtaIEta().at(phIdx) >= 0.035) return false; // larger than POG (0.0321) to get a sideband
+        if(photons_full5x5_hOverEtowBC().at(phIdx) >= 0.069) return false; 
+        if(photons_haspixelSeed().at(phIdx)) return false;
+        return true;
+      } 
+      else return false;
+    } 
   }
-  else if (analysis == HADv2) {
-    if( fabs(photons_p4().at(phIdx).eta()) <= 1.479 ){
-      if(photons_full5x5_sigmaIEtaIEta().at(phIdx) >= 0.015) return false; // looser than POG (0.01) to get a sideband
-      if(photons_full5x5_hOverEtowBC().at(phIdx) >= 0.048) return false; 
-      if(photons_haspixelSeed().at(phIdx)) return false;
-      return true;
-      
-    } else if( fabs(photons_p4().at(phIdx).eta()) > 1.479 && fabs(photons_p4().at(phIdx).eta())  < 2.5){
-      if(photons_full5x5_sigmaIEtaIEta().at(phIdx) >= 0.035) return false; // larger than POG (0.0321) to get a sideband
-      if(photons_full5x5_hOverEtowBC().at(phIdx) >= 0.069) return false; 
-      if(photons_haspixelSeed().at(phIdx)) return false;
-      return true;
-      
-    } else return false;
-  } else {
+  else {
     std::cerr << "CORE::PhotonSelection -- Photon selection not implemented for analysis " << analysis << std::endl;
     std::cerr << "CORE::PhotonSelection -- I will return true." << std::endl;
   }
@@ -43,35 +46,36 @@ bool isLoosePhoton(unsigned int phIdx, analysis_t analysis){
   return true;
 }
 
-bool isTightPhoton(unsigned int phIdx, analysis_t analysis) {
+bool isTightPhoton(unsigned int phIdx, analysis_t analysis, int version){
   // This should be the same as POG LOOSE: 
   //https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedPhotonIdentificationRun2
-  if (analysis == HAD) {
-    if (!isLoosePhoton(phIdx, HAD)) return false;
-    
-    if( fabs(photons_p4().at(phIdx).eta()) <= 1.479 ){
-      if(photons_full5x5_sigmaIEtaIEta().at(phIdx) >= 0.010) return false; 
-      return true;
-      
-    } else if( fabs(photons_p4().at(phIdx).eta()) > 1.479 && fabs(photons_p4().at(phIdx).eta())  < 2.5){
-      if(photons_full5x5_sigmaIEtaIEta().at(phIdx) >= 0.0321) return false; 
-      return true;
-      
-    } else return false;
+  if (analysis == HAD){
+    if (version == 1){
+      if (!isLoosePhoton(phIdx, HAD)) return false;
+      if( fabs(photons_p4().at(phIdx).eta()) <= 1.479 ){
+        if(photons_full5x5_sigmaIEtaIEta().at(phIdx) >= 0.010) return false; 
+        return true;
+      } 
+      else if( fabs(photons_p4().at(phIdx).eta()) > 1.479 && fabs(photons_p4().at(phIdx).eta())  < 2.5){
+        if(photons_full5x5_sigmaIEtaIEta().at(phIdx) >= 0.0321) return false; 
+        return true;
+      } 
+      else return false;
+    }
+    if (version == 2){
+      if (!isLoosePhoton(phIdx, HAD, 2)) return false;
+      if( fabs(photons_p4().at(phIdx).eta()) <= 1.479 ){
+        if(photons_full5x5_sigmaIEtaIEta().at(phIdx) >= 0.0106) return false; 
+        return true;
+      } 
+      else if( fabs(photons_p4().at(phIdx).eta()) > 1.479 && fabs(photons_p4().at(phIdx).eta())  < 2.5){
+        if(photons_full5x5_sigmaIEtaIEta().at(phIdx) >= 0.0266) return false; 
+        return true;
+      } 
+      else return false;
+    } 
   }
-  else if (analysis == HADv2) {
-    if (!isLoosePhoton(phIdx, HADv2)) return false;
-    
-    if( fabs(photons_p4().at(phIdx).eta()) <= 1.479 ){
-      if(photons_full5x5_sigmaIEtaIEta().at(phIdx) >= 0.0106) return false; 
-      return true;
-      
-    } else if( fabs(photons_p4().at(phIdx).eta()) > 1.479 && fabs(photons_p4().at(phIdx).eta())  < 2.5){
-      if(photons_full5x5_sigmaIEtaIEta().at(phIdx) >= 0.0266) return false; 
-      return true;
-      
-    } else return false;
-  } else {
+  else {
     std::cerr << "CORE::PhotonSelection -- Photon selection not implemented for analysis " << analysis << std::endl;
     std::cerr << "CORE::PhotonSelection -- I will return true." << std::endl;
   } 

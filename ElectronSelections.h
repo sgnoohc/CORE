@@ -35,7 +35,7 @@ float elRelIsoCustomCone(unsigned int idx, float dr, bool useVetoCones=true, flo
 float elMiniRelIso(unsigned int idx, bool useVetoCones=true, float ptthresh = 0.0, bool useDBcor=false);
 
 //Tightest ID passed by electron
-int eleTightID(unsigned int elIdx, analysis_t analysis);
+int eleTightID(unsigned int elIdx, analysis_t analysis, int version = 1);
 
 //Three charge agree
 bool threeChargeAgree(unsigned int elIdx); 
