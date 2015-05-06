@@ -54,9 +54,7 @@ std::vector<particle_t> getGenPair(bool verbose=false);
 
 //Signal region selections
 anal_type_t analysisCategory(float lep1pt, float lep2pt);
-void passesBaselineCuts(int njets, int nbtag, float met, float ht, unsigned int& analysisBitMask);
-int baselineRegion(int njets, int nbtags, float met, float ht, float lep1pt, float lep2pt);
-void passesSignalRegionCuts(float ht, float met, unsigned int& analysisBitMask);
+int baselineRegion(int njets, int nbtags, float met, float ht);
 int signalRegion(int njets, int nbtags, float met, float ht, float mt_min, float lep1pt, float lep2pt);
 
 //More Lepton selections
@@ -89,7 +87,7 @@ bool isIsolatedLepton(int id, int idx);
 bool isLooseIsolatedLepton(int id, int idx);
 bool isMiniIsolatedLepton(int id, int idx);
 bool isLooseMiniIsolatedLepton(int id, int idx);
-bool isNewMiniIsolatedLepton(int id, int idx);
+bool isNewMiniIsolatedLepton(int id, int idx, int level);
 bool isLooseNewMiniIsolatedLepton(int id, int idx);
 
 //MC truth functions
