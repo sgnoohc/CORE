@@ -54,7 +54,7 @@ std::vector<particle_t> getGenPair(bool verbose=false);
 
 //Signal region selections
 anal_type_t analysisCategory(float lep1pt, float lep2pt);
-int baselineRegion(int njets, int nbtags, float met, float ht);
+int baselineRegion(int njets, int nbtags, float met, float ht, float lep1_pt, float lep2_pt);
 int signalRegion(int njets, int nbtags, float met, float ht, float mt_min, float lep1pt, float lep2pt);
 
 //More Lepton selections

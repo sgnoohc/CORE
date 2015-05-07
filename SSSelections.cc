@@ -368,8 +368,10 @@ anal_type_t analysisCategory(float lep1pt, float lep2pt){
   return Undefined;
 }
 
-int baselineRegion(int njets, int nbtags, float met, float ht){
+int baselineRegion(int njets, int nbtags, float met, float ht, float lep1_pt, float lep2_pt){
   //Kinematic cuts
+  if (lep1_pt < 10) return -1;
+  if (lep2_pt < 10) return -1;
   if (njets < 2) return -1;
   if (met < 30 && ht < 500) return -1;
  
