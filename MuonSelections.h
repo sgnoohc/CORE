@@ -13,7 +13,7 @@ bool isTightMuonPOG(unsigned int muIdx);
 bool muonID(unsigned int muIdx, id_level_t id_level);
 
 //Tightest ID passed by muon
-int muTightID(unsigned int muIdx, analysis_t analysis);
+int muTightID(unsigned int muIdx, analysis_t analysis, int version = 1);
 
 // tight charge requirement
 int tightChargeMuon(unsigned int muIdx);

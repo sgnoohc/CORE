@@ -28,7 +28,7 @@ bool isMediumElectronPOGphys14noIso(unsigned int elIdx);
 bool isTightElectronPOGphys14noIso(unsigned int elIdx);
 
 //Tightest ID passed by electron
-int eleTightID(unsigned int elIdx, analysis_t analysis);
+int eleTightID(unsigned int elIdx, analysis_t analysis, int version = 1);
 
 //Three charge agree
 bool threeChargeAgree(unsigned int elIdx); 
