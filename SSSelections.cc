@@ -610,11 +610,9 @@ int isGoodHyp(int iHyp, IsolationMethods isoCase, bool verbose){
     if (abs(id_lt) == 11) cout << "   lepton with pT " << pt_lt << " passes 3chg: " << threeChargeAgree(idx_lt) << endl;
   }
 
-  //Other Cuts
-  if      (abs(id_ll) == 11 && pt_ll < 7) return 0;
-  else if (abs(id_ll) == 13 && pt_ll < 5) return 0;
-  if      (abs(id_lt) == 11 && pt_lt < 7) return 0;
-  else if (abs(id_lt) == 13 && pt_lt < 5) return 0;
+  //Kinematic Cuts
+  if (pt_ll < 10) return 0;
+  if (pt_lt < 10) return 0;
   if (fabs(eta_ll) > 2.4) return 0;
   if (fabs(eta_lt) > 2.4) return 0;
 
