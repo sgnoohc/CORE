@@ -28,6 +28,10 @@ analysis_t whichAnalysis(id_level_t id_level){
     case (SS_medium_v3):
     case (SS_tight_noiso_v3):
     case (SS_tight_v3):
+    case (SS_veto_noip_v3):
+    case (SS_veto_noiso_noip_v3):
+    case (SS_fo_noiso_noip_v3):
+    case (SS_fo_noip_v3):
       return SS;
       break;
     case (HAD_veto_noiso_v1):
