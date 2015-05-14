@@ -284,6 +284,19 @@ bool isGoodLeptonIsoOrPtRel(int id, int idx){
   return true;
 }
 
+bool isInSituFRLepton(int id, int idx){
+  if (abs(id) == 11){
+    if (els_p4().at(idx).pt() < 10.) return false;
+    if (!electronID(idx, SS_veto_noip_v3)) return false;
+    if (fabs(els_ip3d().at(idx))/els_ip3derr().at(idx) < 4) return false;
+  }
+  if (abs(id) == 13){
+    if (mus_p4().at(idx).pt() < 10.) return false;
+    if (!muonID(idx, SS_veto_noip_v3)) return false;
+    if (fabs(mus_ip3d().at(idx))/mus_ip3derr().at(idx) < 4) return false;
+  }
+}
+
 bool isDenominatorLepton(int id, int idx, IsolationMethods isoCase){
   if (isoCase == PtRel) return isDenominatorLeptonIsoOrPtRel(id,idx);
   else if (isoCase == MiniIso) return isDenominatorLeptonMiniIso(id,idx);
