@@ -295,6 +295,7 @@ bool isInSituFRLepton(int id, int idx){
     if (!muonID(idx, SS_veto_noip_v3)) return false;
     if (fabs(mus_ip3d().at(idx))/mus_ip3derr().at(idx) < 4) return false;
   }
+  return true;
 }
 
 bool isDenominatorLepton(int id, int idx, IsolationMethods isoCase){
@@ -657,12 +658,14 @@ hyp_result_t chooseBestHyp(IsolationMethods isoCase, bool verbose){
 
   //List of good hyps
   vector <int> good_hyps_ss; //same sign, tight tight
+  vector <int> good_hyps_fr; //same sign, inSituFR
   vector <int> good_hyps_sf; //same sign, single fail
   vector <int> good_hyps_df; //same sign, double fail
   vector <int> good_hyps_os; //opposite sign, tight tight
   for (unsigned int i = 0; i < tas::hyp_type().size(); i++){
     int good_hyp_result = isGoodHyp(i, isoCase, verbose);
     if (good_hyp_result == 3) good_hyps_ss.push_back(i); 
+    if (good_hyp_result == 5) good_hyps_fr.push_back(i); 
     if (good_hyp_result == 2) good_hyps_sf.push_back(i); 
     else if (good_hyp_result == 1) good_hyps_df.push_back(i); 
     else if (good_hyp_result == 4) good_hyps_os.push_back(i); 
@@ -680,6 +683,10 @@ hyp_result_t chooseBestHyp(IsolationMethods isoCase, bool verbose){
   else if (good_hyps_sf.size() != 0){
     good_hyps = good_hyps_sf;
     hyp_class_ = 2;
+  }
+  else if (good_hyps_fr.size() != 0){
+    good_hyps = good_hyps_fr;
+    hyp_class_ = 5;
   }
   else if (good_hyps_df.size() != 0){
      good_hyps = good_hyps_df;
