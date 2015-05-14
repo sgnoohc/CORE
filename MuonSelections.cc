@@ -197,7 +197,7 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
 
    case(SS_fo_noip_v3):
       if (!muonID(muIdx, SS_fo_noiso_noip_v3)) return false;
-      return passMultiIso(11, elIdx, 0.4, 6.7, 0.68); 
+      return passMultiIso(11, muIdx, 0.4, 6.7, 0.68); 
       break;
 
 

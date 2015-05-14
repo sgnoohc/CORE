@@ -605,8 +605,15 @@ int isGoodHyp(int iHyp, IsolationMethods isoCase, bool verbose){
   bool passed_id_numer_lt = isGoodLepton(id_lt, idx_lt, isoCase);
   bool passed_id_denom_ll = isDenominatorLepton(id_ll, idx_ll, isoCase);
   bool passed_id_denom_lt = isDenominatorLepton(id_lt, idx_lt, isoCase);
+  bool passed_id_inSituFR_ll = isInSituFRLepton(id_ll, idx_ll); 
+  bool passed_id_inSituFR_lt = isInSituFRLepton(id_lt, idx_lt); 
   bool extraZ = makesExtraZ(iHyp);
   bool extraGammaStar = makesExtraGammaStar(iHyp);
+  bool truth_match_ll = ((abs(id_ll) == 11 && abs(tas::els_mc_id().at(idx_ll)) == 11) || (abs(id_ll) == 13 && abs(tas::mus_mc_id().at(idx_ll)) == 13));
+  bool truth_match_lt = ((abs(id_lt) == 11 && abs(tas::els_mc_id().at(idx_lt)) == 11) || (abs(id_lt) == 13 && abs(tas::mus_mc_id().at(idx_lt)) == 13));
+
+  //Truth match
+  bool truth_inSituFR = ((truth_match_ll && !truth_match_lt) || (truth_match_lt && !truth_match_ll));
 
   //Verbose info:
   if (verbose && pt_ll > ptCutLow && pt_lt > ptCutLow){
@@ -638,8 +645,9 @@ int isGoodHyp(int iHyp, IsolationMethods isoCase, bool verbose){
   //Results
   if (passed_id_numer_ll == 0 && passed_id_denom_ll == 0) return 0; // 0 if ll fails denom
   if (passed_id_numer_lt == 0 && passed_id_denom_lt == 0) return 0; // 0 if lt fails denom
-  else if (passed_id_numer_lt == 1 && passed_id_numer_ll == 1 && isss == 1) return 3;  // 3 if both numer pass, SS
-  else if (passed_id_numer_lt == 1 && passed_id_numer_ll == 1 && isss == 0) return 4;  // 4 if both numer pass, OS
+  else if (passed_id_numer_lt && passed_id_numer_ll == 1 && isss) return 3;  // 3 if both numer pass, SS
+  else if (passed_id_inSituFR_lt && passed_id_inSituFR_ll && isss && truth_inSituFR) return 5;  // 5 if both pass inSituFR
+  else if (passed_id_numer_lt && passed_id_numer_ll == 1 && isss == 0) return 4;  // 4 if both numer pass, OS
   else if (passed_id_numer_lt == 0 && passed_id_numer_ll == 0 && passed_id_denom_lt == 1 && passed_id_denom_ll == 1 && isss == true) return 1; // 1 SS, if both denom and no numer pass
   else if (isss == true) return 2; //2 SS, one numer and one denom not numer
   else return 0; //non-highpass OS

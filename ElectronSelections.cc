@@ -243,7 +243,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
 
     case(SS_veto_noip_v3):
       if (electronID(elIdx, SS_veto_noiso_noip_v3)==0) return false; 
-      return passMultiIso(11, elIdx, 0.4, 7.0, 0.7){
+      return passMultiIso(11, elIdx, 0.4, 7.0, 0.7);
       return true;
       break;
 
