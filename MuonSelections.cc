@@ -86,6 +86,18 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
       if (muMiniRelIso(muIdx, true, 0.5, false, true) > 0.40) return false;
       return true;
       break;
+
+    case(SS_veto_noiso_noip_v3):
+      if (fabs(mus_p4().at(muIdx).eta()) > 2.4) return false;
+      //if (fabs(mus_dzPV().at(muIdx)) > 0.1) return false;
+      return isLooseMuonPOG(muIdx);
+      break;
+
+    case(SS_veto_noip_v3):
+      if (muonID(muIdx, SS_veto_noiso_noip_v3)==0) return false;
+      if (muMiniRelIso(muIdx, true, 0.5, false, true) > 0.40) return false;
+      return true;
+      break;
   
    ////////////////////
    /// HAD loose v1 ///
@@ -163,18 +175,31 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
    ///////////////////
 
     case(SS_fo_noiso_v3):
-      if (muonID(muIdx, SS_veto_noiso_v3)==0) return false;//make sure it's tighter than veto
+      if (!muonID(muIdx, SS_veto_noiso_v3)) return false;
       if (fabs(mus_dxyPV().at(muIdx)) > 0.05) return false;
       if (fabs(mus_dzPV().at(muIdx)) > 0.1) return false;
       if (mus_ptErr().at(muIdx)/mus_trk_p4().at(muIdx).pt() >= 0.2) return false;
       return isMediumMuonPOG(muIdx);
       break;
 
+    case(SS_fo_noiso_noip_v3):
+      if (!muonID(muIdx, SS_veto_noip_v3)) return false;
+      //if (fabs(mus_dzPV().at(muIdx)) > 0.1) return false;
+      if (mus_ptErr().at(muIdx)/mus_trk_p4().at(muIdx).pt() >= 0.2) return false;
+      return isMediumMuonPOG(muIdx);
+      break;
+
    case(SS_fo_v3):
-      if (muonID(muIdx, SS_fo_noiso_v3)==0) return false;
+      if (!muonID(muIdx, SS_fo_noiso_v3)) return false;
       if (muMiniRelIso(muIdx, true, 0.5, false, true) > 0.40) return false;
       return true;
       break;
+
+   case(SS_fo_noip_v3):
+      if (!muonID(muIdx, SS_fo_noiso_noip_v3)) return false;
+      return passMultiIso(11, elIdx, 0.4, 6.7, 0.68); 
+      break;
+
 
    ///////////////////
    /// SS tight v1 ///

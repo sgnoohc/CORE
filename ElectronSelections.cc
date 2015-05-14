@@ -193,7 +193,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
    ////////////////////
 
     case(SS_veto_noiso_v3):
-      //trigger match cuts fixme
+      //trigger match cuts fixme and fix noip below
       /*
       if (fabs(els_etaSC().at(elIdx)) <= 1.479){
         if (fabs(els_dEtaIn().at(elIdx)) >= 0.01) return false; 
@@ -216,9 +216,9 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       if (els_exp_innerlayers().at(elIdx) > 1) return false;
       if (fabs(els_dxyPV().at(elIdx)) >= 0.05) return false;
       if (fabs(els_dzPV().at(elIdx)) >= 0.1) return false; 
-      if (globalEleMVAreader==0) {
-	cout << "readMVA=0, please create and init it (e.g with createAndInitMVA function)" << endl;
-	return false;
+      if (globalEleMVAreader==0){
+	    cout << "readMVA=0, please create and init it (e.g with createAndInitMVA function)" << endl;
+	    return false;
       }
       return globalEleMVAreader->passesElectronMVAid(elIdx, id_level);
       break;
@@ -226,6 +226,24 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
     case(SS_veto_v3):
       if (electronID(elIdx, SS_veto_noiso_v3)==0) return false; 
       if (elMiniRelIso(elIdx, true, 0.0, false, true) >= 0.40) return false;
+      return true;
+      break;
+
+    case(SS_veto_noiso_noip_v3):
+      if (fabs(els_etaSC().at(elIdx)) > 2.5) return false;
+      if (els_conv_vtx_flag().at(elIdx)) return false;
+      if (els_exp_innerlayers().at(elIdx) > 1) return false;
+      //if (fabs(els_dzPV().at(elIdx)) >= 0.1) return false; 
+      if (globalEleMVAreader==0){
+	    cout << "readMVA=0, please create and init it (e.g with createAndInitMVA function)" << endl;
+	    return false;
+      }
+      return globalEleMVAreader->passesElectronMVAid(elIdx, id_level);
+      break;
+
+    case(SS_veto_noip_v3):
+      if (electronID(elIdx, SS_veto_noiso_noip_v3)==0) return false; 
+      return passMultiIso(11, elIdx, 0.4, 7.0, 0.7){
       return true;
       break;
 
@@ -360,9 +378,9 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
     case(SS_fo_noiso_v3):
     case(SS_fo_looseMVA_noiso_v3):
       if (electronID(elIdx, SS_veto_noiso_v3)==0) return false;//make sure it's tighter than veto
-      if (globalEleMVAreader==0) {
-	cout << "readMVA=0, please create and init it (e.g with createAndInitMVA function)" << endl;
-	return false;
+      if (globalEleMVAreader==0){
+	    cout << "readMVA=0, please create and init it (e.g with createAndInitMVA function)" << endl;
+	    return false;
       }
       if (fabs(els_etaSC().at(elIdx)) > 2.5) return false;
       if (els_conv_vtx_flag().at(elIdx)) return false;
@@ -626,11 +644,11 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
    ///////////////
    /// Default ///
    ///////////////
-    default:
-      {
-        cout << "Warning! Electron ID not defined for this id_level!" << endl;
-        return false;
-      }
+  default:
+    {
+      cout << "Warning! Electron ID not defined for this id_level!" << endl;
+      return false;
+    }
 
   }//switch
   return true;
