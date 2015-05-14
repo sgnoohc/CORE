@@ -287,12 +287,12 @@ bool isGoodLeptonIsoOrPtRel(int id, int idx){
 bool isInSituFRLepton(int id, int idx){
   if (abs(id) == 11){
     if (els_p4().at(idx).pt() < 10.) return false;
-    if (!electronID(idx, SS_veto_noip_v3)) return false;
+    if (!electronID(idx, SS_medium_noip_v3)) return false;
     if (fabs(els_ip3d().at(idx))/els_ip3derr().at(idx) < 4) return false;
   }
   if (abs(id) == 13){
     if (mus_p4().at(idx).pt() < 10.) return false;
-    if (!muonID(idx, SS_veto_noip_v3)) return false;
+    if (!muonID(idx, SS_tight_noip_v3)) return false;
     if (fabs(mus_ip3d().at(idx))/mus_ip3derr().at(idx) < 4) return false;
   }
   return true;
@@ -579,6 +579,7 @@ bool isGoodMuon(unsigned int muidx){
 }
 
 int lepMotherID(Lep lep){
+  if (abs(lep.pdgId()) != abs(lep.mc_id())) return 0; 
   if (tas::evt_isRealData()) return 1;
   else if (isFromZ(lep.pdgId(),lep.idx()) || isFromW(lep.pdgId(),lep.idx())){
     if (sgn(lep.pdgId()) == sgn(lep.mc_id())) return 1;
@@ -610,8 +611,8 @@ int isGoodHyp(int iHyp, IsolationMethods isoCase, bool verbose){
   bool passed_id_inSituFR_lt = isInSituFRLepton(id_lt, idx_lt); 
   bool extraZ = makesExtraZ(iHyp);
   bool extraGammaStar = makesExtraGammaStar(iHyp);
-  bool truth_match_ll = ((abs(id_ll) == 11 && abs(tas::els_mc_id().at(idx_ll)) == 11) || (abs(id_ll) == 13 && abs(tas::mus_mc_id().at(idx_ll)) == 13));
-  bool truth_match_lt = ((abs(id_lt) == 11 && abs(tas::els_mc_id().at(idx_lt)) == 11) || (abs(id_lt) == 13 && abs(tas::mus_mc_id().at(idx_lt)) == 13));
+  bool truth_match_ll = lepMotherID( Lep(id_ll, idx_ll) ); 
+  bool truth_match_lt = lepMotherID( Lep(id_lt, idx_lt) ); 
 
   //Truth match
   bool truth_inSituFR = ((truth_match_ll && !truth_match_lt) || (truth_match_lt && !truth_match_ll));
