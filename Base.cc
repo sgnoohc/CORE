@@ -7,7 +7,7 @@ analysis_t whichAnalysis(id_level_t id_level){
     case (SS_veto_noiso_v1):
     case (SS_veto_v1):
     case (SS_fo_noiso_v1):
-    case (SS_fo_v1):
+	case (SS_fo_v1):
     case (SS_medium_noiso_v1):
     case (SS_medium_v1):
     case (SS_tight_noiso_v1):
@@ -30,6 +30,7 @@ analysis_t whichAnalysis(id_level_t id_level){
     case (SS_tight_v3):
     case (SS_veto_noiso_noip_v3):
     case (SS_fo_looseMVA_noiso_noip_v3):
+    case (SS_fo_looseMVA_noiso_v3):
     case (SS_fo_looseMVA_v3):
     case (SS_medium_noip_v3):
     case (SS_tight_noip_v3):
