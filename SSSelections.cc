@@ -611,11 +611,11 @@ int isGoodHyp(int iHyp, IsolationMethods isoCase, bool verbose){
   bool passed_id_inSituFR_lt = isInSituFRLepton(id_lt, idx_lt); 
   bool extraZ = makesExtraZ(iHyp);
   bool extraGammaStar = makesExtraGammaStar(iHyp);
-  bool truth_match_ll = lepMotherID( Lep(id_ll, idx_ll) ); 
-  bool truth_match_lt = lepMotherID( Lep(id_lt, idx_lt) ); 
+  bool truth_match_ll = lepMotherID( Lep(id_ll, idx_ll) ) && passed_id_numer_ll; 
+  bool truth_match_lt = lepMotherID( Lep(id_lt, idx_lt) ) && passed_id_numer_lt; 
 
-  //Truth match
-  bool truth_inSituFR = ((truth_match_ll && !truth_match_lt) || (truth_match_lt && !truth_match_ll));
+  //One is truth-matched and passes numer ID, other is not but passes inSituFR id
+  bool truth_inSituFR = ((truth_match_ll && !truth_match_lt && passed_id_inSituFR_lt) || (truth_match_lt && !truth_match_ll && passed_id_inSituFR_ll));
 
   //Verbose info:
   if (verbose && pt_ll > ptCutLow && pt_lt > ptCutLow){
@@ -648,7 +648,7 @@ int isGoodHyp(int iHyp, IsolationMethods isoCase, bool verbose){
   if (passed_id_numer_ll == 0 && passed_id_denom_ll == 0) return 0; // 0 if ll fails denom
   if (passed_id_numer_lt == 0 && passed_id_denom_lt == 0) return 0; // 0 if lt fails denom
   else if (passed_id_numer_lt && passed_id_numer_ll == 1 && isss) return 3;  // 3 if both numer pass, SS
-  else if (passed_id_inSituFR_lt && passed_id_inSituFR_ll && isss && truth_inSituFR) return 5;  // 5 if both pass inSituFR
+  else if (isss && truth_inSituFR) return 5;  // 5 if both pass inSituFR
   else if (passed_id_numer_lt && passed_id_numer_ll == 1 && isss == 0) return 4;  // 4 if both numer pass, OS
   else if (passed_id_numer_lt == 0 && passed_id_numer_ll == 0 && passed_id_denom_lt == 1 && passed_id_denom_ll == 1 && isss == true) return 1; // 1 SS, if both denom and no numer pass
   else if (isss == true) return 2; //2 SS, one numer and one denom not numer
