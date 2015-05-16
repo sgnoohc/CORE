@@ -253,7 +253,8 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
       //if (fabs(mus_dzPV().at(muIdx)) > 0.1) return false;
       if (mus_ptErr().at(muIdx)/mus_trk_p4().at(muIdx).pt() >= 0.2) return false;
       if (!isMediumMuonPOG(muIdx)) return false;
-      return passMultiIso(13, muIdx, 0.40, 0.68, 6.7);
+      //return passMultiIso(13, muIdx, 0.40, 0.68, 6.7);
+      return true;
       break;
 
 
