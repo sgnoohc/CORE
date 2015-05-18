@@ -287,13 +287,11 @@ bool isGoodLeptonIsoOrPtRel(int id, int idx){
 bool isInSituFRLepton(int id, int idx){
   if (abs(id) == 11){
     if (els_p4().at(idx).pt() < 10.) return false;
-    if (!electronID(idx, SS_medium_noip_v3)) return false;
-    //if (fabs(els_ip3d().at(idx))/els_ip3derr().at(idx) < 4) return false;
+    if (!electronID(idx, SS_medium_highip_v3) && !electronID(idx, SS_medium_v3)) return false;
   }
   if (abs(id) == 13){
     if (mus_p4().at(idx).pt() < 10.) return false;
-    if (!muonID(idx, SS_fo_noiso_noip_v3)) return false;
-    //if (fabs(mus_ip3d().at(idx))/mus_ip3derr().at(idx) < 4) return false;
+    if (!muonID(idx, SS_fo_noiso_highip_v3) && !muonID(idx, SS_fo_noiso_v3)) return false;
   }
   return true;
 }
@@ -590,6 +588,18 @@ int lepMotherID(Lep lep){
   return 0;
 }
 
+int lepMotherID_inSituFR(Lep lep){
+  if (tas::evt_isRealData()) return 1;
+  else if (isFromW(lep.pdgId(),lep.idx())){
+    if (sgn(lep.pdgId()) == sgn(lep.mc_id())) return 1;
+    else return 2;
+  }
+  else if (isFromB(lep.pdgId(),lep.idx())) return -1;
+  else if (isFromC(lep.pdgId(),lep.idx())) return -2;
+  else if (isFromLight(lep.pdgId(),lep.idx())) return -3;
+  return 0;
+}
+
 int isGoodHyp(int iHyp, IsolationMethods isoCase, bool verbose){
 
   //Bunch o' variables
@@ -611,10 +621,10 @@ int isGoodHyp(int iHyp, IsolationMethods isoCase, bool verbose){
   bool passed_id_inSituFR_lt = isInSituFRLepton(id_lt, idx_lt); 
   bool extraZ = makesExtraZ(iHyp);
   bool extraGammaStar = makesExtraGammaStar(iHyp);
-  bool truth_match_ll = lepMotherID( Lep(id_ll, idx_ll) ) && passed_id_numer_ll; 
-  bool truth_match_lt = lepMotherID( Lep(id_lt, idx_lt) ) && passed_id_numer_lt; 
+  bool truth_match_ll = lepMotherID_inSituFR( Lep(id_ll, idx_ll) ) && passed_id_numer_ll; 
+  bool truth_match_lt = lepMotherID_inSituFR( Lep(id_lt, idx_lt) ) && passed_id_numer_lt; 
 
-  //One is truth-matched and passes numer ID, other is not but passes inSituFR id
+  //One is truth-matched and passes numer ID, other is not but passes inSituFR id (which has SIP > 4 req)
   bool truth_inSituFR = ((truth_match_ll && !truth_match_lt && passed_id_inSituFR_lt) || (truth_match_lt && !truth_match_ll && passed_id_inSituFR_ll));
 
   //Verbose info:

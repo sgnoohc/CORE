@@ -93,6 +93,7 @@ bool isInSituFRLepton(int lep_id, int lep_idx);
 
 //MC truth functions
 int lepMotherID(Lep lep);
+int lepMotherID_inSituFR(Lep lep);
 
 //Jet selection function
 std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator();

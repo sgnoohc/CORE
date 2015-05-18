@@ -4,14 +4,17 @@
 using namespace std;
 using namespace tas;
 
-bool passMultiIso(int id, int idx, float cutMiniIso, float cutPtRatio, float cutPtRel){
+bool passMultiIso(int id, int idx, float cutMiniIso, float cutPtRatio, float cutPtRel, bool coneCorrected){
 
   const LorentzVector& lep_p4 = abs(id)==11 ? els_p4().at(idx) : mus_p4().at(idx);
   const LorentzVector& jet_p4 = closestJet(lep_p4,0.4,2.4);
+  float cut = abs(id) == 11 ? 0.10 : 0.14; 
   
   float miniIso = abs(id)==11 ? elMiniRelIso(idx, 0.1, true) : muMiniRelIso(idx, 0.1, true);
   float closeJetPt = jet_p4.pt();
-  float ptratio = ( closeJetPt>0. ? lep_p4.pt()/closeJetPt : 1. );
+  float ptratio = 0; 
+  if (!coneCorrected) ptratio = ( closeJetPt>0. ? lep_p4.pt()/closeJetPt : 1. );
+  if  (coneCorrected) ptratio = ( closeJetPt>0. ? (lep_p4.pt()*(1+max(miniIso-cut, (float)0)))/closeJetPt : 1. );
   float ptrel = ptRel(lep_p4, jet_p4, true);
   return ( miniIso < cutMiniIso && (ptratio>cutPtRatio || ptrel > cutPtRel));
 }
