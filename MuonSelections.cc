@@ -45,14 +45,6 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
 
   switch (id_level){
 
-   /////////////////////
-   /// stop loose v1 ///
-   /////////////////////
-  
-    case(STOP_loose_v1):
-      return isLooseMuonPOG(muIdx);
-      break;
- 
    ///////////////////
    /// SS veto v1, v2 ///
    ///////////////////
@@ -248,11 +240,37 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
       break;
 
    /////////////////////
-   /// STOP tight v1 ///
+   /// stop loose v1 ///
    /////////////////////
-  
+   case(STOP_loose_v1):
+   if (!isLooseMuonPOG(muIdx)) return false;
+   return true;
+   break;
+
+   /////////////////////
+   /// STOP medium ///
+   /////////////////////
+    case(STOP_medium_v1):
+      if (!isMediumMuonPOG(muIdx)) return false;
+      if (muMiniRelIso(muIdx, true, 0.5, true, false) >= 0.1) return false;
+       return true;
+       break;
+
+   /////////////////////
+   /// STOP tight///
+   /////////////////////
     case(STOP_tight_v1):
-      return isTightMuonPOG(muIdx);
+      if (!isTightMuonPOG(muIdx)) return false;
+      if (muRelIso03DB(muIdx) >= 0.15) return false;
+       return true;
+       break;
+
+   /////////////////////
+   ///  STOP sync    ///
+   /////////////////////
+    case(STOP_sync_v1):
+      if (!isTightMuonPOG(muIdx)) return false;
+      if (muRelIso03DB(muIdx) >= 0.15) return false;
        break;
 
    ////////////////////
@@ -356,7 +374,8 @@ int muTightID(unsigned int muIdx, analysis_t analysis, int version){
       }
       break;
     case (STOP):
-      if (muonID(muIdx, STOP_tight_v1)) return 1;
+      if (muonID(muIdx, STOP_tight_v1)) return 2;
+      if (muonID(muIdx, STOP_medium_v1)) return 1;
       if (muonID(muIdx, STOP_loose_v1)) return 0;
       break;
     case (ZMET):

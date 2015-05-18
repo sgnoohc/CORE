@@ -59,6 +59,11 @@ analysis_t whichAnalysis(id_level_t id_level){
     case (STOP_loose_v1):
     case (STOP_medium_v1):
     case (STOP_tight_v1):
+    case (STOP_sync_v1):
+    case (STOP_veto_v2):
+    case (STOP_loose_v2):
+    case (STOP_medium_v2):
+    case (STOP_tight_v2):
       return STOP;
       break;
     case (ZMET_loose_v2):

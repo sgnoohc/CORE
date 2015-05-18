@@ -56,6 +56,11 @@ enum id_level_t {
   STOP_loose_v1, 
   STOP_medium_v1, 
   STOP_tight_v1,
+  STOP_sync_v1,
+  STOP_veto_v2,
+  STOP_loose_v2,
+  STOP_medium_v2,
+  STOP_tight_v2,
 
   ZMET_loose_noiso_v1, 
   ZMET_loose_v2, 
