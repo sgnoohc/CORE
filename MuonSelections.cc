@@ -247,17 +247,6 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
       return passMultiIso(13, muIdx, 0.14, 0.68, 6.7);
       break;
 
-   case(SS_tight_noip_v3):
-      if (muonID(muIdx, SS_fo_noiso_noip_v3)==0) return false;
-      //if (fabs(mus_ip3d().at(muIdx))/mus_ip3derr().at(muIdx) >= 4) return false;
-      //if (fabs(mus_dzPV().at(muIdx)) > 0.1) return false;
-      if (mus_ptErr().at(muIdx)/mus_trk_p4().at(muIdx).pt() >= 0.2) return false;
-      if (!isMediumMuonPOG(muIdx)) return false;
-      //return passMultiIso(13, muIdx, 0.40, 0.68, 6.7);
-      return true;
-      break;
-
-
    /////////////////////
    /// STOP tight v1 ///
    /////////////////////
