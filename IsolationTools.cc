@@ -10,7 +10,7 @@ bool passMultiIso(int id, int idx, float cutMiniIso, float cutPtRatio, float cut
   const LorentzVector& jet_p4 = closestJet(lep_p4,0.4,2.4);
   float cut = abs(id) == 11 ? 0.10 : 0.14; 
   
-  float miniIso = abs(id)==11 ? elMiniRelIso(idx, 0.1, true) : muMiniRelIso(idx, 0.1, true);
+  float miniIso = abs(id)==11 ? elMiniRelIso(idx, true, 0.0, false, true) : muMiniRelIso(idx, true, 0.5, false, true);
   float closeJetPt = jet_p4.pt();
   float ptratio = 0; 
   if (!coneCorrected) ptratio = ( closeJetPt>0. ? lep_p4.pt()/closeJetPt : 1. );

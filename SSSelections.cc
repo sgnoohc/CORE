@@ -221,10 +221,10 @@ bool isMiniIsolatedLepton(int id, int idx){
 
 bool isLooseNewMiniIsolatedLepton(int id, int idx){
   if (abs(id) == 11) {
-    return elMiniRelIso(idx, 0.1, true) < 0.4;
+    return elMiniRelIso(idx, true, 0.0, false, true) < 0.4;
   }
   if (abs(id) == 13) {
-    return muMiniRelIso(idx, 0.1, true) < 0.4;
+    return muMiniRelIso(idx, true, 0.5, false, true) < 0.4;
   }
   return false;
 }
