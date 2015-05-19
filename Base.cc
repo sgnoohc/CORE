@@ -32,9 +32,9 @@ analysis_t whichAnalysis(id_level_t id_level){
     case (SS_fo_looseMVA_noiso_noip_v3):
     case (SS_fo_looseMVA_noiso_v3):
     case (SS_fo_looseMVA_v3):
-    case (SS_medium_noip_v3):
-    case (SS_tight_noip_v3):
+    case (SS_medium_highip_v3):
     case (SS_fo_noiso_noip_v3):
+    case (SS_fo_noiso_highip_v3):
       return SS;
       break;
     case (HAD_veto_noiso_v1):
@@ -77,7 +77,7 @@ analysis_t whichAnalysis(id_level_t id_level){
       break;
     default:
       std::cout << "Warning! Not sure which analysis you're doing!" << std::endl;
-      std::cout << "Update \"whichAnalysis\" in base.cc with this id_level!" << std::endl;
+      std::cout << "Update \"whichAnalysis\" in base.cc with this id_level: " << id_level << std::endl;
       return POG;
   }
 
