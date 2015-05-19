@@ -629,7 +629,7 @@ int isGoodHyp(int iHyp, IsolationMethods isoCase, bool verbose){
 
   //Verbose info:
   if (verbose && pt_ll > ptCutLow && pt_lt > ptCutLow){
-    cout << "hyp " << iHyp << " leptons: " << id_ll << " " << pt_ll << " " << id_lt << " " << pt_lt << endl;
+    cout << "hyp " << iHyp << " leptons: " << id_ll << " " << pt_ll << " (idx: " << idx_ll << ") " << id_lt << " " << pt_lt << " (idx: " << idx_lt << ")" << endl;
     cout << "   isss: " << isss << endl;
     cout << "   extraZ: " << extraZ << endl;
     cout << "   extraG: " << extraGammaStar << endl;
