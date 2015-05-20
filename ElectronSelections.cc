@@ -1085,6 +1085,31 @@ int tightChargeEle(unsigned int elIdx){
   else                                                                  return 0;
 }
 
+void readMVA::DumpValues(){
+  cout << "ele_kfhits:           " << ele_kfhits_             << endl;
+  cout << "ele_oldsigmaietaieta: " << ele_oldsigmaietaieta_   << endl;
+  cout << "ele_oldsigmaiphiiphi: " << ele_oldsigmaiphiiphi_   << endl;
+  cout << "ele_oldcircularity:   " << ele_oldcircularity_     << endl;
+  cout << "ele_oldr9:            " << ele_oldr9_              << endl;
+  cout << "ele_scletawidth:      " << ele_scletawidth_        << endl;
+  cout << "ele_sclphiwidth:      " << ele_sclphiwidth_        << endl;
+  cout << "ele_he:               " << ele_he_                 << endl;
+  cout << "ele_kfchi2:           " << ele_kfchi2_             << endl;
+  cout << "ele_chi2_hits:        " << ele_chi2_hits_          << endl;
+  cout << "ele_fbrem:            " << ele_fbrem_              << endl;
+  cout << "ele_ep:               " << ele_ep_                 << endl;
+  cout << "ele_eelepout:         " << ele_eelepout_           << endl;
+  cout << "ele_IoEmIop:          " << ele_IoEmIop_            << endl;
+  cout << "ele_deltaetain:       " << ele_deltaetain_         << endl;
+  cout << "ele_deltaphiin:       " << ele_deltaphiin_         << endl;
+  cout << "ele_deltaetaseed:     " << ele_deltaetaseed_       << endl;
+  cout << "ele_psEoverEraw:      " << ele_psEoverEraw_        << endl;
+  cout << "ele_pT:               " << ele_pT_                 << endl;
+  cout << "ele_isbarrel:         " << ele_isbarrel_           << endl;
+  cout << "ele_isendcap:         " << ele_isendcap_           << endl;
+  cout << "scl_eta:              " << scl_eta_                << endl;
+}
+
 void readMVA::InitMVA(string path){
 
   //Declare all variables
