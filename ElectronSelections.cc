@@ -602,7 +602,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       return passMultiIso(11, elIdx, 0.10, 0.70, 7.0);
       break;
 
-    case(SS_medium_highip_v3):
+    case(SS_medium_noip_v3):
       if (electronID(elIdx, SS_fo_looseMVA_noiso_noip_v3)==0) return false;//make sure it's tighter than FO
       if (globalEleMVAreader==0) {
 	    cout << "readMVA=0, please create and init it (e.g with createAndInitMVA function)" << endl;
@@ -613,7 +613,6 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       if (els_exp_innerlayers().at(elIdx) > 0) return false;
       if (threeChargeAgree(elIdx)==0) return false;
       //if (fabs(els_dzPV().at(elIdx)) >= 0.1) return false;
-      if (fabs(els_ip3d().at(elIdx))/els_ip3derr().at(elIdx) < 4) return false;
       if (!globalEleMVAreader->passesElectronMVAid(elIdx, id_level)) return false;
       //return passMultiIso(11, elIdx, 0.40, 0.7, 7.0);
       return true;
@@ -1086,6 +1085,31 @@ int tightChargeEle(unsigned int elIdx){
   else                                                                  return 0;
 }
 
+void readMVA::DumpValues(){
+  cout << "ele_kfhits:           " << ele_kfhits_             << endl;
+  cout << "ele_oldsigmaietaieta: " << ele_oldsigmaietaieta_   << endl;
+  cout << "ele_oldsigmaiphiiphi: " << ele_oldsigmaiphiiphi_   << endl;
+  cout << "ele_oldcircularity:   " << ele_oldcircularity_     << endl;
+  cout << "ele_oldr9:            " << ele_oldr9_              << endl;
+  cout << "ele_scletawidth:      " << ele_scletawidth_        << endl;
+  cout << "ele_sclphiwidth:      " << ele_sclphiwidth_        << endl;
+  cout << "ele_he:               " << ele_he_                 << endl;
+  cout << "ele_kfchi2:           " << ele_kfchi2_             << endl;
+  cout << "ele_chi2_hits:        " << ele_chi2_hits_          << endl;
+  cout << "ele_fbrem:            " << ele_fbrem_              << endl;
+  cout << "ele_ep:               " << ele_ep_                 << endl;
+  cout << "ele_eelepout:         " << ele_eelepout_           << endl;
+  cout << "ele_IoEmIop:          " << ele_IoEmIop_            << endl;
+  cout << "ele_deltaetain:       " << ele_deltaetain_         << endl;
+  cout << "ele_deltaphiin:       " << ele_deltaphiin_         << endl;
+  cout << "ele_deltaetaseed:     " << ele_deltaetaseed_       << endl;
+  cout << "ele_psEoverEraw:      " << ele_psEoverEraw_        << endl;
+  cout << "ele_pT:               " << ele_pT_                 << endl;
+  cout << "ele_isbarrel:         " << ele_isbarrel_           << endl;
+  cout << "ele_isendcap:         " << ele_isendcap_           << endl;
+  cout << "scl_eta:              " << scl_eta_                << endl;
+}
+
 void readMVA::InitMVA(string path){
 
   //Declare all variables
@@ -1228,6 +1252,7 @@ bool readMVA::passesElectronMVAid(unsigned int index, id_level_t id_level){
   case(SS_veto_noiso_v3):
   case (SS_veto_noiso_noip_v3):
   case(SS_fo_looseMVA_noiso_v3):
+  case (SS_fo_looseMVA_noiso_noip_v3):
     if (aeta < 0.8) return disc > -0.11;
     if ((aeta >= 0.8 && aeta <= 1.479)) return disc > -0.35;
     if (aeta > 1.479) return disc > -0.55;
@@ -1237,8 +1262,7 @@ bool readMVA::passesElectronMVAid(unsigned int index, id_level_t id_level){
   case(SS_medium_noiso_v2):
   case(SS_fo_noiso_v3):
   case(SS_medium_noiso_v3):
-  case(SS_medium_highip_v3):
-  case (SS_fo_looseMVA_noiso_noip_v3):
+  case(SS_medium_noip_v3):
     if (aeta < 0.8) return disc > 0.73;
     if ((aeta >= 0.8 && aeta <= 1.479)) return disc > 0.57;
     if (aeta > 1.479) return disc > 0.05;

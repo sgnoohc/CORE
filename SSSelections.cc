@@ -221,10 +221,10 @@ bool isMiniIsolatedLepton(int id, int idx){
 
 bool isLooseNewMiniIsolatedLepton(int id, int idx){
   if (abs(id) == 11) {
-    return elMiniRelIso(idx, 0.1, true) < 0.4;
+    return elMiniRelIso(idx, true, 0.0, false, true) < 0.4;
   }
   if (abs(id) == 13) {
-    return muMiniRelIso(idx, 0.1, true) < 0.4;
+    return muMiniRelIso(idx, true, 0.5, false, true) < 0.4;
   }
   return false;
 }
@@ -287,11 +287,11 @@ bool isGoodLeptonIsoOrPtRel(int id, int idx){
 bool isInSituFRLepton(int id, int idx){
   if (abs(id) == 11){
     if (els_p4().at(idx).pt() < 10.) return false;
-    if (!electronID(idx, SS_medium_highip_v3) && !electronID(idx, SS_medium_v3)) return false;
+    if (!electronID(idx, SS_medium_noip_v3) && !electronID(idx, SS_medium_v3)) return false;
   }
   if (abs(id) == 13){
     if (mus_p4().at(idx).pt() < 10.) return false;
-    if (!muonID(idx, SS_fo_noiso_highip_v3) && !muonID(idx, SS_fo_noiso_v3)) return false;
+    if (!muonID(idx, SS_fo_noiso_noip_v3) && !muonID(idx, SS_fo_noiso_v3)) return false;
   }
   return true;
 }
@@ -400,9 +400,9 @@ int signalRegion(int njets, int nbtags, float met, float ht, float mt_min, float
   anal_type_t lep_pt = analysisCategory(lep1pt, lep2pt); 
 
   //Reject events out of kinematic acceptance
-  if (met < 50) return 0; 
-  if (njets < 2) return 0; 
-  if (lep_pt != LowLow && met > 500 && ht < 300) return 0; 
+  if (met < 50) return -1; 
+  if (njets < 2) return -1; 
+  if (lep_pt != LowLow && met > 500 && ht < 300) return -1; 
 
   //High-high
   if (lep_pt == HighHigh){
@@ -488,7 +488,7 @@ int signalRegion(int njets, int nbtags, float met, float ht, float mt_min, float
 
   //Low-Low
   if (lep_pt == LowLow){
-    if (ht < 300) return 0; 
+    if (ht < 300) return -1; 
     if (mt_min > 120) return 8; 
     if (nbtags == 0 && met < 200) return 1;
     if (nbtags == 0 && met >= 200) return 2;
@@ -617,8 +617,8 @@ int isGoodHyp(int iHyp, IsolationMethods isoCase, bool verbose){
   bool passed_id_numer_lt = isGoodLepton(id_lt, idx_lt, isoCase);
   bool passed_id_denom_ll = isDenominatorLepton(id_ll, idx_ll, isoCase);
   bool passed_id_denom_lt = isDenominatorLepton(id_lt, idx_lt, isoCase);
-  bool passed_id_inSituFR_ll = isInSituFRLepton(id_ll, idx_ll); 
-  bool passed_id_inSituFR_lt = isInSituFRLepton(id_lt, idx_lt); 
+  bool passed_id_inSituFR_ll = isInSituFRLepton(id_ll, idx_ll);
+  bool passed_id_inSituFR_lt = isInSituFRLepton(id_lt, idx_lt);
   bool extraZ = makesExtraZ(iHyp);
   bool extraGammaStar = makesExtraGammaStar(iHyp);
   bool truth_match_ll = lepMotherID_inSituFR( Lep(id_ll, idx_ll) ) && passed_id_numer_ll; 
@@ -629,7 +629,7 @@ int isGoodHyp(int iHyp, IsolationMethods isoCase, bool verbose){
 
   //Verbose info:
   if (verbose && pt_ll > ptCutLow && pt_lt > ptCutLow){
-    cout << "hyp " << iHyp << " leptons: " << id_ll << " " << pt_ll << " " << id_lt << " " << pt_lt << endl;
+    cout << "hyp " << iHyp << " leptons: " << id_ll << " " << pt_ll << " (idx: " << idx_ll << ") " << id_lt << " " << pt_lt << " (idx: " << idx_lt << ")" << endl;
     cout << "   isss: " << isss << endl;
     cout << "   extraZ: " << extraZ << endl;
     cout << "   extraG: " << extraGammaStar << endl;
@@ -658,10 +658,10 @@ int isGoodHyp(int iHyp, IsolationMethods isoCase, bool verbose){
   if (passed_id_numer_ll == 0 && passed_id_denom_ll == 0) return 0; // 0 if ll fails denom
   if (passed_id_numer_lt == 0 && passed_id_denom_lt == 0) return 0; // 0 if lt fails denom
   else if (passed_id_numer_lt && passed_id_numer_ll == 1 && isss) return 3;  // 3 if both numer pass, SS
-  else if (isss && truth_inSituFR) return 5;  // 5 if both pass inSituFR
   else if (passed_id_numer_lt && passed_id_numer_ll == 1 && isss == 0) return 4;  // 4 if both numer pass, OS
   else if (passed_id_numer_lt == 0 && passed_id_numer_ll == 0 && passed_id_denom_lt == 1 && passed_id_denom_ll == 1 && isss == true) return 1; // 1 SS, if both denom and no numer pass
   else if (isss == true) return 2; //2 SS, one numer and one denom not numer
+  else if (isss && truth_inSituFR) return 5;  // 5 if both pass inSituFR
   else return 0; //non-highpass OS
 }
 
@@ -676,10 +676,10 @@ hyp_result_t chooseBestHyp(IsolationMethods isoCase, bool verbose){
   for (unsigned int i = 0; i < tas::hyp_type().size(); i++){
     int good_hyp_result = isGoodHyp(i, isoCase, verbose);
     if (good_hyp_result == 3) good_hyps_ss.push_back(i); 
-    if (good_hyp_result == 5) good_hyps_fr.push_back(i); 
-    if (good_hyp_result == 2) good_hyps_sf.push_back(i); 
+    else if (good_hyp_result == 2) good_hyps_sf.push_back(i); 
     else if (good_hyp_result == 1) good_hyps_df.push_back(i); 
     else if (good_hyp_result == 4) good_hyps_os.push_back(i); 
+    else if (good_hyp_result == 5) good_hyps_fr.push_back(i); 
   }
 
   //hyp_class_ to track SS(3), SF(2), DF(1), OS(4), or none(0)
@@ -695,10 +695,6 @@ hyp_result_t chooseBestHyp(IsolationMethods isoCase, bool verbose){
     good_hyps = good_hyps_sf;
     hyp_class_ = 2;
   }
-  else if (good_hyps_fr.size() != 0){
-    good_hyps = good_hyps_fr;
-    hyp_class_ = 5;
-  }
   else if (good_hyps_df.size() != 0){
      good_hyps = good_hyps_df;
      hyp_class_ = 1;
@@ -706,6 +702,10 @@ hyp_result_t chooseBestHyp(IsolationMethods isoCase, bool verbose){
   else if (good_hyps_os.size() != 0){
     good_hyps = good_hyps_os;
     hyp_class_ = 4;
+  }
+  else if (good_hyps_fr.size() != 0){
+    good_hyps = good_hyps_fr;
+    hyp_class_ = 5;
   }
   else hyp_class_ = 0; 
 
