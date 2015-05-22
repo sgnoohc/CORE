@@ -96,7 +96,7 @@ bool makesExtraZ(int iHyp){
       }
       if (is_hyp_lep) continue;
       if (fabs(tas::els_p4().at(eidx).eta()) > 2.4) continue;
-      if (tas::els_p4().at(eidx).pt() < 10) continue;
+      if (tas::els_p4().at(eidx).pt() < 7) continue;
 
       if (!isGoodVetoElectron(eidx)) continue;
 
@@ -118,7 +118,7 @@ bool makesExtraZ(int iHyp){
       }
       if (is_hyp_lep) continue;
       if (fabs(tas::mus_p4().at(midx).eta()) > 2.4) continue;
-      if (tas::mus_p4().at(midx).pt() < 10.) continue;
+      if (tas::mus_p4().at(midx).pt() < 5.) continue;
 
       if (!isGoodVetoMuon(midx)) continue;
 
