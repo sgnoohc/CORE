@@ -286,22 +286,26 @@ bool isGoodLeptonIsoOrPtRel(int id, int idx){
 
 bool isInSituFRLepton(int id, int idx){
   if (abs(id) == 11){
-    if (els_p4().at(idx).pt() < 10.) return false;
     if (!electronID(idx, SS_medium_noip_v3) && !electronID(idx, SS_medium_v3)) return false;
   }
   if (abs(id) == 13){
-    if (mus_p4().at(idx).pt() < 10.) return false;
     if (!muonID(idx, SS_fo_noiso_noip_v3) && !muonID(idx, SS_fo_noiso_v3)) return false;
   }
   return true;
 }
 
 bool isDenominatorLepton(int id, int idx, IsolationMethods isoCase){
-  if (isoCase == PtRel) return isDenominatorLeptonIsoOrPtRel(id,idx);
+  if (isoCase == MultiIso) return isDenominatorLeptonNewMiniIso(id,idx);
+  else if (isoCase == PtRel) return isDenominatorLeptonIsoOrPtRel(id,idx);
   else if (isoCase == MiniIso) return isDenominatorLeptonMiniIso(id,idx);
   else if (isoCase == NewMiniIso) return isDenominatorLeptonNewMiniIso(id,idx);
-  else if (isoCase == MultiIso) return isDenominatorLeptonNewMiniIso(id,idx);
   else return isDenominatorLeptonIso(id,idx);
+}
+
+bool isDenominatorLeptonMiniIso(int id, int idx){
+  if (isDenominatorLeptonNoIso(id,idx)==0) return false;
+  if (isLooseMiniIsolatedLepton(id,idx)==0) return false;
+  return true;
 }
 
 bool isDenominatorLeptonNoIso(int id, int idx){
@@ -313,12 +317,6 @@ bool isDenominatorLeptonNoIso(int id, int idx){
 bool isDenominatorLeptonIso(int id, int idx){
   if (isDenominatorLeptonNoIso(id,idx)==0) return false;
   if (isLooseIsolatedLepton(id,idx)==0) return false;
-  return true;
-}
-
-bool isDenominatorLeptonMiniIso(int id, int idx){
-  if (isDenominatorLeptonNoIso(id,idx)==0) return false;
-  if (isLooseMiniIsolatedLepton(id,idx)==0) return false;
   return true;
 }
 

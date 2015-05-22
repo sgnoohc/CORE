@@ -170,7 +170,7 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
 
     case(SS_fo_noiso_noip_v3):
       if (!muonID(muIdx, SS_veto_noiso_noip_v3)) return false;
-      //if (fabs(mus_dzPV().at(muIdx)) > 0.1) return false;
+      if (fabs(mus_dzPV().at(muIdx)) > 0.1) return false;
       if (mus_ptErr().at(muIdx)/mus_trk_p4().at(muIdx).pt() >= 0.2) return false;
       return isMediumMuonPOG(muIdx);
       break;
