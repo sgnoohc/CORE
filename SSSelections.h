@@ -32,6 +32,7 @@ struct particle_t { int id; LorentzVector p4; int idx; };
 struct Lep;
 struct DilepHyp;
 struct Jet;
+struct Z_result_t { bool result; int id; int idx; }; 
 
 //helper function for sign
 template <typename T> int sgn(T val){
@@ -47,7 +48,7 @@ bool isVetoLepton(int id, int idx, IsolationMethods isoCase);
 hyp_result_t chooseBestHyp(IsolationMethods isoCase, bool verbose=false);
 int isGoodHyp(int iHyp, IsolationMethods isoCase, bool verbose=false);
 bool makesExtraGammaStar(int iHyp);
-bool makesExtraZ(int iHyp);
+Z_result_t makesExtraZ(int iHyp);
 bool hypsFromFirstGoodVertex(size_t hypIdx, float dz_cut = 1.0);
 std::pair<particle_t, int> getThirdLepton(int hyp);
 std::vector<particle_t> getGenPair(bool verbose=false);
