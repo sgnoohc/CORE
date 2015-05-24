@@ -768,6 +768,21 @@ protected:
 	vector<float> els_mva_;
 	TBranch *els_mva_branch;
 	bool els_mva_isLoaded;
+       vector<float> els_miniIso_ch_;
+       TBranch *els_miniIso_ch_branch;
+       bool els_miniIso_ch_isLoaded;
+       vector<float> els_miniIso_db_;
+       TBranch *els_miniIso_db_branch;
+       bool els_miniIso_db_isLoaded;
+       vector<float> els_miniIso_em_;
+       TBranch *els_miniIso_em_branch;
+       bool els_miniIso_em_isLoaded;
+       vector<float> els_miniIso_nh_;
+       TBranch *els_miniIso_nh_branch;
+       bool els_miniIso_nh_isLoaded;
+       vector<float> els_miniIso_uncor_;
+       TBranch *els_miniIso_uncor_branch;
+       bool els_miniIso_uncor_isLoaded;
 	vector<float> els_ndof_;
 	TBranch *els_ndof_branch;
 	bool els_ndof_isLoaded;
@@ -1179,6 +1194,21 @@ protected:
 	vector<float> mus_mc_patMatch_dr_;
 	TBranch *mus_mc_patMatch_dr_branch;
 	bool mus_mc_patMatch_dr_isLoaded;
+       vector<float> mus_miniIso_ch_;
+       TBranch *mus_miniIso_ch_branch;
+       bool mus_miniIso_ch_isLoaded;
+       vector<float> mus_miniIso_db_;
+       TBranch *mus_miniIso_db_branch;
+       bool mus_miniIso_db_isLoaded;
+       vector<float> mus_miniIso_em_;
+       TBranch *mus_miniIso_em_branch;
+       bool mus_miniIso_em_isLoaded;
+       vector<float> mus_miniIso_nh_;
+       TBranch *mus_miniIso_nh_branch;
+       bool mus_miniIso_nh_isLoaded;
+       vector<float> mus_miniIso_uncor_;
+       TBranch *mus_miniIso_uncor_branch;
+       bool mus_miniIso_uncor_isLoaded;
 	vector<float> mus_ndof_;
 	TBranch *mus_ndof_branch;
 	bool mus_ndof_isLoaded;
@@ -3683,6 +3713,31 @@ void Init(TTree *tree) {
 		els_mva_branch = tree->GetBranch(tree->GetAlias("els_mva"));
 		if (els_mva_branch) {els_mva_branch->SetAddress(&els_mva_);}
 	}
+       els_miniIso_ch_branch = 0;
+       if (tree->GetAlias("els_miniIso_ch") != 0) {
+               els_miniIso_ch_branch = tree->GetBranch(tree->GetAlias("els_miniIso_ch"));
+               if (els_miniIso_ch_branch) {els_miniIso_ch_branch->SetAddress(&els_miniIso_ch_);}
+       }
+       els_miniIso_db_branch = 0;
+       if (tree->GetAlias("els_miniIso_db") != 0) {
+               els_miniIso_db_branch = tree->GetBranch(tree->GetAlias("els_miniIso_db"));
+               if (els_miniIso_db_branch) {els_miniIso_db_branch->SetAddress(&els_miniIso_db_);}
+       }
+       els_miniIso_em_branch = 0;
+       if (tree->GetAlias("els_miniIso_em") != 0) {
+               els_miniIso_em_branch = tree->GetBranch(tree->GetAlias("els_miniIso_em"));
+               if (els_miniIso_em_branch) {els_miniIso_em_branch->SetAddress(&els_miniIso_em_);}
+       }
+       els_miniIso_nh_branch = 0;
+       if (tree->GetAlias("els_miniIso_nh") != 0) {
+               els_miniIso_nh_branch = tree->GetBranch(tree->GetAlias("els_miniIso_nh"));
+               if (els_miniIso_nh_branch) {els_miniIso_nh_branch->SetAddress(&els_miniIso_nh_);}
+       }
+       els_miniIso_uncor_branch = 0;
+       if (tree->GetAlias("els_miniIso_uncor") != 0) {
+               els_miniIso_uncor_branch = tree->GetBranch(tree->GetAlias("els_miniIso_uncor"));
+               if (els_miniIso_uncor_branch) {els_miniIso_uncor_branch->SetAddress(&els_miniIso_uncor_);}
+       }
 	els_ndof_branch = 0;
 	if (tree->GetAlias("els_ndof") != 0) {
 		els_ndof_branch = tree->GetBranch(tree->GetAlias("els_ndof"));
@@ -4368,6 +4423,31 @@ void Init(TTree *tree) {
 		mus_mc_patMatch_dr_branch = tree->GetBranch(tree->GetAlias("mus_mc_patMatch_dr"));
 		if (mus_mc_patMatch_dr_branch) {mus_mc_patMatch_dr_branch->SetAddress(&mus_mc_patMatch_dr_);}
 	}
+       mus_miniIso_ch_branch = 0;
+       if (tree->GetAlias("mus_miniIso_ch") != 0) {
+               mus_miniIso_ch_branch = tree->GetBranch(tree->GetAlias("mus_miniIso_ch"));
+               if (mus_miniIso_ch_branch) {mus_miniIso_ch_branch->SetAddress(&mus_miniIso_ch_);}
+       }
+       mus_miniIso_db_branch = 0;
+       if (tree->GetAlias("mus_miniIso_db") != 0) {
+               mus_miniIso_db_branch = tree->GetBranch(tree->GetAlias("mus_miniIso_db"));
+               if (mus_miniIso_db_branch) {mus_miniIso_db_branch->SetAddress(&mus_miniIso_db_);}
+       }
+       mus_miniIso_em_branch = 0;
+       if (tree->GetAlias("mus_miniIso_em") != 0) {
+               mus_miniIso_em_branch = tree->GetBranch(tree->GetAlias("mus_miniIso_em"));
+               if (mus_miniIso_em_branch) {mus_miniIso_em_branch->SetAddress(&mus_miniIso_em_);}
+       }
+       mus_miniIso_nh_branch = 0;
+       if (tree->GetAlias("mus_miniIso_nh") != 0) {
+               mus_miniIso_nh_branch = tree->GetBranch(tree->GetAlias("mus_miniIso_nh"));
+               if (mus_miniIso_nh_branch) {mus_miniIso_nh_branch->SetAddress(&mus_miniIso_nh_);}
+       }
+       mus_miniIso_uncor_branch = 0;
+       if (tree->GetAlias("mus_miniIso_uncor") != 0) {
+               mus_miniIso_uncor_branch = tree->GetBranch(tree->GetAlias("mus_miniIso_uncor"));
+               if (mus_miniIso_uncor_branch) {mus_miniIso_uncor_branch->SetAddress(&mus_miniIso_uncor_);}
+       }
 	mus_ndof_branch = 0;
 	if (tree->GetAlias("mus_ndof") != 0) {
 		mus_ndof_branch = tree->GetBranch(tree->GetAlias("mus_ndof"));
@@ -6709,6 +6789,11 @@ void GetEntry(unsigned int idx)
 		els_mass_isLoaded = false;
 		els_mc_patMatch_dr_isLoaded = false;
 		els_mva_isLoaded = false;
+                els_miniIso_ch_isLoaded = false;
+                els_miniIso_db_isLoaded = false;
+                els_miniIso_em_isLoaded = false;
+                els_miniIso_nh_isLoaded = false;
+                els_miniIso_uncor_isLoaded = false;
 		els_ndof_isLoaded = false;
 		els_pfChargedHadronIso_isLoaded = false;
 		els_pfNeutralHadronIso_isLoaded = false;
@@ -6846,6 +6931,11 @@ void GetEntry(unsigned int idx)
 		mus_localDistance_isLoaded = false;
 		mus_mass_isLoaded = false;
 		mus_mc_patMatch_dr_isLoaded = false;
+                mus_miniIso_ch_isLoaded = false;
+                mus_miniIso_db_isLoaded = false;
+                mus_miniIso_em_isLoaded = false;
+                mus_miniIso_nh_isLoaded = false;
+                mus_miniIso_uncor_isLoaded = false;
 		mus_ndof_isLoaded = false;
 		mus_overlapCompat_isLoaded = false;
 		mus_phiErr_isLoaded = false;
@@ -7518,6 +7608,11 @@ void LoadAllBranches()
 	if (els_mass_branch != 0) els_mass();
 	if (els_mc_patMatch_dr_branch != 0) els_mc_patMatch_dr();
 	if (els_mva_branch != 0) els_mva();
+        if (els_miniIso_ch_branch != 0) els_miniIso_ch();
+        if (els_miniIso_db_branch != 0) els_miniIso_db();
+        if (els_miniIso_em_branch != 0) els_miniIso_em();
+        if (els_miniIso_nh_branch != 0) els_miniIso_nh();
+        if (els_miniIso_uncor_branch != 0) els_miniIso_uncor();
 	if (els_ndof_branch != 0) els_ndof();
 	if (els_pfChargedHadronIso_branch != 0) els_pfChargedHadronIso();
 	if (els_pfNeutralHadronIso_branch != 0) els_pfNeutralHadronIso();
@@ -7654,6 +7749,11 @@ void LoadAllBranches()
 	if (mus_iso_trckvetoDep_branch != 0) mus_iso_trckvetoDep();
 	if (mus_localDistance_branch != 0) mus_localDistance();
 	if (mus_mass_branch != 0) mus_mass();
+        if (mus_miniIso_ch_branch != 0) mus_miniIso_ch();
+        if (mus_miniIso_db_branch != 0) mus_miniIso_db();
+        if (mus_miniIso_em_branch != 0) mus_miniIso_em();
+        if (mus_miniIso_nh_branch != 0) mus_miniIso_nh();
+        if (mus_miniIso_uncor_branch != 0) mus_miniIso_uncor();
 	if (mus_mc_patMatch_dr_branch != 0) mus_mc_patMatch_dr();
 	if (mus_ndof_branch != 0) mus_ndof();
 	if (mus_overlapCompat_branch != 0) mus_overlapCompat();
@@ -11324,6 +11424,71 @@ void LoadAllBranches()
 		}
 		return els_mva_;
 	}
+        const vector<float> &els_miniIso_ch()
+        {
+                if (not els_miniIso_ch_isLoaded) {
+                        if (els_miniIso_ch_branch != 0) {
+                                els_miniIso_ch_branch->GetEntry(index);
+                        } else { 
+                                printf("branch els_miniIso_ch_branch does not exist!\n");
+                                exit(1);
+                        }
+                        els_miniIso_ch_isLoaded = true;
+                }
+                return els_miniIso_ch_;
+        }
+        const vector<float> &els_miniIso_db()
+        {
+                if (not els_miniIso_db_isLoaded) {
+                        if (els_miniIso_db_branch != 0) {
+                                els_miniIso_db_branch->GetEntry(index);
+                        } else { 
+                                printf("branch els_miniIso_db_branch does not exist!\n");
+                                exit(1);
+                        }
+                        els_miniIso_db_isLoaded = true;
+                }
+                return els_miniIso_db_;
+        }
+        const vector<float> &els_miniIso_em()
+        {
+                if (not els_miniIso_em_isLoaded) {
+                        if (els_miniIso_em_branch != 0) {
+                                els_miniIso_em_branch->GetEntry(index);
+                        } else { 
+                                printf("branch els_miniIso_em_branch does not exist!\n");
+                                exit(1);
+                        }
+                        els_miniIso_em_isLoaded = true;
+                }
+                return els_miniIso_em_;
+        }
+        const vector<float> &els_miniIso_nh()
+        {
+                if (not els_miniIso_nh_isLoaded) {
+                        if (els_miniIso_nh_branch != 0) {
+                                els_miniIso_nh_branch->GetEntry(index);
+                        } else { 
+                                printf("branch els_miniIso_nh_branch does not exist!\n");
+                                exit(1);
+                        }
+                        els_miniIso_nh_isLoaded = true;
+                }
+                return els_miniIso_nh_;
+        }
+        const vector<float> &els_miniIso_uncor()
+        {
+                if (not els_miniIso_uncor_isLoaded) {
+                        if (els_miniIso_uncor_branch != 0) {
+                                els_miniIso_uncor_branch->GetEntry(index);
+                        } else { 
+                                printf("branch els_miniIso_uncor_branch does not exist!\n");
+                                exit(1);
+                        }
+                        els_miniIso_uncor_isLoaded = true;
+                }
+                return els_miniIso_uncor_;
+        }
 	const vector<float> &els_ndof()
 	{
 		if (not els_ndof_isLoaded) {
@@ -13092,6 +13257,71 @@ void LoadAllBranches()
 		}
 		return mus_mass_;
 	}
+        const vector<float> &mus_miniIso_ch()
+        {
+                if (not mus_miniIso_ch_isLoaded) {
+                        if (mus_miniIso_ch_branch != 0) {
+                                mus_miniIso_ch_branch->GetEntry(index);
+                        } else { 
+                                printf("branch mus_miniIso_ch_branch does not exist!\n");
+                                exit(1);
+                        }
+                        mus_miniIso_ch_isLoaded = true;
+                }
+                return mus_miniIso_ch_;
+        }
+        const vector<float> &mus_miniIso_db()
+        {
+                if (not mus_miniIso_db_isLoaded) {
+                        if (mus_miniIso_db_branch != 0) {
+                                mus_miniIso_db_branch->GetEntry(index);
+                        } else { 
+                                printf("branch mus_miniIso_db_branch does not exist!\n");
+                                exit(1);
+                        }
+                        mus_miniIso_db_isLoaded = true;
+                }
+                return mus_miniIso_db_;
+        }
+        const vector<float> &mus_miniIso_em()
+        {
+                if (not mus_miniIso_em_isLoaded) {
+                        if (mus_miniIso_em_branch != 0) {
+                                mus_miniIso_em_branch->GetEntry(index);
+                        } else { 
+                                printf("branch mus_miniIso_em_branch does not exist!\n");
+                                exit(1);
+                        }
+                        mus_miniIso_em_isLoaded = true;
+                }
+                return mus_miniIso_em_;
+        }
+        const vector<float> &mus_miniIso_nh()
+        {
+                if (not mus_miniIso_nh_isLoaded) {
+                        if (mus_miniIso_nh_branch != 0) {
+                                mus_miniIso_nh_branch->GetEntry(index);
+                        } else { 
+                                printf("branch mus_miniIso_nh_branch does not exist!\n");
+                                exit(1);
+                        }
+                        mus_miniIso_nh_isLoaded = true;
+                }
+                return mus_miniIso_nh_;
+        }
+        const vector<float> &mus_miniIso_uncor()
+        {
+                if (not mus_miniIso_uncor_isLoaded) {
+                        if (mus_miniIso_uncor_branch != 0) {
+                                mus_miniIso_uncor_branch->GetEntry(index);
+                        } else { 
+                                printf("branch mus_miniIso_uncor_branch does not exist!\n");
+                                exit(1);
+                        }
+                        mus_miniIso_uncor_isLoaded = true;
+                }
+                return mus_miniIso_uncor_;
+        }
 	const vector<float> &mus_mc_patMatch_dr()
 	{
 		if (not mus_mc_patMatch_dr_isLoaded) {
@@ -18837,6 +19067,11 @@ namespace tas {
 	const vector<float> &els_mass();
 	const vector<float> &els_mc_patMatch_dr();
 	const vector<float> &els_mva();
+        const vector<float> &els_miniIso_ch();
+        const vector<float> &els_miniIso_db();
+        const vector<float> &els_miniIso_em();
+        const vector<float> &els_miniIso_nh();
+        const vector<float> &els_miniIso_uncor();
 	const vector<float> &els_ndof();
 	const vector<float> &els_pfChargedHadronIso();
 	const vector<float> &els_pfNeutralHadronIso();
@@ -18973,6 +19208,11 @@ namespace tas {
 	const vector<float> &mus_iso_trckvetoDep();
 	const vector<float> &mus_localDistance();
 	const vector<float> &mus_mass();
+        const vector<float> &mus_miniIso_ch();
+        const vector<float> &mus_miniIso_db();
+        const vector<float> &mus_miniIso_em();
+        const vector<float> &mus_miniIso_nh();
+        const vector<float> &mus_miniIso_uncor();
 	const vector<float> &mus_mc_patMatch_dr();
 	const vector<float> &mus_ndof();
 	const vector<float> &mus_overlapCompat();
