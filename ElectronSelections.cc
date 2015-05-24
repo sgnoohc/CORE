@@ -1213,9 +1213,9 @@ float readMVA::MVA(unsigned int index){
   ele_fbrem_            = tas::els_fbrem().at(index);
   ele_ep_               = tas::els_eOverPIn().at(index);
   ele_eelepout_         = tas::els_eOverPOut().at(index);
-  ele_IoEmIop_          = tas::els_ecalEnergy().at(index) != 0 ? 1.0/tas::els_ecalEnergy().at(index) - tas::els_eOverPIn().at(index)/tas::els_ecalEnergy().at(index) : 999999;
-  ele_deltaetain_       = tas::els_dEtaIn().at(index);
-  ele_deltaphiin_       = tas::els_dPhiIn().at(index);
+  ele_IoEmIop_          = (tas::els_ecalEnergy().at(index) != 0 && tas::els_p4().at(index).P() != 0) ? 1.0/tas::els_ecalEnergy().at(index) - 1.0/tas::els_p4().at(index).P() : 999999;
+  ele_deltaetain_       = fabs(tas::els_dEtaIn().at(index));
+  ele_deltaphiin_       = fabs(tas::els_dPhiIn().at(index));
   ele_deltaetaseed_     = tas::els_dEtaOut().at(index);
   ele_pT_               = tas::els_p4().at(index).pt(); 
   ele_isbarrel_         = fabs(tas::els_etaSC().at(index)) < 1.479 ? 1 : 0; 
