@@ -20,6 +20,9 @@ float muEA03(unsigned int muIdx);
 float muRelIso03EA(unsigned int muIdx);
 float muRelIsoCustomCone(unsigned int idx, float dr, bool useVetoCones=true, float ptthresh = 0.5, bool useDBcor=false, bool useEAcor=false);
 float muMiniRelIso(unsigned int idx, bool useVetoCones=true, float ptthresh = 0.5, bool useDBcor=false, bool useEAcor=false);
+float muMiniRelIsoCMS3_EA(unsigned int idx);
+float muMiniRelIsoCMS3_DB(unsigned int idx);
+
 
 //Electron
 float eleRelIso03(unsigned int elIdx, analysis_t analysis);
@@ -28,5 +31,7 @@ float elEA03(unsigned int elIdx);
 float eleRelIso03EA(unsigned int elIdx);
 float elRelIsoCustomCone(unsigned int idx, float dr, bool useVetoCones=true, float ptthresh = 0.0, bool useDBcor=false, bool useEAcor=false);
 float elMiniRelIso(unsigned int idx, bool useVetoCones=true, float ptthresh = 0.0, bool useDBcor=false, bool useEAcor=false);
+float elMiniRelIsoCMS3_EA(unsigned int idx);
+float elMiniRelIsoCMS3_DB(unsigned int idx);
 
 #endif

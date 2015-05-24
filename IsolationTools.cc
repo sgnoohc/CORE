@@ -134,7 +134,23 @@ float muMiniRelIso(unsigned int idx, bool useVetoCones, float ptthresh, bool use
   float dr = 0.2;
   if (pt>50) dr = 10./pt;
   if (pt>200) dr = 0.05;
-  return muRelIsoCustomCone(idx,dr,useVetoCones,ptthresh,useDBcor,useEAcor);
+  return  muRelIsoCustomCone(idx,dr,useVetoCones,ptthresh,useDBcor,useEAcor);
+}
+
+float muMiniRelIsoCMS3_DB(unsigned int idx) {
+  float correction = 0.5 * mus_miniIso_db().at(idx);
+  float absiso = mus_miniIso_ch().at(idx) + std::max(float(0.0), mus_miniIso_nh().at(idx) + mus_miniIso_em().at(idx) - correction);
+  return absiso/(mus_p4().at(idx).pt());
+}
+
+float muMiniRelIsoCMS3_EA(unsigned int idx) {
+  float pt = mus_p4().at(idx).pt();
+  float dr = 0.2;
+  if (pt>50) dr = 10./pt;
+  if (pt>200) dr = 0.05;
+  float correction = evt_fixgrid_all_rho() * muEA03(idx) * (dr/0.3) * (dr/0.3);
+  float absiso = mus_miniIso_ch().at(idx) + std::max(float(0.0), mus_miniIso_nh().at(idx) + mus_miniIso_em().at(idx) - correction);
+  return absiso/(mus_p4().at(idx).pt());
 }
 
 float eleRelIso03(unsigned int elIdx, analysis_t analysis){
@@ -204,9 +220,26 @@ float elRelIsoCustomCone(unsigned int elIdx, float dr, bool useVetoCones, float 
   return absiso/(els_p4().at(elIdx).pt());
 }
 float elMiniRelIso(unsigned int idx, bool useVetoCones, float ptthresh, bool useDBcor, bool useEAcor){
+
   float pt = els_p4().at(idx).pt();
   float dr = 0.2;
   if (pt>50) dr = 10./pt;
   if (pt>200) dr = 0.05;
   return elRelIsoCustomCone(idx,dr,useVetoCones,ptthresh,useDBcor,useEAcor);
+}
+
+float elMiniRelIsoCMS3_DB(unsigned int idx) {
+  float correction = 0.5 * els_miniIso_db().at(idx);
+  float absiso = els_miniIso_ch().at(idx) + std::max(float(0.0), els_miniIso_nh().at(idx) + els_miniIso_em().at(idx) - correction);
+  return absiso/(els_p4().at(idx).pt());
+}
+
+float elMiniRelIsoCMS3_EA(unsigned int idx) {
+  float pt = els_p4().at(idx).pt();
+  float dr = 0.2;
+  if (pt>50) dr = 10./pt;
+  if (pt>200) dr = 0.05;
+  float correction = evt_fixgrid_all_rho() * elEA03(idx) * (dr/0.3) * (dr/0.3);
+  float absiso = els_miniIso_ch().at(idx) + std::max(float(0.0), els_miniIso_nh().at(idx) + els_miniIso_em().at(idx) - correction);
+  return absiso/(els_p4().at(idx).pt());
 }
