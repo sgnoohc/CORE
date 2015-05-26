@@ -647,10 +647,11 @@ int isGoodHyp(int iHyp, IsolationMethods isoCase, bool verbose){
     cout << "   extraZ: " << extraZ << endl;
     cout << "   extraG: " << extraGammaStar << endl;
     cout << "   invt mass: " << (tas::hyp_ll_p4().at(iHyp) + tas::hyp_lt_p4().at(iHyp)).M() << endl;
-    cout << "   passes eta: " << (fabs(eta_ll) < 2.4 && fabs(eta_lt) < 2.4) << " etas are " << eta_ll << " and " << eta_lt << endl;
+    cout << "   passes eta: " << ((abs(id_ll) == 11 ? fabs(eta_ll) < 2.5 : fabs(eta_ll) < 2.4) && (abs(id_lt) == 11 ? fabs(eta_lt) < 2.5 : fabs(eta_lt) < 2.4)) << " etas are " << eta_ll << " and " << eta_lt << endl;
     cout << "   passes hypsFromFirstGoodVertex: " << hypsFromFirstGoodVertex(iHyp) << endl;
     cout << "   lepton with pT " << pt_ll << " passes id: " << passed_id_numer_ll << endl;
     cout << "   lepton with pT " << pt_lt << " passes id: " << passed_id_numer_lt << endl;
+    cout << "   lowMassVeto: " << ((tas::hyp_ll_p4().at(iHyp) + tas::hyp_lt_p4().at(iHyp)).M() < 8) << endl;
     if (abs(id_ll) == 11) cout << "   lepton with pT " << pt_ll << " passes 3chg: " << threeChargeAgree(idx_ll) << endl;
     if (abs(id_lt) == 11) cout << "   lepton with pT " << pt_lt << " passes 3chg: " << threeChargeAgree(idx_lt) << endl;
   }
@@ -659,9 +660,9 @@ int isGoodHyp(int iHyp, IsolationMethods isoCase, bool verbose){
   if (pt_ll < 10) return 0;
   if (pt_lt < 10) return 0;
   if (abs(id_ll) == 11 && fabs(eta_ll) > 2.5) return 0;
-  if (abs(id_ll) == 11 && fabs(eta_lt) > 2.5) return 0;
+  if (abs(id_lt) == 11 && fabs(eta_lt) > 2.5) return 0;
   if (abs(id_ll) == 13 && fabs(eta_ll) > 2.4) return 0;
-  if (abs(id_ll) == 13 && fabs(eta_lt) > 2.4) return 0;
+  if (abs(id_lt) == 13 && fabs(eta_lt) > 2.4) return 0;
 
   //Other cuts
   if (extraGammaStar) return 0;
@@ -675,12 +676,12 @@ int isGoodHyp(int iHyp, IsolationMethods isoCase, bool verbose){
   //Results
   if (!passed_id_numer_ll && !passed_id_denom_ll) return 0;
   if (!passed_id_numer_lt && !passed_id_denom_lt) return 0;
-  else if (passed_id_numer_lt && passed_id_numer_ll == 1 && isss) return 3;  // 3 if both numer pass, SS
-  else if (passed_id_numer_lt && passed_id_numer_ll == 1 && isss == 0) return 4;  // 4 if both numer pass, OS
+  else if (passed_id_numer_lt && passed_id_numer_ll && isss) return 3;  // 3 if both numer pass, SS
+  else if (passed_id_numer_lt && passed_id_numer_ll && !isss) return 4;  // 4 if both numer pass, OS
   else if (passed_id_numer_lt == 0 && passed_id_numer_ll == 0 && passed_id_denom_lt == 1 && passed_id_denom_ll == 1 && isss == true) return 1; // 1 SS, if both denom and no numer pass
   else if (isss == true) return 2; //2 SS, one numer and one denom not numer
   else if (isss && truth_inSituFR) return 5;  // 5 if both pass inSituFR
-  else return 0; //non-highpass OS
+  return 0; //non-highpass OS
 }
 
 hyp_result_t chooseBestHyp(IsolationMethods isoCase, bool verbose){
