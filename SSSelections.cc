@@ -658,8 +658,10 @@ int isGoodHyp(int iHyp, IsolationMethods isoCase, bool verbose){
   //Kinematic Cuts
   if (pt_ll < 10) return 0;
   if (pt_lt < 10) return 0;
-  if (fabs(eta_ll) > 2.4) return 0;
-  if (fabs(eta_lt) > 2.4) return 0;
+  if (abs(id_ll) == 11 && fabs(eta_ll) > 2.5) return 0;
+  if (abs(id_ll) == 11 && fabs(eta_lt) > 2.5) return 0;
+  if (abs(id_ll) == 13 && fabs(eta_ll) > 2.4) return 0;
+  if (abs(id_ll) == 13 && fabs(eta_lt) > 2.4) return 0;
 
   //Other cuts
   if (extraGammaStar) return 0;
