@@ -256,6 +256,14 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
        return true;
        break;
 
+    case(STOP_medium_v2):
+      if (!isMediumMuonPOG(muIdx)) return false;
+      if (fabs(mus_dxyPV()             .at(muIdx)) >  0.02 ) return false;
+      if (fabs(mus_dzPV()              .at(muIdx)) >  0.1 ) return false;
+      if (muMiniRelIso(muIdx, true, 0.5, true, false) >= 0.1) return false;
+       return true;
+       break;
+
    /////////////////////
    /// STOP tight///
    /////////////////////
@@ -375,7 +383,7 @@ int muTightID(unsigned int muIdx, analysis_t analysis, int version){
       break;
     case (STOP):
       if (muonID(muIdx, STOP_tight_v1)) return 2;
-      if (muonID(muIdx, STOP_medium_v1)) return 1;
+      if (muonID(muIdx, STOP_medium_v2)) return 1;
       if (muonID(muIdx, STOP_loose_v1)) return 0;
       break;
     case (ZMET):
