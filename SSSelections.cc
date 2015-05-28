@@ -111,7 +111,7 @@ Z_result_t makesExtraZ(int iHyp){
         float zcandmass = sqrt(fabs(zp4.mass2()));
         if (fabs(zcandmass-91.) < 15.){
           result.result = true; 
-          result.id = 11;
+          result.id = sgn(tas::els_charge().at(eidx))*11;
           result.idx = eidx;  
           return result;
         }
@@ -138,7 +138,7 @@ Z_result_t makesExtraZ(int iHyp){
         float zcandmass = sqrt(fabs(zp4.mass2()));
         if (fabs(zcandmass-91.) < 15.){
           result.result = true; 
-          result.id = 13;
+          result.id = sgn(tas::mus_charge().at(midx))*13;
           result.idx = midx;  
           return result;
         }
@@ -662,6 +662,10 @@ int isGoodHyp(int iHyp, IsolationMethods isoCase, bool verbose){
   if (abs(id_ll) == 13 && fabs(eta_ll) > 2.4) return 0;
   if (abs(id_lt) == 13 && fabs(eta_lt) > 2.4) return 0;
 
+  //Must pass at least one denominator selection
+  if (!passed_id_inSituFR_ll && !passed_id_denom_ll && !passed_id_numer_ll) return 0;
+  if (!passed_id_inSituFR_lt && !passed_id_denom_lt && !passed_id_numer_lt) return 0;
+
   //Other cuts
   if (extraGammaStar) return 0;
   if ((tas::hyp_ll_p4().at(iHyp) + tas::hyp_lt_p4().at(iHyp)).M() < 8) return 0; 
@@ -673,10 +677,10 @@ int isGoodHyp(int iHyp, IsolationMethods isoCase, bool verbose){
 
   //Results
   else if (passed_id_numer_lt && passed_id_numer_ll && isss) return 3;  // 3 if both numer pass, SS
-  else if (passed_id_numer_lt && passed_id_numer_ll && !isss) return 4;  // 4 if both numer pass, OS
-  else if (passed_id_numer_lt == 0 && passed_id_numer_ll == 0 && passed_id_denom_lt == 1 && passed_id_denom_ll == 1 && isss == true) return 1; // 1 SS, if both denom and no numer pass
-  else if (isss == true) return 2; //2 SS, one numer and one denom not numer
+  else if (!passed_id_numer_lt && !passed_id_numer_ll && passed_id_denom_lt && passed_id_denom_ll && isss == true) return 1; // 1 SS, if both denom and no numer pass
+  else if (((passed_id_numer_ll && passed_id_denom_lt) || (passed_id_numer_lt && passed_id_denom_ll)) && isss == true) return 2; //2 SS, one numer and one denom not numer
   else if (isss && truth_inSituFR) return 5;  // 5 if both pass inSituFR
+  else if (passed_id_numer_lt && passed_id_numer_ll && !isss) return 4;  // 4 if both numer pass, OS
   return 0; //non-highpass OS
 }
 
