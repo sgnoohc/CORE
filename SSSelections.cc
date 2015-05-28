@@ -634,8 +634,6 @@ int isGoodHyp(int iHyp, IsolationMethods isoCase, bool verbose){
   bool passed_id_inSituFR_lt = isInSituFRLepton(id_lt, idx_lt);
   bool extraZ = makesExtraZ(iHyp).result;
   bool extraGammaStar = makesExtraGammaStar(iHyp);
-  bool truth_match_ll = lepMotherID_inSituFR( Lep(id_ll, idx_ll) ) && passed_id_numer_ll; 
-  bool truth_match_lt = lepMotherID_inSituFR( Lep(id_lt, idx_lt) ) && passed_id_numer_lt; 
 
   //pass in situ ID
   bool truth_inSituFR = passed_id_inSituFR_lt && passed_id_inSituFR_ll;
