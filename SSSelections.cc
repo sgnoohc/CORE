@@ -637,8 +637,8 @@ int isGoodHyp(int iHyp, IsolationMethods isoCase, bool verbose){
   bool truth_match_ll = lepMotherID_inSituFR( Lep(id_ll, idx_ll) ) && passed_id_numer_ll; 
   bool truth_match_lt = lepMotherID_inSituFR( Lep(id_lt, idx_lt) ) && passed_id_numer_lt; 
 
-  //One is truth-matched and passes numer ID, other is not but passes inSituFR id (which has SIP > 4 req)
-  bool truth_inSituFR = ((truth_match_ll && !truth_match_lt && passed_id_inSituFR_lt) || (truth_match_lt && !truth_match_ll && passed_id_inSituFR_ll));
+  //pass in situ ID
+  bool truth_inSituFR = passed_id_inSituFR_lt && passed_id_inSituFR_ll;
 
   //Verbose info:
   if (verbose && pt_ll > ptCutLow && pt_lt > ptCutLow){
