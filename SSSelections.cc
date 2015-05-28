@@ -672,8 +672,6 @@ int isGoodHyp(int iHyp, IsolationMethods isoCase, bool verbose){
   if (extraZ) return 0;
 
   //Results
-  if (!passed_id_numer_ll && !passed_id_denom_ll) return 0;
-  if (!passed_id_numer_lt && !passed_id_denom_lt) return 0;
   else if (passed_id_numer_lt && passed_id_numer_ll && isss) return 3;  // 3 if both numer pass, SS
   else if (passed_id_numer_lt && passed_id_numer_ll && !isss) return 4;  // 4 if both numer pass, OS
   else if (passed_id_numer_lt == 0 && passed_id_numer_ll == 0 && passed_id_denom_lt == 1 && passed_id_denom_ll == 1 && isss == true) return 1; // 1 SS, if both denom and no numer pass
