@@ -111,7 +111,7 @@ Z_result_t makesExtraZ(int iHyp){
         float zcandmass = sqrt(fabs(zp4.mass2()));
         if (fabs(zcandmass-91.) < 15.){
           result.result = true; 
-          result.id = sgn(tas::els_charge().at(eidx))*11;
+          result.id = -sgn(tas::els_charge().at(eidx))*11;
           result.idx = eidx;  
           return result;
         }
@@ -138,7 +138,7 @@ Z_result_t makesExtraZ(int iHyp){
         float zcandmass = sqrt(fabs(zp4.mass2()));
         if (fabs(zcandmass-91.) < 15.){
           result.result = true; 
-          result.id = sgn(tas::mus_charge().at(midx))*13;
+          result.id = -sgn(tas::mus_charge().at(midx))*13;
           result.idx = midx;  
           return result;
         }
