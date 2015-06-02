@@ -168,11 +168,10 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
       return isMediumMuonPOG(muIdx);
       break;
 
-    case(SS_fo_noiso_highip_v3):
+    case(SS_fo_noiso_noip_v3):
       if (!muonID(muIdx, SS_veto_noiso_noip_v3)) return false;
-      //if (fabs(mus_dzPV().at(muIdx)) > 0.1) return false;
+      if (fabs(mus_dzPV().at(muIdx)) > 0.1) return false;
       if (mus_ptErr().at(muIdx)/mus_trk_p4().at(muIdx).pt() >= 0.2) return false;
-      if (fabs(mus_ip3d().at(muIdx))/mus_ip3derr().at(muIdx) < 4) return false;
       return isMediumMuonPOG(muIdx);
       break;
 
@@ -253,6 +252,14 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
    /////////////////////
     case(STOP_medium_v1):
       if (!isMediumMuonPOG(muIdx)) return false;
+      if (muMiniRelIso(muIdx, true, 0.5, true, false) >= 0.1) return false;
+       return true;
+       break;
+
+    case(STOP_medium_v2):
+      if (!isMediumMuonPOG(muIdx)) return false;
+      if (fabs(mus_dxyPV()             .at(muIdx)) >  0.02 ) return false;
+      if (fabs(mus_dzPV()              .at(muIdx)) >  0.1 ) return false;
       if (muMiniRelIso(muIdx, true, 0.5, true, false) >= 0.1) return false;
        return true;
        break;
@@ -376,7 +383,7 @@ int muTightID(unsigned int muIdx, analysis_t analysis, int version){
       break;
     case (STOP):
       if (muonID(muIdx, STOP_tight_v1)) return 2;
-      if (muonID(muIdx, STOP_medium_v1)) return 1;
+      if (muonID(muIdx, STOP_medium_v2)) return 1;
       if (muonID(muIdx, STOP_loose_v1)) return 0;
       break;
     case (ZMET):

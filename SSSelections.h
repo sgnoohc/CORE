@@ -32,11 +32,14 @@ struct particle_t { int id; LorentzVector p4; int idx; };
 struct Lep;
 struct DilepHyp;
 struct Jet;
+struct Z_result_t { bool result; int id; int idx; }; 
 
 //helper function for sign
 template <typename T> int sgn(T val){
   return (T(0) < val) - (val < T(0));
 }
+
+float coneCorrPt(int id, int idx);
 
 //Main Object selections
 bool isGoodLepton(int id, int idx, IsolationMethods isoCase);
@@ -47,7 +50,7 @@ bool isVetoLepton(int id, int idx, IsolationMethods isoCase);
 hyp_result_t chooseBestHyp(IsolationMethods isoCase, bool verbose=false);
 int isGoodHyp(int iHyp, IsolationMethods isoCase, bool verbose=false);
 bool makesExtraGammaStar(int iHyp);
-bool makesExtraZ(int iHyp);
+Z_result_t makesExtraZ(int iHyp);
 bool hypsFromFirstGoodVertex(size_t hypIdx, float dz_cut = 1.0);
 std::pair<particle_t, int> getThirdLepton(int hyp);
 std::vector<particle_t> getGenPair(bool verbose=false);
@@ -113,7 +116,7 @@ struct Lep {
   float eta() {return abs(pdgid_)==11 ? cms3.els_p4().at(idx_).eta() : cms3.mus_p4().at(idx_).eta();}
   LorentzVector p4() {return abs(pdgid_)==11 ? cms3.els_p4().at(idx_) : cms3.mus_p4().at(idx_);}
   float relIso03() { return abs(pdgid_)==11 ? eleRelIso03(idx_, SS) : muRelIso03(idx_, SS);}
-  float miniRelIso() { return abs(pdgid_)==11 ? elMiniRelIso(idx_) : muMiniRelIso(idx_);}
+  float miniRelIso() { return abs(pdgid_)==11 ? elMiniRelIso(idx_, false, 0.0, false, true) : muMiniRelIso(idx_, false, 0.5, false, true);}
   float dxyPV() { return abs(pdgid_)==11 ? cms3.els_dxyPV().at(idx_) : cms3.mus_dxyPV().at(idx_);}
   float dzPV() { return abs(pdgid_)==11 ? cms3.els_dzPV().at(idx_) : cms3.mus_dzPV().at(idx_);}
   float d0Err() { return abs(pdgid_)==11 ? cms3.els_d0Err().at(idx_) : cms3.mus_d0Err().at(idx_);}

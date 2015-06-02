@@ -50,6 +50,7 @@ class readMVA {
     void InitMVA(string path);
     float MVA(unsigned int index); 
     bool passesElectronMVAid(unsigned int index, id_level_t id_level);
+    void DumpValues();
 
   private:
     //the readers
@@ -85,4 +86,6 @@ class readMVA {
 };
 
 void createAndInitMVA(std::string pathToCORE);
+float getMVAoutput(unsigned int index);
+
 #endif

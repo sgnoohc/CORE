@@ -69,7 +69,12 @@ bool makesExtraGammaStar(int iHyp){
   return false;
 }
 
-bool makesExtraZ(int iHyp){
+Z_result_t makesExtraZ(int iHyp){
+
+  Z_result_t result;
+  result.result = false;
+  result.id = 0;
+  result.idx = 0; 
 
   std::vector<unsigned int> ele_idx;
   std::vector<unsigned int> mu_idx;
@@ -84,7 +89,7 @@ bool makesExtraZ(int iHyp){
 
   if (ele_idx.size() + mu_idx.size() != 2) {
     std::cout << "ERROR: don't have 2 leptons in hypothesis!!!  Exiting" << std::endl;
-    return false;
+    return result;
   }
       
   if (ele_idx.size() > 0) {
@@ -96,7 +101,7 @@ bool makesExtraZ(int iHyp){
       }
       if (is_hyp_lep) continue;
       if (fabs(tas::els_p4().at(eidx).eta()) > 2.4) continue;
-      if (tas::els_p4().at(eidx).pt() < 10) continue;
+      if (tas::els_p4().at(eidx).pt() < 7) continue;
 
       if (!isGoodVetoElectron(eidx)) continue;
 
@@ -104,7 +109,12 @@ bool makesExtraZ(int iHyp){
         if (tas::els_charge().at(eidx) * tas::els_charge().at(ele_idx.at(vidx)) > 0) continue;
         LorentzVector zp4 = tas::els_p4().at(eidx) + tas::els_p4().at(ele_idx.at(vidx));
         float zcandmass = sqrt(fabs(zp4.mass2()));
-        if (fabs(zcandmass-91.) < 15.) return true;
+        if (fabs(zcandmass-91.) < 15.){
+          result.result = true; 
+          result.id = -sgn(tas::els_charge().at(eidx))*11;
+          result.idx = eidx;  
+          return result;
+        }
       }
     }
   }
@@ -118,7 +128,7 @@ bool makesExtraZ(int iHyp){
       }
       if (is_hyp_lep) continue;
       if (fabs(tas::mus_p4().at(midx).eta()) > 2.4) continue;
-      if (tas::mus_p4().at(midx).pt() < 10.) continue;
+      if (tas::mus_p4().at(midx).pt() < 5.) continue;
 
       if (!isGoodVetoMuon(midx)) continue;
 
@@ -126,12 +136,17 @@ bool makesExtraZ(int iHyp){
         if (tas::mus_charge().at(midx) * tas::mus_charge().at(mu_idx.at(vidx)) > 0) continue;
         LorentzVector zp4 = tas::mus_p4().at(midx) + tas::mus_p4().at(mu_idx.at(vidx));
         float zcandmass = sqrt(fabs(zp4.mass2()));
-        if (fabs(zcandmass-91.) < 15.) return true;
+        if (fabs(zcandmass-91.) < 15.){
+          result.result = true; 
+          result.id = -sgn(tas::mus_charge().at(midx))*13;
+          result.idx = midx;  
+          return result;
+        }
       }
     }
   }
 
-  return false;
+  return result;
 }
 
 std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(){
@@ -221,10 +236,10 @@ bool isMiniIsolatedLepton(int id, int idx){
 
 bool isLooseNewMiniIsolatedLepton(int id, int idx){
   if (abs(id) == 11) {
-    return elMiniRelIso(idx, 0.1, true) < 0.4;
+    return elMiniRelIso(idx, true, 0.0, false, true) < 0.4;
   }
   if (abs(id) == 13) {
-    return muMiniRelIso(idx, 0.1, true) < 0.4;
+    return muMiniRelIso(idx, true, 0.5, false, true) < 0.4;
   }
   return false;
 }
@@ -286,22 +301,26 @@ bool isGoodLeptonIsoOrPtRel(int id, int idx){
 
 bool isInSituFRLepton(int id, int idx){
   if (abs(id) == 11){
-    if (els_p4().at(idx).pt() < 10.) return false;
-    if (!electronID(idx, SS_medium_highip_v3) && !electronID(idx, SS_medium_v3)) return false;
+    if (!electronID(idx, SS_medium_noip_v3) && !electronID(idx, SS_medium_v3)) return false;
   }
   if (abs(id) == 13){
-    if (mus_p4().at(idx).pt() < 10.) return false;
-    if (!muonID(idx, SS_fo_noiso_highip_v3) && !muonID(idx, SS_fo_noiso_v3)) return false;
+    if (!muonID(idx, SS_fo_noiso_noip_v3) && !muonID(idx, SS_fo_noiso_v3)) return false;
   }
   return true;
 }
 
 bool isDenominatorLepton(int id, int idx, IsolationMethods isoCase){
-  if (isoCase == PtRel) return isDenominatorLeptonIsoOrPtRel(id,idx);
+  if (isoCase == MultiIso) return isDenominatorLeptonNewMiniIso(id,idx);
+  else if (isoCase == PtRel) return isDenominatorLeptonIsoOrPtRel(id,idx);
   else if (isoCase == MiniIso) return isDenominatorLeptonMiniIso(id,idx);
   else if (isoCase == NewMiniIso) return isDenominatorLeptonNewMiniIso(id,idx);
-  else if (isoCase == MultiIso) return isDenominatorLeptonNewMiniIso(id,idx);
   else return isDenominatorLeptonIso(id,idx);
+}
+
+bool isDenominatorLeptonMiniIso(int id, int idx){
+  if (isDenominatorLeptonNoIso(id,idx)==0) return false;
+  if (isLooseMiniIsolatedLepton(id,idx)==0) return false;
+  return true;
 }
 
 bool isDenominatorLeptonNoIso(int id, int idx){
@@ -313,12 +332,6 @@ bool isDenominatorLeptonNoIso(int id, int idx){
 bool isDenominatorLeptonIso(int id, int idx){
   if (isDenominatorLeptonNoIso(id,idx)==0) return false;
   if (isLooseIsolatedLepton(id,idx)==0) return false;
-  return true;
-}
-
-bool isDenominatorLeptonMiniIso(int id, int idx){
-  if (isDenominatorLeptonNoIso(id,idx)==0) return false;
-  if (isLooseMiniIsolatedLepton(id,idx)==0) return false;
   return true;
 }
 
@@ -488,7 +501,7 @@ int signalRegion(int njets, int nbtags, float met, float ht, float mt_min, float
 
   //Low-Low
   if (lep_pt == LowLow){
-    if (ht < 300) return 0; 
+    if (ht < 300) return -1; 
     if (mt_min > 120) return 8; 
     if (nbtags == 0 && met < 200) return 1;
     if (nbtags == 0 && met >= 200) return 2;
@@ -617,27 +630,26 @@ int isGoodHyp(int iHyp, IsolationMethods isoCase, bool verbose){
   bool passed_id_numer_lt = isGoodLepton(id_lt, idx_lt, isoCase);
   bool passed_id_denom_ll = isDenominatorLepton(id_ll, idx_ll, isoCase);
   bool passed_id_denom_lt = isDenominatorLepton(id_lt, idx_lt, isoCase);
-  bool passed_id_inSituFR_ll = isInSituFRLepton(id_ll, idx_ll); 
-  bool passed_id_inSituFR_lt = isInSituFRLepton(id_lt, idx_lt); 
-  bool extraZ = makesExtraZ(iHyp);
+  bool passed_id_inSituFR_ll = isInSituFRLepton(id_ll, idx_ll);
+  bool passed_id_inSituFR_lt = isInSituFRLepton(id_lt, idx_lt);
+  bool extraZ = makesExtraZ(iHyp).result;
   bool extraGammaStar = makesExtraGammaStar(iHyp);
-  bool truth_match_ll = lepMotherID_inSituFR( Lep(id_ll, idx_ll) ) && passed_id_numer_ll; 
-  bool truth_match_lt = lepMotherID_inSituFR( Lep(id_lt, idx_lt) ) && passed_id_numer_lt; 
 
-  //One is truth-matched and passes numer ID, other is not but passes inSituFR id (which has SIP > 4 req)
-  bool truth_inSituFR = ((truth_match_ll && !truth_match_lt && passed_id_inSituFR_lt) || (truth_match_lt && !truth_match_ll && passed_id_inSituFR_ll));
+  //pass in situ ID
+  bool truth_inSituFR = passed_id_inSituFR_lt && passed_id_inSituFR_ll;
 
   //Verbose info:
   if (verbose && pt_ll > ptCutLow && pt_lt > ptCutLow){
-    cout << "hyp " << iHyp << " leptons: " << id_ll << " " << pt_ll << " " << id_lt << " " << pt_lt << endl;
+    cout << "hyp " << iHyp << " leptons: " << id_ll << " " << pt_ll << " (idx: " << idx_ll << ") " << id_lt << " " << pt_lt << " (idx: " << idx_lt << ")" << endl;
     cout << "   isss: " << isss << endl;
     cout << "   extraZ: " << extraZ << endl;
     cout << "   extraG: " << extraGammaStar << endl;
     cout << "   invt mass: " << (tas::hyp_ll_p4().at(iHyp) + tas::hyp_lt_p4().at(iHyp)).M() << endl;
-    cout << "   passes eta: " << (fabs(eta_ll) < 2.4 && fabs(eta_lt) < 2.4) << " etas are " << eta_ll << " and " << eta_lt << endl;
+    cout << "   passes eta: " << ((abs(id_ll) == 11 ? fabs(eta_ll) < 2.5 : fabs(eta_ll) < 2.4) && (abs(id_lt) == 11 ? fabs(eta_lt) < 2.5 : fabs(eta_lt) < 2.4)) << " etas are " << eta_ll << " and " << eta_lt << endl;
     cout << "   passes hypsFromFirstGoodVertex: " << hypsFromFirstGoodVertex(iHyp) << endl;
     cout << "   lepton with pT " << pt_ll << " passes id: " << passed_id_numer_ll << endl;
     cout << "   lepton with pT " << pt_lt << " passes id: " << passed_id_numer_lt << endl;
+    cout << "   lowMassVeto: " << ((tas::hyp_ll_p4().at(iHyp) + tas::hyp_lt_p4().at(iHyp)).M() < 8) << endl;
     if (abs(id_ll) == 11) cout << "   lepton with pT " << pt_ll << " passes 3chg: " << threeChargeAgree(idx_ll) << endl;
     if (abs(id_lt) == 11) cout << "   lepton with pT " << pt_lt << " passes 3chg: " << threeChargeAgree(idx_lt) << endl;
   }
@@ -645,24 +657,31 @@ int isGoodHyp(int iHyp, IsolationMethods isoCase, bool verbose){
   //Kinematic Cuts
   if (pt_ll < 10) return 0;
   if (pt_lt < 10) return 0;
-  if (fabs(eta_ll) > 2.4) return 0;
-  if (fabs(eta_lt) > 2.4) return 0;
+  if (abs(id_ll) == 11 && fabs(eta_ll) > 2.5) return 0;
+  if (abs(id_lt) == 11 && fabs(eta_lt) > 2.5) return 0;
+  if (abs(id_ll) == 13 && fabs(eta_ll) > 2.4) return 0;
+  if (abs(id_lt) == 13 && fabs(eta_lt) > 2.4) return 0;
+
+  //Must pass at least one denominator selection
+  if (!passed_id_inSituFR_ll && !passed_id_denom_ll && !passed_id_numer_ll) return 0;
+  if (!passed_id_inSituFR_lt && !passed_id_denom_lt && !passed_id_numer_lt) return 0;
 
   //Other cuts
-  if (extraZ) return 0;
   if (extraGammaStar) return 0;
   if ((tas::hyp_ll_p4().at(iHyp) + tas::hyp_lt_p4().at(iHyp)).M() < 8) return 0; 
   if (!hypsFromFirstGoodVertex(iHyp)) return 0;
 
+  //Finished for events that fail z veto
+  if (extraZ && passed_id_numer_ll && passed_id_numer_lt && isss) return 6;  //6 if fails Z veto, otherwise tight-tight
+  if (extraZ) return 0;
+
   //Results
-  if (passed_id_numer_ll == 0 && passed_id_denom_ll == 0) return 0; // 0 if ll fails denom
-  if (passed_id_numer_lt == 0 && passed_id_denom_lt == 0) return 0; // 0 if lt fails denom
-  else if (passed_id_numer_lt && passed_id_numer_ll == 1 && isss) return 3;  // 3 if both numer pass, SS
+  else if (passed_id_numer_lt && passed_id_numer_ll && isss) return 3;  // 3 if both numer pass, SS
+  else if (!passed_id_numer_lt && !passed_id_numer_ll && passed_id_denom_lt && passed_id_denom_ll && isss == true) return 1; // 1 SS, if both denom and no numer pass
+  else if (((passed_id_numer_ll && passed_id_denom_lt) || (passed_id_numer_lt && passed_id_denom_ll)) && isss == true) return 2; //2 SS, one numer and one denom not numer
   else if (isss && truth_inSituFR) return 5;  // 5 if both pass inSituFR
-  else if (passed_id_numer_lt && passed_id_numer_ll == 1 && isss == 0) return 4;  // 4 if both numer pass, OS
-  else if (passed_id_numer_lt == 0 && passed_id_numer_ll == 0 && passed_id_denom_lt == 1 && passed_id_denom_ll == 1 && isss == true) return 1; // 1 SS, if both denom and no numer pass
-  else if (isss == true) return 2; //2 SS, one numer and one denom not numer
-  else return 0; //non-highpass OS
+  else if (passed_id_numer_lt && passed_id_numer_ll && !isss) return 4;  // 4 if both numer pass, OS
+  return 0; //non-highpass OS
 }
 
 hyp_result_t chooseBestHyp(IsolationMethods isoCase, bool verbose){
@@ -673,13 +692,15 @@ hyp_result_t chooseBestHyp(IsolationMethods isoCase, bool verbose){
   vector <int> good_hyps_sf; //same sign, single fail
   vector <int> good_hyps_df; //same sign, double fail
   vector <int> good_hyps_os; //opposite sign, tight tight
+  vector <int> good_hyps_zv; //same sign, tight tight, fail Z veto
   for (unsigned int i = 0; i < tas::hyp_type().size(); i++){
     int good_hyp_result = isGoodHyp(i, isoCase, verbose);
     if (good_hyp_result == 3) good_hyps_ss.push_back(i); 
-    if (good_hyp_result == 5) good_hyps_fr.push_back(i); 
-    if (good_hyp_result == 2) good_hyps_sf.push_back(i); 
+    else if (good_hyp_result == 2) good_hyps_sf.push_back(i); 
     else if (good_hyp_result == 1) good_hyps_df.push_back(i); 
     else if (good_hyp_result == 4) good_hyps_os.push_back(i); 
+    else if (good_hyp_result == 5) good_hyps_fr.push_back(i); 
+    else if (good_hyp_result == 6) good_hyps_zv.push_back(i); 
   }
 
   //hyp_class_ to track SS(3), SF(2), DF(1), OS(4), or none(0)
@@ -695,10 +716,6 @@ hyp_result_t chooseBestHyp(IsolationMethods isoCase, bool verbose){
     good_hyps = good_hyps_sf;
     hyp_class_ = 2;
   }
-  else if (good_hyps_fr.size() != 0){
-    good_hyps = good_hyps_fr;
-    hyp_class_ = 5;
-  }
   else if (good_hyps_df.size() != 0){
      good_hyps = good_hyps_df;
      hyp_class_ = 1;
@@ -706,6 +723,14 @@ hyp_result_t chooseBestHyp(IsolationMethods isoCase, bool verbose){
   else if (good_hyps_os.size() != 0){
     good_hyps = good_hyps_os;
     hyp_class_ = 4;
+  }
+  else if (good_hyps_fr.size() != 0){
+    good_hyps = good_hyps_fr;
+    hyp_class_ = 5;
+  }
+  else if (good_hyps_zv.size() != 0){
+    good_hyps = good_hyps_zv;
+    hyp_class_ = 6;
   }
   else hyp_class_ = 0; 
 
@@ -719,7 +744,7 @@ hyp_result_t chooseBestHyp(IsolationMethods isoCase, bool verbose){
     for (unsigned int i = 1; i < good_hyps.size(); i++){
       int hyp = good_hyps.at(i);
       if (tas::hyp_type().at(hyp) < tas::hyp_type().at(best_hyp_)) best_hyp_ = hyp;
-      else if (tas::hyp_type().at(hyp) == tas::hyp_type().at(best_hyp_) && (tas::hyp_ll_p4().at(hyp)+tas::hyp_lt_p4().at(hyp)).pt() > (tas::hyp_ll_p4().at(best_hyp_) + tas::hyp_lt_p4().at(best_hyp_)).pt()) best_hyp_ = hyp;
+      else if (tas::hyp_type().at(hyp) == tas::hyp_type().at(best_hyp_) && (tas::hyp_ll_p4().at(hyp).pt()+tas::hyp_lt_p4().at(hyp).pt()) > (tas::hyp_ll_p4().at(best_hyp_).pt() + tas::hyp_lt_p4().at(best_hyp_).pt())) best_hyp_ = hyp;
     }
   }
 
@@ -831,6 +856,22 @@ vector <particle_t> getGenPair(bool verbose){
 
 pair<particle_t, int> getThirdLepton(int hyp){
 
+  //If hyp_class == 6, save the lepton that triggered the Z veto (so long as it is veto or higher)
+  Z_result_t Zresult = makesExtraZ(hyp);
+  if (Zresult.result == true){
+    particle_t result;
+    result.id = Zresult.id;
+    result.idx = Zresult.idx;
+    result.p4 = abs(result.id) == 11 ? tas::els_p4().at(result.idx) : tas::mus_p4().at(result.idx);
+    int quality = 0;
+    if (abs(result.id) == 11 ? !isGoodVetoElectron(result.idx) : !isGoodVetoMuon(result.idx)) quality = -1;
+    if (abs(result.id) == 11 ? isFakableElectron(result.idx) : isFakableMuon(result.idx)) quality = 1;
+    if (abs(result.id) == 11 ? isGoodElectron(result.idx) : isGoodMuon(result.idx)) quality = 2;
+    if (quality >= 0) return pair<particle_t, int>(result, quality);
+  }
+  
+  //Otherwise, find the highest-quality lepton possible. 
+
   //Selected Lepton Information
   int ll_id = tas::hyp_ll_id().at(hyp);
   int lt_id = tas::hyp_lt_id().at(hyp);
@@ -911,3 +952,14 @@ bool lepsort (Lep i,Lep j) {
 }
 
 bool jetptsort (Jet i,Jet j) { return (i.pt()>j.pt()); }
+
+float coneCorrPt(int id, int idx){
+  float miniIso = abs(id)==11 ? elMiniRelIso(idx, true, 0.0, false, true) : muMiniRelIso(idx, true, 0.5, false, true);
+  LorentzVector lep_p4 = abs(id)==11 ? els_p4().at(idx) : mus_p4().at(idx);
+  LorentzVector jet_p4  = closestJet(lep_p4, 0.4, 2.4);
+  float ptrel = ptRel(lep_p4, jet_p4, true);
+  float A = abs(id)==11 ? 0.10 : 0.14;
+  float B = abs(id)==11 ? 0.70 : 0.68;
+  float C = abs(id)==11 ? 7.00 : 6.70;
+  return ((ptrel > C) ? lep_p4.pt()*(1 + std::max((float)0, miniIso - A)) : std::max(lep_p4.pt(), jet_p4.pt() * B));
+}
