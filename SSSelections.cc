@@ -531,13 +531,13 @@ bool isGoodVetoElectron(unsigned int elidx){
 
 bool isFakableElectronNoIso(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 10.) return false;
-  if (!electronID(elidx, SS_fo_noiso_v3)) return false;
+  if (!electronID(elidx, SS_fo_looseMVA_noiso_v3)) return false;
   return true;
 }
 
 bool isFakableElectron(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 10.) return false;
-  if (!electronID(elidx, SS_fo_v3)) return false;
+  if (!electronID(elidx, SS_fo_looseMVA_v3)) return false;
   return true;
 }
 
