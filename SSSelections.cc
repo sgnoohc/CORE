@@ -389,9 +389,9 @@ int baselineRegion(int njets, int nbtags, float met, float ht, float lep1_pt, fl
  
   //Return baseline region
   if      (nbtags == 0) return 0;
-  else if (nbtags == 1) return 10;
-  else if (nbtags == 2) return 20;
-  else                  return 30;
+  else if (nbtags == 1) return 1;
+  else if (nbtags == 2) return 2;
+  else                  return 3;
 }
 
 int signalRegion(int njets, int nbtags, float met, float ht, float mt_min, float lep1pt, float lep2pt){
@@ -400,9 +400,9 @@ int signalRegion(int njets, int nbtags, float met, float ht, float mt_min, float
   anal_type_t lep_pt = analysisCategory(lep1pt, lep2pt); 
 
   //Reject events out of kinematic acceptance
-  if (met < 50) return 0; 
-  if (njets < 2) return 0; 
-  if (lep_pt != LowLow && met > 500 && ht < 300) return 0; 
+  if (met < 50) return -1; 
+  if (njets < 2) return -1; 
+  if (lep_pt != LowLow && met > 500 && ht < 300) return -1; 
 
   //High-high
   if (lep_pt == HighHigh){
