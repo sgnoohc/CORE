@@ -39,6 +39,8 @@ template <typename T> int sgn(T val){
   return (T(0) < val) - (val < T(0));
 }
 
+float coneCorrPt(int id, int idx);
+
 //Main Object selections
 bool isGoodLepton(int id, int idx, IsolationMethods isoCase);
 bool isDenominatorLepton(int id, int idx, IsolationMethods isoCase);

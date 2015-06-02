@@ -952,3 +952,14 @@ bool lepsort (Lep i,Lep j) {
 }
 
 bool jetptsort (Jet i,Jet j) { return (i.pt()>j.pt()); }
+
+float coneCorrPt(int id, int idx){
+  float miniIso = abs(id)==11 ? elMiniRelIso(idx, true, 0.0, false, true) : muMiniRelIso(idx, true, 0.5, false, true);
+  LorentzVector lep_p4 = abs(id)==11 ? els_p4().at(idx) : mus_p4().at(idx);
+  LorentzVector jet_p4  = closestJet(lep_p4, 0.4, 2.4);
+  float ptrel = ptRel(lep_p4, jet_p4, true);
+  float A = abs(id)==11 ? 0.10 : 0.14;
+  float B = abs(id)==11 ? 0.70 : 0.68;
+  float C = abs(id)==11 ? 7.00 : 6.70;
+  return ((ptrel > C) ? lep_p4.pt()*(1 + std::max((float)0, miniIso - A)) : std::max(lep_p4.pt(), jet_p4.pt() * B));
+}
