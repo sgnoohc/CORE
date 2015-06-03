@@ -1326,9 +1326,9 @@ protected:
 	vector<float> pfjets_chargedHadronE_;
 	TBranch *pfjets_chargedHadronE_branch;
 	bool pfjets_chargedHadronE_isLoaded;
-	vector<float> pfjets_combinedInclusiveSecondaryVertexV2BJetTag_;
-	TBranch *pfjets_combinedInclusiveSecondaryVertexV2BJetTag_branch;
-	bool pfjets_combinedInclusiveSecondaryVertexV2BJetTag_isLoaded;
+	vector<float> pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_;
+	TBranch *pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch;
+	bool pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_isLoaded;
 	vector<float> pfjets_combinedMVABJetTag_;
 	TBranch *pfjets_combinedMVABJetTag_branch;
 	bool pfjets_combinedMVABJetTag_isLoaded;
@@ -4643,10 +4643,10 @@ void Init(TTree *tree) {
 		pfjets_chargedHadronE_branch = tree->GetBranch(tree->GetAlias("pfjets_chargedHadronE"));
 		if (pfjets_chargedHadronE_branch) {pfjets_chargedHadronE_branch->SetAddress(&pfjets_chargedHadronE_);}
 	}
-	pfjets_combinedInclusiveSecondaryVertexV2BJetTag_branch = 0;
-	if (tree->GetAlias("pfjets_combinedInclusiveSecondaryVertexV2BJetTag") != 0) {
-		pfjets_combinedInclusiveSecondaryVertexV2BJetTag_branch = tree->GetBranch(tree->GetAlias("pfjets_combinedInclusiveSecondaryVertexV2BJetTag"));
-		if (pfjets_combinedInclusiveSecondaryVertexV2BJetTag_branch) {pfjets_combinedInclusiveSecondaryVertexV2BJetTag_branch->SetAddress(&pfjets_combinedInclusiveSecondaryVertexV2BJetTag_);}
+	pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch = 0;
+	if (tree->GetAlias("pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag") != 0) {
+		pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch = tree->GetBranch(tree->GetAlias("pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag"));
+		if (pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch) {pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch->SetAddress(&pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_);}
 	}
 	pfjets_combinedMVABJetTag_branch = 0;
 	if (tree->GetAlias("pfjets_combinedMVABJetTag") != 0) {
@@ -6975,7 +6975,7 @@ void GetEntry(unsigned int idx)
 		pfjets_area_isLoaded = false;
 		pfjets_chargedEmE_isLoaded = false;
 		pfjets_chargedHadronE_isLoaded = false;
-		pfjets_combinedInclusiveSecondaryVertexV2BJetTag_isLoaded = false;
+		pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_isLoaded = false;
 		pfjets_combinedMVABJetTag_isLoaded = false;
 		pfjets_corL1Fast_isLoaded = false;
 		pfjets_corL1FastL2L3_isLoaded = false;
@@ -7794,7 +7794,7 @@ void LoadAllBranches()
 	if (pfjets_area_branch != 0) pfjets_area();
 	if (pfjets_chargedEmE_branch != 0) pfjets_chargedEmE();
 	if (pfjets_chargedHadronE_branch != 0) pfjets_chargedHadronE();
-	if (pfjets_combinedInclusiveSecondaryVertexV2BJetTag_branch != 0) pfjets_combinedInclusiveSecondaryVertexV2BJetTag();
+	if (pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch != 0) pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag();
 	if (pfjets_combinedMVABJetTag_branch != 0) pfjets_combinedMVABJetTag();
 	if (pfjets_corL1Fast_branch != 0) pfjets_corL1Fast();
 	if (pfjets_corL1FastL2L3_branch != 0) pfjets_corL1FastL2L3();
@@ -13842,18 +13842,18 @@ void LoadAllBranches()
 		}
 		return pfjets_chargedHadronE_;
 	}
-	const vector<float> &pfjets_combinedInclusiveSecondaryVertexV2BJetTag()
+	const vector<float> &pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag()
 	{
-		if (not pfjets_combinedInclusiveSecondaryVertexV2BJetTag_isLoaded) {
-			if (pfjets_combinedInclusiveSecondaryVertexV2BJetTag_branch != 0) {
-				pfjets_combinedInclusiveSecondaryVertexV2BJetTag_branch->GetEntry(index);
+		if (not pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_isLoaded) {
+			if (pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch != 0) {
+				pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch->GetEntry(index);
 			} else { 
-				printf("branch pfjets_combinedInclusiveSecondaryVertexV2BJetTag_branch does not exist!\n");
+				printf("branch pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch does not exist!\n");
 				exit(1);
 			}
-			pfjets_combinedInclusiveSecondaryVertexV2BJetTag_isLoaded = true;
+			pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_isLoaded = true;
 		}
-		return pfjets_combinedInclusiveSecondaryVertexV2BJetTag_;
+		return pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_;
 	}
 	const vector<float> &pfjets_combinedMVABJetTag()
 	{
@@ -19253,7 +19253,7 @@ namespace tas {
 	const vector<float> &pfjets_area();
 	const vector<float> &pfjets_chargedEmE();
 	const vector<float> &pfjets_chargedHadronE();
-	const vector<float> &pfjets_combinedInclusiveSecondaryVertexV2BJetTag();
+	const vector<float> &pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag();
 	const vector<float> &pfjets_combinedMVABJetTag();
 	const vector<float> &pfjets_corL1Fast();
 	const vector<float> &pfjets_corL1FastL2L3();

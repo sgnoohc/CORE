@@ -437,7 +437,7 @@ namespace tas {
 	const vector<float> &pfjets_area() { return cms3.pfjets_area(); }
 	const vector<float> &pfjets_chargedEmE() { return cms3.pfjets_chargedEmE(); }
 	const vector<float> &pfjets_chargedHadronE() { return cms3.pfjets_chargedHadronE(); }
-	const vector<float> &pfjets_combinedInclusiveSecondaryVertexV2BJetTag() { return cms3.pfjets_combinedInclusiveSecondaryVertexV2BJetTag(); }
+	const vector<float> &pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag() { return cms3.pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag(); }
 	const vector<float> &pfjets_combinedMVABJetTag() { return cms3.pfjets_combinedMVABJetTag(); }
 	const vector<float> &pfjets_corL1Fast() { return cms3.pfjets_corL1Fast(); }
 	const vector<float> &pfjets_corL1FastL2L3() { return cms3.pfjets_corL1FastL2L3(); }

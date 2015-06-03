@@ -185,7 +185,7 @@ std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(){
     if (jetIsLep == true) continue;
     
     //Get discriminator
-    float disc = tas::pfjets_combinedInclusiveSecondaryVertexV2BJetTag().at(i);
+    float disc = tas::pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag().at(i);
 
     //Save jets that make it this far
     if (jet.pt() >= 40.) {
