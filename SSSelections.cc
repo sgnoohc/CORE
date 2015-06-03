@@ -402,9 +402,9 @@ int baselineRegion(int njets, int nbtags, float met, float ht, float lep1_pt, fl
  
   //Return baseline region
   if      (nbtags == 0) return 0;
-  else if (nbtags == 1) return 10;
-  else if (nbtags == 2) return 20;
-  else                  return 30;
+  else if (nbtags == 1) return 1;
+  else if (nbtags == 2) return 2;
+  else                  return 3;
 }
 
 int signalRegion(int njets, int nbtags, float met, float ht, float mt_min, float lep1pt, float lep2pt){
@@ -531,13 +531,13 @@ bool isGoodVetoElectron(unsigned int elidx){
 
 bool isFakableElectronNoIso(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 10.) return false;
-  if (!electronID(elidx, SS_fo_noiso_v3)) return false;
+  if (!electronID(elidx, SS_fo_looseMVA_noiso_v3)) return false;
   return true;
 }
 
 bool isFakableElectron(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 10.) return false;
-  if (!electronID(elidx, SS_fo_v3)) return false;
+  if (!electronID(elidx, SS_fo_looseMVA_v3)) return false;
   return true;
 }
 
@@ -672,8 +672,7 @@ int isGoodHyp(int iHyp, IsolationMethods isoCase, bool verbose){
   if (!hypsFromFirstGoodVertex(iHyp)) return 0;
 
   //Finished for events that fail z veto
-  if (extraZ && passed_id_numer_ll && passed_id_numer_lt && isss) return 6;  //6 if fails Z veto, otherwise tight-tight
-  if (extraZ) return 0;
+  if (extraZ) return 6;
 
   //Results
   else if (passed_id_numer_lt && passed_id_numer_ll && isss) return 3;  // 3 if both numer pass, SS
@@ -712,6 +711,10 @@ hyp_result_t chooseBestHyp(IsolationMethods isoCase, bool verbose){
      good_hyps = good_hyps_ss;
      hyp_class_ = 3;
   }
+  else if (good_hyps_zv.size() != 0){
+    good_hyps = good_hyps_zv;
+    hyp_class_ = 6;
+  }
   else if (good_hyps_sf.size() != 0){
     good_hyps = good_hyps_sf;
     hyp_class_ = 2;
@@ -727,10 +730,6 @@ hyp_result_t chooseBestHyp(IsolationMethods isoCase, bool verbose){
   else if (good_hyps_fr.size() != 0){
     good_hyps = good_hyps_fr;
     hyp_class_ = 5;
-  }
-  else if (good_hyps_zv.size() != 0){
-    good_hyps = good_hyps_zv;
-    hyp_class_ = 6;
   }
   else hyp_class_ = 0; 
 
