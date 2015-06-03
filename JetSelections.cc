@@ -12,6 +12,7 @@ bool isLoosePFJet(unsigned int pfJetIdx){
   float pfjet_cef_  = pfjets_chargedEmE()[pfJetIdx] / (pfjets_undoJEC().at(pfJetIdx)*pfjets_p4()[pfJetIdx].energy());
   float pfjet_nef_  = pfjets_neutralEmE()[pfJetIdx] / (pfjets_undoJEC().at(pfJetIdx)*pfjets_p4()[pfJetIdx].energy());
   int   pfjet_cm_  = pfjets_chargedMultiplicity()[pfJetIdx];
+  int   pfjet_nm_  = pfjets_neutralMultiplicity()[pfJetIdx];
   float pfjet_eta  = fabs(pfjets_p4()[pfJetIdx].eta());
 
   if (pfjets_pfcandIndicies()[pfJetIdx].size() < 2) return false;
@@ -19,7 +20,7 @@ bool isLoosePFJet(unsigned int pfJetIdx){
   if (pfjet_nhf_ >= 0.99) return false;
 
   if (pfjet_eta < 2.4){
-    if (pfjet_cm_ < 1) return false;
+    if (pfjet_cm_ + pfjet_nm_ < 1) return false;
     if (pfjet_chf_ < 1e-6) return false;
     if (pfjet_cef_ >= 0.99) return false;
   }
