@@ -167,7 +167,7 @@ std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(){
     bool jetIsLep = false;
     for (unsigned int eidx = 0; eidx < tas::els_p4().size(); eidx++){
       LorentzVector electron = tas::els_p4().at(eidx);
-      if (electron.pt() < 7) continue;
+      if (electron.pt() < 10) continue;
       if (!isGoodVetoElectron(eidx)) continue;
       if (ROOT::Math::VectorUtil::DeltaR(jet, electron) > 0.4) continue;
       jetIsLep = true;
@@ -177,7 +177,7 @@ std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(){
     //Jet cleaning -- muons
     for (unsigned int muidx = 0; muidx < tas::mus_p4().size(); muidx++){
       LorentzVector muon = tas::mus_p4().at(muidx);
-      if (muon.pt() < 5) continue;
+      if (muon.pt() < 10) continue;
       if (!isGoodVetoMuon(muidx)) continue;
       if (ROOT::Math::VectorUtil::DeltaR(jet, muon) > 0.4) continue;
       jetIsLep = true;
