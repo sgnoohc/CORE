@@ -679,8 +679,13 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
 
 
   case(ZMET_loose_v2):
-	if (!isLooseElectronPOGphys14noIso(elIdx)) return false;
-	if (elMiniRelIso(elIdx) >= 0.1) return false; 
+	if( !isLooseElectronPOGphys14noIso(elIdx)               ) return false;
+	if( elMiniRelIso( elIdx, true, 0.0, false, true ) > 0.1 ) return false;
+	else return true;
+	break;
+
+  case(ZMET_loose_noiso_v2):
+	if( !isLooseElectronPOGphys14noIso(elIdx)               ) return false;
 	else return true;
 	break;
 
