@@ -194,7 +194,7 @@ float elRelIsoCustomCone(unsigned int elIdx, float dr, bool useVetoCones, float 
   float deadcone_pu = 0.;
   float deadcone_ph = 0.;
   // veto cones only in the endcap for electrons
-  if (useVetoCones && fabs(els_p4().at(elIdx).eta()) > 1.479) {
+  if (useVetoCones && fabs(els_etaSC().at(elIdx)) > 1.479) {
     deadcone_ch = 0.015;
     deadcone_pu = 0.015;
     deadcone_ph = 0.08;
