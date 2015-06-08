@@ -86,6 +86,6 @@ class readMVA {
 };
 
 void createAndInitMVA(std::string pathToCORE);
-float getMVAoutput(unsigned int index);
+float getMVAoutput(unsigned int index = 0);
 
 #endif

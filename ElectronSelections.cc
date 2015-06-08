@@ -1287,7 +1287,8 @@ void createAndInitMVA(std::string pathToCORE){
   globalEleMVAreader = new readMVA();
   globalEleMVAreader->InitMVA(pathToCORE); 
 }
-float getMVAoutput(unsigned int index = 0) {
+
+float getMVAoutput(unsigned int index){
   if (globalEleMVAreader==0) {
     cout << "readMVA=0, please create and init it (e.g with createAndInitMVA function)" << endl;
     return -999.;
