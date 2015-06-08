@@ -602,6 +602,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       return passMultiIso(11, elIdx, 0.10, 0.70, 7.0);
       break;
 
+    case(SS_medium_looseMVA_noip_v3): 
     case(SS_medium_noip_v3):
       if (electronID(elIdx, SS_fo_looseMVA_noiso_noip_v3)==0) return false;//make sure it's tighter than FO
       if (globalEleMVAreader==0) {
@@ -1253,6 +1254,7 @@ bool readMVA::passesElectronMVAid(unsigned int index, id_level_t id_level){
   case (SS_veto_noiso_noip_v3):
   case(SS_fo_looseMVA_noiso_v3):
   case (SS_fo_looseMVA_noiso_noip_v3):
+  case (SS_medium_looseMVA_noip_v3):
     if (aeta < 0.8) return disc > -0.11;
     if ((aeta >= 0.8 && aeta <= 1.479)) return disc > -0.35;
     if (aeta > 1.479) return disc > -0.55;
