@@ -34,6 +34,7 @@ analysis_t whichAnalysis(id_level_t id_level){
     case (SS_fo_looseMVA_v3):
     case (SS_medium_noip_v3):
     case (SS_fo_noiso_noip_v3):
+    case (SS_medium_looseMVA_noip_v3):
       return SS;
       break;
     case (HAD_veto_noiso_v1):
@@ -66,9 +67,11 @@ analysis_t whichAnalysis(id_level_t id_level){
       return STOP;
       break;
     case (ZMET_loose_v2):
+    case (ZMET_loose_noiso_v2):
     case (ZMET_loose_v1):
     case (ZMET_loose_noiso_v1):
     case (ZMET_tight_v2):
+    case (ZMET_tight_noiso_v2):
     case (ZMET_tight_v1):
     case (ZMET_tight_noiso_v1):
     case (ZMET_photon_v1):
