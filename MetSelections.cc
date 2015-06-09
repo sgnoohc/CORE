@@ -5,7 +5,7 @@ using namespace tas;
 
 metStruct trackerMET(float deltaZCut, const std::vector<LorentzVector>* jets) {
 
-  if ( vtxs_sumpt().empty() ) return metStruct();
+  if ( vtxs_isFake().empty() ) return metStruct();
   double pX(0), pY(0);
   
   for (unsigned int i=0; i<pfcands_particleId().size(); ++i){

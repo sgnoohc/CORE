@@ -10,7 +10,7 @@
 #include "TFile.h"
 #include "TBits.h"
 #include <vector> 
-#include <unistd.h>
+#include <unistd.h> 
 typedef ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > LorentzVector;
 
 using namespace std; 
@@ -18,9 +18,15 @@ class CMS3 {
 private: 
 protected: 
 	unsigned int index;
+	vector<string> genweightsID_;
+	TBranch *genweightsID_branch;
+	bool genweightsID_isLoaded;
 	TBits hlt_bits_;
 	TBranch *hlt_bits_branch;
 	bool hlt_bits_isLoaded;
+	vector<TString> pfjets_nonCHS_bDiscriminatorNames_;
+	TBranch *pfjets_nonCHS_bDiscriminatorNames_branch;
+	bool pfjets_nonCHS_bDiscriminatorNames_isLoaded;
 	vector<TString> evt_CMS3tag_;
 	TBranch *evt_CMS3tag_branch;
 	bool evt_CMS3tag_isLoaded;
@@ -30,6 +36,12 @@ protected:
 	vector<TString> hlt_trigNames_;
 	TBranch *hlt_trigNames_branch;
 	bool hlt_trigNames_isLoaded;
+	vector<TString> pfjets_bDiscriminatorNames_;
+	TBranch *pfjets_bDiscriminatorNames_branch;
+	bool pfjets_bDiscriminatorNames_isLoaded;
+	vector<TString> pfjets_puppi_bDiscriminatorNames_;
+	TBranch *pfjets_puppi_bDiscriminatorNames_branch;
+	bool pfjets_puppi_bDiscriminatorNames_isLoaded;
 	vector<TString> taus_pf_IDnames_;
 	TBranch *taus_pf_IDnames_branch;
 	bool taus_pf_IDnames_isLoaded;
@@ -99,6 +111,39 @@ protected:
 	vector<bool> els_passingPflowPreselection_;
 	TBranch *els_passingPflowPreselection_branch;
 	bool els_passingPflowPreselection_isLoaded;
+	vector<bool> genps_fromHardProcessBeforeFSR_;
+	TBranch *genps_fromHardProcessBeforeFSR_branch;
+	bool genps_fromHardProcessBeforeFSR_isLoaded;
+	vector<bool> genps_fromHardProcessDecayed_;
+	TBranch *genps_fromHardProcessDecayed_branch;
+	bool genps_fromHardProcessDecayed_isLoaded;
+	vector<bool> genps_fromHardProcessFinalState_;
+	TBranch *genps_fromHardProcessFinalState_branch;
+	bool genps_fromHardProcessFinalState_isLoaded;
+	vector<bool> genps_isDirectHardProcessTauDecayProductFinalState_;
+	TBranch *genps_isDirectHardProcessTauDecayProductFinalState_branch;
+	bool genps_isDirectHardProcessTauDecayProductFinalState_isLoaded;
+	vector<bool> genps_isDirectPromptTauDecayProductFinalState_;
+	TBranch *genps_isDirectPromptTauDecayProductFinalState_branch;
+	bool genps_isDirectPromptTauDecayProductFinalState_isLoaded;
+	vector<bool> genps_isHardProcess_;
+	TBranch *genps_isHardProcess_branch;
+	bool genps_isHardProcess_isLoaded;
+	vector<bool> genps_isLastCopy_;
+	TBranch *genps_isLastCopy_branch;
+	bool genps_isLastCopy_isLoaded;
+	vector<bool> genps_isLastCopyBeforeFSR_;
+	TBranch *genps_isLastCopyBeforeFSR_branch;
+	bool genps_isLastCopyBeforeFSR_isLoaded;
+	vector<bool> genps_isMostlyLikePythia6Status3_;
+	TBranch *genps_isMostlyLikePythia6Status3_branch;
+	bool genps_isMostlyLikePythia6Status3_isLoaded;
+	vector<bool> genps_isPromptDecayed_;
+	TBranch *genps_isPromptDecayed_branch;
+	bool genps_isPromptDecayed_isLoaded;
+	vector<bool> genps_isPromptFinalState_;
+	TBranch *genps_isPromptFinalState_branch;
+	bool genps_isPromptFinalState_isLoaded;
 	vector<bool> mus_isRPCMuon_;
 	TBranch *mus_isRPCMuon_branch;
 	bool mus_isRPCMuon_isLoaded;
@@ -318,6 +363,12 @@ protected:
 	float evt_fixgrid_rho_fwd_;
 	TBranch *evt_fixgrid_rho_fwd_branch;
 	bool evt_fixgrid_rho_fwd_isLoaded;
+	float evt_calomet_;
+	TBranch *evt_calomet_branch;
+	bool evt_calomet_isLoaded;
+	float evt_calometPhi_;
+	TBranch *evt_calometPhi_branch;
+	bool evt_calometPhi_isLoaded;
 	float evt_pfmet_;
 	TBranch *evt_pfmet_branch;
 	bool evt_pfmet_isLoaded;
@@ -330,9 +381,6 @@ protected:
 	float evt_pfmetSig_;
 	TBranch *evt_pfmetSig_branch;
 	bool evt_pfmetSig_isLoaded;
-	float evt_pfmetSignificance_;
-	TBranch *evt_pfmetSignificance_branch;
-	bool evt_pfmetSignificance_isLoaded;
 	float evt_pfmet_raw_;
 	TBranch *evt_pfmet_raw_branch;
 	bool evt_pfmet_raw_isLoaded;
@@ -369,6 +417,15 @@ protected:
 	ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> >  evt_bsp4_;
 	TBranch *evt_bsp4_branch;
 	bool evt_bsp4_isLoaded;
+	vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > pfjets_nonCHS_p4_;
+	TBranch *pfjets_nonCHS_p4_branch;
+	bool pfjets_nonCHS_p4_isLoaded;
+	vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > ak8jets_mc_gp_p4_;
+	TBranch *ak8jets_mc_gp_p4_branch;
+	bool ak8jets_mc_gp_p4_isLoaded;
+	vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > ak8jets_mc_p4_;
+	TBranch *ak8jets_mc_p4_branch;
+	bool ak8jets_mc_p4_isLoaded;
 	vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > els_mc_motherp4_;
 	TBranch *els_mc_motherp4_branch;
 	bool els_mc_motherp4_isLoaded;
@@ -396,15 +453,9 @@ protected:
 	vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > photons_mc_p4_;
 	TBranch *photons_mc_p4_branch;
 	bool photons_mc_p4_isLoaded;
-	vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > els_inner_position_;
-	TBranch *els_inner_position_branch;
-	bool els_inner_position_isLoaded;
 	vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > els_mc_patMatch_p4_;
 	TBranch *els_mc_patMatch_p4_branch;
 	bool els_mc_patMatch_p4_isLoaded;
-	vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > els_outer_position_;
-	TBranch *els_outer_position_branch;
-	bool els_outer_position_isLoaded;
 	vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > els_p4_;
 	TBranch *els_p4_branch;
 	bool els_p4_isLoaded;
@@ -432,6 +483,9 @@ protected:
 	vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > genps_prod_vtx_;
 	TBranch *genps_prod_vtx_branch;
 	bool genps_prod_vtx_isLoaded;
+	vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > genjets_p4_;
+	TBranch *genjets_p4_branch;
+	bool genjets_p4_isLoaded;
 	vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > hyp_ll_p4_;
 	TBranch *hyp_ll_p4_branch;
 	bool hyp_ll_p4_isLoaded;
@@ -441,6 +495,9 @@ protected:
 	vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > hyp_p4_;
 	TBranch *hyp_p4_branch;
 	bool hyp_p4_isLoaded;
+	vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > isotracks_p4_;
+	TBranch *isotracks_p4_branch;
+	bool isotracks_p4_isLoaded;
 	vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > mus_gfit_p4_;
 	TBranch *mus_gfit_p4_branch;
 	bool mus_gfit_p4_isLoaded;
@@ -474,6 +531,9 @@ protected:
 	vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > pfjets_p4_;
 	TBranch *pfjets_p4_branch;
 	bool pfjets_p4_isLoaded;
+	vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > pfjets_puppi_p4_;
+	TBranch *pfjets_puppi_p4_branch;
+	bool pfjets_puppi_p4_isLoaded;
 	vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > taus_pf_lead_chargecand_p4_;
 	TBranch *taus_pf_lead_chargecand_p4_branch;
 	bool taus_pf_lead_chargecand_p4_isLoaded;
@@ -510,6 +570,48 @@ protected:
 	vector<vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > > taus_pf_signalcands_p4_;
 	TBranch *taus_pf_signalcands_p4_branch;
 	bool taus_pf_signalcands_p4_isLoaded;
+	vector<float> pfjets_nonCHS_area_;
+	TBranch *pfjets_nonCHS_area_branch;
+	bool pfjets_nonCHS_area_isLoaded;
+	vector<float> pfjets_nonCHS_chargedEmE_;
+	TBranch *pfjets_nonCHS_chargedEmE_branch;
+	bool pfjets_nonCHS_chargedEmE_isLoaded;
+	vector<float> pfjets_nonCHS_chargedHadronE_;
+	TBranch *pfjets_nonCHS_chargedHadronE_branch;
+	bool pfjets_nonCHS_chargedHadronE_isLoaded;
+	vector<float> pfjets_nonCHS_electronE_;
+	TBranch *pfjets_nonCHS_electronE_branch;
+	bool pfjets_nonCHS_electronE_isLoaded;
+	vector<float> pfjets_nonCHS_hfEmE_;
+	TBranch *pfjets_nonCHS_hfEmE_branch;
+	bool pfjets_nonCHS_hfEmE_isLoaded;
+	vector<float> pfjets_nonCHS_hfHadronE_;
+	TBranch *pfjets_nonCHS_hfHadronE_branch;
+	bool pfjets_nonCHS_hfHadronE_isLoaded;
+	vector<float> pfjets_nonCHS_mass_;
+	TBranch *pfjets_nonCHS_mass_branch;
+	bool pfjets_nonCHS_mass_isLoaded;
+	vector<float> pfjets_nonCHS_muonE_;
+	TBranch *pfjets_nonCHS_muonE_branch;
+	bool pfjets_nonCHS_muonE_isLoaded;
+	vector<float> pfjets_nonCHS_neutralEmE_;
+	TBranch *pfjets_nonCHS_neutralEmE_branch;
+	bool pfjets_nonCHS_neutralEmE_isLoaded;
+	vector<float> pfjets_nonCHS_neutralHadronE_;
+	TBranch *pfjets_nonCHS_neutralHadronE_branch;
+	bool pfjets_nonCHS_neutralHadronE_isLoaded;
+	vector<float> pfjets_nonCHS_pfCombinedInclusiveSecondaryVertexV2BJetTag_;
+	TBranch *pfjets_nonCHS_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch;
+	bool pfjets_nonCHS_pfCombinedInclusiveSecondaryVertexV2BJetTag_isLoaded;
+	vector<float> pfjets_nonCHS_photonE_;
+	TBranch *pfjets_nonCHS_photonE_branch;
+	bool pfjets_nonCHS_photonE_isLoaded;
+	vector<float> pfjets_nonCHS_pileupJetId_;
+	TBranch *pfjets_nonCHS_pileupJetId_branch;
+	bool pfjets_nonCHS_pileupJetId_isLoaded;
+	vector<float> pfjets_nonCHS_undoJEC_;
+	TBranch *pfjets_nonCHS_undoJEC_branch;
+	bool pfjets_nonCHS_undoJEC_isLoaded;
 	vector<float> evt_bs_covMatrix_;
 	TBranch *evt_bs_covMatrix_branch;
 	bool evt_bs_covMatrix_isLoaded;
@@ -669,6 +771,9 @@ protected:
 	vector<float> els_ecalIso04_;
 	TBranch *els_ecalIso04_branch;
 	bool els_ecalIso04_isLoaded;
+	vector<float> els_ecalPFClusterIso_;
+	TBranch *els_ecalPFClusterIso_branch;
+	bool els_ecalPFClusterIso_isLoaded;
 	vector<float> els_etaErr_;
 	TBranch *els_etaErr_branch;
 	bool els_etaErr_isLoaded;
@@ -711,6 +816,9 @@ protected:
 	vector<float> els_hcalIso04_;
 	TBranch *els_hcalIso04_branch;
 	bool els_hcalIso04_isLoaded;
+	vector<float> els_hcalPFClusterIso_;
+	TBranch *els_hcalPFClusterIso_branch;
+	bool els_hcalPFClusterIso_isLoaded;
 	vector<float> els_ip2d_;
 	TBranch *els_ip2d_branch;
 	bool els_ip2d_isLoaded;
@@ -723,66 +831,30 @@ protected:
 	vector<float> els_ip3derr_;
 	TBranch *els_ip3derr_branch;
 	bool els_ip3derr_isLoaded;
-	vector<float> els_iso03_pf2012_ch_;
-	TBranch *els_iso03_pf2012_ch_branch;
-	bool els_iso03_pf2012_ch_isLoaded;
-	vector<float> els_iso03_pf2012_em_;
-	TBranch *els_iso03_pf2012_em_branch;
-	bool els_iso03_pf2012_em_isLoaded;
-	vector<float> els_iso03_pf2012ext_ch_;
-	TBranch *els_iso03_pf2012ext_ch_branch;
-	bool els_iso03_pf2012ext_ch_isLoaded;
-	vector<float> els_iso03_pf2012ext_em_;
-	TBranch *els_iso03_pf2012ext_em_branch;
-	bool els_iso03_pf2012ext_em_isLoaded;
-	vector<float> els_iso03_pf2012ext_nh_;
-	TBranch *els_iso03_pf2012ext_nh_branch;
-	bool els_iso03_pf2012ext_nh_isLoaded;
-	vector<float> els_iso03_pf2012_nh_;
-	TBranch *els_iso03_pf2012_nh_branch;
-	bool els_iso03_pf2012_nh_isLoaded;
-	vector<float> els_iso04_pf2012_ch_;
-	TBranch *els_iso04_pf2012_ch_branch;
-	bool els_iso04_pf2012_ch_isLoaded;
-	vector<float> els_iso04_pf2012_em_;
-	TBranch *els_iso04_pf2012_em_branch;
-	bool els_iso04_pf2012_em_isLoaded;
-	vector<float> els_iso04_pf2012ext_ch_;
-	TBranch *els_iso04_pf2012ext_ch_branch;
-	bool els_iso04_pf2012ext_ch_isLoaded;
-	vector<float> els_iso04_pf2012ext_em_;
-	TBranch *els_iso04_pf2012ext_em_branch;
-	bool els_iso04_pf2012ext_em_isLoaded;
-	vector<float> els_iso04_pf2012ext_nh_;
-	TBranch *els_iso04_pf2012ext_nh_branch;
-	bool els_iso04_pf2012ext_nh_isLoaded;
-	vector<float> els_iso04_pf2012_nh_;
-	TBranch *els_iso04_pf2012_nh_branch;
-	bool els_iso04_pf2012_nh_isLoaded;
 	vector<float> els_mass_;
 	TBranch *els_mass_branch;
 	bool els_mass_isLoaded;
 	vector<float> els_mc_patMatch_dr_;
 	TBranch *els_mc_patMatch_dr_branch;
 	bool els_mc_patMatch_dr_isLoaded;
+	vector<float> els_miniIso_ch_;
+	TBranch *els_miniIso_ch_branch;
+	bool els_miniIso_ch_isLoaded;
+	vector<float> els_miniIso_db_;
+	TBranch *els_miniIso_db_branch;
+	bool els_miniIso_db_isLoaded;
+	vector<float> els_miniIso_em_;
+	TBranch *els_miniIso_em_branch;
+	bool els_miniIso_em_isLoaded;
+	vector<float> els_miniIso_nh_;
+	TBranch *els_miniIso_nh_branch;
+	bool els_miniIso_nh_isLoaded;
+	vector<float> els_miniIso_uncor_;
+	TBranch *els_miniIso_uncor_branch;
+	bool els_miniIso_uncor_isLoaded;
 	vector<float> els_mva_;
 	TBranch *els_mva_branch;
 	bool els_mva_isLoaded;
-       vector<float> els_miniIso_ch_;
-       TBranch *els_miniIso_ch_branch;
-       bool els_miniIso_ch_isLoaded;
-       vector<float> els_miniIso_db_;
-       TBranch *els_miniIso_db_branch;
-       bool els_miniIso_db_isLoaded;
-       vector<float> els_miniIso_em_;
-       TBranch *els_miniIso_em_branch;
-       bool els_miniIso_em_isLoaded;
-       vector<float> els_miniIso_nh_;
-       TBranch *els_miniIso_nh_branch;
-       bool els_miniIso_nh_isLoaded;
-       vector<float> els_miniIso_uncor_;
-       TBranch *els_miniIso_uncor_branch;
-       bool els_miniIso_uncor_isLoaded;
 	vector<float> els_ndof_;
 	TBranch *els_ndof_branch;
 	bool els_ndof_isLoaded;
@@ -873,9 +945,18 @@ protected:
 	vector<float> genps_mass_;
 	TBranch *genps_mass_branch;
 	bool genps_mass_isLoaded;
-	vector<float> mus_backToBackCompat_;
-	TBranch *mus_backToBackCompat_branch;
-	bool mus_backToBackCompat_isLoaded;
+	vector<float> genweights_;
+	TBranch *genweights_branch;
+	bool genweights_isLoaded;
+	vector<float> isotracks_dz_;
+	TBranch *isotracks_dz_branch;
+	bool isotracks_dz_isLoaded;
+	vector<float> isotracks_mass_;
+	TBranch *isotracks_mass_branch;
+	bool isotracks_mass_isLoaded;
+	vector<float> isotracks_relIso_;
+	TBranch *isotracks_relIso_branch;
+	bool isotracks_relIso_isLoaded;
 	vector<float> mus_bs2d_;
 	TBranch *mus_bs2d_branch;
 	bool mus_bs2d_isLoaded;
@@ -900,9 +981,6 @@ protected:
 	vector<float> mus_chi2LocalPosition_;
 	TBranch *mus_chi2LocalPosition_branch;
 	bool mus_chi2LocalPosition_isLoaded;
-	vector<float> mus_cosmicCompat_;
-	TBranch *mus_cosmicCompat_branch;
-	bool mus_cosmicCompat_isLoaded;
 	vector<float> mus_d0_;
 	TBranch *mus_d0_branch;
 	bool mus_d0_isLoaded;
@@ -927,9 +1005,6 @@ protected:
 	vector<float> mus_ecal_time_;
 	TBranch *mus_ecal_time_branch;
 	bool mus_ecal_time_isLoaded;
-	vector<float> mus_ecal_timeError_;
-	TBranch *mus_ecal_timeError_branch;
-	bool mus_ecal_timeError_isLoaded;
 	vector<float> mus_e_em_;
 	TBranch *mus_e_em_branch;
 	bool mus_e_em_isLoaded;
@@ -1008,9 +1083,6 @@ protected:
 	vector<float> mus_hcal_time_;
 	TBranch *mus_hcal_time_branch;
 	bool mus_hcal_time_isLoaded;
-	vector<float> mus_hcal_timeError_;
-	TBranch *mus_hcal_timeError_branch;
-	bool mus_hcal_timeError_isLoaded;
 	vector<float> mus_ip2d_;
 	TBranch *mus_ip2d_branch;
 	bool mus_ip2d_isLoaded;
@@ -1194,27 +1266,24 @@ protected:
 	vector<float> mus_mc_patMatch_dr_;
 	TBranch *mus_mc_patMatch_dr_branch;
 	bool mus_mc_patMatch_dr_isLoaded;
-       vector<float> mus_miniIso_ch_;
-       TBranch *mus_miniIso_ch_branch;
-       bool mus_miniIso_ch_isLoaded;
-       vector<float> mus_miniIso_db_;
-       TBranch *mus_miniIso_db_branch;
-       bool mus_miniIso_db_isLoaded;
-       vector<float> mus_miniIso_em_;
-       TBranch *mus_miniIso_em_branch;
-       bool mus_miniIso_em_isLoaded;
-       vector<float> mus_miniIso_nh_;
-       TBranch *mus_miniIso_nh_branch;
-       bool mus_miniIso_nh_isLoaded;
-       vector<float> mus_miniIso_uncor_;
-       TBranch *mus_miniIso_uncor_branch;
-       bool mus_miniIso_uncor_isLoaded;
+	vector<float> mus_miniIso_ch_;
+	TBranch *mus_miniIso_ch_branch;
+	bool mus_miniIso_ch_isLoaded;
+	vector<float> mus_miniIso_db_;
+	TBranch *mus_miniIso_db_branch;
+	bool mus_miniIso_db_isLoaded;
+	vector<float> mus_miniIso_em_;
+	TBranch *mus_miniIso_em_branch;
+	bool mus_miniIso_em_isLoaded;
+	vector<float> mus_miniIso_nh_;
+	TBranch *mus_miniIso_nh_branch;
+	bool mus_miniIso_nh_isLoaded;
+	vector<float> mus_miniIso_uncor_;
+	TBranch *mus_miniIso_uncor_branch;
+	bool mus_miniIso_uncor_isLoaded;
 	vector<float> mus_ndof_;
 	TBranch *mus_ndof_branch;
 	bool mus_ndof_isLoaded;
-	vector<float> mus_overlapCompat_;
-	TBranch *mus_overlapCompat_branch;
-	bool mus_overlapCompat_isLoaded;
 	vector<float> mus_phiErr_;
 	TBranch *mus_phiErr_branch;
 	bool mus_phiErr_isLoaded;
@@ -1281,24 +1350,12 @@ protected:
 	vector<float> mus_timeAtIpOutInErr_;
 	TBranch *mus_timeAtIpOutInErr_branch;
 	bool mus_timeAtIpOutInErr_isLoaded;
-	vector<float> mus_timeCompat_;
-	TBranch *mus_timeCompat_branch;
-	bool mus_timeCompat_isLoaded;
-	vector<float> mus_tower_;
-	TBranch *mus_tower_branch;
-	bool mus_tower_isLoaded;
-	vector<float> mus_towerS9_;
-	TBranch *mus_towerS9_branch;
-	bool mus_towerS9_isLoaded;
 	vector<float> mus_trkKink_;
 	TBranch *mus_trkKink_branch;
 	bool mus_trkKink_isLoaded;
 	vector<float> mus_trkRelChi2_;
 	TBranch *mus_trkRelChi2_branch;
 	bool mus_trkRelChi2_isLoaded;
-	vector<float> mus_vertexCompat_;
-	TBranch *mus_vertexCompat_branch;
-	bool mus_vertexCompat_isLoaded;
 	vector<float> mus_vertexphi_;
 	TBranch *mus_vertexphi_branch;
 	bool mus_vertexphi_isLoaded;
@@ -1326,21 +1383,6 @@ protected:
 	vector<float> pfjets_chargedHadronE_;
 	TBranch *pfjets_chargedHadronE_branch;
 	bool pfjets_chargedHadronE_isLoaded;
-	vector<float> pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_;
-	TBranch *pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch;
-	bool pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_isLoaded;
-	vector<float> pfjets_combinedMVABJetTag_;
-	TBranch *pfjets_combinedMVABJetTag_branch;
-	bool pfjets_combinedMVABJetTag_isLoaded;
-	vector<float> pfjets_corL1Fast_;
-	TBranch *pfjets_corL1Fast_branch;
-	bool pfjets_corL1Fast_isLoaded;
-	vector<float> pfjets_corL1FastL2L3_;
-	TBranch *pfjets_corL1FastL2L3_branch;
-	bool pfjets_corL1FastL2L3_isLoaded;
-	vector<float> pfjets_corL2L3_;
-	TBranch *pfjets_corL2L3_branch;
-	bool pfjets_corL2L3_isLoaded;
 	vector<float> pfjets_electronE_;
 	TBranch *pfjets_electronE_branch;
 	bool pfjets_electronE_isLoaded;
@@ -1350,12 +1392,6 @@ protected:
 	vector<float> pfjets_hfHadronE_;
 	TBranch *pfjets_hfHadronE_branch;
 	bool pfjets_hfHadronE_isLoaded;
-	vector<float> pfjets_jetBProbabilityBJetTag_;
-	TBranch *pfjets_jetBProbabilityBJetTag_branch;
-	bool pfjets_jetBProbabilityBJetTag_isLoaded;
-	vector<float> pfjets_jetProbabilityBJetTag_;
-	TBranch *pfjets_jetProbabilityBJetTag_branch;
-	bool pfjets_jetProbabilityBJetTag_isLoaded;
 	vector<float> pfjets_mass_;
 	TBranch *pfjets_mass_branch;
 	bool pfjets_mass_isLoaded;
@@ -1368,30 +1404,60 @@ protected:
 	vector<float> pfjets_neutralHadronE_;
 	TBranch *pfjets_neutralHadronE_branch;
 	bool pfjets_neutralHadronE_isLoaded;
-	vector<float> pfjets_pfCombinedSecondaryVertexBJetTag_;
-	TBranch *pfjets_pfCombinedSecondaryVertexBJetTag_branch;
-	bool pfjets_pfCombinedSecondaryVertexBJetTag_isLoaded;
+	vector<float> pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_;
+	TBranch *pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch;
+	bool pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_isLoaded;
 	vector<float> pfjets_photonE_;
 	TBranch *pfjets_photonE_branch;
 	bool pfjets_photonE_isLoaded;
 	vector<float> pfjets_pileupJetId_;
 	TBranch *pfjets_pileupJetId_branch;
 	bool pfjets_pileupJetId_isLoaded;
-	vector<float> pfjets_simpleSecondaryVertexHighEffBJetTag_;
-	TBranch *pfjets_simpleSecondaryVertexHighEffBJetTag_branch;
-	bool pfjets_simpleSecondaryVertexHighEffBJetTag_isLoaded;
-	vector<float> pfjets_simpleSecondaryVertexHighPurBJetTags_;
-	TBranch *pfjets_simpleSecondaryVertexHighPurBJetTags_branch;
-	bool pfjets_simpleSecondaryVertexHighPurBJetTags_isLoaded;
-	vector<float> pfjets_trackCountingHighEffBJetTag_;
-	TBranch *pfjets_trackCountingHighEffBJetTag_branch;
-	bool pfjets_trackCountingHighEffBJetTag_isLoaded;
-	vector<float> pfjets_trackCountingHighPurBJetTag_;
-	TBranch *pfjets_trackCountingHighPurBJetTag_branch;
-	bool pfjets_trackCountingHighPurBJetTag_isLoaded;
 	vector<float> pfjets_undoJEC_;
 	TBranch *pfjets_undoJEC_branch;
 	bool pfjets_undoJEC_isLoaded;
+	vector<float> pfjets_puppi_area_;
+	TBranch *pfjets_puppi_area_branch;
+	bool pfjets_puppi_area_isLoaded;
+	vector<float> pfjets_puppi_chargedEmE_;
+	TBranch *pfjets_puppi_chargedEmE_branch;
+	bool pfjets_puppi_chargedEmE_isLoaded;
+	vector<float> pfjets_puppi_chargedHadronE_;
+	TBranch *pfjets_puppi_chargedHadronE_branch;
+	bool pfjets_puppi_chargedHadronE_isLoaded;
+	vector<float> pfjets_puppi_electronE_;
+	TBranch *pfjets_puppi_electronE_branch;
+	bool pfjets_puppi_electronE_isLoaded;
+	vector<float> pfjets_puppi_hfEmE_;
+	TBranch *pfjets_puppi_hfEmE_branch;
+	bool pfjets_puppi_hfEmE_isLoaded;
+	vector<float> pfjets_puppi_hfHadronE_;
+	TBranch *pfjets_puppi_hfHadronE_branch;
+	bool pfjets_puppi_hfHadronE_isLoaded;
+	vector<float> pfjets_puppi_mass_;
+	TBranch *pfjets_puppi_mass_branch;
+	bool pfjets_puppi_mass_isLoaded;
+	vector<float> pfjets_puppi_muonE_;
+	TBranch *pfjets_puppi_muonE_branch;
+	bool pfjets_puppi_muonE_isLoaded;
+	vector<float> pfjets_puppi_neutralEmE_;
+	TBranch *pfjets_puppi_neutralEmE_branch;
+	bool pfjets_puppi_neutralEmE_isLoaded;
+	vector<float> pfjets_puppi_neutralHadronE_;
+	TBranch *pfjets_puppi_neutralHadronE_branch;
+	bool pfjets_puppi_neutralHadronE_isLoaded;
+	vector<float> pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag_;
+	TBranch *pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch;
+	bool pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag_isLoaded;
+	vector<float> pfjets_puppi_photonE_;
+	TBranch *pfjets_puppi_photonE_branch;
+	bool pfjets_puppi_photonE_isLoaded;
+	vector<float> pfjets_puppi_pileupJetId_;
+	TBranch *pfjets_puppi_pileupJetId_branch;
+	bool pfjets_puppi_pileupJetId_isLoaded;
+	vector<float> pfjets_puppi_undoJEC_;
+	TBranch *pfjets_puppi_undoJEC_branch;
+	bool pfjets_puppi_undoJEC_isLoaded;
 	vector<float> taus_pf_mass_;
 	TBranch *taus_pf_mass_branch;
 	bool taus_pf_mass_isLoaded;
@@ -1410,12 +1476,27 @@ protected:
 	vector<float> photons_e5x5_;
 	TBranch *photons_e5x5_branch;
 	bool photons_e5x5_isLoaded;
+	vector<float> photons_eSC_;
+	TBranch *photons_eSC_branch;
+	bool photons_eSC_isLoaded;
+	vector<float> photons_eSCPresh_;
+	TBranch *photons_eSCPresh_branch;
+	bool photons_eSCPresh_isLoaded;
+	vector<float> photons_eSCRaw_;
+	TBranch *photons_eSCRaw_branch;
+	bool photons_eSCRaw_isLoaded;
 	vector<float> photons_ecalIso03_;
 	TBranch *photons_ecalIso03_branch;
 	bool photons_ecalIso03_isLoaded;
 	vector<float> photons_ecalIso04_;
 	TBranch *photons_ecalIso04_branch;
 	bool photons_ecalIso04_isLoaded;
+	vector<float> photons_ecalPFClusterIso_;
+	TBranch *photons_ecalPFClusterIso_branch;
+	bool photons_ecalPFClusterIso_isLoaded;
+	vector<float> photons_etaSC_;
+	TBranch *photons_etaSC_branch;
+	bool photons_etaSC_isLoaded;
 	vector<float> photons_full3x3_e3x3_;
 	TBranch *photons_full3x3_e3x3_branch;
 	bool photons_full3x3_e3x3_isLoaded;
@@ -1446,6 +1527,9 @@ protected:
 	vector<float> photons_hOverE_;
 	TBranch *photons_hOverE_branch;
 	bool photons_hOverE_isLoaded;
+	vector<float> photons_hOverEtowBC_;
+	TBranch *photons_hOverEtowBC_branch;
+	bool photons_hOverEtowBC_isLoaded;
 	vector<float> photons_hcalDepth1TowerSumEtBcConeDR03_;
 	TBranch *photons_hcalDepth1TowerSumEtBcConeDR03_branch;
 	bool photons_hcalDepth1TowerSumEtBcConeDR03_isLoaded;
@@ -1464,6 +1548,9 @@ protected:
 	vector<float> photons_hcalIso04_;
 	TBranch *photons_hcalIso04_branch;
 	bool photons_hcalIso04_isLoaded;
+	vector<float> photons_hcalPFClusterIso_;
+	TBranch *photons_hcalPFClusterIso_branch;
+	bool photons_hcalPFClusterIso_isLoaded;
 	vector<float> photons_hcalTowerSumEtBcConeDR03_;
 	TBranch *photons_hcalTowerSumEtBcConeDR03_branch;
 	bool photons_hcalTowerSumEtBcConeDR03_isLoaded;
@@ -1488,6 +1575,9 @@ protected:
 	vector<float> photons_ntkIsoSolid04_;
 	TBranch *photons_ntkIsoSolid04_branch;
 	bool photons_ntkIsoSolid04_isLoaded;
+	vector<float> photons_phiSC_;
+	TBranch *photons_phiSC_branch;
+	bool photons_phiSC_isLoaded;
 	vector<float> photons_photonIso_;
 	TBranch *photons_photonIso_branch;
 	bool photons_photonIso_isLoaded;
@@ -1569,21 +1659,15 @@ protected:
 	vector<float> ak8jets_area_;
 	TBranch *ak8jets_area_branch;
 	bool ak8jets_area_isLoaded;
-	vector<float> ak8jets_combinedSecondaryVertexBJetTag_;
-	TBranch *ak8jets_combinedSecondaryVertexBJetTag_branch;
-	bool ak8jets_combinedSecondaryVertexBJetTag_isLoaded;
 	vector<float> ak8jets_filteredMass_;
 	TBranch *ak8jets_filteredMass_branch;
 	bool ak8jets_filteredMass_isLoaded;
-	vector<float> ak8jets_jetBProbabilityBJetTag_;
-	TBranch *ak8jets_jetBProbabilityBJetTag_branch;
-	bool ak8jets_jetBProbabilityBJetTag_isLoaded;
-	vector<float> ak8jets_jetProbabilityBJetTag_;
-	TBranch *ak8jets_jetProbabilityBJetTag_branch;
-	bool ak8jets_jetProbabilityBJetTag_isLoaded;
 	vector<float> ak8jets_mass_;
 	TBranch *ak8jets_mass_branch;
 	bool ak8jets_mass_isLoaded;
+	vector<float> ak8jets_minMass_;
+	TBranch *ak8jets_minMass_branch;
+	bool ak8jets_minMass_isLoaded;
 	vector<float> ak8jets_nJettinessTau1_;
 	TBranch *ak8jets_nJettinessTau1_branch;
 	bool ak8jets_nJettinessTau1_isLoaded;
@@ -1596,18 +1680,12 @@ protected:
 	vector<float> ak8jets_prunedMass_;
 	TBranch *ak8jets_prunedMass_branch;
 	bool ak8jets_prunedMass_isLoaded;
-	vector<float> ak8jets_simpleSecondaryVertexHighEffBJetTag_;
-	TBranch *ak8jets_simpleSecondaryVertexHighEffBJetTag_branch;
-	bool ak8jets_simpleSecondaryVertexHighEffBJetTag_isLoaded;
-	vector<float> ak8jets_simpleSecondaryVertexHighPurBJetTags_;
-	TBranch *ak8jets_simpleSecondaryVertexHighPurBJetTags_branch;
-	bool ak8jets_simpleSecondaryVertexHighPurBJetTags_isLoaded;
-	vector<float> ak8jets_trackCountingHighEffBJetTag_;
-	TBranch *ak8jets_trackCountingHighEffBJetTag_branch;
-	bool ak8jets_trackCountingHighEffBJetTag_isLoaded;
-	vector<float> ak8jets_trackCountingHighPurBJetTag_;
-	TBranch *ak8jets_trackCountingHighPurBJetTag_branch;
-	bool ak8jets_trackCountingHighPurBJetTag_isLoaded;
+	vector<float> ak8jets_softdropMass_;
+	TBranch *ak8jets_softdropMass_branch;
+	bool ak8jets_softdropMass_isLoaded;
+	vector<float> ak8jets_topMass_;
+	TBranch *ak8jets_topMass_branch;
+	bool ak8jets_topMass_isLoaded;
 	vector<float> ak8jets_trimmedMass_;
 	TBranch *ak8jets_trimmedMass_branch;
 	bool ak8jets_trimmedMass_isLoaded;
@@ -1620,9 +1698,9 @@ protected:
 	vector<float> vtxs_ndof_;
 	TBranch *vtxs_ndof_branch;
 	bool vtxs_ndof_isLoaded;
-	vector<float> vtxs_sumpt_;
-	TBranch *vtxs_sumpt_branch;
-	bool vtxs_sumpt_isLoaded;
+	vector<float> vtxs_score_;
+	TBranch *vtxs_score_branch;
+	bool vtxs_score_isLoaded;
 	vector<float> vtxs_xError_;
 	TBranch *vtxs_xError_branch;
 	bool vtxs_xError_isLoaded;
@@ -1632,12 +1710,21 @@ protected:
 	vector<float> vtxs_zError_;
 	TBranch *vtxs_zError_branch;
 	bool vtxs_zError_isLoaded;
+	vector<vector<float> > pfjets_nonCHS_bDiscriminators_;
+	TBranch *pfjets_nonCHS_bDiscriminators_branch;
+	bool pfjets_nonCHS_bDiscriminators_isLoaded;
 	vector<vector<float> > mus_stationShowerDeltaR_;
 	TBranch *mus_stationShowerDeltaR_branch;
 	bool mus_stationShowerDeltaR_isLoaded;
 	vector<vector<float> > mus_stationShowerSizeT_;
 	TBranch *mus_stationShowerSizeT_branch;
 	bool mus_stationShowerSizeT_isLoaded;
+	vector<vector<float> > pfjets_bDiscriminators_;
+	TBranch *pfjets_bDiscriminators_branch;
+	bool pfjets_bDiscriminators_isLoaded;
+	vector<vector<float> > pfjets_puppi_bDiscriminators_;
+	TBranch *pfjets_puppi_bDiscriminators_branch;
+	bool pfjets_puppi_bDiscriminators_isLoaded;
 	vector<vector<float> > taus_pf_IDs_;
 	TBranch *taus_pf_IDs_branch;
 	bool taus_pf_IDs_isLoaded;
@@ -1731,6 +1818,33 @@ protected:
 	int sparm_subProcessId_;
 	TBranch *sparm_subProcessId_branch;
 	bool sparm_subProcessId_isLoaded;
+	vector<int> pfjets_nonCHS_chargedHadronMultiplicity_;
+	TBranch *pfjets_nonCHS_chargedHadronMultiplicity_branch;
+	bool pfjets_nonCHS_chargedHadronMultiplicity_isLoaded;
+	vector<int> pfjets_nonCHS_chargedMultiplicity_;
+	TBranch *pfjets_nonCHS_chargedMultiplicity_branch;
+	bool pfjets_nonCHS_chargedMultiplicity_isLoaded;
+	vector<int> pfjets_nonCHS_electronMultiplicity_;
+	TBranch *pfjets_nonCHS_electronMultiplicity_branch;
+	bool pfjets_nonCHS_electronMultiplicity_isLoaded;
+	vector<int> pfjets_nonCHS_muonMultiplicity_;
+	TBranch *pfjets_nonCHS_muonMultiplicity_branch;
+	bool pfjets_nonCHS_muonMultiplicity_isLoaded;
+	vector<int> pfjets_nonCHS_neutralHadronMultiplicity_;
+	TBranch *pfjets_nonCHS_neutralHadronMultiplicity_branch;
+	bool pfjets_nonCHS_neutralHadronMultiplicity_isLoaded;
+	vector<int> pfjets_nonCHS_neutralMultiplicity_;
+	TBranch *pfjets_nonCHS_neutralMultiplicity_branch;
+	bool pfjets_nonCHS_neutralMultiplicity_isLoaded;
+	vector<int> pfjets_nonCHS_partonFlavour_;
+	TBranch *pfjets_nonCHS_partonFlavour_branch;
+	bool pfjets_nonCHS_partonFlavour_isLoaded;
+	vector<int> pfjets_nonCHS_photonMultiplicity_;
+	TBranch *pfjets_nonCHS_photonMultiplicity_branch;
+	bool pfjets_nonCHS_photonMultiplicity_isLoaded;
+	vector<int> ak8jets_mc_id_;
+	TBranch *ak8jets_mc_id_branch;
+	bool ak8jets_mc_id_isLoaded;
 	vector<int> els_mc3_id_;
 	TBranch *els_mc3_id_branch;
 	bool els_mc3_id_isLoaded;
@@ -1926,6 +2040,12 @@ protected:
 	vector<int> hyp_type_;
 	TBranch *hyp_type_branch;
 	bool hyp_type_isLoaded;
+	vector<int> isotracks_charge_;
+	TBranch *isotracks_charge_branch;
+	bool isotracks_charge_isLoaded;
+	vector<int> isotracks_particleId_;
+	TBranch *isotracks_particleId_branch;
+	bool isotracks_particleId_isLoaded;
 	vector<int> mus_algo_;
 	TBranch *mus_algo_branch;
 	bool mus_algo_isLoaded;
@@ -2124,9 +2244,6 @@ protected:
 	vector<int> mus_trk_charge_;
 	TBranch *mus_trk_charge_branch;
 	bool mus_trk_charge_isLoaded;
-	vector<int> mus_trkidx_;
-	TBranch *mus_trkidx_branch;
-	bool mus_trkidx_isLoaded;
 	vector<int> mus_type_;
 	TBranch *mus_type_branch;
 	bool mus_type_isLoaded;
@@ -2166,6 +2283,30 @@ protected:
 	vector<int> pfjets_photonMultiplicity_;
 	TBranch *pfjets_photonMultiplicity_branch;
 	bool pfjets_photonMultiplicity_isLoaded;
+	vector<int> pfjets_puppi_chargedHadronMultiplicity_;
+	TBranch *pfjets_puppi_chargedHadronMultiplicity_branch;
+	bool pfjets_puppi_chargedHadronMultiplicity_isLoaded;
+	vector<int> pfjets_puppi_chargedMultiplicity_;
+	TBranch *pfjets_puppi_chargedMultiplicity_branch;
+	bool pfjets_puppi_chargedMultiplicity_isLoaded;
+	vector<int> pfjets_puppi_electronMultiplicity_;
+	TBranch *pfjets_puppi_electronMultiplicity_branch;
+	bool pfjets_puppi_electronMultiplicity_isLoaded;
+	vector<int> pfjets_puppi_muonMultiplicity_;
+	TBranch *pfjets_puppi_muonMultiplicity_branch;
+	bool pfjets_puppi_muonMultiplicity_isLoaded;
+	vector<int> pfjets_puppi_neutralHadronMultiplicity_;
+	TBranch *pfjets_puppi_neutralHadronMultiplicity_branch;
+	bool pfjets_puppi_neutralHadronMultiplicity_isLoaded;
+	vector<int> pfjets_puppi_neutralMultiplicity_;
+	TBranch *pfjets_puppi_neutralMultiplicity_branch;
+	bool pfjets_puppi_neutralMultiplicity_isLoaded;
+	vector<int> pfjets_puppi_partonFlavour_;
+	TBranch *pfjets_puppi_partonFlavour_branch;
+	bool pfjets_puppi_partonFlavour_isLoaded;
+	vector<int> pfjets_puppi_photonMultiplicity_;
+	TBranch *pfjets_puppi_photonMultiplicity_branch;
+	bool pfjets_puppi_photonMultiplicity_isLoaded;
 	vector<int> taus_pf_charge_;
 	TBranch *taus_pf_charge_branch;
 	bool taus_pf_charge_isLoaded;
@@ -2196,6 +2337,9 @@ protected:
 	vector<int> svs_nTrks_;
 	TBranch *svs_nTrks_branch;
 	bool svs_nTrks_isLoaded;
+	vector<int> ak8jets_nSubJets_;
+	TBranch *ak8jets_nSubJets_branch;
+	bool ak8jets_nSubJets_isLoaded;
 	vector<int> ak8jets_partonFlavour_;
 	TBranch *ak8jets_partonFlavour_branch;
 	bool ak8jets_partonFlavour_isLoaded;
@@ -2205,9 +2349,9 @@ protected:
 	vector<int> vtxs_isValid_;
 	TBranch *vtxs_isValid_branch;
 	bool vtxs_isValid_isLoaded;
-	vector<int> vtxs_tracksSize_;
-	TBranch *vtxs_tracksSize_branch;
-	bool vtxs_tracksSize_isLoaded;
+	vector<vector<int> > pfjets_nonCHS_pfcandIndicies_;
+	TBranch *pfjets_nonCHS_pfcandIndicies_branch;
+	bool pfjets_nonCHS_pfcandIndicies_isLoaded;
 	vector<vector<int> > els_PFCand_idx_;
 	TBranch *els_PFCand_idx_branch;
 	bool els_PFCand_idx_isLoaded;
@@ -2229,6 +2373,9 @@ protected:
 	vector<vector<int> > pfjets_pfcandIndicies_;
 	TBranch *pfjets_pfcandIndicies_branch;
 	bool pfjets_pfcandIndicies_isLoaded;
+	vector<vector<int> > pfjets_puppi_pfcandIndicies_;
+	TBranch *pfjets_puppi_pfcandIndicies_branch;
+	bool pfjets_puppi_pfcandIndicies_isLoaded;
 	vector<vector<int> > photons_PFCand_idx_;
 	TBranch *photons_PFCand_idx_branch;
 	bool photons_PFCand_idx_isLoaded;
@@ -2244,6 +2391,9 @@ protected:
 	vector<vector<int> > ak8jets_pfcandIndicies_;
 	TBranch *ak8jets_pfcandIndicies_branch;
 	bool ak8jets_pfcandIndicies_isLoaded;
+	vector<unsigned char> isotracks_fromPV_;
+	TBranch *isotracks_fromPV_branch;
+	bool isotracks_fromPV_isLoaded;
 	vector<unsigned char> pfcands_fromPV_;
 	TBranch *pfcands_fromPV_branch;
 	bool pfcands_fromPV_isLoaded;
@@ -2271,6 +2421,18 @@ protected:
 	unsigned int els_HLT_Ele20_SC4_Mass50_TrailingLeg_version_;
 	TBranch *els_HLT_Ele20_SC4_Mass50_TrailingLeg_version_branch;
 	bool els_HLT_Ele20_SC4_Mass50_TrailingLeg_version_isLoaded;
+	unsigned int els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_version_;
+	TBranch *els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_version_branch;
+	bool els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_version_isLoaded;
+	unsigned int els_HLT_Ele25WP60_Ele8_Mass55_version_;
+	TBranch *els_HLT_Ele25WP60_Ele8_Mass55_version_branch;
+	bool els_HLT_Ele25WP60_Ele8_Mass55_version_isLoaded;
+	unsigned int els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_version_;
+	TBranch *els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_version_branch;
+	bool els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_version_isLoaded;
+	unsigned int els_HLT_Ele25WP60_SC4_Mass55_version_;
+	TBranch *els_HLT_Ele25WP60_SC4_Mass55_version_branch;
+	bool els_HLT_Ele25WP60_SC4_Mass55_version_isLoaded;
 	unsigned int els_HLT_Ele27_WP80_L1sL1SingleEG20ORL1SingleEG22_version_;
 	TBranch *els_HLT_Ele27_WP80_L1sL1SingleEG20ORL1SingleEG22_version_branch;
 	bool els_HLT_Ele27_WP80_L1sL1SingleEG20ORL1SingleEG22_version_isLoaded;
@@ -2283,6 +2445,12 @@ protected:
 	unsigned int els_HLT_Ele32_SC17_Mass50_TrailingLeg_version_;
 	TBranch *els_HLT_Ele32_SC17_Mass50_TrailingLeg_version_branch;
 	bool els_HLT_Ele32_SC17_Mass50_TrailingLeg_version_isLoaded;
+	unsigned int els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_version_;
+	TBranch *els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_version_branch;
+	bool els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_version_isLoaded;
+	unsigned int els_HLT_Ele5_SC5_JPsi_Mass2to4p5_version_;
+	TBranch *els_HLT_Ele5_SC5_JPsi_Mass2to4p5_version_branch;
+	bool els_HLT_Ele5_SC5_JPsi_Mass2to4p5_version_isLoaded;
 	unsigned int els_HLT_Mu17_Ele8_TrailingLeg_version_;
 	TBranch *els_HLT_Mu17_Ele8_TrailingLeg_version_branch;
 	bool els_HLT_Mu17_Ele8_TrailingLeg_version_isLoaded;
@@ -2310,6 +2478,9 @@ protected:
 	unsigned int genps_signalProcessID_;
 	TBranch *genps_signalProcessID_branch;
 	bool genps_signalProcessID_isLoaded;
+	unsigned int evt_ngenjets_;
+	TBranch *evt_ngenjets_branch;
+	bool evt_ngenjets_isLoaded;
 	unsigned int mus_HLT_IsoMu24_eta2p1_L1sMu16Eta2p1_version_;
 	TBranch *mus_HLT_IsoMu24_eta2p1_L1sMu16Eta2p1_version_branch;
 	bool mus_HLT_IsoMu24_eta2p1_L1sMu16Eta2p1_version_isLoaded;
@@ -2382,6 +2553,18 @@ protected:
 	vector<unsigned int> els_HLT_Ele20_SC4_Mass50_TrailingLeg_;
 	TBranch *els_HLT_Ele20_SC4_Mass50_TrailingLeg_branch;
 	bool els_HLT_Ele20_SC4_Mass50_TrailingLeg_isLoaded;
+	vector<unsigned int> els_HLT_Ele25WP60_Ele8_Mass55_;
+	TBranch *els_HLT_Ele25WP60_Ele8_Mass55_branch;
+	bool els_HLT_Ele25WP60_Ele8_Mass55_isLoaded;
+	vector<unsigned int> els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_;
+	TBranch *els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_branch;
+	bool els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_isLoaded;
+	vector<unsigned int> els_HLT_Ele25WP60_SC4_Mass55_;
+	TBranch *els_HLT_Ele25WP60_SC4_Mass55_branch;
+	bool els_HLT_Ele25WP60_SC4_Mass55_isLoaded;
+	vector<unsigned int> els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_;
+	TBranch *els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_branch;
+	bool els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_isLoaded;
 	vector<unsigned int> els_HLT_Ele27_WP80_;
 	TBranch *els_HLT_Ele27_WP80_branch;
 	bool els_HLT_Ele27_WP80_isLoaded;
@@ -2394,6 +2577,12 @@ protected:
 	vector<unsigned int> els_HLT_Ele32_SC17_Mass50_TrailingLeg_;
 	TBranch *els_HLT_Ele32_SC17_Mass50_TrailingLeg_branch;
 	bool els_HLT_Ele32_SC17_Mass50_TrailingLeg_isLoaded;
+	vector<unsigned int> els_HLT_Ele5_SC5_JPsi_Mass2to4p5_;
+	TBranch *els_HLT_Ele5_SC5_JPsi_Mass2to4p5_branch;
+	bool els_HLT_Ele5_SC5_JPsi_Mass2to4p5_isLoaded;
+	vector<unsigned int> els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_;
+	TBranch *els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_branch;
+	bool els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_isLoaded;
 	vector<unsigned int> els_HLT_Mu17_Ele8_;
 	TBranch *els_HLT_Mu17_Ele8_branch;
 	bool els_HLT_Mu17_Ele8_isLoaded;
@@ -2448,10 +2637,10 @@ protected:
 	vector<unsigned int> mus_HLT_Mu8_Ele17_TrailingLeg_;
 	TBranch *mus_HLT_Mu8_Ele17_TrailingLeg_branch;
 	bool mus_HLT_Mu8_Ele17_TrailingLeg_isLoaded;
-	unsigned long long evt_event_;
+	ULong64_t evt_event_;
 	TBranch *evt_event_branch;
 	bool evt_event_isLoaded;
-	vector<unsigned long long> evt_timestamp_;
+	vector<ULong64_t> evt_timestamp_;
 	TBranch *evt_timestamp_branch;
 	bool evt_timestamp_isLoaded;
 	unsigned long long	evt_nEvts_;
@@ -2471,6 +2660,21 @@ void Init(TTree *tree) {
 	if (tree->GetAlias("evt_bsp4") != 0) {
 		evt_bsp4_branch = tree->GetBranch(tree->GetAlias("evt_bsp4"));
 		if (evt_bsp4_branch) {evt_bsp4_branch->SetAddress(&evt_bsp4_);}
+	}
+	pfjets_nonCHS_p4_branch = 0;
+	if (tree->GetAlias("pfjets_nonCHS_p4") != 0) {
+		pfjets_nonCHS_p4_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_p4"));
+		if (pfjets_nonCHS_p4_branch) {pfjets_nonCHS_p4_branch->SetAddress(&pfjets_nonCHS_p4_);}
+	}
+	ak8jets_mc_gp_p4_branch = 0;
+	if (tree->GetAlias("ak8jets_mc_gp_p4") != 0) {
+		ak8jets_mc_gp_p4_branch = tree->GetBranch(tree->GetAlias("ak8jets_mc_gp_p4"));
+		if (ak8jets_mc_gp_p4_branch) {ak8jets_mc_gp_p4_branch->SetAddress(&ak8jets_mc_gp_p4_);}
+	}
+	ak8jets_mc_p4_branch = 0;
+	if (tree->GetAlias("ak8jets_mc_p4") != 0) {
+		ak8jets_mc_p4_branch = tree->GetBranch(tree->GetAlias("ak8jets_mc_p4"));
+		if (ak8jets_mc_p4_branch) {ak8jets_mc_p4_branch->SetAddress(&ak8jets_mc_p4_);}
 	}
 	els_mc_motherp4_branch = 0;
 	if (tree->GetAlias("els_mc_motherp4") != 0) {
@@ -2517,20 +2721,10 @@ void Init(TTree *tree) {
 		photons_mc_p4_branch = tree->GetBranch(tree->GetAlias("photons_mc_p4"));
 		if (photons_mc_p4_branch) {photons_mc_p4_branch->SetAddress(&photons_mc_p4_);}
 	}
-	els_inner_position_branch = 0;
-	if (tree->GetAlias("els_inner_position") != 0) {
-		els_inner_position_branch = tree->GetBranch(tree->GetAlias("els_inner_position"));
-		if (els_inner_position_branch) {els_inner_position_branch->SetAddress(&els_inner_position_);}
-	}
 	els_mc_patMatch_p4_branch = 0;
 	if (tree->GetAlias("els_mc_patMatch_p4") != 0) {
 		els_mc_patMatch_p4_branch = tree->GetBranch(tree->GetAlias("els_mc_patMatch_p4"));
 		if (els_mc_patMatch_p4_branch) {els_mc_patMatch_p4_branch->SetAddress(&els_mc_patMatch_p4_);}
-	}
-	els_outer_position_branch = 0;
-	if (tree->GetAlias("els_outer_position") != 0) {
-		els_outer_position_branch = tree->GetBranch(tree->GetAlias("els_outer_position"));
-		if (els_outer_position_branch) {els_outer_position_branch->SetAddress(&els_outer_position_);}
 	}
 	els_p4_branch = 0;
 	if (tree->GetAlias("els_p4") != 0) {
@@ -2577,6 +2771,11 @@ void Init(TTree *tree) {
 		genps_prod_vtx_branch = tree->GetBranch(tree->GetAlias("genps_prod_vtx"));
 		if (genps_prod_vtx_branch) {genps_prod_vtx_branch->SetAddress(&genps_prod_vtx_);}
 	}
+	genjets_p4_branch = 0;
+	if (tree->GetAlias("genjets_p4") != 0) {
+		genjets_p4_branch = tree->GetBranch(tree->GetAlias("genjets_p4"));
+		if (genjets_p4_branch) {genjets_p4_branch->SetAddress(&genjets_p4_);}
+	}
 	hyp_ll_p4_branch = 0;
 	if (tree->GetAlias("hyp_ll_p4") != 0) {
 		hyp_ll_p4_branch = tree->GetBranch(tree->GetAlias("hyp_ll_p4"));
@@ -2591,6 +2790,11 @@ void Init(TTree *tree) {
 	if (tree->GetAlias("hyp_p4") != 0) {
 		hyp_p4_branch = tree->GetBranch(tree->GetAlias("hyp_p4"));
 		if (hyp_p4_branch) {hyp_p4_branch->SetAddress(&hyp_p4_);}
+	}
+	isotracks_p4_branch = 0;
+	if (tree->GetAlias("isotracks_p4") != 0) {
+		isotracks_p4_branch = tree->GetBranch(tree->GetAlias("isotracks_p4"));
+		if (isotracks_p4_branch) {isotracks_p4_branch->SetAddress(&isotracks_p4_);}
 	}
 	mus_gfit_p4_branch = 0;
 	if (tree->GetAlias("mus_gfit_p4") != 0) {
@@ -2647,6 +2851,11 @@ void Init(TTree *tree) {
 		pfjets_p4_branch = tree->GetBranch(tree->GetAlias("pfjets_p4"));
 		if (pfjets_p4_branch) {pfjets_p4_branch->SetAddress(&pfjets_p4_);}
 	}
+	pfjets_puppi_p4_branch = 0;
+	if (tree->GetAlias("pfjets_puppi_p4") != 0) {
+		pfjets_puppi_p4_branch = tree->GetBranch(tree->GetAlias("pfjets_puppi_p4"));
+		if (pfjets_puppi_p4_branch) {pfjets_puppi_p4_branch->SetAddress(&pfjets_puppi_p4_);}
+	}
 	taus_pf_lead_chargecand_p4_branch = 0;
 	if (tree->GetAlias("taus_pf_lead_chargecand_p4") != 0) {
 		taus_pf_lead_chargecand_p4_branch = tree->GetBranch(tree->GetAlias("taus_pf_lead_chargecand_p4"));
@@ -2688,6 +2897,16 @@ void Init(TTree *tree) {
 		if (vtxs_position_branch) {vtxs_position_branch->SetAddress(&vtxs_position_);}
 	}
   tree->SetMakeClass(1);
+	genweightsID_branch = 0;
+	if (tree->GetAlias("genweightsID") != 0) {
+		genweightsID_branch = tree->GetBranch(tree->GetAlias("genweightsID"));
+		if (genweightsID_branch) {genweightsID_branch->SetAddress(&genweightsID_);}
+	}
+	pfjets_nonCHS_bDiscriminatorNames_branch = 0;
+	if (tree->GetAlias("pfjets_nonCHS_bDiscriminatorNames") != 0) {
+		pfjets_nonCHS_bDiscriminatorNames_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_bDiscriminatorNames"));
+		if (pfjets_nonCHS_bDiscriminatorNames_branch) {pfjets_nonCHS_bDiscriminatorNames_branch->SetAddress(&pfjets_nonCHS_bDiscriminatorNames_);}
+	}
 	evt_CMS3tag_branch = 0;
 	if (tree->GetAlias("evt_CMS3tag") != 0) {
 		evt_CMS3tag_branch = tree->GetBranch(tree->GetAlias("evt_CMS3tag"));
@@ -2702,6 +2921,16 @@ void Init(TTree *tree) {
 	if (tree->GetAlias("hlt_trigNames") != 0) {
 		hlt_trigNames_branch = tree->GetBranch(tree->GetAlias("hlt_trigNames"));
 		if (hlt_trigNames_branch) {hlt_trigNames_branch->SetAddress(&hlt_trigNames_);}
+	}
+	pfjets_bDiscriminatorNames_branch = 0;
+	if (tree->GetAlias("pfjets_bDiscriminatorNames") != 0) {
+		pfjets_bDiscriminatorNames_branch = tree->GetBranch(tree->GetAlias("pfjets_bDiscriminatorNames"));
+		if (pfjets_bDiscriminatorNames_branch) {pfjets_bDiscriminatorNames_branch->SetAddress(&pfjets_bDiscriminatorNames_);}
+	}
+	pfjets_puppi_bDiscriminatorNames_branch = 0;
+	if (tree->GetAlias("pfjets_puppi_bDiscriminatorNames") != 0) {
+		pfjets_puppi_bDiscriminatorNames_branch = tree->GetBranch(tree->GetAlias("pfjets_puppi_bDiscriminatorNames"));
+		if (pfjets_puppi_bDiscriminatorNames_branch) {pfjets_puppi_bDiscriminatorNames_branch->SetAddress(&pfjets_puppi_bDiscriminatorNames_);}
 	}
 	taus_pf_IDnames_branch = 0;
 	if (tree->GetAlias("taus_pf_IDnames") != 0) {
@@ -2817,6 +3046,61 @@ void Init(TTree *tree) {
 	if (tree->GetAlias("els_passingPflowPreselection") != 0) {
 		els_passingPflowPreselection_branch = tree->GetBranch(tree->GetAlias("els_passingPflowPreselection"));
 		if (els_passingPflowPreselection_branch) {els_passingPflowPreselection_branch->SetAddress(&els_passingPflowPreselection_);}
+	}
+	genps_fromHardProcessBeforeFSR_branch = 0;
+	if (tree->GetAlias("genps_fromHardProcessBeforeFSR") != 0) {
+		genps_fromHardProcessBeforeFSR_branch = tree->GetBranch(tree->GetAlias("genps_fromHardProcessBeforeFSR"));
+		if (genps_fromHardProcessBeforeFSR_branch) {genps_fromHardProcessBeforeFSR_branch->SetAddress(&genps_fromHardProcessBeforeFSR_);}
+	}
+	genps_fromHardProcessDecayed_branch = 0;
+	if (tree->GetAlias("genps_fromHardProcessDecayed") != 0) {
+		genps_fromHardProcessDecayed_branch = tree->GetBranch(tree->GetAlias("genps_fromHardProcessDecayed"));
+		if (genps_fromHardProcessDecayed_branch) {genps_fromHardProcessDecayed_branch->SetAddress(&genps_fromHardProcessDecayed_);}
+	}
+	genps_fromHardProcessFinalState_branch = 0;
+	if (tree->GetAlias("genps_fromHardProcessFinalState") != 0) {
+		genps_fromHardProcessFinalState_branch = tree->GetBranch(tree->GetAlias("genps_fromHardProcessFinalState"));
+		if (genps_fromHardProcessFinalState_branch) {genps_fromHardProcessFinalState_branch->SetAddress(&genps_fromHardProcessFinalState_);}
+	}
+	genps_isDirectHardProcessTauDecayProductFinalState_branch = 0;
+	if (tree->GetAlias("genps_isDirectHardProcessTauDecayProductFinalState") != 0) {
+		genps_isDirectHardProcessTauDecayProductFinalState_branch = tree->GetBranch(tree->GetAlias("genps_isDirectHardProcessTauDecayProductFinalState"));
+		if (genps_isDirectHardProcessTauDecayProductFinalState_branch) {genps_isDirectHardProcessTauDecayProductFinalState_branch->SetAddress(&genps_isDirectHardProcessTauDecayProductFinalState_);}
+	}
+	genps_isDirectPromptTauDecayProductFinalState_branch = 0;
+	if (tree->GetAlias("genps_isDirectPromptTauDecayProductFinalState") != 0) {
+		genps_isDirectPromptTauDecayProductFinalState_branch = tree->GetBranch(tree->GetAlias("genps_isDirectPromptTauDecayProductFinalState"));
+		if (genps_isDirectPromptTauDecayProductFinalState_branch) {genps_isDirectPromptTauDecayProductFinalState_branch->SetAddress(&genps_isDirectPromptTauDecayProductFinalState_);}
+	}
+	genps_isHardProcess_branch = 0;
+	if (tree->GetAlias("genps_isHardProcess") != 0) {
+		genps_isHardProcess_branch = tree->GetBranch(tree->GetAlias("genps_isHardProcess"));
+		if (genps_isHardProcess_branch) {genps_isHardProcess_branch->SetAddress(&genps_isHardProcess_);}
+	}
+	genps_isLastCopy_branch = 0;
+	if (tree->GetAlias("genps_isLastCopy") != 0) {
+		genps_isLastCopy_branch = tree->GetBranch(tree->GetAlias("genps_isLastCopy"));
+		if (genps_isLastCopy_branch) {genps_isLastCopy_branch->SetAddress(&genps_isLastCopy_);}
+	}
+	genps_isLastCopyBeforeFSR_branch = 0;
+	if (tree->GetAlias("genps_isLastCopyBeforeFSR") != 0) {
+		genps_isLastCopyBeforeFSR_branch = tree->GetBranch(tree->GetAlias("genps_isLastCopyBeforeFSR"));
+		if (genps_isLastCopyBeforeFSR_branch) {genps_isLastCopyBeforeFSR_branch->SetAddress(&genps_isLastCopyBeforeFSR_);}
+	}
+	genps_isMostlyLikePythia6Status3_branch = 0;
+	if (tree->GetAlias("genps_isMostlyLikePythia6Status3") != 0) {
+		genps_isMostlyLikePythia6Status3_branch = tree->GetBranch(tree->GetAlias("genps_isMostlyLikePythia6Status3"));
+		if (genps_isMostlyLikePythia6Status3_branch) {genps_isMostlyLikePythia6Status3_branch->SetAddress(&genps_isMostlyLikePythia6Status3_);}
+	}
+	genps_isPromptDecayed_branch = 0;
+	if (tree->GetAlias("genps_isPromptDecayed") != 0) {
+		genps_isPromptDecayed_branch = tree->GetBranch(tree->GetAlias("genps_isPromptDecayed"));
+		if (genps_isPromptDecayed_branch) {genps_isPromptDecayed_branch->SetAddress(&genps_isPromptDecayed_);}
+	}
+	genps_isPromptFinalState_branch = 0;
+	if (tree->GetAlias("genps_isPromptFinalState") != 0) {
+		genps_isPromptFinalState_branch = tree->GetBranch(tree->GetAlias("genps_isPromptFinalState"));
+		if (genps_isPromptFinalState_branch) {genps_isPromptFinalState_branch->SetAddress(&genps_isPromptFinalState_);}
 	}
 	mus_isRPCMuon_branch = 0;
 	if (tree->GetAlias("mus_isRPCMuon") != 0) {
@@ -3183,6 +3467,16 @@ void Init(TTree *tree) {
 		evt_fixgrid_rho_fwd_branch = tree->GetBranch(tree->GetAlias("evt_fixgrid_rho_fwd"));
 		if (evt_fixgrid_rho_fwd_branch) {evt_fixgrid_rho_fwd_branch->SetAddress(&evt_fixgrid_rho_fwd_);}
 	}
+	evt_calomet_branch = 0;
+	if (tree->GetAlias("evt_calomet") != 0) {
+		evt_calomet_branch = tree->GetBranch(tree->GetAlias("evt_calomet"));
+		if (evt_calomet_branch) {evt_calomet_branch->SetAddress(&evt_calomet_);}
+	}
+	evt_calometPhi_branch = 0;
+	if (tree->GetAlias("evt_calometPhi") != 0) {
+		evt_calometPhi_branch = tree->GetBranch(tree->GetAlias("evt_calometPhi"));
+		if (evt_calometPhi_branch) {evt_calometPhi_branch->SetAddress(&evt_calometPhi_);}
+	}
 	evt_pfmet_branch = 0;
 	if (tree->GetAlias("evt_pfmet") != 0) {
 		evt_pfmet_branch = tree->GetBranch(tree->GetAlias("evt_pfmet"));
@@ -3202,11 +3496,6 @@ void Init(TTree *tree) {
 	if (tree->GetAlias("evt_pfmetSig") != 0) {
 		evt_pfmetSig_branch = tree->GetBranch(tree->GetAlias("evt_pfmetSig"));
 		if (evt_pfmetSig_branch) {evt_pfmetSig_branch->SetAddress(&evt_pfmetSig_);}
-	}
-	evt_pfmetSignificance_branch = 0;
-	if (tree->GetAlias("evt_pfmetSignificance") != 0) {
-		evt_pfmetSignificance_branch = tree->GetBranch(tree->GetAlias("evt_pfmetSignificance"));
-		if (evt_pfmetSignificance_branch) {evt_pfmetSignificance_branch->SetAddress(&evt_pfmetSignificance_);}
 	}
 	evt_pfmet_raw_branch = 0;
 	if (tree->GetAlias("evt_pfmet_raw") != 0) {
@@ -3282,6 +3571,76 @@ void Init(TTree *tree) {
 	if (tree->GetAlias("taus_pf_signalcands_p4") != 0) {
 		taus_pf_signalcands_p4_branch = tree->GetBranch(tree->GetAlias("taus_pf_signalcands_p4"));
 		if (taus_pf_signalcands_p4_branch) {taus_pf_signalcands_p4_branch->SetAddress(&taus_pf_signalcands_p4_);}
+	}
+	pfjets_nonCHS_area_branch = 0;
+	if (tree->GetAlias("pfjets_nonCHS_area") != 0) {
+		pfjets_nonCHS_area_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_area"));
+		if (pfjets_nonCHS_area_branch) {pfjets_nonCHS_area_branch->SetAddress(&pfjets_nonCHS_area_);}
+	}
+	pfjets_nonCHS_chargedEmE_branch = 0;
+	if (tree->GetAlias("pfjets_nonCHS_chargedEmE") != 0) {
+		pfjets_nonCHS_chargedEmE_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_chargedEmE"));
+		if (pfjets_nonCHS_chargedEmE_branch) {pfjets_nonCHS_chargedEmE_branch->SetAddress(&pfjets_nonCHS_chargedEmE_);}
+	}
+	pfjets_nonCHS_chargedHadronE_branch = 0;
+	if (tree->GetAlias("pfjets_nonCHS_chargedHadronE") != 0) {
+		pfjets_nonCHS_chargedHadronE_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_chargedHadronE"));
+		if (pfjets_nonCHS_chargedHadronE_branch) {pfjets_nonCHS_chargedHadronE_branch->SetAddress(&pfjets_nonCHS_chargedHadronE_);}
+	}
+	pfjets_nonCHS_electronE_branch = 0;
+	if (tree->GetAlias("pfjets_nonCHS_electronE") != 0) {
+		pfjets_nonCHS_electronE_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_electronE"));
+		if (pfjets_nonCHS_electronE_branch) {pfjets_nonCHS_electronE_branch->SetAddress(&pfjets_nonCHS_electronE_);}
+	}
+	pfjets_nonCHS_hfEmE_branch = 0;
+	if (tree->GetAlias("pfjets_nonCHS_hfEmE") != 0) {
+		pfjets_nonCHS_hfEmE_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_hfEmE"));
+		if (pfjets_nonCHS_hfEmE_branch) {pfjets_nonCHS_hfEmE_branch->SetAddress(&pfjets_nonCHS_hfEmE_);}
+	}
+	pfjets_nonCHS_hfHadronE_branch = 0;
+	if (tree->GetAlias("pfjets_nonCHS_hfHadronE") != 0) {
+		pfjets_nonCHS_hfHadronE_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_hfHadronE"));
+		if (pfjets_nonCHS_hfHadronE_branch) {pfjets_nonCHS_hfHadronE_branch->SetAddress(&pfjets_nonCHS_hfHadronE_);}
+	}
+	pfjets_nonCHS_mass_branch = 0;
+	if (tree->GetAlias("pfjets_nonCHS_mass") != 0) {
+		pfjets_nonCHS_mass_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_mass"));
+		if (pfjets_nonCHS_mass_branch) {pfjets_nonCHS_mass_branch->SetAddress(&pfjets_nonCHS_mass_);}
+	}
+	pfjets_nonCHS_muonE_branch = 0;
+	if (tree->GetAlias("pfjets_nonCHS_muonE") != 0) {
+		pfjets_nonCHS_muonE_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_muonE"));
+		if (pfjets_nonCHS_muonE_branch) {pfjets_nonCHS_muonE_branch->SetAddress(&pfjets_nonCHS_muonE_);}
+	}
+	pfjets_nonCHS_neutralEmE_branch = 0;
+	if (tree->GetAlias("pfjets_nonCHS_neutralEmE") != 0) {
+		pfjets_nonCHS_neutralEmE_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_neutralEmE"));
+		if (pfjets_nonCHS_neutralEmE_branch) {pfjets_nonCHS_neutralEmE_branch->SetAddress(&pfjets_nonCHS_neutralEmE_);}
+	}
+	pfjets_nonCHS_neutralHadronE_branch = 0;
+	if (tree->GetAlias("pfjets_nonCHS_neutralHadronE") != 0) {
+		pfjets_nonCHS_neutralHadronE_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_neutralHadronE"));
+		if (pfjets_nonCHS_neutralHadronE_branch) {pfjets_nonCHS_neutralHadronE_branch->SetAddress(&pfjets_nonCHS_neutralHadronE_);}
+	}
+	pfjets_nonCHS_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch = 0;
+	if (tree->GetAlias("pfjets_nonCHS_pfCombinedInclusiveSecondaryVertexV2BJetTag") != 0) {
+		pfjets_nonCHS_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_pfCombinedInclusiveSecondaryVertexV2BJetTag"));
+		if (pfjets_nonCHS_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch) {pfjets_nonCHS_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch->SetAddress(&pfjets_nonCHS_pfCombinedInclusiveSecondaryVertexV2BJetTag_);}
+	}
+	pfjets_nonCHS_photonE_branch = 0;
+	if (tree->GetAlias("pfjets_nonCHS_photonE") != 0) {
+		pfjets_nonCHS_photonE_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_photonE"));
+		if (pfjets_nonCHS_photonE_branch) {pfjets_nonCHS_photonE_branch->SetAddress(&pfjets_nonCHS_photonE_);}
+	}
+	pfjets_nonCHS_pileupJetId_branch = 0;
+	if (tree->GetAlias("pfjets_nonCHS_pileupJetId") != 0) {
+		pfjets_nonCHS_pileupJetId_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_pileupJetId"));
+		if (pfjets_nonCHS_pileupJetId_branch) {pfjets_nonCHS_pileupJetId_branch->SetAddress(&pfjets_nonCHS_pileupJetId_);}
+	}
+	pfjets_nonCHS_undoJEC_branch = 0;
+	if (tree->GetAlias("pfjets_nonCHS_undoJEC") != 0) {
+		pfjets_nonCHS_undoJEC_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_undoJEC"));
+		if (pfjets_nonCHS_undoJEC_branch) {pfjets_nonCHS_undoJEC_branch->SetAddress(&pfjets_nonCHS_undoJEC_);}
 	}
 	evt_bs_covMatrix_branch = 0;
 	if (tree->GetAlias("evt_bs_covMatrix") != 0) {
@@ -3548,6 +3907,11 @@ void Init(TTree *tree) {
 		els_ecalIso04_branch = tree->GetBranch(tree->GetAlias("els_ecalIso04"));
 		if (els_ecalIso04_branch) {els_ecalIso04_branch->SetAddress(&els_ecalIso04_);}
 	}
+	els_ecalPFClusterIso_branch = 0;
+	if (tree->GetAlias("els_ecalPFClusterIso") != 0) {
+		els_ecalPFClusterIso_branch = tree->GetBranch(tree->GetAlias("els_ecalPFClusterIso"));
+		if (els_ecalPFClusterIso_branch) {els_ecalPFClusterIso_branch->SetAddress(&els_ecalPFClusterIso_);}
+	}
 	els_etaErr_branch = 0;
 	if (tree->GetAlias("els_etaErr") != 0) {
 		els_etaErr_branch = tree->GetBranch(tree->GetAlias("els_etaErr"));
@@ -3618,6 +3982,11 @@ void Init(TTree *tree) {
 		els_hcalIso04_branch = tree->GetBranch(tree->GetAlias("els_hcalIso04"));
 		if (els_hcalIso04_branch) {els_hcalIso04_branch->SetAddress(&els_hcalIso04_);}
 	}
+	els_hcalPFClusterIso_branch = 0;
+	if (tree->GetAlias("els_hcalPFClusterIso") != 0) {
+		els_hcalPFClusterIso_branch = tree->GetBranch(tree->GetAlias("els_hcalPFClusterIso"));
+		if (els_hcalPFClusterIso_branch) {els_hcalPFClusterIso_branch->SetAddress(&els_hcalPFClusterIso_);}
+	}
 	els_ip2d_branch = 0;
 	if (tree->GetAlias("els_ip2d") != 0) {
 		els_ip2d_branch = tree->GetBranch(tree->GetAlias("els_ip2d"));
@@ -3638,66 +4007,6 @@ void Init(TTree *tree) {
 		els_ip3derr_branch = tree->GetBranch(tree->GetAlias("els_ip3derr"));
 		if (els_ip3derr_branch) {els_ip3derr_branch->SetAddress(&els_ip3derr_);}
 	}
-	els_iso03_pf2012_ch_branch = 0;
-	if (tree->GetAlias("els_iso03_pf2012_ch") != 0) {
-		els_iso03_pf2012_ch_branch = tree->GetBranch(tree->GetAlias("els_iso03_pf2012_ch"));
-		if (els_iso03_pf2012_ch_branch) {els_iso03_pf2012_ch_branch->SetAddress(&els_iso03_pf2012_ch_);}
-	}
-	els_iso03_pf2012_em_branch = 0;
-	if (tree->GetAlias("els_iso03_pf2012_em") != 0) {
-		els_iso03_pf2012_em_branch = tree->GetBranch(tree->GetAlias("els_iso03_pf2012_em"));
-		if (els_iso03_pf2012_em_branch) {els_iso03_pf2012_em_branch->SetAddress(&els_iso03_pf2012_em_);}
-	}
-	els_iso03_pf2012ext_ch_branch = 0;
-	if (tree->GetAlias("els_iso03_pf2012ext_ch") != 0) {
-		els_iso03_pf2012ext_ch_branch = tree->GetBranch(tree->GetAlias("els_iso03_pf2012ext_ch"));
-		if (els_iso03_pf2012ext_ch_branch) {els_iso03_pf2012ext_ch_branch->SetAddress(&els_iso03_pf2012ext_ch_);}
-	}
-	els_iso03_pf2012ext_em_branch = 0;
-	if (tree->GetAlias("els_iso03_pf2012ext_em") != 0) {
-		els_iso03_pf2012ext_em_branch = tree->GetBranch(tree->GetAlias("els_iso03_pf2012ext_em"));
-		if (els_iso03_pf2012ext_em_branch) {els_iso03_pf2012ext_em_branch->SetAddress(&els_iso03_pf2012ext_em_);}
-	}
-	els_iso03_pf2012ext_nh_branch = 0;
-	if (tree->GetAlias("els_iso03_pf2012ext_nh") != 0) {
-		els_iso03_pf2012ext_nh_branch = tree->GetBranch(tree->GetAlias("els_iso03_pf2012ext_nh"));
-		if (els_iso03_pf2012ext_nh_branch) {els_iso03_pf2012ext_nh_branch->SetAddress(&els_iso03_pf2012ext_nh_);}
-	}
-	els_iso03_pf2012_nh_branch = 0;
-	if (tree->GetAlias("els_iso03_pf2012_nh") != 0) {
-		els_iso03_pf2012_nh_branch = tree->GetBranch(tree->GetAlias("els_iso03_pf2012_nh"));
-		if (els_iso03_pf2012_nh_branch) {els_iso03_pf2012_nh_branch->SetAddress(&els_iso03_pf2012_nh_);}
-	}
-	els_iso04_pf2012_ch_branch = 0;
-	if (tree->GetAlias("els_iso04_pf2012_ch") != 0) {
-		els_iso04_pf2012_ch_branch = tree->GetBranch(tree->GetAlias("els_iso04_pf2012_ch"));
-		if (els_iso04_pf2012_ch_branch) {els_iso04_pf2012_ch_branch->SetAddress(&els_iso04_pf2012_ch_);}
-	}
-	els_iso04_pf2012_em_branch = 0;
-	if (tree->GetAlias("els_iso04_pf2012_em") != 0) {
-		els_iso04_pf2012_em_branch = tree->GetBranch(tree->GetAlias("els_iso04_pf2012_em"));
-		if (els_iso04_pf2012_em_branch) {els_iso04_pf2012_em_branch->SetAddress(&els_iso04_pf2012_em_);}
-	}
-	els_iso04_pf2012ext_ch_branch = 0;
-	if (tree->GetAlias("els_iso04_pf2012ext_ch") != 0) {
-		els_iso04_pf2012ext_ch_branch = tree->GetBranch(tree->GetAlias("els_iso04_pf2012ext_ch"));
-		if (els_iso04_pf2012ext_ch_branch) {els_iso04_pf2012ext_ch_branch->SetAddress(&els_iso04_pf2012ext_ch_);}
-	}
-	els_iso04_pf2012ext_em_branch = 0;
-	if (tree->GetAlias("els_iso04_pf2012ext_em") != 0) {
-		els_iso04_pf2012ext_em_branch = tree->GetBranch(tree->GetAlias("els_iso04_pf2012ext_em"));
-		if (els_iso04_pf2012ext_em_branch) {els_iso04_pf2012ext_em_branch->SetAddress(&els_iso04_pf2012ext_em_);}
-	}
-	els_iso04_pf2012ext_nh_branch = 0;
-	if (tree->GetAlias("els_iso04_pf2012ext_nh") != 0) {
-		els_iso04_pf2012ext_nh_branch = tree->GetBranch(tree->GetAlias("els_iso04_pf2012ext_nh"));
-		if (els_iso04_pf2012ext_nh_branch) {els_iso04_pf2012ext_nh_branch->SetAddress(&els_iso04_pf2012ext_nh_);}
-	}
-	els_iso04_pf2012_nh_branch = 0;
-	if (tree->GetAlias("els_iso04_pf2012_nh") != 0) {
-		els_iso04_pf2012_nh_branch = tree->GetBranch(tree->GetAlias("els_iso04_pf2012_nh"));
-		if (els_iso04_pf2012_nh_branch) {els_iso04_pf2012_nh_branch->SetAddress(&els_iso04_pf2012_nh_);}
-	}
 	els_mass_branch = 0;
 	if (tree->GetAlias("els_mass") != 0) {
 		els_mass_branch = tree->GetBranch(tree->GetAlias("els_mass"));
@@ -3708,36 +4017,36 @@ void Init(TTree *tree) {
 		els_mc_patMatch_dr_branch = tree->GetBranch(tree->GetAlias("els_mc_patMatch_dr"));
 		if (els_mc_patMatch_dr_branch) {els_mc_patMatch_dr_branch->SetAddress(&els_mc_patMatch_dr_);}
 	}
+	els_miniIso_ch_branch = 0;
+	if (tree->GetAlias("els_miniIso_ch") != 0) {
+		els_miniIso_ch_branch = tree->GetBranch(tree->GetAlias("els_miniIso_ch"));
+		if (els_miniIso_ch_branch) {els_miniIso_ch_branch->SetAddress(&els_miniIso_ch_);}
+	}
+	els_miniIso_db_branch = 0;
+	if (tree->GetAlias("els_miniIso_db") != 0) {
+		els_miniIso_db_branch = tree->GetBranch(tree->GetAlias("els_miniIso_db"));
+		if (els_miniIso_db_branch) {els_miniIso_db_branch->SetAddress(&els_miniIso_db_);}
+	}
+	els_miniIso_em_branch = 0;
+	if (tree->GetAlias("els_miniIso_em") != 0) {
+		els_miniIso_em_branch = tree->GetBranch(tree->GetAlias("els_miniIso_em"));
+		if (els_miniIso_em_branch) {els_miniIso_em_branch->SetAddress(&els_miniIso_em_);}
+	}
+	els_miniIso_nh_branch = 0;
+	if (tree->GetAlias("els_miniIso_nh") != 0) {
+		els_miniIso_nh_branch = tree->GetBranch(tree->GetAlias("els_miniIso_nh"));
+		if (els_miniIso_nh_branch) {els_miniIso_nh_branch->SetAddress(&els_miniIso_nh_);}
+	}
+	els_miniIso_uncor_branch = 0;
+	if (tree->GetAlias("els_miniIso_uncor") != 0) {
+		els_miniIso_uncor_branch = tree->GetBranch(tree->GetAlias("els_miniIso_uncor"));
+		if (els_miniIso_uncor_branch) {els_miniIso_uncor_branch->SetAddress(&els_miniIso_uncor_);}
+	}
 	els_mva_branch = 0;
 	if (tree->GetAlias("els_mva") != 0) {
 		els_mva_branch = tree->GetBranch(tree->GetAlias("els_mva"));
 		if (els_mva_branch) {els_mva_branch->SetAddress(&els_mva_);}
 	}
-       els_miniIso_ch_branch = 0;
-       if (tree->GetAlias("els_miniIso_ch") != 0) {
-               els_miniIso_ch_branch = tree->GetBranch(tree->GetAlias("els_miniIso_ch"));
-               if (els_miniIso_ch_branch) {els_miniIso_ch_branch->SetAddress(&els_miniIso_ch_);}
-       }
-       els_miniIso_db_branch = 0;
-       if (tree->GetAlias("els_miniIso_db") != 0) {
-               els_miniIso_db_branch = tree->GetBranch(tree->GetAlias("els_miniIso_db"));
-               if (els_miniIso_db_branch) {els_miniIso_db_branch->SetAddress(&els_miniIso_db_);}
-       }
-       els_miniIso_em_branch = 0;
-       if (tree->GetAlias("els_miniIso_em") != 0) {
-               els_miniIso_em_branch = tree->GetBranch(tree->GetAlias("els_miniIso_em"));
-               if (els_miniIso_em_branch) {els_miniIso_em_branch->SetAddress(&els_miniIso_em_);}
-       }
-       els_miniIso_nh_branch = 0;
-       if (tree->GetAlias("els_miniIso_nh") != 0) {
-               els_miniIso_nh_branch = tree->GetBranch(tree->GetAlias("els_miniIso_nh"));
-               if (els_miniIso_nh_branch) {els_miniIso_nh_branch->SetAddress(&els_miniIso_nh_);}
-       }
-       els_miniIso_uncor_branch = 0;
-       if (tree->GetAlias("els_miniIso_uncor") != 0) {
-               els_miniIso_uncor_branch = tree->GetBranch(tree->GetAlias("els_miniIso_uncor"));
-               if (els_miniIso_uncor_branch) {els_miniIso_uncor_branch->SetAddress(&els_miniIso_uncor_);}
-       }
 	els_ndof_branch = 0;
 	if (tree->GetAlias("els_ndof") != 0) {
 		els_ndof_branch = tree->GetBranch(tree->GetAlias("els_ndof"));
@@ -3888,10 +4197,25 @@ void Init(TTree *tree) {
 		genps_mass_branch = tree->GetBranch(tree->GetAlias("genps_mass"));
 		if (genps_mass_branch) {genps_mass_branch->SetAddress(&genps_mass_);}
 	}
-	mus_backToBackCompat_branch = 0;
-	if (tree->GetAlias("mus_backToBackCompat") != 0) {
-		mus_backToBackCompat_branch = tree->GetBranch(tree->GetAlias("mus_backToBackCompat"));
-		if (mus_backToBackCompat_branch) {mus_backToBackCompat_branch->SetAddress(&mus_backToBackCompat_);}
+	genweights_branch = 0;
+	if (tree->GetAlias("genweights") != 0) {
+		genweights_branch = tree->GetBranch(tree->GetAlias("genweights"));
+		if (genweights_branch) {genweights_branch->SetAddress(&genweights_);}
+	}
+	isotracks_dz_branch = 0;
+	if (tree->GetAlias("isotracks_dz") != 0) {
+		isotracks_dz_branch = tree->GetBranch(tree->GetAlias("isotracks_dz"));
+		if (isotracks_dz_branch) {isotracks_dz_branch->SetAddress(&isotracks_dz_);}
+	}
+	isotracks_mass_branch = 0;
+	if (tree->GetAlias("isotracks_mass") != 0) {
+		isotracks_mass_branch = tree->GetBranch(tree->GetAlias("isotracks_mass"));
+		if (isotracks_mass_branch) {isotracks_mass_branch->SetAddress(&isotracks_mass_);}
+	}
+	isotracks_relIso_branch = 0;
+	if (tree->GetAlias("isotracks_relIso") != 0) {
+		isotracks_relIso_branch = tree->GetBranch(tree->GetAlias("isotracks_relIso"));
+		if (isotracks_relIso_branch) {isotracks_relIso_branch->SetAddress(&isotracks_relIso_);}
 	}
 	mus_bs2d_branch = 0;
 	if (tree->GetAlias("mus_bs2d") != 0) {
@@ -3933,11 +4257,6 @@ void Init(TTree *tree) {
 		mus_chi2LocalPosition_branch = tree->GetBranch(tree->GetAlias("mus_chi2LocalPosition"));
 		if (mus_chi2LocalPosition_branch) {mus_chi2LocalPosition_branch->SetAddress(&mus_chi2LocalPosition_);}
 	}
-	mus_cosmicCompat_branch = 0;
-	if (tree->GetAlias("mus_cosmicCompat") != 0) {
-		mus_cosmicCompat_branch = tree->GetBranch(tree->GetAlias("mus_cosmicCompat"));
-		if (mus_cosmicCompat_branch) {mus_cosmicCompat_branch->SetAddress(&mus_cosmicCompat_);}
-	}
 	mus_d0_branch = 0;
 	if (tree->GetAlias("mus_d0") != 0) {
 		mus_d0_branch = tree->GetBranch(tree->GetAlias("mus_d0"));
@@ -3977,11 +4296,6 @@ void Init(TTree *tree) {
 	if (tree->GetAlias("mus_ecal_time") != 0) {
 		mus_ecal_time_branch = tree->GetBranch(tree->GetAlias("mus_ecal_time"));
 		if (mus_ecal_time_branch) {mus_ecal_time_branch->SetAddress(&mus_ecal_time_);}
-	}
-	mus_ecal_timeError_branch = 0;
-	if (tree->GetAlias("mus_ecal_timeError") != 0) {
-		mus_ecal_timeError_branch = tree->GetBranch(tree->GetAlias("mus_ecal_timeError"));
-		if (mus_ecal_timeError_branch) {mus_ecal_timeError_branch->SetAddress(&mus_ecal_timeError_);}
 	}
 	mus_e_em_branch = 0;
 	if (tree->GetAlias("mus_e_em") != 0) {
@@ -4112,11 +4426,6 @@ void Init(TTree *tree) {
 	if (tree->GetAlias("mus_hcal_time") != 0) {
 		mus_hcal_time_branch = tree->GetBranch(tree->GetAlias("mus_hcal_time"));
 		if (mus_hcal_time_branch) {mus_hcal_time_branch->SetAddress(&mus_hcal_time_);}
-	}
-	mus_hcal_timeError_branch = 0;
-	if (tree->GetAlias("mus_hcal_timeError") != 0) {
-		mus_hcal_timeError_branch = tree->GetBranch(tree->GetAlias("mus_hcal_timeError"));
-		if (mus_hcal_timeError_branch) {mus_hcal_timeError_branch->SetAddress(&mus_hcal_timeError_);}
 	}
 	mus_ip2d_branch = 0;
 	if (tree->GetAlias("mus_ip2d") != 0) {
@@ -4423,40 +4732,35 @@ void Init(TTree *tree) {
 		mus_mc_patMatch_dr_branch = tree->GetBranch(tree->GetAlias("mus_mc_patMatch_dr"));
 		if (mus_mc_patMatch_dr_branch) {mus_mc_patMatch_dr_branch->SetAddress(&mus_mc_patMatch_dr_);}
 	}
-       mus_miniIso_ch_branch = 0;
-       if (tree->GetAlias("mus_miniIso_ch") != 0) {
-               mus_miniIso_ch_branch = tree->GetBranch(tree->GetAlias("mus_miniIso_ch"));
-               if (mus_miniIso_ch_branch) {mus_miniIso_ch_branch->SetAddress(&mus_miniIso_ch_);}
-       }
-       mus_miniIso_db_branch = 0;
-       if (tree->GetAlias("mus_miniIso_db") != 0) {
-               mus_miniIso_db_branch = tree->GetBranch(tree->GetAlias("mus_miniIso_db"));
-               if (mus_miniIso_db_branch) {mus_miniIso_db_branch->SetAddress(&mus_miniIso_db_);}
-       }
-       mus_miniIso_em_branch = 0;
-       if (tree->GetAlias("mus_miniIso_em") != 0) {
-               mus_miniIso_em_branch = tree->GetBranch(tree->GetAlias("mus_miniIso_em"));
-               if (mus_miniIso_em_branch) {mus_miniIso_em_branch->SetAddress(&mus_miniIso_em_);}
-       }
-       mus_miniIso_nh_branch = 0;
-       if (tree->GetAlias("mus_miniIso_nh") != 0) {
-               mus_miniIso_nh_branch = tree->GetBranch(tree->GetAlias("mus_miniIso_nh"));
-               if (mus_miniIso_nh_branch) {mus_miniIso_nh_branch->SetAddress(&mus_miniIso_nh_);}
-       }
-       mus_miniIso_uncor_branch = 0;
-       if (tree->GetAlias("mus_miniIso_uncor") != 0) {
-               mus_miniIso_uncor_branch = tree->GetBranch(tree->GetAlias("mus_miniIso_uncor"));
-               if (mus_miniIso_uncor_branch) {mus_miniIso_uncor_branch->SetAddress(&mus_miniIso_uncor_);}
-       }
+	mus_miniIso_ch_branch = 0;
+	if (tree->GetAlias("mus_miniIso_ch") != 0) {
+		mus_miniIso_ch_branch = tree->GetBranch(tree->GetAlias("mus_miniIso_ch"));
+		if (mus_miniIso_ch_branch) {mus_miniIso_ch_branch->SetAddress(&mus_miniIso_ch_);}
+	}
+	mus_miniIso_db_branch = 0;
+	if (tree->GetAlias("mus_miniIso_db") != 0) {
+		mus_miniIso_db_branch = tree->GetBranch(tree->GetAlias("mus_miniIso_db"));
+		if (mus_miniIso_db_branch) {mus_miniIso_db_branch->SetAddress(&mus_miniIso_db_);}
+	}
+	mus_miniIso_em_branch = 0;
+	if (tree->GetAlias("mus_miniIso_em") != 0) {
+		mus_miniIso_em_branch = tree->GetBranch(tree->GetAlias("mus_miniIso_em"));
+		if (mus_miniIso_em_branch) {mus_miniIso_em_branch->SetAddress(&mus_miniIso_em_);}
+	}
+	mus_miniIso_nh_branch = 0;
+	if (tree->GetAlias("mus_miniIso_nh") != 0) {
+		mus_miniIso_nh_branch = tree->GetBranch(tree->GetAlias("mus_miniIso_nh"));
+		if (mus_miniIso_nh_branch) {mus_miniIso_nh_branch->SetAddress(&mus_miniIso_nh_);}
+	}
+	mus_miniIso_uncor_branch = 0;
+	if (tree->GetAlias("mus_miniIso_uncor") != 0) {
+		mus_miniIso_uncor_branch = tree->GetBranch(tree->GetAlias("mus_miniIso_uncor"));
+		if (mus_miniIso_uncor_branch) {mus_miniIso_uncor_branch->SetAddress(&mus_miniIso_uncor_);}
+	}
 	mus_ndof_branch = 0;
 	if (tree->GetAlias("mus_ndof") != 0) {
 		mus_ndof_branch = tree->GetBranch(tree->GetAlias("mus_ndof"));
 		if (mus_ndof_branch) {mus_ndof_branch->SetAddress(&mus_ndof_);}
-	}
-	mus_overlapCompat_branch = 0;
-	if (tree->GetAlias("mus_overlapCompat") != 0) {
-		mus_overlapCompat_branch = tree->GetBranch(tree->GetAlias("mus_overlapCompat"));
-		if (mus_overlapCompat_branch) {mus_overlapCompat_branch->SetAddress(&mus_overlapCompat_);}
 	}
 	mus_phiErr_branch = 0;
 	if (tree->GetAlias("mus_phiErr") != 0) {
@@ -4568,21 +4872,6 @@ void Init(TTree *tree) {
 		mus_timeAtIpOutInErr_branch = tree->GetBranch(tree->GetAlias("mus_timeAtIpOutInErr"));
 		if (mus_timeAtIpOutInErr_branch) {mus_timeAtIpOutInErr_branch->SetAddress(&mus_timeAtIpOutInErr_);}
 	}
-	mus_timeCompat_branch = 0;
-	if (tree->GetAlias("mus_timeCompat") != 0) {
-		mus_timeCompat_branch = tree->GetBranch(tree->GetAlias("mus_timeCompat"));
-		if (mus_timeCompat_branch) {mus_timeCompat_branch->SetAddress(&mus_timeCompat_);}
-	}
-	mus_tower_branch = 0;
-	if (tree->GetAlias("mus_tower") != 0) {
-		mus_tower_branch = tree->GetBranch(tree->GetAlias("mus_tower"));
-		if (mus_tower_branch) {mus_tower_branch->SetAddress(&mus_tower_);}
-	}
-	mus_towerS9_branch = 0;
-	if (tree->GetAlias("mus_towerS9") != 0) {
-		mus_towerS9_branch = tree->GetBranch(tree->GetAlias("mus_towerS9"));
-		if (mus_towerS9_branch) {mus_towerS9_branch->SetAddress(&mus_towerS9_);}
-	}
 	mus_trkKink_branch = 0;
 	if (tree->GetAlias("mus_trkKink") != 0) {
 		mus_trkKink_branch = tree->GetBranch(tree->GetAlias("mus_trkKink"));
@@ -4592,11 +4881,6 @@ void Init(TTree *tree) {
 	if (tree->GetAlias("mus_trkRelChi2") != 0) {
 		mus_trkRelChi2_branch = tree->GetBranch(tree->GetAlias("mus_trkRelChi2"));
 		if (mus_trkRelChi2_branch) {mus_trkRelChi2_branch->SetAddress(&mus_trkRelChi2_);}
-	}
-	mus_vertexCompat_branch = 0;
-	if (tree->GetAlias("mus_vertexCompat") != 0) {
-		mus_vertexCompat_branch = tree->GetBranch(tree->GetAlias("mus_vertexCompat"));
-		if (mus_vertexCompat_branch) {mus_vertexCompat_branch->SetAddress(&mus_vertexCompat_);}
 	}
 	mus_vertexphi_branch = 0;
 	if (tree->GetAlias("mus_vertexphi") != 0) {
@@ -4643,31 +4927,6 @@ void Init(TTree *tree) {
 		pfjets_chargedHadronE_branch = tree->GetBranch(tree->GetAlias("pfjets_chargedHadronE"));
 		if (pfjets_chargedHadronE_branch) {pfjets_chargedHadronE_branch->SetAddress(&pfjets_chargedHadronE_);}
 	}
-	pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch = 0;
-	if (tree->GetAlias("pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag") != 0) {
-		pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch = tree->GetBranch(tree->GetAlias("pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag"));
-		if (pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch) {pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch->SetAddress(&pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_);}
-	}
-	pfjets_combinedMVABJetTag_branch = 0;
-	if (tree->GetAlias("pfjets_combinedMVABJetTag") != 0) {
-		pfjets_combinedMVABJetTag_branch = tree->GetBranch(tree->GetAlias("pfjets_combinedMVABJetTag"));
-		if (pfjets_combinedMVABJetTag_branch) {pfjets_combinedMVABJetTag_branch->SetAddress(&pfjets_combinedMVABJetTag_);}
-	}
-	pfjets_corL1Fast_branch = 0;
-	if (tree->GetAlias("pfjets_corL1Fast") != 0) {
-		pfjets_corL1Fast_branch = tree->GetBranch(tree->GetAlias("pfjets_corL1Fast"));
-		if (pfjets_corL1Fast_branch) {pfjets_corL1Fast_branch->SetAddress(&pfjets_corL1Fast_);}
-	}
-	pfjets_corL1FastL2L3_branch = 0;
-	if (tree->GetAlias("pfjets_corL1FastL2L3") != 0) {
-		pfjets_corL1FastL2L3_branch = tree->GetBranch(tree->GetAlias("pfjets_corL1FastL2L3"));
-		if (pfjets_corL1FastL2L3_branch) {pfjets_corL1FastL2L3_branch->SetAddress(&pfjets_corL1FastL2L3_);}
-	}
-	pfjets_corL2L3_branch = 0;
-	if (tree->GetAlias("pfjets_corL2L3") != 0) {
-		pfjets_corL2L3_branch = tree->GetBranch(tree->GetAlias("pfjets_corL2L3"));
-		if (pfjets_corL2L3_branch) {pfjets_corL2L3_branch->SetAddress(&pfjets_corL2L3_);}
-	}
 	pfjets_electronE_branch = 0;
 	if (tree->GetAlias("pfjets_electronE") != 0) {
 		pfjets_electronE_branch = tree->GetBranch(tree->GetAlias("pfjets_electronE"));
@@ -4682,16 +4941,6 @@ void Init(TTree *tree) {
 	if (tree->GetAlias("pfjets_hfHadronE") != 0) {
 		pfjets_hfHadronE_branch = tree->GetBranch(tree->GetAlias("pfjets_hfHadronE"));
 		if (pfjets_hfHadronE_branch) {pfjets_hfHadronE_branch->SetAddress(&pfjets_hfHadronE_);}
-	}
-	pfjets_jetBProbabilityBJetTag_branch = 0;
-	if (tree->GetAlias("pfjets_jetBProbabilityBJetTag") != 0) {
-		pfjets_jetBProbabilityBJetTag_branch = tree->GetBranch(tree->GetAlias("pfjets_jetBProbabilityBJetTag"));
-		if (pfjets_jetBProbabilityBJetTag_branch) {pfjets_jetBProbabilityBJetTag_branch->SetAddress(&pfjets_jetBProbabilityBJetTag_);}
-	}
-	pfjets_jetProbabilityBJetTag_branch = 0;
-	if (tree->GetAlias("pfjets_jetProbabilityBJetTag") != 0) {
-		pfjets_jetProbabilityBJetTag_branch = tree->GetBranch(tree->GetAlias("pfjets_jetProbabilityBJetTag"));
-		if (pfjets_jetProbabilityBJetTag_branch) {pfjets_jetProbabilityBJetTag_branch->SetAddress(&pfjets_jetProbabilityBJetTag_);}
 	}
 	pfjets_mass_branch = 0;
 	if (tree->GetAlias("pfjets_mass") != 0) {
@@ -4713,10 +4962,10 @@ void Init(TTree *tree) {
 		pfjets_neutralHadronE_branch = tree->GetBranch(tree->GetAlias("pfjets_neutralHadronE"));
 		if (pfjets_neutralHadronE_branch) {pfjets_neutralHadronE_branch->SetAddress(&pfjets_neutralHadronE_);}
 	}
-	pfjets_pfCombinedSecondaryVertexBJetTag_branch = 0;
-	if (tree->GetAlias("pfjets_pfCombinedSecondaryVertexBJetTag") != 0) {
-		pfjets_pfCombinedSecondaryVertexBJetTag_branch = tree->GetBranch(tree->GetAlias("pfjets_pfCombinedSecondaryVertexBJetTag"));
-		if (pfjets_pfCombinedSecondaryVertexBJetTag_branch) {pfjets_pfCombinedSecondaryVertexBJetTag_branch->SetAddress(&pfjets_pfCombinedSecondaryVertexBJetTag_);}
+	pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch = 0;
+	if (tree->GetAlias("pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag") != 0) {
+		pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch = tree->GetBranch(tree->GetAlias("pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag"));
+		if (pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch) {pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch->SetAddress(&pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_);}
 	}
 	pfjets_photonE_branch = 0;
 	if (tree->GetAlias("pfjets_photonE") != 0) {
@@ -4728,30 +4977,80 @@ void Init(TTree *tree) {
 		pfjets_pileupJetId_branch = tree->GetBranch(tree->GetAlias("pfjets_pileupJetId"));
 		if (pfjets_pileupJetId_branch) {pfjets_pileupJetId_branch->SetAddress(&pfjets_pileupJetId_);}
 	}
-	pfjets_simpleSecondaryVertexHighEffBJetTag_branch = 0;
-	if (tree->GetAlias("pfjets_simpleSecondaryVertexHighEffBJetTag") != 0) {
-		pfjets_simpleSecondaryVertexHighEffBJetTag_branch = tree->GetBranch(tree->GetAlias("pfjets_simpleSecondaryVertexHighEffBJetTag"));
-		if (pfjets_simpleSecondaryVertexHighEffBJetTag_branch) {pfjets_simpleSecondaryVertexHighEffBJetTag_branch->SetAddress(&pfjets_simpleSecondaryVertexHighEffBJetTag_);}
-	}
-	pfjets_simpleSecondaryVertexHighPurBJetTags_branch = 0;
-	if (tree->GetAlias("pfjets_simpleSecondaryVertexHighPurBJetTags") != 0) {
-		pfjets_simpleSecondaryVertexHighPurBJetTags_branch = tree->GetBranch(tree->GetAlias("pfjets_simpleSecondaryVertexHighPurBJetTags"));
-		if (pfjets_simpleSecondaryVertexHighPurBJetTags_branch) {pfjets_simpleSecondaryVertexHighPurBJetTags_branch->SetAddress(&pfjets_simpleSecondaryVertexHighPurBJetTags_);}
-	}
-	pfjets_trackCountingHighEffBJetTag_branch = 0;
-	if (tree->GetAlias("pfjets_trackCountingHighEffBJetTag") != 0) {
-		pfjets_trackCountingHighEffBJetTag_branch = tree->GetBranch(tree->GetAlias("pfjets_trackCountingHighEffBJetTag"));
-		if (pfjets_trackCountingHighEffBJetTag_branch) {pfjets_trackCountingHighEffBJetTag_branch->SetAddress(&pfjets_trackCountingHighEffBJetTag_);}
-	}
-	pfjets_trackCountingHighPurBJetTag_branch = 0;
-	if (tree->GetAlias("pfjets_trackCountingHighPurBJetTag") != 0) {
-		pfjets_trackCountingHighPurBJetTag_branch = tree->GetBranch(tree->GetAlias("pfjets_trackCountingHighPurBJetTag"));
-		if (pfjets_trackCountingHighPurBJetTag_branch) {pfjets_trackCountingHighPurBJetTag_branch->SetAddress(&pfjets_trackCountingHighPurBJetTag_);}
-	}
 	pfjets_undoJEC_branch = 0;
 	if (tree->GetAlias("pfjets_undoJEC") != 0) {
 		pfjets_undoJEC_branch = tree->GetBranch(tree->GetAlias("pfjets_undoJEC"));
 		if (pfjets_undoJEC_branch) {pfjets_undoJEC_branch->SetAddress(&pfjets_undoJEC_);}
+	}
+	pfjets_puppi_area_branch = 0;
+	if (tree->GetAlias("pfjets_puppi_area") != 0) {
+		pfjets_puppi_area_branch = tree->GetBranch(tree->GetAlias("pfjets_puppi_area"));
+		if (pfjets_puppi_area_branch) {pfjets_puppi_area_branch->SetAddress(&pfjets_puppi_area_);}
+	}
+	pfjets_puppi_chargedEmE_branch = 0;
+	if (tree->GetAlias("pfjets_puppi_chargedEmE") != 0) {
+		pfjets_puppi_chargedEmE_branch = tree->GetBranch(tree->GetAlias("pfjets_puppi_chargedEmE"));
+		if (pfjets_puppi_chargedEmE_branch) {pfjets_puppi_chargedEmE_branch->SetAddress(&pfjets_puppi_chargedEmE_);}
+	}
+	pfjets_puppi_chargedHadronE_branch = 0;
+	if (tree->GetAlias("pfjets_puppi_chargedHadronE") != 0) {
+		pfjets_puppi_chargedHadronE_branch = tree->GetBranch(tree->GetAlias("pfjets_puppi_chargedHadronE"));
+		if (pfjets_puppi_chargedHadronE_branch) {pfjets_puppi_chargedHadronE_branch->SetAddress(&pfjets_puppi_chargedHadronE_);}
+	}
+	pfjets_puppi_electronE_branch = 0;
+	if (tree->GetAlias("pfjets_puppi_electronE") != 0) {
+		pfjets_puppi_electronE_branch = tree->GetBranch(tree->GetAlias("pfjets_puppi_electronE"));
+		if (pfjets_puppi_electronE_branch) {pfjets_puppi_electronE_branch->SetAddress(&pfjets_puppi_electronE_);}
+	}
+	pfjets_puppi_hfEmE_branch = 0;
+	if (tree->GetAlias("pfjets_puppi_hfEmE") != 0) {
+		pfjets_puppi_hfEmE_branch = tree->GetBranch(tree->GetAlias("pfjets_puppi_hfEmE"));
+		if (pfjets_puppi_hfEmE_branch) {pfjets_puppi_hfEmE_branch->SetAddress(&pfjets_puppi_hfEmE_);}
+	}
+	pfjets_puppi_hfHadronE_branch = 0;
+	if (tree->GetAlias("pfjets_puppi_hfHadronE") != 0) {
+		pfjets_puppi_hfHadronE_branch = tree->GetBranch(tree->GetAlias("pfjets_puppi_hfHadronE"));
+		if (pfjets_puppi_hfHadronE_branch) {pfjets_puppi_hfHadronE_branch->SetAddress(&pfjets_puppi_hfHadronE_);}
+	}
+	pfjets_puppi_mass_branch = 0;
+	if (tree->GetAlias("pfjets_puppi_mass") != 0) {
+		pfjets_puppi_mass_branch = tree->GetBranch(tree->GetAlias("pfjets_puppi_mass"));
+		if (pfjets_puppi_mass_branch) {pfjets_puppi_mass_branch->SetAddress(&pfjets_puppi_mass_);}
+	}
+	pfjets_puppi_muonE_branch = 0;
+	if (tree->GetAlias("pfjets_puppi_muonE") != 0) {
+		pfjets_puppi_muonE_branch = tree->GetBranch(tree->GetAlias("pfjets_puppi_muonE"));
+		if (pfjets_puppi_muonE_branch) {pfjets_puppi_muonE_branch->SetAddress(&pfjets_puppi_muonE_);}
+	}
+	pfjets_puppi_neutralEmE_branch = 0;
+	if (tree->GetAlias("pfjets_puppi_neutralEmE") != 0) {
+		pfjets_puppi_neutralEmE_branch = tree->GetBranch(tree->GetAlias("pfjets_puppi_neutralEmE"));
+		if (pfjets_puppi_neutralEmE_branch) {pfjets_puppi_neutralEmE_branch->SetAddress(&pfjets_puppi_neutralEmE_);}
+	}
+	pfjets_puppi_neutralHadronE_branch = 0;
+	if (tree->GetAlias("pfjets_puppi_neutralHadronE") != 0) {
+		pfjets_puppi_neutralHadronE_branch = tree->GetBranch(tree->GetAlias("pfjets_puppi_neutralHadronE"));
+		if (pfjets_puppi_neutralHadronE_branch) {pfjets_puppi_neutralHadronE_branch->SetAddress(&pfjets_puppi_neutralHadronE_);}
+	}
+	pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch = 0;
+	if (tree->GetAlias("pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag") != 0) {
+		pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch = tree->GetBranch(tree->GetAlias("pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag"));
+		if (pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch) {pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch->SetAddress(&pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag_);}
+	}
+	pfjets_puppi_photonE_branch = 0;
+	if (tree->GetAlias("pfjets_puppi_photonE") != 0) {
+		pfjets_puppi_photonE_branch = tree->GetBranch(tree->GetAlias("pfjets_puppi_photonE"));
+		if (pfjets_puppi_photonE_branch) {pfjets_puppi_photonE_branch->SetAddress(&pfjets_puppi_photonE_);}
+	}
+	pfjets_puppi_pileupJetId_branch = 0;
+	if (tree->GetAlias("pfjets_puppi_pileupJetId") != 0) {
+		pfjets_puppi_pileupJetId_branch = tree->GetBranch(tree->GetAlias("pfjets_puppi_pileupJetId"));
+		if (pfjets_puppi_pileupJetId_branch) {pfjets_puppi_pileupJetId_branch->SetAddress(&pfjets_puppi_pileupJetId_);}
+	}
+	pfjets_puppi_undoJEC_branch = 0;
+	if (tree->GetAlias("pfjets_puppi_undoJEC") != 0) {
+		pfjets_puppi_undoJEC_branch = tree->GetBranch(tree->GetAlias("pfjets_puppi_undoJEC"));
+		if (pfjets_puppi_undoJEC_branch) {pfjets_puppi_undoJEC_branch->SetAddress(&pfjets_puppi_undoJEC_);}
 	}
 	taus_pf_mass_branch = 0;
 	if (tree->GetAlias("taus_pf_mass") != 0) {
@@ -4783,6 +5082,21 @@ void Init(TTree *tree) {
 		photons_e5x5_branch = tree->GetBranch(tree->GetAlias("photons_e5x5"));
 		if (photons_e5x5_branch) {photons_e5x5_branch->SetAddress(&photons_e5x5_);}
 	}
+	photons_eSC_branch = 0;
+	if (tree->GetAlias("photons_eSC") != 0) {
+		photons_eSC_branch = tree->GetBranch(tree->GetAlias("photons_eSC"));
+		if (photons_eSC_branch) {photons_eSC_branch->SetAddress(&photons_eSC_);}
+	}
+	photons_eSCPresh_branch = 0;
+	if (tree->GetAlias("photons_eSCPresh") != 0) {
+		photons_eSCPresh_branch = tree->GetBranch(tree->GetAlias("photons_eSCPresh"));
+		if (photons_eSCPresh_branch) {photons_eSCPresh_branch->SetAddress(&photons_eSCPresh_);}
+	}
+	photons_eSCRaw_branch = 0;
+	if (tree->GetAlias("photons_eSCRaw") != 0) {
+		photons_eSCRaw_branch = tree->GetBranch(tree->GetAlias("photons_eSCRaw"));
+		if (photons_eSCRaw_branch) {photons_eSCRaw_branch->SetAddress(&photons_eSCRaw_);}
+	}
 	photons_ecalIso03_branch = 0;
 	if (tree->GetAlias("photons_ecalIso03") != 0) {
 		photons_ecalIso03_branch = tree->GetBranch(tree->GetAlias("photons_ecalIso03"));
@@ -4792,6 +5106,16 @@ void Init(TTree *tree) {
 	if (tree->GetAlias("photons_ecalIso04") != 0) {
 		photons_ecalIso04_branch = tree->GetBranch(tree->GetAlias("photons_ecalIso04"));
 		if (photons_ecalIso04_branch) {photons_ecalIso04_branch->SetAddress(&photons_ecalIso04_);}
+	}
+	photons_ecalPFClusterIso_branch = 0;
+	if (tree->GetAlias("photons_ecalPFClusterIso") != 0) {
+		photons_ecalPFClusterIso_branch = tree->GetBranch(tree->GetAlias("photons_ecalPFClusterIso"));
+		if (photons_ecalPFClusterIso_branch) {photons_ecalPFClusterIso_branch->SetAddress(&photons_ecalPFClusterIso_);}
+	}
+	photons_etaSC_branch = 0;
+	if (tree->GetAlias("photons_etaSC") != 0) {
+		photons_etaSC_branch = tree->GetBranch(tree->GetAlias("photons_etaSC"));
+		if (photons_etaSC_branch) {photons_etaSC_branch->SetAddress(&photons_etaSC_);}
 	}
 	photons_full3x3_e3x3_branch = 0;
 	if (tree->GetAlias("photons_full3x3_e3x3") != 0) {
@@ -4843,6 +5167,11 @@ void Init(TTree *tree) {
 		photons_hOverE_branch = tree->GetBranch(tree->GetAlias("photons_hOverE"));
 		if (photons_hOverE_branch) {photons_hOverE_branch->SetAddress(&photons_hOverE_);}
 	}
+	photons_hOverEtowBC_branch = 0;
+	if (tree->GetAlias("photons_hOverEtowBC") != 0) {
+		photons_hOverEtowBC_branch = tree->GetBranch(tree->GetAlias("photons_hOverEtowBC"));
+		if (photons_hOverEtowBC_branch) {photons_hOverEtowBC_branch->SetAddress(&photons_hOverEtowBC_);}
+	}
 	photons_hcalDepth1TowerSumEtBcConeDR03_branch = 0;
 	if (tree->GetAlias("photons_hcalDepth1TowerSumEtBcConeDR03") != 0) {
 		photons_hcalDepth1TowerSumEtBcConeDR03_branch = tree->GetBranch(tree->GetAlias("photons_hcalDepth1TowerSumEtBcConeDR03"));
@@ -4872,6 +5201,11 @@ void Init(TTree *tree) {
 	if (tree->GetAlias("photons_hcalIso04") != 0) {
 		photons_hcalIso04_branch = tree->GetBranch(tree->GetAlias("photons_hcalIso04"));
 		if (photons_hcalIso04_branch) {photons_hcalIso04_branch->SetAddress(&photons_hcalIso04_);}
+	}
+	photons_hcalPFClusterIso_branch = 0;
+	if (tree->GetAlias("photons_hcalPFClusterIso") != 0) {
+		photons_hcalPFClusterIso_branch = tree->GetBranch(tree->GetAlias("photons_hcalPFClusterIso"));
+		if (photons_hcalPFClusterIso_branch) {photons_hcalPFClusterIso_branch->SetAddress(&photons_hcalPFClusterIso_);}
 	}
 	photons_hcalTowerSumEtBcConeDR03_branch = 0;
 	if (tree->GetAlias("photons_hcalTowerSumEtBcConeDR03") != 0) {
@@ -4912,6 +5246,11 @@ void Init(TTree *tree) {
 	if (tree->GetAlias("photons_ntkIsoSolid04") != 0) {
 		photons_ntkIsoSolid04_branch = tree->GetBranch(tree->GetAlias("photons_ntkIsoSolid04"));
 		if (photons_ntkIsoSolid04_branch) {photons_ntkIsoSolid04_branch->SetAddress(&photons_ntkIsoSolid04_);}
+	}
+	photons_phiSC_branch = 0;
+	if (tree->GetAlias("photons_phiSC") != 0) {
+		photons_phiSC_branch = tree->GetBranch(tree->GetAlias("photons_phiSC"));
+		if (photons_phiSC_branch) {photons_phiSC_branch->SetAddress(&photons_phiSC_);}
 	}
 	photons_photonIso_branch = 0;
 	if (tree->GetAlias("photons_photonIso") != 0) {
@@ -5048,30 +5387,20 @@ void Init(TTree *tree) {
 		ak8jets_area_branch = tree->GetBranch(tree->GetAlias("ak8jets_area"));
 		if (ak8jets_area_branch) {ak8jets_area_branch->SetAddress(&ak8jets_area_);}
 	}
-	ak8jets_combinedSecondaryVertexBJetTag_branch = 0;
-	if (tree->GetAlias("ak8jets_combinedSecondaryVertexBJetTag") != 0) {
-		ak8jets_combinedSecondaryVertexBJetTag_branch = tree->GetBranch(tree->GetAlias("ak8jets_combinedSecondaryVertexBJetTag"));
-		if (ak8jets_combinedSecondaryVertexBJetTag_branch) {ak8jets_combinedSecondaryVertexBJetTag_branch->SetAddress(&ak8jets_combinedSecondaryVertexBJetTag_);}
-	}
 	ak8jets_filteredMass_branch = 0;
 	if (tree->GetAlias("ak8jets_filteredMass") != 0) {
 		ak8jets_filteredMass_branch = tree->GetBranch(tree->GetAlias("ak8jets_filteredMass"));
 		if (ak8jets_filteredMass_branch) {ak8jets_filteredMass_branch->SetAddress(&ak8jets_filteredMass_);}
 	}
-	ak8jets_jetBProbabilityBJetTag_branch = 0;
-	if (tree->GetAlias("ak8jets_jetBProbabilityBJetTag") != 0) {
-		ak8jets_jetBProbabilityBJetTag_branch = tree->GetBranch(tree->GetAlias("ak8jets_jetBProbabilityBJetTag"));
-		if (ak8jets_jetBProbabilityBJetTag_branch) {ak8jets_jetBProbabilityBJetTag_branch->SetAddress(&ak8jets_jetBProbabilityBJetTag_);}
-	}
-	ak8jets_jetProbabilityBJetTag_branch = 0;
-	if (tree->GetAlias("ak8jets_jetProbabilityBJetTag") != 0) {
-		ak8jets_jetProbabilityBJetTag_branch = tree->GetBranch(tree->GetAlias("ak8jets_jetProbabilityBJetTag"));
-		if (ak8jets_jetProbabilityBJetTag_branch) {ak8jets_jetProbabilityBJetTag_branch->SetAddress(&ak8jets_jetProbabilityBJetTag_);}
-	}
 	ak8jets_mass_branch = 0;
 	if (tree->GetAlias("ak8jets_mass") != 0) {
 		ak8jets_mass_branch = tree->GetBranch(tree->GetAlias("ak8jets_mass"));
 		if (ak8jets_mass_branch) {ak8jets_mass_branch->SetAddress(&ak8jets_mass_);}
+	}
+	ak8jets_minMass_branch = 0;
+	if (tree->GetAlias("ak8jets_minMass") != 0) {
+		ak8jets_minMass_branch = tree->GetBranch(tree->GetAlias("ak8jets_minMass"));
+		if (ak8jets_minMass_branch) {ak8jets_minMass_branch->SetAddress(&ak8jets_minMass_);}
 	}
 	ak8jets_nJettinessTau1_branch = 0;
 	if (tree->GetAlias("ak8jets_nJettinessTau1") != 0) {
@@ -5093,25 +5422,15 @@ void Init(TTree *tree) {
 		ak8jets_prunedMass_branch = tree->GetBranch(tree->GetAlias("ak8jets_prunedMass"));
 		if (ak8jets_prunedMass_branch) {ak8jets_prunedMass_branch->SetAddress(&ak8jets_prunedMass_);}
 	}
-	ak8jets_simpleSecondaryVertexHighEffBJetTag_branch = 0;
-	if (tree->GetAlias("ak8jets_simpleSecondaryVertexHighEffBJetTag") != 0) {
-		ak8jets_simpleSecondaryVertexHighEffBJetTag_branch = tree->GetBranch(tree->GetAlias("ak8jets_simpleSecondaryVertexHighEffBJetTag"));
-		if (ak8jets_simpleSecondaryVertexHighEffBJetTag_branch) {ak8jets_simpleSecondaryVertexHighEffBJetTag_branch->SetAddress(&ak8jets_simpleSecondaryVertexHighEffBJetTag_);}
+	ak8jets_softdropMass_branch = 0;
+	if (tree->GetAlias("ak8jets_softdropMass") != 0) {
+		ak8jets_softdropMass_branch = tree->GetBranch(tree->GetAlias("ak8jets_softdropMass"));
+		if (ak8jets_softdropMass_branch) {ak8jets_softdropMass_branch->SetAddress(&ak8jets_softdropMass_);}
 	}
-	ak8jets_simpleSecondaryVertexHighPurBJetTags_branch = 0;
-	if (tree->GetAlias("ak8jets_simpleSecondaryVertexHighPurBJetTags") != 0) {
-		ak8jets_simpleSecondaryVertexHighPurBJetTags_branch = tree->GetBranch(tree->GetAlias("ak8jets_simpleSecondaryVertexHighPurBJetTags"));
-		if (ak8jets_simpleSecondaryVertexHighPurBJetTags_branch) {ak8jets_simpleSecondaryVertexHighPurBJetTags_branch->SetAddress(&ak8jets_simpleSecondaryVertexHighPurBJetTags_);}
-	}
-	ak8jets_trackCountingHighEffBJetTag_branch = 0;
-	if (tree->GetAlias("ak8jets_trackCountingHighEffBJetTag") != 0) {
-		ak8jets_trackCountingHighEffBJetTag_branch = tree->GetBranch(tree->GetAlias("ak8jets_trackCountingHighEffBJetTag"));
-		if (ak8jets_trackCountingHighEffBJetTag_branch) {ak8jets_trackCountingHighEffBJetTag_branch->SetAddress(&ak8jets_trackCountingHighEffBJetTag_);}
-	}
-	ak8jets_trackCountingHighPurBJetTag_branch = 0;
-	if (tree->GetAlias("ak8jets_trackCountingHighPurBJetTag") != 0) {
-		ak8jets_trackCountingHighPurBJetTag_branch = tree->GetBranch(tree->GetAlias("ak8jets_trackCountingHighPurBJetTag"));
-		if (ak8jets_trackCountingHighPurBJetTag_branch) {ak8jets_trackCountingHighPurBJetTag_branch->SetAddress(&ak8jets_trackCountingHighPurBJetTag_);}
+	ak8jets_topMass_branch = 0;
+	if (tree->GetAlias("ak8jets_topMass") != 0) {
+		ak8jets_topMass_branch = tree->GetBranch(tree->GetAlias("ak8jets_topMass"));
+		if (ak8jets_topMass_branch) {ak8jets_topMass_branch->SetAddress(&ak8jets_topMass_);}
 	}
 	ak8jets_trimmedMass_branch = 0;
 	if (tree->GetAlias("ak8jets_trimmedMass") != 0) {
@@ -5133,10 +5452,10 @@ void Init(TTree *tree) {
 		vtxs_ndof_branch = tree->GetBranch(tree->GetAlias("vtxs_ndof"));
 		if (vtxs_ndof_branch) {vtxs_ndof_branch->SetAddress(&vtxs_ndof_);}
 	}
-	vtxs_sumpt_branch = 0;
-	if (tree->GetAlias("vtxs_sumpt") != 0) {
-		vtxs_sumpt_branch = tree->GetBranch(tree->GetAlias("vtxs_sumpt"));
-		if (vtxs_sumpt_branch) {vtxs_sumpt_branch->SetAddress(&vtxs_sumpt_);}
+	vtxs_score_branch = 0;
+	if (tree->GetAlias("vtxs_score") != 0) {
+		vtxs_score_branch = tree->GetBranch(tree->GetAlias("vtxs_score"));
+		if (vtxs_score_branch) {vtxs_score_branch->SetAddress(&vtxs_score_);}
 	}
 	vtxs_xError_branch = 0;
 	if (tree->GetAlias("vtxs_xError") != 0) {
@@ -5153,6 +5472,11 @@ void Init(TTree *tree) {
 		vtxs_zError_branch = tree->GetBranch(tree->GetAlias("vtxs_zError"));
 		if (vtxs_zError_branch) {vtxs_zError_branch->SetAddress(&vtxs_zError_);}
 	}
+	pfjets_nonCHS_bDiscriminators_branch = 0;
+	if (tree->GetAlias("pfjets_nonCHS_bDiscriminators") != 0) {
+		pfjets_nonCHS_bDiscriminators_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_bDiscriminators"));
+		if (pfjets_nonCHS_bDiscriminators_branch) {pfjets_nonCHS_bDiscriminators_branch->SetAddress(&pfjets_nonCHS_bDiscriminators_);}
+	}
 	mus_stationShowerDeltaR_branch = 0;
 	if (tree->GetAlias("mus_stationShowerDeltaR") != 0) {
 		mus_stationShowerDeltaR_branch = tree->GetBranch(tree->GetAlias("mus_stationShowerDeltaR"));
@@ -5162,6 +5486,16 @@ void Init(TTree *tree) {
 	if (tree->GetAlias("mus_stationShowerSizeT") != 0) {
 		mus_stationShowerSizeT_branch = tree->GetBranch(tree->GetAlias("mus_stationShowerSizeT"));
 		if (mus_stationShowerSizeT_branch) {mus_stationShowerSizeT_branch->SetAddress(&mus_stationShowerSizeT_);}
+	}
+	pfjets_bDiscriminators_branch = 0;
+	if (tree->GetAlias("pfjets_bDiscriminators") != 0) {
+		pfjets_bDiscriminators_branch = tree->GetBranch(tree->GetAlias("pfjets_bDiscriminators"));
+		if (pfjets_bDiscriminators_branch) {pfjets_bDiscriminators_branch->SetAddress(&pfjets_bDiscriminators_);}
+	}
+	pfjets_puppi_bDiscriminators_branch = 0;
+	if (tree->GetAlias("pfjets_puppi_bDiscriminators") != 0) {
+		pfjets_puppi_bDiscriminators_branch = tree->GetBranch(tree->GetAlias("pfjets_puppi_bDiscriminators"));
+		if (pfjets_puppi_bDiscriminators_branch) {pfjets_puppi_bDiscriminators_branch->SetAddress(&pfjets_puppi_bDiscriminators_);}
 	}
 	taus_pf_IDs_branch = 0;
 	if (tree->GetAlias("taus_pf_IDs") != 0) {
@@ -5317,6 +5651,51 @@ void Init(TTree *tree) {
 	if (tree->GetAlias("sparm_subProcessId") != 0) {
 		sparm_subProcessId_branch = tree->GetBranch(tree->GetAlias("sparm_subProcessId"));
 		if (sparm_subProcessId_branch) {sparm_subProcessId_branch->SetAddress(&sparm_subProcessId_);}
+	}
+	pfjets_nonCHS_chargedHadronMultiplicity_branch = 0;
+	if (tree->GetAlias("pfjets_nonCHS_chargedHadronMultiplicity") != 0) {
+		pfjets_nonCHS_chargedHadronMultiplicity_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_chargedHadronMultiplicity"));
+		if (pfjets_nonCHS_chargedHadronMultiplicity_branch) {pfjets_nonCHS_chargedHadronMultiplicity_branch->SetAddress(&pfjets_nonCHS_chargedHadronMultiplicity_);}
+	}
+	pfjets_nonCHS_chargedMultiplicity_branch = 0;
+	if (tree->GetAlias("pfjets_nonCHS_chargedMultiplicity") != 0) {
+		pfjets_nonCHS_chargedMultiplicity_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_chargedMultiplicity"));
+		if (pfjets_nonCHS_chargedMultiplicity_branch) {pfjets_nonCHS_chargedMultiplicity_branch->SetAddress(&pfjets_nonCHS_chargedMultiplicity_);}
+	}
+	pfjets_nonCHS_electronMultiplicity_branch = 0;
+	if (tree->GetAlias("pfjets_nonCHS_electronMultiplicity") != 0) {
+		pfjets_nonCHS_electronMultiplicity_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_electronMultiplicity"));
+		if (pfjets_nonCHS_electronMultiplicity_branch) {pfjets_nonCHS_electronMultiplicity_branch->SetAddress(&pfjets_nonCHS_electronMultiplicity_);}
+	}
+	pfjets_nonCHS_muonMultiplicity_branch = 0;
+	if (tree->GetAlias("pfjets_nonCHS_muonMultiplicity") != 0) {
+		pfjets_nonCHS_muonMultiplicity_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_muonMultiplicity"));
+		if (pfjets_nonCHS_muonMultiplicity_branch) {pfjets_nonCHS_muonMultiplicity_branch->SetAddress(&pfjets_nonCHS_muonMultiplicity_);}
+	}
+	pfjets_nonCHS_neutralHadronMultiplicity_branch = 0;
+	if (tree->GetAlias("pfjets_nonCHS_neutralHadronMultiplicity") != 0) {
+		pfjets_nonCHS_neutralHadronMultiplicity_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_neutralHadronMultiplicity"));
+		if (pfjets_nonCHS_neutralHadronMultiplicity_branch) {pfjets_nonCHS_neutralHadronMultiplicity_branch->SetAddress(&pfjets_nonCHS_neutralHadronMultiplicity_);}
+	}
+	pfjets_nonCHS_neutralMultiplicity_branch = 0;
+	if (tree->GetAlias("pfjets_nonCHS_neutralMultiplicity") != 0) {
+		pfjets_nonCHS_neutralMultiplicity_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_neutralMultiplicity"));
+		if (pfjets_nonCHS_neutralMultiplicity_branch) {pfjets_nonCHS_neutralMultiplicity_branch->SetAddress(&pfjets_nonCHS_neutralMultiplicity_);}
+	}
+	pfjets_nonCHS_partonFlavour_branch = 0;
+	if (tree->GetAlias("pfjets_nonCHS_partonFlavour") != 0) {
+		pfjets_nonCHS_partonFlavour_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_partonFlavour"));
+		if (pfjets_nonCHS_partonFlavour_branch) {pfjets_nonCHS_partonFlavour_branch->SetAddress(&pfjets_nonCHS_partonFlavour_);}
+	}
+	pfjets_nonCHS_photonMultiplicity_branch = 0;
+	if (tree->GetAlias("pfjets_nonCHS_photonMultiplicity") != 0) {
+		pfjets_nonCHS_photonMultiplicity_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_photonMultiplicity"));
+		if (pfjets_nonCHS_photonMultiplicity_branch) {pfjets_nonCHS_photonMultiplicity_branch->SetAddress(&pfjets_nonCHS_photonMultiplicity_);}
+	}
+	ak8jets_mc_id_branch = 0;
+	if (tree->GetAlias("ak8jets_mc_id") != 0) {
+		ak8jets_mc_id_branch = tree->GetBranch(tree->GetAlias("ak8jets_mc_id"));
+		if (ak8jets_mc_id_branch) {ak8jets_mc_id_branch->SetAddress(&ak8jets_mc_id_);}
 	}
 	els_mc3_id_branch = 0;
 	if (tree->GetAlias("els_mc3_id") != 0) {
@@ -5642,6 +6021,16 @@ void Init(TTree *tree) {
 	if (tree->GetAlias("hyp_type") != 0) {
 		hyp_type_branch = tree->GetBranch(tree->GetAlias("hyp_type"));
 		if (hyp_type_branch) {hyp_type_branch->SetAddress(&hyp_type_);}
+	}
+	isotracks_charge_branch = 0;
+	if (tree->GetAlias("isotracks_charge") != 0) {
+		isotracks_charge_branch = tree->GetBranch(tree->GetAlias("isotracks_charge"));
+		if (isotracks_charge_branch) {isotracks_charge_branch->SetAddress(&isotracks_charge_);}
+	}
+	isotracks_particleId_branch = 0;
+	if (tree->GetAlias("isotracks_particleId") != 0) {
+		isotracks_particleId_branch = tree->GetBranch(tree->GetAlias("isotracks_particleId"));
+		if (isotracks_particleId_branch) {isotracks_particleId_branch->SetAddress(&isotracks_particleId_);}
 	}
 	mus_algo_branch = 0;
 	if (tree->GetAlias("mus_algo") != 0) {
@@ -5973,11 +6362,6 @@ void Init(TTree *tree) {
 		mus_trk_charge_branch = tree->GetBranch(tree->GetAlias("mus_trk_charge"));
 		if (mus_trk_charge_branch) {mus_trk_charge_branch->SetAddress(&mus_trk_charge_);}
 	}
-	mus_trkidx_branch = 0;
-	if (tree->GetAlias("mus_trkidx") != 0) {
-		mus_trkidx_branch = tree->GetBranch(tree->GetAlias("mus_trkidx"));
-		if (mus_trkidx_branch) {mus_trkidx_branch->SetAddress(&mus_trkidx_);}
-	}
 	mus_type_branch = 0;
 	if (tree->GetAlias("mus_type") != 0) {
 		mus_type_branch = tree->GetBranch(tree->GetAlias("mus_type"));
@@ -6043,6 +6427,46 @@ void Init(TTree *tree) {
 		pfjets_photonMultiplicity_branch = tree->GetBranch(tree->GetAlias("pfjets_photonMultiplicity"));
 		if (pfjets_photonMultiplicity_branch) {pfjets_photonMultiplicity_branch->SetAddress(&pfjets_photonMultiplicity_);}
 	}
+	pfjets_puppi_chargedHadronMultiplicity_branch = 0;
+	if (tree->GetAlias("pfjets_puppi_chargedHadronMultiplicity") != 0) {
+		pfjets_puppi_chargedHadronMultiplicity_branch = tree->GetBranch(tree->GetAlias("pfjets_puppi_chargedHadronMultiplicity"));
+		if (pfjets_puppi_chargedHadronMultiplicity_branch) {pfjets_puppi_chargedHadronMultiplicity_branch->SetAddress(&pfjets_puppi_chargedHadronMultiplicity_);}
+	}
+	pfjets_puppi_chargedMultiplicity_branch = 0;
+	if (tree->GetAlias("pfjets_puppi_chargedMultiplicity") != 0) {
+		pfjets_puppi_chargedMultiplicity_branch = tree->GetBranch(tree->GetAlias("pfjets_puppi_chargedMultiplicity"));
+		if (pfjets_puppi_chargedMultiplicity_branch) {pfjets_puppi_chargedMultiplicity_branch->SetAddress(&pfjets_puppi_chargedMultiplicity_);}
+	}
+	pfjets_puppi_electronMultiplicity_branch = 0;
+	if (tree->GetAlias("pfjets_puppi_electronMultiplicity") != 0) {
+		pfjets_puppi_electronMultiplicity_branch = tree->GetBranch(tree->GetAlias("pfjets_puppi_electronMultiplicity"));
+		if (pfjets_puppi_electronMultiplicity_branch) {pfjets_puppi_electronMultiplicity_branch->SetAddress(&pfjets_puppi_electronMultiplicity_);}
+	}
+	pfjets_puppi_muonMultiplicity_branch = 0;
+	if (tree->GetAlias("pfjets_puppi_muonMultiplicity") != 0) {
+		pfjets_puppi_muonMultiplicity_branch = tree->GetBranch(tree->GetAlias("pfjets_puppi_muonMultiplicity"));
+		if (pfjets_puppi_muonMultiplicity_branch) {pfjets_puppi_muonMultiplicity_branch->SetAddress(&pfjets_puppi_muonMultiplicity_);}
+	}
+	pfjets_puppi_neutralHadronMultiplicity_branch = 0;
+	if (tree->GetAlias("pfjets_puppi_neutralHadronMultiplicity") != 0) {
+		pfjets_puppi_neutralHadronMultiplicity_branch = tree->GetBranch(tree->GetAlias("pfjets_puppi_neutralHadronMultiplicity"));
+		if (pfjets_puppi_neutralHadronMultiplicity_branch) {pfjets_puppi_neutralHadronMultiplicity_branch->SetAddress(&pfjets_puppi_neutralHadronMultiplicity_);}
+	}
+	pfjets_puppi_neutralMultiplicity_branch = 0;
+	if (tree->GetAlias("pfjets_puppi_neutralMultiplicity") != 0) {
+		pfjets_puppi_neutralMultiplicity_branch = tree->GetBranch(tree->GetAlias("pfjets_puppi_neutralMultiplicity"));
+		if (pfjets_puppi_neutralMultiplicity_branch) {pfjets_puppi_neutralMultiplicity_branch->SetAddress(&pfjets_puppi_neutralMultiplicity_);}
+	}
+	pfjets_puppi_partonFlavour_branch = 0;
+	if (tree->GetAlias("pfjets_puppi_partonFlavour") != 0) {
+		pfjets_puppi_partonFlavour_branch = tree->GetBranch(tree->GetAlias("pfjets_puppi_partonFlavour"));
+		if (pfjets_puppi_partonFlavour_branch) {pfjets_puppi_partonFlavour_branch->SetAddress(&pfjets_puppi_partonFlavour_);}
+	}
+	pfjets_puppi_photonMultiplicity_branch = 0;
+	if (tree->GetAlias("pfjets_puppi_photonMultiplicity") != 0) {
+		pfjets_puppi_photonMultiplicity_branch = tree->GetBranch(tree->GetAlias("pfjets_puppi_photonMultiplicity"));
+		if (pfjets_puppi_photonMultiplicity_branch) {pfjets_puppi_photonMultiplicity_branch->SetAddress(&pfjets_puppi_photonMultiplicity_);}
+	}
 	taus_pf_charge_branch = 0;
 	if (tree->GetAlias("taus_pf_charge") != 0) {
 		taus_pf_charge_branch = tree->GetBranch(tree->GetAlias("taus_pf_charge"));
@@ -6093,6 +6517,11 @@ void Init(TTree *tree) {
 		svs_nTrks_branch = tree->GetBranch(tree->GetAlias("svs_nTrks"));
 		if (svs_nTrks_branch) {svs_nTrks_branch->SetAddress(&svs_nTrks_);}
 	}
+	ak8jets_nSubJets_branch = 0;
+	if (tree->GetAlias("ak8jets_nSubJets") != 0) {
+		ak8jets_nSubJets_branch = tree->GetBranch(tree->GetAlias("ak8jets_nSubJets"));
+		if (ak8jets_nSubJets_branch) {ak8jets_nSubJets_branch->SetAddress(&ak8jets_nSubJets_);}
+	}
 	ak8jets_partonFlavour_branch = 0;
 	if (tree->GetAlias("ak8jets_partonFlavour") != 0) {
 		ak8jets_partonFlavour_branch = tree->GetBranch(tree->GetAlias("ak8jets_partonFlavour"));
@@ -6108,10 +6537,10 @@ void Init(TTree *tree) {
 		vtxs_isValid_branch = tree->GetBranch(tree->GetAlias("vtxs_isValid"));
 		if (vtxs_isValid_branch) {vtxs_isValid_branch->SetAddress(&vtxs_isValid_);}
 	}
-	vtxs_tracksSize_branch = 0;
-	if (tree->GetAlias("vtxs_tracksSize") != 0) {
-		vtxs_tracksSize_branch = tree->GetBranch(tree->GetAlias("vtxs_tracksSize"));
-		if (vtxs_tracksSize_branch) {vtxs_tracksSize_branch->SetAddress(&vtxs_tracksSize_);}
+	pfjets_nonCHS_pfcandIndicies_branch = 0;
+	if (tree->GetAlias("pfjets_nonCHS_pfcandIndicies") != 0) {
+		pfjets_nonCHS_pfcandIndicies_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_pfcandIndicies"));
+		if (pfjets_nonCHS_pfcandIndicies_branch) {pfjets_nonCHS_pfcandIndicies_branch->SetAddress(&pfjets_nonCHS_pfcandIndicies_);}
 	}
 	els_PFCand_idx_branch = 0;
 	if (tree->GetAlias("els_PFCand_idx") != 0) {
@@ -6148,6 +6577,11 @@ void Init(TTree *tree) {
 		pfjets_pfcandIndicies_branch = tree->GetBranch(tree->GetAlias("pfjets_pfcandIndicies"));
 		if (pfjets_pfcandIndicies_branch) {pfjets_pfcandIndicies_branch->SetAddress(&pfjets_pfcandIndicies_);}
 	}
+	pfjets_puppi_pfcandIndicies_branch = 0;
+	if (tree->GetAlias("pfjets_puppi_pfcandIndicies") != 0) {
+		pfjets_puppi_pfcandIndicies_branch = tree->GetBranch(tree->GetAlias("pfjets_puppi_pfcandIndicies"));
+		if (pfjets_puppi_pfcandIndicies_branch) {pfjets_puppi_pfcandIndicies_branch->SetAddress(&pfjets_puppi_pfcandIndicies_);}
+	}
 	photons_PFCand_idx_branch = 0;
 	if (tree->GetAlias("photons_PFCand_idx") != 0) {
 		photons_PFCand_idx_branch = tree->GetBranch(tree->GetAlias("photons_PFCand_idx"));
@@ -6172,6 +6606,11 @@ void Init(TTree *tree) {
 	if (tree->GetAlias("ak8jets_pfcandIndicies") != 0) {
 		ak8jets_pfcandIndicies_branch = tree->GetBranch(tree->GetAlias("ak8jets_pfcandIndicies"));
 		if (ak8jets_pfcandIndicies_branch) {ak8jets_pfcandIndicies_branch->SetAddress(&ak8jets_pfcandIndicies_);}
+	}
+	isotracks_fromPV_branch = 0;
+	if (tree->GetAlias("isotracks_fromPV") != 0) {
+		isotracks_fromPV_branch = tree->GetBranch(tree->GetAlias("isotracks_fromPV"));
+		if (isotracks_fromPV_branch) {isotracks_fromPV_branch->SetAddress(&isotracks_fromPV_);}
 	}
 	pfcands_fromPV_branch = 0;
 	if (tree->GetAlias("pfcands_fromPV") != 0) {
@@ -6218,6 +6657,26 @@ void Init(TTree *tree) {
 		els_HLT_Ele20_SC4_Mass50_TrailingLeg_version_branch = tree->GetBranch(tree->GetAlias("els_HLT_Ele20_SC4_Mass50_TrailingLeg_version"));
 		if (els_HLT_Ele20_SC4_Mass50_TrailingLeg_version_branch) {els_HLT_Ele20_SC4_Mass50_TrailingLeg_version_branch->SetAddress(&els_HLT_Ele20_SC4_Mass50_TrailingLeg_version_);}
 	}
+	els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_version_branch = 0;
+	if (tree->GetAlias("els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_version") != 0) {
+		els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_version_branch = tree->GetBranch(tree->GetAlias("els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_version"));
+		if (els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_version_branch) {els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_version_branch->SetAddress(&els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_version_);}
+	}
+	els_HLT_Ele25WP60_Ele8_Mass55_version_branch = 0;
+	if (tree->GetAlias("els_HLT_Ele25WP60_Ele8_Mass55_version") != 0) {
+		els_HLT_Ele25WP60_Ele8_Mass55_version_branch = tree->GetBranch(tree->GetAlias("els_HLT_Ele25WP60_Ele8_Mass55_version"));
+		if (els_HLT_Ele25WP60_Ele8_Mass55_version_branch) {els_HLT_Ele25WP60_Ele8_Mass55_version_branch->SetAddress(&els_HLT_Ele25WP60_Ele8_Mass55_version_);}
+	}
+	els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_version_branch = 0;
+	if (tree->GetAlias("els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_version") != 0) {
+		els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_version_branch = tree->GetBranch(tree->GetAlias("els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_version"));
+		if (els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_version_branch) {els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_version_branch->SetAddress(&els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_version_);}
+	}
+	els_HLT_Ele25WP60_SC4_Mass55_version_branch = 0;
+	if (tree->GetAlias("els_HLT_Ele25WP60_SC4_Mass55_version") != 0) {
+		els_HLT_Ele25WP60_SC4_Mass55_version_branch = tree->GetBranch(tree->GetAlias("els_HLT_Ele25WP60_SC4_Mass55_version"));
+		if (els_HLT_Ele25WP60_SC4_Mass55_version_branch) {els_HLT_Ele25WP60_SC4_Mass55_version_branch->SetAddress(&els_HLT_Ele25WP60_SC4_Mass55_version_);}
+	}
 	els_HLT_Ele27_WP80_L1sL1SingleEG20ORL1SingleEG22_version_branch = 0;
 	if (tree->GetAlias("els_HLT_Ele27_WP80_L1sL1SingleEG20ORL1SingleEG22_version") != 0) {
 		els_HLT_Ele27_WP80_L1sL1SingleEG20ORL1SingleEG22_version_branch = tree->GetBranch(tree->GetAlias("els_HLT_Ele27_WP80_L1sL1SingleEG20ORL1SingleEG22_version"));
@@ -6237,6 +6696,16 @@ void Init(TTree *tree) {
 	if (tree->GetAlias("els_HLT_Ele32_SC17_Mass50_TrailingLeg_version") != 0) {
 		els_HLT_Ele32_SC17_Mass50_TrailingLeg_version_branch = tree->GetBranch(tree->GetAlias("els_HLT_Ele32_SC17_Mass50_TrailingLeg_version"));
 		if (els_HLT_Ele32_SC17_Mass50_TrailingLeg_version_branch) {els_HLT_Ele32_SC17_Mass50_TrailingLeg_version_branch->SetAddress(&els_HLT_Ele32_SC17_Mass50_TrailingLeg_version_);}
+	}
+	els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_version_branch = 0;
+	if (tree->GetAlias("els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_version") != 0) {
+		els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_version_branch = tree->GetBranch(tree->GetAlias("els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_version"));
+		if (els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_version_branch) {els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_version_branch->SetAddress(&els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_version_);}
+	}
+	els_HLT_Ele5_SC5_JPsi_Mass2to4p5_version_branch = 0;
+	if (tree->GetAlias("els_HLT_Ele5_SC5_JPsi_Mass2to4p5_version") != 0) {
+		els_HLT_Ele5_SC5_JPsi_Mass2to4p5_version_branch = tree->GetBranch(tree->GetAlias("els_HLT_Ele5_SC5_JPsi_Mass2to4p5_version"));
+		if (els_HLT_Ele5_SC5_JPsi_Mass2to4p5_version_branch) {els_HLT_Ele5_SC5_JPsi_Mass2to4p5_version_branch->SetAddress(&els_HLT_Ele5_SC5_JPsi_Mass2to4p5_version_);}
 	}
 	els_HLT_Mu17_Ele8_TrailingLeg_version_branch = 0;
 	if (tree->GetAlias("els_HLT_Mu17_Ele8_TrailingLeg_version") != 0) {
@@ -6282,6 +6751,11 @@ void Init(TTree *tree) {
 	if (tree->GetAlias("genps_signalProcessID") != 0) {
 		genps_signalProcessID_branch = tree->GetBranch(tree->GetAlias("genps_signalProcessID"));
 		if (genps_signalProcessID_branch) {genps_signalProcessID_branch->SetAddress(&genps_signalProcessID_);}
+	}
+	evt_ngenjets_branch = 0;
+	if (tree->GetAlias("evt_ngenjets") != 0) {
+		evt_ngenjets_branch = tree->GetBranch(tree->GetAlias("evt_ngenjets"));
+		if (evt_ngenjets_branch) {evt_ngenjets_branch->SetAddress(&evt_ngenjets_);}
 	}
 	mus_HLT_IsoMu24_eta2p1_L1sMu16Eta2p1_version_branch = 0;
 	if (tree->GetAlias("mus_HLT_IsoMu24_eta2p1_L1sMu16Eta2p1_version") != 0) {
@@ -6403,6 +6877,26 @@ void Init(TTree *tree) {
 		els_HLT_Ele20_SC4_Mass50_TrailingLeg_branch = tree->GetBranch(tree->GetAlias("els_HLT_Ele20_SC4_Mass50_TrailingLeg"));
 		if (els_HLT_Ele20_SC4_Mass50_TrailingLeg_branch) {els_HLT_Ele20_SC4_Mass50_TrailingLeg_branch->SetAddress(&els_HLT_Ele20_SC4_Mass50_TrailingLeg_);}
 	}
+	els_HLT_Ele25WP60_Ele8_Mass55_branch = 0;
+	if (tree->GetAlias("els_HLT_Ele25WP60_Ele8_Mass55") != 0) {
+		els_HLT_Ele25WP60_Ele8_Mass55_branch = tree->GetBranch(tree->GetAlias("els_HLT_Ele25WP60_Ele8_Mass55"));
+		if (els_HLT_Ele25WP60_Ele8_Mass55_branch) {els_HLT_Ele25WP60_Ele8_Mass55_branch->SetAddress(&els_HLT_Ele25WP60_Ele8_Mass55_);}
+	}
+	els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_branch = 0;
+	if (tree->GetAlias("els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg") != 0) {
+		els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_branch = tree->GetBranch(tree->GetAlias("els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg"));
+		if (els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_branch) {els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_branch->SetAddress(&els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_);}
+	}
+	els_HLT_Ele25WP60_SC4_Mass55_branch = 0;
+	if (tree->GetAlias("els_HLT_Ele25WP60_SC4_Mass55") != 0) {
+		els_HLT_Ele25WP60_SC4_Mass55_branch = tree->GetBranch(tree->GetAlias("els_HLT_Ele25WP60_SC4_Mass55"));
+		if (els_HLT_Ele25WP60_SC4_Mass55_branch) {els_HLT_Ele25WP60_SC4_Mass55_branch->SetAddress(&els_HLT_Ele25WP60_SC4_Mass55_);}
+	}
+	els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_branch = 0;
+	if (tree->GetAlias("els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg") != 0) {
+		els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_branch = tree->GetBranch(tree->GetAlias("els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg"));
+		if (els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_branch) {els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_branch->SetAddress(&els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_);}
+	}
 	els_HLT_Ele27_WP80_branch = 0;
 	if (tree->GetAlias("els_HLT_Ele27_WP80") != 0) {
 		els_HLT_Ele27_WP80_branch = tree->GetBranch(tree->GetAlias("els_HLT_Ele27_WP80"));
@@ -6422,6 +6916,16 @@ void Init(TTree *tree) {
 	if (tree->GetAlias("els_HLT_Ele32_SC17_Mass50_TrailingLeg") != 0) {
 		els_HLT_Ele32_SC17_Mass50_TrailingLeg_branch = tree->GetBranch(tree->GetAlias("els_HLT_Ele32_SC17_Mass50_TrailingLeg"));
 		if (els_HLT_Ele32_SC17_Mass50_TrailingLeg_branch) {els_HLT_Ele32_SC17_Mass50_TrailingLeg_branch->SetAddress(&els_HLT_Ele32_SC17_Mass50_TrailingLeg_);}
+	}
+	els_HLT_Ele5_SC5_JPsi_Mass2to4p5_branch = 0;
+	if (tree->GetAlias("els_HLT_Ele5_SC5_JPsi_Mass2to4p5") != 0) {
+		els_HLT_Ele5_SC5_JPsi_Mass2to4p5_branch = tree->GetBranch(tree->GetAlias("els_HLT_Ele5_SC5_JPsi_Mass2to4p5"));
+		if (els_HLT_Ele5_SC5_JPsi_Mass2to4p5_branch) {els_HLT_Ele5_SC5_JPsi_Mass2to4p5_branch->SetAddress(&els_HLT_Ele5_SC5_JPsi_Mass2to4p5_);}
+	}
+	els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_branch = 0;
+	if (tree->GetAlias("els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg") != 0) {
+		els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_branch = tree->GetBranch(tree->GetAlias("els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg"));
+		if (els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_branch) {els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_branch->SetAddress(&els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_);}
 	}
 	els_HLT_Mu17_Ele8_branch = 0;
 	if (tree->GetAlias("els_HLT_Mu17_Ele8") != 0) {
@@ -6539,10 +7043,14 @@ void GetEntry(unsigned int idx)
 	// this only marks branches as not loaded, saving a lot of time
 	{
 		index = idx;
+		genweightsID_isLoaded = false;
 		hlt_bits_isLoaded = false;
+		pfjets_nonCHS_bDiscriminatorNames_isLoaded = false;
 		evt_CMS3tag_isLoaded = false;
 		evt_dataset_isLoaded = false;
 		hlt_trigNames_isLoaded = false;
+		pfjets_bDiscriminatorNames_isLoaded = false;
+		pfjets_puppi_bDiscriminatorNames_isLoaded = false;
 		taus_pf_IDnames_isLoaded = false;
 		sparm_comment_isLoaded = false;
 		sparm_names_isLoaded = false;
@@ -6566,6 +7074,17 @@ void GetEntry(unsigned int idx)
 		els_isGsfCtfScPixChargeConsistent_isLoaded = false;
 		els_passingMvaPreselection_isLoaded = false;
 		els_passingPflowPreselection_isLoaded = false;
+		genps_fromHardProcessBeforeFSR_isLoaded = false;
+		genps_fromHardProcessDecayed_isLoaded = false;
+		genps_fromHardProcessFinalState_isLoaded = false;
+		genps_isDirectHardProcessTauDecayProductFinalState_isLoaded = false;
+		genps_isDirectPromptTauDecayProductFinalState_isLoaded = false;
+		genps_isHardProcess_isLoaded = false;
+		genps_isLastCopy_isLoaded = false;
+		genps_isLastCopyBeforeFSR_isLoaded = false;
+		genps_isMostlyLikePythia6Status3_isLoaded = false;
+		genps_isPromptDecayed_isLoaded = false;
+		genps_isPromptFinalState_isLoaded = false;
 		mus_isRPCMuon_isLoaded = false;
 		mus_tightMatch_isLoaded = false;
 		mus_updatedSta_isLoaded = false;
@@ -6639,11 +7158,12 @@ void GetEntry(unsigned int idx)
 		evt_fixgrid_rho_all_isLoaded = false;
 		evt_fixgrid_rho_ctr_isLoaded = false;
 		evt_fixgrid_rho_fwd_isLoaded = false;
+		evt_calomet_isLoaded = false;
+		evt_calometPhi_isLoaded = false;
 		evt_pfmet_isLoaded = false;
 		evt_pfmetPhi_isLoaded = false;
 		evt_pfmetPhi_raw_isLoaded = false;
 		evt_pfmetSig_isLoaded = false;
-		evt_pfmetSignificance_isLoaded = false;
 		evt_pfmet_raw_isLoaded = false;
 		evt_pfsumet_isLoaded = false;
 		evt_pfsumet_raw_isLoaded = false;
@@ -6656,6 +7176,9 @@ void GetEntry(unsigned int idx)
 		sparm_weight_isLoaded = false;
 		sparm_xsec_isLoaded = false;
 		evt_bsp4_isLoaded = false;
+		pfjets_nonCHS_p4_isLoaded = false;
+		ak8jets_mc_gp_p4_isLoaded = false;
+		ak8jets_mc_p4_isLoaded = false;
 		els_mc_motherp4_isLoaded = false;
 		els_mc_p4_isLoaded = false;
 		mus_mc_motherp4_isLoaded = false;
@@ -6665,9 +7188,7 @@ void GetEntry(unsigned int idx)
 		pfjets_mc_p4_isLoaded = false;
 		photons_mc_motherp4_isLoaded = false;
 		photons_mc_p4_isLoaded = false;
-		els_inner_position_isLoaded = false;
 		els_mc_patMatch_p4_isLoaded = false;
-		els_outer_position_isLoaded = false;
 		els_p4_isLoaded = false;
 		els_p4In_isLoaded = false;
 		els_p4Out_isLoaded = false;
@@ -6677,9 +7198,11 @@ void GetEntry(unsigned int idx)
 		genjets_p4NoMuNoNu_isLoaded = false;
 		genps_p4_isLoaded = false;
 		genps_prod_vtx_isLoaded = false;
+		genjets_p4_isLoaded = false;
 		hyp_ll_p4_isLoaded = false;
 		hyp_lt_p4_isLoaded = false;
 		hyp_p4_isLoaded = false;
+		isotracks_p4_isLoaded = false;
 		mus_gfit_p4_isLoaded = false;
 		mus_gfit_vertex_p4_isLoaded = false;
 		mus_mc_patMatch_p4_isLoaded = false;
@@ -6691,6 +7214,7 @@ void GetEntry(unsigned int idx)
 		mus_vertex_p4_isLoaded = false;
 		pfcands_p4_isLoaded = false;
 		pfjets_p4_isLoaded = false;
+		pfjets_puppi_p4_isLoaded = false;
 		taus_pf_lead_chargecand_p4_isLoaded = false;
 		taus_pf_lead_neutrcand_p4_isLoaded = false;
 		taus_pf_p4_isLoaded = false;
@@ -6703,6 +7227,20 @@ void GetEntry(unsigned int idx)
 		hlt_trigObjs_p4_isLoaded = false;
 		taus_pf_isocands_p4_isLoaded = false;
 		taus_pf_signalcands_p4_isLoaded = false;
+		pfjets_nonCHS_area_isLoaded = false;
+		pfjets_nonCHS_chargedEmE_isLoaded = false;
+		pfjets_nonCHS_chargedHadronE_isLoaded = false;
+		pfjets_nonCHS_electronE_isLoaded = false;
+		pfjets_nonCHS_hfEmE_isLoaded = false;
+		pfjets_nonCHS_hfHadronE_isLoaded = false;
+		pfjets_nonCHS_mass_isLoaded = false;
+		pfjets_nonCHS_muonE_isLoaded = false;
+		pfjets_nonCHS_neutralEmE_isLoaded = false;
+		pfjets_nonCHS_neutralHadronE_isLoaded = false;
+		pfjets_nonCHS_pfCombinedInclusiveSecondaryVertexV2BJetTag_isLoaded = false;
+		pfjets_nonCHS_photonE_isLoaded = false;
+		pfjets_nonCHS_pileupJetId_isLoaded = false;
+		pfjets_nonCHS_undoJEC_isLoaded = false;
 		evt_bs_covMatrix_isLoaded = false;
 		els_mc3dr_isLoaded = false;
 		els_mcdr_isLoaded = false;
@@ -6756,6 +7294,7 @@ void GetEntry(unsigned int idx)
 		els_ecalEnergyError_isLoaded = false;
 		els_ecalIso_isLoaded = false;
 		els_ecalIso04_isLoaded = false;
+		els_ecalPFClusterIso_isLoaded = false;
 		els_etaErr_isLoaded = false;
 		els_etaSC_isLoaded = false;
 		els_etaSCwidth_isLoaded = false;
@@ -6770,30 +7309,19 @@ void GetEntry(unsigned int idx)
 		els_hcalDepth2TowerSumEt04_isLoaded = false;
 		els_hcalIso_isLoaded = false;
 		els_hcalIso04_isLoaded = false;
+		els_hcalPFClusterIso_isLoaded = false;
 		els_ip2d_isLoaded = false;
 		els_ip2derr_isLoaded = false;
 		els_ip3d_isLoaded = false;
 		els_ip3derr_isLoaded = false;
-		els_iso03_pf2012_ch_isLoaded = false;
-		els_iso03_pf2012_em_isLoaded = false;
-		els_iso03_pf2012ext_ch_isLoaded = false;
-		els_iso03_pf2012ext_em_isLoaded = false;
-		els_iso03_pf2012ext_nh_isLoaded = false;
-		els_iso03_pf2012_nh_isLoaded = false;
-		els_iso04_pf2012_ch_isLoaded = false;
-		els_iso04_pf2012_em_isLoaded = false;
-		els_iso04_pf2012ext_ch_isLoaded = false;
-		els_iso04_pf2012ext_em_isLoaded = false;
-		els_iso04_pf2012ext_nh_isLoaded = false;
-		els_iso04_pf2012_nh_isLoaded = false;
 		els_mass_isLoaded = false;
 		els_mc_patMatch_dr_isLoaded = false;
+		els_miniIso_ch_isLoaded = false;
+		els_miniIso_db_isLoaded = false;
+		els_miniIso_em_isLoaded = false;
+		els_miniIso_nh_isLoaded = false;
+		els_miniIso_uncor_isLoaded = false;
 		els_mva_isLoaded = false;
-                els_miniIso_ch_isLoaded = false;
-                els_miniIso_db_isLoaded = false;
-                els_miniIso_em_isLoaded = false;
-                els_miniIso_nh_isLoaded = false;
-                els_miniIso_uncor_isLoaded = false;
 		els_ndof_isLoaded = false;
 		els_pfChargedHadronIso_isLoaded = false;
 		els_pfNeutralHadronIso_isLoaded = false;
@@ -6824,7 +7352,10 @@ void GetEntry(unsigned int idx)
 		genps_charge_isLoaded = false;
 		genps_iso_isLoaded = false;
 		genps_mass_isLoaded = false;
-		mus_backToBackCompat_isLoaded = false;
+		genweights_isLoaded = false;
+		isotracks_dz_isLoaded = false;
+		isotracks_mass_isLoaded = false;
+		isotracks_relIso_isLoaded = false;
 		mus_bs2d_isLoaded = false;
 		mus_bs2derr_isLoaded = false;
 		mus_bs3d_isLoaded = false;
@@ -6833,7 +7364,6 @@ void GetEntry(unsigned int idx)
 		mus_chi2_isLoaded = false;
 		mus_chi2LocalMomentum_isLoaded = false;
 		mus_chi2LocalPosition_isLoaded = false;
-		mus_cosmicCompat_isLoaded = false;
 		mus_d0_isLoaded = false;
 		mus_d0Err_isLoaded = false;
 		mus_d0corr_isLoaded = false;
@@ -6842,7 +7372,6 @@ void GetEntry(unsigned int idx)
 		mus_dxyPV_isLoaded = false;
 		mus_dzPV_isLoaded = false;
 		mus_ecal_time_isLoaded = false;
-		mus_ecal_timeError_isLoaded = false;
 		mus_e_em_isLoaded = false;
 		mus_e_emS9_isLoaded = false;
 		mus_e_had_isLoaded = false;
@@ -6869,7 +7398,6 @@ void GetEntry(unsigned int idx)
 		mus_globalDeltaEtaPhi_isLoaded = false;
 		mus_hadMax_isLoaded = false;
 		mus_hcal_time_isLoaded = false;
-		mus_hcal_timeError_isLoaded = false;
 		mus_ip2d_isLoaded = false;
 		mus_ip2derr_isLoaded = false;
 		mus_ip3d_isLoaded = false;
@@ -6931,13 +7459,12 @@ void GetEntry(unsigned int idx)
 		mus_localDistance_isLoaded = false;
 		mus_mass_isLoaded = false;
 		mus_mc_patMatch_dr_isLoaded = false;
-                mus_miniIso_ch_isLoaded = false;
-                mus_miniIso_db_isLoaded = false;
-                mus_miniIso_em_isLoaded = false;
-                mus_miniIso_nh_isLoaded = false;
-                mus_miniIso_uncor_isLoaded = false;
+		mus_miniIso_ch_isLoaded = false;
+		mus_miniIso_db_isLoaded = false;
+		mus_miniIso_em_isLoaded = false;
+		mus_miniIso_nh_isLoaded = false;
+		mus_miniIso_uncor_isLoaded = false;
 		mus_ndof_isLoaded = false;
-		mus_overlapCompat_isLoaded = false;
 		mus_phiErr_isLoaded = false;
 		mus_ptErr_isLoaded = false;
 		mus_qoverp_isLoaded = false;
@@ -6960,12 +7487,8 @@ void GetEntry(unsigned int idx)
 		mus_timeAtIpInOutErr_isLoaded = false;
 		mus_timeAtIpOutIn_isLoaded = false;
 		mus_timeAtIpOutInErr_isLoaded = false;
-		mus_timeCompat_isLoaded = false;
-		mus_tower_isLoaded = false;
-		mus_towerS9_isLoaded = false;
 		mus_trkKink_isLoaded = false;
 		mus_trkRelChi2_isLoaded = false;
-		mus_vertexCompat_isLoaded = false;
 		mus_vertexphi_isLoaded = false;
 		mus_z0_isLoaded = false;
 		mus_z0Err_isLoaded = false;
@@ -6975,36 +7498,44 @@ void GetEntry(unsigned int idx)
 		pfjets_area_isLoaded = false;
 		pfjets_chargedEmE_isLoaded = false;
 		pfjets_chargedHadronE_isLoaded = false;
-		pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_isLoaded = false;
-		pfjets_combinedMVABJetTag_isLoaded = false;
-		pfjets_corL1Fast_isLoaded = false;
-		pfjets_corL1FastL2L3_isLoaded = false;
-		pfjets_corL2L3_isLoaded = false;
 		pfjets_electronE_isLoaded = false;
 		pfjets_hfEmE_isLoaded = false;
 		pfjets_hfHadronE_isLoaded = false;
-		pfjets_jetBProbabilityBJetTag_isLoaded = false;
-		pfjets_jetProbabilityBJetTag_isLoaded = false;
 		pfjets_mass_isLoaded = false;
 		pfjets_muonE_isLoaded = false;
 		pfjets_neutralEmE_isLoaded = false;
 		pfjets_neutralHadronE_isLoaded = false;
-		pfjets_pfCombinedSecondaryVertexBJetTag_isLoaded = false;
+		pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_isLoaded = false;
 		pfjets_photonE_isLoaded = false;
 		pfjets_pileupJetId_isLoaded = false;
-		pfjets_simpleSecondaryVertexHighEffBJetTag_isLoaded = false;
-		pfjets_simpleSecondaryVertexHighPurBJetTags_isLoaded = false;
-		pfjets_trackCountingHighEffBJetTag_isLoaded = false;
-		pfjets_trackCountingHighPurBJetTag_isLoaded = false;
 		pfjets_undoJEC_isLoaded = false;
+		pfjets_puppi_area_isLoaded = false;
+		pfjets_puppi_chargedEmE_isLoaded = false;
+		pfjets_puppi_chargedHadronE_isLoaded = false;
+		pfjets_puppi_electronE_isLoaded = false;
+		pfjets_puppi_hfEmE_isLoaded = false;
+		pfjets_puppi_hfHadronE_isLoaded = false;
+		pfjets_puppi_mass_isLoaded = false;
+		pfjets_puppi_muonE_isLoaded = false;
+		pfjets_puppi_neutralEmE_isLoaded = false;
+		pfjets_puppi_neutralHadronE_isLoaded = false;
+		pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag_isLoaded = false;
+		pfjets_puppi_photonE_isLoaded = false;
+		pfjets_puppi_pileupJetId_isLoaded = false;
+		pfjets_puppi_undoJEC_isLoaded = false;
 		taus_pf_mass_isLoaded = false;
 		photons_chargedHadronIso_isLoaded = false;
 		photons_e1x5_isLoaded = false;
 		photons_e2x5Max_isLoaded = false;
 		photons_e3x3_isLoaded = false;
 		photons_e5x5_isLoaded = false;
+		photons_eSC_isLoaded = false;
+		photons_eSCPresh_isLoaded = false;
+		photons_eSCRaw_isLoaded = false;
 		photons_ecalIso03_isLoaded = false;
 		photons_ecalIso04_isLoaded = false;
+		photons_ecalPFClusterIso_isLoaded = false;
+		photons_etaSC_isLoaded = false;
 		photons_full3x3_e3x3_isLoaded = false;
 		photons_full5x5_e1x5_isLoaded = false;
 		photons_full5x5_e2x5Max_isLoaded = false;
@@ -7015,12 +7546,14 @@ void GetEntry(unsigned int idx)
 		photons_full5x5_sigmaEtaEta_isLoaded = false;
 		photons_full5x5_sigmaIEtaIEta_isLoaded = false;
 		photons_hOverE_isLoaded = false;
+		photons_hOverEtowBC_isLoaded = false;
 		photons_hcalDepth1TowerSumEtBcConeDR03_isLoaded = false;
 		photons_hcalDepth1TowerSumEtBcConeDR04_isLoaded = false;
 		photons_hcalDepth2TowerSumEtBcConeDR03_isLoaded = false;
 		photons_hcalDepth2TowerSumEtBcConeDR04_isLoaded = false;
 		photons_hcalIso03_isLoaded = false;
 		photons_hcalIso04_isLoaded = false;
+		photons_hcalPFClusterIso_isLoaded = false;
 		photons_hcalTowerSumEtBcConeDR03_isLoaded = false;
 		photons_hcalTowerSumEtBcConeDR04_isLoaded = false;
 		photons_mass_isLoaded = false;
@@ -7029,6 +7562,7 @@ void GetEntry(unsigned int idx)
 		photons_ntkIsoHollow04_isLoaded = false;
 		photons_ntkIsoSolid03_isLoaded = false;
 		photons_ntkIsoSolid04_isLoaded = false;
+		photons_phiSC_isLoaded = false;
 		photons_photonIso_isLoaded = false;
 		photons_recoChargedHadronIso_isLoaded = false;
 		photons_recoNeutralHadronIso_isLoaded = false;
@@ -7056,29 +7590,28 @@ void GetEntry(unsigned int idx)
 		svs_yError_isLoaded = false;
 		svs_zError_isLoaded = false;
 		ak8jets_area_isLoaded = false;
-		ak8jets_combinedSecondaryVertexBJetTag_isLoaded = false;
 		ak8jets_filteredMass_isLoaded = false;
-		ak8jets_jetBProbabilityBJetTag_isLoaded = false;
-		ak8jets_jetProbabilityBJetTag_isLoaded = false;
 		ak8jets_mass_isLoaded = false;
+		ak8jets_minMass_isLoaded = false;
 		ak8jets_nJettinessTau1_isLoaded = false;
 		ak8jets_nJettinessTau2_isLoaded = false;
 		ak8jets_nJettinessTau3_isLoaded = false;
 		ak8jets_prunedMass_isLoaded = false;
-		ak8jets_simpleSecondaryVertexHighEffBJetTag_isLoaded = false;
-		ak8jets_simpleSecondaryVertexHighPurBJetTags_isLoaded = false;
-		ak8jets_trackCountingHighEffBJetTag_isLoaded = false;
-		ak8jets_trackCountingHighPurBJetTag_isLoaded = false;
+		ak8jets_softdropMass_isLoaded = false;
+		ak8jets_topMass_isLoaded = false;
 		ak8jets_trimmedMass_isLoaded = false;
 		ak8jets_undoJEC_isLoaded = false;
 		vtxs_chi2_isLoaded = false;
 		vtxs_ndof_isLoaded = false;
-		vtxs_sumpt_isLoaded = false;
+		vtxs_score_isLoaded = false;
 		vtxs_xError_isLoaded = false;
 		vtxs_yError_isLoaded = false;
 		vtxs_zError_isLoaded = false;
+		pfjets_nonCHS_bDiscriminators_isLoaded = false;
 		mus_stationShowerDeltaR_isLoaded = false;
 		mus_stationShowerSizeT_isLoaded = false;
+		pfjets_bDiscriminators_isLoaded = false;
+		pfjets_puppi_bDiscriminators_isLoaded = false;
 		taus_pf_IDs_isLoaded = false;
 		puInfo_instLumi_isLoaded = false;
 		vtxs_covMatrix_isLoaded = false;
@@ -7110,6 +7643,15 @@ void GetEntry(unsigned int idx)
 		pdfinfo_id1_isLoaded = false;
 		pdfinfo_id2_isLoaded = false;
 		sparm_subProcessId_isLoaded = false;
+		pfjets_nonCHS_chargedHadronMultiplicity_isLoaded = false;
+		pfjets_nonCHS_chargedMultiplicity_isLoaded = false;
+		pfjets_nonCHS_electronMultiplicity_isLoaded = false;
+		pfjets_nonCHS_muonMultiplicity_isLoaded = false;
+		pfjets_nonCHS_neutralHadronMultiplicity_isLoaded = false;
+		pfjets_nonCHS_neutralMultiplicity_isLoaded = false;
+		pfjets_nonCHS_partonFlavour_isLoaded = false;
+		pfjets_nonCHS_photonMultiplicity_isLoaded = false;
+		ak8jets_mc_id_isLoaded = false;
 		els_mc3_id_isLoaded = false;
 		els_mc3idx_isLoaded = false;
 		els_mc3_motherid_isLoaded = false;
@@ -7175,6 +7717,8 @@ void GetEntry(unsigned int idx)
 		hyp_lt_id_isLoaded = false;
 		hyp_lt_index_isLoaded = false;
 		hyp_type_isLoaded = false;
+		isotracks_charge_isLoaded = false;
+		isotracks_particleId_isLoaded = false;
 		mus_algo_isLoaded = false;
 		mus_charge_isLoaded = false;
 		mus_ecal_rawId_isLoaded = false;
@@ -7241,7 +7785,6 @@ void GetEntry(unsigned int idx)
 		mus_timeDirection_isLoaded = false;
 		mus_timeNumStationsUsed_isLoaded = false;
 		mus_trk_charge_isLoaded = false;
-		mus_trkidx_isLoaded = false;
 		mus_type_isLoaded = false;
 		mus_validHits_isLoaded = false;
 		mus_validPixelHits_isLoaded = false;
@@ -7255,6 +7798,14 @@ void GetEntry(unsigned int idx)
 		pfjets_neutralMultiplicity_isLoaded = false;
 		pfjets_partonFlavour_isLoaded = false;
 		pfjets_photonMultiplicity_isLoaded = false;
+		pfjets_puppi_chargedHadronMultiplicity_isLoaded = false;
+		pfjets_puppi_chargedMultiplicity_isLoaded = false;
+		pfjets_puppi_electronMultiplicity_isLoaded = false;
+		pfjets_puppi_muonMultiplicity_isLoaded = false;
+		pfjets_puppi_neutralHadronMultiplicity_isLoaded = false;
+		pfjets_puppi_neutralMultiplicity_isLoaded = false;
+		pfjets_puppi_partonFlavour_isLoaded = false;
+		pfjets_puppi_photonMultiplicity_isLoaded = false;
 		taus_pf_charge_isLoaded = false;
 		photons_fiduciality_isLoaded = false;
 		photons_photonID_loose_isLoaded = false;
@@ -7265,10 +7816,11 @@ void GetEntry(unsigned int idx)
 		convs_isConverted_isLoaded = false;
 		convs_quality_isLoaded = false;
 		svs_nTrks_isLoaded = false;
+		ak8jets_nSubJets_isLoaded = false;
 		ak8jets_partonFlavour_isLoaded = false;
 		vtxs_isFake_isLoaded = false;
 		vtxs_isValid_isLoaded = false;
-		vtxs_tracksSize_isLoaded = false;
+		pfjets_nonCHS_pfcandIndicies_isLoaded = false;
 		els_PFCand_idx_isLoaded = false;
 		genps_lepdaughter_id_isLoaded = false;
 		genps_lepdaughter_idx_isLoaded = false;
@@ -7276,11 +7828,13 @@ void GetEntry(unsigned int idx)
 		mus_nStationCorrelatedHits_isLoaded = false;
 		mus_nStationHits_isLoaded = false;
 		pfjets_pfcandIndicies_isLoaded = false;
+		pfjets_puppi_pfcandIndicies_isLoaded = false;
 		photons_PFCand_idx_isLoaded = false;
 		convs_nHitsBeforeVtx_isLoaded = false;
 		convs_tkalgo_isLoaded = false;
 		convs_tkidx_isLoaded = false;
 		ak8jets_pfcandIndicies_isLoaded = false;
+		isotracks_fromPV_isLoaded = false;
 		pfcands_fromPV_isLoaded = false;
 		els_HLT_Ele17_Ele8_L1sL1DoubleEG137_version_isLoaded = false;
 		els_HLT_Ele17_Ele8_LeadingLeg_version_isLoaded = false;
@@ -7290,10 +7844,16 @@ void GetEntry(unsigned int idx)
 		els_HLT_Ele17_Ele8_version_isLoaded = false;
 		els_HLT_Ele20_SC4_Mass50_LeadingLeg_version_isLoaded = false;
 		els_HLT_Ele20_SC4_Mass50_TrailingLeg_version_isLoaded = false;
+		els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_version_isLoaded = false;
+		els_HLT_Ele25WP60_Ele8_Mass55_version_isLoaded = false;
+		els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_version_isLoaded = false;
+		els_HLT_Ele25WP60_SC4_Mass55_version_isLoaded = false;
 		els_HLT_Ele27_WP80_L1sL1SingleEG20ORL1SingleEG22_version_isLoaded = false;
 		els_HLT_Ele27_WP80_version_isLoaded = false;
 		els_HLT_Ele32_SC17_Mass50_LeadingLeg_version_isLoaded = false;
 		els_HLT_Ele32_SC17_Mass50_TrailingLeg_version_isLoaded = false;
+		els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_version_isLoaded = false;
+		els_HLT_Ele5_SC5_JPsi_Mass2to4p5_version_isLoaded = false;
 		els_HLT_Mu17_Ele8_TrailingLeg_version_isLoaded = false;
 		els_HLT_Mu17_Ele8_version_isLoaded = false;
 		els_HLT_Mu8_Ele17_version_isLoaded = false;
@@ -7303,6 +7863,7 @@ void GetEntry(unsigned int idx)
 		evt_run_isLoaded = false;
 		evt_ngenjetsNoMuNoNu_isLoaded = false;
 		genps_signalProcessID_isLoaded = false;
+		evt_ngenjets_isLoaded = false;
 		mus_HLT_IsoMu24_eta2p1_L1sMu16Eta2p1_version_isLoaded = false;
 		mus_HLT_IsoMu24_eta2p1_version_isLoaded = false;
 		mus_HLT_Mu17_Ele8_LeadingLeg_version_isLoaded = false;
@@ -7327,10 +7888,16 @@ void GetEntry(unsigned int idx)
 		els_HLT_Ele17_Ele8_TrailingLeg_isLoaded = false;
 		els_HLT_Ele20_SC4_Mass50_LeadingLeg_isLoaded = false;
 		els_HLT_Ele20_SC4_Mass50_TrailingLeg_isLoaded = false;
+		els_HLT_Ele25WP60_Ele8_Mass55_isLoaded = false;
+		els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_isLoaded = false;
+		els_HLT_Ele25WP60_SC4_Mass55_isLoaded = false;
+		els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_isLoaded = false;
 		els_HLT_Ele27_WP80_isLoaded = false;
 		els_HLT_Ele27_WP80_L1sL1SingleEG20ORL1SingleEG22_isLoaded = false;
 		els_HLT_Ele32_SC17_Mass50_LeadingLeg_isLoaded = false;
 		els_HLT_Ele32_SC17_Mass50_TrailingLeg_isLoaded = false;
+		els_HLT_Ele5_SC5_JPsi_Mass2to4p5_isLoaded = false;
+		els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_isLoaded = false;
 		els_HLT_Mu17_Ele8_isLoaded = false;
 		els_HLT_Mu17_Ele8_TrailingLeg_isLoaded = false;
 		els_HLT_Mu8_Ele17_isLoaded = false;
@@ -7358,10 +7925,14 @@ void GetEntry(unsigned int idx)
 void LoadAllBranches() 
 	// load all branches
 {
+	if (genweightsID_branch != 0) genweightsID();
 	if (hlt_bits_branch != 0) hlt_bits();
+	if (pfjets_nonCHS_bDiscriminatorNames_branch != 0) pfjets_nonCHS_bDiscriminatorNames();
 	if (evt_CMS3tag_branch != 0) evt_CMS3tag();
 	if (evt_dataset_branch != 0) evt_dataset();
 	if (hlt_trigNames_branch != 0) hlt_trigNames();
+	if (pfjets_bDiscriminatorNames_branch != 0) pfjets_bDiscriminatorNames();
+	if (pfjets_puppi_bDiscriminatorNames_branch != 0) pfjets_puppi_bDiscriminatorNames();
 	if (taus_pf_IDnames_branch != 0) taus_pf_IDnames();
 	if (sparm_comment_branch != 0) sparm_comment();
 	if (sparm_names_branch != 0) sparm_names();
@@ -7385,6 +7956,17 @@ void LoadAllBranches()
 	if (els_isGsfCtfScPixChargeConsistent_branch != 0) els_isGsfCtfScPixChargeConsistent();
 	if (els_passingMvaPreselection_branch != 0) els_passingMvaPreselection();
 	if (els_passingPflowPreselection_branch != 0) els_passingPflowPreselection();
+	if (genps_fromHardProcessBeforeFSR_branch != 0) genps_fromHardProcessBeforeFSR();
+	if (genps_fromHardProcessDecayed_branch != 0) genps_fromHardProcessDecayed();
+	if (genps_fromHardProcessFinalState_branch != 0) genps_fromHardProcessFinalState();
+	if (genps_isDirectHardProcessTauDecayProductFinalState_branch != 0) genps_isDirectHardProcessTauDecayProductFinalState();
+	if (genps_isDirectPromptTauDecayProductFinalState_branch != 0) genps_isDirectPromptTauDecayProductFinalState();
+	if (genps_isHardProcess_branch != 0) genps_isHardProcess();
+	if (genps_isLastCopy_branch != 0) genps_isLastCopy();
+	if (genps_isLastCopyBeforeFSR_branch != 0) genps_isLastCopyBeforeFSR();
+	if (genps_isMostlyLikePythia6Status3_branch != 0) genps_isMostlyLikePythia6Status3();
+	if (genps_isPromptDecayed_branch != 0) genps_isPromptDecayed();
+	if (genps_isPromptFinalState_branch != 0) genps_isPromptFinalState();
 	if (mus_isRPCMuon_branch != 0) mus_isRPCMuon();
 	if (mus_tightMatch_branch != 0) mus_tightMatch();
 	if (mus_updatedSta_branch != 0) mus_updatedSta();
@@ -7458,11 +8040,12 @@ void LoadAllBranches()
 	if (evt_fixgrid_rho_all_branch != 0) evt_fixgrid_rho_all();
 	if (evt_fixgrid_rho_ctr_branch != 0) evt_fixgrid_rho_ctr();
 	if (evt_fixgrid_rho_fwd_branch != 0) evt_fixgrid_rho_fwd();
+	if (evt_calomet_branch != 0) evt_calomet();
+	if (evt_calometPhi_branch != 0) evt_calometPhi();
 	if (evt_pfmet_branch != 0) evt_pfmet();
 	if (evt_pfmetPhi_branch != 0) evt_pfmetPhi();
 	if (evt_pfmetPhi_raw_branch != 0) evt_pfmetPhi_raw();
 	if (evt_pfmetSig_branch != 0) evt_pfmetSig();
-	if (evt_pfmetSignificance_branch != 0) evt_pfmetSignificance();
 	if (evt_pfmet_raw_branch != 0) evt_pfmet_raw();
 	if (evt_pfsumet_branch != 0) evt_pfsumet();
 	if (evt_pfsumet_raw_branch != 0) evt_pfsumet_raw();
@@ -7475,6 +8058,9 @@ void LoadAllBranches()
 	if (sparm_weight_branch != 0) sparm_weight();
 	if (sparm_xsec_branch != 0) sparm_xsec();
 	if (evt_bsp4_branch != 0) evt_bsp4();
+	if (pfjets_nonCHS_p4_branch != 0) pfjets_nonCHS_p4();
+	if (ak8jets_mc_gp_p4_branch != 0) ak8jets_mc_gp_p4();
+	if (ak8jets_mc_p4_branch != 0) ak8jets_mc_p4();
 	if (els_mc_motherp4_branch != 0) els_mc_motherp4();
 	if (els_mc_p4_branch != 0) els_mc_p4();
 	if (mus_mc_motherp4_branch != 0) mus_mc_motherp4();
@@ -7484,9 +8070,7 @@ void LoadAllBranches()
 	if (pfjets_mc_p4_branch != 0) pfjets_mc_p4();
 	if (photons_mc_motherp4_branch != 0) photons_mc_motherp4();
 	if (photons_mc_p4_branch != 0) photons_mc_p4();
-	if (els_inner_position_branch != 0) els_inner_position();
 	if (els_mc_patMatch_p4_branch != 0) els_mc_patMatch_p4();
-	if (els_outer_position_branch != 0) els_outer_position();
 	if (els_p4_branch != 0) els_p4();
 	if (els_p4In_branch != 0) els_p4In();
 	if (els_p4Out_branch != 0) els_p4Out();
@@ -7496,9 +8080,11 @@ void LoadAllBranches()
 	if (genjets_p4NoMuNoNu_branch != 0) genjets_p4NoMuNoNu();
 	if (genps_p4_branch != 0) genps_p4();
 	if (genps_prod_vtx_branch != 0) genps_prod_vtx();
+	if (genjets_p4_branch != 0) genjets_p4();
 	if (hyp_ll_p4_branch != 0) hyp_ll_p4();
 	if (hyp_lt_p4_branch != 0) hyp_lt_p4();
 	if (hyp_p4_branch != 0) hyp_p4();
+	if (isotracks_p4_branch != 0) isotracks_p4();
 	if (mus_gfit_p4_branch != 0) mus_gfit_p4();
 	if (mus_gfit_vertex_p4_branch != 0) mus_gfit_vertex_p4();
 	if (mus_mc_patMatch_p4_branch != 0) mus_mc_patMatch_p4();
@@ -7510,6 +8096,7 @@ void LoadAllBranches()
 	if (mus_vertex_p4_branch != 0) mus_vertex_p4();
 	if (pfcands_p4_branch != 0) pfcands_p4();
 	if (pfjets_p4_branch != 0) pfjets_p4();
+	if (pfjets_puppi_p4_branch != 0) pfjets_puppi_p4();
 	if (taus_pf_lead_chargecand_p4_branch != 0) taus_pf_lead_chargecand_p4();
 	if (taus_pf_lead_neutrcand_p4_branch != 0) taus_pf_lead_neutrcand_p4();
 	if (taus_pf_p4_branch != 0) taus_pf_p4();
@@ -7522,6 +8109,20 @@ void LoadAllBranches()
 	if (hlt_trigObjs_p4_branch != 0) hlt_trigObjs_p4();
 	if (taus_pf_isocands_p4_branch != 0) taus_pf_isocands_p4();
 	if (taus_pf_signalcands_p4_branch != 0) taus_pf_signalcands_p4();
+	if (pfjets_nonCHS_area_branch != 0) pfjets_nonCHS_area();
+	if (pfjets_nonCHS_chargedEmE_branch != 0) pfjets_nonCHS_chargedEmE();
+	if (pfjets_nonCHS_chargedHadronE_branch != 0) pfjets_nonCHS_chargedHadronE();
+	if (pfjets_nonCHS_electronE_branch != 0) pfjets_nonCHS_electronE();
+	if (pfjets_nonCHS_hfEmE_branch != 0) pfjets_nonCHS_hfEmE();
+	if (pfjets_nonCHS_hfHadronE_branch != 0) pfjets_nonCHS_hfHadronE();
+	if (pfjets_nonCHS_mass_branch != 0) pfjets_nonCHS_mass();
+	if (pfjets_nonCHS_muonE_branch != 0) pfjets_nonCHS_muonE();
+	if (pfjets_nonCHS_neutralEmE_branch != 0) pfjets_nonCHS_neutralEmE();
+	if (pfjets_nonCHS_neutralHadronE_branch != 0) pfjets_nonCHS_neutralHadronE();
+	if (pfjets_nonCHS_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch != 0) pfjets_nonCHS_pfCombinedInclusiveSecondaryVertexV2BJetTag();
+	if (pfjets_nonCHS_photonE_branch != 0) pfjets_nonCHS_photonE();
+	if (pfjets_nonCHS_pileupJetId_branch != 0) pfjets_nonCHS_pileupJetId();
+	if (pfjets_nonCHS_undoJEC_branch != 0) pfjets_nonCHS_undoJEC();
 	if (evt_bs_covMatrix_branch != 0) evt_bs_covMatrix();
 	if (els_mc3dr_branch != 0) els_mc3dr();
 	if (els_mcdr_branch != 0) els_mcdr();
@@ -7575,6 +8176,7 @@ void LoadAllBranches()
 	if (els_ecalEnergyError_branch != 0) els_ecalEnergyError();
 	if (els_ecalIso_branch != 0) els_ecalIso();
 	if (els_ecalIso04_branch != 0) els_ecalIso04();
+	if (els_ecalPFClusterIso_branch != 0) els_ecalPFClusterIso();
 	if (els_etaErr_branch != 0) els_etaErr();
 	if (els_etaSC_branch != 0) els_etaSC();
 	if (els_etaSCwidth_branch != 0) els_etaSCwidth();
@@ -7589,30 +8191,19 @@ void LoadAllBranches()
 	if (els_hcalDepth2TowerSumEt04_branch != 0) els_hcalDepth2TowerSumEt04();
 	if (els_hcalIso_branch != 0) els_hcalIso();
 	if (els_hcalIso04_branch != 0) els_hcalIso04();
+	if (els_hcalPFClusterIso_branch != 0) els_hcalPFClusterIso();
 	if (els_ip2d_branch != 0) els_ip2d();
 	if (els_ip2derr_branch != 0) els_ip2derr();
 	if (els_ip3d_branch != 0) els_ip3d();
 	if (els_ip3derr_branch != 0) els_ip3derr();
-	if (els_iso03_pf2012_ch_branch != 0) els_iso03_pf2012_ch();
-	if (els_iso03_pf2012_em_branch != 0) els_iso03_pf2012_em();
-	if (els_iso03_pf2012ext_ch_branch != 0) els_iso03_pf2012ext_ch();
-	if (els_iso03_pf2012ext_em_branch != 0) els_iso03_pf2012ext_em();
-	if (els_iso03_pf2012ext_nh_branch != 0) els_iso03_pf2012ext_nh();
-	if (els_iso03_pf2012_nh_branch != 0) els_iso03_pf2012_nh();
-	if (els_iso04_pf2012_ch_branch != 0) els_iso04_pf2012_ch();
-	if (els_iso04_pf2012_em_branch != 0) els_iso04_pf2012_em();
-	if (els_iso04_pf2012ext_ch_branch != 0) els_iso04_pf2012ext_ch();
-	if (els_iso04_pf2012ext_em_branch != 0) els_iso04_pf2012ext_em();
-	if (els_iso04_pf2012ext_nh_branch != 0) els_iso04_pf2012ext_nh();
-	if (els_iso04_pf2012_nh_branch != 0) els_iso04_pf2012_nh();
 	if (els_mass_branch != 0) els_mass();
 	if (els_mc_patMatch_dr_branch != 0) els_mc_patMatch_dr();
+	if (els_miniIso_ch_branch != 0) els_miniIso_ch();
+	if (els_miniIso_db_branch != 0) els_miniIso_db();
+	if (els_miniIso_em_branch != 0) els_miniIso_em();
+	if (els_miniIso_nh_branch != 0) els_miniIso_nh();
+	if (els_miniIso_uncor_branch != 0) els_miniIso_uncor();
 	if (els_mva_branch != 0) els_mva();
-        if (els_miniIso_ch_branch != 0) els_miniIso_ch();
-        if (els_miniIso_db_branch != 0) els_miniIso_db();
-        if (els_miniIso_em_branch != 0) els_miniIso_em();
-        if (els_miniIso_nh_branch != 0) els_miniIso_nh();
-        if (els_miniIso_uncor_branch != 0) els_miniIso_uncor();
 	if (els_ndof_branch != 0) els_ndof();
 	if (els_pfChargedHadronIso_branch != 0) els_pfChargedHadronIso();
 	if (els_pfNeutralHadronIso_branch != 0) els_pfNeutralHadronIso();
@@ -7643,7 +8234,10 @@ void LoadAllBranches()
 	if (genps_charge_branch != 0) genps_charge();
 	if (genps_iso_branch != 0) genps_iso();
 	if (genps_mass_branch != 0) genps_mass();
-	if (mus_backToBackCompat_branch != 0) mus_backToBackCompat();
+	if (genweights_branch != 0) genweights();
+	if (isotracks_dz_branch != 0) isotracks_dz();
+	if (isotracks_mass_branch != 0) isotracks_mass();
+	if (isotracks_relIso_branch != 0) isotracks_relIso();
 	if (mus_bs2d_branch != 0) mus_bs2d();
 	if (mus_bs2derr_branch != 0) mus_bs2derr();
 	if (mus_bs3d_branch != 0) mus_bs3d();
@@ -7652,7 +8246,6 @@ void LoadAllBranches()
 	if (mus_chi2_branch != 0) mus_chi2();
 	if (mus_chi2LocalMomentum_branch != 0) mus_chi2LocalMomentum();
 	if (mus_chi2LocalPosition_branch != 0) mus_chi2LocalPosition();
-	if (mus_cosmicCompat_branch != 0) mus_cosmicCompat();
 	if (mus_d0_branch != 0) mus_d0();
 	if (mus_d0Err_branch != 0) mus_d0Err();
 	if (mus_d0corr_branch != 0) mus_d0corr();
@@ -7661,7 +8254,6 @@ void LoadAllBranches()
 	if (mus_dxyPV_branch != 0) mus_dxyPV();
 	if (mus_dzPV_branch != 0) mus_dzPV();
 	if (mus_ecal_time_branch != 0) mus_ecal_time();
-	if (mus_ecal_timeError_branch != 0) mus_ecal_timeError();
 	if (mus_e_em_branch != 0) mus_e_em();
 	if (mus_e_emS9_branch != 0) mus_e_emS9();
 	if (mus_e_had_branch != 0) mus_e_had();
@@ -7688,7 +8280,6 @@ void LoadAllBranches()
 	if (mus_globalDeltaEtaPhi_branch != 0) mus_globalDeltaEtaPhi();
 	if (mus_hadMax_branch != 0) mus_hadMax();
 	if (mus_hcal_time_branch != 0) mus_hcal_time();
-	if (mus_hcal_timeError_branch != 0) mus_hcal_timeError();
 	if (mus_ip2d_branch != 0) mus_ip2d();
 	if (mus_ip2derr_branch != 0) mus_ip2derr();
 	if (mus_ip3d_branch != 0) mus_ip3d();
@@ -7749,14 +8340,13 @@ void LoadAllBranches()
 	if (mus_iso_trckvetoDep_branch != 0) mus_iso_trckvetoDep();
 	if (mus_localDistance_branch != 0) mus_localDistance();
 	if (mus_mass_branch != 0) mus_mass();
-        if (mus_miniIso_ch_branch != 0) mus_miniIso_ch();
-        if (mus_miniIso_db_branch != 0) mus_miniIso_db();
-        if (mus_miniIso_em_branch != 0) mus_miniIso_em();
-        if (mus_miniIso_nh_branch != 0) mus_miniIso_nh();
-        if (mus_miniIso_uncor_branch != 0) mus_miniIso_uncor();
 	if (mus_mc_patMatch_dr_branch != 0) mus_mc_patMatch_dr();
+	if (mus_miniIso_ch_branch != 0) mus_miniIso_ch();
+	if (mus_miniIso_db_branch != 0) mus_miniIso_db();
+	if (mus_miniIso_em_branch != 0) mus_miniIso_em();
+	if (mus_miniIso_nh_branch != 0) mus_miniIso_nh();
+	if (mus_miniIso_uncor_branch != 0) mus_miniIso_uncor();
 	if (mus_ndof_branch != 0) mus_ndof();
-	if (mus_overlapCompat_branch != 0) mus_overlapCompat();
 	if (mus_phiErr_branch != 0) mus_phiErr();
 	if (mus_ptErr_branch != 0) mus_ptErr();
 	if (mus_qoverp_branch != 0) mus_qoverp();
@@ -7779,12 +8369,8 @@ void LoadAllBranches()
 	if (mus_timeAtIpInOutErr_branch != 0) mus_timeAtIpInOutErr();
 	if (mus_timeAtIpOutIn_branch != 0) mus_timeAtIpOutIn();
 	if (mus_timeAtIpOutInErr_branch != 0) mus_timeAtIpOutInErr();
-	if (mus_timeCompat_branch != 0) mus_timeCompat();
-	if (mus_tower_branch != 0) mus_tower();
-	if (mus_towerS9_branch != 0) mus_towerS9();
 	if (mus_trkKink_branch != 0) mus_trkKink();
 	if (mus_trkRelChi2_branch != 0) mus_trkRelChi2();
-	if (mus_vertexCompat_branch != 0) mus_vertexCompat();
 	if (mus_vertexphi_branch != 0) mus_vertexphi();
 	if (mus_z0_branch != 0) mus_z0();
 	if (mus_z0Err_branch != 0) mus_z0Err();
@@ -7794,36 +8380,44 @@ void LoadAllBranches()
 	if (pfjets_area_branch != 0) pfjets_area();
 	if (pfjets_chargedEmE_branch != 0) pfjets_chargedEmE();
 	if (pfjets_chargedHadronE_branch != 0) pfjets_chargedHadronE();
-	if (pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch != 0) pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag();
-	if (pfjets_combinedMVABJetTag_branch != 0) pfjets_combinedMVABJetTag();
-	if (pfjets_corL1Fast_branch != 0) pfjets_corL1Fast();
-	if (pfjets_corL1FastL2L3_branch != 0) pfjets_corL1FastL2L3();
-	if (pfjets_corL2L3_branch != 0) pfjets_corL2L3();
 	if (pfjets_electronE_branch != 0) pfjets_electronE();
 	if (pfjets_hfEmE_branch != 0) pfjets_hfEmE();
 	if (pfjets_hfHadronE_branch != 0) pfjets_hfHadronE();
-	if (pfjets_jetBProbabilityBJetTag_branch != 0) pfjets_jetBProbabilityBJetTag();
-	if (pfjets_jetProbabilityBJetTag_branch != 0) pfjets_jetProbabilityBJetTag();
 	if (pfjets_mass_branch != 0) pfjets_mass();
 	if (pfjets_muonE_branch != 0) pfjets_muonE();
 	if (pfjets_neutralEmE_branch != 0) pfjets_neutralEmE();
 	if (pfjets_neutralHadronE_branch != 0) pfjets_neutralHadronE();
-	if (pfjets_pfCombinedSecondaryVertexBJetTag_branch != 0) pfjets_pfCombinedSecondaryVertexBJetTag();
+	if (pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch != 0) pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag();
 	if (pfjets_photonE_branch != 0) pfjets_photonE();
 	if (pfjets_pileupJetId_branch != 0) pfjets_pileupJetId();
-	if (pfjets_simpleSecondaryVertexHighEffBJetTag_branch != 0) pfjets_simpleSecondaryVertexHighEffBJetTag();
-	if (pfjets_simpleSecondaryVertexHighPurBJetTags_branch != 0) pfjets_simpleSecondaryVertexHighPurBJetTags();
-	if (pfjets_trackCountingHighEffBJetTag_branch != 0) pfjets_trackCountingHighEffBJetTag();
-	if (pfjets_trackCountingHighPurBJetTag_branch != 0) pfjets_trackCountingHighPurBJetTag();
 	if (pfjets_undoJEC_branch != 0) pfjets_undoJEC();
+	if (pfjets_puppi_area_branch != 0) pfjets_puppi_area();
+	if (pfjets_puppi_chargedEmE_branch != 0) pfjets_puppi_chargedEmE();
+	if (pfjets_puppi_chargedHadronE_branch != 0) pfjets_puppi_chargedHadronE();
+	if (pfjets_puppi_electronE_branch != 0) pfjets_puppi_electronE();
+	if (pfjets_puppi_hfEmE_branch != 0) pfjets_puppi_hfEmE();
+	if (pfjets_puppi_hfHadronE_branch != 0) pfjets_puppi_hfHadronE();
+	if (pfjets_puppi_mass_branch != 0) pfjets_puppi_mass();
+	if (pfjets_puppi_muonE_branch != 0) pfjets_puppi_muonE();
+	if (pfjets_puppi_neutralEmE_branch != 0) pfjets_puppi_neutralEmE();
+	if (pfjets_puppi_neutralHadronE_branch != 0) pfjets_puppi_neutralHadronE();
+	if (pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch != 0) pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag();
+	if (pfjets_puppi_photonE_branch != 0) pfjets_puppi_photonE();
+	if (pfjets_puppi_pileupJetId_branch != 0) pfjets_puppi_pileupJetId();
+	if (pfjets_puppi_undoJEC_branch != 0) pfjets_puppi_undoJEC();
 	if (taus_pf_mass_branch != 0) taus_pf_mass();
 	if (photons_chargedHadronIso_branch != 0) photons_chargedHadronIso();
 	if (photons_e1x5_branch != 0) photons_e1x5();
 	if (photons_e2x5Max_branch != 0) photons_e2x5Max();
 	if (photons_e3x3_branch != 0) photons_e3x3();
 	if (photons_e5x5_branch != 0) photons_e5x5();
+	if (photons_eSC_branch != 0) photons_eSC();
+	if (photons_eSCPresh_branch != 0) photons_eSCPresh();
+	if (photons_eSCRaw_branch != 0) photons_eSCRaw();
 	if (photons_ecalIso03_branch != 0) photons_ecalIso03();
 	if (photons_ecalIso04_branch != 0) photons_ecalIso04();
+	if (photons_ecalPFClusterIso_branch != 0) photons_ecalPFClusterIso();
+	if (photons_etaSC_branch != 0) photons_etaSC();
 	if (photons_full3x3_e3x3_branch != 0) photons_full3x3_e3x3();
 	if (photons_full5x5_e1x5_branch != 0) photons_full5x5_e1x5();
 	if (photons_full5x5_e2x5Max_branch != 0) photons_full5x5_e2x5Max();
@@ -7834,12 +8428,14 @@ void LoadAllBranches()
 	if (photons_full5x5_sigmaEtaEta_branch != 0) photons_full5x5_sigmaEtaEta();
 	if (photons_full5x5_sigmaIEtaIEta_branch != 0) photons_full5x5_sigmaIEtaIEta();
 	if (photons_hOverE_branch != 0) photons_hOverE();
+	if (photons_hOverEtowBC_branch != 0) photons_hOverEtowBC();
 	if (photons_hcalDepth1TowerSumEtBcConeDR03_branch != 0) photons_hcalDepth1TowerSumEtBcConeDR03();
 	if (photons_hcalDepth1TowerSumEtBcConeDR04_branch != 0) photons_hcalDepth1TowerSumEtBcConeDR04();
 	if (photons_hcalDepth2TowerSumEtBcConeDR03_branch != 0) photons_hcalDepth2TowerSumEtBcConeDR03();
 	if (photons_hcalDepth2TowerSumEtBcConeDR04_branch != 0) photons_hcalDepth2TowerSumEtBcConeDR04();
 	if (photons_hcalIso03_branch != 0) photons_hcalIso03();
 	if (photons_hcalIso04_branch != 0) photons_hcalIso04();
+	if (photons_hcalPFClusterIso_branch != 0) photons_hcalPFClusterIso();
 	if (photons_hcalTowerSumEtBcConeDR03_branch != 0) photons_hcalTowerSumEtBcConeDR03();
 	if (photons_hcalTowerSumEtBcConeDR04_branch != 0) photons_hcalTowerSumEtBcConeDR04();
 	if (photons_mass_branch != 0) photons_mass();
@@ -7848,6 +8444,7 @@ void LoadAllBranches()
 	if (photons_ntkIsoHollow04_branch != 0) photons_ntkIsoHollow04();
 	if (photons_ntkIsoSolid03_branch != 0) photons_ntkIsoSolid03();
 	if (photons_ntkIsoSolid04_branch != 0) photons_ntkIsoSolid04();
+	if (photons_phiSC_branch != 0) photons_phiSC();
 	if (photons_photonIso_branch != 0) photons_photonIso();
 	if (photons_recoChargedHadronIso_branch != 0) photons_recoChargedHadronIso();
 	if (photons_recoNeutralHadronIso_branch != 0) photons_recoNeutralHadronIso();
@@ -7875,29 +8472,28 @@ void LoadAllBranches()
 	if (svs_yError_branch != 0) svs_yError();
 	if (svs_zError_branch != 0) svs_zError();
 	if (ak8jets_area_branch != 0) ak8jets_area();
-	if (ak8jets_combinedSecondaryVertexBJetTag_branch != 0) ak8jets_combinedSecondaryVertexBJetTag();
 	if (ak8jets_filteredMass_branch != 0) ak8jets_filteredMass();
-	if (ak8jets_jetBProbabilityBJetTag_branch != 0) ak8jets_jetBProbabilityBJetTag();
-	if (ak8jets_jetProbabilityBJetTag_branch != 0) ak8jets_jetProbabilityBJetTag();
 	if (ak8jets_mass_branch != 0) ak8jets_mass();
+	if (ak8jets_minMass_branch != 0) ak8jets_minMass();
 	if (ak8jets_nJettinessTau1_branch != 0) ak8jets_nJettinessTau1();
 	if (ak8jets_nJettinessTau2_branch != 0) ak8jets_nJettinessTau2();
 	if (ak8jets_nJettinessTau3_branch != 0) ak8jets_nJettinessTau3();
 	if (ak8jets_prunedMass_branch != 0) ak8jets_prunedMass();
-	if (ak8jets_simpleSecondaryVertexHighEffBJetTag_branch != 0) ak8jets_simpleSecondaryVertexHighEffBJetTag();
-	if (ak8jets_simpleSecondaryVertexHighPurBJetTags_branch != 0) ak8jets_simpleSecondaryVertexHighPurBJetTags();
-	if (ak8jets_trackCountingHighEffBJetTag_branch != 0) ak8jets_trackCountingHighEffBJetTag();
-	if (ak8jets_trackCountingHighPurBJetTag_branch != 0) ak8jets_trackCountingHighPurBJetTag();
+	if (ak8jets_softdropMass_branch != 0) ak8jets_softdropMass();
+	if (ak8jets_topMass_branch != 0) ak8jets_topMass();
 	if (ak8jets_trimmedMass_branch != 0) ak8jets_trimmedMass();
 	if (ak8jets_undoJEC_branch != 0) ak8jets_undoJEC();
 	if (vtxs_chi2_branch != 0) vtxs_chi2();
 	if (vtxs_ndof_branch != 0) vtxs_ndof();
-	if (vtxs_sumpt_branch != 0) vtxs_sumpt();
+	if (vtxs_score_branch != 0) vtxs_score();
 	if (vtxs_xError_branch != 0) vtxs_xError();
 	if (vtxs_yError_branch != 0) vtxs_yError();
 	if (vtxs_zError_branch != 0) vtxs_zError();
+	if (pfjets_nonCHS_bDiscriminators_branch != 0) pfjets_nonCHS_bDiscriminators();
 	if (mus_stationShowerDeltaR_branch != 0) mus_stationShowerDeltaR();
 	if (mus_stationShowerSizeT_branch != 0) mus_stationShowerSizeT();
+	if (pfjets_bDiscriminators_branch != 0) pfjets_bDiscriminators();
+	if (pfjets_puppi_bDiscriminators_branch != 0) pfjets_puppi_bDiscriminators();
 	if (taus_pf_IDs_branch != 0) taus_pf_IDs();
 	if (puInfo_instLumi_branch != 0) puInfo_instLumi();
 	if (vtxs_covMatrix_branch != 0) vtxs_covMatrix();
@@ -7929,6 +8525,15 @@ void LoadAllBranches()
 	if (pdfinfo_id1_branch != 0) pdfinfo_id1();
 	if (pdfinfo_id2_branch != 0) pdfinfo_id2();
 	if (sparm_subProcessId_branch != 0) sparm_subProcessId();
+	if (pfjets_nonCHS_chargedHadronMultiplicity_branch != 0) pfjets_nonCHS_chargedHadronMultiplicity();
+	if (pfjets_nonCHS_chargedMultiplicity_branch != 0) pfjets_nonCHS_chargedMultiplicity();
+	if (pfjets_nonCHS_electronMultiplicity_branch != 0) pfjets_nonCHS_electronMultiplicity();
+	if (pfjets_nonCHS_muonMultiplicity_branch != 0) pfjets_nonCHS_muonMultiplicity();
+	if (pfjets_nonCHS_neutralHadronMultiplicity_branch != 0) pfjets_nonCHS_neutralHadronMultiplicity();
+	if (pfjets_nonCHS_neutralMultiplicity_branch != 0) pfjets_nonCHS_neutralMultiplicity();
+	if (pfjets_nonCHS_partonFlavour_branch != 0) pfjets_nonCHS_partonFlavour();
+	if (pfjets_nonCHS_photonMultiplicity_branch != 0) pfjets_nonCHS_photonMultiplicity();
+	if (ak8jets_mc_id_branch != 0) ak8jets_mc_id();
 	if (els_mc3_id_branch != 0) els_mc3_id();
 	if (els_mc3idx_branch != 0) els_mc3idx();
 	if (els_mc3_motherid_branch != 0) els_mc3_motherid();
@@ -7994,6 +8599,8 @@ void LoadAllBranches()
 	if (hyp_lt_id_branch != 0) hyp_lt_id();
 	if (hyp_lt_index_branch != 0) hyp_lt_index();
 	if (hyp_type_branch != 0) hyp_type();
+	if (isotracks_charge_branch != 0) isotracks_charge();
+	if (isotracks_particleId_branch != 0) isotracks_particleId();
 	if (mus_algo_branch != 0) mus_algo();
 	if (mus_charge_branch != 0) mus_charge();
 	if (mus_ecal_rawId_branch != 0) mus_ecal_rawId();
@@ -8060,7 +8667,6 @@ void LoadAllBranches()
 	if (mus_timeDirection_branch != 0) mus_timeDirection();
 	if (mus_timeNumStationsUsed_branch != 0) mus_timeNumStationsUsed();
 	if (mus_trk_charge_branch != 0) mus_trk_charge();
-	if (mus_trkidx_branch != 0) mus_trkidx();
 	if (mus_type_branch != 0) mus_type();
 	if (mus_validHits_branch != 0) mus_validHits();
 	if (mus_validPixelHits_branch != 0) mus_validPixelHits();
@@ -8074,6 +8680,14 @@ void LoadAllBranches()
 	if (pfjets_neutralMultiplicity_branch != 0) pfjets_neutralMultiplicity();
 	if (pfjets_partonFlavour_branch != 0) pfjets_partonFlavour();
 	if (pfjets_photonMultiplicity_branch != 0) pfjets_photonMultiplicity();
+	if (pfjets_puppi_chargedHadronMultiplicity_branch != 0) pfjets_puppi_chargedHadronMultiplicity();
+	if (pfjets_puppi_chargedMultiplicity_branch != 0) pfjets_puppi_chargedMultiplicity();
+	if (pfjets_puppi_electronMultiplicity_branch != 0) pfjets_puppi_electronMultiplicity();
+	if (pfjets_puppi_muonMultiplicity_branch != 0) pfjets_puppi_muonMultiplicity();
+	if (pfjets_puppi_neutralHadronMultiplicity_branch != 0) pfjets_puppi_neutralHadronMultiplicity();
+	if (pfjets_puppi_neutralMultiplicity_branch != 0) pfjets_puppi_neutralMultiplicity();
+	if (pfjets_puppi_partonFlavour_branch != 0) pfjets_puppi_partonFlavour();
+	if (pfjets_puppi_photonMultiplicity_branch != 0) pfjets_puppi_photonMultiplicity();
 	if (taus_pf_charge_branch != 0) taus_pf_charge();
 	if (photons_fiduciality_branch != 0) photons_fiduciality();
 	if (photons_photonID_loose_branch != 0) photons_photonID_loose();
@@ -8084,10 +8698,11 @@ void LoadAllBranches()
 	if (convs_isConverted_branch != 0) convs_isConverted();
 	if (convs_quality_branch != 0) convs_quality();
 	if (svs_nTrks_branch != 0) svs_nTrks();
+	if (ak8jets_nSubJets_branch != 0) ak8jets_nSubJets();
 	if (ak8jets_partonFlavour_branch != 0) ak8jets_partonFlavour();
 	if (vtxs_isFake_branch != 0) vtxs_isFake();
 	if (vtxs_isValid_branch != 0) vtxs_isValid();
-	if (vtxs_tracksSize_branch != 0) vtxs_tracksSize();
+	if (pfjets_nonCHS_pfcandIndicies_branch != 0) pfjets_nonCHS_pfcandIndicies();
 	if (els_PFCand_idx_branch != 0) els_PFCand_idx();
 	if (genps_lepdaughter_id_branch != 0) genps_lepdaughter_id();
 	if (genps_lepdaughter_idx_branch != 0) genps_lepdaughter_idx();
@@ -8095,11 +8710,13 @@ void LoadAllBranches()
 	if (mus_nStationCorrelatedHits_branch != 0) mus_nStationCorrelatedHits();
 	if (mus_nStationHits_branch != 0) mus_nStationHits();
 	if (pfjets_pfcandIndicies_branch != 0) pfjets_pfcandIndicies();
+	if (pfjets_puppi_pfcandIndicies_branch != 0) pfjets_puppi_pfcandIndicies();
 	if (photons_PFCand_idx_branch != 0) photons_PFCand_idx();
 	if (convs_nHitsBeforeVtx_branch != 0) convs_nHitsBeforeVtx();
 	if (convs_tkalgo_branch != 0) convs_tkalgo();
 	if (convs_tkidx_branch != 0) convs_tkidx();
 	if (ak8jets_pfcandIndicies_branch != 0) ak8jets_pfcandIndicies();
+	if (isotracks_fromPV_branch != 0) isotracks_fromPV();
 	if (pfcands_fromPV_branch != 0) pfcands_fromPV();
 	if (els_HLT_Ele17_Ele8_L1sL1DoubleEG137_version_branch != 0) els_HLT_Ele17_Ele8_L1sL1DoubleEG137_version();
 	if (els_HLT_Ele17_Ele8_LeadingLeg_version_branch != 0) els_HLT_Ele17_Ele8_LeadingLeg_version();
@@ -8109,10 +8726,16 @@ void LoadAllBranches()
 	if (els_HLT_Ele17_Ele8_version_branch != 0) els_HLT_Ele17_Ele8_version();
 	if (els_HLT_Ele20_SC4_Mass50_LeadingLeg_version_branch != 0) els_HLT_Ele20_SC4_Mass50_LeadingLeg_version();
 	if (els_HLT_Ele20_SC4_Mass50_TrailingLeg_version_branch != 0) els_HLT_Ele20_SC4_Mass50_TrailingLeg_version();
+	if (els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_version_branch != 0) els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_version();
+	if (els_HLT_Ele25WP60_Ele8_Mass55_version_branch != 0) els_HLT_Ele25WP60_Ele8_Mass55_version();
+	if (els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_version_branch != 0) els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_version();
+	if (els_HLT_Ele25WP60_SC4_Mass55_version_branch != 0) els_HLT_Ele25WP60_SC4_Mass55_version();
 	if (els_HLT_Ele27_WP80_L1sL1SingleEG20ORL1SingleEG22_version_branch != 0) els_HLT_Ele27_WP80_L1sL1SingleEG20ORL1SingleEG22_version();
 	if (els_HLT_Ele27_WP80_version_branch != 0) els_HLT_Ele27_WP80_version();
 	if (els_HLT_Ele32_SC17_Mass50_LeadingLeg_version_branch != 0) els_HLT_Ele32_SC17_Mass50_LeadingLeg_version();
 	if (els_HLT_Ele32_SC17_Mass50_TrailingLeg_version_branch != 0) els_HLT_Ele32_SC17_Mass50_TrailingLeg_version();
+	if (els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_version_branch != 0) els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_version();
+	if (els_HLT_Ele5_SC5_JPsi_Mass2to4p5_version_branch != 0) els_HLT_Ele5_SC5_JPsi_Mass2to4p5_version();
 	if (els_HLT_Mu17_Ele8_TrailingLeg_version_branch != 0) els_HLT_Mu17_Ele8_TrailingLeg_version();
 	if (els_HLT_Mu17_Ele8_version_branch != 0) els_HLT_Mu17_Ele8_version();
 	if (els_HLT_Mu8_Ele17_version_branch != 0) els_HLT_Mu8_Ele17_version();
@@ -8122,6 +8745,7 @@ void LoadAllBranches()
 	if (evt_run_branch != 0) evt_run();
 	if (evt_ngenjetsNoMuNoNu_branch != 0) evt_ngenjetsNoMuNoNu();
 	if (genps_signalProcessID_branch != 0) genps_signalProcessID();
+	if (evt_ngenjets_branch != 0) evt_ngenjets();
 	if (mus_HLT_IsoMu24_eta2p1_L1sMu16Eta2p1_version_branch != 0) mus_HLT_IsoMu24_eta2p1_L1sMu16Eta2p1_version();
 	if (mus_HLT_IsoMu24_eta2p1_version_branch != 0) mus_HLT_IsoMu24_eta2p1_version();
 	if (mus_HLT_Mu17_Ele8_LeadingLeg_version_branch != 0) mus_HLT_Mu17_Ele8_LeadingLeg_version();
@@ -8146,10 +8770,16 @@ void LoadAllBranches()
 	if (els_HLT_Ele17_Ele8_TrailingLeg_branch != 0) els_HLT_Ele17_Ele8_TrailingLeg();
 	if (els_HLT_Ele20_SC4_Mass50_LeadingLeg_branch != 0) els_HLT_Ele20_SC4_Mass50_LeadingLeg();
 	if (els_HLT_Ele20_SC4_Mass50_TrailingLeg_branch != 0) els_HLT_Ele20_SC4_Mass50_TrailingLeg();
+	if (els_HLT_Ele25WP60_Ele8_Mass55_branch != 0) els_HLT_Ele25WP60_Ele8_Mass55();
+	if (els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_branch != 0) els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg();
+	if (els_HLT_Ele25WP60_SC4_Mass55_branch != 0) els_HLT_Ele25WP60_SC4_Mass55();
+	if (els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_branch != 0) els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg();
 	if (els_HLT_Ele27_WP80_branch != 0) els_HLT_Ele27_WP80();
 	if (els_HLT_Ele27_WP80_L1sL1SingleEG20ORL1SingleEG22_branch != 0) els_HLT_Ele27_WP80_L1sL1SingleEG20ORL1SingleEG22();
 	if (els_HLT_Ele32_SC17_Mass50_LeadingLeg_branch != 0) els_HLT_Ele32_SC17_Mass50_LeadingLeg();
 	if (els_HLT_Ele32_SC17_Mass50_TrailingLeg_branch != 0) els_HLT_Ele32_SC17_Mass50_TrailingLeg();
+	if (els_HLT_Ele5_SC5_JPsi_Mass2to4p5_branch != 0) els_HLT_Ele5_SC5_JPsi_Mass2to4p5();
+	if (els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_branch != 0) els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg();
 	if (els_HLT_Mu17_Ele8_branch != 0) els_HLT_Mu17_Ele8();
 	if (els_HLT_Mu17_Ele8_TrailingLeg_branch != 0) els_HLT_Mu17_Ele8_TrailingLeg();
 	if (els_HLT_Mu8_Ele17_branch != 0) els_HLT_Mu8_Ele17();
@@ -8174,6 +8804,19 @@ void LoadAllBranches()
 	if (evt_filt_eff_branch != 0) evt_filt_eff();
 }
 
+	const vector<string> &genweightsID()
+	{
+		if (not genweightsID_isLoaded) {
+			if (genweightsID_branch != 0) {
+				genweightsID_branch->GetEntry(index);
+			} else { 
+				printf("branch genweightsID_branch does not exist!\n");
+				exit(1);
+			}
+			genweightsID_isLoaded = true;
+		}
+		return genweightsID_;
+	}
 	TBits &hlt_bits()
 	{
 		if (not hlt_bits_isLoaded) {
@@ -8186,6 +8829,19 @@ void LoadAllBranches()
 			hlt_bits_isLoaded = true;
 		}
 		return hlt_bits_;
+	}
+	const vector<TString> &pfjets_nonCHS_bDiscriminatorNames()
+	{
+		if (not pfjets_nonCHS_bDiscriminatorNames_isLoaded) {
+			if (pfjets_nonCHS_bDiscriminatorNames_branch != 0) {
+				pfjets_nonCHS_bDiscriminatorNames_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_nonCHS_bDiscriminatorNames_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_nonCHS_bDiscriminatorNames_isLoaded = true;
+		}
+		return pfjets_nonCHS_bDiscriminatorNames_;
 	}
 	const vector<TString> &evt_CMS3tag()
 	{
@@ -8225,6 +8881,32 @@ void LoadAllBranches()
 			hlt_trigNames_isLoaded = true;
 		}
 		return hlt_trigNames_;
+	}
+	const vector<TString> &pfjets_bDiscriminatorNames()
+	{
+		if (not pfjets_bDiscriminatorNames_isLoaded) {
+			if (pfjets_bDiscriminatorNames_branch != 0) {
+				pfjets_bDiscriminatorNames_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_bDiscriminatorNames_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_bDiscriminatorNames_isLoaded = true;
+		}
+		return pfjets_bDiscriminatorNames_;
+	}
+	const vector<TString> &pfjets_puppi_bDiscriminatorNames()
+	{
+		if (not pfjets_puppi_bDiscriminatorNames_isLoaded) {
+			if (pfjets_puppi_bDiscriminatorNames_branch != 0) {
+				pfjets_puppi_bDiscriminatorNames_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_puppi_bDiscriminatorNames_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_puppi_bDiscriminatorNames_isLoaded = true;
+		}
+		return pfjets_puppi_bDiscriminatorNames_;
 	}
 	const vector<TString> &taus_pf_IDnames()
 	{
@@ -8524,6 +9206,149 @@ void LoadAllBranches()
 			els_passingPflowPreselection_isLoaded = true;
 		}
 		return els_passingPflowPreselection_;
+	}
+	const vector<bool> &genps_fromHardProcessBeforeFSR()
+	{
+		if (not genps_fromHardProcessBeforeFSR_isLoaded) {
+			if (genps_fromHardProcessBeforeFSR_branch != 0) {
+				genps_fromHardProcessBeforeFSR_branch->GetEntry(index);
+			} else { 
+				printf("branch genps_fromHardProcessBeforeFSR_branch does not exist!\n");
+				exit(1);
+			}
+			genps_fromHardProcessBeforeFSR_isLoaded = true;
+		}
+		return genps_fromHardProcessBeforeFSR_;
+	}
+	const vector<bool> &genps_fromHardProcessDecayed()
+	{
+		if (not genps_fromHardProcessDecayed_isLoaded) {
+			if (genps_fromHardProcessDecayed_branch != 0) {
+				genps_fromHardProcessDecayed_branch->GetEntry(index);
+			} else { 
+				printf("branch genps_fromHardProcessDecayed_branch does not exist!\n");
+				exit(1);
+			}
+			genps_fromHardProcessDecayed_isLoaded = true;
+		}
+		return genps_fromHardProcessDecayed_;
+	}
+	const vector<bool> &genps_fromHardProcessFinalState()
+	{
+		if (not genps_fromHardProcessFinalState_isLoaded) {
+			if (genps_fromHardProcessFinalState_branch != 0) {
+				genps_fromHardProcessFinalState_branch->GetEntry(index);
+			} else { 
+				printf("branch genps_fromHardProcessFinalState_branch does not exist!\n");
+				exit(1);
+			}
+			genps_fromHardProcessFinalState_isLoaded = true;
+		}
+		return genps_fromHardProcessFinalState_;
+	}
+	const vector<bool> &genps_isDirectHardProcessTauDecayProductFinalState()
+	{
+		if (not genps_isDirectHardProcessTauDecayProductFinalState_isLoaded) {
+			if (genps_isDirectHardProcessTauDecayProductFinalState_branch != 0) {
+				genps_isDirectHardProcessTauDecayProductFinalState_branch->GetEntry(index);
+			} else { 
+				printf("branch genps_isDirectHardProcessTauDecayProductFinalState_branch does not exist!\n");
+				exit(1);
+			}
+			genps_isDirectHardProcessTauDecayProductFinalState_isLoaded = true;
+		}
+		return genps_isDirectHardProcessTauDecayProductFinalState_;
+	}
+	const vector<bool> &genps_isDirectPromptTauDecayProductFinalState()
+	{
+		if (not genps_isDirectPromptTauDecayProductFinalState_isLoaded) {
+			if (genps_isDirectPromptTauDecayProductFinalState_branch != 0) {
+				genps_isDirectPromptTauDecayProductFinalState_branch->GetEntry(index);
+			} else { 
+				printf("branch genps_isDirectPromptTauDecayProductFinalState_branch does not exist!\n");
+				exit(1);
+			}
+			genps_isDirectPromptTauDecayProductFinalState_isLoaded = true;
+		}
+		return genps_isDirectPromptTauDecayProductFinalState_;
+	}
+	const vector<bool> &genps_isHardProcess()
+	{
+		if (not genps_isHardProcess_isLoaded) {
+			if (genps_isHardProcess_branch != 0) {
+				genps_isHardProcess_branch->GetEntry(index);
+			} else { 
+				printf("branch genps_isHardProcess_branch does not exist!\n");
+				exit(1);
+			}
+			genps_isHardProcess_isLoaded = true;
+		}
+		return genps_isHardProcess_;
+	}
+	const vector<bool> &genps_isLastCopy()
+	{
+		if (not genps_isLastCopy_isLoaded) {
+			if (genps_isLastCopy_branch != 0) {
+				genps_isLastCopy_branch->GetEntry(index);
+			} else { 
+				printf("branch genps_isLastCopy_branch does not exist!\n");
+				exit(1);
+			}
+			genps_isLastCopy_isLoaded = true;
+		}
+		return genps_isLastCopy_;
+	}
+	const vector<bool> &genps_isLastCopyBeforeFSR()
+	{
+		if (not genps_isLastCopyBeforeFSR_isLoaded) {
+			if (genps_isLastCopyBeforeFSR_branch != 0) {
+				genps_isLastCopyBeforeFSR_branch->GetEntry(index);
+			} else { 
+				printf("branch genps_isLastCopyBeforeFSR_branch does not exist!\n");
+				exit(1);
+			}
+			genps_isLastCopyBeforeFSR_isLoaded = true;
+		}
+		return genps_isLastCopyBeforeFSR_;
+	}
+	const vector<bool> &genps_isMostlyLikePythia6Status3()
+	{
+		if (not genps_isMostlyLikePythia6Status3_isLoaded) {
+			if (genps_isMostlyLikePythia6Status3_branch != 0) {
+				genps_isMostlyLikePythia6Status3_branch->GetEntry(index);
+			} else { 
+				printf("branch genps_isMostlyLikePythia6Status3_branch does not exist!\n");
+				exit(1);
+			}
+			genps_isMostlyLikePythia6Status3_isLoaded = true;
+		}
+		return genps_isMostlyLikePythia6Status3_;
+	}
+	const vector<bool> &genps_isPromptDecayed()
+	{
+		if (not genps_isPromptDecayed_isLoaded) {
+			if (genps_isPromptDecayed_branch != 0) {
+				genps_isPromptDecayed_branch->GetEntry(index);
+			} else { 
+				printf("branch genps_isPromptDecayed_branch does not exist!\n");
+				exit(1);
+			}
+			genps_isPromptDecayed_isLoaded = true;
+		}
+		return genps_isPromptDecayed_;
+	}
+	const vector<bool> &genps_isPromptFinalState()
+	{
+		if (not genps_isPromptFinalState_isLoaded) {
+			if (genps_isPromptFinalState_branch != 0) {
+				genps_isPromptFinalState_branch->GetEntry(index);
+			} else { 
+				printf("branch genps_isPromptFinalState_branch does not exist!\n");
+				exit(1);
+			}
+			genps_isPromptFinalState_isLoaded = true;
+		}
+		return genps_isPromptFinalState_;
 	}
 	const vector<bool> &mus_isRPCMuon()
 	{
@@ -9474,6 +10299,32 @@ void LoadAllBranches()
 		}
 		return evt_fixgrid_rho_fwd_;
 	}
+	float &evt_calomet()
+	{
+		if (not evt_calomet_isLoaded) {
+			if (evt_calomet_branch != 0) {
+				evt_calomet_branch->GetEntry(index);
+			} else { 
+				printf("branch evt_calomet_branch does not exist!\n");
+				exit(1);
+			}
+			evt_calomet_isLoaded = true;
+		}
+		return evt_calomet_;
+	}
+	float &evt_calometPhi()
+	{
+		if (not evt_calometPhi_isLoaded) {
+			if (evt_calometPhi_branch != 0) {
+				evt_calometPhi_branch->GetEntry(index);
+			} else { 
+				printf("branch evt_calometPhi_branch does not exist!\n");
+				exit(1);
+			}
+			evt_calometPhi_isLoaded = true;
+		}
+		return evt_calometPhi_;
+	}
 	float &evt_pfmet()
 	{
 		if (not evt_pfmet_isLoaded) {
@@ -9525,19 +10376,6 @@ void LoadAllBranches()
 			evt_pfmetSig_isLoaded = true;
 		}
 		return evt_pfmetSig_;
-	}
-	float &evt_pfmetSignificance()
-	{
-		if (not evt_pfmetSignificance_isLoaded) {
-			if (evt_pfmetSignificance_branch != 0) {
-				evt_pfmetSignificance_branch->GetEntry(index);
-			} else { 
-				printf("branch evt_pfmetSignificance_branch does not exist!\n");
-				exit(1);
-			}
-			evt_pfmetSignificance_isLoaded = true;
-		}
-		return evt_pfmetSignificance_;
 	}
 	float &evt_pfmet_raw()
 	{
@@ -9695,6 +10533,45 @@ void LoadAllBranches()
 		}
 		return evt_bsp4_;
 	}
+	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &pfjets_nonCHS_p4()
+	{
+		if (not pfjets_nonCHS_p4_isLoaded) {
+			if (pfjets_nonCHS_p4_branch != 0) {
+				pfjets_nonCHS_p4_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_nonCHS_p4_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_nonCHS_p4_isLoaded = true;
+		}
+		return pfjets_nonCHS_p4_;
+	}
+	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &ak8jets_mc_gp_p4()
+	{
+		if (not ak8jets_mc_gp_p4_isLoaded) {
+			if (ak8jets_mc_gp_p4_branch != 0) {
+				ak8jets_mc_gp_p4_branch->GetEntry(index);
+			} else { 
+				printf("branch ak8jets_mc_gp_p4_branch does not exist!\n");
+				exit(1);
+			}
+			ak8jets_mc_gp_p4_isLoaded = true;
+		}
+		return ak8jets_mc_gp_p4_;
+	}
+	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &ak8jets_mc_p4()
+	{
+		if (not ak8jets_mc_p4_isLoaded) {
+			if (ak8jets_mc_p4_branch != 0) {
+				ak8jets_mc_p4_branch->GetEntry(index);
+			} else { 
+				printf("branch ak8jets_mc_p4_branch does not exist!\n");
+				exit(1);
+			}
+			ak8jets_mc_p4_isLoaded = true;
+		}
+		return ak8jets_mc_p4_;
+	}
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &els_mc_motherp4()
 	{
 		if (not els_mc_motherp4_isLoaded) {
@@ -9812,19 +10689,6 @@ void LoadAllBranches()
 		}
 		return photons_mc_p4_;
 	}
-	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &els_inner_position()
-	{
-		if (not els_inner_position_isLoaded) {
-			if (els_inner_position_branch != 0) {
-				els_inner_position_branch->GetEntry(index);
-			} else { 
-				printf("branch els_inner_position_branch does not exist!\n");
-				exit(1);
-			}
-			els_inner_position_isLoaded = true;
-		}
-		return els_inner_position_;
-	}
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &els_mc_patMatch_p4()
 	{
 		if (not els_mc_patMatch_p4_isLoaded) {
@@ -9837,19 +10701,6 @@ void LoadAllBranches()
 			els_mc_patMatch_p4_isLoaded = true;
 		}
 		return els_mc_patMatch_p4_;
-	}
-	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &els_outer_position()
-	{
-		if (not els_outer_position_isLoaded) {
-			if (els_outer_position_branch != 0) {
-				els_outer_position_branch->GetEntry(index);
-			} else { 
-				printf("branch els_outer_position_branch does not exist!\n");
-				exit(1);
-			}
-			els_outer_position_isLoaded = true;
-		}
-		return els_outer_position_;
 	}
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &els_p4()
 	{
@@ -9968,6 +10819,19 @@ void LoadAllBranches()
 		}
 		return genps_prod_vtx_;
 	}
+	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &genjets_p4()
+	{
+		if (not genjets_p4_isLoaded) {
+			if (genjets_p4_branch != 0) {
+				genjets_p4_branch->GetEntry(index);
+			} else { 
+				printf("branch genjets_p4_branch does not exist!\n");
+				exit(1);
+			}
+			genjets_p4_isLoaded = true;
+		}
+		return genjets_p4_;
+	}
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &hyp_ll_p4()
 	{
 		if (not hyp_ll_p4_isLoaded) {
@@ -10006,6 +10870,19 @@ void LoadAllBranches()
 			hyp_p4_isLoaded = true;
 		}
 		return hyp_p4_;
+	}
+	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &isotracks_p4()
+	{
+		if (not isotracks_p4_isLoaded) {
+			if (isotracks_p4_branch != 0) {
+				isotracks_p4_branch->GetEntry(index);
+			} else { 
+				printf("branch isotracks_p4_branch does not exist!\n");
+				exit(1);
+			}
+			isotracks_p4_isLoaded = true;
+		}
+		return isotracks_p4_;
 	}
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &mus_gfit_p4()
 	{
@@ -10149,6 +11026,19 @@ void LoadAllBranches()
 			pfjets_p4_isLoaded = true;
 		}
 		return pfjets_p4_;
+	}
+	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &pfjets_puppi_p4()
+	{
+		if (not pfjets_puppi_p4_isLoaded) {
+			if (pfjets_puppi_p4_branch != 0) {
+				pfjets_puppi_p4_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_puppi_p4_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_puppi_p4_isLoaded = true;
+		}
+		return pfjets_puppi_p4_;
 	}
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &taus_pf_lead_chargecand_p4()
 	{
@@ -10305,6 +11195,188 @@ void LoadAllBranches()
 			taus_pf_signalcands_p4_isLoaded = true;
 		}
 		return taus_pf_signalcands_p4_;
+	}
+	const vector<float> &pfjets_nonCHS_area()
+	{
+		if (not pfjets_nonCHS_area_isLoaded) {
+			if (pfjets_nonCHS_area_branch != 0) {
+				pfjets_nonCHS_area_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_nonCHS_area_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_nonCHS_area_isLoaded = true;
+		}
+		return pfjets_nonCHS_area_;
+	}
+	const vector<float> &pfjets_nonCHS_chargedEmE()
+	{
+		if (not pfjets_nonCHS_chargedEmE_isLoaded) {
+			if (pfjets_nonCHS_chargedEmE_branch != 0) {
+				pfjets_nonCHS_chargedEmE_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_nonCHS_chargedEmE_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_nonCHS_chargedEmE_isLoaded = true;
+		}
+		return pfjets_nonCHS_chargedEmE_;
+	}
+	const vector<float> &pfjets_nonCHS_chargedHadronE()
+	{
+		if (not pfjets_nonCHS_chargedHadronE_isLoaded) {
+			if (pfjets_nonCHS_chargedHadronE_branch != 0) {
+				pfjets_nonCHS_chargedHadronE_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_nonCHS_chargedHadronE_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_nonCHS_chargedHadronE_isLoaded = true;
+		}
+		return pfjets_nonCHS_chargedHadronE_;
+	}
+	const vector<float> &pfjets_nonCHS_electronE()
+	{
+		if (not pfjets_nonCHS_electronE_isLoaded) {
+			if (pfjets_nonCHS_electronE_branch != 0) {
+				pfjets_nonCHS_electronE_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_nonCHS_electronE_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_nonCHS_electronE_isLoaded = true;
+		}
+		return pfjets_nonCHS_electronE_;
+	}
+	const vector<float> &pfjets_nonCHS_hfEmE()
+	{
+		if (not pfjets_nonCHS_hfEmE_isLoaded) {
+			if (pfjets_nonCHS_hfEmE_branch != 0) {
+				pfjets_nonCHS_hfEmE_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_nonCHS_hfEmE_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_nonCHS_hfEmE_isLoaded = true;
+		}
+		return pfjets_nonCHS_hfEmE_;
+	}
+	const vector<float> &pfjets_nonCHS_hfHadronE()
+	{
+		if (not pfjets_nonCHS_hfHadronE_isLoaded) {
+			if (pfjets_nonCHS_hfHadronE_branch != 0) {
+				pfjets_nonCHS_hfHadronE_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_nonCHS_hfHadronE_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_nonCHS_hfHadronE_isLoaded = true;
+		}
+		return pfjets_nonCHS_hfHadronE_;
+	}
+	const vector<float> &pfjets_nonCHS_mass()
+	{
+		if (not pfjets_nonCHS_mass_isLoaded) {
+			if (pfjets_nonCHS_mass_branch != 0) {
+				pfjets_nonCHS_mass_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_nonCHS_mass_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_nonCHS_mass_isLoaded = true;
+		}
+		return pfjets_nonCHS_mass_;
+	}
+	const vector<float> &pfjets_nonCHS_muonE()
+	{
+		if (not pfjets_nonCHS_muonE_isLoaded) {
+			if (pfjets_nonCHS_muonE_branch != 0) {
+				pfjets_nonCHS_muonE_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_nonCHS_muonE_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_nonCHS_muonE_isLoaded = true;
+		}
+		return pfjets_nonCHS_muonE_;
+	}
+	const vector<float> &pfjets_nonCHS_neutralEmE()
+	{
+		if (not pfjets_nonCHS_neutralEmE_isLoaded) {
+			if (pfjets_nonCHS_neutralEmE_branch != 0) {
+				pfjets_nonCHS_neutralEmE_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_nonCHS_neutralEmE_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_nonCHS_neutralEmE_isLoaded = true;
+		}
+		return pfjets_nonCHS_neutralEmE_;
+	}
+	const vector<float> &pfjets_nonCHS_neutralHadronE()
+	{
+		if (not pfjets_nonCHS_neutralHadronE_isLoaded) {
+			if (pfjets_nonCHS_neutralHadronE_branch != 0) {
+				pfjets_nonCHS_neutralHadronE_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_nonCHS_neutralHadronE_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_nonCHS_neutralHadronE_isLoaded = true;
+		}
+		return pfjets_nonCHS_neutralHadronE_;
+	}
+	const vector<float> &pfjets_nonCHS_pfCombinedInclusiveSecondaryVertexV2BJetTag()
+	{
+		if (not pfjets_nonCHS_pfCombinedInclusiveSecondaryVertexV2BJetTag_isLoaded) {
+			if (pfjets_nonCHS_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch != 0) {
+				pfjets_nonCHS_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_nonCHS_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_nonCHS_pfCombinedInclusiveSecondaryVertexV2BJetTag_isLoaded = true;
+		}
+		return pfjets_nonCHS_pfCombinedInclusiveSecondaryVertexV2BJetTag_;
+	}
+	const vector<float> &pfjets_nonCHS_photonE()
+	{
+		if (not pfjets_nonCHS_photonE_isLoaded) {
+			if (pfjets_nonCHS_photonE_branch != 0) {
+				pfjets_nonCHS_photonE_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_nonCHS_photonE_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_nonCHS_photonE_isLoaded = true;
+		}
+		return pfjets_nonCHS_photonE_;
+	}
+	const vector<float> &pfjets_nonCHS_pileupJetId()
+	{
+		if (not pfjets_nonCHS_pileupJetId_isLoaded) {
+			if (pfjets_nonCHS_pileupJetId_branch != 0) {
+				pfjets_nonCHS_pileupJetId_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_nonCHS_pileupJetId_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_nonCHS_pileupJetId_isLoaded = true;
+		}
+		return pfjets_nonCHS_pileupJetId_;
+	}
+	const vector<float> &pfjets_nonCHS_undoJEC()
+	{
+		if (not pfjets_nonCHS_undoJEC_isLoaded) {
+			if (pfjets_nonCHS_undoJEC_branch != 0) {
+				pfjets_nonCHS_undoJEC_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_nonCHS_undoJEC_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_nonCHS_undoJEC_isLoaded = true;
+		}
+		return pfjets_nonCHS_undoJEC_;
 	}
 	const vector<float> &evt_bs_covMatrix()
 	{
@@ -10995,6 +12067,19 @@ void LoadAllBranches()
 		}
 		return els_ecalIso04_;
 	}
+	const vector<float> &els_ecalPFClusterIso()
+	{
+		if (not els_ecalPFClusterIso_isLoaded) {
+			if (els_ecalPFClusterIso_branch != 0) {
+				els_ecalPFClusterIso_branch->GetEntry(index);
+			} else { 
+				printf("branch els_ecalPFClusterIso_branch does not exist!\n");
+				exit(1);
+			}
+			els_ecalPFClusterIso_isLoaded = true;
+		}
+		return els_ecalPFClusterIso_;
+	}
 	const vector<float> &els_etaErr()
 	{
 		if (not els_etaErr_isLoaded) {
@@ -11177,6 +12262,19 @@ void LoadAllBranches()
 		}
 		return els_hcalIso04_;
 	}
+	const vector<float> &els_hcalPFClusterIso()
+	{
+		if (not els_hcalPFClusterIso_isLoaded) {
+			if (els_hcalPFClusterIso_branch != 0) {
+				els_hcalPFClusterIso_branch->GetEntry(index);
+			} else { 
+				printf("branch els_hcalPFClusterIso_branch does not exist!\n");
+				exit(1);
+			}
+			els_hcalPFClusterIso_isLoaded = true;
+		}
+		return els_hcalPFClusterIso_;
+	}
 	const vector<float> &els_ip2d()
 	{
 		if (not els_ip2d_isLoaded) {
@@ -11229,162 +12327,6 @@ void LoadAllBranches()
 		}
 		return els_ip3derr_;
 	}
-	const vector<float> &els_iso03_pf2012_ch()
-	{
-		if (not els_iso03_pf2012_ch_isLoaded) {
-			if (els_iso03_pf2012_ch_branch != 0) {
-				els_iso03_pf2012_ch_branch->GetEntry(index);
-			} else { 
-				printf("branch els_iso03_pf2012_ch_branch does not exist!\n");
-				exit(1);
-			}
-			els_iso03_pf2012_ch_isLoaded = true;
-		}
-		return els_iso03_pf2012_ch_;
-	}
-	const vector<float> &els_iso03_pf2012_em()
-	{
-		if (not els_iso03_pf2012_em_isLoaded) {
-			if (els_iso03_pf2012_em_branch != 0) {
-				els_iso03_pf2012_em_branch->GetEntry(index);
-			} else { 
-				printf("branch els_iso03_pf2012_em_branch does not exist!\n");
-				exit(1);
-			}
-			els_iso03_pf2012_em_isLoaded = true;
-		}
-		return els_iso03_pf2012_em_;
-	}
-	const vector<float> &els_iso03_pf2012ext_ch()
-	{
-		if (not els_iso03_pf2012ext_ch_isLoaded) {
-			if (els_iso03_pf2012ext_ch_branch != 0) {
-				els_iso03_pf2012ext_ch_branch->GetEntry(index);
-			} else { 
-				printf("branch els_iso03_pf2012ext_ch_branch does not exist!\n");
-				exit(1);
-			}
-			els_iso03_pf2012ext_ch_isLoaded = true;
-		}
-		return els_iso03_pf2012ext_ch_;
-	}
-	const vector<float> &els_iso03_pf2012ext_em()
-	{
-		if (not els_iso03_pf2012ext_em_isLoaded) {
-			if (els_iso03_pf2012ext_em_branch != 0) {
-				els_iso03_pf2012ext_em_branch->GetEntry(index);
-			} else { 
-				printf("branch els_iso03_pf2012ext_em_branch does not exist!\n");
-				exit(1);
-			}
-			els_iso03_pf2012ext_em_isLoaded = true;
-		}
-		return els_iso03_pf2012ext_em_;
-	}
-	const vector<float> &els_iso03_pf2012ext_nh()
-	{
-		if (not els_iso03_pf2012ext_nh_isLoaded) {
-			if (els_iso03_pf2012ext_nh_branch != 0) {
-				els_iso03_pf2012ext_nh_branch->GetEntry(index);
-			} else { 
-				printf("branch els_iso03_pf2012ext_nh_branch does not exist!\n");
-				exit(1);
-			}
-			els_iso03_pf2012ext_nh_isLoaded = true;
-		}
-		return els_iso03_pf2012ext_nh_;
-	}
-	const vector<float> &els_iso03_pf2012_nh()
-	{
-		if (not els_iso03_pf2012_nh_isLoaded) {
-			if (els_iso03_pf2012_nh_branch != 0) {
-				els_iso03_pf2012_nh_branch->GetEntry(index);
-			} else { 
-				printf("branch els_iso03_pf2012_nh_branch does not exist!\n");
-				exit(1);
-			}
-			els_iso03_pf2012_nh_isLoaded = true;
-		}
-		return els_iso03_pf2012_nh_;
-	}
-	const vector<float> &els_iso04_pf2012_ch()
-	{
-		if (not els_iso04_pf2012_ch_isLoaded) {
-			if (els_iso04_pf2012_ch_branch != 0) {
-				els_iso04_pf2012_ch_branch->GetEntry(index);
-			} else { 
-				printf("branch els_iso04_pf2012_ch_branch does not exist!\n");
-				exit(1);
-			}
-			els_iso04_pf2012_ch_isLoaded = true;
-		}
-		return els_iso04_pf2012_ch_;
-	}
-	const vector<float> &els_iso04_pf2012_em()
-	{
-		if (not els_iso04_pf2012_em_isLoaded) {
-			if (els_iso04_pf2012_em_branch != 0) {
-				els_iso04_pf2012_em_branch->GetEntry(index);
-			} else { 
-				printf("branch els_iso04_pf2012_em_branch does not exist!\n");
-				exit(1);
-			}
-			els_iso04_pf2012_em_isLoaded = true;
-		}
-		return els_iso04_pf2012_em_;
-	}
-	const vector<float> &els_iso04_pf2012ext_ch()
-	{
-		if (not els_iso04_pf2012ext_ch_isLoaded) {
-			if (els_iso04_pf2012ext_ch_branch != 0) {
-				els_iso04_pf2012ext_ch_branch->GetEntry(index);
-			} else { 
-				printf("branch els_iso04_pf2012ext_ch_branch does not exist!\n");
-				exit(1);
-			}
-			els_iso04_pf2012ext_ch_isLoaded = true;
-		}
-		return els_iso04_pf2012ext_ch_;
-	}
-	const vector<float> &els_iso04_pf2012ext_em()
-	{
-		if (not els_iso04_pf2012ext_em_isLoaded) {
-			if (els_iso04_pf2012ext_em_branch != 0) {
-				els_iso04_pf2012ext_em_branch->GetEntry(index);
-			} else { 
-				printf("branch els_iso04_pf2012ext_em_branch does not exist!\n");
-				exit(1);
-			}
-			els_iso04_pf2012ext_em_isLoaded = true;
-		}
-		return els_iso04_pf2012ext_em_;
-	}
-	const vector<float> &els_iso04_pf2012ext_nh()
-	{
-		if (not els_iso04_pf2012ext_nh_isLoaded) {
-			if (els_iso04_pf2012ext_nh_branch != 0) {
-				els_iso04_pf2012ext_nh_branch->GetEntry(index);
-			} else { 
-				printf("branch els_iso04_pf2012ext_nh_branch does not exist!\n");
-				exit(1);
-			}
-			els_iso04_pf2012ext_nh_isLoaded = true;
-		}
-		return els_iso04_pf2012ext_nh_;
-	}
-	const vector<float> &els_iso04_pf2012_nh()
-	{
-		if (not els_iso04_pf2012_nh_isLoaded) {
-			if (els_iso04_pf2012_nh_branch != 0) {
-				els_iso04_pf2012_nh_branch->GetEntry(index);
-			} else { 
-				printf("branch els_iso04_pf2012_nh_branch does not exist!\n");
-				exit(1);
-			}
-			els_iso04_pf2012_nh_isLoaded = true;
-		}
-		return els_iso04_pf2012_nh_;
-	}
 	const vector<float> &els_mass()
 	{
 		if (not els_mass_isLoaded) {
@@ -11411,6 +12353,71 @@ void LoadAllBranches()
 		}
 		return els_mc_patMatch_dr_;
 	}
+	const vector<float> &els_miniIso_ch()
+	{
+		if (not els_miniIso_ch_isLoaded) {
+			if (els_miniIso_ch_branch != 0) {
+				els_miniIso_ch_branch->GetEntry(index);
+			} else { 
+				printf("branch els_miniIso_ch_branch does not exist!\n");
+				exit(1);
+			}
+			els_miniIso_ch_isLoaded = true;
+		}
+		return els_miniIso_ch_;
+	}
+	const vector<float> &els_miniIso_db()
+	{
+		if (not els_miniIso_db_isLoaded) {
+			if (els_miniIso_db_branch != 0) {
+				els_miniIso_db_branch->GetEntry(index);
+			} else { 
+				printf("branch els_miniIso_db_branch does not exist!\n");
+				exit(1);
+			}
+			els_miniIso_db_isLoaded = true;
+		}
+		return els_miniIso_db_;
+	}
+	const vector<float> &els_miniIso_em()
+	{
+		if (not els_miniIso_em_isLoaded) {
+			if (els_miniIso_em_branch != 0) {
+				els_miniIso_em_branch->GetEntry(index);
+			} else { 
+				printf("branch els_miniIso_em_branch does not exist!\n");
+				exit(1);
+			}
+			els_miniIso_em_isLoaded = true;
+		}
+		return els_miniIso_em_;
+	}
+	const vector<float> &els_miniIso_nh()
+	{
+		if (not els_miniIso_nh_isLoaded) {
+			if (els_miniIso_nh_branch != 0) {
+				els_miniIso_nh_branch->GetEntry(index);
+			} else { 
+				printf("branch els_miniIso_nh_branch does not exist!\n");
+				exit(1);
+			}
+			els_miniIso_nh_isLoaded = true;
+		}
+		return els_miniIso_nh_;
+	}
+	const vector<float> &els_miniIso_uncor()
+	{
+		if (not els_miniIso_uncor_isLoaded) {
+			if (els_miniIso_uncor_branch != 0) {
+				els_miniIso_uncor_branch->GetEntry(index);
+			} else { 
+				printf("branch els_miniIso_uncor_branch does not exist!\n");
+				exit(1);
+			}
+			els_miniIso_uncor_isLoaded = true;
+		}
+		return els_miniIso_uncor_;
+	}
 	const vector<float> &els_mva()
 	{
 		if (not els_mva_isLoaded) {
@@ -11424,71 +12431,6 @@ void LoadAllBranches()
 		}
 		return els_mva_;
 	}
-        const vector<float> &els_miniIso_ch()
-        {
-                if (not els_miniIso_ch_isLoaded) {
-                        if (els_miniIso_ch_branch != 0) {
-                                els_miniIso_ch_branch->GetEntry(index);
-                        } else { 
-                                printf("branch els_miniIso_ch_branch does not exist!\n");
-                                exit(1);
-                        }
-                        els_miniIso_ch_isLoaded = true;
-                }
-                return els_miniIso_ch_;
-        }
-        const vector<float> &els_miniIso_db()
-        {
-                if (not els_miniIso_db_isLoaded) {
-                        if (els_miniIso_db_branch != 0) {
-                                els_miniIso_db_branch->GetEntry(index);
-                        } else { 
-                                printf("branch els_miniIso_db_branch does not exist!\n");
-                                exit(1);
-                        }
-                        els_miniIso_db_isLoaded = true;
-                }
-                return els_miniIso_db_;
-        }
-        const vector<float> &els_miniIso_em()
-        {
-                if (not els_miniIso_em_isLoaded) {
-                        if (els_miniIso_em_branch != 0) {
-                                els_miniIso_em_branch->GetEntry(index);
-                        } else { 
-                                printf("branch els_miniIso_em_branch does not exist!\n");
-                                exit(1);
-                        }
-                        els_miniIso_em_isLoaded = true;
-                }
-                return els_miniIso_em_;
-        }
-        const vector<float> &els_miniIso_nh()
-        {
-                if (not els_miniIso_nh_isLoaded) {
-                        if (els_miniIso_nh_branch != 0) {
-                                els_miniIso_nh_branch->GetEntry(index);
-                        } else { 
-                                printf("branch els_miniIso_nh_branch does not exist!\n");
-                                exit(1);
-                        }
-                        els_miniIso_nh_isLoaded = true;
-                }
-                return els_miniIso_nh_;
-        }
-        const vector<float> &els_miniIso_uncor()
-        {
-                if (not els_miniIso_uncor_isLoaded) {
-                        if (els_miniIso_uncor_branch != 0) {
-                                els_miniIso_uncor_branch->GetEntry(index);
-                        } else { 
-                                printf("branch els_miniIso_uncor_branch does not exist!\n");
-                                exit(1);
-                        }
-                        els_miniIso_uncor_isLoaded = true;
-                }
-                return els_miniIso_uncor_;
-        }
 	const vector<float> &els_ndof()
 	{
 		if (not els_ndof_isLoaded) {
@@ -11879,18 +12821,57 @@ void LoadAllBranches()
 		}
 		return genps_mass_;
 	}
-	const vector<float> &mus_backToBackCompat()
+	const vector<float> &genweights()
 	{
-		if (not mus_backToBackCompat_isLoaded) {
-			if (mus_backToBackCompat_branch != 0) {
-				mus_backToBackCompat_branch->GetEntry(index);
+		if (not genweights_isLoaded) {
+			if (genweights_branch != 0) {
+				genweights_branch->GetEntry(index);
 			} else { 
-				printf("branch mus_backToBackCompat_branch does not exist!\n");
+				printf("branch genweights_branch does not exist!\n");
 				exit(1);
 			}
-			mus_backToBackCompat_isLoaded = true;
+			genweights_isLoaded = true;
 		}
-		return mus_backToBackCompat_;
+		return genweights_;
+	}
+	const vector<float> &isotracks_dz()
+	{
+		if (not isotracks_dz_isLoaded) {
+			if (isotracks_dz_branch != 0) {
+				isotracks_dz_branch->GetEntry(index);
+			} else { 
+				printf("branch isotracks_dz_branch does not exist!\n");
+				exit(1);
+			}
+			isotracks_dz_isLoaded = true;
+		}
+		return isotracks_dz_;
+	}
+	const vector<float> &isotracks_mass()
+	{
+		if (not isotracks_mass_isLoaded) {
+			if (isotracks_mass_branch != 0) {
+				isotracks_mass_branch->GetEntry(index);
+			} else { 
+				printf("branch isotracks_mass_branch does not exist!\n");
+				exit(1);
+			}
+			isotracks_mass_isLoaded = true;
+		}
+		return isotracks_mass_;
+	}
+	const vector<float> &isotracks_relIso()
+	{
+		if (not isotracks_relIso_isLoaded) {
+			if (isotracks_relIso_branch != 0) {
+				isotracks_relIso_branch->GetEntry(index);
+			} else { 
+				printf("branch isotracks_relIso_branch does not exist!\n");
+				exit(1);
+			}
+			isotracks_relIso_isLoaded = true;
+		}
+		return isotracks_relIso_;
 	}
 	const vector<float> &mus_bs2d()
 	{
@@ -11996,19 +12977,6 @@ void LoadAllBranches()
 		}
 		return mus_chi2LocalPosition_;
 	}
-	const vector<float> &mus_cosmicCompat()
-	{
-		if (not mus_cosmicCompat_isLoaded) {
-			if (mus_cosmicCompat_branch != 0) {
-				mus_cosmicCompat_branch->GetEntry(index);
-			} else { 
-				printf("branch mus_cosmicCompat_branch does not exist!\n");
-				exit(1);
-			}
-			mus_cosmicCompat_isLoaded = true;
-		}
-		return mus_cosmicCompat_;
-	}
 	const vector<float> &mus_d0()
 	{
 		if (not mus_d0_isLoaded) {
@@ -12112,19 +13080,6 @@ void LoadAllBranches()
 			mus_ecal_time_isLoaded = true;
 		}
 		return mus_ecal_time_;
-	}
-	const vector<float> &mus_ecal_timeError()
-	{
-		if (not mus_ecal_timeError_isLoaded) {
-			if (mus_ecal_timeError_branch != 0) {
-				mus_ecal_timeError_branch->GetEntry(index);
-			} else { 
-				printf("branch mus_ecal_timeError_branch does not exist!\n");
-				exit(1);
-			}
-			mus_ecal_timeError_isLoaded = true;
-		}
-		return mus_ecal_timeError_;
 	}
 	const vector<float> &mus_e_em()
 	{
@@ -12463,19 +13418,6 @@ void LoadAllBranches()
 			mus_hcal_time_isLoaded = true;
 		}
 		return mus_hcal_time_;
-	}
-	const vector<float> &mus_hcal_timeError()
-	{
-		if (not mus_hcal_timeError_isLoaded) {
-			if (mus_hcal_timeError_branch != 0) {
-				mus_hcal_timeError_branch->GetEntry(index);
-			} else { 
-				printf("branch mus_hcal_timeError_branch does not exist!\n");
-				exit(1);
-			}
-			mus_hcal_timeError_isLoaded = true;
-		}
-		return mus_hcal_timeError_;
 	}
 	const vector<float> &mus_ip2d()
 	{
@@ -13257,71 +14199,6 @@ void LoadAllBranches()
 		}
 		return mus_mass_;
 	}
-        const vector<float> &mus_miniIso_ch()
-        {
-                if (not mus_miniIso_ch_isLoaded) {
-                        if (mus_miniIso_ch_branch != 0) {
-                                mus_miniIso_ch_branch->GetEntry(index);
-                        } else { 
-                                printf("branch mus_miniIso_ch_branch does not exist!\n");
-                                exit(1);
-                        }
-                        mus_miniIso_ch_isLoaded = true;
-                }
-                return mus_miniIso_ch_;
-        }
-        const vector<float> &mus_miniIso_db()
-        {
-                if (not mus_miniIso_db_isLoaded) {
-                        if (mus_miniIso_db_branch != 0) {
-                                mus_miniIso_db_branch->GetEntry(index);
-                        } else { 
-                                printf("branch mus_miniIso_db_branch does not exist!\n");
-                                exit(1);
-                        }
-                        mus_miniIso_db_isLoaded = true;
-                }
-                return mus_miniIso_db_;
-        }
-        const vector<float> &mus_miniIso_em()
-        {
-                if (not mus_miniIso_em_isLoaded) {
-                        if (mus_miniIso_em_branch != 0) {
-                                mus_miniIso_em_branch->GetEntry(index);
-                        } else { 
-                                printf("branch mus_miniIso_em_branch does not exist!\n");
-                                exit(1);
-                        }
-                        mus_miniIso_em_isLoaded = true;
-                }
-                return mus_miniIso_em_;
-        }
-        const vector<float> &mus_miniIso_nh()
-        {
-                if (not mus_miniIso_nh_isLoaded) {
-                        if (mus_miniIso_nh_branch != 0) {
-                                mus_miniIso_nh_branch->GetEntry(index);
-                        } else { 
-                                printf("branch mus_miniIso_nh_branch does not exist!\n");
-                                exit(1);
-                        }
-                        mus_miniIso_nh_isLoaded = true;
-                }
-                return mus_miniIso_nh_;
-        }
-        const vector<float> &mus_miniIso_uncor()
-        {
-                if (not mus_miniIso_uncor_isLoaded) {
-                        if (mus_miniIso_uncor_branch != 0) {
-                                mus_miniIso_uncor_branch->GetEntry(index);
-                        } else { 
-                                printf("branch mus_miniIso_uncor_branch does not exist!\n");
-                                exit(1);
-                        }
-                        mus_miniIso_uncor_isLoaded = true;
-                }
-                return mus_miniIso_uncor_;
-        }
 	const vector<float> &mus_mc_patMatch_dr()
 	{
 		if (not mus_mc_patMatch_dr_isLoaded) {
@@ -13335,6 +14212,71 @@ void LoadAllBranches()
 		}
 		return mus_mc_patMatch_dr_;
 	}
+	const vector<float> &mus_miniIso_ch()
+	{
+		if (not mus_miniIso_ch_isLoaded) {
+			if (mus_miniIso_ch_branch != 0) {
+				mus_miniIso_ch_branch->GetEntry(index);
+			} else { 
+				printf("branch mus_miniIso_ch_branch does not exist!\n");
+				exit(1);
+			}
+			mus_miniIso_ch_isLoaded = true;
+		}
+		return mus_miniIso_ch_;
+	}
+	const vector<float> &mus_miniIso_db()
+	{
+		if (not mus_miniIso_db_isLoaded) {
+			if (mus_miniIso_db_branch != 0) {
+				mus_miniIso_db_branch->GetEntry(index);
+			} else { 
+				printf("branch mus_miniIso_db_branch does not exist!\n");
+				exit(1);
+			}
+			mus_miniIso_db_isLoaded = true;
+		}
+		return mus_miniIso_db_;
+	}
+	const vector<float> &mus_miniIso_em()
+	{
+		if (not mus_miniIso_em_isLoaded) {
+			if (mus_miniIso_em_branch != 0) {
+				mus_miniIso_em_branch->GetEntry(index);
+			} else { 
+				printf("branch mus_miniIso_em_branch does not exist!\n");
+				exit(1);
+			}
+			mus_miniIso_em_isLoaded = true;
+		}
+		return mus_miniIso_em_;
+	}
+	const vector<float> &mus_miniIso_nh()
+	{
+		if (not mus_miniIso_nh_isLoaded) {
+			if (mus_miniIso_nh_branch != 0) {
+				mus_miniIso_nh_branch->GetEntry(index);
+			} else { 
+				printf("branch mus_miniIso_nh_branch does not exist!\n");
+				exit(1);
+			}
+			mus_miniIso_nh_isLoaded = true;
+		}
+		return mus_miniIso_nh_;
+	}
+	const vector<float> &mus_miniIso_uncor()
+	{
+		if (not mus_miniIso_uncor_isLoaded) {
+			if (mus_miniIso_uncor_branch != 0) {
+				mus_miniIso_uncor_branch->GetEntry(index);
+			} else { 
+				printf("branch mus_miniIso_uncor_branch does not exist!\n");
+				exit(1);
+			}
+			mus_miniIso_uncor_isLoaded = true;
+		}
+		return mus_miniIso_uncor_;
+	}
 	const vector<float> &mus_ndof()
 	{
 		if (not mus_ndof_isLoaded) {
@@ -13347,19 +14289,6 @@ void LoadAllBranches()
 			mus_ndof_isLoaded = true;
 		}
 		return mus_ndof_;
-	}
-	const vector<float> &mus_overlapCompat()
-	{
-		if (not mus_overlapCompat_isLoaded) {
-			if (mus_overlapCompat_branch != 0) {
-				mus_overlapCompat_branch->GetEntry(index);
-			} else { 
-				printf("branch mus_overlapCompat_branch does not exist!\n");
-				exit(1);
-			}
-			mus_overlapCompat_isLoaded = true;
-		}
-		return mus_overlapCompat_;
 	}
 	const vector<float> &mus_phiErr()
 	{
@@ -13647,45 +14576,6 @@ void LoadAllBranches()
 		}
 		return mus_timeAtIpOutInErr_;
 	}
-	const vector<float> &mus_timeCompat()
-	{
-		if (not mus_timeCompat_isLoaded) {
-			if (mus_timeCompat_branch != 0) {
-				mus_timeCompat_branch->GetEntry(index);
-			} else { 
-				printf("branch mus_timeCompat_branch does not exist!\n");
-				exit(1);
-			}
-			mus_timeCompat_isLoaded = true;
-		}
-		return mus_timeCompat_;
-	}
-	const vector<float> &mus_tower()
-	{
-		if (not mus_tower_isLoaded) {
-			if (mus_tower_branch != 0) {
-				mus_tower_branch->GetEntry(index);
-			} else { 
-				printf("branch mus_tower_branch does not exist!\n");
-				exit(1);
-			}
-			mus_tower_isLoaded = true;
-		}
-		return mus_tower_;
-	}
-	const vector<float> &mus_towerS9()
-	{
-		if (not mus_towerS9_isLoaded) {
-			if (mus_towerS9_branch != 0) {
-				mus_towerS9_branch->GetEntry(index);
-			} else { 
-				printf("branch mus_towerS9_branch does not exist!\n");
-				exit(1);
-			}
-			mus_towerS9_isLoaded = true;
-		}
-		return mus_towerS9_;
-	}
 	const vector<float> &mus_trkKink()
 	{
 		if (not mus_trkKink_isLoaded) {
@@ -13711,19 +14601,6 @@ void LoadAllBranches()
 			mus_trkRelChi2_isLoaded = true;
 		}
 		return mus_trkRelChi2_;
-	}
-	const vector<float> &mus_vertexCompat()
-	{
-		if (not mus_vertexCompat_isLoaded) {
-			if (mus_vertexCompat_branch != 0) {
-				mus_vertexCompat_branch->GetEntry(index);
-			} else { 
-				printf("branch mus_vertexCompat_branch does not exist!\n");
-				exit(1);
-			}
-			mus_vertexCompat_isLoaded = true;
-		}
-		return mus_vertexCompat_;
 	}
 	const vector<float> &mus_vertexphi()
 	{
@@ -13842,71 +14719,6 @@ void LoadAllBranches()
 		}
 		return pfjets_chargedHadronE_;
 	}
-	const vector<float> &pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag()
-	{
-		if (not pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_isLoaded) {
-			if (pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch != 0) {
-				pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch->GetEntry(index);
-			} else { 
-				printf("branch pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch does not exist!\n");
-				exit(1);
-			}
-			pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_isLoaded = true;
-		}
-		return pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_;
-	}
-	const vector<float> &pfjets_combinedMVABJetTag()
-	{
-		if (not pfjets_combinedMVABJetTag_isLoaded) {
-			if (pfjets_combinedMVABJetTag_branch != 0) {
-				pfjets_combinedMVABJetTag_branch->GetEntry(index);
-			} else { 
-				printf("branch pfjets_combinedMVABJetTag_branch does not exist!\n");
-				exit(1);
-			}
-			pfjets_combinedMVABJetTag_isLoaded = true;
-		}
-		return pfjets_combinedMVABJetTag_;
-	}
-	const vector<float> &pfjets_corL1Fast()
-	{
-		if (not pfjets_corL1Fast_isLoaded) {
-			if (pfjets_corL1Fast_branch != 0) {
-				pfjets_corL1Fast_branch->GetEntry(index);
-			} else { 
-				printf("branch pfjets_corL1Fast_branch does not exist!\n");
-				exit(1);
-			}
-			pfjets_corL1Fast_isLoaded = true;
-		}
-		return pfjets_corL1Fast_;
-	}
-	const vector<float> &pfjets_corL1FastL2L3()
-	{
-		if (not pfjets_corL1FastL2L3_isLoaded) {
-			if (pfjets_corL1FastL2L3_branch != 0) {
-				pfjets_corL1FastL2L3_branch->GetEntry(index);
-			} else { 
-				printf("branch pfjets_corL1FastL2L3_branch does not exist!\n");
-				exit(1);
-			}
-			pfjets_corL1FastL2L3_isLoaded = true;
-		}
-		return pfjets_corL1FastL2L3_;
-	}
-	const vector<float> &pfjets_corL2L3()
-	{
-		if (not pfjets_corL2L3_isLoaded) {
-			if (pfjets_corL2L3_branch != 0) {
-				pfjets_corL2L3_branch->GetEntry(index);
-			} else { 
-				printf("branch pfjets_corL2L3_branch does not exist!\n");
-				exit(1);
-			}
-			pfjets_corL2L3_isLoaded = true;
-		}
-		return pfjets_corL2L3_;
-	}
 	const vector<float> &pfjets_electronE()
 	{
 		if (not pfjets_electronE_isLoaded) {
@@ -13945,32 +14757,6 @@ void LoadAllBranches()
 			pfjets_hfHadronE_isLoaded = true;
 		}
 		return pfjets_hfHadronE_;
-	}
-	const vector<float> &pfjets_jetBProbabilityBJetTag()
-	{
-		if (not pfjets_jetBProbabilityBJetTag_isLoaded) {
-			if (pfjets_jetBProbabilityBJetTag_branch != 0) {
-				pfjets_jetBProbabilityBJetTag_branch->GetEntry(index);
-			} else { 
-				printf("branch pfjets_jetBProbabilityBJetTag_branch does not exist!\n");
-				exit(1);
-			}
-			pfjets_jetBProbabilityBJetTag_isLoaded = true;
-		}
-		return pfjets_jetBProbabilityBJetTag_;
-	}
-	const vector<float> &pfjets_jetProbabilityBJetTag()
-	{
-		if (not pfjets_jetProbabilityBJetTag_isLoaded) {
-			if (pfjets_jetProbabilityBJetTag_branch != 0) {
-				pfjets_jetProbabilityBJetTag_branch->GetEntry(index);
-			} else { 
-				printf("branch pfjets_jetProbabilityBJetTag_branch does not exist!\n");
-				exit(1);
-			}
-			pfjets_jetProbabilityBJetTag_isLoaded = true;
-		}
-		return pfjets_jetProbabilityBJetTag_;
 	}
 	const vector<float> &pfjets_mass()
 	{
@@ -14024,18 +14810,18 @@ void LoadAllBranches()
 		}
 		return pfjets_neutralHadronE_;
 	}
-	const vector<float> &pfjets_pfCombinedSecondaryVertexBJetTag()
+	const vector<float> &pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag()
 	{
-		if (not pfjets_pfCombinedSecondaryVertexBJetTag_isLoaded) {
-			if (pfjets_pfCombinedSecondaryVertexBJetTag_branch != 0) {
-				pfjets_pfCombinedSecondaryVertexBJetTag_branch->GetEntry(index);
+		if (not pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_isLoaded) {
+			if (pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch != 0) {
+				pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch->GetEntry(index);
 			} else { 
-				printf("branch pfjets_pfCombinedSecondaryVertexBJetTag_branch does not exist!\n");
+				printf("branch pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch does not exist!\n");
 				exit(1);
 			}
-			pfjets_pfCombinedSecondaryVertexBJetTag_isLoaded = true;
+			pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_isLoaded = true;
 		}
-		return pfjets_pfCombinedSecondaryVertexBJetTag_;
+		return pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_;
 	}
 	const vector<float> &pfjets_photonE()
 	{
@@ -14063,58 +14849,6 @@ void LoadAllBranches()
 		}
 		return pfjets_pileupJetId_;
 	}
-	const vector<float> &pfjets_simpleSecondaryVertexHighEffBJetTag()
-	{
-		if (not pfjets_simpleSecondaryVertexHighEffBJetTag_isLoaded) {
-			if (pfjets_simpleSecondaryVertexHighEffBJetTag_branch != 0) {
-				pfjets_simpleSecondaryVertexHighEffBJetTag_branch->GetEntry(index);
-			} else { 
-				printf("branch pfjets_simpleSecondaryVertexHighEffBJetTag_branch does not exist!\n");
-				exit(1);
-			}
-			pfjets_simpleSecondaryVertexHighEffBJetTag_isLoaded = true;
-		}
-		return pfjets_simpleSecondaryVertexHighEffBJetTag_;
-	}
-	const vector<float> &pfjets_simpleSecondaryVertexHighPurBJetTags()
-	{
-		if (not pfjets_simpleSecondaryVertexHighPurBJetTags_isLoaded) {
-			if (pfjets_simpleSecondaryVertexHighPurBJetTags_branch != 0) {
-				pfjets_simpleSecondaryVertexHighPurBJetTags_branch->GetEntry(index);
-			} else { 
-				printf("branch pfjets_simpleSecondaryVertexHighPurBJetTags_branch does not exist!\n");
-				exit(1);
-			}
-			pfjets_simpleSecondaryVertexHighPurBJetTags_isLoaded = true;
-		}
-		return pfjets_simpleSecondaryVertexHighPurBJetTags_;
-	}
-	const vector<float> &pfjets_trackCountingHighEffBJetTag()
-	{
-		if (not pfjets_trackCountingHighEffBJetTag_isLoaded) {
-			if (pfjets_trackCountingHighEffBJetTag_branch != 0) {
-				pfjets_trackCountingHighEffBJetTag_branch->GetEntry(index);
-			} else { 
-				printf("branch pfjets_trackCountingHighEffBJetTag_branch does not exist!\n");
-				exit(1);
-			}
-			pfjets_trackCountingHighEffBJetTag_isLoaded = true;
-		}
-		return pfjets_trackCountingHighEffBJetTag_;
-	}
-	const vector<float> &pfjets_trackCountingHighPurBJetTag()
-	{
-		if (not pfjets_trackCountingHighPurBJetTag_isLoaded) {
-			if (pfjets_trackCountingHighPurBJetTag_branch != 0) {
-				pfjets_trackCountingHighPurBJetTag_branch->GetEntry(index);
-			} else { 
-				printf("branch pfjets_trackCountingHighPurBJetTag_branch does not exist!\n");
-				exit(1);
-			}
-			pfjets_trackCountingHighPurBJetTag_isLoaded = true;
-		}
-		return pfjets_trackCountingHighPurBJetTag_;
-	}
 	const vector<float> &pfjets_undoJEC()
 	{
 		if (not pfjets_undoJEC_isLoaded) {
@@ -14127,6 +14861,188 @@ void LoadAllBranches()
 			pfjets_undoJEC_isLoaded = true;
 		}
 		return pfjets_undoJEC_;
+	}
+	const vector<float> &pfjets_puppi_area()
+	{
+		if (not pfjets_puppi_area_isLoaded) {
+			if (pfjets_puppi_area_branch != 0) {
+				pfjets_puppi_area_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_puppi_area_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_puppi_area_isLoaded = true;
+		}
+		return pfjets_puppi_area_;
+	}
+	const vector<float> &pfjets_puppi_chargedEmE()
+	{
+		if (not pfjets_puppi_chargedEmE_isLoaded) {
+			if (pfjets_puppi_chargedEmE_branch != 0) {
+				pfjets_puppi_chargedEmE_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_puppi_chargedEmE_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_puppi_chargedEmE_isLoaded = true;
+		}
+		return pfjets_puppi_chargedEmE_;
+	}
+	const vector<float> &pfjets_puppi_chargedHadronE()
+	{
+		if (not pfjets_puppi_chargedHadronE_isLoaded) {
+			if (pfjets_puppi_chargedHadronE_branch != 0) {
+				pfjets_puppi_chargedHadronE_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_puppi_chargedHadronE_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_puppi_chargedHadronE_isLoaded = true;
+		}
+		return pfjets_puppi_chargedHadronE_;
+	}
+	const vector<float> &pfjets_puppi_electronE()
+	{
+		if (not pfjets_puppi_electronE_isLoaded) {
+			if (pfjets_puppi_electronE_branch != 0) {
+				pfjets_puppi_electronE_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_puppi_electronE_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_puppi_electronE_isLoaded = true;
+		}
+		return pfjets_puppi_electronE_;
+	}
+	const vector<float> &pfjets_puppi_hfEmE()
+	{
+		if (not pfjets_puppi_hfEmE_isLoaded) {
+			if (pfjets_puppi_hfEmE_branch != 0) {
+				pfjets_puppi_hfEmE_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_puppi_hfEmE_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_puppi_hfEmE_isLoaded = true;
+		}
+		return pfjets_puppi_hfEmE_;
+	}
+	const vector<float> &pfjets_puppi_hfHadronE()
+	{
+		if (not pfjets_puppi_hfHadronE_isLoaded) {
+			if (pfjets_puppi_hfHadronE_branch != 0) {
+				pfjets_puppi_hfHadronE_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_puppi_hfHadronE_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_puppi_hfHadronE_isLoaded = true;
+		}
+		return pfjets_puppi_hfHadronE_;
+	}
+	const vector<float> &pfjets_puppi_mass()
+	{
+		if (not pfjets_puppi_mass_isLoaded) {
+			if (pfjets_puppi_mass_branch != 0) {
+				pfjets_puppi_mass_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_puppi_mass_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_puppi_mass_isLoaded = true;
+		}
+		return pfjets_puppi_mass_;
+	}
+	const vector<float> &pfjets_puppi_muonE()
+	{
+		if (not pfjets_puppi_muonE_isLoaded) {
+			if (pfjets_puppi_muonE_branch != 0) {
+				pfjets_puppi_muonE_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_puppi_muonE_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_puppi_muonE_isLoaded = true;
+		}
+		return pfjets_puppi_muonE_;
+	}
+	const vector<float> &pfjets_puppi_neutralEmE()
+	{
+		if (not pfjets_puppi_neutralEmE_isLoaded) {
+			if (pfjets_puppi_neutralEmE_branch != 0) {
+				pfjets_puppi_neutralEmE_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_puppi_neutralEmE_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_puppi_neutralEmE_isLoaded = true;
+		}
+		return pfjets_puppi_neutralEmE_;
+	}
+	const vector<float> &pfjets_puppi_neutralHadronE()
+	{
+		if (not pfjets_puppi_neutralHadronE_isLoaded) {
+			if (pfjets_puppi_neutralHadronE_branch != 0) {
+				pfjets_puppi_neutralHadronE_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_puppi_neutralHadronE_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_puppi_neutralHadronE_isLoaded = true;
+		}
+		return pfjets_puppi_neutralHadronE_;
+	}
+	const vector<float> &pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag()
+	{
+		if (not pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag_isLoaded) {
+			if (pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch != 0) {
+				pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag_isLoaded = true;
+		}
+		return pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag_;
+	}
+	const vector<float> &pfjets_puppi_photonE()
+	{
+		if (not pfjets_puppi_photonE_isLoaded) {
+			if (pfjets_puppi_photonE_branch != 0) {
+				pfjets_puppi_photonE_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_puppi_photonE_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_puppi_photonE_isLoaded = true;
+		}
+		return pfjets_puppi_photonE_;
+	}
+	const vector<float> &pfjets_puppi_pileupJetId()
+	{
+		if (not pfjets_puppi_pileupJetId_isLoaded) {
+			if (pfjets_puppi_pileupJetId_branch != 0) {
+				pfjets_puppi_pileupJetId_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_puppi_pileupJetId_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_puppi_pileupJetId_isLoaded = true;
+		}
+		return pfjets_puppi_pileupJetId_;
+	}
+	const vector<float> &pfjets_puppi_undoJEC()
+	{
+		if (not pfjets_puppi_undoJEC_isLoaded) {
+			if (pfjets_puppi_undoJEC_branch != 0) {
+				pfjets_puppi_undoJEC_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_puppi_undoJEC_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_puppi_undoJEC_isLoaded = true;
+		}
+		return pfjets_puppi_undoJEC_;
 	}
 	const vector<float> &taus_pf_mass()
 	{
@@ -14206,6 +15122,45 @@ void LoadAllBranches()
 		}
 		return photons_e5x5_;
 	}
+	const vector<float> &photons_eSC()
+	{
+		if (not photons_eSC_isLoaded) {
+			if (photons_eSC_branch != 0) {
+				photons_eSC_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_eSC_branch does not exist!\n");
+				exit(1);
+			}
+			photons_eSC_isLoaded = true;
+		}
+		return photons_eSC_;
+	}
+	const vector<float> &photons_eSCPresh()
+	{
+		if (not photons_eSCPresh_isLoaded) {
+			if (photons_eSCPresh_branch != 0) {
+				photons_eSCPresh_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_eSCPresh_branch does not exist!\n");
+				exit(1);
+			}
+			photons_eSCPresh_isLoaded = true;
+		}
+		return photons_eSCPresh_;
+	}
+	const vector<float> &photons_eSCRaw()
+	{
+		if (not photons_eSCRaw_isLoaded) {
+			if (photons_eSCRaw_branch != 0) {
+				photons_eSCRaw_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_eSCRaw_branch does not exist!\n");
+				exit(1);
+			}
+			photons_eSCRaw_isLoaded = true;
+		}
+		return photons_eSCRaw_;
+	}
 	const vector<float> &photons_ecalIso03()
 	{
 		if (not photons_ecalIso03_isLoaded) {
@@ -14231,6 +15186,32 @@ void LoadAllBranches()
 			photons_ecalIso04_isLoaded = true;
 		}
 		return photons_ecalIso04_;
+	}
+	const vector<float> &photons_ecalPFClusterIso()
+	{
+		if (not photons_ecalPFClusterIso_isLoaded) {
+			if (photons_ecalPFClusterIso_branch != 0) {
+				photons_ecalPFClusterIso_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_ecalPFClusterIso_branch does not exist!\n");
+				exit(1);
+			}
+			photons_ecalPFClusterIso_isLoaded = true;
+		}
+		return photons_ecalPFClusterIso_;
+	}
+	const vector<float> &photons_etaSC()
+	{
+		if (not photons_etaSC_isLoaded) {
+			if (photons_etaSC_branch != 0) {
+				photons_etaSC_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_etaSC_branch does not exist!\n");
+				exit(1);
+			}
+			photons_etaSC_isLoaded = true;
+		}
+		return photons_etaSC_;
 	}
 	const vector<float> &photons_full3x3_e3x3()
 	{
@@ -14362,6 +15343,19 @@ void LoadAllBranches()
 		}
 		return photons_hOverE_;
 	}
+	const vector<float> &photons_hOverEtowBC()
+	{
+		if (not photons_hOverEtowBC_isLoaded) {
+			if (photons_hOverEtowBC_branch != 0) {
+				photons_hOverEtowBC_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_hOverEtowBC_branch does not exist!\n");
+				exit(1);
+			}
+			photons_hOverEtowBC_isLoaded = true;
+		}
+		return photons_hOverEtowBC_;
+	}
 	const vector<float> &photons_hcalDepth1TowerSumEtBcConeDR03()
 	{
 		if (not photons_hcalDepth1TowerSumEtBcConeDR03_isLoaded) {
@@ -14439,6 +15433,19 @@ void LoadAllBranches()
 			photons_hcalIso04_isLoaded = true;
 		}
 		return photons_hcalIso04_;
+	}
+	const vector<float> &photons_hcalPFClusterIso()
+	{
+		if (not photons_hcalPFClusterIso_isLoaded) {
+			if (photons_hcalPFClusterIso_branch != 0) {
+				photons_hcalPFClusterIso_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_hcalPFClusterIso_branch does not exist!\n");
+				exit(1);
+			}
+			photons_hcalPFClusterIso_isLoaded = true;
+		}
+		return photons_hcalPFClusterIso_;
 	}
 	const vector<float> &photons_hcalTowerSumEtBcConeDR03()
 	{
@@ -14543,6 +15550,19 @@ void LoadAllBranches()
 			photons_ntkIsoSolid04_isLoaded = true;
 		}
 		return photons_ntkIsoSolid04_;
+	}
+	const vector<float> &photons_phiSC()
+	{
+		if (not photons_phiSC_isLoaded) {
+			if (photons_phiSC_branch != 0) {
+				photons_phiSC_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_phiSC_branch does not exist!\n");
+				exit(1);
+			}
+			photons_phiSC_isLoaded = true;
+		}
+		return photons_phiSC_;
 	}
 	const vector<float> &photons_photonIso()
 	{
@@ -14895,19 +15915,6 @@ void LoadAllBranches()
 		}
 		return ak8jets_area_;
 	}
-	const vector<float> &ak8jets_combinedSecondaryVertexBJetTag()
-	{
-		if (not ak8jets_combinedSecondaryVertexBJetTag_isLoaded) {
-			if (ak8jets_combinedSecondaryVertexBJetTag_branch != 0) {
-				ak8jets_combinedSecondaryVertexBJetTag_branch->GetEntry(index);
-			} else { 
-				printf("branch ak8jets_combinedSecondaryVertexBJetTag_branch does not exist!\n");
-				exit(1);
-			}
-			ak8jets_combinedSecondaryVertexBJetTag_isLoaded = true;
-		}
-		return ak8jets_combinedSecondaryVertexBJetTag_;
-	}
 	const vector<float> &ak8jets_filteredMass()
 	{
 		if (not ak8jets_filteredMass_isLoaded) {
@@ -14921,32 +15928,6 @@ void LoadAllBranches()
 		}
 		return ak8jets_filteredMass_;
 	}
-	const vector<float> &ak8jets_jetBProbabilityBJetTag()
-	{
-		if (not ak8jets_jetBProbabilityBJetTag_isLoaded) {
-			if (ak8jets_jetBProbabilityBJetTag_branch != 0) {
-				ak8jets_jetBProbabilityBJetTag_branch->GetEntry(index);
-			} else { 
-				printf("branch ak8jets_jetBProbabilityBJetTag_branch does not exist!\n");
-				exit(1);
-			}
-			ak8jets_jetBProbabilityBJetTag_isLoaded = true;
-		}
-		return ak8jets_jetBProbabilityBJetTag_;
-	}
-	const vector<float> &ak8jets_jetProbabilityBJetTag()
-	{
-		if (not ak8jets_jetProbabilityBJetTag_isLoaded) {
-			if (ak8jets_jetProbabilityBJetTag_branch != 0) {
-				ak8jets_jetProbabilityBJetTag_branch->GetEntry(index);
-			} else { 
-				printf("branch ak8jets_jetProbabilityBJetTag_branch does not exist!\n");
-				exit(1);
-			}
-			ak8jets_jetProbabilityBJetTag_isLoaded = true;
-		}
-		return ak8jets_jetProbabilityBJetTag_;
-	}
 	const vector<float> &ak8jets_mass()
 	{
 		if (not ak8jets_mass_isLoaded) {
@@ -14959,6 +15940,19 @@ void LoadAllBranches()
 			ak8jets_mass_isLoaded = true;
 		}
 		return ak8jets_mass_;
+	}
+	const vector<float> &ak8jets_minMass()
+	{
+		if (not ak8jets_minMass_isLoaded) {
+			if (ak8jets_minMass_branch != 0) {
+				ak8jets_minMass_branch->GetEntry(index);
+			} else { 
+				printf("branch ak8jets_minMass_branch does not exist!\n");
+				exit(1);
+			}
+			ak8jets_minMass_isLoaded = true;
+		}
+		return ak8jets_minMass_;
 	}
 	const vector<float> &ak8jets_nJettinessTau1()
 	{
@@ -15012,57 +16006,31 @@ void LoadAllBranches()
 		}
 		return ak8jets_prunedMass_;
 	}
-	const vector<float> &ak8jets_simpleSecondaryVertexHighEffBJetTag()
+	const vector<float> &ak8jets_softdropMass()
 	{
-		if (not ak8jets_simpleSecondaryVertexHighEffBJetTag_isLoaded) {
-			if (ak8jets_simpleSecondaryVertexHighEffBJetTag_branch != 0) {
-				ak8jets_simpleSecondaryVertexHighEffBJetTag_branch->GetEntry(index);
+		if (not ak8jets_softdropMass_isLoaded) {
+			if (ak8jets_softdropMass_branch != 0) {
+				ak8jets_softdropMass_branch->GetEntry(index);
 			} else { 
-				printf("branch ak8jets_simpleSecondaryVertexHighEffBJetTag_branch does not exist!\n");
+				printf("branch ak8jets_softdropMass_branch does not exist!\n");
 				exit(1);
 			}
-			ak8jets_simpleSecondaryVertexHighEffBJetTag_isLoaded = true;
+			ak8jets_softdropMass_isLoaded = true;
 		}
-		return ak8jets_simpleSecondaryVertexHighEffBJetTag_;
+		return ak8jets_softdropMass_;
 	}
-	const vector<float> &ak8jets_simpleSecondaryVertexHighPurBJetTags()
+	const vector<float> &ak8jets_topMass()
 	{
-		if (not ak8jets_simpleSecondaryVertexHighPurBJetTags_isLoaded) {
-			if (ak8jets_simpleSecondaryVertexHighPurBJetTags_branch != 0) {
-				ak8jets_simpleSecondaryVertexHighPurBJetTags_branch->GetEntry(index);
+		if (not ak8jets_topMass_isLoaded) {
+			if (ak8jets_topMass_branch != 0) {
+				ak8jets_topMass_branch->GetEntry(index);
 			} else { 
-				printf("branch ak8jets_simpleSecondaryVertexHighPurBJetTags_branch does not exist!\n");
+				printf("branch ak8jets_topMass_branch does not exist!\n");
 				exit(1);
 			}
-			ak8jets_simpleSecondaryVertexHighPurBJetTags_isLoaded = true;
+			ak8jets_topMass_isLoaded = true;
 		}
-		return ak8jets_simpleSecondaryVertexHighPurBJetTags_;
-	}
-	const vector<float> &ak8jets_trackCountingHighEffBJetTag()
-	{
-		if (not ak8jets_trackCountingHighEffBJetTag_isLoaded) {
-			if (ak8jets_trackCountingHighEffBJetTag_branch != 0) {
-				ak8jets_trackCountingHighEffBJetTag_branch->GetEntry(index);
-			} else { 
-				printf("branch ak8jets_trackCountingHighEffBJetTag_branch does not exist!\n");
-				exit(1);
-			}
-			ak8jets_trackCountingHighEffBJetTag_isLoaded = true;
-		}
-		return ak8jets_trackCountingHighEffBJetTag_;
-	}
-	const vector<float> &ak8jets_trackCountingHighPurBJetTag()
-	{
-		if (not ak8jets_trackCountingHighPurBJetTag_isLoaded) {
-			if (ak8jets_trackCountingHighPurBJetTag_branch != 0) {
-				ak8jets_trackCountingHighPurBJetTag_branch->GetEntry(index);
-			} else { 
-				printf("branch ak8jets_trackCountingHighPurBJetTag_branch does not exist!\n");
-				exit(1);
-			}
-			ak8jets_trackCountingHighPurBJetTag_isLoaded = true;
-		}
-		return ak8jets_trackCountingHighPurBJetTag_;
+		return ak8jets_topMass_;
 	}
 	const vector<float> &ak8jets_trimmedMass()
 	{
@@ -15116,18 +16084,18 @@ void LoadAllBranches()
 		}
 		return vtxs_ndof_;
 	}
-	const vector<float> &vtxs_sumpt()
+	const vector<float> &vtxs_score()
 	{
-		if (not vtxs_sumpt_isLoaded) {
-			if (vtxs_sumpt_branch != 0) {
-				vtxs_sumpt_branch->GetEntry(index);
+		if (not vtxs_score_isLoaded) {
+			if (vtxs_score_branch != 0) {
+				vtxs_score_branch->GetEntry(index);
 			} else { 
-				printf("branch vtxs_sumpt_branch does not exist!\n");
+				printf("branch vtxs_score_branch does not exist!\n");
 				exit(1);
 			}
-			vtxs_sumpt_isLoaded = true;
+			vtxs_score_isLoaded = true;
 		}
-		return vtxs_sumpt_;
+		return vtxs_score_;
 	}
 	const vector<float> &vtxs_xError()
 	{
@@ -15168,6 +16136,19 @@ void LoadAllBranches()
 		}
 		return vtxs_zError_;
 	}
+	const vector<vector<float> > &pfjets_nonCHS_bDiscriminators()
+	{
+		if (not pfjets_nonCHS_bDiscriminators_isLoaded) {
+			if (pfjets_nonCHS_bDiscriminators_branch != 0) {
+				pfjets_nonCHS_bDiscriminators_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_nonCHS_bDiscriminators_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_nonCHS_bDiscriminators_isLoaded = true;
+		}
+		return pfjets_nonCHS_bDiscriminators_;
+	}
 	const vector<vector<float> > &mus_stationShowerDeltaR()
 	{
 		if (not mus_stationShowerDeltaR_isLoaded) {
@@ -15193,6 +16174,32 @@ void LoadAllBranches()
 			mus_stationShowerSizeT_isLoaded = true;
 		}
 		return mus_stationShowerSizeT_;
+	}
+	const vector<vector<float> > &pfjets_bDiscriminators()
+	{
+		if (not pfjets_bDiscriminators_isLoaded) {
+			if (pfjets_bDiscriminators_branch != 0) {
+				pfjets_bDiscriminators_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_bDiscriminators_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_bDiscriminators_isLoaded = true;
+		}
+		return pfjets_bDiscriminators_;
+	}
+	const vector<vector<float> > &pfjets_puppi_bDiscriminators()
+	{
+		if (not pfjets_puppi_bDiscriminators_isLoaded) {
+			if (pfjets_puppi_bDiscriminators_branch != 0) {
+				pfjets_puppi_bDiscriminators_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_puppi_bDiscriminators_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_puppi_bDiscriminators_isLoaded = true;
+		}
+		return pfjets_puppi_bDiscriminators_;
 	}
 	const vector<vector<float> > &taus_pf_IDs()
 	{
@@ -15596,6 +16603,123 @@ void LoadAllBranches()
 			sparm_subProcessId_isLoaded = true;
 		}
 		return sparm_subProcessId_;
+	}
+	const vector<int> &pfjets_nonCHS_chargedHadronMultiplicity()
+	{
+		if (not pfjets_nonCHS_chargedHadronMultiplicity_isLoaded) {
+			if (pfjets_nonCHS_chargedHadronMultiplicity_branch != 0) {
+				pfjets_nonCHS_chargedHadronMultiplicity_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_nonCHS_chargedHadronMultiplicity_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_nonCHS_chargedHadronMultiplicity_isLoaded = true;
+		}
+		return pfjets_nonCHS_chargedHadronMultiplicity_;
+	}
+	const vector<int> &pfjets_nonCHS_chargedMultiplicity()
+	{
+		if (not pfjets_nonCHS_chargedMultiplicity_isLoaded) {
+			if (pfjets_nonCHS_chargedMultiplicity_branch != 0) {
+				pfjets_nonCHS_chargedMultiplicity_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_nonCHS_chargedMultiplicity_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_nonCHS_chargedMultiplicity_isLoaded = true;
+		}
+		return pfjets_nonCHS_chargedMultiplicity_;
+	}
+	const vector<int> &pfjets_nonCHS_electronMultiplicity()
+	{
+		if (not pfjets_nonCHS_electronMultiplicity_isLoaded) {
+			if (pfjets_nonCHS_electronMultiplicity_branch != 0) {
+				pfjets_nonCHS_electronMultiplicity_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_nonCHS_electronMultiplicity_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_nonCHS_electronMultiplicity_isLoaded = true;
+		}
+		return pfjets_nonCHS_electronMultiplicity_;
+	}
+	const vector<int> &pfjets_nonCHS_muonMultiplicity()
+	{
+		if (not pfjets_nonCHS_muonMultiplicity_isLoaded) {
+			if (pfjets_nonCHS_muonMultiplicity_branch != 0) {
+				pfjets_nonCHS_muonMultiplicity_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_nonCHS_muonMultiplicity_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_nonCHS_muonMultiplicity_isLoaded = true;
+		}
+		return pfjets_nonCHS_muonMultiplicity_;
+	}
+	const vector<int> &pfjets_nonCHS_neutralHadronMultiplicity()
+	{
+		if (not pfjets_nonCHS_neutralHadronMultiplicity_isLoaded) {
+			if (pfjets_nonCHS_neutralHadronMultiplicity_branch != 0) {
+				pfjets_nonCHS_neutralHadronMultiplicity_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_nonCHS_neutralHadronMultiplicity_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_nonCHS_neutralHadronMultiplicity_isLoaded = true;
+		}
+		return pfjets_nonCHS_neutralHadronMultiplicity_;
+	}
+	const vector<int> &pfjets_nonCHS_neutralMultiplicity()
+	{
+		if (not pfjets_nonCHS_neutralMultiplicity_isLoaded) {
+			if (pfjets_nonCHS_neutralMultiplicity_branch != 0) {
+				pfjets_nonCHS_neutralMultiplicity_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_nonCHS_neutralMultiplicity_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_nonCHS_neutralMultiplicity_isLoaded = true;
+		}
+		return pfjets_nonCHS_neutralMultiplicity_;
+	}
+	const vector<int> &pfjets_nonCHS_partonFlavour()
+	{
+		if (not pfjets_nonCHS_partonFlavour_isLoaded) {
+			if (pfjets_nonCHS_partonFlavour_branch != 0) {
+				pfjets_nonCHS_partonFlavour_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_nonCHS_partonFlavour_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_nonCHS_partonFlavour_isLoaded = true;
+		}
+		return pfjets_nonCHS_partonFlavour_;
+	}
+	const vector<int> &pfjets_nonCHS_photonMultiplicity()
+	{
+		if (not pfjets_nonCHS_photonMultiplicity_isLoaded) {
+			if (pfjets_nonCHS_photonMultiplicity_branch != 0) {
+				pfjets_nonCHS_photonMultiplicity_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_nonCHS_photonMultiplicity_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_nonCHS_photonMultiplicity_isLoaded = true;
+		}
+		return pfjets_nonCHS_photonMultiplicity_;
+	}
+	const vector<int> &ak8jets_mc_id()
+	{
+		if (not ak8jets_mc_id_isLoaded) {
+			if (ak8jets_mc_id_branch != 0) {
+				ak8jets_mc_id_branch->GetEntry(index);
+			} else { 
+				printf("branch ak8jets_mc_id_branch does not exist!\n");
+				exit(1);
+			}
+			ak8jets_mc_id_isLoaded = true;
+		}
+		return ak8jets_mc_id_;
 	}
 	const vector<int> &els_mc3_id()
 	{
@@ -16441,6 +17565,32 @@ void LoadAllBranches()
 			hyp_type_isLoaded = true;
 		}
 		return hyp_type_;
+	}
+	const vector<int> &isotracks_charge()
+	{
+		if (not isotracks_charge_isLoaded) {
+			if (isotracks_charge_branch != 0) {
+				isotracks_charge_branch->GetEntry(index);
+			} else { 
+				printf("branch isotracks_charge_branch does not exist!\n");
+				exit(1);
+			}
+			isotracks_charge_isLoaded = true;
+		}
+		return isotracks_charge_;
+	}
+	const vector<int> &isotracks_particleId()
+	{
+		if (not isotracks_particleId_isLoaded) {
+			if (isotracks_particleId_branch != 0) {
+				isotracks_particleId_branch->GetEntry(index);
+			} else { 
+				printf("branch isotracks_particleId_branch does not exist!\n");
+				exit(1);
+			}
+			isotracks_particleId_isLoaded = true;
+		}
+		return isotracks_particleId_;
 	}
 	const vector<int> &mus_algo()
 	{
@@ -17300,19 +18450,6 @@ void LoadAllBranches()
 		}
 		return mus_trk_charge_;
 	}
-	const vector<int> &mus_trkidx()
-	{
-		if (not mus_trkidx_isLoaded) {
-			if (mus_trkidx_branch != 0) {
-				mus_trkidx_branch->GetEntry(index);
-			} else { 
-				printf("branch mus_trkidx_branch does not exist!\n");
-				exit(1);
-			}
-			mus_trkidx_isLoaded = true;
-		}
-		return mus_trkidx_;
-	}
 	const vector<int> &mus_type()
 	{
 		if (not mus_type_isLoaded) {
@@ -17482,6 +18619,110 @@ void LoadAllBranches()
 		}
 		return pfjets_photonMultiplicity_;
 	}
+	const vector<int> &pfjets_puppi_chargedHadronMultiplicity()
+	{
+		if (not pfjets_puppi_chargedHadronMultiplicity_isLoaded) {
+			if (pfjets_puppi_chargedHadronMultiplicity_branch != 0) {
+				pfjets_puppi_chargedHadronMultiplicity_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_puppi_chargedHadronMultiplicity_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_puppi_chargedHadronMultiplicity_isLoaded = true;
+		}
+		return pfjets_puppi_chargedHadronMultiplicity_;
+	}
+	const vector<int> &pfjets_puppi_chargedMultiplicity()
+	{
+		if (not pfjets_puppi_chargedMultiplicity_isLoaded) {
+			if (pfjets_puppi_chargedMultiplicity_branch != 0) {
+				pfjets_puppi_chargedMultiplicity_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_puppi_chargedMultiplicity_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_puppi_chargedMultiplicity_isLoaded = true;
+		}
+		return pfjets_puppi_chargedMultiplicity_;
+	}
+	const vector<int> &pfjets_puppi_electronMultiplicity()
+	{
+		if (not pfjets_puppi_electronMultiplicity_isLoaded) {
+			if (pfjets_puppi_electronMultiplicity_branch != 0) {
+				pfjets_puppi_electronMultiplicity_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_puppi_electronMultiplicity_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_puppi_electronMultiplicity_isLoaded = true;
+		}
+		return pfjets_puppi_electronMultiplicity_;
+	}
+	const vector<int> &pfjets_puppi_muonMultiplicity()
+	{
+		if (not pfjets_puppi_muonMultiplicity_isLoaded) {
+			if (pfjets_puppi_muonMultiplicity_branch != 0) {
+				pfjets_puppi_muonMultiplicity_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_puppi_muonMultiplicity_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_puppi_muonMultiplicity_isLoaded = true;
+		}
+		return pfjets_puppi_muonMultiplicity_;
+	}
+	const vector<int> &pfjets_puppi_neutralHadronMultiplicity()
+	{
+		if (not pfjets_puppi_neutralHadronMultiplicity_isLoaded) {
+			if (pfjets_puppi_neutralHadronMultiplicity_branch != 0) {
+				pfjets_puppi_neutralHadronMultiplicity_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_puppi_neutralHadronMultiplicity_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_puppi_neutralHadronMultiplicity_isLoaded = true;
+		}
+		return pfjets_puppi_neutralHadronMultiplicity_;
+	}
+	const vector<int> &pfjets_puppi_neutralMultiplicity()
+	{
+		if (not pfjets_puppi_neutralMultiplicity_isLoaded) {
+			if (pfjets_puppi_neutralMultiplicity_branch != 0) {
+				pfjets_puppi_neutralMultiplicity_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_puppi_neutralMultiplicity_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_puppi_neutralMultiplicity_isLoaded = true;
+		}
+		return pfjets_puppi_neutralMultiplicity_;
+	}
+	const vector<int> &pfjets_puppi_partonFlavour()
+	{
+		if (not pfjets_puppi_partonFlavour_isLoaded) {
+			if (pfjets_puppi_partonFlavour_branch != 0) {
+				pfjets_puppi_partonFlavour_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_puppi_partonFlavour_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_puppi_partonFlavour_isLoaded = true;
+		}
+		return pfjets_puppi_partonFlavour_;
+	}
+	const vector<int> &pfjets_puppi_photonMultiplicity()
+	{
+		if (not pfjets_puppi_photonMultiplicity_isLoaded) {
+			if (pfjets_puppi_photonMultiplicity_branch != 0) {
+				pfjets_puppi_photonMultiplicity_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_puppi_photonMultiplicity_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_puppi_photonMultiplicity_isLoaded = true;
+		}
+		return pfjets_puppi_photonMultiplicity_;
+	}
 	const vector<int> &taus_pf_charge()
 	{
 		if (not taus_pf_charge_isLoaded) {
@@ -17612,6 +18853,19 @@ void LoadAllBranches()
 		}
 		return svs_nTrks_;
 	}
+	const vector<int> &ak8jets_nSubJets()
+	{
+		if (not ak8jets_nSubJets_isLoaded) {
+			if (ak8jets_nSubJets_branch != 0) {
+				ak8jets_nSubJets_branch->GetEntry(index);
+			} else { 
+				printf("branch ak8jets_nSubJets_branch does not exist!\n");
+				exit(1);
+			}
+			ak8jets_nSubJets_isLoaded = true;
+		}
+		return ak8jets_nSubJets_;
+	}
 	const vector<int> &ak8jets_partonFlavour()
 	{
 		if (not ak8jets_partonFlavour_isLoaded) {
@@ -17651,18 +18905,18 @@ void LoadAllBranches()
 		}
 		return vtxs_isValid_;
 	}
-	const vector<int> &vtxs_tracksSize()
+	const vector<vector<int> > &pfjets_nonCHS_pfcandIndicies()
 	{
-		if (not vtxs_tracksSize_isLoaded) {
-			if (vtxs_tracksSize_branch != 0) {
-				vtxs_tracksSize_branch->GetEntry(index);
+		if (not pfjets_nonCHS_pfcandIndicies_isLoaded) {
+			if (pfjets_nonCHS_pfcandIndicies_branch != 0) {
+				pfjets_nonCHS_pfcandIndicies_branch->GetEntry(index);
 			} else { 
-				printf("branch vtxs_tracksSize_branch does not exist!\n");
+				printf("branch pfjets_nonCHS_pfcandIndicies_branch does not exist!\n");
 				exit(1);
 			}
-			vtxs_tracksSize_isLoaded = true;
+			pfjets_nonCHS_pfcandIndicies_isLoaded = true;
 		}
-		return vtxs_tracksSize_;
+		return pfjets_nonCHS_pfcandIndicies_;
 	}
 	const vector<vector<int> > &els_PFCand_idx()
 	{
@@ -17755,6 +19009,19 @@ void LoadAllBranches()
 		}
 		return pfjets_pfcandIndicies_;
 	}
+	const vector<vector<int> > &pfjets_puppi_pfcandIndicies()
+	{
+		if (not pfjets_puppi_pfcandIndicies_isLoaded) {
+			if (pfjets_puppi_pfcandIndicies_branch != 0) {
+				pfjets_puppi_pfcandIndicies_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_puppi_pfcandIndicies_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_puppi_pfcandIndicies_isLoaded = true;
+		}
+		return pfjets_puppi_pfcandIndicies_;
+	}
 	const vector<vector<int> > &photons_PFCand_idx()
 	{
 		if (not photons_PFCand_idx_isLoaded) {
@@ -17819,6 +19086,19 @@ void LoadAllBranches()
 			ak8jets_pfcandIndicies_isLoaded = true;
 		}
 		return ak8jets_pfcandIndicies_;
+	}
+	const vector<unsigned char> &isotracks_fromPV()
+	{
+		if (not isotracks_fromPV_isLoaded) {
+			if (isotracks_fromPV_branch != 0) {
+				isotracks_fromPV_branch->GetEntry(index);
+			} else { 
+				printf("branch isotracks_fromPV_branch does not exist!\n");
+				exit(1);
+			}
+			isotracks_fromPV_isLoaded = true;
+		}
+		return isotracks_fromPV_;
 	}
 	const vector<unsigned char> &pfcands_fromPV()
 	{
@@ -17937,6 +19217,58 @@ void LoadAllBranches()
 		}
 		return els_HLT_Ele20_SC4_Mass50_TrailingLeg_version_;
 	}
+	unsigned int &els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_version()
+	{
+		if (not els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_version_isLoaded) {
+			if (els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_version_branch != 0) {
+				els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_version_branch->GetEntry(index);
+			} else { 
+				printf("branch els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_version_branch does not exist!\n");
+				exit(1);
+			}
+			els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_version_isLoaded = true;
+		}
+		return els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_version_;
+	}
+	unsigned int &els_HLT_Ele25WP60_Ele8_Mass55_version()
+	{
+		if (not els_HLT_Ele25WP60_Ele8_Mass55_version_isLoaded) {
+			if (els_HLT_Ele25WP60_Ele8_Mass55_version_branch != 0) {
+				els_HLT_Ele25WP60_Ele8_Mass55_version_branch->GetEntry(index);
+			} else { 
+				printf("branch els_HLT_Ele25WP60_Ele8_Mass55_version_branch does not exist!\n");
+				exit(1);
+			}
+			els_HLT_Ele25WP60_Ele8_Mass55_version_isLoaded = true;
+		}
+		return els_HLT_Ele25WP60_Ele8_Mass55_version_;
+	}
+	unsigned int &els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_version()
+	{
+		if (not els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_version_isLoaded) {
+			if (els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_version_branch != 0) {
+				els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_version_branch->GetEntry(index);
+			} else { 
+				printf("branch els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_version_branch does not exist!\n");
+				exit(1);
+			}
+			els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_version_isLoaded = true;
+		}
+		return els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_version_;
+	}
+	unsigned int &els_HLT_Ele25WP60_SC4_Mass55_version()
+	{
+		if (not els_HLT_Ele25WP60_SC4_Mass55_version_isLoaded) {
+			if (els_HLT_Ele25WP60_SC4_Mass55_version_branch != 0) {
+				els_HLT_Ele25WP60_SC4_Mass55_version_branch->GetEntry(index);
+			} else { 
+				printf("branch els_HLT_Ele25WP60_SC4_Mass55_version_branch does not exist!\n");
+				exit(1);
+			}
+			els_HLT_Ele25WP60_SC4_Mass55_version_isLoaded = true;
+		}
+		return els_HLT_Ele25WP60_SC4_Mass55_version_;
+	}
 	unsigned int &els_HLT_Ele27_WP80_L1sL1SingleEG20ORL1SingleEG22_version()
 	{
 		if (not els_HLT_Ele27_WP80_L1sL1SingleEG20ORL1SingleEG22_version_isLoaded) {
@@ -17988,6 +19320,32 @@ void LoadAllBranches()
 			els_HLT_Ele32_SC17_Mass50_TrailingLeg_version_isLoaded = true;
 		}
 		return els_HLT_Ele32_SC17_Mass50_TrailingLeg_version_;
+	}
+	unsigned int &els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_version()
+	{
+		if (not els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_version_isLoaded) {
+			if (els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_version_branch != 0) {
+				els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_version_branch->GetEntry(index);
+			} else { 
+				printf("branch els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_version_branch does not exist!\n");
+				exit(1);
+			}
+			els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_version_isLoaded = true;
+		}
+		return els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_version_;
+	}
+	unsigned int &els_HLT_Ele5_SC5_JPsi_Mass2to4p5_version()
+	{
+		if (not els_HLT_Ele5_SC5_JPsi_Mass2to4p5_version_isLoaded) {
+			if (els_HLT_Ele5_SC5_JPsi_Mass2to4p5_version_branch != 0) {
+				els_HLT_Ele5_SC5_JPsi_Mass2to4p5_version_branch->GetEntry(index);
+			} else { 
+				printf("branch els_HLT_Ele5_SC5_JPsi_Mass2to4p5_version_branch does not exist!\n");
+				exit(1);
+			}
+			els_HLT_Ele5_SC5_JPsi_Mass2to4p5_version_isLoaded = true;
+		}
+		return els_HLT_Ele5_SC5_JPsi_Mass2to4p5_version_;
 	}
 	unsigned int &els_HLT_Mu17_Ele8_TrailingLeg_version()
 	{
@@ -18105,6 +19463,19 @@ void LoadAllBranches()
 			genps_signalProcessID_isLoaded = true;
 		}
 		return genps_signalProcessID_;
+	}
+	unsigned int &evt_ngenjets()
+	{
+		if (not evt_ngenjets_isLoaded) {
+			if (evt_ngenjets_branch != 0) {
+				evt_ngenjets_branch->GetEntry(index);
+			} else { 
+				printf("branch evt_ngenjets_branch does not exist!\n");
+				exit(1);
+			}
+			evt_ngenjets_isLoaded = true;
+		}
+		return evt_ngenjets_;
 	}
 	unsigned int &mus_HLT_IsoMu24_eta2p1_L1sMu16Eta2p1_version()
 	{
@@ -18418,6 +19789,58 @@ void LoadAllBranches()
 		}
 		return els_HLT_Ele20_SC4_Mass50_TrailingLeg_;
 	}
+	const vector<unsigned int> &els_HLT_Ele25WP60_Ele8_Mass55()
+	{
+		if (not els_HLT_Ele25WP60_Ele8_Mass55_isLoaded) {
+			if (els_HLT_Ele25WP60_Ele8_Mass55_branch != 0) {
+				els_HLT_Ele25WP60_Ele8_Mass55_branch->GetEntry(index);
+			} else { 
+				printf("branch els_HLT_Ele25WP60_Ele8_Mass55_branch does not exist!\n");
+				exit(1);
+			}
+			els_HLT_Ele25WP60_Ele8_Mass55_isLoaded = true;
+		}
+		return els_HLT_Ele25WP60_Ele8_Mass55_;
+	}
+	const vector<unsigned int> &els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg()
+	{
+		if (not els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_isLoaded) {
+			if (els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_branch != 0) {
+				els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_branch->GetEntry(index);
+			} else { 
+				printf("branch els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_branch does not exist!\n");
+				exit(1);
+			}
+			els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_isLoaded = true;
+		}
+		return els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_;
+	}
+	const vector<unsigned int> &els_HLT_Ele25WP60_SC4_Mass55()
+	{
+		if (not els_HLT_Ele25WP60_SC4_Mass55_isLoaded) {
+			if (els_HLT_Ele25WP60_SC4_Mass55_branch != 0) {
+				els_HLT_Ele25WP60_SC4_Mass55_branch->GetEntry(index);
+			} else { 
+				printf("branch els_HLT_Ele25WP60_SC4_Mass55_branch does not exist!\n");
+				exit(1);
+			}
+			els_HLT_Ele25WP60_SC4_Mass55_isLoaded = true;
+		}
+		return els_HLT_Ele25WP60_SC4_Mass55_;
+	}
+	const vector<unsigned int> &els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg()
+	{
+		if (not els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_isLoaded) {
+			if (els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_branch != 0) {
+				els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_branch->GetEntry(index);
+			} else { 
+				printf("branch els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_branch does not exist!\n");
+				exit(1);
+			}
+			els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_isLoaded = true;
+		}
+		return els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_;
+	}
 	const vector<unsigned int> &els_HLT_Ele27_WP80()
 	{
 		if (not els_HLT_Ele27_WP80_isLoaded) {
@@ -18469,6 +19892,32 @@ void LoadAllBranches()
 			els_HLT_Ele32_SC17_Mass50_TrailingLeg_isLoaded = true;
 		}
 		return els_HLT_Ele32_SC17_Mass50_TrailingLeg_;
+	}
+	const vector<unsigned int> &els_HLT_Ele5_SC5_JPsi_Mass2to4p5()
+	{
+		if (not els_HLT_Ele5_SC5_JPsi_Mass2to4p5_isLoaded) {
+			if (els_HLT_Ele5_SC5_JPsi_Mass2to4p5_branch != 0) {
+				els_HLT_Ele5_SC5_JPsi_Mass2to4p5_branch->GetEntry(index);
+			} else { 
+				printf("branch els_HLT_Ele5_SC5_JPsi_Mass2to4p5_branch does not exist!\n");
+				exit(1);
+			}
+			els_HLT_Ele5_SC5_JPsi_Mass2to4p5_isLoaded = true;
+		}
+		return els_HLT_Ele5_SC5_JPsi_Mass2to4p5_;
+	}
+	const vector<unsigned int> &els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg()
+	{
+		if (not els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_isLoaded) {
+			if (els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_branch != 0) {
+				els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_branch->GetEntry(index);
+			} else { 
+				printf("branch els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_branch does not exist!\n");
+				exit(1);
+			}
+			els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_isLoaded = true;
+		}
+		return els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_;
 	}
 	const vector<unsigned int> &els_HLT_Mu17_Ele8()
 	{
@@ -18704,7 +20153,7 @@ void LoadAllBranches()
 		}
 		return mus_HLT_Mu8_Ele17_TrailingLeg_;
 	}
-	unsigned long long &evt_event()
+	ULong64_t &evt_event()
 	{
 		if (not evt_event_isLoaded) {
 			if (evt_event_branch != 0) {
@@ -18717,7 +20166,7 @@ void LoadAllBranches()
 		}
 		return evt_event_;
 	}
-	const vector<unsigned long long> &evt_timestamp()
+	const vector<ULong64_t> &evt_timestamp()
 	{
 		if (not evt_timestamp_isLoaded) {
 			if (evt_timestamp_branch != 0) {
@@ -18789,6 +20238,25 @@ void LoadAllBranches()
 			return 0;
 		}
 	}
+	float getbtagvalue(TString bDiscriminatorName, unsigned int jetIndx) {
+		size_t bDiscriminatorIndx;
+		vector<TString>::const_iterator begin_it = pfjets_bDiscriminatorNames().begin();
+		vector<TString>::const_iterator end_it = pfjets_bDiscriminatorNames().end();
+		vector<TString>::const_iterator found_it = find(begin_it, end_it, bDiscriminatorName);
+		if(found_it != end_it)
+			bDiscriminatorIndx = found_it - begin_it;
+		else {
+			cout << "Cannot find b discriminator " << bDiscriminatorName << endl; 
+			return 0;
+		}
+
+		if (jetIndx < pfjets_bDiscriminators().size()) 
+			return pfjets_bDiscriminators().at(jetIndx).at(bDiscriminatorIndx);
+		else {
+			cout << "Cannot find jet # "<< jetIndx << endl;
+			return 0;
+		}
+	}
 
   static void progress( int nEventsTotal, int nEventsChain ){
     int period = 1000;
@@ -18817,10 +20285,14 @@ extern CMS3 cms3;
 #endif
 
 namespace tas {
+	const vector<string> &genweightsID();
 	const TBits &hlt_bits();
+	const vector<TString> &pfjets_nonCHS_bDiscriminatorNames();
 	const vector<TString> &evt_CMS3tag();
 	const vector<TString> &evt_dataset();
 	const vector<TString> &hlt_trigNames();
+	const vector<TString> &pfjets_bDiscriminatorNames();
+	const vector<TString> &pfjets_puppi_bDiscriminatorNames();
 	const vector<TString> &taus_pf_IDnames();
 	const vector<TString> &sparm_comment();
 	const vector<TString> &sparm_names();
@@ -18844,6 +20316,17 @@ namespace tas {
 	const vector<bool> &els_isGsfCtfScPixChargeConsistent();
 	const vector<bool> &els_passingMvaPreselection();
 	const vector<bool> &els_passingPflowPreselection();
+	const vector<bool> &genps_fromHardProcessBeforeFSR();
+	const vector<bool> &genps_fromHardProcessDecayed();
+	const vector<bool> &genps_fromHardProcessFinalState();
+	const vector<bool> &genps_isDirectHardProcessTauDecayProductFinalState();
+	const vector<bool> &genps_isDirectPromptTauDecayProductFinalState();
+	const vector<bool> &genps_isHardProcess();
+	const vector<bool> &genps_isLastCopy();
+	const vector<bool> &genps_isLastCopyBeforeFSR();
+	const vector<bool> &genps_isMostlyLikePythia6Status3();
+	const vector<bool> &genps_isPromptDecayed();
+	const vector<bool> &genps_isPromptFinalState();
 	const vector<bool> &mus_isRPCMuon();
 	const vector<bool> &mus_tightMatch();
 	const vector<bool> &mus_updatedSta();
@@ -18917,11 +20400,12 @@ namespace tas {
 	const float &evt_fixgrid_rho_all();
 	const float &evt_fixgrid_rho_ctr();
 	const float &evt_fixgrid_rho_fwd();
+	const float &evt_calomet();
+	const float &evt_calometPhi();
 	const float &evt_pfmet();
 	const float &evt_pfmetPhi();
 	const float &evt_pfmetPhi_raw();
 	const float &evt_pfmetSig();
-	const float &evt_pfmetSignificance();
 	const float &evt_pfmet_raw();
 	const float &evt_pfsumet();
 	const float &evt_pfsumet_raw();
@@ -18934,6 +20418,9 @@ namespace tas {
 	const float &sparm_weight();
 	const float &sparm_xsec();
 	const ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> >  &evt_bsp4();
+	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &pfjets_nonCHS_p4();
+	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &ak8jets_mc_gp_p4();
+	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &ak8jets_mc_p4();
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &els_mc_motherp4();
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &els_mc_p4();
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &mus_mc_motherp4();
@@ -18943,9 +20430,7 @@ namespace tas {
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &pfjets_mc_p4();
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &photons_mc_motherp4();
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &photons_mc_p4();
-	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &els_inner_position();
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &els_mc_patMatch_p4();
-	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &els_outer_position();
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &els_p4();
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &els_p4In();
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &els_p4Out();
@@ -18955,9 +20440,11 @@ namespace tas {
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &genjets_p4NoMuNoNu();
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &genps_p4();
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &genps_prod_vtx();
+	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &genjets_p4();
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &hyp_ll_p4();
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &hyp_lt_p4();
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &hyp_p4();
+	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &isotracks_p4();
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &mus_gfit_p4();
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &mus_gfit_vertex_p4();
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &mus_mc_patMatch_p4();
@@ -18969,6 +20456,7 @@ namespace tas {
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &mus_vertex_p4();
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &pfcands_p4();
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &pfjets_p4();
+	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &pfjets_puppi_p4();
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &taus_pf_lead_chargecand_p4();
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &taus_pf_lead_neutrcand_p4();
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &taus_pf_p4();
@@ -18981,6 +20469,20 @@ namespace tas {
 	const vector<vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > > &hlt_trigObjs_p4();
 	const vector<vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > > &taus_pf_isocands_p4();
 	const vector<vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > > &taus_pf_signalcands_p4();
+	const vector<float> &pfjets_nonCHS_area();
+	const vector<float> &pfjets_nonCHS_chargedEmE();
+	const vector<float> &pfjets_nonCHS_chargedHadronE();
+	const vector<float> &pfjets_nonCHS_electronE();
+	const vector<float> &pfjets_nonCHS_hfEmE();
+	const vector<float> &pfjets_nonCHS_hfHadronE();
+	const vector<float> &pfjets_nonCHS_mass();
+	const vector<float> &pfjets_nonCHS_muonE();
+	const vector<float> &pfjets_nonCHS_neutralEmE();
+	const vector<float> &pfjets_nonCHS_neutralHadronE();
+	const vector<float> &pfjets_nonCHS_pfCombinedInclusiveSecondaryVertexV2BJetTag();
+	const vector<float> &pfjets_nonCHS_photonE();
+	const vector<float> &pfjets_nonCHS_pileupJetId();
+	const vector<float> &pfjets_nonCHS_undoJEC();
 	const vector<float> &evt_bs_covMatrix();
 	const vector<float> &els_mc3dr();
 	const vector<float> &els_mcdr();
@@ -19034,6 +20536,7 @@ namespace tas {
 	const vector<float> &els_ecalEnergyError();
 	const vector<float> &els_ecalIso();
 	const vector<float> &els_ecalIso04();
+	const vector<float> &els_ecalPFClusterIso();
 	const vector<float> &els_etaErr();
 	const vector<float> &els_etaSC();
 	const vector<float> &els_etaSCwidth();
@@ -19048,30 +20551,19 @@ namespace tas {
 	const vector<float> &els_hcalDepth2TowerSumEt04();
 	const vector<float> &els_hcalIso();
 	const vector<float> &els_hcalIso04();
+	const vector<float> &els_hcalPFClusterIso();
 	const vector<float> &els_ip2d();
 	const vector<float> &els_ip2derr();
 	const vector<float> &els_ip3d();
 	const vector<float> &els_ip3derr();
-	const vector<float> &els_iso03_pf2012_ch();
-	const vector<float> &els_iso03_pf2012_em();
-	const vector<float> &els_iso03_pf2012ext_ch();
-	const vector<float> &els_iso03_pf2012ext_em();
-	const vector<float> &els_iso03_pf2012ext_nh();
-	const vector<float> &els_iso03_pf2012_nh();
-	const vector<float> &els_iso04_pf2012_ch();
-	const vector<float> &els_iso04_pf2012_em();
-	const vector<float> &els_iso04_pf2012ext_ch();
-	const vector<float> &els_iso04_pf2012ext_em();
-	const vector<float> &els_iso04_pf2012ext_nh();
-	const vector<float> &els_iso04_pf2012_nh();
 	const vector<float> &els_mass();
 	const vector<float> &els_mc_patMatch_dr();
+	const vector<float> &els_miniIso_ch();
+	const vector<float> &els_miniIso_db();
+	const vector<float> &els_miniIso_em();
+	const vector<float> &els_miniIso_nh();
+	const vector<float> &els_miniIso_uncor();
 	const vector<float> &els_mva();
-        const vector<float> &els_miniIso_ch();
-        const vector<float> &els_miniIso_db();
-        const vector<float> &els_miniIso_em();
-        const vector<float> &els_miniIso_nh();
-        const vector<float> &els_miniIso_uncor();
 	const vector<float> &els_ndof();
 	const vector<float> &els_pfChargedHadronIso();
 	const vector<float> &els_pfNeutralHadronIso();
@@ -19102,7 +20594,10 @@ namespace tas {
 	const vector<float> &genps_charge();
 	const vector<float> &genps_iso();
 	const vector<float> &genps_mass();
-	const vector<float> &mus_backToBackCompat();
+	const vector<float> &genweights();
+	const vector<float> &isotracks_dz();
+	const vector<float> &isotracks_mass();
+	const vector<float> &isotracks_relIso();
 	const vector<float> &mus_bs2d();
 	const vector<float> &mus_bs2derr();
 	const vector<float> &mus_bs3d();
@@ -19111,7 +20606,6 @@ namespace tas {
 	const vector<float> &mus_chi2();
 	const vector<float> &mus_chi2LocalMomentum();
 	const vector<float> &mus_chi2LocalPosition();
-	const vector<float> &mus_cosmicCompat();
 	const vector<float> &mus_d0();
 	const vector<float> &mus_d0Err();
 	const vector<float> &mus_d0corr();
@@ -19120,7 +20614,6 @@ namespace tas {
 	const vector<float> &mus_dxyPV();
 	const vector<float> &mus_dzPV();
 	const vector<float> &mus_ecal_time();
-	const vector<float> &mus_ecal_timeError();
 	const vector<float> &mus_e_em();
 	const vector<float> &mus_e_emS9();
 	const vector<float> &mus_e_had();
@@ -19147,7 +20640,6 @@ namespace tas {
 	const vector<float> &mus_globalDeltaEtaPhi();
 	const vector<float> &mus_hadMax();
 	const vector<float> &mus_hcal_time();
-	const vector<float> &mus_hcal_timeError();
 	const vector<float> &mus_ip2d();
 	const vector<float> &mus_ip2derr();
 	const vector<float> &mus_ip3d();
@@ -19208,14 +20700,13 @@ namespace tas {
 	const vector<float> &mus_iso_trckvetoDep();
 	const vector<float> &mus_localDistance();
 	const vector<float> &mus_mass();
-        const vector<float> &mus_miniIso_ch();
-        const vector<float> &mus_miniIso_db();
-        const vector<float> &mus_miniIso_em();
-        const vector<float> &mus_miniIso_nh();
-        const vector<float> &mus_miniIso_uncor();
 	const vector<float> &mus_mc_patMatch_dr();
+	const vector<float> &mus_miniIso_ch();
+	const vector<float> &mus_miniIso_db();
+	const vector<float> &mus_miniIso_em();
+	const vector<float> &mus_miniIso_nh();
+	const vector<float> &mus_miniIso_uncor();
 	const vector<float> &mus_ndof();
-	const vector<float> &mus_overlapCompat();
 	const vector<float> &mus_phiErr();
 	const vector<float> &mus_ptErr();
 	const vector<float> &mus_qoverp();
@@ -19238,12 +20729,8 @@ namespace tas {
 	const vector<float> &mus_timeAtIpInOutErr();
 	const vector<float> &mus_timeAtIpOutIn();
 	const vector<float> &mus_timeAtIpOutInErr();
-	const vector<float> &mus_timeCompat();
-	const vector<float> &mus_tower();
-	const vector<float> &mus_towerS9();
 	const vector<float> &mus_trkKink();
 	const vector<float> &mus_trkRelChi2();
-	const vector<float> &mus_vertexCompat();
 	const vector<float> &mus_vertexphi();
 	const vector<float> &mus_z0();
 	const vector<float> &mus_z0Err();
@@ -19253,36 +20740,44 @@ namespace tas {
 	const vector<float> &pfjets_area();
 	const vector<float> &pfjets_chargedEmE();
 	const vector<float> &pfjets_chargedHadronE();
-	const vector<float> &pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag();
-	const vector<float> &pfjets_combinedMVABJetTag();
-	const vector<float> &pfjets_corL1Fast();
-	const vector<float> &pfjets_corL1FastL2L3();
-	const vector<float> &pfjets_corL2L3();
 	const vector<float> &pfjets_electronE();
 	const vector<float> &pfjets_hfEmE();
 	const vector<float> &pfjets_hfHadronE();
-	const vector<float> &pfjets_jetBProbabilityBJetTag();
-	const vector<float> &pfjets_jetProbabilityBJetTag();
 	const vector<float> &pfjets_mass();
 	const vector<float> &pfjets_muonE();
 	const vector<float> &pfjets_neutralEmE();
 	const vector<float> &pfjets_neutralHadronE();
-	const vector<float> &pfjets_pfCombinedSecondaryVertexBJetTag();
+	const vector<float> &pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag();
 	const vector<float> &pfjets_photonE();
 	const vector<float> &pfjets_pileupJetId();
-	const vector<float> &pfjets_simpleSecondaryVertexHighEffBJetTag();
-	const vector<float> &pfjets_simpleSecondaryVertexHighPurBJetTags();
-	const vector<float> &pfjets_trackCountingHighEffBJetTag();
-	const vector<float> &pfjets_trackCountingHighPurBJetTag();
 	const vector<float> &pfjets_undoJEC();
+	const vector<float> &pfjets_puppi_area();
+	const vector<float> &pfjets_puppi_chargedEmE();
+	const vector<float> &pfjets_puppi_chargedHadronE();
+	const vector<float> &pfjets_puppi_electronE();
+	const vector<float> &pfjets_puppi_hfEmE();
+	const vector<float> &pfjets_puppi_hfHadronE();
+	const vector<float> &pfjets_puppi_mass();
+	const vector<float> &pfjets_puppi_muonE();
+	const vector<float> &pfjets_puppi_neutralEmE();
+	const vector<float> &pfjets_puppi_neutralHadronE();
+	const vector<float> &pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag();
+	const vector<float> &pfjets_puppi_photonE();
+	const vector<float> &pfjets_puppi_pileupJetId();
+	const vector<float> &pfjets_puppi_undoJEC();
 	const vector<float> &taus_pf_mass();
 	const vector<float> &photons_chargedHadronIso();
 	const vector<float> &photons_e1x5();
 	const vector<float> &photons_e2x5Max();
 	const vector<float> &photons_e3x3();
 	const vector<float> &photons_e5x5();
+	const vector<float> &photons_eSC();
+	const vector<float> &photons_eSCPresh();
+	const vector<float> &photons_eSCRaw();
 	const vector<float> &photons_ecalIso03();
 	const vector<float> &photons_ecalIso04();
+	const vector<float> &photons_ecalPFClusterIso();
+	const vector<float> &photons_etaSC();
 	const vector<float> &photons_full3x3_e3x3();
 	const vector<float> &photons_full5x5_e1x5();
 	const vector<float> &photons_full5x5_e2x5Max();
@@ -19293,12 +20788,14 @@ namespace tas {
 	const vector<float> &photons_full5x5_sigmaEtaEta();
 	const vector<float> &photons_full5x5_sigmaIEtaIEta();
 	const vector<float> &photons_hOverE();
+	const vector<float> &photons_hOverEtowBC();
 	const vector<float> &photons_hcalDepth1TowerSumEtBcConeDR03();
 	const vector<float> &photons_hcalDepth1TowerSumEtBcConeDR04();
 	const vector<float> &photons_hcalDepth2TowerSumEtBcConeDR03();
 	const vector<float> &photons_hcalDepth2TowerSumEtBcConeDR04();
 	const vector<float> &photons_hcalIso03();
 	const vector<float> &photons_hcalIso04();
+	const vector<float> &photons_hcalPFClusterIso();
 	const vector<float> &photons_hcalTowerSumEtBcConeDR03();
 	const vector<float> &photons_hcalTowerSumEtBcConeDR04();
 	const vector<float> &photons_mass();
@@ -19307,6 +20804,7 @@ namespace tas {
 	const vector<float> &photons_ntkIsoHollow04();
 	const vector<float> &photons_ntkIsoSolid03();
 	const vector<float> &photons_ntkIsoSolid04();
+	const vector<float> &photons_phiSC();
 	const vector<float> &photons_photonIso();
 	const vector<float> &photons_recoChargedHadronIso();
 	const vector<float> &photons_recoNeutralHadronIso();
@@ -19334,29 +20832,28 @@ namespace tas {
 	const vector<float> &svs_yError();
 	const vector<float> &svs_zError();
 	const vector<float> &ak8jets_area();
-	const vector<float> &ak8jets_combinedSecondaryVertexBJetTag();
 	const vector<float> &ak8jets_filteredMass();
-	const vector<float> &ak8jets_jetBProbabilityBJetTag();
-	const vector<float> &ak8jets_jetProbabilityBJetTag();
 	const vector<float> &ak8jets_mass();
+	const vector<float> &ak8jets_minMass();
 	const vector<float> &ak8jets_nJettinessTau1();
 	const vector<float> &ak8jets_nJettinessTau2();
 	const vector<float> &ak8jets_nJettinessTau3();
 	const vector<float> &ak8jets_prunedMass();
-	const vector<float> &ak8jets_simpleSecondaryVertexHighEffBJetTag();
-	const vector<float> &ak8jets_simpleSecondaryVertexHighPurBJetTags();
-	const vector<float> &ak8jets_trackCountingHighEffBJetTag();
-	const vector<float> &ak8jets_trackCountingHighPurBJetTag();
+	const vector<float> &ak8jets_softdropMass();
+	const vector<float> &ak8jets_topMass();
 	const vector<float> &ak8jets_trimmedMass();
 	const vector<float> &ak8jets_undoJEC();
 	const vector<float> &vtxs_chi2();
 	const vector<float> &vtxs_ndof();
-	const vector<float> &vtxs_sumpt();
+	const vector<float> &vtxs_score();
 	const vector<float> &vtxs_xError();
 	const vector<float> &vtxs_yError();
 	const vector<float> &vtxs_zError();
+	const vector<vector<float> > &pfjets_nonCHS_bDiscriminators();
 	const vector<vector<float> > &mus_stationShowerDeltaR();
 	const vector<vector<float> > &mus_stationShowerSizeT();
+	const vector<vector<float> > &pfjets_bDiscriminators();
+	const vector<vector<float> > &pfjets_puppi_bDiscriminators();
 	const vector<vector<float> > &taus_pf_IDs();
 	const vector<vector<float> > &puInfo_instLumi();
 	const vector<vector<float> > &vtxs_covMatrix();
@@ -19388,6 +20885,15 @@ namespace tas {
 	const int &pdfinfo_id1();
 	const int &pdfinfo_id2();
 	const int &sparm_subProcessId();
+	const vector<int> &pfjets_nonCHS_chargedHadronMultiplicity();
+	const vector<int> &pfjets_nonCHS_chargedMultiplicity();
+	const vector<int> &pfjets_nonCHS_electronMultiplicity();
+	const vector<int> &pfjets_nonCHS_muonMultiplicity();
+	const vector<int> &pfjets_nonCHS_neutralHadronMultiplicity();
+	const vector<int> &pfjets_nonCHS_neutralMultiplicity();
+	const vector<int> &pfjets_nonCHS_partonFlavour();
+	const vector<int> &pfjets_nonCHS_photonMultiplicity();
+	const vector<int> &ak8jets_mc_id();
 	const vector<int> &els_mc3_id();
 	const vector<int> &els_mc3idx();
 	const vector<int> &els_mc3_motherid();
@@ -19453,6 +20959,8 @@ namespace tas {
 	const vector<int> &hyp_lt_id();
 	const vector<int> &hyp_lt_index();
 	const vector<int> &hyp_type();
+	const vector<int> &isotracks_charge();
+	const vector<int> &isotracks_particleId();
 	const vector<int> &mus_algo();
 	const vector<int> &mus_charge();
 	const vector<int> &mus_ecal_rawId();
@@ -19519,7 +21027,6 @@ namespace tas {
 	const vector<int> &mus_timeDirection();
 	const vector<int> &mus_timeNumStationsUsed();
 	const vector<int> &mus_trk_charge();
-	const vector<int> &mus_trkidx();
 	const vector<int> &mus_type();
 	const vector<int> &mus_validHits();
 	const vector<int> &mus_validPixelHits();
@@ -19533,6 +21040,14 @@ namespace tas {
 	const vector<int> &pfjets_neutralMultiplicity();
 	const vector<int> &pfjets_partonFlavour();
 	const vector<int> &pfjets_photonMultiplicity();
+	const vector<int> &pfjets_puppi_chargedHadronMultiplicity();
+	const vector<int> &pfjets_puppi_chargedMultiplicity();
+	const vector<int> &pfjets_puppi_electronMultiplicity();
+	const vector<int> &pfjets_puppi_muonMultiplicity();
+	const vector<int> &pfjets_puppi_neutralHadronMultiplicity();
+	const vector<int> &pfjets_puppi_neutralMultiplicity();
+	const vector<int> &pfjets_puppi_partonFlavour();
+	const vector<int> &pfjets_puppi_photonMultiplicity();
 	const vector<int> &taus_pf_charge();
 	const vector<int> &photons_fiduciality();
 	const vector<int> &photons_photonID_loose();
@@ -19543,10 +21058,11 @@ namespace tas {
 	const vector<int> &convs_isConverted();
 	const vector<int> &convs_quality();
 	const vector<int> &svs_nTrks();
+	const vector<int> &ak8jets_nSubJets();
 	const vector<int> &ak8jets_partonFlavour();
 	const vector<int> &vtxs_isFake();
 	const vector<int> &vtxs_isValid();
-	const vector<int> &vtxs_tracksSize();
+	const vector<vector<int> > &pfjets_nonCHS_pfcandIndicies();
 	const vector<vector<int> > &els_PFCand_idx();
 	const vector<vector<int> > &genps_lepdaughter_id();
 	const vector<vector<int> > &genps_lepdaughter_idx();
@@ -19554,11 +21070,13 @@ namespace tas {
 	const vector<vector<int> > &mus_nStationCorrelatedHits();
 	const vector<vector<int> > &mus_nStationHits();
 	const vector<vector<int> > &pfjets_pfcandIndicies();
+	const vector<vector<int> > &pfjets_puppi_pfcandIndicies();
 	const vector<vector<int> > &photons_PFCand_idx();
 	const vector<vector<int> > &convs_nHitsBeforeVtx();
 	const vector<vector<int> > &convs_tkalgo();
 	const vector<vector<int> > &convs_tkidx();
 	const vector<vector<int> > &ak8jets_pfcandIndicies();
+	const vector<unsigned char> &isotracks_fromPV();
 	const vector<unsigned char> &pfcands_fromPV();
 	const unsigned int &els_HLT_Ele17_Ele8_L1sL1DoubleEG137_version();
 	const unsigned int &els_HLT_Ele17_Ele8_LeadingLeg_version();
@@ -19568,10 +21086,16 @@ namespace tas {
 	const unsigned int &els_HLT_Ele17_Ele8_version();
 	const unsigned int &els_HLT_Ele20_SC4_Mass50_LeadingLeg_version();
 	const unsigned int &els_HLT_Ele20_SC4_Mass50_TrailingLeg_version();
+	const unsigned int &els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_version();
+	const unsigned int &els_HLT_Ele25WP60_Ele8_Mass55_version();
+	const unsigned int &els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_version();
+	const unsigned int &els_HLT_Ele25WP60_SC4_Mass55_version();
 	const unsigned int &els_HLT_Ele27_WP80_L1sL1SingleEG20ORL1SingleEG22_version();
 	const unsigned int &els_HLT_Ele27_WP80_version();
 	const unsigned int &els_HLT_Ele32_SC17_Mass50_LeadingLeg_version();
 	const unsigned int &els_HLT_Ele32_SC17_Mass50_TrailingLeg_version();
+	const unsigned int &els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_version();
+	const unsigned int &els_HLT_Ele5_SC5_JPsi_Mass2to4p5_version();
 	const unsigned int &els_HLT_Mu17_Ele8_TrailingLeg_version();
 	const unsigned int &els_HLT_Mu17_Ele8_version();
 	const unsigned int &els_HLT_Mu8_Ele17_version();
@@ -19581,6 +21105,7 @@ namespace tas {
 	const unsigned int &evt_run();
 	const unsigned int &evt_ngenjetsNoMuNoNu();
 	const unsigned int &genps_signalProcessID();
+	const unsigned int &evt_ngenjets();
 	const unsigned int &mus_HLT_IsoMu24_eta2p1_L1sMu16Eta2p1_version();
 	const unsigned int &mus_HLT_IsoMu24_eta2p1_version();
 	const unsigned int &mus_HLT_Mu17_Ele8_LeadingLeg_version();
@@ -19605,10 +21130,16 @@ namespace tas {
 	const vector<unsigned int> &els_HLT_Ele17_Ele8_TrailingLeg();
 	const vector<unsigned int> &els_HLT_Ele20_SC4_Mass50_LeadingLeg();
 	const vector<unsigned int> &els_HLT_Ele20_SC4_Mass50_TrailingLeg();
+	const vector<unsigned int> &els_HLT_Ele25WP60_Ele8_Mass55();
+	const vector<unsigned int> &els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg();
+	const vector<unsigned int> &els_HLT_Ele25WP60_SC4_Mass55();
+	const vector<unsigned int> &els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg();
 	const vector<unsigned int> &els_HLT_Ele27_WP80();
 	const vector<unsigned int> &els_HLT_Ele27_WP80_L1sL1SingleEG20ORL1SingleEG22();
 	const vector<unsigned int> &els_HLT_Ele32_SC17_Mass50_LeadingLeg();
 	const vector<unsigned int> &els_HLT_Ele32_SC17_Mass50_TrailingLeg();
+	const vector<unsigned int> &els_HLT_Ele5_SC5_JPsi_Mass2to4p5();
+	const vector<unsigned int> &els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg();
 	const vector<unsigned int> &els_HLT_Mu17_Ele8();
 	const vector<unsigned int> &els_HLT_Mu17_Ele8_TrailingLeg();
 	const vector<unsigned int> &els_HLT_Mu8_Ele17();
@@ -19627,11 +21158,12 @@ namespace tas {
 	const vector<unsigned int> &mus_HLT_Mu17_TkMu8_TrailingLegTrkFiltered();
 	const vector<unsigned int> &mus_HLT_Mu8_Ele17();
 	const vector<unsigned int> &mus_HLT_Mu8_Ele17_TrailingLeg();
-	const unsigned long long &evt_event();
-	const vector<unsigned long long> &evt_timestamp();
+	const ULong64_t &evt_event();
+	const vector<ULong64_t> &evt_timestamp();
 	const unsigned long long &evt_nEvts();
 	const float &evt_filt_eff();
 	bool passHLTTrigger(TString trigName);
 	float passTauID(TString idName, unsigned int tauIndx);
+	float getbtagvalue(TString bDiscriminatorName, unsigned int jetIndx);
 }
 #endif
