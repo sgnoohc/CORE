@@ -47,8 +47,8 @@ bool isDenominatorLepton(int id, int idx, IsolationMethods isoCase);
 bool isVetoLepton(int id, int idx, IsolationMethods isoCase);
 
 //Hyp selections
-hyp_result_t chooseBestHyp(IsolationMethods isoCase, bool verbose=false);
-int isGoodHyp(int iHyp, IsolationMethods isoCase, bool verbose=false);
+hyp_result_t chooseBestHyp(IsolationMethods isoCase, bool expt, bool verbose=false);
+int isGoodHyp(int iHyp, IsolationMethods isoCase, bool expt, bool verbose=false);
 bool makesExtraGammaStar(int iHyp);
 Z_result_t makesExtraZ(int iHyp);
 bool hypsFromFirstGoodVertex(size_t hypIdx, float dz_cut = 1.0);
@@ -92,7 +92,7 @@ bool isMiniIsolatedLepton(int id, int idx);
 bool isLooseMiniIsolatedLepton(int id, int idx);
 bool isNewMiniIsolatedLepton(int id, int idx, int level);
 bool isLooseNewMiniIsolatedLepton(int id, int idx);
-bool isInSituFRLepton(int lep_id, int lep_idx);
+bool isInSituFRLepton(int lep_id, int lep_idx, bool expt);
 
 //MC truth functions
 int lepMotherID(Lep lep);
