@@ -23,6 +23,7 @@ enum id_level_t {
   SS_veto_v3, 
   SS_veto_noiso_noip_v3,
   SS_fo_looseMVA_noiso_noip_v3,
+  SS_medium_looseMVA_noip_v3,
   SS_medium_noip_v3,
   SS_fo_noiso_noip_v3,
   SS_fo_noiso_v3, 
