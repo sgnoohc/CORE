@@ -19,6 +19,7 @@ const static float ptRelCutLoose = 6.;
 //Enums
 enum anal_type_t { HighHigh = 0, HighLow = 1, LowLow = 2, Undefined = -1 };
 enum hyp_type_t { EE, MM, EM, UNASSIGNED }; 
+enum est_type_t { MCSS, FLIPMC, SFAKEMC, DFAKEMC, FLIPDD, SFAKEDD, DFAKEDD, ALLMC }; 
 //fixme: put WF and FSR in different categories
 enum LeptonCategories { Prompt = 0, PromptWS = 1, PromptWF = 2, PromptFSR = 2, 
 			FakeLightTrue = 3, FakeC = 4, FakeB = 5, FakeLightFake = 6, FakeHiPtGamma = 7, 
