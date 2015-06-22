@@ -23,6 +23,7 @@ enum id_level_t {
   SS_veto_v3, 
   SS_veto_noiso_noip_v3,
   SS_fo_looseMVA_noiso_noip_v3,
+  SS_medium_looseMVA_noip_v3,
   SS_medium_noip_v3,
   SS_fo_noiso_noip_v3,
   SS_fo_noiso_v3, 
@@ -60,12 +61,14 @@ enum id_level_t {
   STOP_medium_v2,
   STOP_tight_v2,
 
+  ZMET_loose_v1, 
   ZMET_loose_noiso_v1, 
   ZMET_loose_v2, 
-  ZMET_loose_v1, 
+  ZMET_loose_noiso_v2,
+  ZMET_tight_v1, 
   ZMET_tight_noiso_v1, 
   ZMET_tight_v2, 
-  ZMET_tight_v1, 
+  ZMET_tight_noiso_v2, 
   ZMET_photon_v1
 
 };

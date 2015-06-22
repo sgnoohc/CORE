@@ -377,7 +377,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       break;
 
    ///////////////////
-   /// SS FO v3 /// same as medium, but no SIP3D cut and looser iso
+   /// SS FO v3 /// same as medium, but looser iso and option for looser MVA cut
    ///////////////////
 
     case(SS_fo_noiso_v3):
@@ -392,6 +392,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       if (els_exp_innerlayers().at(elIdx) > 0) return false;
       if (threeChargeAgree(elIdx)==0) return false;
       if (fabs(els_dxyPV().at(elIdx)) > 0.05) return false;
+      if (fabs(els_ip3d().at(elIdx))/els_ip3derr().at(elIdx) >= 4) return false;
       if (fabs(els_dzPV().at(elIdx)) >= 0.1) return false;
       return globalEleMVAreader->passesElectronMVAid(elIdx, id_level);
 
@@ -603,6 +604,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       return passMultiIso(11, elIdx, 0.10, 0.70, 7.0);
       break;
 
+    case(SS_medium_looseMVA_noip_v3): 
     case(SS_medium_noip_v3):
       if (electronID(elIdx, SS_fo_looseMVA_noiso_noip_v3)==0) return false;//make sure it's tighter than FO
       if (globalEleMVAreader==0) {
@@ -680,8 +682,13 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
 
 
   case(ZMET_loose_v2):
-	if (!isLooseElectronPOGphys14noIso(elIdx)) return false;
-	if (elMiniRelIso(elIdx) >= 0.1) return false; 
+	if( !isLooseElectronPOGphys14noIso(elIdx)               ) return false;
+	if( elMiniRelIso( elIdx, true, 0.0, false, true ) > 0.1 ) return false;
+	else return true;
+	break;
+
+  case(ZMET_loose_noiso_v2):
+	if( !isLooseElectronPOGphys14noIso(elIdx)               ) return false;
 	else return true;
 	break;
 
@@ -1217,11 +1224,28 @@ float readMVA::MVA(unsigned int index){
   ele_IoEmIop_          = (tas::els_ecalEnergy().at(index) != 0 && tas::els_p4().at(index).P() != 0) ? 1.0/tas::els_ecalEnergy().at(index) - 1.0/tas::els_p4().at(index).P() : 999999;
   ele_deltaetain_       = fabs(tas::els_dEtaIn().at(index));
   ele_deltaphiin_       = fabs(tas::els_dPhiIn().at(index));
-  ele_deltaetaseed_     = tas::els_dEtaOut().at(index);
+  ele_deltaetaseed_     = fabs(tas::els_dEtaOut().at(index));
   ele_pT_               = tas::els_p4().at(index).pt(); 
   ele_isbarrel_         = fabs(tas::els_etaSC().at(index)) < 1.479 ? 1 : 0; 
   ele_isendcap_         = fabs(tas::els_etaSC().at(index)) > 1.479 ? 1 : 0; 
   scl_eta_              = tas::els_etaSC().at(index); 
+
+  //bindVariables  
+  if(ele_fbrem_ < -1.) ele_fbrem_ = -1.;
+  ele_deltaetain_ = fabs(ele_deltaetain_);
+  if(ele_deltaetain_ > 0.06) ele_deltaetain_ = 0.06;
+  ele_deltaphiin_ = fabs(ele_deltaphiin_);
+  if(ele_deltaphiin_ > 0.6) ele_deltaphiin_ = 0.6;
+  if(ele_ep_ > 20.) ele_ep_ = 20.;
+  if(ele_eelepout_ > 20.) ele_eelepout_ = 20.;
+  ele_deltaetaseed_ = fabs(ele_deltaetaseed_);
+  if(ele_deltaetaseed_ > 0.2) ele_deltaetaseed_ = 0.2;
+  if(ele_oldcircularity_ < -1.) ele_oldcircularity_ = -1;
+  if(ele_oldcircularity_ > 2.) ele_oldcircularity_ = 2.; 
+  if(ele_oldr9_ > 5) ele_oldr9_ = 5;
+  if(ele_chi2_hits_ > 200.) ele_chi2_hits_ = 200;
+  if(ele_kfchi2_ > 10.) ele_kfchi2_ = 10.;
+  if(std::isnan(ele_oldsigmaiphiiphi_)) ele_oldsigmaiphiiphi_ = 0.;
 
   float disc = -1.0;
   if (ele_pT_ >= 10.0){
@@ -1254,6 +1278,7 @@ bool readMVA::passesElectronMVAid(unsigned int index, id_level_t id_level){
   case (SS_veto_noiso_noip_v3):
   case(SS_fo_looseMVA_noiso_v3):
   case (SS_fo_looseMVA_noiso_noip_v3):
+  case (SS_medium_looseMVA_noip_v3):
     if (aeta < 0.8) return disc > -0.11;
     if ((aeta >= 0.8 && aeta <= 1.479)) return disc > -0.35;
     if (aeta > 1.479) return disc > -0.55;
@@ -1281,7 +1306,8 @@ void createAndInitMVA(std::string pathToCORE){
   globalEleMVAreader = new readMVA();
   globalEleMVAreader->InitMVA(pathToCORE); 
 }
-float getMVAoutput(unsigned int index = 0) {
+
+float getMVAoutput(unsigned int index){
   if (globalEleMVAreader==0) {
     cout << "readMVA=0, please create and init it (e.g with createAndInitMVA function)" << endl;
     return -999.;

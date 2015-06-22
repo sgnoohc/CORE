@@ -235,7 +235,7 @@ float elMiniRelIsoCMS3_EA(unsigned int idx) {
   float dr = 0.2;
   if (pt>50) dr = 10./pt;
   if (pt>200) dr = 0.05;
-  float correction = evt_fixgridfastjet_all_rho() * (dr/0.3) * (dr/0.3);
+  float correction = evt_fixgridfastjet_all_rho() * elEA03(idx) * (dr/0.3) * (dr/0.3);
   float absiso = els_miniIso_ch().at(idx) + std::max(float(0.0), els_miniIso_nh().at(idx) + els_miniIso_em().at(idx) - correction);
   return absiso/(els_p4().at(idx).pt());
 }
