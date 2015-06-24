@@ -20,7 +20,7 @@ bool isMediumMuonPOG(unsigned int muIdx){
   bool goodGlb = isGlobal && mus_gfit_chi2().at(muIdx)/mus_gfit_ndof().at(muIdx)<3. && 
                  mus_chi2LocalPosition().at(muIdx)<12. && mus_trkKink().at(muIdx)<20.;
   double validFraction = mus_validHits().at(muIdx)/(double)(mus_validHits().at(muIdx)+mus_lostHits().at(muIdx)+mus_exp_innerlayers().at(muIdx)+mus_exp_outerlayers().at(muIdx));
-  bool good = validFraction >= 0.8 &&  mus_segmCompatibility().at(muIdx) >= (goodGlb ? 0.303 : 0.451);
+  bool good = isLooseMuonPOG(muIdx) && validFraction >= 0.8 &&  mus_segmCompatibility().at(muIdx) >= (goodGlb ? 0.303 : 0.451);
   return good;
 }
 
@@ -244,6 +244,14 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
    /////////////////////
    case(STOP_loose_v1):
    if (!isLooseMuonPOG(muIdx)) return false;
+   return true;
+   break;
+
+   case(STOP_loose_v2):
+     if (!isLooseMuonPOG(muIdx)) return false;
+     if (fabs(mus_dxyPV()             .at(muIdx)) >  0.1   ) return false;
+     if (fabs(mus_dzPV()              .at(muIdx)) >  0.5   ) return false;
+     if (muMiniRelIso(muIdx, true, 0.5, true, false) >= 0.2) return false;
    return true;
    break;
 
