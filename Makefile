@@ -9,7 +9,7 @@ OBJECTS=$(SOURCES:.cc=.o)
 LIB=CMS3_CORE.so
 
 #
-# how to make it
+# how to make it 
 #
 
 $(LIB): $(OBJECTS) 

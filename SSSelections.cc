@@ -159,7 +159,7 @@ std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(){
     //Kinematic jet cuts
     if (jet.pt() < 25.) continue;
     if (fabs(jet.eta()) > 2.4) continue;
-    
+
     //Require loose jet ID
     if (!isLoosePFJet(i)) continue;
     
@@ -299,9 +299,10 @@ bool isGoodLeptonIsoOrPtRel(int id, int idx){
   return true;
 }
 
-bool isInSituFRLepton(int id, int idx){
+bool isInSituFRLepton(int id, int idx, bool expt){
   if (abs(id) == 11){
-    if (!electronID(idx, SS_medium_noip_v3) && !electronID(idx, SS_medium_v3)) return false;
+    if (!expt && !electronID(idx, SS_medium_noip_v3) && !electronID(idx, SS_medium_v3)) return false;
+    if (expt && !electronID(idx, SS_medium_looseMVA_noip_v3) && !electronID(idx, SS_medium_v3)) return false;
   }
   if (abs(id) == 13){
     if (!muonID(idx, SS_fo_noiso_noip_v3) && !muonID(idx, SS_fo_noiso_v3)) return false;
@@ -613,7 +614,7 @@ int lepMotherID_inSituFR(Lep lep){
   return 0;
 }
 
-int isGoodHyp(int iHyp, IsolationMethods isoCase, bool verbose){
+int isGoodHyp(int iHyp, IsolationMethods isoCase, bool expt, bool verbose){
 
   //Bunch o' variables
   float pt_ll = tas::hyp_ll_p4().at(iHyp).pt(); 
@@ -630,8 +631,8 @@ int isGoodHyp(int iHyp, IsolationMethods isoCase, bool verbose){
   bool passed_id_numer_lt = isGoodLepton(id_lt, idx_lt, isoCase);
   bool passed_id_denom_ll = isDenominatorLepton(id_ll, idx_ll, isoCase);
   bool passed_id_denom_lt = isDenominatorLepton(id_lt, idx_lt, isoCase);
-  bool passed_id_inSituFR_ll = isInSituFRLepton(id_ll, idx_ll);
-  bool passed_id_inSituFR_lt = isInSituFRLepton(id_lt, idx_lt);
+  bool passed_id_inSituFR_ll = isInSituFRLepton(id_ll, idx_ll, expt);
+  bool passed_id_inSituFR_lt = isInSituFRLepton(id_lt, idx_lt, expt);
   bool extraZ = makesExtraZ(iHyp).result;
   bool extraGammaStar = makesExtraGammaStar(iHyp);
 
@@ -683,7 +684,7 @@ int isGoodHyp(int iHyp, IsolationMethods isoCase, bool verbose){
   return 0; //non-highpass OS
 }
 
-hyp_result_t chooseBestHyp(IsolationMethods isoCase, bool verbose){
+hyp_result_t chooseBestHyp(IsolationMethods isoCase, bool expt, bool verbose){
 
   //List of good hyps
   vector <int> good_hyps_ss; //same sign, tight tight
@@ -693,7 +694,7 @@ hyp_result_t chooseBestHyp(IsolationMethods isoCase, bool verbose){
   vector <int> good_hyps_os; //opposite sign, tight tight
   vector <int> good_hyps_zv; //same sign, tight tight, fail Z veto
   for (unsigned int i = 0; i < tas::hyp_type().size(); i++){
-    int good_hyp_result = isGoodHyp(i, isoCase, verbose);
+    int good_hyp_result = isGoodHyp(i, isoCase, expt, verbose);
     if (good_hyp_result == 3) good_hyps_ss.push_back(i); 
     else if (good_hyp_result == 2) good_hyps_sf.push_back(i); 
     else if (good_hyp_result == 1) good_hyps_df.push_back(i); 
