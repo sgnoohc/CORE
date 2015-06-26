@@ -7,7 +7,7 @@ using namespace tas;
 bool passMultiIso(int id, int idx, float cutMiniIso, float cutPtRatio, float cutPtRel){
   const LorentzVector& lep_p4 = abs(id)==11 ? els_p4().at(idx) : mus_p4().at(idx);
   const LorentzVector& jet_p4 = closestJet(lep_p4,0.4,2.4);
-  float miniIso = abs(id)==11 ? elMiniRelIso(idx, true, 0.0, false, true) : muMiniRelIso(idx, true, 0.5, false, true);
+  float miniIso = abs(id)==11 ? elMiniRelIsoCMS3_EA(idx) : muMiniRelIsoCMS3_EA(idx);
   float closeJetPt = jet_p4.pt();
   float ptratio = ( closeJetPt>0. ? lep_p4.pt()/closeJetPt : 1.);
   float ptrel = ptRel(lep_p4, jet_p4, true);

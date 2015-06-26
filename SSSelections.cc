@@ -213,22 +213,22 @@ bool isIsolatedLepton(int id, int idx){
 }
 bool isLooseMiniIsolatedLepton(int id, int idx){
   if (abs(id) == 11) {
-    if (getPtRel(id, idx, true)>6.) return elMiniRelIso(idx) < 0.5;
+    if (getPtRel(id, idx, true)>6.) return elMiniRelIsoCMS3_EA(idx) < 0.5;
     return eleRelIso03(idx, SS) < 0.5;
   }
   if (abs(id) == 13) {
-    if (getPtRel(id, idx, true)>6.) return muMiniRelIso(idx) < 0.5;
+    if (getPtRel(id, idx, true)>6.) return muMiniRelIsoCMS3_EA(idx) < 0.5;
     return muRelIso03(idx, SS) < 0.5;
   }
   return false;
 }
 bool isMiniIsolatedLepton(int id, int idx){
   if (abs(id) == 11) {
-    if (getPtRel(id, idx, true)>6.) return elMiniRelIso(idx) < 0.05;
+    if (getPtRel(id, idx, true)>6.) return elMiniRelIsoCMS3_EA(idx) < 0.05;
     return eleRelIso03(idx, SS) < 0.1;
   }
   if (abs(id) == 13) {
-    if (getPtRel(id, idx, true)>6.) return muMiniRelIso(idx) < 0.05;
+    if (getPtRel(id, idx, true)>6.) return muMiniRelIsoCMS3_EA(idx) < 0.05;
     return muRelIso03(idx, SS) < 0.1;
   }
   return false;
@@ -236,10 +236,10 @@ bool isMiniIsolatedLepton(int id, int idx){
 
 bool isLooseNewMiniIsolatedLepton(int id, int idx){
   if (abs(id) == 11) {
-    return elMiniRelIso(idx, true, 0.0, false, true) < 0.4;
+    return elMiniRelIsoCMS3_EA(idx) < 0.4;
   }
   if (abs(id) == 13) {
-    return muMiniRelIso(idx, true, 0.5, false, true) < 0.4;
+    return muMiniRelIsoCMS3_EA(idx) < 0.4;
   }
   return false;
 }
@@ -954,7 +954,7 @@ bool lepsort (Lep i,Lep j) {
 bool jetptsort (Jet i,Jet j) { return (i.pt()>j.pt()); }
 
 float coneCorrPt(int id, int idx){
-  float miniIso = abs(id)==11 ? elMiniRelIso(idx, true, 0.0, false, true) : muMiniRelIso(idx, true, 0.5, false, true);
+  float miniIso = abs(id)==11 ? elMiniRelIsoCMS3_EA(idx) : muMiniRelIsoCMS3_EA(idx);
   LorentzVector lep_p4 = abs(id)==11 ? els_p4().at(idx) : mus_p4().at(idx);
   LorentzVector jet_p4  = closestJet(lep_p4, 0.4, 2.4);
   float ptrel = ptRel(lep_p4, jet_p4, true);

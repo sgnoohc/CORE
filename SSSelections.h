@@ -157,7 +157,7 @@ struct Jet {
   float pt() {return p4().pt();}
   float eta() {return p4().eta();}
   float phi() {return p4().phi();}
-  float csv() {return tas::getbtagvalue("pfCombinedSecondaryVertexBJetTag",idx_);}
+  float csv() {return tas::getbtagvalue("pfCombinedSecondaryVertexV2BJetTags",idx_);}
   float csvivf() {return cms3.pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag()[idx_];}
   bool isBtag() {return csvivf()>0.814;}
   int   mc3_id() {return cms3.pfjets_mc3_id()[idx_];}

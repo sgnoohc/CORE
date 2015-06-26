@@ -225,7 +225,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
 
     case(SS_veto_v3):
       if (electronID(elIdx, SS_veto_noiso_v3)==0) return false; 
-      if (elMiniRelIso(elIdx, true, 0.0, false, true) >= 0.40) return false;
+      if (elMiniRelIsoCMS3_EA(elIdx) >= 0.40) return false;
       return true;
       break;
 
@@ -412,13 +412,13 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
 
     case(SS_fo_v3):
       if (electronID(elIdx, SS_fo_noiso_v3)==0) return false; 
-      if (elMiniRelIso(elIdx, true, 0.0, false, true) >= 0.40) return false;
+      if (elMiniRelIsoCMS3_EA(elIdx) >= 0.40) return false;
       return true;
       break;
 
     case(SS_fo_looseMVA_v3):
       if (electronID(elIdx, SS_fo_looseMVA_noiso_v3)==0) return false; 
-      if (elMiniRelIso(elIdx, true, 0.0, false, true) >= 0.40) return false;
+      if (elMiniRelIsoCMS3_EA(elIdx) >= 0.40) return false;
       return true;
       break;
 
