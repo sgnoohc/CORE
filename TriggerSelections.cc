@@ -142,10 +142,10 @@ int HLT_prescale( const char* arg ){
 }
 
 //---------------------------------------------
-// Check if trigger is unprescaled and passes
+// Check if trigger passes
 // for a specific object, specified by a p4
 //---------------------------------------------
-bool passUnprescaledHLTTrigger(const char* arg, const LorentzVector &obj){
+bool passHLTTrigger(const char* arg, const LorentzVector &obj){
 
   // put the trigger name into a string
   TString HLTTrigger( arg );
@@ -187,13 +187,33 @@ bool passUnprescaledHLTTrigger(const char* arg, const LorentzVector &obj){
     exit(0);
   }
 
-  //return true only if pre-scale = 1
-  if( hlt_prescales().at(trigIdx) == 1 ) return true;
-
-  return false;
+  return true;
 
 }
 
+//---------------------------------------------
+// Check if trigger is unprescaled and passes
+// for a specific object, specified by a p4
+//---------------------------------------------
+bool passUnprescaledHLTTrigger(const char* arg, const LorentzVector &obj){
+
+  // put the trigger name into a string
+  TString HLTTrigger( arg );
+
+  // find the index of this trigger
+  int trigIdx = -1;
+  vector<TString>::const_iterator begin_it = hlt_trigNames().begin();
+  vector<TString>::const_iterator end_it = hlt_trigNames().end();
+  vector<TString>::const_iterator found_it = find(begin_it, end_it, HLTTrigger);
+  if(found_it != end_it) trigIdx = found_it - begin_it;
+  else return false; // trigger was not found
+
+  //return false if pre-scale != 1
+  if( hlt_prescales().at(trigIdx) != 1 ) return false;
+
+  return passHLTTrigger(arg, obj);
+
+}
 
 //--------------------------------------------------------
 // Returns the number of objects passing a given trigger

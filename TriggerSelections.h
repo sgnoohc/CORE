@@ -9,6 +9,7 @@ bool passesTriggerVeryLowPt(int hyp_type);
 bool passUnprescaledHLTTrigger(const char* arg);
 bool passUnprescaledHLTTrigger(const char* arg, const LorentzVector &obj);
 bool passUnprescaledHLTTriggerPattern(const char* arg);
+bool passHLTTrigger(const char* arg, const LorentzVector &obj);
 bool passHLTTriggerPattern(const char* arg);
 TString triggerName(TString triggerPattern);
 
