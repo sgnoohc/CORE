@@ -602,18 +602,6 @@ int lepMotherID(Lep lep){
   return 0;
 }
 
-int lepMotherID_inSituFR(Lep lep){
-  if (tas::evt_isRealData()) return 1;
-  else if (isFromW(lep.pdgId(),lep.idx())){
-    if (sgn(lep.pdgId()) == sgn(lep.mc_id())) return 1;
-    else return 2;
-  }
-  else if (isFromB(lep.pdgId(),lep.idx())) return -1;
-  else if (isFromC(lep.pdgId(),lep.idx())) return -2;
-  else if (isFromLight(lep.pdgId(),lep.idx())) return -3;
-  return 0;
-}
-
 int isGoodHyp(int iHyp, IsolationMethods isoCase, bool expt, bool verbose){
 
   //Bunch o' variables
@@ -635,6 +623,9 @@ int isGoodHyp(int iHyp, IsolationMethods isoCase, bool expt, bool verbose){
   bool passed_id_inSituFR_lt = isInSituFRLepton(id_lt, idx_lt, expt);
   bool extraZ = makesExtraZ(iHyp).result;
   bool extraGammaStar = makesExtraGammaStar(iHyp);
+
+  cout << "lep with pt " << pt_ll << " passes denom ID: " << passed_id_denom_ll << endl;
+  cout << "lep with pt " << pt_lt << " passes denom ID: " << passed_id_denom_lt << endl;
 
   //pass in situ ID
   bool truth_inSituFR = passed_id_inSituFR_lt && passed_id_inSituFR_ll;
