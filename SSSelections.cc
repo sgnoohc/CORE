@@ -624,9 +624,6 @@ int isGoodHyp(int iHyp, IsolationMethods isoCase, bool expt, bool verbose){
   bool extraZ = makesExtraZ(iHyp).result;
   bool extraGammaStar = makesExtraGammaStar(iHyp);
 
-  cout << "lep with pt " << pt_ll << " passes denom ID: " << passed_id_denom_ll << endl;
-  cout << "lep with pt " << pt_lt << " passes denom ID: " << passed_id_denom_lt << endl;
-
   //pass in situ ID
   bool truth_inSituFR = passed_id_inSituFR_lt && passed_id_inSituFR_ll;
 
