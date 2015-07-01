@@ -264,7 +264,8 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
      if (!isLooseMuonPOG(muIdx)) return false;
      if (fabs(mus_dxyPV()             .at(muIdx)) >  0.1   ) return false;
      if (fabs(mus_dzPV()              .at(muIdx)) >  0.5   ) return false;
-     if (muMiniRelIso(muIdx, true, 0.5, true, false) >= 0.2) return false;
+     //if (muMiniRelIso(muIdx, true, 0.5, true, false) > 0.2) return false;
+     if (muMiniRelIsoCMS3_DB(muIdx)                   > 0.2) return false;
    return true;
    break;
 
@@ -273,7 +274,8 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
    /////////////////////
     case(STOP_medium_v1):
       if (!isMediumMuonPOG(muIdx)) return false;
-      if (muMiniRelIso(muIdx, true, 0.5, true, false) >= 0.1) return false;
+      //if (muMiniRelIso(muIdx, true, 0.5, true, false) > 0.1) return false;
+      if (muMiniRelIsoCMS3_DB(muIdx)                   > 0.1) return false;
        return true;
        break;
 
@@ -282,7 +284,8 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
       if (!isMediumMuonPOG(muIdx)) return false;
       if (fabs(mus_dxyPV()             .at(muIdx)) >  0.02  ) return false;
       if (fabs(mus_dzPV()              .at(muIdx)) >  0.1   ) return false;
-      if (muMiniRelIso(muIdx, true, 0.5, true, false) >= 0.1) return false;
+      //if (muMiniRelIso(muIdx, true, 0.5, true, false) > 0.1) return false;
+      if (muMiniRelIsoCMS3_DB(muIdx)                   > 0.1) return false;
        return true;
        break;
 

@@ -312,7 +312,8 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
 
     case(STOP_veto_v2):
       if (!isVetoElectronPOGphys14noIso_v2(elIdx)) return false;
-      if ( elMiniRelIso(elIdx, true, 0.0, true, false) >= 0.2) return false;
+      //if ( elMiniRelIso(elIdx, true, 0.0, true, false) > 0.2) return false;
+      if (  elMiniRelIsoCMS3_DB(elIdx)      > 0.2) return false;
       return true;
       break;
 
@@ -329,7 +330,8 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
 
     case(STOP_loose_v2):
       if (!isLooseElectronPOGphys14noIso_v2(elIdx)) return false;
-      if ( elMiniRelIso(elIdx, true, 0.0, true, false) >= 0.1) return false;
+      //if ( elMiniRelIso(elIdx, true, 0.0, true, false) >= 0.1) return false;
+      if (  elMiniRelIsoCMS3_DB(elIdx)       > 0.2) return false;
       return true;
       break;
 
@@ -506,7 +508,8 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
 
     case(STOP_medium_v2):
       if (!isMediumElectronPOGphys14noIso_v2(elIdx)) return false;
-      if ( elMiniRelIso(elIdx, true, 0.0, true, false) >= 0.1) return false;
+      //if ( elMiniRelIso(elIdx, true, 0.0, true, false) > 0.1) return false;
+      if (  elMiniRelIsoCMS3_DB(elIdx)        > 0.1) return false;
       return true;
       break;
 
@@ -659,7 +662,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       break;
 
    /////////////////////
-   /// STOP tigh     ///
+   /// STOP tight    ///
    /////////////////////
 
     case(STOP_tight_v1):
@@ -670,7 +673,8 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
   
     case(STOP_tight_v2):
       if (!isTightElectronPOGphys14noIso_v2(elIdx)) return false;
-      if ( elMiniRelIso(elIdx, true, 0.0, true, false) >= 0.1) return false;
+      //if ( elMiniRelIso(elIdx, true, 0.0, true, false) > 0.1) return false;
+      if (  elMiniRelIsoCMS3_DB(elIdx)       > 0.1) return false;
       return true;
       break;
 
