@@ -482,7 +482,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
     // same ID as v2, but use CMS3 miniIso with EA corrections
     case(HAD_loose_v3):
       if (electronID(elIdx, HAD_loose_noiso_v3)==0) return false;
-      if (elMiniRelIso(elIdx) > 0.1) return false; 
+      if (elMiniRelIsoCMS3_EA(elIdx) > 0.1) return false; 
       return true;
       break;
 
