@@ -277,6 +277,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
 
     // same as POG phys14 veto
     case(HAD_veto_noiso_v2):
+    case(HAD_veto_noiso_v3):
       if (!isVetoElectronPOGphys14noIso(elIdx)) return false;
       return true;
       break;
@@ -287,6 +288,18 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       if (elMiniRelIso(elIdx) > 0.1) return false; 
       return true;
       break;
+
+   ////////////////////
+   /// HAD veto v3 ////
+   ////////////////////
+
+    // same ID as v2, but use CMS3 miniIso with EA corrections
+    case(HAD_veto_v3):
+      if (electronID(elIdx, HAD_veto_noiso_v3)==0) return false;
+      if (elMiniRelIsoCMS3_EA(elIdx) > 0.1) return false; 
+      return true;
+      break;
+
 
    /////////////////////
    /// STOP veto v1 ////
@@ -451,12 +464,24 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
 
     // same as POG phys14 loose
     case(HAD_loose_noiso_v2):
+    case(HAD_loose_noiso_v3):
       if (!isLooseElectronPOGphys14noIso(elIdx)) return false;
       return true;
       break;
 
     case(HAD_loose_v2):
       if (electronID(elIdx, HAD_loose_noiso_v2)==0) return false;
+      if (elMiniRelIso(elIdx) > 0.1) return false; 
+      return true;
+      break;
+
+   /////////////////////
+   /// HAD loose v3 ////
+   /////////////////////
+
+    // same ID as v2, but use CMS3 miniIso with EA corrections
+    case(HAD_loose_v3):
+      if (electronID(elIdx, HAD_loose_noiso_v3)==0) return false;
       if (elMiniRelIso(elIdx) > 0.1) return false; 
       return true;
       break;
@@ -514,6 +539,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
 
     // same as POG phys14 medium
     case(HAD_medium_noiso_v2):
+    case(HAD_medium_noiso_v3):
       if (!isMediumElectronPOGphys14noIso(elIdx)) return false;
       return true;
       break;
@@ -521,6 +547,17 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
     case(HAD_medium_v2):
       if (electronID(elIdx, HAD_medium_noiso_v2)==0) return false;
       if (elMiniRelIso(elIdx) > 0.1) return false; 
+      return true;
+      break;
+
+   //////////////////////
+   /// HAD medium v3 ////
+   //////////////////////
+
+    // same ID as v2, but use CMS3 miniIso with EA corrections
+    case(HAD_medium_v3):
+      if (electronID(elIdx, HAD_medium_noiso_v3)==0) return false;
+      if (elMiniRelIsoCMS3_EA(elIdx) > 0.1) return false; 
       return true;
       break;
 
@@ -666,6 +703,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
 
     // same as POG phys14 tight
     case(HAD_tight_noiso_v2):
+    case(HAD_tight_noiso_v3):
       if (!isTightElectronPOGphys14noIso(elIdx)) return false;
       return true;
       break;
@@ -673,6 +711,17 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
     case(HAD_tight_v2):
       if (electronID(elIdx, HAD_tight_noiso_v2)==0) return false;
       if (elMiniRelIso(elIdx) > 0.1) return false; 
+      return true;
+      break;
+
+   /////////////////////
+   /// HAD tight v3 ////
+   /////////////////////
+
+    // same ID as v2, but use CMS3 miniIso with EA corrections
+    case(HAD_tight_v3):
+      if (electronID(elIdx, HAD_tight_noiso_v3)==0) return false;
+      if (elMiniRelIsoCMS3_EA(elIdx) > 0.1) return false; 
       return true;
       break;
 
@@ -1069,6 +1118,12 @@ int eleTightID(unsigned int elIdx, analysis_t analysis, int version){
         if (electronID(elIdx, HAD_medium_v2)) return 2;
         if (electronID(elIdx, HAD_loose_v2)) return 1;
         if (electronID(elIdx, HAD_veto_v2)) return 0;
+      }
+      if (version == 3){
+        if (electronID(elIdx, HAD_tight_v3)) return 3;
+        if (electronID(elIdx, HAD_medium_v3)) return 2;
+        if (electronID(elIdx, HAD_loose_v3)) return 1;
+        if (electronID(elIdx, HAD_veto_v3)) return 0;
       }
       break;
     case (STOP):
