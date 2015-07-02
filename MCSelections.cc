@@ -1,8 +1,3 @@
-#include "CMS3.h"
-#include "TDatabasePDG.h"
-#include "TFile.h"
-#include "TTree.h"
-
 #include "MCSelections.h"
 
 using namespace tas;
