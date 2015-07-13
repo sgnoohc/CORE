@@ -602,18 +602,6 @@ int lepMotherID(Lep lep){
   return 0;
 }
 
-int lepMotherID_inSituFR(Lep lep){
-  if (tas::evt_isRealData()) return 1;
-  else if (isFromW(lep.pdgId(),lep.idx())){
-    if (sgn(lep.pdgId()) == sgn(lep.mc_id())) return 1;
-    else return 2;
-  }
-  else if (isFromB(lep.pdgId(),lep.idx())) return -1;
-  else if (isFromC(lep.pdgId(),lep.idx())) return -2;
-  else if (isFromLight(lep.pdgId(),lep.idx())) return -3;
-  return 0;
-}
-
 int isGoodHyp(int iHyp, IsolationMethods isoCase, bool expt, bool verbose){
 
   //Bunch o' variables
@@ -904,8 +892,9 @@ pair<particle_t, int> getThirdLepton(int hyp){
     //Choose the highest-quality, highest-pT electron 
     if (quality_ > quality || (quality_ == quality && tas::els_p4().at(i).pt() > lep3_p4_.pt())){
        quality = quality_;
-       lep3_p4_ = tas::els_p4().at(i); 
-       lep3_id_ = -11*tas::els_charge().at(i);
+       lep3_p4_  = tas::els_p4().at(i); 
+       lep3_id_  = -11*tas::els_charge().at(i);
+       lep3_idx_ = i;
     } 
   }
   
@@ -929,8 +918,9 @@ pair<particle_t, int> getThirdLepton(int hyp){
     //Choose the highest-quality, highest-pT electron 
     if (quality_ > quality || (quality_ == quality && tas::mus_p4().at(i).pt() > lep3_p4_.pt())){
        quality = quality_;
-       lep3_p4_ = tas::mus_p4().at(i); 
-       lep3_id_ = -11*tas::mus_charge().at(i);
+       lep3_p4_  = tas::mus_p4().at(i); 
+       lep3_id_  = -11*tas::mus_charge().at(i);
+       lep3_idx_ = i;
     } 
 
   }//Muon loop
