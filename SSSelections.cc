@@ -919,7 +919,7 @@ pair<particle_t, int> getThirdLepton(int hyp){
     if (quality_ > quality || (quality_ == quality && tas::mus_p4().at(i).pt() > lep3_p4_.pt())){
        quality = quality_;
        lep3_p4_  = tas::mus_p4().at(i); 
-       lep3_id_  = -11*tas::mus_charge().at(i);
+       lep3_id_  = -13*tas::mus_charge().at(i);
        lep3_idx_ = i;
     } 
 
