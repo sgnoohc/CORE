@@ -295,17 +295,17 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
       return passMultiIso(13, muIdx, 0.14, 0.68, 6.7);
       break;
 
-   /////////////.//////
+   ////////////////////
    /// WW medium v1 ///
-   //////////////./////
+   ////////////////////
   
     case(WW_medium_noiso_v1):
       if (muonID(muIdx, WW_fo_noiso_v1)==0) return false;//make sure it's tighter than FO
       return isMediumMuonPOG(muIdx);
       break;
 
-   case(WW_tight_v1):
-      if (muonID(muIdx, WW_tight_noiso_v1)==0) return false;
+   case(WW_medium_v1):
+      if (muonID(muIdx, WW_medium_noiso_v1)==0) return false;
       return passMultiIso(13, muIdx, 0.22, 0.63, 6.0);
       break;
 
