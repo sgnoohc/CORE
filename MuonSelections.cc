@@ -85,6 +85,28 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
       return isLooseMuonPOG(muIdx);
       break;
 
+   ///////////////////
+   /// WW veto v1 ///
+   ///////////////////
+  
+    case(WW_veto_noiso_v1):
+      if (fabs(mus_p4().at(muIdx).eta()) > 2.4) return false;
+      if (fabs(mus_dxyPV().at(muIdx)) > 0.05) return false;
+      if (fabs(mus_dzPV().at(muIdx)) > 0.1) return false;
+      return isLooseMuonPOG(muIdx);
+      break;
+
+    case(WW_veto_v1):
+      if (muonID(muIdx, WW_veto_noiso_v1)==0) return false;
+      if (muMiniRelIsoCMS3_EA(muIdx) > 0.40) return false;
+      return true;
+      break;
+
+    case(WW_veto_noiso_noip_v1):
+      if (fabs(mus_p4().at(muIdx).eta()) > 2.4) return false;
+      return isLooseMuonPOG(muIdx);
+      break;
+
    ////////////////////
    /// HAD loose v1 ///
    ////////////////////
@@ -195,6 +217,27 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
       break;
 
    ///////////////////
+   /// WW FO v1    ///  same as tight, but looser iso
+   ///////////////////
+
+    case(WW_fo_noiso_v1):
+      if (!muonID(muIdx, WW_veto_noiso_v1)) return false;
+      if (fabs(mus_ip3d().at(muIdx))/mus_ip3derr().at(muIdx) >= 4) return false;
+      return isMediumMuonPOG(muIdx);
+      break;
+
+    case(WW_fo_noiso_noip_v1):
+      if (!muonID(muIdx, WW_veto_noiso_noip_v1)) return false;
+       return isMediumMuonPOG(muIdx);
+      break;
+
+   case(WW_fo_v1):
+      if (!muonID(muIdx, WW_fo_noiso_v1)) return false;
+      if (muMiniRelIsoCMS3_EA(muIdx) > 0.40) return false;
+      return true;
+      break;
+
+   ///////////////////
    /// SS tight v1 ///
    ///////////////////
   
@@ -250,6 +293,20 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
    case(SS_tight_v3):
       if (muonID(muIdx, SS_tight_noiso_v3)==0) return false;
       return passMultiIso(13, muIdx, 0.14, 0.68, 6.7);
+      break;
+
+   /////////////.//////
+   /// WW medium v1 ///
+   //////////////./////
+  
+    case(WW_medium_noiso_v1):
+      if (muonID(muIdx, WW_fo_noiso_v1)==0) return false;//make sure it's tighter than FO
+      return isMediumMuonPOG(muIdx);
+      break;
+
+   case(WW_tight_v1):
+      if (muonID(muIdx, WW_tight_noiso_v1)==0) return false;
+      return passMultiIso(13, muIdx, 0.22, 0.63, 6.0);
       break;
 
    /////////////////////
@@ -407,6 +464,11 @@ int muTightID(unsigned int muIdx, analysis_t analysis, int version){
     case (POG):
       if (!isTightMuonPOG(muIdx)) return 1;
       if (!isLooseMuonPOG(muIdx)) return 0;
+      break;
+    case (WW):
+      if (muonID(muIdx, WW_medium_v1)) return 2;
+      if (muonID(muIdx, WW_fo_v1))     return 1;
+      if (muonID(muIdx, WW_veto_v1))   return 0;
       break;
     case (SS):
       if (muonID(muIdx, SS_tight_v3)) return 2;

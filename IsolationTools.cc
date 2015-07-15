@@ -68,6 +68,7 @@ float muRelIso04DB(unsigned int muIdx){
 }
 
 float muRelIso03(unsigned int muIdx, analysis_t analysis){
+  if (analysis == WW  ) return muRelIso03EA(muIdx);
   if (analysis == SS  ) return muRelIso03EA(muIdx);
   if (analysis == ZMET) return muRelIso03EA(muIdx);
   return muRelIso03DB(muIdx);
@@ -151,6 +152,7 @@ float muMiniRelIsoCMS3_EA(unsigned int idx) {
 float eleRelIso03(unsigned int elIdx, analysis_t analysis){
   if (analysis == HAD ) return eleRelIso03DB(elIdx);
   if (analysis == STOP) return eleRelIso03DB(elIdx);
+  if (analysis == WW  ) return eleRelIso03EA(elIdx);
   if (analysis == SS  ) return eleRelIso03EA(elIdx);
   if (analysis == ZMET) return eleRelIso03EA(elIdx);
 
