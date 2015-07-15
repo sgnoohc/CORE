@@ -214,10 +214,10 @@ std::pair <vector <Jet>, vector <Jet> > WWAnalysis::WWJetsCalculator(TString CMS
     
     //Get discriminator
     float disc;
-    if (convertCMS3tag(CMS3tag) >= 70403)
-      disc = tas::pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag().at(i);
-    else 
-      disc = tas::pfjets_combinedInclusiveSecondaryVertexV2BJetTag().at(i);
+    //    if (convertCMS3tag(CMS3tag) >= 70403)
+    disc = tas::pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag().at(i);
+    //    else 
+    //      disc = tas::pfjets_combinedInclusiveSecondaryVertexV2BJetTag().at(i);
 
     //Save jets that make it this far
     if (jet.pt() >= 30.) {
