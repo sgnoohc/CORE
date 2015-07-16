@@ -5,6 +5,7 @@
 #include "Base.h"
 
 bool passPtRel(int id, int idx, float cut, bool subtractLep);
+bool passMultiIso(float cutMiniIso, float cutPtRatio, float cutPtRel, float miniIsoValue, float ptRatioValue, float ptRelValue);
 bool passMultiIso(int id, int idx, float cutMiniIso, float cutPtRatio, float cutPtRel);
 
 float ptRel(const LorentzVector& lepp4, const LorentzVector& jetp4, bool subtractLep = false);

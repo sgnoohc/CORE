@@ -88,4 +88,30 @@ class readMVA {
 void createAndInitMVA(std::string pathToCORE);
 float getMVAoutput(unsigned int index = 0);
 
+struct elIDcache {
+public:
+  void  setCacheValues(int idx, float mva, float miniiso, float ptratio, float ptrel) {
+    idx_ = idx;
+    mva_ = mva;
+    miniiso_ = miniiso;
+    ptratio_ = ptratio;
+    ptrel_ = ptrel;
+  }
+  //make sure it was set for this electron before returning
+  float getMVA(int idx) {assert(idx==idx_); return mva_;}
+  float getMiniiso(int idx) {assert(idx==idx_); return miniiso_;}
+  float getPtratio(int idx) {assert(idx==idx_); return ptratio_;}
+  float getPtrel(int idx) {assert(idx==idx_); return ptrel_;}
+private:
+  int idx_;
+  float mva_;
+  float miniiso_;
+  float ptratio_;
+  float ptrel_;
+};
+namespace elID {
+  void setCache(int idx, float mva, float miniiso, float ptratio, float ptrel);
+  void unsetCache();
+}
+
 #endif

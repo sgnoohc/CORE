@@ -10,6 +10,17 @@
 
 readMVA* globalEleMVAreader = 0;
 
+bool elIDCacheSet = false;
+elIDcache elID_cache;
+void elID::setCache(int idx, float mva, float miniiso, float ptratio, float ptrel) {
+  assert(elIDCacheSet==false);//you must unset it before setting it again
+  elID_cache.setCacheValues(idx,mva,miniiso,ptratio,ptrel);
+  elIDCacheSet=true;
+}
+void elID::unsetCache() {
+  elIDCacheSet=false;
+}
+
 using namespace tas;
 
 bool isVetoElectronPOG(unsigned int elIdx){
@@ -711,7 +722,8 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
 
     case(SS_medium_v3):
       if (electronID(elIdx, SS_medium_noiso_v3)==0) return false; 
-      return passMultiIso(11, elIdx, 0.10, 0.70, 7.0);
+      if (elIDCacheSet) return passMultiIso(0.10, 0.70, 7.0, elID_cache.getMiniiso(elIdx), elID_cache.getPtratio(elIdx), elID_cache.getPtrel(elIdx) );
+      else return passMultiIso(11, elIdx, 0.10, 0.70, 7.0);
       break;
 
     case(SS_medium_looseMVA_noip_v3): 
@@ -746,7 +758,8 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
 
     case(WW_medium_v1):
       if (electronID(elIdx, WW_medium_noiso_v1)==0) return false; 
-      return passMultiIso(11, elIdx, 0.14, 0.68, 6.7);
+      if (elIDCacheSet) return passMultiIso(0.14, 0.68, 6.7, elID_cache.getMiniiso(elIdx), elID_cache.getPtratio(elIdx), elID_cache.getPtrel(elIdx) );
+      else return passMultiIso(11, elIdx, 0.14, 0.68, 6.7);
       break;
 
     case(WW_medium_looseMVA_noip_v1): 
@@ -758,7 +771,8 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
 	    return false;
       }
       if (!globalEleMVAreader->passesElectronMVAid(elIdx, id_level)) return false;
-      return passMultiIso(11, elIdx, 0.14, 0.68, 6.7);
+      if (elIDCacheSet) return passMultiIso(0.14, 0.68, 6.7, elID_cache.getMiniiso(elIdx), elID_cache.getPtratio(elIdx), elID_cache.getPtrel(elIdx) );
+      else return passMultiIso(11, elIdx, 0.14, 0.68, 6.7);
       break;
 
    /////////////////////
@@ -1369,6 +1383,8 @@ void readMVA::InitMVA(string path){
 }
 
 float readMVA::MVA(unsigned int index){
+
+  if (elIDCacheSet) return elID_cache.getMVA(index);
 
   //Load all variables from tree
   ele_kfhits_           = tas::els_ckf_laywithmeas().at(index);

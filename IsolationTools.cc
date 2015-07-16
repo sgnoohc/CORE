@@ -4,6 +4,10 @@
 using namespace std;
 using namespace tas;
 
+bool passMultiIso(float cutMiniIso, float cutPtRatio, float cutPtRel, float miniIsoValue, float ptRatioValue, float ptRelValue){
+  return (miniIsoValue < cutMiniIso && (ptRatioValue>cutPtRatio || ptRelValue > cutPtRel));
+}
+
 bool passMultiIso(int id, int idx, float cutMiniIso, float cutPtRatio, float cutPtRel){
   const LorentzVector& lep_p4 = abs(id)==11 ? els_p4().at(idx) : mus_p4().at(idx);
   const LorentzVector& jet_p4 = closestJet(lep_p4,0.4,2.4);
@@ -11,7 +15,7 @@ bool passMultiIso(int id, int idx, float cutMiniIso, float cutPtRatio, float cut
   float closeJetPt = jet_p4.pt();
   float ptratio = ( closeJetPt>0. ? lep_p4.pt()/closeJetPt : 1.);
   float ptrel = ptRel(lep_p4, jet_p4, true);
-  return (miniIso < cutMiniIso && (ptratio>cutPtRatio || ptrel > cutPtRel));
+  return passMultiIso(cutMiniIso, cutPtRatio, cutPtRel, miniIso, ptratio, ptrel);
 }
 
 bool passPtRel(int id, int idx, float cut, bool subtractLep) {
