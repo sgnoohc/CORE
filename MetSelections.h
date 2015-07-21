@@ -13,5 +13,6 @@ struct metStruct{
 };
 
 metStruct trackerMET(float deltaZCut = 0.2, const std::vector<LorentzVector>* jets = 0);
+bool hbheNoiseFilter(int minZeros = 999);
 
 #endif
