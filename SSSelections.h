@@ -100,7 +100,7 @@ int lepMotherID(Lep lep);
 int lepMotherID_inSituFR(Lep lep);
 
 //Jet selection function
-std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator();
+std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector* jetCorr);
 
 //Sorting functions
 bool ptsort (int i,int j);

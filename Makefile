@@ -3,9 +3,8 @@ include Makefile.arch
 #
 # stuff to make
 #
-SOURCES=$(wildcard *.cc)
+SOURCES=$(wildcard *.cc) $(wildcard *.cc) $(wildcard MT2/*.cc)
 OBJECTS=$(SOURCES:.cc=.o)
-#LIB=libCMS3NtupleMacrosCORE.so
 LIB=CMS3_CORE.so
 
 #
