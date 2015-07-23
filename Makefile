@@ -27,7 +27,7 @@ clean:
 	rm -f *.o \
 	rm -f *.d \
 	rm -f *.so \ 
- 	rm -f Tools/*.o \ 
+	rm -f Tools/*.o \ 
 	rm -f Tools/*.d \
 	rm -f Tools/*.so \
 	rm -f Tools/MT2/*.o \ 
