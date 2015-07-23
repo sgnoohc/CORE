@@ -1,5 +1,4 @@
 *.o
 CMS3_CORE.so
-Tools
 CORE-run1
 *.pcm
