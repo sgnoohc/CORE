@@ -36,3 +36,21 @@ metStruct trackerMET(float deltaZCut, const std::vector<LorentzVector>* jets) {
   met.mety = pY;
   return met;
 }
+
+bool hbheNoiseFilter(int minZeros) {
+    // http://cmslxr.fnal.gov/lxr/source/CommonTools/RecoAlgos/plugins/HBHENoiseFilter.cc?v=CMSSW_7_4_1
+    // by default (false --> reject), maxZeros() cut will never cause a lost event
+    if(hcalnoise_minE2Over10TS()<-999.0) return false;
+    if(hcalnoise_maxE2Over10TS()>999.0) return false;
+    if(hcalnoise_maxRBXHits()>=999) return false;
+    if(hcalnoise_min25GeVHitTime()<-9999.0) return false;
+    if(hcalnoise_max25GeVHitTime()>9999.0) return false;
+    if(hcalnoise_minRBXEMF()<-999.0) return false;
+    if(hcalnoise_maxHPDHits()>=17) return false;
+    if(hcalnoise_maxHPDNoOtherHits()>=10) return false;
+    if(hcalnoise_maxZeros()>=minZeros) return false;
+    if(hcalnoise_numIsolatedNoiseChannels()>=10) return false;
+    if(hcalnoise_isolatedNoiseSumE()>=50.0) return false;
+    if(hcalnoise_isolatedNoiseSumEt()>=25.0) return false;
+    return true;
+}
