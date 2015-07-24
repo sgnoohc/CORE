@@ -908,6 +908,7 @@ namespace tas {
 	const vector<unsigned int> &els_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg() { return cms3.els_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg(); }
 	const vector<unsigned int> &els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg() { return cms3.els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg(); }
 	const vector<unsigned int> &hlt_prescales() { return cms3.hlt_prescales(); }
+	const vector<unsigned int> &hlt_l1prescales() { return cms3.hlt_l1prescales(); }
 	const vector<unsigned int> &mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg() { return cms3.mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg(); }
 	const vector<unsigned int> &mus_HLT_IsoMu24_eta2p1() { return cms3.mus_HLT_IsoMu24_eta2p1(); }
 	const vector<unsigned int> &mus_HLT_IsoMu24_eta2p1_L1sMu16Eta2p1() { return cms3.mus_HLT_IsoMu24_eta2p1_L1sMu16Eta2p1(); }

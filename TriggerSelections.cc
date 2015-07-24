@@ -11,6 +11,7 @@ void PrintTriggers(){
   for( unsigned int i = 0; i < hlt_trigNames().size(); i++ ){
     cout << passHLTTrigger(hlt_trigNames().at(i).Data()) << "\t"
          << hlt_prescales().at(i) << "\t" 
+         << hlt_l1prescales().at(i) << "\t" 
          << hlt_trigNames().at(i).Data() << endl;
 
   } 
@@ -62,11 +63,12 @@ bool passUnprescaledHLTTrigger(const char* arg){
   if( strcmp( arg , hlt_trigNames().at(trigIndx) ) != 0 ){
     cout << "Error! trig names don't match" << endl;
     cout << "Found trig name " << hlt_trigNames().at(trigIndx) << endl;
-    cout << "Prescale        " << hlt_prescales().at(trigIndx) << endl;
+    cout << "Prescale HLT    " << hlt_prescales().at(trigIndx) << endl;
+    cout << "Prescale L1     " << hlt_l1prescales().at(trigIndx) << endl;
     exit(0);
   }
 
-  if( hlt_prescales().at(trigIndx) == 1) return true;
+  if( hlt_prescales().at(trigIndx) == 1 && hlt_l1prescales().at(trigIndx) == 1) return true;
 
   return false;
 
@@ -105,8 +107,7 @@ TString triggerName(TString triggerPattern){
 
 }
 
-
-//this function returns the HLT pre-scale for a given trigger name
+//this function returns the total (L1*HLT) pre-scale for a given trigger name
 int HLT_prescale( const char* arg ){
 
  // put the trigger name into a string
@@ -133,12 +134,13 @@ int HLT_prescale( const char* arg ){
   if( strcmp( arg , hlt_trigNames().at(trigIndx) ) != 0 ){
     cout << "Error! trig names don't match" << endl;
     cout << "Found trig name " << hlt_trigNames().at(trigIndx) << endl;
-    cout << "Prescale        " << hlt_prescales().at(trigIndx) << endl;
+    cout << "Prescale HLT    " << hlt_prescales().at(trigIndx) << endl;
+    cout << "Prescale L1     " << hlt_l1prescales().at(trigIndx) << endl;
     exit(0);
   }
 
   //return prescale
-  return hlt_prescales().at(trigIndx);
+  return hlt_prescales().at(trigIndx)*hlt_l1prescales().at(trigIndx);
 }
 
 //---------------------------------------------
@@ -209,7 +211,8 @@ bool passUnprescaledHLTTrigger(const char* arg, const LorentzVector &obj){
   else return false; // trigger was not found
 
   //return false if pre-scale != 1
-  if( hlt_prescales().at(trigIdx) != 1 ) return false;
+  if( hlt_prescales().at(trigIdx)   != 1 ) return false;
+  if( hlt_l1prescales().at(trigIdx) != 1 ) return false;
 
   return passHLTTrigger(arg, obj);
 
