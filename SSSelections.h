@@ -96,6 +96,9 @@ bool isNewMiniIsolatedLepton(int id, int idx, int level);
 bool isLooseNewMiniIsolatedLepton(int id, int idx);
 bool isInSituFRLepton(int lep_id, int lep_idx, bool expt);
 
+//MET corrections
+LorentzVector correctedMET(FactorizedJetCorrector* jetCorr);
+
 //MC truth functions
 int lepMotherID(Lep lep);
 int lepMotherID_inSituFR(Lep lep);
