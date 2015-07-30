@@ -1016,7 +1016,7 @@ LorentzVector correctedMET(FactorizedJetCorrector* jetCorr){
     corrected_jets += jet*JEC; 
 
     //Calculate it
-    newMET += corrected_jets - uncorrected_jets; 
+    newMET -= corrected_jets - uncorrected_jets; 
 
   }
   return newMET; 
