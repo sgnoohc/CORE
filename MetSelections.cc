@@ -54,3 +54,22 @@ bool hbheNoiseFilter(int minZeros) {
     if(hcalnoise_isolatedNoiseSumEt()>=25.0) return false;
     return true;
 }
+
+pair<float,float> MET3p0() { 
+
+  float met_pt  = 0.0;
+  float met_phi = 0.0;
+  
+  LorentzVector pfcands3p0_p4(0,0,0,0);
+  
+  for( size_t pfind = 0; pfind < cms3.pfcands_p4().size(); pfind++ ){
+	
+	if( abs( cms3.pfcands_p4().at(pfind).eta() ) < 3.0 ){ 
+	  pfcands3p0_p4 -= cms3.pfcands_p4().at(pfind);
+	}
+  }
+  met_pt  = pfcands3p0_p4.pt();
+  met_phi = pfcands3p0_p4.phi();
+
+  return make_pair( met_pt, met_phi ); 
+}
