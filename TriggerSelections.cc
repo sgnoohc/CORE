@@ -151,6 +151,7 @@ bool passHLTTrigger(const char* arg, const LorentzVector &obj){
 
   // put the trigger name into a string
   TString HLTTrigger( arg );
+  if (!passHLTTrigger(HLTTrigger)) return false;
 
   // find the index of this trigger
   int trigIdx = -1;
@@ -166,10 +167,17 @@ bool passHLTTrigger(const char* arg, const LorentzVector &obj){
   // if no trigger objects then fail
   if (trigObjs.size() == 0) return false; 
 
+  // Two cases
+  // 1. (OLD). Objects only present if full HLT path has passed
+  // 2. (NEW). Objects present even if only passed part of HLT path
+  // For case 2 we will need to check the new branch "hlt_trigObjs_passLast)
+  //CASE2: std::vector<bool> trigObjsPassHLT = hlt_trigObjs_passLast()[trigIdx];
+    
   // does the trigger match this lepton
   float drMin = 999.99;
   for (size_t i = 0; i < trigObjs.size(); ++i)
   {
+    //CASE2: if (!trigObjsPassHLT[i]) continue;
     float dr = ROOT::Math::VectorUtil::DeltaR(trigObjs[i], obj);
     if (dr < drMin) drMin = dr;
   }
@@ -188,6 +196,59 @@ bool passHLTTrigger(const char* arg, const LorentzVector &obj){
     cout << "Prescale        " << hlt_prescales().at(trigIdx) << endl;
     exit(0);
   }
+
+  return true;
+
+}
+
+int getTriggerIndex(const char* arg){
+  TString HLTTrigger( arg );
+  int trigIdx = -1;
+  vector<TString>::const_iterator begin_it = hlt_trigNames().begin();
+  vector<TString>::const_iterator end_it = hlt_trigNames().end();
+  vector<TString>::const_iterator found_it = find(begin_it, end_it, HLTTrigger);
+  if(found_it != end_it) trigIdx = found_it - begin_it;
+  return trigIdx;
+}
+
+int getTriggerPatternIndex(const char* arg){ 
+  TString HLTTriggerPattern(arg);
+  TString HLTTrigger = triggerName( HLTTriggerPattern );
+  if( HLTTrigger.Contains("TRIGGER_NOT_FOUND")) return -1;
+  return getTriggerIndex(HLTTrigger);
+}
+
+// This function does not require the full trigger path to have passed. 
+bool matchToHLTFilter(const char* arg, const char* filt, const LorentzVector &obj){
+
+  // put the trigger name into a string
+  TString HLTTrigger( arg );
+  TString HLTFilter( filt );
+
+  int trigIdx = getTriggerPatternIndex(HLTTrigger);
+  if (trigIdx == -1) return false;
+
+  // get the vector of p4 passing this trigger
+  std::vector<LorentzVector> trigObjs = hlt_trigObjs_p4()[trigIdx];
+  std::vector<TString> trigObjsFilters = hlt_trigObjs_filters()[trigIdx];
+
+  // if no trigger objects then fail
+  if (trigObjs.size() == 0 || trigObjs.size() != trigObjsFilters.size()) return false; 
+
+  // does the trigger match this lepton
+  float drMin = 999.99;
+  for (size_t i = 0; i < trigObjs.size(); ++i)
+  {
+
+    if ( ! trigObjsFilters[i].Contains(HLTFilter) ) continue;
+
+    float dr = ROOT::Math::VectorUtil::DeltaR(trigObjs[i], obj);
+    if (dr < drMin) drMin = dr;
+  }
+
+  // if the closest trigger object
+  // is further than 0.1 then fail
+  if (drMin > 0.1) return false;
 
   return true;
 
@@ -267,6 +328,7 @@ int nHLTObjects(const char* arg ){
 LorentzVector p4HLTObject(const char* arg, int objNumber){
  
   TString HLTTrigger( arg );
+  if (!passHLTTrigger(HLTTrigger)) return LorentzVector(0,0,0,0);
   int trigIndx = -1;
   vector<TString>::const_iterator begin_it = hlt_trigNames().begin();
   vector<TString>::const_iterator end_it = hlt_trigNames().end();
@@ -299,6 +361,7 @@ LorentzVector p4HLTObject(const char* arg, int objNumber){
 int idHLTObject(const char* arg, int objNumber){
 
   TString HLTTrigger( arg );
+  if (!passHLTTrigger(HLTTrigger)) return 0;
   int trigIndx = -1;
   vector<TString>::const_iterator begin_it = hlt_trigNames().begin();
   vector<TString>::const_iterator end_it = hlt_trigNames().end();

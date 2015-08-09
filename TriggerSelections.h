@@ -12,7 +12,9 @@ bool passUnprescaledHLTTriggerPattern(const char* arg);
 bool passHLTTrigger(const char* arg, const LorentzVector &obj);
 bool passHLTTriggerPattern(const char* arg);
 TString triggerName(TString triggerPattern);
-
+int getTriggerIndex(const char* arg);
+int getTriggerPatternIndex(const char* arg);
+bool matchToHLTFilter(const char* arg, const char* filt, const LorentzVector &obj);
 int HLT_prescale( const char* arg );
 
 int nHLTObjects(const char*);
