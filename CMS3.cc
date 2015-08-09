@@ -12,6 +12,7 @@ namespace tas {
 	const vector<TString> &taus_pf_IDnames() { return cms3.taus_pf_IDnames(); }
 	const vector<TString> &sparm_comment() { return cms3.sparm_comment(); }
 	const vector<TString> &sparm_names() { return cms3.sparm_names(); }
+	const vector<vector<TString> > &hlt_trigObjs_filters() { return cms3.hlt_trigObjs_filters(); }
 	const bool &hcalnoise_HasBadRBXTS4TS5() { return cms3.hcalnoise_HasBadRBXTS4TS5(); }
 	const bool &evt_cscTightHaloId() { return cms3.evt_cscTightHaloId(); }
 	const bool &evt_hbheFilter() { return cms3.evt_hbheFilter(); }
@@ -47,6 +48,7 @@ namespace tas {
 	const vector<bool> &mus_tightMatch() { return cms3.mus_tightMatch(); }
 	const vector<bool> &mus_updatedSta() { return cms3.mus_updatedSta(); }
 	const vector<bool> &photons_haspixelSeed() { return cms3.photons_haspixelSeed(); }
+	const vector<vector<bool> > &hlt_trigObjs_passLast() { return cms3.hlt_trigObjs_passLast(); }
 	const float &evt_bs_Xwidth() { return cms3.evt_bs_Xwidth(); }
 	const float &evt_bs_XwidthErr() { return cms3.evt_bs_XwidthErr(); }
 	const float &evt_bs_Ywidth() { return cms3.evt_bs_Ywidth(); }

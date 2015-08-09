@@ -51,6 +51,9 @@ protected:
 	vector<TString> sparm_names_;
 	TBranch *sparm_names_branch;
 	bool sparm_names_isLoaded;
+	vector<vector<TString> > hlt_trigObjs_filters_;
+	TBranch *hlt_trigObjs_filters_branch;
+	bool hlt_trigObjs_filters_isLoaded;           
 	bool hcalnoise_HasBadRBXTS4TS5_;
 	TBranch *hcalnoise_HasBadRBXTS4TS5_branch;
 	bool hcalnoise_HasBadRBXTS4TS5_isLoaded;
@@ -156,6 +159,9 @@ protected:
 	vector<bool> photons_haspixelSeed_;
 	TBranch *photons_haspixelSeed_branch;
 	bool photons_haspixelSeed_isLoaded;
+        vector<vector<bool> > hlt_trigObjs_passLast_;         
+        TBranch *hlt_trigObjs_passLast_branch;                
+        bool hlt_trigObjs_passLast_isLoaded;                  
 	float evt_bs_Xwidth_;
 	TBranch *evt_bs_Xwidth_branch;
 	bool evt_bs_Xwidth_isLoaded;
@@ -3133,6 +3139,11 @@ void Init(TTree *tree) {
 		sparm_names_branch = tree->GetBranch(tree->GetAlias("sparm_names"));
 		if (sparm_names_branch) {sparm_names_branch->SetAddress(&sparm_names_);}
 	}
+	hlt_trigObjs_filters_branch = 0;
+	if (tree->GetAlias("hlt_trigObjs_filters") != 0) {
+		hlt_trigObjs_filters_branch = tree->GetBranch(tree->GetAlias("hlt_trigObjs_filters"));
+		if (hlt_trigObjs_filters_branch) {hlt_trigObjs_filters_branch->SetAddress(&hlt_trigObjs_filters_);}
+	}
 	hcalnoise_HasBadRBXTS4TS5_branch = 0;
 	if (tree->GetAlias("hcalnoise_HasBadRBXTS4TS5") != 0) {
 		hcalnoise_HasBadRBXTS4TS5_branch = tree->GetBranch(tree->GetAlias("hcalnoise_HasBadRBXTS4TS5"));
@@ -3307,6 +3318,11 @@ void Init(TTree *tree) {
 	if (tree->GetAlias("photons_haspixelSeed") != 0) {
 		photons_haspixelSeed_branch = tree->GetBranch(tree->GetAlias("photons_haspixelSeed"));
 		if (photons_haspixelSeed_branch) {photons_haspixelSeed_branch->SetAddress(&photons_haspixelSeed_);}
+	}
+	hlt_trigObjs_passLast_branch = 0;
+	if (tree->GetAlias("hlt_trigObjs_passLast") != 0) {
+		hlt_trigObjs_passLast_branch = tree->GetBranch(tree->GetAlias("hlt_trigObjs_passLast"));
+		if (hlt_trigObjs_passLast_branch) {hlt_trigObjs_passLast_branch->SetAddress(&hlt_trigObjs_passLast_);}
 	}
 	evt_bs_Xwidth_branch = 0;
 	if (tree->GetAlias("evt_bs_Xwidth") != 0) {
@@ -7550,6 +7566,7 @@ void GetEntry(unsigned int idx)
 		taus_pf_IDnames_isLoaded = false;
 		sparm_comment_isLoaded = false;
 		sparm_names_isLoaded = false;
+		hlt_trigObjs_filters_isLoaded = false;
 		hcalnoise_HasBadRBXTS4TS5_isLoaded = false;
 		evt_cscTightHaloId_isLoaded = false;
 		evt_hbheFilter_isLoaded = false;
@@ -7585,6 +7602,7 @@ void GetEntry(unsigned int idx)
 		mus_tightMatch_isLoaded = false;
 		mus_updatedSta_isLoaded = false;
 		photons_haspixelSeed_isLoaded = false;
+		hlt_trigObjs_passLast_isLoaded = false;
 		evt_bs_Xwidth_isLoaded = false;
 		evt_bs_XwidthErr_isLoaded = false;
 		evt_bs_Ywidth_isLoaded = false;
@@ -8494,6 +8512,7 @@ void LoadAllBranches()
 	if (taus_pf_IDnames_branch != 0) taus_pf_IDnames();
 	if (sparm_comment_branch != 0) sparm_comment();
 	if (sparm_names_branch != 0) sparm_names();
+	if (hlt_trigObjs_filters_branch != 0) hlt_trigObjs_filters();
 	if (hcalnoise_HasBadRBXTS4TS5_branch != 0) hcalnoise_HasBadRBXTS4TS5();
 	if (evt_cscTightHaloId_branch != 0) evt_cscTightHaloId();
 	if (evt_hbheFilter_branch != 0) evt_hbheFilter();
@@ -8529,6 +8548,7 @@ void LoadAllBranches()
 	if (mus_tightMatch_branch != 0) mus_tightMatch();
 	if (mus_updatedSta_branch != 0) mus_updatedSta();
 	if (photons_haspixelSeed_branch != 0) photons_haspixelSeed();
+	if (hlt_trigObjs_passLast_branch != 0) hlt_trigObjs_passLast();
 	if (evt_bs_Xwidth_branch != 0) evt_bs_Xwidth();
 	if (evt_bs_XwidthErr_branch != 0) evt_bs_XwidthErr();
 	if (evt_bs_Ywidth_branch != 0) evt_bs_Ywidth();
@@ -9567,6 +9587,19 @@ void LoadAllBranches()
 		}
 		return sparm_names_;
 	}
+	const vector<vector<TString> > &hlt_trigObjs_filters()
+	{
+		if (not hlt_trigObjs_filters_isLoaded) {
+			if (hlt_trigObjs_filters_branch != 0) {
+				hlt_trigObjs_filters_branch->GetEntry(index);
+			} else { 
+				printf("branch hlt_trigObjs_filters_branch does not exist!\n");
+				exit(1);
+			}
+			hlt_trigObjs_filters_isLoaded = true;
+		}
+		return hlt_trigObjs_filters_;
+	}
 	bool &hcalnoise_HasBadRBXTS4TS5()
 	{
 		if (not hcalnoise_HasBadRBXTS4TS5_isLoaded) {
@@ -10021,6 +10054,19 @@ void LoadAllBranches()
 			photons_haspixelSeed_isLoaded = true;
 		}
 		return photons_haspixelSeed_;
+	}
+	const vector<vector<bool> > &hlt_trigObjs_passLast()
+	{
+		if (not hlt_trigObjs_passLast_isLoaded) {
+			if (hlt_trigObjs_passLast_branch != 0) {
+				hlt_trigObjs_passLast_branch->GetEntry(index);
+			} else { 
+				printf("branch hlt_trigObjs_passLast_branch does not exist!\n");
+				exit(1);
+			}
+			hlt_trigObjs_passLast_isLoaded = true;
+		}
+		return hlt_trigObjs_passLast_;
 	}
 	float &evt_bs_Xwidth()
 	{
@@ -21722,6 +21768,7 @@ namespace tas {
 	const vector<TString> &taus_pf_IDnames();
 	const vector<TString> &sparm_comment();
 	const vector<TString> &sparm_names();
+	const vector<vector<TString> > &hlt_trigObjs_filters();
 	const bool &hcalnoise_HasBadRBXTS4TS5();
 	const bool &evt_cscTightHaloId();
 	const bool &evt_hbheFilter();
@@ -21757,6 +21804,7 @@ namespace tas {
 	const vector<bool> &mus_tightMatch();
 	const vector<bool> &mus_updatedSta();
 	const vector<bool> &photons_haspixelSeed();
+	const vector<vector<bool> > &hlt_trigObjs_passLast();
 	const float &evt_bs_Xwidth();
 	const float &evt_bs_XwidthErr();
 	const float &evt_bs_Ywidth();
