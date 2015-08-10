@@ -960,3 +960,64 @@ float coneCorrPt(int id, int idx){
   float C = abs(id)==11 ? 7.00 : 6.70;
   return ((ptrel > C) ? lep_p4.pt()*(1 + std::max((float)0, miniIso - A)) : std::max(lep_p4.pt(), jet_p4.pt() * B));
 }
+
+LorentzVector correctedMET(FactorizedJetCorrector* jetCorr){
+
+  //uncorrected MET
+  LorentzVector newMET(tas::evt_pfmet_raw()*cos(tas::evt_pfmetPhi_raw()), 
+                       tas::evt_pfmet_raw()*sin(tas::evt_pfmetPhi_raw()),
+                       0,
+                       sqrt(pow(tas::evt_pfmet_raw()*cos(tas::evt_pfmetPhi_raw()), 2) + pow(tas::evt_pfmet_raw()*sin(tas::evt_pfmetPhi_raw()), 2)) );
+
+  LorentzVector uncorrected_jets;
+  LorentzVector corrected_jets;
+  
+
+  for (unsigned int i = 0; i < tas::pfjets_p4().size(); i++){
+    LorentzVector jet = tas::pfjets_p4().at(i);
+    
+    //Kinematic jet cuts
+    if (jet.pt() < 10.) continue;
+    if (fabs(jet.eta()) > 5.2) continue;
+
+    //Require loose jet ID -- vince uses V2 of this function, fixme
+    if (!isLoosePFJet(i)) continue;
+    
+    //Jet cleaning -- electrons
+    bool jetIsLep = false;
+    for (unsigned int eidx = 0; eidx < tas::els_p4().size(); eidx++){
+      LorentzVector electron = tas::els_p4().at(eidx);
+      if (electron.pt() < 10) continue;
+      if (!isGoodVetoElectron(eidx)) continue;
+      if (ROOT::Math::VectorUtil::DeltaR(jet, electron) > 0.4) continue;
+      jetIsLep = true;
+    }
+    if (jetIsLep == true) continue;
+    
+    //Jet cleaning -- muons
+    for (unsigned int muidx = 0; muidx < tas::mus_p4().size(); muidx++){
+      LorentzVector muon = tas::mus_p4().at(muidx);
+      if (muon.pt() < 10) continue;
+      if (!isGoodVetoMuon(muidx)) continue;
+      if (ROOT::Math::VectorUtil::DeltaR(jet, muon) > 0.4) continue;
+      jetIsLep = true;
+    }
+    if (jetIsLep == true) continue;
+
+    //Figure out jet correction
+    jetCorr->setJetEta(jet.eta()); 
+    jetCorr->setJetPt(jet.pt()); 
+    jetCorr->setJetA(tas::pfjets_area().at(i)); 
+    jetCorr->setRho(tas::evt_fixgrid_all_rho()); 
+    float JEC = jetCorr->getCorrection(); 
+    
+    //Add to jet vector
+    uncorrected_jets += jet; 
+    corrected_jets += jet*JEC; 
+
+    //Calculate it
+    newMET -= corrected_jets - uncorrected_jets; 
+
+  }
+  return newMET; 
+}

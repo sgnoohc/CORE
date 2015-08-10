@@ -51,6 +51,7 @@ protected:
 	vector<vector<TString> > hlt_trigObjs_filters_;
 	TBranch *hlt_trigObjs_filters_branch;
 	bool hlt_trigObjs_filters_isLoaded;
+	bool hlt_trigObjs_filters_isLoaded;           
 	bool hcalnoise_HasBadRBXTS4TS5_;
 	TBranch *hcalnoise_HasBadRBXTS4TS5_branch;
 	bool hcalnoise_HasBadRBXTS4TS5_isLoaded;
@@ -177,6 +178,9 @@ protected:
 	float evt_METToolbox_pfmet_raw_;
 	TBranch *evt_METToolbox_pfmet_raw_branch;
 	bool evt_METToolbox_pfmet_raw_isLoaded;
+	vector<vector<bool> > hlt_trigObjs_passLast_;         
+	TBranch *hlt_trigObjs_passLast_branch;                
+	bool hlt_trigObjs_passLast_isLoaded;                  
 	float evt_bs_Xwidth_;
 	TBranch *evt_bs_Xwidth_branch;
 	bool evt_bs_Xwidth_isLoaded;
@@ -3102,6 +3106,9 @@ protected:
 	vector<unsigned int> hlt_prescales_;
 	TBranch *hlt_prescales_branch;
 	bool hlt_prescales_isLoaded;
+	vector<unsigned int> hlt_l1prescales_;
+	TBranch *hlt_l1prescales_branch;
+	bool hlt_l1prescales_isLoaded;
 	vector<unsigned int> mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg_;
 	TBranch *mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg_branch;
 	bool mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg_isLoaded;
@@ -8338,6 +8345,11 @@ void Init(TTree *tree) {
 		hlt_prescales_branch = tree->GetBranch(tree->GetAlias("hlt_prescales"));
 		if (hlt_prescales_branch) {hlt_prescales_branch->SetAddress(&hlt_prescales_);}
 	}
+	hlt_l1prescales_branch = 0;
+	if (tree->GetAlias("hlt_l1prescales") != 0) {
+		hlt_l1prescales_branch = tree->GetBranch(tree->GetAlias("hlt_l1prescales"));
+		if (hlt_l1prescales_branch) {hlt_l1prescales_branch->SetAddress(&hlt_l1prescales_);}
+	}
 	mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg_branch = 0;
 	if (tree->GetAlias("mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg") != 0) {
 		mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg_branch = tree->GetBranch(tree->GetAlias("mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg"));
@@ -9527,6 +9539,7 @@ void GetEntry(unsigned int idx)
 		els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg_isLoaded = false;
 		hlt_l1prescales_isLoaded = false;
 		hlt_prescales_isLoaded = false;
+		hlt_l1prescales_isLoaded = false;
 		mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg_isLoaded = false;
 		mus_HLT_IsoMu24_eta2p1_isLoaded = false;
 		mus_HLT_IsoMu24_eta2p1_L1sMu16Eta2p1_isLoaded = false;
@@ -10591,6 +10604,7 @@ void LoadAllBranches()
 	if (els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg_branch != 0) els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg();
 	if (hlt_l1prescales_branch != 0) hlt_l1prescales();
 	if (hlt_prescales_branch != 0) hlt_prescales();
+	if (hlt_l1prescales_branch != 0) hlt_l1prescales();
 	if (mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg_branch != 0) mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg();
 	if (mus_HLT_IsoMu24_eta2p1_branch != 0) mus_HLT_IsoMu24_eta2p1();
 	if (mus_HLT_IsoMu24_eta2p1_L1sMu16Eta2p1_branch != 0) mus_HLT_IsoMu24_eta2p1_L1sMu16Eta2p1();
@@ -23988,6 +24002,19 @@ void LoadAllBranches()
 		}
 		return hlt_prescales_;
 	}
+	const vector<unsigned int> &hlt_l1prescales()
+	{
+		if (not hlt_l1prescales_isLoaded) {
+			if (hlt_l1prescales_branch != 0) {
+				hlt_l1prescales_branch->GetEntry(index);
+			} else { 
+				printf("branch hlt_l1prescales_branch does not exist!\n");
+				exit(1);
+			}
+			hlt_l1prescales_isLoaded = true;
+		}
+		return hlt_l1prescales_;
+	}
 	const vector<unsigned int> &mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg()
 	{
 		if (not mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg_isLoaded) {
@@ -25499,6 +25526,7 @@ namespace tas {
 	const vector<unsigned int> &els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg();
 	const vector<unsigned int> &hlt_l1prescales();
 	const vector<unsigned int> &hlt_prescales();
+	const vector<unsigned int> &hlt_l1prescales();
 	const vector<unsigned int> &mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg();
 	const vector<unsigned int> &mus_HLT_IsoMu24_eta2p1();
 	const vector<unsigned int> &mus_HLT_IsoMu24_eta2p1_L1sMu16Eta2p1();

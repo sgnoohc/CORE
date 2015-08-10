@@ -40,21 +40,21 @@ metStruct trackerMET(float deltaZCut, const std::vector<LorentzVector>* jets) {
 }
 
 bool hbheNoiseFilter(int minZeros) {
-    // http://cmslxr.fnal.gov/lxr/source/CommonTools/RecoAlgos/plugins/HBHENoiseFilter.cc?v=CMSSW_7_4_1
-    // by default (false --> reject), maxZeros() cut will never cause a lost event
-    if(hcalnoise_minE2Over10TS()<-999.0) return false;
-    if(hcalnoise_maxE2Over10TS()>999.0) return false;
-    if(hcalnoise_maxRBXHits()>=999) return false;
-    if(hcalnoise_min25GeVHitTime()<-9999.0) return false;
-    if(hcalnoise_max25GeVHitTime()>9999.0) return false;
-    if(hcalnoise_minRBXEMF()<-999.0) return false;
-    if(hcalnoise_maxHPDHits()>=17) return false;
-    if(hcalnoise_maxHPDNoOtherHits()>=10) return false;
-    if(hcalnoise_maxZeros()>=minZeros) return false;
-    if(hcalnoise_numIsolatedNoiseChannels()>=10) return false;
-    if(hcalnoise_isolatedNoiseSumE()>=50.0) return false;
-    if(hcalnoise_isolatedNoiseSumEt()>=25.0) return false;
-    return true;
+  // http://cmslxr.fnal.gov/lxr/source/CommonTools/RecoAlgos/plugins/HBHENoiseFilter.cc?v=CMSSW_7_4_1
+  // by default (false --> reject), maxZeros() cut will never cause a lost event
+  if(hcalnoise_minE2Over10TS()<-999.0) return false;
+  if(hcalnoise_maxE2Over10TS()>999.0) return false;
+  if(hcalnoise_maxRBXHits()>=999) return false;
+  if(hcalnoise_min25GeVHitTime()<-9999.0) return false;
+  if(hcalnoise_max25GeVHitTime()>9999.0) return false;
+  if(hcalnoise_minRBXEMF()<-999.0) return false;
+  if(hcalnoise_maxHPDHits()>=17) return false;
+  if(hcalnoise_maxHPDNoOtherHits()>=10) return false;
+  if(hcalnoise_maxZeros()>=minZeros) return false;
+  if(hcalnoise_numIsolatedNoiseChannels()>=10) return false;
+  if(hcalnoise_isolatedNoiseSumE()>=50.0) return false;
+  if(hcalnoise_isolatedNoiseSumEt()>=25.0) return false;
+  return true;
 }
 
 // takes in a string with the list of JECs you want to use to correct MET
@@ -135,4 +135,23 @@ pair <float, float> getT1CHSMET( std::vector<std::string> jetcorr_filenames ){
   golf_metPhi = std::atan2(golf_mety, golf_metx);
 
   return make_pair(golf_met, golf_metPhi);
+}
+
+pair<float,float> MET3p0() { 
+
+  float met_pt  = 0.0;
+  float met_phi = 0.0;
+  
+  LorentzVector pfcands3p0_p4(0,0,0,0);
+  
+  for( size_t pfind = 0; pfind < cms3.pfcands_p4().size(); pfind++ ){
+	
+	if( abs( cms3.pfcands_p4().at(pfind).eta() ) < 3.0 ){ 
+	  pfcands3p0_p4 -= cms3.pfcands_p4().at(pfind);
+	}
+  }
+  met_pt  = pfcands3p0_p4.pt();
+  met_phi = pfcands3p0_p4.phi();
+
+  return make_pair( met_pt, met_phi ); 
 }

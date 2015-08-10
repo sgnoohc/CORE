@@ -96,6 +96,9 @@ bool isNewMiniIsolatedLepton(int id, int idx, int level);
 bool isLooseNewMiniIsolatedLepton(int id, int idx);
 bool isInSituFRLepton(int lep_id, int lep_idx, bool expt);
 
+//MET corrections
+LorentzVector correctedMET(FactorizedJetCorrector* jetCorr);
+
 //MC truth functions
 int lepMotherID(Lep lep);
 int lepMotherID_inSituFR(Lep lep);
@@ -167,6 +170,7 @@ struct Jet {
     LorentzVector genps_p4() {return cms3.pfjets_mc_gp_p4()[idx_];}
     int idx() {return idx_;}
     float jec() { return JEC;} 
+    float undo_jec() { return tas::pfjets_undoJEC().at(idx_); } 
   private:
     int idx_;
     float JEC;

@@ -15,5 +15,6 @@ struct metStruct{
 metStruct trackerMET(float deltaZCut = 0.2, const std::vector<LorentzVector>* jets = 0);
 bool hbheNoiseFilter(int minZeros = 999);
 std::pair <float, float> getT1CHSMET( std::vector<std::string> jetcorr_filenames );
+pair<float,float> MET3p0(); // tracker style MET with no particles with eta > 3.0
 
 #endif
