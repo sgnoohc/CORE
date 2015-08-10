@@ -22,6 +22,7 @@ float muRelIsoCustomCone(unsigned int idx, float dr, bool useVetoCones=true, flo
 float muMiniRelIso(unsigned int idx, bool useVetoCones=true, float ptthresh = 0.5, bool useDBcor=false, bool useEAcor=false);
 float muMiniRelIsoCMS3_EA(unsigned int idx);
 float muMiniRelIsoCMS3_DB(unsigned int idx);
+float muRelIso03_noCorr(unsigned int muIdx);
 
 
 //Electron
@@ -33,5 +34,6 @@ float elRelIsoCustomCone(unsigned int idx, float dr, bool useVetoCones=true, flo
 float elMiniRelIso(unsigned int idx, bool useVetoCones=true, float ptthresh = 0.0, bool useDBcor=false, bool useEAcor=false);
 float elMiniRelIsoCMS3_EA(unsigned int idx);
 float elMiniRelIsoCMS3_DB(unsigned int idx);
+float eleRelIso03_noCorr(unsigned int elIdx);
 
 #endif
