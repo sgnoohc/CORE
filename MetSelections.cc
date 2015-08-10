@@ -1,5 +1,6 @@
 #include "MetSelections.h"
 #include "Math/VectorUtil.h"
+#include "MetSelections.h"
 
 using namespace tas;
 
@@ -72,4 +73,23 @@ pair<float,float> MET3p0() {
   met_phi = pfcands3p0_p4.phi();
 
   return make_pair( met_pt, met_phi ); 
+}
+
+bool passesMETfilter(){
+
+  //primary vertex filter (re-run by user)
+  if (firstGoodVertex() == -1) return false;
+
+  //CSC beam halo filter 
+  if (!filt_cscBeamHalo()) return false;
+  
+  //HBHE noise filter (re-run by user)
+  if (!hbheNoiseFilter(10)) return false;
+
+  //ee badSC noise filter NEW
+  if (!filt_eeBadSc()) return false;
+
+  //Otherwise good
+  return true;
+
 }
