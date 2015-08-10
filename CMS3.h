@@ -24,9 +24,6 @@ protected:
 	TBits hlt_bits_;
 	TBranch *hlt_bits_branch;
 	bool hlt_bits_isLoaded;
-	vector<TString> pfjets_nonCHS_bDiscriminatorNames_;
-	TBranch *pfjets_nonCHS_bDiscriminatorNames_branch;
-	bool pfjets_nonCHS_bDiscriminatorNames_isLoaded;
 	vector<TString> evt_CMS3tag_;
 	TBranch *evt_CMS3tag_branch;
 	bool evt_CMS3tag_isLoaded;
@@ -51,6 +48,9 @@ protected:
 	vector<TString> sparm_names_;
 	TBranch *sparm_names_branch;
 	bool sparm_names_isLoaded;
+	vector<vector<TString> > hlt_trigObjs_filters_;
+	TBranch *hlt_trigObjs_filters_branch;
+	bool hlt_trigObjs_filters_isLoaded;
 	bool hcalnoise_HasBadRBXTS4TS5_;
 	TBranch *hcalnoise_HasBadRBXTS4TS5_branch;
 	bool hcalnoise_HasBadRBXTS4TS5_isLoaded;
@@ -153,9 +153,30 @@ protected:
 	vector<bool> mus_updatedSta_;
 	TBranch *mus_updatedSta_branch;
 	bool mus_updatedSta_isLoaded;
+	vector<bool> pfcands_isGlobalMuon_;
+	TBranch *pfcands_isGlobalMuon_branch;
+	bool pfcands_isGlobalMuon_isLoaded;
+	vector<bool> pfcands_isStandAloneMuon_;
+	TBranch *pfcands_isStandAloneMuon_branch;
+	bool pfcands_isStandAloneMuon_isLoaded;
 	vector<bool> photons_haspixelSeed_;
 	TBranch *photons_haspixelSeed_branch;
 	bool photons_haspixelSeed_isLoaded;
+	vector<vector<bool> > hlt_trigObjs_passLast_;
+	TBranch *hlt_trigObjs_passLast_branch;
+	bool hlt_trigObjs_passLast_isLoaded;
+	float evt_METToolbox_pfmet_;
+	TBranch *evt_METToolbox_pfmet_branch;
+	bool evt_METToolbox_pfmet_isLoaded;
+	float evt_METToolbox_pfmetPhi_;
+	TBranch *evt_METToolbox_pfmetPhi_branch;
+	bool evt_METToolbox_pfmetPhi_isLoaded;
+	float evt_METToolbox_pfmetPhi_raw_;
+	TBranch *evt_METToolbox_pfmetPhi_raw_branch;
+	bool evt_METToolbox_pfmetPhi_raw_isLoaded;
+	float evt_METToolbox_pfmet_raw_;
+	TBranch *evt_METToolbox_pfmet_raw_branch;
+	bool evt_METToolbox_pfmet_raw_isLoaded;
 	float evt_bs_Xwidth_;
 	TBranch *evt_bs_Xwidth_branch;
 	bool evt_bs_Xwidth_isLoaded;
@@ -354,15 +375,15 @@ protected:
 	float pdfinfo_x2_;
 	TBranch *pdfinfo_x2_branch;
 	bool pdfinfo_x2_isLoaded;
-	float evt_fixgrid_rho_all_;
-	TBranch *evt_fixgrid_rho_all_branch;
-	bool evt_fixgrid_rho_all_isLoaded;
-	float evt_fixgrid_rho_ctr_;
-	TBranch *evt_fixgrid_rho_ctr_branch;
-	bool evt_fixgrid_rho_ctr_isLoaded;
-	float evt_fixgrid_rho_fwd_;
-	TBranch *evt_fixgrid_rho_fwd_branch;
-	bool evt_fixgrid_rho_fwd_isLoaded;
+	float pfcandsevt_fixgrid_rho_all_;
+	TBranch *pfcandsevt_fixgrid_rho_all_branch;
+	bool pfcandsevt_fixgrid_rho_all_isLoaded;
+	float pfcandsevt_fixgrid_rho_ctr_;
+	TBranch *pfcandsevt_fixgrid_rho_ctr_branch;
+	bool pfcandsevt_fixgrid_rho_ctr_isLoaded;
+	float pfcandsevt_fixgrid_rho_fwd_;
+	TBranch *pfcandsevt_fixgrid_rho_fwd_branch;
+	bool pfcandsevt_fixgrid_rho_fwd_isLoaded;
 	float evt_calomet_;
 	TBranch *evt_calomet_branch;
 	bool evt_calomet_isLoaded;
@@ -417,9 +438,9 @@ protected:
 	ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> >  evt_bsp4_;
 	TBranch *evt_bsp4_branch;
 	bool evt_bsp4_isLoaded;
-	vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > pfjets_nonCHS_p4_;
-	TBranch *pfjets_nonCHS_p4_branch;
-	bool pfjets_nonCHS_p4_isLoaded;
+	vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > pfjets_METToolbox_p4_;
+	TBranch *pfjets_METToolbox_p4_branch;
+	bool pfjets_METToolbox_p4_isLoaded;
 	vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > ak8jets_mc_gp_p4_;
 	TBranch *ak8jets_mc_gp_p4_branch;
 	bool ak8jets_mc_gp_p4_isLoaded;
@@ -483,9 +504,6 @@ protected:
 	vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > genps_prod_vtx_;
 	TBranch *genps_prod_vtx_branch;
 	bool genps_prod_vtx_isLoaded;
-	vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > genjets_p4_;
-	TBranch *genjets_p4_branch;
-	bool genjets_p4_isLoaded;
 	vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > hyp_ll_p4_;
 	TBranch *hyp_ll_p4_branch;
 	bool hyp_ll_p4_isLoaded;
@@ -570,48 +588,39 @@ protected:
 	vector<vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > > taus_pf_signalcands_p4_;
 	TBranch *taus_pf_signalcands_p4_branch;
 	bool taus_pf_signalcands_p4_isLoaded;
-	vector<float> pfjets_nonCHS_area_;
-	TBranch *pfjets_nonCHS_area_branch;
-	bool pfjets_nonCHS_area_isLoaded;
-	vector<float> pfjets_nonCHS_chargedEmE_;
-	TBranch *pfjets_nonCHS_chargedEmE_branch;
-	bool pfjets_nonCHS_chargedEmE_isLoaded;
-	vector<float> pfjets_nonCHS_chargedHadronE_;
-	TBranch *pfjets_nonCHS_chargedHadronE_branch;
-	bool pfjets_nonCHS_chargedHadronE_isLoaded;
-	vector<float> pfjets_nonCHS_electronE_;
-	TBranch *pfjets_nonCHS_electronE_branch;
-	bool pfjets_nonCHS_electronE_isLoaded;
-	vector<float> pfjets_nonCHS_hfEmE_;
-	TBranch *pfjets_nonCHS_hfEmE_branch;
-	bool pfjets_nonCHS_hfEmE_isLoaded;
-	vector<float> pfjets_nonCHS_hfHadronE_;
-	TBranch *pfjets_nonCHS_hfHadronE_branch;
-	bool pfjets_nonCHS_hfHadronE_isLoaded;
-	vector<float> pfjets_nonCHS_mass_;
-	TBranch *pfjets_nonCHS_mass_branch;
-	bool pfjets_nonCHS_mass_isLoaded;
-	vector<float> pfjets_nonCHS_muonE_;
-	TBranch *pfjets_nonCHS_muonE_branch;
-	bool pfjets_nonCHS_muonE_isLoaded;
-	vector<float> pfjets_nonCHS_neutralEmE_;
-	TBranch *pfjets_nonCHS_neutralEmE_branch;
-	bool pfjets_nonCHS_neutralEmE_isLoaded;
-	vector<float> pfjets_nonCHS_neutralHadronE_;
-	TBranch *pfjets_nonCHS_neutralHadronE_branch;
-	bool pfjets_nonCHS_neutralHadronE_isLoaded;
-	vector<float> pfjets_nonCHS_pfCombinedInclusiveSecondaryVertexV2BJetTag_;
-	TBranch *pfjets_nonCHS_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch;
-	bool pfjets_nonCHS_pfCombinedInclusiveSecondaryVertexV2BJetTag_isLoaded;
-	vector<float> pfjets_nonCHS_photonE_;
-	TBranch *pfjets_nonCHS_photonE_branch;
-	bool pfjets_nonCHS_photonE_isLoaded;
-	vector<float> pfjets_nonCHS_pileupJetId_;
-	TBranch *pfjets_nonCHS_pileupJetId_branch;
-	bool pfjets_nonCHS_pileupJetId_isLoaded;
-	vector<float> pfjets_nonCHS_undoJEC_;
-	TBranch *pfjets_nonCHS_undoJEC_branch;
-	bool pfjets_nonCHS_undoJEC_isLoaded;
+	vector<float> pfjets_METToolbox_area_;
+	TBranch *pfjets_METToolbox_area_branch;
+	bool pfjets_METToolbox_area_isLoaded;
+	vector<float> pfjets_METToolbox_chargedEmE_;
+	TBranch *pfjets_METToolbox_chargedEmE_branch;
+	bool pfjets_METToolbox_chargedEmE_isLoaded;
+	vector<float> pfjets_METToolbox_chargedHadronE_;
+	TBranch *pfjets_METToolbox_chargedHadronE_branch;
+	bool pfjets_METToolbox_chargedHadronE_isLoaded;
+	vector<float> pfjets_METToolbox_electronE_;
+	TBranch *pfjets_METToolbox_electronE_branch;
+	bool pfjets_METToolbox_electronE_isLoaded;
+	vector<float> pfjets_METToolbox_hfEmE_;
+	TBranch *pfjets_METToolbox_hfEmE_branch;
+	bool pfjets_METToolbox_hfEmE_isLoaded;
+	vector<float> pfjets_METToolbox_hfHadronE_;
+	TBranch *pfjets_METToolbox_hfHadronE_branch;
+	bool pfjets_METToolbox_hfHadronE_isLoaded;
+	vector<float> pfjets_METToolbox_mass_;
+	TBranch *pfjets_METToolbox_mass_branch;
+	bool pfjets_METToolbox_mass_isLoaded;
+	vector<float> pfjets_METToolbox_muonE_;
+	TBranch *pfjets_METToolbox_muonE_branch;
+	bool pfjets_METToolbox_muonE_isLoaded;
+	vector<float> pfjets_METToolbox_neutralEmE_;
+	TBranch *pfjets_METToolbox_neutralEmE_branch;
+	bool pfjets_METToolbox_neutralEmE_isLoaded;
+	vector<float> pfjets_METToolbox_neutralHadronE_;
+	TBranch *pfjets_METToolbox_neutralHadronE_branch;
+	bool pfjets_METToolbox_neutralHadronE_isLoaded;
+	vector<float> pfjets_METToolbox_photonE_;
+	TBranch *pfjets_METToolbox_photonE_branch;
+	bool pfjets_METToolbox_photonE_isLoaded;
 	vector<float> evt_bs_covMatrix_;
 	TBranch *evt_bs_covMatrix_branch;
 	bool evt_bs_covMatrix_isLoaded;
@@ -675,6 +684,33 @@ protected:
 	vector<float> els_ckf_ndof_;
 	TBranch *els_ckf_ndof_branch;
 	bool els_ckf_ndof_isLoaded;
+	vector<float> els_clusterMaxDR_;
+	TBranch *els_clusterMaxDR_branch;
+	bool els_clusterMaxDR_isLoaded;
+	vector<float> els_clusterMaxDRDEta_;
+	TBranch *els_clusterMaxDRDEta_branch;
+	bool els_clusterMaxDRDEta_isLoaded;
+	vector<float> els_clusterMaxDRDPhi_;
+	TBranch *els_clusterMaxDRDPhi_branch;
+	bool els_clusterMaxDRDPhi_isLoaded;
+	vector<float> els_clusterMaxDRRawEnergy_;
+	TBranch *els_clusterMaxDRRawEnergy_branch;
+	bool els_clusterMaxDRRawEnergy_isLoaded;
+	vector<float> els_clustersMeanDEtaToSeed_;
+	TBranch *els_clustersMeanDEtaToSeed_branch;
+	bool els_clustersMeanDEtaToSeed_isLoaded;
+	vector<float> els_clustersMeanDPhiToSeed_;
+	TBranch *els_clustersMeanDPhiToSeed_branch;
+	bool els_clustersMeanDPhiToSeed_isLoaded;
+	vector<float> els_clustersMeanDRToSeed_;
+	TBranch *els_clustersMeanDRToSeed_branch;
+	bool els_clustersMeanDRToSeed_isLoaded;
+	vector<float> els_clustersMeanRawEnergy_;
+	TBranch *els_clustersMeanRawEnergy_branch;
+	bool els_clustersMeanRawEnergy_isLoaded;
+	vector<float> els_clustersRMSRawEnergy_;
+	TBranch *els_clustersRMSRawEnergy_branch;
+	bool els_clustersRMSRawEnergy_isLoaded;
 	vector<float> els_d0_;
 	TBranch *els_d0_branch;
 	bool els_d0_isLoaded;
@@ -891,6 +927,99 @@ protected:
 	vector<float> els_r9_full5x5_;
 	TBranch *els_r9_full5x5_branch;
 	bool els_r9_full5x5_isLoaded;
+	vector<float> els_scIsEB_;
+	TBranch *els_scIsEB_branch;
+	bool els_scIsEB_isLoaded;
+	vector<float> els_scPreshowerEnergyPlane1_;
+	TBranch *els_scPreshowerEnergyPlane1_branch;
+	bool els_scPreshowerEnergyPlane1_isLoaded;
+	vector<float> els_scPreshowerEnergyPlane2_;
+	TBranch *els_scPreshowerEnergyPlane2_branch;
+	bool els_scPreshowerEnergyPlane2_isLoaded;
+	vector<float> els_scR_;
+	TBranch *els_scR_branch;
+	bool els_scR_isLoaded;
+	vector<float> els_scSeed2x5LeftRightAsym_;
+	TBranch *els_scSeed2x5LeftRightAsym_branch;
+	bool els_scSeed2x5LeftRightAsym_isLoaded;
+	vector<float> els_scSeed2x5TopBottomAsym_;
+	TBranch *els_scSeed2x5TopBottomAsym_branch;
+	bool els_scSeed2x5TopBottomAsym_isLoaded;
+	vector<float> els_scSeedCryEta_;
+	TBranch *els_scSeedCryEta_branch;
+	bool els_scSeedCryEta_isLoaded;
+	vector<float> els_scSeedCryIeta_;
+	TBranch *els_scSeedCryIeta_branch;
+	bool els_scSeedCryIeta_isLoaded;
+	vector<float> els_scSeedCryIphi_;
+	TBranch *els_scSeedCryIphi_branch;
+	bool els_scSeedCryIphi_isLoaded;
+	vector<float> els_scSeedCryIx_;
+	TBranch *els_scSeedCryIx_branch;
+	bool els_scSeedCryIx_isLoaded;
+	vector<float> els_scSeedCryIy_;
+	TBranch *els_scSeedCryIy_branch;
+	bool els_scSeedCryIy_isLoaded;
+	vector<float> els_scSeedCryPhi_;
+	TBranch *els_scSeedCryPhi_branch;
+	bool els_scSeedCryPhi_isLoaded;
+	vector<float> els_scSeedCryX_;
+	TBranch *els_scSeedCryX_branch;
+	bool els_scSeedCryX_isLoaded;
+	vector<float> els_scSeedCryY_;
+	TBranch *els_scSeedCryY_branch;
+	bool els_scSeedCryY_isLoaded;
+	vector<float> els_scSeedE2nd_;
+	TBranch *els_scSeedE2nd_branch;
+	bool els_scSeedE2nd_isLoaded;
+	vector<float> els_scSeedE2x5Bottom_;
+	TBranch *els_scSeedE2x5Bottom_branch;
+	bool els_scSeedE2x5Bottom_isLoaded;
+	vector<float> els_scSeedE2x5Left_;
+	TBranch *els_scSeedE2x5Left_branch;
+	bool els_scSeedE2x5Left_isLoaded;
+	vector<float> els_scSeedE2x5Right_;
+	TBranch *els_scSeedE2x5Right_branch;
+	bool els_scSeedE2x5Right_isLoaded;
+	vector<float> els_scSeedE2x5Top_;
+	TBranch *els_scSeedE2x5Top_branch;
+	bool els_scSeedE2x5Top_isLoaded;
+	vector<float> els_scSeedE3x3_;
+	TBranch *els_scSeedE3x3_branch;
+	bool els_scSeedE3x3_isLoaded;
+	vector<float> els_scSeedEBottom_;
+	TBranch *els_scSeedEBottom_branch;
+	bool els_scSeedEBottom_isLoaded;
+	vector<float> els_scSeedELeft_;
+	TBranch *els_scSeedELeft_branch;
+	bool els_scSeedELeft_isLoaded;
+	vector<float> els_scSeedERight_;
+	TBranch *els_scSeedERight_branch;
+	bool els_scSeedERight_isLoaded;
+	vector<float> els_scSeedETop_;
+	TBranch *els_scSeedETop_branch;
+	bool els_scSeedETop_isLoaded;
+	vector<float> els_scSeedEmax_;
+	TBranch *els_scSeedEmax_branch;
+	bool els_scSeedEmax_isLoaded;
+	vector<float> els_scSeedEta_;
+	TBranch *els_scSeedEta_branch;
+	bool els_scSeedEta_isLoaded;
+	vector<float> els_scSeedLeftRightAsym_;
+	TBranch *els_scSeedLeftRightAsym_branch;
+	bool els_scSeedLeftRightAsym_isLoaded;
+	vector<float> els_scSeedPhi_;
+	TBranch *els_scSeedPhi_branch;
+	bool els_scSeedPhi_isLoaded;
+	vector<float> els_scSeedSigmaIetaIphi_;
+	TBranch *els_scSeedSigmaIetaIphi_branch;
+	bool els_scSeedSigmaIetaIphi_isLoaded;
+	vector<float> els_scSeedSize_;
+	TBranch *els_scSeedSize_branch;
+	bool els_scSeedSize_isLoaded;
+	vector<float> els_scSeedTopBottomAsym_;
+	TBranch *els_scSeedTopBottomAsym_branch;
+	bool els_scSeedTopBottomAsym_isLoaded;
 	vector<float> els_sigmaEtaEta_;
 	TBranch *els_sigmaEtaEta_branch;
 	bool els_sigmaEtaEta_isLoaded;
@@ -1374,6 +1503,9 @@ protected:
 	vector<float> pfcands_mass_;
 	TBranch *pfcands_mass_branch;
 	bool pfcands_mass_isLoaded;
+	vector<float> pfcands_phiAtVtx_;
+	TBranch *pfcands_phiAtVtx_branch;
+	bool pfcands_phiAtVtx_isLoaded;
 	vector<float> pfjets_area_;
 	TBranch *pfjets_area_branch;
 	bool pfjets_area_isLoaded;
@@ -1464,6 +1596,33 @@ protected:
 	vector<float> photons_chargedHadronIso_;
 	TBranch *photons_chargedHadronIso_branch;
 	bool photons_chargedHadronIso_isLoaded;
+	vector<float> photons_clusterMaxDR_;
+	TBranch *photons_clusterMaxDR_branch;
+	bool photons_clusterMaxDR_isLoaded;
+	vector<float> photons_clusterMaxDRDEta_;
+	TBranch *photons_clusterMaxDRDEta_branch;
+	bool photons_clusterMaxDRDEta_isLoaded;
+	vector<float> photons_clusterMaxDRDPhi_;
+	TBranch *photons_clusterMaxDRDPhi_branch;
+	bool photons_clusterMaxDRDPhi_isLoaded;
+	vector<float> photons_clusterMaxDRRawEnergy_;
+	TBranch *photons_clusterMaxDRRawEnergy_branch;
+	bool photons_clusterMaxDRRawEnergy_isLoaded;
+	vector<float> photons_clustersMeanDEtaToSeed_;
+	TBranch *photons_clustersMeanDEtaToSeed_branch;
+	bool photons_clustersMeanDEtaToSeed_isLoaded;
+	vector<float> photons_clustersMeanDPhiToSeed_;
+	TBranch *photons_clustersMeanDPhiToSeed_branch;
+	bool photons_clustersMeanDPhiToSeed_isLoaded;
+	vector<float> photons_clustersMeanDRToSeed_;
+	TBranch *photons_clustersMeanDRToSeed_branch;
+	bool photons_clustersMeanDRToSeed_isLoaded;
+	vector<float> photons_clustersMeanRawEnergy_;
+	TBranch *photons_clustersMeanRawEnergy_branch;
+	bool photons_clustersMeanRawEnergy_isLoaded;
+	vector<float> photons_clustersRMSRawEnergy_;
+	TBranch *photons_clustersRMSRawEnergy_branch;
+	bool photons_clustersRMSRawEnergy_isLoaded;
 	vector<float> photons_e1x5_;
 	TBranch *photons_e1x5_branch;
 	bool photons_e1x5_isLoaded;
@@ -1590,6 +1749,114 @@ protected:
 	vector<float> photons_recoPhotonIso_;
 	TBranch *photons_recoPhotonIso_branch;
 	bool photons_recoPhotonIso_isLoaded;
+	vector<float> photonsscEtaWidth_;
+	TBranch *photonsscEtaWidth_branch;
+	bool photonsscEtaWidth_isLoaded;
+	vector<float> photons_scIsEB_;
+	TBranch *photons_scIsEB_branch;
+	bool photons_scIsEB_isLoaded;
+	vector<float> photonsscPhiWidth_;
+	TBranch *photonsscPhiWidth_branch;
+	bool photonsscPhiWidth_isLoaded;
+	vector<float> photons_scPreshowerEnergyPlane1_;
+	TBranch *photons_scPreshowerEnergyPlane1_branch;
+	bool photons_scPreshowerEnergyPlane1_isLoaded;
+	vector<float> photons_scPreshowerEnergyPlane2_;
+	TBranch *photons_scPreshowerEnergyPlane2_branch;
+	bool photons_scPreshowerEnergyPlane2_isLoaded;
+	vector<float> photons_scR_;
+	TBranch *photons_scR_branch;
+	bool photons_scR_isLoaded;
+	vector<float> photons_scSeed2x5LeftRightAsym_;
+	TBranch *photons_scSeed2x5LeftRightAsym_branch;
+	bool photons_scSeed2x5LeftRightAsym_isLoaded;
+	vector<float> photons_scSeed2x5TopBottomAsym_;
+	TBranch *photons_scSeed2x5TopBottomAsym_branch;
+	bool photons_scSeed2x5TopBottomAsym_isLoaded;
+	vector<float> photonsscSeedCalibratedEnergy_;
+	TBranch *photonsscSeedCalibratedEnergy_branch;
+	bool photonsscSeedCalibratedEnergy_isLoaded;
+	vector<float> photons_scSeedCryEta_;
+	TBranch *photons_scSeedCryEta_branch;
+	bool photons_scSeedCryEta_isLoaded;
+	vector<float> photons_scSeedCryIeta_;
+	TBranch *photons_scSeedCryIeta_branch;
+	bool photons_scSeedCryIeta_isLoaded;
+	vector<float> photons_scSeedCryIphi_;
+	TBranch *photons_scSeedCryIphi_branch;
+	bool photons_scSeedCryIphi_isLoaded;
+	vector<float> photons_scSeedCryIx_;
+	TBranch *photons_scSeedCryIx_branch;
+	bool photons_scSeedCryIx_isLoaded;
+	vector<float> photons_scSeedCryIy_;
+	TBranch *photons_scSeedCryIy_branch;
+	bool photons_scSeedCryIy_isLoaded;
+	vector<float> photons_scSeedCryPhi_;
+	TBranch *photons_scSeedCryPhi_branch;
+	bool photons_scSeedCryPhi_isLoaded;
+	vector<float> photons_scSeedCryX_;
+	TBranch *photons_scSeedCryX_branch;
+	bool photons_scSeedCryX_isLoaded;
+	vector<float> photons_scSeedCryY_;
+	TBranch *photons_scSeedCryY_branch;
+	bool photons_scSeedCryY_isLoaded;
+	vector<float> photons_scSeedE2nd_;
+	TBranch *photons_scSeedE2nd_branch;
+	bool photons_scSeedE2nd_isLoaded;
+	vector<float> photons_scSeedE2x5Bottom_;
+	TBranch *photons_scSeedE2x5Bottom_branch;
+	bool photons_scSeedE2x5Bottom_isLoaded;
+	vector<float> photons_scSeedE2x5Left_;
+	TBranch *photons_scSeedE2x5Left_branch;
+	bool photons_scSeedE2x5Left_isLoaded;
+	vector<float> photons_scSeedE2x5Right_;
+	TBranch *photons_scSeedE2x5Right_branch;
+	bool photons_scSeedE2x5Right_isLoaded;
+	vector<float> photons_scSeedE2x5Top_;
+	TBranch *photons_scSeedE2x5Top_branch;
+	bool photons_scSeedE2x5Top_isLoaded;
+	vector<float> photons_scSeedE3x3_;
+	TBranch *photons_scSeedE3x3_branch;
+	bool photons_scSeedE3x3_isLoaded;
+	vector<float> photons_scSeedEBottom_;
+	TBranch *photons_scSeedEBottom_branch;
+	bool photons_scSeedEBottom_isLoaded;
+	vector<float> photons_scSeedELeft_;
+	TBranch *photons_scSeedELeft_branch;
+	bool photons_scSeedELeft_isLoaded;
+	vector<float> photons_scSeedERight_;
+	TBranch *photons_scSeedERight_branch;
+	bool photons_scSeedERight_isLoaded;
+	vector<float> photons_scSeedETop_;
+	TBranch *photons_scSeedETop_branch;
+	bool photons_scSeedETop_isLoaded;
+	vector<float> photons_scSeedEmax_;
+	TBranch *photons_scSeedEmax_branch;
+	bool photons_scSeedEmax_isLoaded;
+	vector<float> photons_scSeedEta_;
+	TBranch *photons_scSeedEta_branch;
+	bool photons_scSeedEta_isLoaded;
+	vector<float> photons_scSeedLeftRightAsym_;
+	TBranch *photons_scSeedLeftRightAsym_branch;
+	bool photons_scSeedLeftRightAsym_isLoaded;
+	vector<float> photons_scSeedPhi_;
+	TBranch *photons_scSeedPhi_branch;
+	bool photons_scSeedPhi_isLoaded;
+	vector<float> photonsscSeedRawEnergy_;
+	TBranch *photonsscSeedRawEnergy_branch;
+	bool photonsscSeedRawEnergy_isLoaded;
+	vector<float> photons_scSeedSigmaIetaIphi_;
+	TBranch *photons_scSeedSigmaIetaIphi_branch;
+	bool photons_scSeedSigmaIetaIphi_isLoaded;
+	vector<float> photonsscSeedSigmaIphiIphi_;
+	TBranch *photonsscSeedSigmaIphiIphi_branch;
+	bool photonsscSeedSigmaIphiIphi_isLoaded;
+	vector<float> photons_scSeedSize_;
+	TBranch *photons_scSeedSize_branch;
+	bool photons_scSeedSize_isLoaded;
+	vector<float> photons_scSeedTopBottomAsym_;
+	TBranch *photons_scSeedTopBottomAsym_branch;
+	bool photons_scSeedTopBottomAsym_isLoaded;
 	vector<float> photons_sigmaEtaEta_;
 	TBranch *photons_sigmaEtaEta_branch;
 	bool photons_sigmaEtaEta_isLoaded;
@@ -1710,9 +1977,39 @@ protected:
 	vector<float> vtxs_zError_;
 	TBranch *vtxs_zError_branch;
 	bool vtxs_zError_isLoaded;
-	vector<vector<float> > pfjets_nonCHS_bDiscriminators_;
-	TBranch *pfjets_nonCHS_bDiscriminators_branch;
-	bool pfjets_nonCHS_bDiscriminators_isLoaded;
+	vector<vector<float> > els_clusterCalibEnergy_;
+	TBranch *els_clusterCalibEnergy_branch;
+	bool els_clusterCalibEnergy_isLoaded;
+	vector<vector<float> > els_clusterDEtaToCentroid_;
+	TBranch *els_clusterDEtaToCentroid_branch;
+	bool els_clusterDEtaToCentroid_isLoaded;
+	vector<vector<float> > els_clusterDEtaToSeed_;
+	TBranch *els_clusterDEtaToSeed_branch;
+	bool els_clusterDEtaToSeed_isLoaded;
+	vector<vector<float> > els_clusterDPhiToCentroid_;
+	TBranch *els_clusterDPhiToCentroid_branch;
+	bool els_clusterDPhiToCentroid_isLoaded;
+	vector<vector<float> > els_clusterDPhiToSeed_;
+	TBranch *els_clusterDPhiToSeed_branch;
+	bool els_clusterDPhiToSeed_isLoaded;
+	vector<vector<float> > els_clusterEta_;
+	TBranch *els_clusterEta_branch;
+	bool els_clusterEta_isLoaded;
+	vector<vector<float> > els_clusterPhi_;
+	TBranch *els_clusterPhi_branch;
+	bool els_clusterPhi_isLoaded;
+	vector<vector<float> > els_clusterRawEnergy_;
+	TBranch *els_clusterRawEnergy_branch;
+	bool els_clusterRawEnergy_isLoaded;
+	vector<vector<float> > els_psClusterEta_;
+	TBranch *els_psClusterEta_branch;
+	bool els_psClusterEta_isLoaded;
+	vector<vector<float> > els_psClusterPhi_;
+	TBranch *els_psClusterPhi_branch;
+	bool els_psClusterPhi_isLoaded;
+	vector<vector<float> > els_psClusterRawEnergy_;
+	TBranch *els_psClusterRawEnergy_branch;
+	bool els_psClusterRawEnergy_isLoaded;
 	vector<vector<float> > mus_stationShowerDeltaR_;
 	TBranch *mus_stationShowerDeltaR_branch;
 	bool mus_stationShowerDeltaR_isLoaded;
@@ -1728,6 +2025,39 @@ protected:
 	vector<vector<float> > taus_pf_IDs_;
 	TBranch *taus_pf_IDs_branch;
 	bool taus_pf_IDs_isLoaded;
+	vector<vector<float> > photons_clusterCalibEnergy_;
+	TBranch *photons_clusterCalibEnergy_branch;
+	bool photons_clusterCalibEnergy_isLoaded;
+	vector<vector<float> > photons_clusterDEtaToCentroid_;
+	TBranch *photons_clusterDEtaToCentroid_branch;
+	bool photons_clusterDEtaToCentroid_isLoaded;
+	vector<vector<float> > photons_clusterDEtaToSeed_;
+	TBranch *photons_clusterDEtaToSeed_branch;
+	bool photons_clusterDEtaToSeed_isLoaded;
+	vector<vector<float> > photons_clusterDPhiToCentroid_;
+	TBranch *photons_clusterDPhiToCentroid_branch;
+	bool photons_clusterDPhiToCentroid_isLoaded;
+	vector<vector<float> > photons_clusterDPhiToSeed_;
+	TBranch *photons_clusterDPhiToSeed_branch;
+	bool photons_clusterDPhiToSeed_isLoaded;
+	vector<vector<float> > photons_clusterEta_;
+	TBranch *photons_clusterEta_branch;
+	bool photons_clusterEta_isLoaded;
+	vector<vector<float> > photons_clusterPhi_;
+	TBranch *photons_clusterPhi_branch;
+	bool photons_clusterPhi_isLoaded;
+	vector<vector<float> > photons_clusterRawEnergy_;
+	TBranch *photons_clusterRawEnergy_branch;
+	bool photons_clusterRawEnergy_isLoaded;
+	vector<vector<float> > photons_psClusterEta_;
+	TBranch *photons_psClusterEta_branch;
+	bool photons_psClusterEta_isLoaded;
+	vector<vector<float> > photons_psClusterPhi_;
+	TBranch *photons_psClusterPhi_branch;
+	bool photons_psClusterPhi_isLoaded;
+	vector<vector<float> > photons_psClusterRawEnergy_;
+	TBranch *photons_psClusterRawEnergy_branch;
+	bool photons_psClusterRawEnergy_isLoaded;
 	vector<vector<float> > puInfo_instLumi_;
 	TBranch *puInfo_instLumi_branch;
 	bool puInfo_instLumi_isLoaded;
@@ -1818,30 +2148,27 @@ protected:
 	int sparm_subProcessId_;
 	TBranch *sparm_subProcessId_branch;
 	bool sparm_subProcessId_isLoaded;
-	vector<int> pfjets_nonCHS_chargedHadronMultiplicity_;
-	TBranch *pfjets_nonCHS_chargedHadronMultiplicity_branch;
-	bool pfjets_nonCHS_chargedHadronMultiplicity_isLoaded;
-	vector<int> pfjets_nonCHS_chargedMultiplicity_;
-	TBranch *pfjets_nonCHS_chargedMultiplicity_branch;
-	bool pfjets_nonCHS_chargedMultiplicity_isLoaded;
-	vector<int> pfjets_nonCHS_electronMultiplicity_;
-	TBranch *pfjets_nonCHS_electronMultiplicity_branch;
-	bool pfjets_nonCHS_electronMultiplicity_isLoaded;
-	vector<int> pfjets_nonCHS_muonMultiplicity_;
-	TBranch *pfjets_nonCHS_muonMultiplicity_branch;
-	bool pfjets_nonCHS_muonMultiplicity_isLoaded;
-	vector<int> pfjets_nonCHS_neutralHadronMultiplicity_;
-	TBranch *pfjets_nonCHS_neutralHadronMultiplicity_branch;
-	bool pfjets_nonCHS_neutralHadronMultiplicity_isLoaded;
-	vector<int> pfjets_nonCHS_neutralMultiplicity_;
-	TBranch *pfjets_nonCHS_neutralMultiplicity_branch;
-	bool pfjets_nonCHS_neutralMultiplicity_isLoaded;
-	vector<int> pfjets_nonCHS_partonFlavour_;
-	TBranch *pfjets_nonCHS_partonFlavour_branch;
-	bool pfjets_nonCHS_partonFlavour_isLoaded;
-	vector<int> pfjets_nonCHS_photonMultiplicity_;
-	TBranch *pfjets_nonCHS_photonMultiplicity_branch;
-	bool pfjets_nonCHS_photonMultiplicity_isLoaded;
+	vector<int> pfjets_METToolbox_chargedHadronMultiplicity_;
+	TBranch *pfjets_METToolbox_chargedHadronMultiplicity_branch;
+	bool pfjets_METToolbox_chargedHadronMultiplicity_isLoaded;
+	vector<int> pfjets_METToolbox_chargedMultiplicity_;
+	TBranch *pfjets_METToolbox_chargedMultiplicity_branch;
+	bool pfjets_METToolbox_chargedMultiplicity_isLoaded;
+	vector<int> pfjets_METToolbox_electronMultiplicity_;
+	TBranch *pfjets_METToolbox_electronMultiplicity_branch;
+	bool pfjets_METToolbox_electronMultiplicity_isLoaded;
+	vector<int> pfjets_METToolbox_muonMultiplicity_;
+	TBranch *pfjets_METToolbox_muonMultiplicity_branch;
+	bool pfjets_METToolbox_muonMultiplicity_isLoaded;
+	vector<int> pfjets_METToolbox_neutralHadronMultiplicity_;
+	TBranch *pfjets_METToolbox_neutralHadronMultiplicity_branch;
+	bool pfjets_METToolbox_neutralHadronMultiplicity_isLoaded;
+	vector<int> pfjets_METToolbox_neutralMultiplicity_;
+	TBranch *pfjets_METToolbox_neutralMultiplicity_branch;
+	bool pfjets_METToolbox_neutralMultiplicity_isLoaded;
+	vector<int> pfjets_METToolbox_photonMultiplicity_;
+	TBranch *pfjets_METToolbox_photonMultiplicity_branch;
+	bool pfjets_METToolbox_photonMultiplicity_isLoaded;
 	vector<int> ak8jets_mc_id_;
 	TBranch *ak8jets_mc_id_branch;
 	bool ak8jets_mc_id_isLoaded;
@@ -1926,6 +2253,12 @@ protected:
 	vector<int> photons_mc_motherid_;
 	TBranch *photons_mc_motherid_branch;
 	bool photons_mc_motherid_isLoaded;
+	vector<int> els_N_ECALClusters_;
+	TBranch *els_N_ECALClusters_branch;
+	bool els_N_ECALClusters_isLoaded;
+	vector<int> els_N_PSClusters_;
+	TBranch *els_N_PSClusters_branch;
+	bool els_N_PSClusters_isLoaded;
 	vector<int> els_category_;
 	TBranch *els_category_branch;
 	bool els_category_isLoaded;
@@ -1950,6 +2283,15 @@ protected:
 	vector<int> els_fiduciality_;
 	TBranch *els_fiduciality_branch;
 	bool els_fiduciality_isLoaded;
+	vector<int> els_isEB_;
+	TBranch *els_isEB_branch;
+	bool els_isEB_isLoaded;
+	vector<int> els_isEcalDriven_;
+	TBranch *els_isEcalDriven_branch;
+	bool els_isEcalDriven_isLoaded;
+	vector<int> els_isTrackerDriven_;
+	TBranch *els_isTrackerDriven_branch;
+	bool els_isTrackerDriven_isLoaded;
 	vector<int> els_lostHits_;
 	TBranch *els_lostHits_branch;
 	bool els_lostHits_isLoaded;
@@ -2310,9 +2652,18 @@ protected:
 	vector<int> taus_pf_charge_;
 	TBranch *taus_pf_charge_branch;
 	bool taus_pf_charge_isLoaded;
+	vector<int> photons_N_ECALClusters_;
+	TBranch *photons_N_ECALClusters_branch;
+	bool photons_N_ECALClusters_isLoaded;
+	vector<int> photons_N_PSClusters_;
+	TBranch *photons_N_PSClusters_branch;
+	bool photons_N_PSClusters_isLoaded;
 	vector<int> photons_fiduciality_;
 	TBranch *photons_fiduciality_branch;
 	bool photons_fiduciality_isLoaded;
+	vector<int> photons_isEB_;
+	TBranch *photons_isEB_branch;
+	bool photons_isEB_isLoaded;
 	vector<int> photons_photonID_loose_;
 	TBranch *photons_photonID_loose_branch;
 	bool photons_photonID_loose_isLoaded;
@@ -2349,9 +2700,15 @@ protected:
 	vector<int> vtxs_isValid_;
 	TBranch *vtxs_isValid_branch;
 	bool vtxs_isValid_isLoaded;
-	vector<vector<int> > pfjets_nonCHS_pfcandIndicies_;
-	TBranch *pfjets_nonCHS_pfcandIndicies_branch;
-	bool pfjets_nonCHS_pfcandIndicies_isLoaded;
+	vector<vector<int> > pfjets_METToolbox_pfcandIndicies_;
+	TBranch *pfjets_METToolbox_pfcandIndicies_branch;
+	bool pfjets_METToolbox_pfcandIndicies_isLoaded;
+	vector<vector<int> > els_clusterInDynDPhi_;
+	TBranch *els_clusterInDynDPhi_branch;
+	bool els_clusterInDynDPhi_isLoaded;
+	vector<vector<int> > els_clusterInMustache_;
+	TBranch *els_clusterInMustache_branch;
+	bool els_clusterInMustache_isLoaded;
 	vector<vector<int> > els_PFCand_idx_;
 	TBranch *els_PFCand_idx_branch;
 	bool els_PFCand_idx_isLoaded;
@@ -2376,6 +2733,12 @@ protected:
 	vector<vector<int> > pfjets_puppi_pfcandIndicies_;
 	TBranch *pfjets_puppi_pfcandIndicies_branch;
 	bool pfjets_puppi_pfcandIndicies_isLoaded;
+	vector<vector<int> > photons_clusterInDynDPhi_;
+	TBranch *photons_clusterInDynDPhi_branch;
+	bool photons_clusterInDynDPhi_isLoaded;
+	vector<vector<int> > photons_clusterInMustache_;
+	TBranch *photons_clusterInMustache_branch;
+	bool photons_clusterInMustache_isLoaded;
 	vector<vector<int> > photons_PFCand_idx_;
 	TBranch *photons_PFCand_idx_branch;
 	bool photons_PFCand_idx_isLoaded;
@@ -2532,9 +2895,6 @@ protected:
 	unsigned int genps_signalProcessID_;
 	TBranch *genps_signalProcessID_branch;
 	bool genps_signalProcessID_isLoaded;
-	unsigned int evt_ngenjets_;
-	TBranch *evt_ngenjets_branch;
-	bool evt_ngenjets_isLoaded;
 	unsigned int mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg_version_;
 	TBranch *mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg_version_branch;
 	bool mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg_version_isLoaded;
@@ -2736,6 +3096,9 @@ protected:
 	vector<unsigned int> els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg_;
 	TBranch *els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg_branch;
 	bool els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg_isLoaded;
+	vector<unsigned int> hlt_l1prescales_;
+	TBranch *hlt_l1prescales_branch;
+	bool hlt_l1prescales_isLoaded;
 	vector<unsigned int> hlt_prescales_;
 	TBranch *hlt_prescales_branch;
 	bool hlt_prescales_isLoaded;
@@ -2844,10 +3207,10 @@ void Init(TTree *tree) {
 		evt_bsp4_branch = tree->GetBranch(tree->GetAlias("evt_bsp4"));
 		if (evt_bsp4_branch) {evt_bsp4_branch->SetAddress(&evt_bsp4_);}
 	}
-	pfjets_nonCHS_p4_branch = 0;
-	if (tree->GetAlias("pfjets_nonCHS_p4") != 0) {
-		pfjets_nonCHS_p4_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_p4"));
-		if (pfjets_nonCHS_p4_branch) {pfjets_nonCHS_p4_branch->SetAddress(&pfjets_nonCHS_p4_);}
+	pfjets_METToolbox_p4_branch = 0;
+	if (tree->GetAlias("pfjets_METToolbox_p4") != 0) {
+		pfjets_METToolbox_p4_branch = tree->GetBranch(tree->GetAlias("pfjets_METToolbox_p4"));
+		if (pfjets_METToolbox_p4_branch) {pfjets_METToolbox_p4_branch->SetAddress(&pfjets_METToolbox_p4_);}
 	}
 	ak8jets_mc_gp_p4_branch = 0;
 	if (tree->GetAlias("ak8jets_mc_gp_p4") != 0) {
@@ -2953,11 +3316,6 @@ void Init(TTree *tree) {
 	if (tree->GetAlias("genps_prod_vtx") != 0) {
 		genps_prod_vtx_branch = tree->GetBranch(tree->GetAlias("genps_prod_vtx"));
 		if (genps_prod_vtx_branch) {genps_prod_vtx_branch->SetAddress(&genps_prod_vtx_);}
-	}
-	genjets_p4_branch = 0;
-	if (tree->GetAlias("genjets_p4") != 0) {
-		genjets_p4_branch = tree->GetBranch(tree->GetAlias("genjets_p4"));
-		if (genjets_p4_branch) {genjets_p4_branch->SetAddress(&genjets_p4_);}
 	}
 	hyp_ll_p4_branch = 0;
 	if (tree->GetAlias("hyp_ll_p4") != 0) {
@@ -3085,11 +3443,6 @@ void Init(TTree *tree) {
 		genweightsID_branch = tree->GetBranch(tree->GetAlias("genweightsID"));
 		if (genweightsID_branch) {genweightsID_branch->SetAddress(&genweightsID_);}
 	}
-	pfjets_nonCHS_bDiscriminatorNames_branch = 0;
-	if (tree->GetAlias("pfjets_nonCHS_bDiscriminatorNames") != 0) {
-		pfjets_nonCHS_bDiscriminatorNames_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_bDiscriminatorNames"));
-		if (pfjets_nonCHS_bDiscriminatorNames_branch) {pfjets_nonCHS_bDiscriminatorNames_branch->SetAddress(&pfjets_nonCHS_bDiscriminatorNames_);}
-	}
 	evt_CMS3tag_branch = 0;
 	if (tree->GetAlias("evt_CMS3tag") != 0) {
 		evt_CMS3tag_branch = tree->GetBranch(tree->GetAlias("evt_CMS3tag"));
@@ -3129,6 +3482,11 @@ void Init(TTree *tree) {
 	if (tree->GetAlias("sparm_names") != 0) {
 		sparm_names_branch = tree->GetBranch(tree->GetAlias("sparm_names"));
 		if (sparm_names_branch) {sparm_names_branch->SetAddress(&sparm_names_);}
+	}
+	hlt_trigObjs_filters_branch = 0;
+	if (tree->GetAlias("hlt_trigObjs_filters") != 0) {
+		hlt_trigObjs_filters_branch = tree->GetBranch(tree->GetAlias("hlt_trigObjs_filters"));
+		if (hlt_trigObjs_filters_branch) {hlt_trigObjs_filters_branch->SetAddress(&hlt_trigObjs_filters_);}
 	}
 	hcalnoise_HasBadRBXTS4TS5_branch = 0;
 	if (tree->GetAlias("hcalnoise_HasBadRBXTS4TS5") != 0) {
@@ -3300,10 +3658,45 @@ void Init(TTree *tree) {
 		mus_updatedSta_branch = tree->GetBranch(tree->GetAlias("mus_updatedSta"));
 		if (mus_updatedSta_branch) {mus_updatedSta_branch->SetAddress(&mus_updatedSta_);}
 	}
+	pfcands_isGlobalMuon_branch = 0;
+	if (tree->GetAlias("pfcands_isGlobalMuon") != 0) {
+		pfcands_isGlobalMuon_branch = tree->GetBranch(tree->GetAlias("pfcands_isGlobalMuon"));
+		if (pfcands_isGlobalMuon_branch) {pfcands_isGlobalMuon_branch->SetAddress(&pfcands_isGlobalMuon_);}
+	}
+	pfcands_isStandAloneMuon_branch = 0;
+	if (tree->GetAlias("pfcands_isStandAloneMuon") != 0) {
+		pfcands_isStandAloneMuon_branch = tree->GetBranch(tree->GetAlias("pfcands_isStandAloneMuon"));
+		if (pfcands_isStandAloneMuon_branch) {pfcands_isStandAloneMuon_branch->SetAddress(&pfcands_isStandAloneMuon_);}
+	}
 	photons_haspixelSeed_branch = 0;
 	if (tree->GetAlias("photons_haspixelSeed") != 0) {
 		photons_haspixelSeed_branch = tree->GetBranch(tree->GetAlias("photons_haspixelSeed"));
 		if (photons_haspixelSeed_branch) {photons_haspixelSeed_branch->SetAddress(&photons_haspixelSeed_);}
+	}
+	hlt_trigObjs_passLast_branch = 0;
+	if (tree->GetAlias("hlt_trigObjs_passLast") != 0) {
+		hlt_trigObjs_passLast_branch = tree->GetBranch(tree->GetAlias("hlt_trigObjs_passLast"));
+		if (hlt_trigObjs_passLast_branch) {hlt_trigObjs_passLast_branch->SetAddress(&hlt_trigObjs_passLast_);}
+	}
+	evt_METToolbox_pfmet_branch = 0;
+	if (tree->GetAlias("evt_METToolbox_pfmet") != 0) {
+		evt_METToolbox_pfmet_branch = tree->GetBranch(tree->GetAlias("evt_METToolbox_pfmet"));
+		if (evt_METToolbox_pfmet_branch) {evt_METToolbox_pfmet_branch->SetAddress(&evt_METToolbox_pfmet_);}
+	}
+	evt_METToolbox_pfmetPhi_branch = 0;
+	if (tree->GetAlias("evt_METToolbox_pfmetPhi") != 0) {
+		evt_METToolbox_pfmetPhi_branch = tree->GetBranch(tree->GetAlias("evt_METToolbox_pfmetPhi"));
+		if (evt_METToolbox_pfmetPhi_branch) {evt_METToolbox_pfmetPhi_branch->SetAddress(&evt_METToolbox_pfmetPhi_);}
+	}
+	evt_METToolbox_pfmetPhi_raw_branch = 0;
+	if (tree->GetAlias("evt_METToolbox_pfmetPhi_raw") != 0) {
+		evt_METToolbox_pfmetPhi_raw_branch = tree->GetBranch(tree->GetAlias("evt_METToolbox_pfmetPhi_raw"));
+		if (evt_METToolbox_pfmetPhi_raw_branch) {evt_METToolbox_pfmetPhi_raw_branch->SetAddress(&evt_METToolbox_pfmetPhi_raw_);}
+	}
+	evt_METToolbox_pfmet_raw_branch = 0;
+	if (tree->GetAlias("evt_METToolbox_pfmet_raw") != 0) {
+		evt_METToolbox_pfmet_raw_branch = tree->GetBranch(tree->GetAlias("evt_METToolbox_pfmet_raw"));
+		if (evt_METToolbox_pfmet_raw_branch) {evt_METToolbox_pfmet_raw_branch->SetAddress(&evt_METToolbox_pfmet_raw_);}
 	}
 	evt_bs_Xwidth_branch = 0;
 	if (tree->GetAlias("evt_bs_Xwidth") != 0) {
@@ -3635,20 +4028,20 @@ void Init(TTree *tree) {
 		pdfinfo_x2_branch = tree->GetBranch(tree->GetAlias("pdfinfo_x2"));
 		if (pdfinfo_x2_branch) {pdfinfo_x2_branch->SetAddress(&pdfinfo_x2_);}
 	}
-	evt_fixgrid_rho_all_branch = 0;
-	if (tree->GetAlias("evt_fixgrid_rho_all") != 0) {
-		evt_fixgrid_rho_all_branch = tree->GetBranch(tree->GetAlias("evt_fixgrid_rho_all"));
-		if (evt_fixgrid_rho_all_branch) {evt_fixgrid_rho_all_branch->SetAddress(&evt_fixgrid_rho_all_);}
+	pfcandsevt_fixgrid_rho_all_branch = 0;
+	if (tree->GetAlias("pfcandsevt_fixgrid_rho_all") != 0) {
+		pfcandsevt_fixgrid_rho_all_branch = tree->GetBranch(tree->GetAlias("pfcandsevt_fixgrid_rho_all"));
+		if (pfcandsevt_fixgrid_rho_all_branch) {pfcandsevt_fixgrid_rho_all_branch->SetAddress(&pfcandsevt_fixgrid_rho_all_);}
 	}
-	evt_fixgrid_rho_ctr_branch = 0;
-	if (tree->GetAlias("evt_fixgrid_rho_ctr") != 0) {
-		evt_fixgrid_rho_ctr_branch = tree->GetBranch(tree->GetAlias("evt_fixgrid_rho_ctr"));
-		if (evt_fixgrid_rho_ctr_branch) {evt_fixgrid_rho_ctr_branch->SetAddress(&evt_fixgrid_rho_ctr_);}
+	pfcandsevt_fixgrid_rho_ctr_branch = 0;
+	if (tree->GetAlias("pfcandsevt_fixgrid_rho_ctr") != 0) {
+		pfcandsevt_fixgrid_rho_ctr_branch = tree->GetBranch(tree->GetAlias("pfcandsevt_fixgrid_rho_ctr"));
+		if (pfcandsevt_fixgrid_rho_ctr_branch) {pfcandsevt_fixgrid_rho_ctr_branch->SetAddress(&pfcandsevt_fixgrid_rho_ctr_);}
 	}
-	evt_fixgrid_rho_fwd_branch = 0;
-	if (tree->GetAlias("evt_fixgrid_rho_fwd") != 0) {
-		evt_fixgrid_rho_fwd_branch = tree->GetBranch(tree->GetAlias("evt_fixgrid_rho_fwd"));
-		if (evt_fixgrid_rho_fwd_branch) {evt_fixgrid_rho_fwd_branch->SetAddress(&evt_fixgrid_rho_fwd_);}
+	pfcandsevt_fixgrid_rho_fwd_branch = 0;
+	if (tree->GetAlias("pfcandsevt_fixgrid_rho_fwd") != 0) {
+		pfcandsevt_fixgrid_rho_fwd_branch = tree->GetBranch(tree->GetAlias("pfcandsevt_fixgrid_rho_fwd"));
+		if (pfcandsevt_fixgrid_rho_fwd_branch) {pfcandsevt_fixgrid_rho_fwd_branch->SetAddress(&pfcandsevt_fixgrid_rho_fwd_);}
 	}
 	evt_calomet_branch = 0;
 	if (tree->GetAlias("evt_calomet") != 0) {
@@ -3755,75 +4148,60 @@ void Init(TTree *tree) {
 		taus_pf_signalcands_p4_branch = tree->GetBranch(tree->GetAlias("taus_pf_signalcands_p4"));
 		if (taus_pf_signalcands_p4_branch) {taus_pf_signalcands_p4_branch->SetAddress(&taus_pf_signalcands_p4_);}
 	}
-	pfjets_nonCHS_area_branch = 0;
-	if (tree->GetAlias("pfjets_nonCHS_area") != 0) {
-		pfjets_nonCHS_area_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_area"));
-		if (pfjets_nonCHS_area_branch) {pfjets_nonCHS_area_branch->SetAddress(&pfjets_nonCHS_area_);}
+	pfjets_METToolbox_area_branch = 0;
+	if (tree->GetAlias("pfjets_METToolbox_area") != 0) {
+		pfjets_METToolbox_area_branch = tree->GetBranch(tree->GetAlias("pfjets_METToolbox_area"));
+		if (pfjets_METToolbox_area_branch) {pfjets_METToolbox_area_branch->SetAddress(&pfjets_METToolbox_area_);}
 	}
-	pfjets_nonCHS_chargedEmE_branch = 0;
-	if (tree->GetAlias("pfjets_nonCHS_chargedEmE") != 0) {
-		pfjets_nonCHS_chargedEmE_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_chargedEmE"));
-		if (pfjets_nonCHS_chargedEmE_branch) {pfjets_nonCHS_chargedEmE_branch->SetAddress(&pfjets_nonCHS_chargedEmE_);}
+	pfjets_METToolbox_chargedEmE_branch = 0;
+	if (tree->GetAlias("pfjets_METToolbox_chargedEmE") != 0) {
+		pfjets_METToolbox_chargedEmE_branch = tree->GetBranch(tree->GetAlias("pfjets_METToolbox_chargedEmE"));
+		if (pfjets_METToolbox_chargedEmE_branch) {pfjets_METToolbox_chargedEmE_branch->SetAddress(&pfjets_METToolbox_chargedEmE_);}
 	}
-	pfjets_nonCHS_chargedHadronE_branch = 0;
-	if (tree->GetAlias("pfjets_nonCHS_chargedHadronE") != 0) {
-		pfjets_nonCHS_chargedHadronE_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_chargedHadronE"));
-		if (pfjets_nonCHS_chargedHadronE_branch) {pfjets_nonCHS_chargedHadronE_branch->SetAddress(&pfjets_nonCHS_chargedHadronE_);}
+	pfjets_METToolbox_chargedHadronE_branch = 0;
+	if (tree->GetAlias("pfjets_METToolbox_chargedHadronE") != 0) {
+		pfjets_METToolbox_chargedHadronE_branch = tree->GetBranch(tree->GetAlias("pfjets_METToolbox_chargedHadronE"));
+		if (pfjets_METToolbox_chargedHadronE_branch) {pfjets_METToolbox_chargedHadronE_branch->SetAddress(&pfjets_METToolbox_chargedHadronE_);}
 	}
-	pfjets_nonCHS_electronE_branch = 0;
-	if (tree->GetAlias("pfjets_nonCHS_electronE") != 0) {
-		pfjets_nonCHS_electronE_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_electronE"));
-		if (pfjets_nonCHS_electronE_branch) {pfjets_nonCHS_electronE_branch->SetAddress(&pfjets_nonCHS_electronE_);}
+	pfjets_METToolbox_electronE_branch = 0;
+	if (tree->GetAlias("pfjets_METToolbox_electronE") != 0) {
+		pfjets_METToolbox_electronE_branch = tree->GetBranch(tree->GetAlias("pfjets_METToolbox_electronE"));
+		if (pfjets_METToolbox_electronE_branch) {pfjets_METToolbox_electronE_branch->SetAddress(&pfjets_METToolbox_electronE_);}
 	}
-	pfjets_nonCHS_hfEmE_branch = 0;
-	if (tree->GetAlias("pfjets_nonCHS_hfEmE") != 0) {
-		pfjets_nonCHS_hfEmE_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_hfEmE"));
-		if (pfjets_nonCHS_hfEmE_branch) {pfjets_nonCHS_hfEmE_branch->SetAddress(&pfjets_nonCHS_hfEmE_);}
+	pfjets_METToolbox_hfEmE_branch = 0;
+	if (tree->GetAlias("pfjets_METToolbox_hfEmE") != 0) {
+		pfjets_METToolbox_hfEmE_branch = tree->GetBranch(tree->GetAlias("pfjets_METToolbox_hfEmE"));
+		if (pfjets_METToolbox_hfEmE_branch) {pfjets_METToolbox_hfEmE_branch->SetAddress(&pfjets_METToolbox_hfEmE_);}
 	}
-	pfjets_nonCHS_hfHadronE_branch = 0;
-	if (tree->GetAlias("pfjets_nonCHS_hfHadronE") != 0) {
-		pfjets_nonCHS_hfHadronE_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_hfHadronE"));
-		if (pfjets_nonCHS_hfHadronE_branch) {pfjets_nonCHS_hfHadronE_branch->SetAddress(&pfjets_nonCHS_hfHadronE_);}
+	pfjets_METToolbox_hfHadronE_branch = 0;
+	if (tree->GetAlias("pfjets_METToolbox_hfHadronE") != 0) {
+		pfjets_METToolbox_hfHadronE_branch = tree->GetBranch(tree->GetAlias("pfjets_METToolbox_hfHadronE"));
+		if (pfjets_METToolbox_hfHadronE_branch) {pfjets_METToolbox_hfHadronE_branch->SetAddress(&pfjets_METToolbox_hfHadronE_);}
 	}
-	pfjets_nonCHS_mass_branch = 0;
-	if (tree->GetAlias("pfjets_nonCHS_mass") != 0) {
-		pfjets_nonCHS_mass_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_mass"));
-		if (pfjets_nonCHS_mass_branch) {pfjets_nonCHS_mass_branch->SetAddress(&pfjets_nonCHS_mass_);}
+	pfjets_METToolbox_mass_branch = 0;
+	if (tree->GetAlias("pfjets_METToolbox_mass") != 0) {
+		pfjets_METToolbox_mass_branch = tree->GetBranch(tree->GetAlias("pfjets_METToolbox_mass"));
+		if (pfjets_METToolbox_mass_branch) {pfjets_METToolbox_mass_branch->SetAddress(&pfjets_METToolbox_mass_);}
 	}
-	pfjets_nonCHS_muonE_branch = 0;
-	if (tree->GetAlias("pfjets_nonCHS_muonE") != 0) {
-		pfjets_nonCHS_muonE_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_muonE"));
-		if (pfjets_nonCHS_muonE_branch) {pfjets_nonCHS_muonE_branch->SetAddress(&pfjets_nonCHS_muonE_);}
+	pfjets_METToolbox_muonE_branch = 0;
+	if (tree->GetAlias("pfjets_METToolbox_muonE") != 0) {
+		pfjets_METToolbox_muonE_branch = tree->GetBranch(tree->GetAlias("pfjets_METToolbox_muonE"));
+		if (pfjets_METToolbox_muonE_branch) {pfjets_METToolbox_muonE_branch->SetAddress(&pfjets_METToolbox_muonE_);}
 	}
-	pfjets_nonCHS_neutralEmE_branch = 0;
-	if (tree->GetAlias("pfjets_nonCHS_neutralEmE") != 0) {
-		pfjets_nonCHS_neutralEmE_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_neutralEmE"));
-		if (pfjets_nonCHS_neutralEmE_branch) {pfjets_nonCHS_neutralEmE_branch->SetAddress(&pfjets_nonCHS_neutralEmE_);}
+	pfjets_METToolbox_neutralEmE_branch = 0;
+	if (tree->GetAlias("pfjets_METToolbox_neutralEmE") != 0) {
+		pfjets_METToolbox_neutralEmE_branch = tree->GetBranch(tree->GetAlias("pfjets_METToolbox_neutralEmE"));
+		if (pfjets_METToolbox_neutralEmE_branch) {pfjets_METToolbox_neutralEmE_branch->SetAddress(&pfjets_METToolbox_neutralEmE_);}
 	}
-	pfjets_nonCHS_neutralHadronE_branch = 0;
-	if (tree->GetAlias("pfjets_nonCHS_neutralHadronE") != 0) {
-		pfjets_nonCHS_neutralHadronE_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_neutralHadronE"));
-		if (pfjets_nonCHS_neutralHadronE_branch) {pfjets_nonCHS_neutralHadronE_branch->SetAddress(&pfjets_nonCHS_neutralHadronE_);}
+	pfjets_METToolbox_neutralHadronE_branch = 0;
+	if (tree->GetAlias("pfjets_METToolbox_neutralHadronE") != 0) {
+		pfjets_METToolbox_neutralHadronE_branch = tree->GetBranch(tree->GetAlias("pfjets_METToolbox_neutralHadronE"));
+		if (pfjets_METToolbox_neutralHadronE_branch) {pfjets_METToolbox_neutralHadronE_branch->SetAddress(&pfjets_METToolbox_neutralHadronE_);}
 	}
-	pfjets_nonCHS_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch = 0;
-	if (tree->GetAlias("pfjets_nonCHS_pfCombinedInclusiveSecondaryVertexV2BJetTag") != 0) {
-		pfjets_nonCHS_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_pfCombinedInclusiveSecondaryVertexV2BJetTag"));
-		if (pfjets_nonCHS_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch) {pfjets_nonCHS_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch->SetAddress(&pfjets_nonCHS_pfCombinedInclusiveSecondaryVertexV2BJetTag_);}
-	}
-	pfjets_nonCHS_photonE_branch = 0;
-	if (tree->GetAlias("pfjets_nonCHS_photonE") != 0) {
-		pfjets_nonCHS_photonE_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_photonE"));
-		if (pfjets_nonCHS_photonE_branch) {pfjets_nonCHS_photonE_branch->SetAddress(&pfjets_nonCHS_photonE_);}
-	}
-	pfjets_nonCHS_pileupJetId_branch = 0;
-	if (tree->GetAlias("pfjets_nonCHS_pileupJetId") != 0) {
-		pfjets_nonCHS_pileupJetId_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_pileupJetId"));
-		if (pfjets_nonCHS_pileupJetId_branch) {pfjets_nonCHS_pileupJetId_branch->SetAddress(&pfjets_nonCHS_pileupJetId_);}
-	}
-	pfjets_nonCHS_undoJEC_branch = 0;
-	if (tree->GetAlias("pfjets_nonCHS_undoJEC") != 0) {
-		pfjets_nonCHS_undoJEC_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_undoJEC"));
-		if (pfjets_nonCHS_undoJEC_branch) {pfjets_nonCHS_undoJEC_branch->SetAddress(&pfjets_nonCHS_undoJEC_);}
+	pfjets_METToolbox_photonE_branch = 0;
+	if (tree->GetAlias("pfjets_METToolbox_photonE") != 0) {
+		pfjets_METToolbox_photonE_branch = tree->GetBranch(tree->GetAlias("pfjets_METToolbox_photonE"));
+		if (pfjets_METToolbox_photonE_branch) {pfjets_METToolbox_photonE_branch->SetAddress(&pfjets_METToolbox_photonE_);}
 	}
 	evt_bs_covMatrix_branch = 0;
 	if (tree->GetAlias("evt_bs_covMatrix") != 0) {
@@ -3929,6 +4307,51 @@ void Init(TTree *tree) {
 	if (tree->GetAlias("els_ckf_ndof") != 0) {
 		els_ckf_ndof_branch = tree->GetBranch(tree->GetAlias("els_ckf_ndof"));
 		if (els_ckf_ndof_branch) {els_ckf_ndof_branch->SetAddress(&els_ckf_ndof_);}
+	}
+	els_clusterMaxDR_branch = 0;
+	if (tree->GetAlias("els_clusterMaxDR") != 0) {
+		els_clusterMaxDR_branch = tree->GetBranch(tree->GetAlias("els_clusterMaxDR"));
+		if (els_clusterMaxDR_branch) {els_clusterMaxDR_branch->SetAddress(&els_clusterMaxDR_);}
+	}
+	els_clusterMaxDRDEta_branch = 0;
+	if (tree->GetAlias("els_clusterMaxDRDEta") != 0) {
+		els_clusterMaxDRDEta_branch = tree->GetBranch(tree->GetAlias("els_clusterMaxDRDEta"));
+		if (els_clusterMaxDRDEta_branch) {els_clusterMaxDRDEta_branch->SetAddress(&els_clusterMaxDRDEta_);}
+	}
+	els_clusterMaxDRDPhi_branch = 0;
+	if (tree->GetAlias("els_clusterMaxDRDPhi") != 0) {
+		els_clusterMaxDRDPhi_branch = tree->GetBranch(tree->GetAlias("els_clusterMaxDRDPhi"));
+		if (els_clusterMaxDRDPhi_branch) {els_clusterMaxDRDPhi_branch->SetAddress(&els_clusterMaxDRDPhi_);}
+	}
+	els_clusterMaxDRRawEnergy_branch = 0;
+	if (tree->GetAlias("els_clusterMaxDRRawEnergy") != 0) {
+		els_clusterMaxDRRawEnergy_branch = tree->GetBranch(tree->GetAlias("els_clusterMaxDRRawEnergy"));
+		if (els_clusterMaxDRRawEnergy_branch) {els_clusterMaxDRRawEnergy_branch->SetAddress(&els_clusterMaxDRRawEnergy_);}
+	}
+	els_clustersMeanDEtaToSeed_branch = 0;
+	if (tree->GetAlias("els_clustersMeanDEtaToSeed") != 0) {
+		els_clustersMeanDEtaToSeed_branch = tree->GetBranch(tree->GetAlias("els_clustersMeanDEtaToSeed"));
+		if (els_clustersMeanDEtaToSeed_branch) {els_clustersMeanDEtaToSeed_branch->SetAddress(&els_clustersMeanDEtaToSeed_);}
+	}
+	els_clustersMeanDPhiToSeed_branch = 0;
+	if (tree->GetAlias("els_clustersMeanDPhiToSeed") != 0) {
+		els_clustersMeanDPhiToSeed_branch = tree->GetBranch(tree->GetAlias("els_clustersMeanDPhiToSeed"));
+		if (els_clustersMeanDPhiToSeed_branch) {els_clustersMeanDPhiToSeed_branch->SetAddress(&els_clustersMeanDPhiToSeed_);}
+	}
+	els_clustersMeanDRToSeed_branch = 0;
+	if (tree->GetAlias("els_clustersMeanDRToSeed") != 0) {
+		els_clustersMeanDRToSeed_branch = tree->GetBranch(tree->GetAlias("els_clustersMeanDRToSeed"));
+		if (els_clustersMeanDRToSeed_branch) {els_clustersMeanDRToSeed_branch->SetAddress(&els_clustersMeanDRToSeed_);}
+	}
+	els_clustersMeanRawEnergy_branch = 0;
+	if (tree->GetAlias("els_clustersMeanRawEnergy") != 0) {
+		els_clustersMeanRawEnergy_branch = tree->GetBranch(tree->GetAlias("els_clustersMeanRawEnergy"));
+		if (els_clustersMeanRawEnergy_branch) {els_clustersMeanRawEnergy_branch->SetAddress(&els_clustersMeanRawEnergy_);}
+	}
+	els_clustersRMSRawEnergy_branch = 0;
+	if (tree->GetAlias("els_clustersRMSRawEnergy") != 0) {
+		els_clustersRMSRawEnergy_branch = tree->GetBranch(tree->GetAlias("els_clustersRMSRawEnergy"));
+		if (els_clustersRMSRawEnergy_branch) {els_clustersRMSRawEnergy_branch->SetAddress(&els_clustersRMSRawEnergy_);}
 	}
 	els_d0_branch = 0;
 	if (tree->GetAlias("els_d0") != 0) {
@@ -4289,6 +4712,161 @@ void Init(TTree *tree) {
 	if (tree->GetAlias("els_r9_full5x5") != 0) {
 		els_r9_full5x5_branch = tree->GetBranch(tree->GetAlias("els_r9_full5x5"));
 		if (els_r9_full5x5_branch) {els_r9_full5x5_branch->SetAddress(&els_r9_full5x5_);}
+	}
+	els_scIsEB_branch = 0;
+	if (tree->GetAlias("els_scIsEB") != 0) {
+		els_scIsEB_branch = tree->GetBranch(tree->GetAlias("els_scIsEB"));
+		if (els_scIsEB_branch) {els_scIsEB_branch->SetAddress(&els_scIsEB_);}
+	}
+	els_scPreshowerEnergyPlane1_branch = 0;
+	if (tree->GetAlias("els_scPreshowerEnergyPlane1") != 0) {
+		els_scPreshowerEnergyPlane1_branch = tree->GetBranch(tree->GetAlias("els_scPreshowerEnergyPlane1"));
+		if (els_scPreshowerEnergyPlane1_branch) {els_scPreshowerEnergyPlane1_branch->SetAddress(&els_scPreshowerEnergyPlane1_);}
+	}
+	els_scPreshowerEnergyPlane2_branch = 0;
+	if (tree->GetAlias("els_scPreshowerEnergyPlane2") != 0) {
+		els_scPreshowerEnergyPlane2_branch = tree->GetBranch(tree->GetAlias("els_scPreshowerEnergyPlane2"));
+		if (els_scPreshowerEnergyPlane2_branch) {els_scPreshowerEnergyPlane2_branch->SetAddress(&els_scPreshowerEnergyPlane2_);}
+	}
+	els_scR_branch = 0;
+	if (tree->GetAlias("els_scR") != 0) {
+		els_scR_branch = tree->GetBranch(tree->GetAlias("els_scR"));
+		if (els_scR_branch) {els_scR_branch->SetAddress(&els_scR_);}
+	}
+	els_scSeed2x5LeftRightAsym_branch = 0;
+	if (tree->GetAlias("els_scSeed2x5LeftRightAsym") != 0) {
+		els_scSeed2x5LeftRightAsym_branch = tree->GetBranch(tree->GetAlias("els_scSeed2x5LeftRightAsym"));
+		if (els_scSeed2x5LeftRightAsym_branch) {els_scSeed2x5LeftRightAsym_branch->SetAddress(&els_scSeed2x5LeftRightAsym_);}
+	}
+	els_scSeed2x5TopBottomAsym_branch = 0;
+	if (tree->GetAlias("els_scSeed2x5TopBottomAsym") != 0) {
+		els_scSeed2x5TopBottomAsym_branch = tree->GetBranch(tree->GetAlias("els_scSeed2x5TopBottomAsym"));
+		if (els_scSeed2x5TopBottomAsym_branch) {els_scSeed2x5TopBottomAsym_branch->SetAddress(&els_scSeed2x5TopBottomAsym_);}
+	}
+	els_scSeedCryEta_branch = 0;
+	if (tree->GetAlias("els_scSeedCryEta") != 0) {
+		els_scSeedCryEta_branch = tree->GetBranch(tree->GetAlias("els_scSeedCryEta"));
+		if (els_scSeedCryEta_branch) {els_scSeedCryEta_branch->SetAddress(&els_scSeedCryEta_);}
+	}
+	els_scSeedCryIeta_branch = 0;
+	if (tree->GetAlias("els_scSeedCryIeta") != 0) {
+		els_scSeedCryIeta_branch = tree->GetBranch(tree->GetAlias("els_scSeedCryIeta"));
+		if (els_scSeedCryIeta_branch) {els_scSeedCryIeta_branch->SetAddress(&els_scSeedCryIeta_);}
+	}
+	els_scSeedCryIphi_branch = 0;
+	if (tree->GetAlias("els_scSeedCryIphi") != 0) {
+		els_scSeedCryIphi_branch = tree->GetBranch(tree->GetAlias("els_scSeedCryIphi"));
+		if (els_scSeedCryIphi_branch) {els_scSeedCryIphi_branch->SetAddress(&els_scSeedCryIphi_);}
+	}
+	els_scSeedCryIx_branch = 0;
+	if (tree->GetAlias("els_scSeedCryIx") != 0) {
+		els_scSeedCryIx_branch = tree->GetBranch(tree->GetAlias("els_scSeedCryIx"));
+		if (els_scSeedCryIx_branch) {els_scSeedCryIx_branch->SetAddress(&els_scSeedCryIx_);}
+	}
+	els_scSeedCryIy_branch = 0;
+	if (tree->GetAlias("els_scSeedCryIy") != 0) {
+		els_scSeedCryIy_branch = tree->GetBranch(tree->GetAlias("els_scSeedCryIy"));
+		if (els_scSeedCryIy_branch) {els_scSeedCryIy_branch->SetAddress(&els_scSeedCryIy_);}
+	}
+	els_scSeedCryPhi_branch = 0;
+	if (tree->GetAlias("els_scSeedCryPhi") != 0) {
+		els_scSeedCryPhi_branch = tree->GetBranch(tree->GetAlias("els_scSeedCryPhi"));
+		if (els_scSeedCryPhi_branch) {els_scSeedCryPhi_branch->SetAddress(&els_scSeedCryPhi_);}
+	}
+	els_scSeedCryX_branch = 0;
+	if (tree->GetAlias("els_scSeedCryX") != 0) {
+		els_scSeedCryX_branch = tree->GetBranch(tree->GetAlias("els_scSeedCryX"));
+		if (els_scSeedCryX_branch) {els_scSeedCryX_branch->SetAddress(&els_scSeedCryX_);}
+	}
+	els_scSeedCryY_branch = 0;
+	if (tree->GetAlias("els_scSeedCryY") != 0) {
+		els_scSeedCryY_branch = tree->GetBranch(tree->GetAlias("els_scSeedCryY"));
+		if (els_scSeedCryY_branch) {els_scSeedCryY_branch->SetAddress(&els_scSeedCryY_);}
+	}
+	els_scSeedE2nd_branch = 0;
+	if (tree->GetAlias("els_scSeedE2nd") != 0) {
+		els_scSeedE2nd_branch = tree->GetBranch(tree->GetAlias("els_scSeedE2nd"));
+		if (els_scSeedE2nd_branch) {els_scSeedE2nd_branch->SetAddress(&els_scSeedE2nd_);}
+	}
+	els_scSeedE2x5Bottom_branch = 0;
+	if (tree->GetAlias("els_scSeedE2x5Bottom") != 0) {
+		els_scSeedE2x5Bottom_branch = tree->GetBranch(tree->GetAlias("els_scSeedE2x5Bottom"));
+		if (els_scSeedE2x5Bottom_branch) {els_scSeedE2x5Bottom_branch->SetAddress(&els_scSeedE2x5Bottom_);}
+	}
+	els_scSeedE2x5Left_branch = 0;
+	if (tree->GetAlias("els_scSeedE2x5Left") != 0) {
+		els_scSeedE2x5Left_branch = tree->GetBranch(tree->GetAlias("els_scSeedE2x5Left"));
+		if (els_scSeedE2x5Left_branch) {els_scSeedE2x5Left_branch->SetAddress(&els_scSeedE2x5Left_);}
+	}
+	els_scSeedE2x5Right_branch = 0;
+	if (tree->GetAlias("els_scSeedE2x5Right") != 0) {
+		els_scSeedE2x5Right_branch = tree->GetBranch(tree->GetAlias("els_scSeedE2x5Right"));
+		if (els_scSeedE2x5Right_branch) {els_scSeedE2x5Right_branch->SetAddress(&els_scSeedE2x5Right_);}
+	}
+	els_scSeedE2x5Top_branch = 0;
+	if (tree->GetAlias("els_scSeedE2x5Top") != 0) {
+		els_scSeedE2x5Top_branch = tree->GetBranch(tree->GetAlias("els_scSeedE2x5Top"));
+		if (els_scSeedE2x5Top_branch) {els_scSeedE2x5Top_branch->SetAddress(&els_scSeedE2x5Top_);}
+	}
+	els_scSeedE3x3_branch = 0;
+	if (tree->GetAlias("els_scSeedE3x3") != 0) {
+		els_scSeedE3x3_branch = tree->GetBranch(tree->GetAlias("els_scSeedE3x3"));
+		if (els_scSeedE3x3_branch) {els_scSeedE3x3_branch->SetAddress(&els_scSeedE3x3_);}
+	}
+	els_scSeedEBottom_branch = 0;
+	if (tree->GetAlias("els_scSeedEBottom") != 0) {
+		els_scSeedEBottom_branch = tree->GetBranch(tree->GetAlias("els_scSeedEBottom"));
+		if (els_scSeedEBottom_branch) {els_scSeedEBottom_branch->SetAddress(&els_scSeedEBottom_);}
+	}
+	els_scSeedELeft_branch = 0;
+	if (tree->GetAlias("els_scSeedELeft") != 0) {
+		els_scSeedELeft_branch = tree->GetBranch(tree->GetAlias("els_scSeedELeft"));
+		if (els_scSeedELeft_branch) {els_scSeedELeft_branch->SetAddress(&els_scSeedELeft_);}
+	}
+	els_scSeedERight_branch = 0;
+	if (tree->GetAlias("els_scSeedERight") != 0) {
+		els_scSeedERight_branch = tree->GetBranch(tree->GetAlias("els_scSeedERight"));
+		if (els_scSeedERight_branch) {els_scSeedERight_branch->SetAddress(&els_scSeedERight_);}
+	}
+	els_scSeedETop_branch = 0;
+	if (tree->GetAlias("els_scSeedETop") != 0) {
+		els_scSeedETop_branch = tree->GetBranch(tree->GetAlias("els_scSeedETop"));
+		if (els_scSeedETop_branch) {els_scSeedETop_branch->SetAddress(&els_scSeedETop_);}
+	}
+	els_scSeedEmax_branch = 0;
+	if (tree->GetAlias("els_scSeedEmax") != 0) {
+		els_scSeedEmax_branch = tree->GetBranch(tree->GetAlias("els_scSeedEmax"));
+		if (els_scSeedEmax_branch) {els_scSeedEmax_branch->SetAddress(&els_scSeedEmax_);}
+	}
+	els_scSeedEta_branch = 0;
+	if (tree->GetAlias("els_scSeedEta") != 0) {
+		els_scSeedEta_branch = tree->GetBranch(tree->GetAlias("els_scSeedEta"));
+		if (els_scSeedEta_branch) {els_scSeedEta_branch->SetAddress(&els_scSeedEta_);}
+	}
+	els_scSeedLeftRightAsym_branch = 0;
+	if (tree->GetAlias("els_scSeedLeftRightAsym") != 0) {
+		els_scSeedLeftRightAsym_branch = tree->GetBranch(tree->GetAlias("els_scSeedLeftRightAsym"));
+		if (els_scSeedLeftRightAsym_branch) {els_scSeedLeftRightAsym_branch->SetAddress(&els_scSeedLeftRightAsym_);}
+	}
+	els_scSeedPhi_branch = 0;
+	if (tree->GetAlias("els_scSeedPhi") != 0) {
+		els_scSeedPhi_branch = tree->GetBranch(tree->GetAlias("els_scSeedPhi"));
+		if (els_scSeedPhi_branch) {els_scSeedPhi_branch->SetAddress(&els_scSeedPhi_);}
+	}
+	els_scSeedSigmaIetaIphi_branch = 0;
+	if (tree->GetAlias("els_scSeedSigmaIetaIphi") != 0) {
+		els_scSeedSigmaIetaIphi_branch = tree->GetBranch(tree->GetAlias("els_scSeedSigmaIetaIphi"));
+		if (els_scSeedSigmaIetaIphi_branch) {els_scSeedSigmaIetaIphi_branch->SetAddress(&els_scSeedSigmaIetaIphi_);}
+	}
+	els_scSeedSize_branch = 0;
+	if (tree->GetAlias("els_scSeedSize") != 0) {
+		els_scSeedSize_branch = tree->GetBranch(tree->GetAlias("els_scSeedSize"));
+		if (els_scSeedSize_branch) {els_scSeedSize_branch->SetAddress(&els_scSeedSize_);}
+	}
+	els_scSeedTopBottomAsym_branch = 0;
+	if (tree->GetAlias("els_scSeedTopBottomAsym") != 0) {
+		els_scSeedTopBottomAsym_branch = tree->GetBranch(tree->GetAlias("els_scSeedTopBottomAsym"));
+		if (els_scSeedTopBottomAsym_branch) {els_scSeedTopBottomAsym_branch->SetAddress(&els_scSeedTopBottomAsym_);}
 	}
 	els_sigmaEtaEta_branch = 0;
 	if (tree->GetAlias("els_sigmaEtaEta") != 0) {
@@ -5095,6 +5673,11 @@ void Init(TTree *tree) {
 		pfcands_mass_branch = tree->GetBranch(tree->GetAlias("pfcands_mass"));
 		if (pfcands_mass_branch) {pfcands_mass_branch->SetAddress(&pfcands_mass_);}
 	}
+	pfcands_phiAtVtx_branch = 0;
+	if (tree->GetAlias("pfcands_phiAtVtx") != 0) {
+		pfcands_phiAtVtx_branch = tree->GetBranch(tree->GetAlias("pfcands_phiAtVtx"));
+		if (pfcands_phiAtVtx_branch) {pfcands_phiAtVtx_branch->SetAddress(&pfcands_phiAtVtx_);}
+	}
 	pfjets_area_branch = 0;
 	if (tree->GetAlias("pfjets_area") != 0) {
 		pfjets_area_branch = tree->GetBranch(tree->GetAlias("pfjets_area"));
@@ -5244,6 +5827,51 @@ void Init(TTree *tree) {
 	if (tree->GetAlias("photons_chargedHadronIso") != 0) {
 		photons_chargedHadronIso_branch = tree->GetBranch(tree->GetAlias("photons_chargedHadronIso"));
 		if (photons_chargedHadronIso_branch) {photons_chargedHadronIso_branch->SetAddress(&photons_chargedHadronIso_);}
+	}
+	photons_clusterMaxDR_branch = 0;
+	if (tree->GetAlias("photons_clusterMaxDR") != 0) {
+		photons_clusterMaxDR_branch = tree->GetBranch(tree->GetAlias("photons_clusterMaxDR"));
+		if (photons_clusterMaxDR_branch) {photons_clusterMaxDR_branch->SetAddress(&photons_clusterMaxDR_);}
+	}
+	photons_clusterMaxDRDEta_branch = 0;
+	if (tree->GetAlias("photons_clusterMaxDRDEta") != 0) {
+		photons_clusterMaxDRDEta_branch = tree->GetBranch(tree->GetAlias("photons_clusterMaxDRDEta"));
+		if (photons_clusterMaxDRDEta_branch) {photons_clusterMaxDRDEta_branch->SetAddress(&photons_clusterMaxDRDEta_);}
+	}
+	photons_clusterMaxDRDPhi_branch = 0;
+	if (tree->GetAlias("photons_clusterMaxDRDPhi") != 0) {
+		photons_clusterMaxDRDPhi_branch = tree->GetBranch(tree->GetAlias("photons_clusterMaxDRDPhi"));
+		if (photons_clusterMaxDRDPhi_branch) {photons_clusterMaxDRDPhi_branch->SetAddress(&photons_clusterMaxDRDPhi_);}
+	}
+	photons_clusterMaxDRRawEnergy_branch = 0;
+	if (tree->GetAlias("photons_clusterMaxDRRawEnergy") != 0) {
+		photons_clusterMaxDRRawEnergy_branch = tree->GetBranch(tree->GetAlias("photons_clusterMaxDRRawEnergy"));
+		if (photons_clusterMaxDRRawEnergy_branch) {photons_clusterMaxDRRawEnergy_branch->SetAddress(&photons_clusterMaxDRRawEnergy_);}
+	}
+	photons_clustersMeanDEtaToSeed_branch = 0;
+	if (tree->GetAlias("photons_clustersMeanDEtaToSeed") != 0) {
+		photons_clustersMeanDEtaToSeed_branch = tree->GetBranch(tree->GetAlias("photons_clustersMeanDEtaToSeed"));
+		if (photons_clustersMeanDEtaToSeed_branch) {photons_clustersMeanDEtaToSeed_branch->SetAddress(&photons_clustersMeanDEtaToSeed_);}
+	}
+	photons_clustersMeanDPhiToSeed_branch = 0;
+	if (tree->GetAlias("photons_clustersMeanDPhiToSeed") != 0) {
+		photons_clustersMeanDPhiToSeed_branch = tree->GetBranch(tree->GetAlias("photons_clustersMeanDPhiToSeed"));
+		if (photons_clustersMeanDPhiToSeed_branch) {photons_clustersMeanDPhiToSeed_branch->SetAddress(&photons_clustersMeanDPhiToSeed_);}
+	}
+	photons_clustersMeanDRToSeed_branch = 0;
+	if (tree->GetAlias("photons_clustersMeanDRToSeed") != 0) {
+		photons_clustersMeanDRToSeed_branch = tree->GetBranch(tree->GetAlias("photons_clustersMeanDRToSeed"));
+		if (photons_clustersMeanDRToSeed_branch) {photons_clustersMeanDRToSeed_branch->SetAddress(&photons_clustersMeanDRToSeed_);}
+	}
+	photons_clustersMeanRawEnergy_branch = 0;
+	if (tree->GetAlias("photons_clustersMeanRawEnergy") != 0) {
+		photons_clustersMeanRawEnergy_branch = tree->GetBranch(tree->GetAlias("photons_clustersMeanRawEnergy"));
+		if (photons_clustersMeanRawEnergy_branch) {photons_clustersMeanRawEnergy_branch->SetAddress(&photons_clustersMeanRawEnergy_);}
+	}
+	photons_clustersRMSRawEnergy_branch = 0;
+	if (tree->GetAlias("photons_clustersRMSRawEnergy") != 0) {
+		photons_clustersRMSRawEnergy_branch = tree->GetBranch(tree->GetAlias("photons_clustersRMSRawEnergy"));
+		if (photons_clustersRMSRawEnergy_branch) {photons_clustersRMSRawEnergy_branch->SetAddress(&photons_clustersRMSRawEnergy_);}
 	}
 	photons_e1x5_branch = 0;
 	if (tree->GetAlias("photons_e1x5") != 0) {
@@ -5455,6 +6083,186 @@ void Init(TTree *tree) {
 		photons_recoPhotonIso_branch = tree->GetBranch(tree->GetAlias("photons_recoPhotonIso"));
 		if (photons_recoPhotonIso_branch) {photons_recoPhotonIso_branch->SetAddress(&photons_recoPhotonIso_);}
 	}
+	photonsscEtaWidth_branch = 0;
+	if (tree->GetAlias("photonsscEtaWidth") != 0) {
+		photonsscEtaWidth_branch = tree->GetBranch(tree->GetAlias("photonsscEtaWidth"));
+		if (photonsscEtaWidth_branch) {photonsscEtaWidth_branch->SetAddress(&photonsscEtaWidth_);}
+	}
+	photons_scIsEB_branch = 0;
+	if (tree->GetAlias("photons_scIsEB") != 0) {
+		photons_scIsEB_branch = tree->GetBranch(tree->GetAlias("photons_scIsEB"));
+		if (photons_scIsEB_branch) {photons_scIsEB_branch->SetAddress(&photons_scIsEB_);}
+	}
+	photonsscPhiWidth_branch = 0;
+	if (tree->GetAlias("photonsscPhiWidth") != 0) {
+		photonsscPhiWidth_branch = tree->GetBranch(tree->GetAlias("photonsscPhiWidth"));
+		if (photonsscPhiWidth_branch) {photonsscPhiWidth_branch->SetAddress(&photonsscPhiWidth_);}
+	}
+	photons_scPreshowerEnergyPlane1_branch = 0;
+	if (tree->GetAlias("photons_scPreshowerEnergyPlane1") != 0) {
+		photons_scPreshowerEnergyPlane1_branch = tree->GetBranch(tree->GetAlias("photons_scPreshowerEnergyPlane1"));
+		if (photons_scPreshowerEnergyPlane1_branch) {photons_scPreshowerEnergyPlane1_branch->SetAddress(&photons_scPreshowerEnergyPlane1_);}
+	}
+	photons_scPreshowerEnergyPlane2_branch = 0;
+	if (tree->GetAlias("photons_scPreshowerEnergyPlane2") != 0) {
+		photons_scPreshowerEnergyPlane2_branch = tree->GetBranch(tree->GetAlias("photons_scPreshowerEnergyPlane2"));
+		if (photons_scPreshowerEnergyPlane2_branch) {photons_scPreshowerEnergyPlane2_branch->SetAddress(&photons_scPreshowerEnergyPlane2_);}
+	}
+	photons_scR_branch = 0;
+	if (tree->GetAlias("photons_scR") != 0) {
+		photons_scR_branch = tree->GetBranch(tree->GetAlias("photons_scR"));
+		if (photons_scR_branch) {photons_scR_branch->SetAddress(&photons_scR_);}
+	}
+	photons_scSeed2x5LeftRightAsym_branch = 0;
+	if (tree->GetAlias("photons_scSeed2x5LeftRightAsym") != 0) {
+		photons_scSeed2x5LeftRightAsym_branch = tree->GetBranch(tree->GetAlias("photons_scSeed2x5LeftRightAsym"));
+		if (photons_scSeed2x5LeftRightAsym_branch) {photons_scSeed2x5LeftRightAsym_branch->SetAddress(&photons_scSeed2x5LeftRightAsym_);}
+	}
+	photons_scSeed2x5TopBottomAsym_branch = 0;
+	if (tree->GetAlias("photons_scSeed2x5TopBottomAsym") != 0) {
+		photons_scSeed2x5TopBottomAsym_branch = tree->GetBranch(tree->GetAlias("photons_scSeed2x5TopBottomAsym"));
+		if (photons_scSeed2x5TopBottomAsym_branch) {photons_scSeed2x5TopBottomAsym_branch->SetAddress(&photons_scSeed2x5TopBottomAsym_);}
+	}
+	photonsscSeedCalibratedEnergy_branch = 0;
+	if (tree->GetAlias("photonsscSeedCalibratedEnergy") != 0) {
+		photonsscSeedCalibratedEnergy_branch = tree->GetBranch(tree->GetAlias("photonsscSeedCalibratedEnergy"));
+		if (photonsscSeedCalibratedEnergy_branch) {photonsscSeedCalibratedEnergy_branch->SetAddress(&photonsscSeedCalibratedEnergy_);}
+	}
+	photons_scSeedCryEta_branch = 0;
+	if (tree->GetAlias("photons_scSeedCryEta") != 0) {
+		photons_scSeedCryEta_branch = tree->GetBranch(tree->GetAlias("photons_scSeedCryEta"));
+		if (photons_scSeedCryEta_branch) {photons_scSeedCryEta_branch->SetAddress(&photons_scSeedCryEta_);}
+	}
+	photons_scSeedCryIeta_branch = 0;
+	if (tree->GetAlias("photons_scSeedCryIeta") != 0) {
+		photons_scSeedCryIeta_branch = tree->GetBranch(tree->GetAlias("photons_scSeedCryIeta"));
+		if (photons_scSeedCryIeta_branch) {photons_scSeedCryIeta_branch->SetAddress(&photons_scSeedCryIeta_);}
+	}
+	photons_scSeedCryIphi_branch = 0;
+	if (tree->GetAlias("photons_scSeedCryIphi") != 0) {
+		photons_scSeedCryIphi_branch = tree->GetBranch(tree->GetAlias("photons_scSeedCryIphi"));
+		if (photons_scSeedCryIphi_branch) {photons_scSeedCryIphi_branch->SetAddress(&photons_scSeedCryIphi_);}
+	}
+	photons_scSeedCryIx_branch = 0;
+	if (tree->GetAlias("photons_scSeedCryIx") != 0) {
+		photons_scSeedCryIx_branch = tree->GetBranch(tree->GetAlias("photons_scSeedCryIx"));
+		if (photons_scSeedCryIx_branch) {photons_scSeedCryIx_branch->SetAddress(&photons_scSeedCryIx_);}
+	}
+	photons_scSeedCryIy_branch = 0;
+	if (tree->GetAlias("photons_scSeedCryIy") != 0) {
+		photons_scSeedCryIy_branch = tree->GetBranch(tree->GetAlias("photons_scSeedCryIy"));
+		if (photons_scSeedCryIy_branch) {photons_scSeedCryIy_branch->SetAddress(&photons_scSeedCryIy_);}
+	}
+	photons_scSeedCryPhi_branch = 0;
+	if (tree->GetAlias("photons_scSeedCryPhi") != 0) {
+		photons_scSeedCryPhi_branch = tree->GetBranch(tree->GetAlias("photons_scSeedCryPhi"));
+		if (photons_scSeedCryPhi_branch) {photons_scSeedCryPhi_branch->SetAddress(&photons_scSeedCryPhi_);}
+	}
+	photons_scSeedCryX_branch = 0;
+	if (tree->GetAlias("photons_scSeedCryX") != 0) {
+		photons_scSeedCryX_branch = tree->GetBranch(tree->GetAlias("photons_scSeedCryX"));
+		if (photons_scSeedCryX_branch) {photons_scSeedCryX_branch->SetAddress(&photons_scSeedCryX_);}
+	}
+	photons_scSeedCryY_branch = 0;
+	if (tree->GetAlias("photons_scSeedCryY") != 0) {
+		photons_scSeedCryY_branch = tree->GetBranch(tree->GetAlias("photons_scSeedCryY"));
+		if (photons_scSeedCryY_branch) {photons_scSeedCryY_branch->SetAddress(&photons_scSeedCryY_);}
+	}
+	photons_scSeedE2nd_branch = 0;
+	if (tree->GetAlias("photons_scSeedE2nd") != 0) {
+		photons_scSeedE2nd_branch = tree->GetBranch(tree->GetAlias("photons_scSeedE2nd"));
+		if (photons_scSeedE2nd_branch) {photons_scSeedE2nd_branch->SetAddress(&photons_scSeedE2nd_);}
+	}
+	photons_scSeedE2x5Bottom_branch = 0;
+	if (tree->GetAlias("photons_scSeedE2x5Bottom") != 0) {
+		photons_scSeedE2x5Bottom_branch = tree->GetBranch(tree->GetAlias("photons_scSeedE2x5Bottom"));
+		if (photons_scSeedE2x5Bottom_branch) {photons_scSeedE2x5Bottom_branch->SetAddress(&photons_scSeedE2x5Bottom_);}
+	}
+	photons_scSeedE2x5Left_branch = 0;
+	if (tree->GetAlias("photons_scSeedE2x5Left") != 0) {
+		photons_scSeedE2x5Left_branch = tree->GetBranch(tree->GetAlias("photons_scSeedE2x5Left"));
+		if (photons_scSeedE2x5Left_branch) {photons_scSeedE2x5Left_branch->SetAddress(&photons_scSeedE2x5Left_);}
+	}
+	photons_scSeedE2x5Right_branch = 0;
+	if (tree->GetAlias("photons_scSeedE2x5Right") != 0) {
+		photons_scSeedE2x5Right_branch = tree->GetBranch(tree->GetAlias("photons_scSeedE2x5Right"));
+		if (photons_scSeedE2x5Right_branch) {photons_scSeedE2x5Right_branch->SetAddress(&photons_scSeedE2x5Right_);}
+	}
+	photons_scSeedE2x5Top_branch = 0;
+	if (tree->GetAlias("photons_scSeedE2x5Top") != 0) {
+		photons_scSeedE2x5Top_branch = tree->GetBranch(tree->GetAlias("photons_scSeedE2x5Top"));
+		if (photons_scSeedE2x5Top_branch) {photons_scSeedE2x5Top_branch->SetAddress(&photons_scSeedE2x5Top_);}
+	}
+	photons_scSeedE3x3_branch = 0;
+	if (tree->GetAlias("photons_scSeedE3x3") != 0) {
+		photons_scSeedE3x3_branch = tree->GetBranch(tree->GetAlias("photons_scSeedE3x3"));
+		if (photons_scSeedE3x3_branch) {photons_scSeedE3x3_branch->SetAddress(&photons_scSeedE3x3_);}
+	}
+	photons_scSeedEBottom_branch = 0;
+	if (tree->GetAlias("photons_scSeedEBottom") != 0) {
+		photons_scSeedEBottom_branch = tree->GetBranch(tree->GetAlias("photons_scSeedEBottom"));
+		if (photons_scSeedEBottom_branch) {photons_scSeedEBottom_branch->SetAddress(&photons_scSeedEBottom_);}
+	}
+	photons_scSeedELeft_branch = 0;
+	if (tree->GetAlias("photons_scSeedELeft") != 0) {
+		photons_scSeedELeft_branch = tree->GetBranch(tree->GetAlias("photons_scSeedELeft"));
+		if (photons_scSeedELeft_branch) {photons_scSeedELeft_branch->SetAddress(&photons_scSeedELeft_);}
+	}
+	photons_scSeedERight_branch = 0;
+	if (tree->GetAlias("photons_scSeedERight") != 0) {
+		photons_scSeedERight_branch = tree->GetBranch(tree->GetAlias("photons_scSeedERight"));
+		if (photons_scSeedERight_branch) {photons_scSeedERight_branch->SetAddress(&photons_scSeedERight_);}
+	}
+	photons_scSeedETop_branch = 0;
+	if (tree->GetAlias("photons_scSeedETop") != 0) {
+		photons_scSeedETop_branch = tree->GetBranch(tree->GetAlias("photons_scSeedETop"));
+		if (photons_scSeedETop_branch) {photons_scSeedETop_branch->SetAddress(&photons_scSeedETop_);}
+	}
+	photons_scSeedEmax_branch = 0;
+	if (tree->GetAlias("photons_scSeedEmax") != 0) {
+		photons_scSeedEmax_branch = tree->GetBranch(tree->GetAlias("photons_scSeedEmax"));
+		if (photons_scSeedEmax_branch) {photons_scSeedEmax_branch->SetAddress(&photons_scSeedEmax_);}
+	}
+	photons_scSeedEta_branch = 0;
+	if (tree->GetAlias("photons_scSeedEta") != 0) {
+		photons_scSeedEta_branch = tree->GetBranch(tree->GetAlias("photons_scSeedEta"));
+		if (photons_scSeedEta_branch) {photons_scSeedEta_branch->SetAddress(&photons_scSeedEta_);}
+	}
+	photons_scSeedLeftRightAsym_branch = 0;
+	if (tree->GetAlias("photons_scSeedLeftRightAsym") != 0) {
+		photons_scSeedLeftRightAsym_branch = tree->GetBranch(tree->GetAlias("photons_scSeedLeftRightAsym"));
+		if (photons_scSeedLeftRightAsym_branch) {photons_scSeedLeftRightAsym_branch->SetAddress(&photons_scSeedLeftRightAsym_);}
+	}
+	photons_scSeedPhi_branch = 0;
+	if (tree->GetAlias("photons_scSeedPhi") != 0) {
+		photons_scSeedPhi_branch = tree->GetBranch(tree->GetAlias("photons_scSeedPhi"));
+		if (photons_scSeedPhi_branch) {photons_scSeedPhi_branch->SetAddress(&photons_scSeedPhi_);}
+	}
+	photonsscSeedRawEnergy_branch = 0;
+	if (tree->GetAlias("photonsscSeedRawEnergy") != 0) {
+		photonsscSeedRawEnergy_branch = tree->GetBranch(tree->GetAlias("photonsscSeedRawEnergy"));
+		if (photonsscSeedRawEnergy_branch) {photonsscSeedRawEnergy_branch->SetAddress(&photonsscSeedRawEnergy_);}
+	}
+	photons_scSeedSigmaIetaIphi_branch = 0;
+	if (tree->GetAlias("photons_scSeedSigmaIetaIphi") != 0) {
+		photons_scSeedSigmaIetaIphi_branch = tree->GetBranch(tree->GetAlias("photons_scSeedSigmaIetaIphi"));
+		if (photons_scSeedSigmaIetaIphi_branch) {photons_scSeedSigmaIetaIphi_branch->SetAddress(&photons_scSeedSigmaIetaIphi_);}
+	}
+	photonsscSeedSigmaIphiIphi_branch = 0;
+	if (tree->GetAlias("photonsscSeedSigmaIphiIphi") != 0) {
+		photonsscSeedSigmaIphiIphi_branch = tree->GetBranch(tree->GetAlias("photonsscSeedSigmaIphiIphi"));
+		if (photonsscSeedSigmaIphiIphi_branch) {photonsscSeedSigmaIphiIphi_branch->SetAddress(&photonsscSeedSigmaIphiIphi_);}
+	}
+	photons_scSeedSize_branch = 0;
+	if (tree->GetAlias("photons_scSeedSize") != 0) {
+		photons_scSeedSize_branch = tree->GetBranch(tree->GetAlias("photons_scSeedSize"));
+		if (photons_scSeedSize_branch) {photons_scSeedSize_branch->SetAddress(&photons_scSeedSize_);}
+	}
+	photons_scSeedTopBottomAsym_branch = 0;
+	if (tree->GetAlias("photons_scSeedTopBottomAsym") != 0) {
+		photons_scSeedTopBottomAsym_branch = tree->GetBranch(tree->GetAlias("photons_scSeedTopBottomAsym"));
+		if (photons_scSeedTopBottomAsym_branch) {photons_scSeedTopBottomAsym_branch->SetAddress(&photons_scSeedTopBottomAsym_);}
+	}
 	photons_sigmaEtaEta_branch = 0;
 	if (tree->GetAlias("photons_sigmaEtaEta") != 0) {
 		photons_sigmaEtaEta_branch = tree->GetBranch(tree->GetAlias("photons_sigmaEtaEta"));
@@ -5655,10 +6463,60 @@ void Init(TTree *tree) {
 		vtxs_zError_branch = tree->GetBranch(tree->GetAlias("vtxs_zError"));
 		if (vtxs_zError_branch) {vtxs_zError_branch->SetAddress(&vtxs_zError_);}
 	}
-	pfjets_nonCHS_bDiscriminators_branch = 0;
-	if (tree->GetAlias("pfjets_nonCHS_bDiscriminators") != 0) {
-		pfjets_nonCHS_bDiscriminators_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_bDiscriminators"));
-		if (pfjets_nonCHS_bDiscriminators_branch) {pfjets_nonCHS_bDiscriminators_branch->SetAddress(&pfjets_nonCHS_bDiscriminators_);}
+	els_clusterCalibEnergy_branch = 0;
+	if (tree->GetAlias("els_clusterCalibEnergy") != 0) {
+		els_clusterCalibEnergy_branch = tree->GetBranch(tree->GetAlias("els_clusterCalibEnergy"));
+		if (els_clusterCalibEnergy_branch) {els_clusterCalibEnergy_branch->SetAddress(&els_clusterCalibEnergy_);}
+	}
+	els_clusterDEtaToCentroid_branch = 0;
+	if (tree->GetAlias("els_clusterDEtaToCentroid") != 0) {
+		els_clusterDEtaToCentroid_branch = tree->GetBranch(tree->GetAlias("els_clusterDEtaToCentroid"));
+		if (els_clusterDEtaToCentroid_branch) {els_clusterDEtaToCentroid_branch->SetAddress(&els_clusterDEtaToCentroid_);}
+	}
+	els_clusterDEtaToSeed_branch = 0;
+	if (tree->GetAlias("els_clusterDEtaToSeed") != 0) {
+		els_clusterDEtaToSeed_branch = tree->GetBranch(tree->GetAlias("els_clusterDEtaToSeed"));
+		if (els_clusterDEtaToSeed_branch) {els_clusterDEtaToSeed_branch->SetAddress(&els_clusterDEtaToSeed_);}
+	}
+	els_clusterDPhiToCentroid_branch = 0;
+	if (tree->GetAlias("els_clusterDPhiToCentroid") != 0) {
+		els_clusterDPhiToCentroid_branch = tree->GetBranch(tree->GetAlias("els_clusterDPhiToCentroid"));
+		if (els_clusterDPhiToCentroid_branch) {els_clusterDPhiToCentroid_branch->SetAddress(&els_clusterDPhiToCentroid_);}
+	}
+	els_clusterDPhiToSeed_branch = 0;
+	if (tree->GetAlias("els_clusterDPhiToSeed") != 0) {
+		els_clusterDPhiToSeed_branch = tree->GetBranch(tree->GetAlias("els_clusterDPhiToSeed"));
+		if (els_clusterDPhiToSeed_branch) {els_clusterDPhiToSeed_branch->SetAddress(&els_clusterDPhiToSeed_);}
+	}
+	els_clusterEta_branch = 0;
+	if (tree->GetAlias("els_clusterEta") != 0) {
+		els_clusterEta_branch = tree->GetBranch(tree->GetAlias("els_clusterEta"));
+		if (els_clusterEta_branch) {els_clusterEta_branch->SetAddress(&els_clusterEta_);}
+	}
+	els_clusterPhi_branch = 0;
+	if (tree->GetAlias("els_clusterPhi") != 0) {
+		els_clusterPhi_branch = tree->GetBranch(tree->GetAlias("els_clusterPhi"));
+		if (els_clusterPhi_branch) {els_clusterPhi_branch->SetAddress(&els_clusterPhi_);}
+	}
+	els_clusterRawEnergy_branch = 0;
+	if (tree->GetAlias("els_clusterRawEnergy") != 0) {
+		els_clusterRawEnergy_branch = tree->GetBranch(tree->GetAlias("els_clusterRawEnergy"));
+		if (els_clusterRawEnergy_branch) {els_clusterRawEnergy_branch->SetAddress(&els_clusterRawEnergy_);}
+	}
+	els_psClusterEta_branch = 0;
+	if (tree->GetAlias("els_psClusterEta") != 0) {
+		els_psClusterEta_branch = tree->GetBranch(tree->GetAlias("els_psClusterEta"));
+		if (els_psClusterEta_branch) {els_psClusterEta_branch->SetAddress(&els_psClusterEta_);}
+	}
+	els_psClusterPhi_branch = 0;
+	if (tree->GetAlias("els_psClusterPhi") != 0) {
+		els_psClusterPhi_branch = tree->GetBranch(tree->GetAlias("els_psClusterPhi"));
+		if (els_psClusterPhi_branch) {els_psClusterPhi_branch->SetAddress(&els_psClusterPhi_);}
+	}
+	els_psClusterRawEnergy_branch = 0;
+	if (tree->GetAlias("els_psClusterRawEnergy") != 0) {
+		els_psClusterRawEnergy_branch = tree->GetBranch(tree->GetAlias("els_psClusterRawEnergy"));
+		if (els_psClusterRawEnergy_branch) {els_psClusterRawEnergy_branch->SetAddress(&els_psClusterRawEnergy_);}
 	}
 	mus_stationShowerDeltaR_branch = 0;
 	if (tree->GetAlias("mus_stationShowerDeltaR") != 0) {
@@ -5684,6 +6542,61 @@ void Init(TTree *tree) {
 	if (tree->GetAlias("taus_pf_IDs") != 0) {
 		taus_pf_IDs_branch = tree->GetBranch(tree->GetAlias("taus_pf_IDs"));
 		if (taus_pf_IDs_branch) {taus_pf_IDs_branch->SetAddress(&taus_pf_IDs_);}
+	}
+	photons_clusterCalibEnergy_branch = 0;
+	if (tree->GetAlias("photons_clusterCalibEnergy") != 0) {
+		photons_clusterCalibEnergy_branch = tree->GetBranch(tree->GetAlias("photons_clusterCalibEnergy"));
+		if (photons_clusterCalibEnergy_branch) {photons_clusterCalibEnergy_branch->SetAddress(&photons_clusterCalibEnergy_);}
+	}
+	photons_clusterDEtaToCentroid_branch = 0;
+	if (tree->GetAlias("photons_clusterDEtaToCentroid") != 0) {
+		photons_clusterDEtaToCentroid_branch = tree->GetBranch(tree->GetAlias("photons_clusterDEtaToCentroid"));
+		if (photons_clusterDEtaToCentroid_branch) {photons_clusterDEtaToCentroid_branch->SetAddress(&photons_clusterDEtaToCentroid_);}
+	}
+	photons_clusterDEtaToSeed_branch = 0;
+	if (tree->GetAlias("photons_clusterDEtaToSeed") != 0) {
+		photons_clusterDEtaToSeed_branch = tree->GetBranch(tree->GetAlias("photons_clusterDEtaToSeed"));
+		if (photons_clusterDEtaToSeed_branch) {photons_clusterDEtaToSeed_branch->SetAddress(&photons_clusterDEtaToSeed_);}
+	}
+	photons_clusterDPhiToCentroid_branch = 0;
+	if (tree->GetAlias("photons_clusterDPhiToCentroid") != 0) {
+		photons_clusterDPhiToCentroid_branch = tree->GetBranch(tree->GetAlias("photons_clusterDPhiToCentroid"));
+		if (photons_clusterDPhiToCentroid_branch) {photons_clusterDPhiToCentroid_branch->SetAddress(&photons_clusterDPhiToCentroid_);}
+	}
+	photons_clusterDPhiToSeed_branch = 0;
+	if (tree->GetAlias("photons_clusterDPhiToSeed") != 0) {
+		photons_clusterDPhiToSeed_branch = tree->GetBranch(tree->GetAlias("photons_clusterDPhiToSeed"));
+		if (photons_clusterDPhiToSeed_branch) {photons_clusterDPhiToSeed_branch->SetAddress(&photons_clusterDPhiToSeed_);}
+	}
+	photons_clusterEta_branch = 0;
+	if (tree->GetAlias("photons_clusterEta") != 0) {
+		photons_clusterEta_branch = tree->GetBranch(tree->GetAlias("photons_clusterEta"));
+		if (photons_clusterEta_branch) {photons_clusterEta_branch->SetAddress(&photons_clusterEta_);}
+	}
+	photons_clusterPhi_branch = 0;
+	if (tree->GetAlias("photons_clusterPhi") != 0) {
+		photons_clusterPhi_branch = tree->GetBranch(tree->GetAlias("photons_clusterPhi"));
+		if (photons_clusterPhi_branch) {photons_clusterPhi_branch->SetAddress(&photons_clusterPhi_);}
+	}
+	photons_clusterRawEnergy_branch = 0;
+	if (tree->GetAlias("photons_clusterRawEnergy") != 0) {
+		photons_clusterRawEnergy_branch = tree->GetBranch(tree->GetAlias("photons_clusterRawEnergy"));
+		if (photons_clusterRawEnergy_branch) {photons_clusterRawEnergy_branch->SetAddress(&photons_clusterRawEnergy_);}
+	}
+	photons_psClusterEta_branch = 0;
+	if (tree->GetAlias("photons_psClusterEta") != 0) {
+		photons_psClusterEta_branch = tree->GetBranch(tree->GetAlias("photons_psClusterEta"));
+		if (photons_psClusterEta_branch) {photons_psClusterEta_branch->SetAddress(&photons_psClusterEta_);}
+	}
+	photons_psClusterPhi_branch = 0;
+	if (tree->GetAlias("photons_psClusterPhi") != 0) {
+		photons_psClusterPhi_branch = tree->GetBranch(tree->GetAlias("photons_psClusterPhi"));
+		if (photons_psClusterPhi_branch) {photons_psClusterPhi_branch->SetAddress(&photons_psClusterPhi_);}
+	}
+	photons_psClusterRawEnergy_branch = 0;
+	if (tree->GetAlias("photons_psClusterRawEnergy") != 0) {
+		photons_psClusterRawEnergy_branch = tree->GetBranch(tree->GetAlias("photons_psClusterRawEnergy"));
+		if (photons_psClusterRawEnergy_branch) {photons_psClusterRawEnergy_branch->SetAddress(&photons_psClusterRawEnergy_);}
 	}
 	puInfo_instLumi_branch = 0;
 	if (tree->GetAlias("puInfo_instLumi") != 0) {
@@ -5835,45 +6748,40 @@ void Init(TTree *tree) {
 		sparm_subProcessId_branch = tree->GetBranch(tree->GetAlias("sparm_subProcessId"));
 		if (sparm_subProcessId_branch) {sparm_subProcessId_branch->SetAddress(&sparm_subProcessId_);}
 	}
-	pfjets_nonCHS_chargedHadronMultiplicity_branch = 0;
-	if (tree->GetAlias("pfjets_nonCHS_chargedHadronMultiplicity") != 0) {
-		pfjets_nonCHS_chargedHadronMultiplicity_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_chargedHadronMultiplicity"));
-		if (pfjets_nonCHS_chargedHadronMultiplicity_branch) {pfjets_nonCHS_chargedHadronMultiplicity_branch->SetAddress(&pfjets_nonCHS_chargedHadronMultiplicity_);}
+	pfjets_METToolbox_chargedHadronMultiplicity_branch = 0;
+	if (tree->GetAlias("pfjets_METToolbox_chargedHadronMultiplicity") != 0) {
+		pfjets_METToolbox_chargedHadronMultiplicity_branch = tree->GetBranch(tree->GetAlias("pfjets_METToolbox_chargedHadronMultiplicity"));
+		if (pfjets_METToolbox_chargedHadronMultiplicity_branch) {pfjets_METToolbox_chargedHadronMultiplicity_branch->SetAddress(&pfjets_METToolbox_chargedHadronMultiplicity_);}
 	}
-	pfjets_nonCHS_chargedMultiplicity_branch = 0;
-	if (tree->GetAlias("pfjets_nonCHS_chargedMultiplicity") != 0) {
-		pfjets_nonCHS_chargedMultiplicity_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_chargedMultiplicity"));
-		if (pfjets_nonCHS_chargedMultiplicity_branch) {pfjets_nonCHS_chargedMultiplicity_branch->SetAddress(&pfjets_nonCHS_chargedMultiplicity_);}
+	pfjets_METToolbox_chargedMultiplicity_branch = 0;
+	if (tree->GetAlias("pfjets_METToolbox_chargedMultiplicity") != 0) {
+		pfjets_METToolbox_chargedMultiplicity_branch = tree->GetBranch(tree->GetAlias("pfjets_METToolbox_chargedMultiplicity"));
+		if (pfjets_METToolbox_chargedMultiplicity_branch) {pfjets_METToolbox_chargedMultiplicity_branch->SetAddress(&pfjets_METToolbox_chargedMultiplicity_);}
 	}
-	pfjets_nonCHS_electronMultiplicity_branch = 0;
-	if (tree->GetAlias("pfjets_nonCHS_electronMultiplicity") != 0) {
-		pfjets_nonCHS_electronMultiplicity_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_electronMultiplicity"));
-		if (pfjets_nonCHS_electronMultiplicity_branch) {pfjets_nonCHS_electronMultiplicity_branch->SetAddress(&pfjets_nonCHS_electronMultiplicity_);}
+	pfjets_METToolbox_electronMultiplicity_branch = 0;
+	if (tree->GetAlias("pfjets_METToolbox_electronMultiplicity") != 0) {
+		pfjets_METToolbox_electronMultiplicity_branch = tree->GetBranch(tree->GetAlias("pfjets_METToolbox_electronMultiplicity"));
+		if (pfjets_METToolbox_electronMultiplicity_branch) {pfjets_METToolbox_electronMultiplicity_branch->SetAddress(&pfjets_METToolbox_electronMultiplicity_);}
 	}
-	pfjets_nonCHS_muonMultiplicity_branch = 0;
-	if (tree->GetAlias("pfjets_nonCHS_muonMultiplicity") != 0) {
-		pfjets_nonCHS_muonMultiplicity_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_muonMultiplicity"));
-		if (pfjets_nonCHS_muonMultiplicity_branch) {pfjets_nonCHS_muonMultiplicity_branch->SetAddress(&pfjets_nonCHS_muonMultiplicity_);}
+	pfjets_METToolbox_muonMultiplicity_branch = 0;
+	if (tree->GetAlias("pfjets_METToolbox_muonMultiplicity") != 0) {
+		pfjets_METToolbox_muonMultiplicity_branch = tree->GetBranch(tree->GetAlias("pfjets_METToolbox_muonMultiplicity"));
+		if (pfjets_METToolbox_muonMultiplicity_branch) {pfjets_METToolbox_muonMultiplicity_branch->SetAddress(&pfjets_METToolbox_muonMultiplicity_);}
 	}
-	pfjets_nonCHS_neutralHadronMultiplicity_branch = 0;
-	if (tree->GetAlias("pfjets_nonCHS_neutralHadronMultiplicity") != 0) {
-		pfjets_nonCHS_neutralHadronMultiplicity_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_neutralHadronMultiplicity"));
-		if (pfjets_nonCHS_neutralHadronMultiplicity_branch) {pfjets_nonCHS_neutralHadronMultiplicity_branch->SetAddress(&pfjets_nonCHS_neutralHadronMultiplicity_);}
+	pfjets_METToolbox_neutralHadronMultiplicity_branch = 0;
+	if (tree->GetAlias("pfjets_METToolbox_neutralHadronMultiplicity") != 0) {
+		pfjets_METToolbox_neutralHadronMultiplicity_branch = tree->GetBranch(tree->GetAlias("pfjets_METToolbox_neutralHadronMultiplicity"));
+		if (pfjets_METToolbox_neutralHadronMultiplicity_branch) {pfjets_METToolbox_neutralHadronMultiplicity_branch->SetAddress(&pfjets_METToolbox_neutralHadronMultiplicity_);}
 	}
-	pfjets_nonCHS_neutralMultiplicity_branch = 0;
-	if (tree->GetAlias("pfjets_nonCHS_neutralMultiplicity") != 0) {
-		pfjets_nonCHS_neutralMultiplicity_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_neutralMultiplicity"));
-		if (pfjets_nonCHS_neutralMultiplicity_branch) {pfjets_nonCHS_neutralMultiplicity_branch->SetAddress(&pfjets_nonCHS_neutralMultiplicity_);}
+	pfjets_METToolbox_neutralMultiplicity_branch = 0;
+	if (tree->GetAlias("pfjets_METToolbox_neutralMultiplicity") != 0) {
+		pfjets_METToolbox_neutralMultiplicity_branch = tree->GetBranch(tree->GetAlias("pfjets_METToolbox_neutralMultiplicity"));
+		if (pfjets_METToolbox_neutralMultiplicity_branch) {pfjets_METToolbox_neutralMultiplicity_branch->SetAddress(&pfjets_METToolbox_neutralMultiplicity_);}
 	}
-	pfjets_nonCHS_partonFlavour_branch = 0;
-	if (tree->GetAlias("pfjets_nonCHS_partonFlavour") != 0) {
-		pfjets_nonCHS_partonFlavour_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_partonFlavour"));
-		if (pfjets_nonCHS_partonFlavour_branch) {pfjets_nonCHS_partonFlavour_branch->SetAddress(&pfjets_nonCHS_partonFlavour_);}
-	}
-	pfjets_nonCHS_photonMultiplicity_branch = 0;
-	if (tree->GetAlias("pfjets_nonCHS_photonMultiplicity") != 0) {
-		pfjets_nonCHS_photonMultiplicity_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_photonMultiplicity"));
-		if (pfjets_nonCHS_photonMultiplicity_branch) {pfjets_nonCHS_photonMultiplicity_branch->SetAddress(&pfjets_nonCHS_photonMultiplicity_);}
+	pfjets_METToolbox_photonMultiplicity_branch = 0;
+	if (tree->GetAlias("pfjets_METToolbox_photonMultiplicity") != 0) {
+		pfjets_METToolbox_photonMultiplicity_branch = tree->GetBranch(tree->GetAlias("pfjets_METToolbox_photonMultiplicity"));
+		if (pfjets_METToolbox_photonMultiplicity_branch) {pfjets_METToolbox_photonMultiplicity_branch->SetAddress(&pfjets_METToolbox_photonMultiplicity_);}
 	}
 	ak8jets_mc_id_branch = 0;
 	if (tree->GetAlias("ak8jets_mc_id") != 0) {
@@ -6015,6 +6923,16 @@ void Init(TTree *tree) {
 		photons_mc_motherid_branch = tree->GetBranch(tree->GetAlias("photons_mc_motherid"));
 		if (photons_mc_motherid_branch) {photons_mc_motherid_branch->SetAddress(&photons_mc_motherid_);}
 	}
+	els_N_ECALClusters_branch = 0;
+	if (tree->GetAlias("els_N_ECALClusters") != 0) {
+		els_N_ECALClusters_branch = tree->GetBranch(tree->GetAlias("els_N_ECALClusters"));
+		if (els_N_ECALClusters_branch) {els_N_ECALClusters_branch->SetAddress(&els_N_ECALClusters_);}
+	}
+	els_N_PSClusters_branch = 0;
+	if (tree->GetAlias("els_N_PSClusters") != 0) {
+		els_N_PSClusters_branch = tree->GetBranch(tree->GetAlias("els_N_PSClusters"));
+		if (els_N_PSClusters_branch) {els_N_PSClusters_branch->SetAddress(&els_N_PSClusters_);}
+	}
 	els_category_branch = 0;
 	if (tree->GetAlias("els_category") != 0) {
 		els_category_branch = tree->GetBranch(tree->GetAlias("els_category"));
@@ -6054,6 +6972,21 @@ void Init(TTree *tree) {
 	if (tree->GetAlias("els_fiduciality") != 0) {
 		els_fiduciality_branch = tree->GetBranch(tree->GetAlias("els_fiduciality"));
 		if (els_fiduciality_branch) {els_fiduciality_branch->SetAddress(&els_fiduciality_);}
+	}
+	els_isEB_branch = 0;
+	if (tree->GetAlias("els_isEB") != 0) {
+		els_isEB_branch = tree->GetBranch(tree->GetAlias("els_isEB"));
+		if (els_isEB_branch) {els_isEB_branch->SetAddress(&els_isEB_);}
+	}
+	els_isEcalDriven_branch = 0;
+	if (tree->GetAlias("els_isEcalDriven") != 0) {
+		els_isEcalDriven_branch = tree->GetBranch(tree->GetAlias("els_isEcalDriven"));
+		if (els_isEcalDriven_branch) {els_isEcalDriven_branch->SetAddress(&els_isEcalDriven_);}
+	}
+	els_isTrackerDriven_branch = 0;
+	if (tree->GetAlias("els_isTrackerDriven") != 0) {
+		els_isTrackerDriven_branch = tree->GetBranch(tree->GetAlias("els_isTrackerDriven"));
+		if (els_isTrackerDriven_branch) {els_isTrackerDriven_branch->SetAddress(&els_isTrackerDriven_);}
 	}
 	els_lostHits_branch = 0;
 	if (tree->GetAlias("els_lostHits") != 0) {
@@ -6655,10 +7588,25 @@ void Init(TTree *tree) {
 		taus_pf_charge_branch = tree->GetBranch(tree->GetAlias("taus_pf_charge"));
 		if (taus_pf_charge_branch) {taus_pf_charge_branch->SetAddress(&taus_pf_charge_);}
 	}
+	photons_N_ECALClusters_branch = 0;
+	if (tree->GetAlias("photons_N_ECALClusters") != 0) {
+		photons_N_ECALClusters_branch = tree->GetBranch(tree->GetAlias("photons_N_ECALClusters"));
+		if (photons_N_ECALClusters_branch) {photons_N_ECALClusters_branch->SetAddress(&photons_N_ECALClusters_);}
+	}
+	photons_N_PSClusters_branch = 0;
+	if (tree->GetAlias("photons_N_PSClusters") != 0) {
+		photons_N_PSClusters_branch = tree->GetBranch(tree->GetAlias("photons_N_PSClusters"));
+		if (photons_N_PSClusters_branch) {photons_N_PSClusters_branch->SetAddress(&photons_N_PSClusters_);}
+	}
 	photons_fiduciality_branch = 0;
 	if (tree->GetAlias("photons_fiduciality") != 0) {
 		photons_fiduciality_branch = tree->GetBranch(tree->GetAlias("photons_fiduciality"));
 		if (photons_fiduciality_branch) {photons_fiduciality_branch->SetAddress(&photons_fiduciality_);}
+	}
+	photons_isEB_branch = 0;
+	if (tree->GetAlias("photons_isEB") != 0) {
+		photons_isEB_branch = tree->GetBranch(tree->GetAlias("photons_isEB"));
+		if (photons_isEB_branch) {photons_isEB_branch->SetAddress(&photons_isEB_);}
 	}
 	photons_photonID_loose_branch = 0;
 	if (tree->GetAlias("photons_photonID_loose") != 0) {
@@ -6720,10 +7668,20 @@ void Init(TTree *tree) {
 		vtxs_isValid_branch = tree->GetBranch(tree->GetAlias("vtxs_isValid"));
 		if (vtxs_isValid_branch) {vtxs_isValid_branch->SetAddress(&vtxs_isValid_);}
 	}
-	pfjets_nonCHS_pfcandIndicies_branch = 0;
-	if (tree->GetAlias("pfjets_nonCHS_pfcandIndicies") != 0) {
-		pfjets_nonCHS_pfcandIndicies_branch = tree->GetBranch(tree->GetAlias("pfjets_nonCHS_pfcandIndicies"));
-		if (pfjets_nonCHS_pfcandIndicies_branch) {pfjets_nonCHS_pfcandIndicies_branch->SetAddress(&pfjets_nonCHS_pfcandIndicies_);}
+	pfjets_METToolbox_pfcandIndicies_branch = 0;
+	if (tree->GetAlias("pfjets_METToolbox_pfcandIndicies") != 0) {
+		pfjets_METToolbox_pfcandIndicies_branch = tree->GetBranch(tree->GetAlias("pfjets_METToolbox_pfcandIndicies"));
+		if (pfjets_METToolbox_pfcandIndicies_branch) {pfjets_METToolbox_pfcandIndicies_branch->SetAddress(&pfjets_METToolbox_pfcandIndicies_);}
+	}
+	els_clusterInDynDPhi_branch = 0;
+	if (tree->GetAlias("els_clusterInDynDPhi") != 0) {
+		els_clusterInDynDPhi_branch = tree->GetBranch(tree->GetAlias("els_clusterInDynDPhi"));
+		if (els_clusterInDynDPhi_branch) {els_clusterInDynDPhi_branch->SetAddress(&els_clusterInDynDPhi_);}
+	}
+	els_clusterInMustache_branch = 0;
+	if (tree->GetAlias("els_clusterInMustache") != 0) {
+		els_clusterInMustache_branch = tree->GetBranch(tree->GetAlias("els_clusterInMustache"));
+		if (els_clusterInMustache_branch) {els_clusterInMustache_branch->SetAddress(&els_clusterInMustache_);}
 	}
 	els_PFCand_idx_branch = 0;
 	if (tree->GetAlias("els_PFCand_idx") != 0) {
@@ -6764,6 +7722,16 @@ void Init(TTree *tree) {
 	if (tree->GetAlias("pfjets_puppi_pfcandIndicies") != 0) {
 		pfjets_puppi_pfcandIndicies_branch = tree->GetBranch(tree->GetAlias("pfjets_puppi_pfcandIndicies"));
 		if (pfjets_puppi_pfcandIndicies_branch) {pfjets_puppi_pfcandIndicies_branch->SetAddress(&pfjets_puppi_pfcandIndicies_);}
+	}
+	photons_clusterInDynDPhi_branch = 0;
+	if (tree->GetAlias("photons_clusterInDynDPhi") != 0) {
+		photons_clusterInDynDPhi_branch = tree->GetBranch(tree->GetAlias("photons_clusterInDynDPhi"));
+		if (photons_clusterInDynDPhi_branch) {photons_clusterInDynDPhi_branch->SetAddress(&photons_clusterInDynDPhi_);}
+	}
+	photons_clusterInMustache_branch = 0;
+	if (tree->GetAlias("photons_clusterInMustache") != 0) {
+		photons_clusterInMustache_branch = tree->GetBranch(tree->GetAlias("photons_clusterInMustache"));
+		if (photons_clusterInMustache_branch) {photons_clusterInMustache_branch->SetAddress(&photons_clusterInMustache_);}
 	}
 	photons_PFCand_idx_branch = 0;
 	if (tree->GetAlias("photons_PFCand_idx") != 0) {
@@ -7024,11 +7992,6 @@ void Init(TTree *tree) {
 	if (tree->GetAlias("genps_signalProcessID") != 0) {
 		genps_signalProcessID_branch = tree->GetBranch(tree->GetAlias("genps_signalProcessID"));
 		if (genps_signalProcessID_branch) {genps_signalProcessID_branch->SetAddress(&genps_signalProcessID_);}
-	}
-	evt_ngenjets_branch = 0;
-	if (tree->GetAlias("evt_ngenjets") != 0) {
-		evt_ngenjets_branch = tree->GetBranch(tree->GetAlias("evt_ngenjets"));
-		if (evt_ngenjets_branch) {evt_ngenjets_branch->SetAddress(&evt_ngenjets_);}
 	}
 	mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg_version_branch = 0;
 	if (tree->GetAlias("mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg_version") != 0) {
@@ -7365,6 +8328,11 @@ void Init(TTree *tree) {
 		els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg_branch = tree->GetBranch(tree->GetAlias("els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg"));
 		if (els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg_branch) {els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg_branch->SetAddress(&els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg_);}
 	}
+	hlt_l1prescales_branch = 0;
+	if (tree->GetAlias("hlt_l1prescales") != 0) {
+		hlt_l1prescales_branch = tree->GetBranch(tree->GetAlias("hlt_l1prescales"));
+		if (hlt_l1prescales_branch) {hlt_l1prescales_branch->SetAddress(&hlt_l1prescales_);}
+	}
 	hlt_prescales_branch = 0;
 	if (tree->GetAlias("hlt_prescales") != 0) {
 		hlt_prescales_branch = tree->GetBranch(tree->GetAlias("hlt_prescales"));
@@ -7533,7 +8501,6 @@ void GetEntry(unsigned int idx)
 		index = idx;
 		genweightsID_isLoaded = false;
 		hlt_bits_isLoaded = false;
-		pfjets_nonCHS_bDiscriminatorNames_isLoaded = false;
 		evt_CMS3tag_isLoaded = false;
 		evt_dataset_isLoaded = false;
 		hlt_trigNames_isLoaded = false;
@@ -7542,6 +8509,7 @@ void GetEntry(unsigned int idx)
 		taus_pf_IDnames_isLoaded = false;
 		sparm_comment_isLoaded = false;
 		sparm_names_isLoaded = false;
+		hlt_trigObjs_filters_isLoaded = false;
 		hcalnoise_HasBadRBXTS4TS5_isLoaded = false;
 		evt_cscTightHaloId_isLoaded = false;
 		evt_hbheFilter_isLoaded = false;
@@ -7576,7 +8544,14 @@ void GetEntry(unsigned int idx)
 		mus_isRPCMuon_isLoaded = false;
 		mus_tightMatch_isLoaded = false;
 		mus_updatedSta_isLoaded = false;
+		pfcands_isGlobalMuon_isLoaded = false;
+		pfcands_isStandAloneMuon_isLoaded = false;
 		photons_haspixelSeed_isLoaded = false;
+		hlt_trigObjs_passLast_isLoaded = false;
+		evt_METToolbox_pfmet_isLoaded = false;
+		evt_METToolbox_pfmetPhi_isLoaded = false;
+		evt_METToolbox_pfmetPhi_raw_isLoaded = false;
+		evt_METToolbox_pfmet_raw_isLoaded = false;
 		evt_bs_Xwidth_isLoaded = false;
 		evt_bs_XwidthErr_isLoaded = false;
 		evt_bs_Ywidth_isLoaded = false;
@@ -7643,9 +8618,9 @@ void GetEntry(unsigned int idx)
 		pdfinfo_scale_isLoaded = false;
 		pdfinfo_x1_isLoaded = false;
 		pdfinfo_x2_isLoaded = false;
-		evt_fixgrid_rho_all_isLoaded = false;
-		evt_fixgrid_rho_ctr_isLoaded = false;
-		evt_fixgrid_rho_fwd_isLoaded = false;
+		pfcandsevt_fixgrid_rho_all_isLoaded = false;
+		pfcandsevt_fixgrid_rho_ctr_isLoaded = false;
+		pfcandsevt_fixgrid_rho_fwd_isLoaded = false;
 		evt_calomet_isLoaded = false;
 		evt_calometPhi_isLoaded = false;
 		evt_pfmet_isLoaded = false;
@@ -7664,7 +8639,7 @@ void GetEntry(unsigned int idx)
 		sparm_weight_isLoaded = false;
 		sparm_xsec_isLoaded = false;
 		evt_bsp4_isLoaded = false;
-		pfjets_nonCHS_p4_isLoaded = false;
+		pfjets_METToolbox_p4_isLoaded = false;
 		ak8jets_mc_gp_p4_isLoaded = false;
 		ak8jets_mc_p4_isLoaded = false;
 		els_mc_motherp4_isLoaded = false;
@@ -7686,7 +8661,6 @@ void GetEntry(unsigned int idx)
 		genjets_p4NoMuNoNu_isLoaded = false;
 		genps_p4_isLoaded = false;
 		genps_prod_vtx_isLoaded = false;
-		genjets_p4_isLoaded = false;
 		hyp_ll_p4_isLoaded = false;
 		hyp_lt_p4_isLoaded = false;
 		hyp_p4_isLoaded = false;
@@ -7715,20 +8689,17 @@ void GetEntry(unsigned int idx)
 		hlt_trigObjs_p4_isLoaded = false;
 		taus_pf_isocands_p4_isLoaded = false;
 		taus_pf_signalcands_p4_isLoaded = false;
-		pfjets_nonCHS_area_isLoaded = false;
-		pfjets_nonCHS_chargedEmE_isLoaded = false;
-		pfjets_nonCHS_chargedHadronE_isLoaded = false;
-		pfjets_nonCHS_electronE_isLoaded = false;
-		pfjets_nonCHS_hfEmE_isLoaded = false;
-		pfjets_nonCHS_hfHadronE_isLoaded = false;
-		pfjets_nonCHS_mass_isLoaded = false;
-		pfjets_nonCHS_muonE_isLoaded = false;
-		pfjets_nonCHS_neutralEmE_isLoaded = false;
-		pfjets_nonCHS_neutralHadronE_isLoaded = false;
-		pfjets_nonCHS_pfCombinedInclusiveSecondaryVertexV2BJetTag_isLoaded = false;
-		pfjets_nonCHS_photonE_isLoaded = false;
-		pfjets_nonCHS_pileupJetId_isLoaded = false;
-		pfjets_nonCHS_undoJEC_isLoaded = false;
+		pfjets_METToolbox_area_isLoaded = false;
+		pfjets_METToolbox_chargedEmE_isLoaded = false;
+		pfjets_METToolbox_chargedHadronE_isLoaded = false;
+		pfjets_METToolbox_electronE_isLoaded = false;
+		pfjets_METToolbox_hfEmE_isLoaded = false;
+		pfjets_METToolbox_hfHadronE_isLoaded = false;
+		pfjets_METToolbox_mass_isLoaded = false;
+		pfjets_METToolbox_muonE_isLoaded = false;
+		pfjets_METToolbox_neutralEmE_isLoaded = false;
+		pfjets_METToolbox_neutralHadronE_isLoaded = false;
+		pfjets_METToolbox_photonE_isLoaded = false;
 		evt_bs_covMatrix_isLoaded = false;
 		els_mc3dr_isLoaded = false;
 		els_mcdr_isLoaded = false;
@@ -7750,6 +8721,15 @@ void GetEntry(unsigned int idx)
 		els_chi2_isLoaded = false;
 		els_ckf_chi2_isLoaded = false;
 		els_ckf_ndof_isLoaded = false;
+		els_clusterMaxDR_isLoaded = false;
+		els_clusterMaxDRDEta_isLoaded = false;
+		els_clusterMaxDRDPhi_isLoaded = false;
+		els_clusterMaxDRRawEnergy_isLoaded = false;
+		els_clustersMeanDEtaToSeed_isLoaded = false;
+		els_clustersMeanDPhiToSeed_isLoaded = false;
+		els_clustersMeanDRToSeed_isLoaded = false;
+		els_clustersMeanRawEnergy_isLoaded = false;
+		els_clustersRMSRawEnergy_isLoaded = false;
 		els_d0_isLoaded = false;
 		els_d0Err_isLoaded = false;
 		els_d0corr_isLoaded = false;
@@ -7822,6 +8802,37 @@ void GetEntry(unsigned int idx)
 		els_ptErrGsf_isLoaded = false;
 		els_r9_isLoaded = false;
 		els_r9_full5x5_isLoaded = false;
+		els_scIsEB_isLoaded = false;
+		els_scPreshowerEnergyPlane1_isLoaded = false;
+		els_scPreshowerEnergyPlane2_isLoaded = false;
+		els_scR_isLoaded = false;
+		els_scSeed2x5LeftRightAsym_isLoaded = false;
+		els_scSeed2x5TopBottomAsym_isLoaded = false;
+		els_scSeedCryEta_isLoaded = false;
+		els_scSeedCryIeta_isLoaded = false;
+		els_scSeedCryIphi_isLoaded = false;
+		els_scSeedCryIx_isLoaded = false;
+		els_scSeedCryIy_isLoaded = false;
+		els_scSeedCryPhi_isLoaded = false;
+		els_scSeedCryX_isLoaded = false;
+		els_scSeedCryY_isLoaded = false;
+		els_scSeedE2nd_isLoaded = false;
+		els_scSeedE2x5Bottom_isLoaded = false;
+		els_scSeedE2x5Left_isLoaded = false;
+		els_scSeedE2x5Right_isLoaded = false;
+		els_scSeedE2x5Top_isLoaded = false;
+		els_scSeedE3x3_isLoaded = false;
+		els_scSeedEBottom_isLoaded = false;
+		els_scSeedELeft_isLoaded = false;
+		els_scSeedERight_isLoaded = false;
+		els_scSeedETop_isLoaded = false;
+		els_scSeedEmax_isLoaded = false;
+		els_scSeedEta_isLoaded = false;
+		els_scSeedLeftRightAsym_isLoaded = false;
+		els_scSeedPhi_isLoaded = false;
+		els_scSeedSigmaIetaIphi_isLoaded = false;
+		els_scSeedSize_isLoaded = false;
+		els_scSeedTopBottomAsym_isLoaded = false;
 		els_sigmaEtaEta_isLoaded = false;
 		els_sigmaEtaEta_full5x5_isLoaded = false;
 		els_sigmaIEtaIEta_isLoaded = false;
@@ -7983,6 +8994,7 @@ void GetEntry(unsigned int idx)
 		mus_z0corr_isLoaded = false;
 		pfcands_dz_isLoaded = false;
 		pfcands_mass_isLoaded = false;
+		pfcands_phiAtVtx_isLoaded = false;
 		pfjets_area_isLoaded = false;
 		pfjets_chargedEmE_isLoaded = false;
 		pfjets_chargedHadronE_isLoaded = false;
@@ -8013,6 +9025,15 @@ void GetEntry(unsigned int idx)
 		pfjets_puppi_undoJEC_isLoaded = false;
 		taus_pf_mass_isLoaded = false;
 		photons_chargedHadronIso_isLoaded = false;
+		photons_clusterMaxDR_isLoaded = false;
+		photons_clusterMaxDRDEta_isLoaded = false;
+		photons_clusterMaxDRDPhi_isLoaded = false;
+		photons_clusterMaxDRRawEnergy_isLoaded = false;
+		photons_clustersMeanDEtaToSeed_isLoaded = false;
+		photons_clustersMeanDPhiToSeed_isLoaded = false;
+		photons_clustersMeanDRToSeed_isLoaded = false;
+		photons_clustersMeanRawEnergy_isLoaded = false;
+		photons_clustersRMSRawEnergy_isLoaded = false;
 		photons_e1x5_isLoaded = false;
 		photons_e2x5Max_isLoaded = false;
 		photons_e3x3_isLoaded = false;
@@ -8055,6 +9076,42 @@ void GetEntry(unsigned int idx)
 		photons_recoChargedHadronIso_isLoaded = false;
 		photons_recoNeutralHadronIso_isLoaded = false;
 		photons_recoPhotonIso_isLoaded = false;
+		photonsscEtaWidth_isLoaded = false;
+		photons_scIsEB_isLoaded = false;
+		photonsscPhiWidth_isLoaded = false;
+		photons_scPreshowerEnergyPlane1_isLoaded = false;
+		photons_scPreshowerEnergyPlane2_isLoaded = false;
+		photons_scR_isLoaded = false;
+		photons_scSeed2x5LeftRightAsym_isLoaded = false;
+		photons_scSeed2x5TopBottomAsym_isLoaded = false;
+		photonsscSeedCalibratedEnergy_isLoaded = false;
+		photons_scSeedCryEta_isLoaded = false;
+		photons_scSeedCryIeta_isLoaded = false;
+		photons_scSeedCryIphi_isLoaded = false;
+		photons_scSeedCryIx_isLoaded = false;
+		photons_scSeedCryIy_isLoaded = false;
+		photons_scSeedCryPhi_isLoaded = false;
+		photons_scSeedCryX_isLoaded = false;
+		photons_scSeedCryY_isLoaded = false;
+		photons_scSeedE2nd_isLoaded = false;
+		photons_scSeedE2x5Bottom_isLoaded = false;
+		photons_scSeedE2x5Left_isLoaded = false;
+		photons_scSeedE2x5Right_isLoaded = false;
+		photons_scSeedE2x5Top_isLoaded = false;
+		photons_scSeedE3x3_isLoaded = false;
+		photons_scSeedEBottom_isLoaded = false;
+		photons_scSeedELeft_isLoaded = false;
+		photons_scSeedERight_isLoaded = false;
+		photons_scSeedETop_isLoaded = false;
+		photons_scSeedEmax_isLoaded = false;
+		photons_scSeedEta_isLoaded = false;
+		photons_scSeedLeftRightAsym_isLoaded = false;
+		photons_scSeedPhi_isLoaded = false;
+		photonsscSeedRawEnergy_isLoaded = false;
+		photons_scSeedSigmaIetaIphi_isLoaded = false;
+		photonsscSeedSigmaIphiIphi_isLoaded = false;
+		photons_scSeedSize_isLoaded = false;
+		photons_scSeedTopBottomAsym_isLoaded = false;
 		photons_sigmaEtaEta_isLoaded = false;
 		photons_sigmaIEtaIEta_isLoaded = false;
 		photons_tkIsoHollow03_isLoaded = false;
@@ -8095,12 +9152,33 @@ void GetEntry(unsigned int idx)
 		vtxs_xError_isLoaded = false;
 		vtxs_yError_isLoaded = false;
 		vtxs_zError_isLoaded = false;
-		pfjets_nonCHS_bDiscriminators_isLoaded = false;
+		els_clusterCalibEnergy_isLoaded = false;
+		els_clusterDEtaToCentroid_isLoaded = false;
+		els_clusterDEtaToSeed_isLoaded = false;
+		els_clusterDPhiToCentroid_isLoaded = false;
+		els_clusterDPhiToSeed_isLoaded = false;
+		els_clusterEta_isLoaded = false;
+		els_clusterPhi_isLoaded = false;
+		els_clusterRawEnergy_isLoaded = false;
+		els_psClusterEta_isLoaded = false;
+		els_psClusterPhi_isLoaded = false;
+		els_psClusterRawEnergy_isLoaded = false;
 		mus_stationShowerDeltaR_isLoaded = false;
 		mus_stationShowerSizeT_isLoaded = false;
 		pfjets_bDiscriminators_isLoaded = false;
 		pfjets_puppi_bDiscriminators_isLoaded = false;
 		taus_pf_IDs_isLoaded = false;
+		photons_clusterCalibEnergy_isLoaded = false;
+		photons_clusterDEtaToCentroid_isLoaded = false;
+		photons_clusterDEtaToSeed_isLoaded = false;
+		photons_clusterDPhiToCentroid_isLoaded = false;
+		photons_clusterDPhiToSeed_isLoaded = false;
+		photons_clusterEta_isLoaded = false;
+		photons_clusterPhi_isLoaded = false;
+		photons_clusterRawEnergy_isLoaded = false;
+		photons_psClusterEta_isLoaded = false;
+		photons_psClusterPhi_isLoaded = false;
+		photons_psClusterRawEnergy_isLoaded = false;
 		puInfo_instLumi_isLoaded = false;
 		vtxs_covMatrix_isLoaded = false;
 		evt_bsType_isLoaded = false;
@@ -8131,14 +9209,13 @@ void GetEntry(unsigned int idx)
 		pdfinfo_id1_isLoaded = false;
 		pdfinfo_id2_isLoaded = false;
 		sparm_subProcessId_isLoaded = false;
-		pfjets_nonCHS_chargedHadronMultiplicity_isLoaded = false;
-		pfjets_nonCHS_chargedMultiplicity_isLoaded = false;
-		pfjets_nonCHS_electronMultiplicity_isLoaded = false;
-		pfjets_nonCHS_muonMultiplicity_isLoaded = false;
-		pfjets_nonCHS_neutralHadronMultiplicity_isLoaded = false;
-		pfjets_nonCHS_neutralMultiplicity_isLoaded = false;
-		pfjets_nonCHS_partonFlavour_isLoaded = false;
-		pfjets_nonCHS_photonMultiplicity_isLoaded = false;
+		pfjets_METToolbox_chargedHadronMultiplicity_isLoaded = false;
+		pfjets_METToolbox_chargedMultiplicity_isLoaded = false;
+		pfjets_METToolbox_electronMultiplicity_isLoaded = false;
+		pfjets_METToolbox_muonMultiplicity_isLoaded = false;
+		pfjets_METToolbox_neutralHadronMultiplicity_isLoaded = false;
+		pfjets_METToolbox_neutralMultiplicity_isLoaded = false;
+		pfjets_METToolbox_photonMultiplicity_isLoaded = false;
 		ak8jets_mc_id_isLoaded = false;
 		els_mc3_id_isLoaded = false;
 		els_mc3idx_isLoaded = false;
@@ -8167,6 +9244,8 @@ void GetEntry(unsigned int idx)
 		photons_mc_id_isLoaded = false;
 		photons_mcidx_isLoaded = false;
 		photons_mc_motherid_isLoaded = false;
+		els_N_ECALClusters_isLoaded = false;
+		els_N_PSClusters_isLoaded = false;
 		els_category_isLoaded = false;
 		els_charge_isLoaded = false;
 		els_ckf_charge_isLoaded = false;
@@ -8175,6 +9254,9 @@ void GetEntry(unsigned int idx)
 		els_exp_innerlayers_isLoaded = false;
 		els_exp_outerlayers_isLoaded = false;
 		els_fiduciality_isLoaded = false;
+		els_isEB_isLoaded = false;
+		els_isEcalDriven_isLoaded = false;
+		els_isTrackerDriven_isLoaded = false;
 		els_lostHits_isLoaded = false;
 		els_lost_pixelhits_isLoaded = false;
 		els_mc_patMatch_id_isLoaded = false;
@@ -8295,7 +9377,10 @@ void GetEntry(unsigned int idx)
 		pfjets_puppi_partonFlavour_isLoaded = false;
 		pfjets_puppi_photonMultiplicity_isLoaded = false;
 		taus_pf_charge_isLoaded = false;
+		photons_N_ECALClusters_isLoaded = false;
+		photons_N_PSClusters_isLoaded = false;
 		photons_fiduciality_isLoaded = false;
+		photons_isEB_isLoaded = false;
 		photons_photonID_loose_isLoaded = false;
 		photons_photonID_tight_isLoaded = false;
 		puInfo_bunchCrossing_isLoaded = false;
@@ -8308,7 +9393,9 @@ void GetEntry(unsigned int idx)
 		ak8jets_partonFlavour_isLoaded = false;
 		vtxs_isFake_isLoaded = false;
 		vtxs_isValid_isLoaded = false;
-		pfjets_nonCHS_pfcandIndicies_isLoaded = false;
+		pfjets_METToolbox_pfcandIndicies_isLoaded = false;
+		els_clusterInDynDPhi_isLoaded = false;
+		els_clusterInMustache_isLoaded = false;
 		els_PFCand_idx_isLoaded = false;
 		genps_lepdaughter_id_isLoaded = false;
 		genps_lepdaughter_idx_isLoaded = false;
@@ -8317,6 +9404,8 @@ void GetEntry(unsigned int idx)
 		mus_nStationHits_isLoaded = false;
 		pfjets_pfcandIndicies_isLoaded = false;
 		pfjets_puppi_pfcandIndicies_isLoaded = false;
+		photons_clusterInDynDPhi_isLoaded = false;
+		photons_clusterInMustache_isLoaded = false;
 		photons_PFCand_idx_isLoaded = false;
 		convs_nHitsBeforeVtx_isLoaded = false;
 		convs_tkalgo_isLoaded = false;
@@ -8369,7 +9458,6 @@ void GetEntry(unsigned int idx)
 		evt_run_isLoaded = false;
 		evt_ngenjetsNoMuNoNu_isLoaded = false;
 		genps_signalProcessID_isLoaded = false;
-		evt_ngenjets_isLoaded = false;
 		mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg_version_isLoaded = false;
 		mus_HLT_IsoMu24_eta2p1_L1sMu16Eta2p1_version_isLoaded = false;
 		mus_HLT_IsoMu24_eta2p1_version_isLoaded = false;
@@ -8437,6 +9525,7 @@ void GetEntry(unsigned int idx)
 		els_HLT_Mu8_Ele17_isLoaded = false;
 		els_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg_isLoaded = false;
 		els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg_isLoaded = false;
+		hlt_l1prescales_isLoaded = false;
 		hlt_prescales_isLoaded = false;
 		mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg_isLoaded = false;
 		mus_HLT_IsoMu24_eta2p1_isLoaded = false;
@@ -8476,7 +9565,6 @@ void LoadAllBranches()
 {
 	if (genweightsID_branch != 0) genweightsID();
 	if (hlt_bits_branch != 0) hlt_bits();
-	if (pfjets_nonCHS_bDiscriminatorNames_branch != 0) pfjets_nonCHS_bDiscriminatorNames();
 	if (evt_CMS3tag_branch != 0) evt_CMS3tag();
 	if (evt_dataset_branch != 0) evt_dataset();
 	if (hlt_trigNames_branch != 0) hlt_trigNames();
@@ -8485,6 +9573,7 @@ void LoadAllBranches()
 	if (taus_pf_IDnames_branch != 0) taus_pf_IDnames();
 	if (sparm_comment_branch != 0) sparm_comment();
 	if (sparm_names_branch != 0) sparm_names();
+	if (hlt_trigObjs_filters_branch != 0) hlt_trigObjs_filters();
 	if (hcalnoise_HasBadRBXTS4TS5_branch != 0) hcalnoise_HasBadRBXTS4TS5();
 	if (evt_cscTightHaloId_branch != 0) evt_cscTightHaloId();
 	if (evt_hbheFilter_branch != 0) evt_hbheFilter();
@@ -8519,7 +9608,14 @@ void LoadAllBranches()
 	if (mus_isRPCMuon_branch != 0) mus_isRPCMuon();
 	if (mus_tightMatch_branch != 0) mus_tightMatch();
 	if (mus_updatedSta_branch != 0) mus_updatedSta();
+	if (pfcands_isGlobalMuon_branch != 0) pfcands_isGlobalMuon();
+	if (pfcands_isStandAloneMuon_branch != 0) pfcands_isStandAloneMuon();
 	if (photons_haspixelSeed_branch != 0) photons_haspixelSeed();
+	if (hlt_trigObjs_passLast_branch != 0) hlt_trigObjs_passLast();
+	if (evt_METToolbox_pfmet_branch != 0) evt_METToolbox_pfmet();
+	if (evt_METToolbox_pfmetPhi_branch != 0) evt_METToolbox_pfmetPhi();
+	if (evt_METToolbox_pfmetPhi_raw_branch != 0) evt_METToolbox_pfmetPhi_raw();
+	if (evt_METToolbox_pfmet_raw_branch != 0) evt_METToolbox_pfmet_raw();
 	if (evt_bs_Xwidth_branch != 0) evt_bs_Xwidth();
 	if (evt_bs_XwidthErr_branch != 0) evt_bs_XwidthErr();
 	if (evt_bs_Ywidth_branch != 0) evt_bs_Ywidth();
@@ -8586,9 +9682,9 @@ void LoadAllBranches()
 	if (pdfinfo_scale_branch != 0) pdfinfo_scale();
 	if (pdfinfo_x1_branch != 0) pdfinfo_x1();
 	if (pdfinfo_x2_branch != 0) pdfinfo_x2();
-	if (evt_fixgrid_rho_all_branch != 0) evt_fixgrid_rho_all();
-	if (evt_fixgrid_rho_ctr_branch != 0) evt_fixgrid_rho_ctr();
-	if (evt_fixgrid_rho_fwd_branch != 0) evt_fixgrid_rho_fwd();
+	if (pfcandsevt_fixgrid_rho_all_branch != 0) pfcandsevt_fixgrid_rho_all();
+	if (pfcandsevt_fixgrid_rho_ctr_branch != 0) pfcandsevt_fixgrid_rho_ctr();
+	if (pfcandsevt_fixgrid_rho_fwd_branch != 0) pfcandsevt_fixgrid_rho_fwd();
 	if (evt_calomet_branch != 0) evt_calomet();
 	if (evt_calometPhi_branch != 0) evt_calometPhi();
 	if (evt_pfmet_branch != 0) evt_pfmet();
@@ -8607,7 +9703,7 @@ void LoadAllBranches()
 	if (sparm_weight_branch != 0) sparm_weight();
 	if (sparm_xsec_branch != 0) sparm_xsec();
 	if (evt_bsp4_branch != 0) evt_bsp4();
-	if (pfjets_nonCHS_p4_branch != 0) pfjets_nonCHS_p4();
+	if (pfjets_METToolbox_p4_branch != 0) pfjets_METToolbox_p4();
 	if (ak8jets_mc_gp_p4_branch != 0) ak8jets_mc_gp_p4();
 	if (ak8jets_mc_p4_branch != 0) ak8jets_mc_p4();
 	if (els_mc_motherp4_branch != 0) els_mc_motherp4();
@@ -8629,7 +9725,6 @@ void LoadAllBranches()
 	if (genjets_p4NoMuNoNu_branch != 0) genjets_p4NoMuNoNu();
 	if (genps_p4_branch != 0) genps_p4();
 	if (genps_prod_vtx_branch != 0) genps_prod_vtx();
-	if (genjets_p4_branch != 0) genjets_p4();
 	if (hyp_ll_p4_branch != 0) hyp_ll_p4();
 	if (hyp_lt_p4_branch != 0) hyp_lt_p4();
 	if (hyp_p4_branch != 0) hyp_p4();
@@ -8658,20 +9753,17 @@ void LoadAllBranches()
 	if (hlt_trigObjs_p4_branch != 0) hlt_trigObjs_p4();
 	if (taus_pf_isocands_p4_branch != 0) taus_pf_isocands_p4();
 	if (taus_pf_signalcands_p4_branch != 0) taus_pf_signalcands_p4();
-	if (pfjets_nonCHS_area_branch != 0) pfjets_nonCHS_area();
-	if (pfjets_nonCHS_chargedEmE_branch != 0) pfjets_nonCHS_chargedEmE();
-	if (pfjets_nonCHS_chargedHadronE_branch != 0) pfjets_nonCHS_chargedHadronE();
-	if (pfjets_nonCHS_electronE_branch != 0) pfjets_nonCHS_electronE();
-	if (pfjets_nonCHS_hfEmE_branch != 0) pfjets_nonCHS_hfEmE();
-	if (pfjets_nonCHS_hfHadronE_branch != 0) pfjets_nonCHS_hfHadronE();
-	if (pfjets_nonCHS_mass_branch != 0) pfjets_nonCHS_mass();
-	if (pfjets_nonCHS_muonE_branch != 0) pfjets_nonCHS_muonE();
-	if (pfjets_nonCHS_neutralEmE_branch != 0) pfjets_nonCHS_neutralEmE();
-	if (pfjets_nonCHS_neutralHadronE_branch != 0) pfjets_nonCHS_neutralHadronE();
-	if (pfjets_nonCHS_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch != 0) pfjets_nonCHS_pfCombinedInclusiveSecondaryVertexV2BJetTag();
-	if (pfjets_nonCHS_photonE_branch != 0) pfjets_nonCHS_photonE();
-	if (pfjets_nonCHS_pileupJetId_branch != 0) pfjets_nonCHS_pileupJetId();
-	if (pfjets_nonCHS_undoJEC_branch != 0) pfjets_nonCHS_undoJEC();
+	if (pfjets_METToolbox_area_branch != 0) pfjets_METToolbox_area();
+	if (pfjets_METToolbox_chargedEmE_branch != 0) pfjets_METToolbox_chargedEmE();
+	if (pfjets_METToolbox_chargedHadronE_branch != 0) pfjets_METToolbox_chargedHadronE();
+	if (pfjets_METToolbox_electronE_branch != 0) pfjets_METToolbox_electronE();
+	if (pfjets_METToolbox_hfEmE_branch != 0) pfjets_METToolbox_hfEmE();
+	if (pfjets_METToolbox_hfHadronE_branch != 0) pfjets_METToolbox_hfHadronE();
+	if (pfjets_METToolbox_mass_branch != 0) pfjets_METToolbox_mass();
+	if (pfjets_METToolbox_muonE_branch != 0) pfjets_METToolbox_muonE();
+	if (pfjets_METToolbox_neutralEmE_branch != 0) pfjets_METToolbox_neutralEmE();
+	if (pfjets_METToolbox_neutralHadronE_branch != 0) pfjets_METToolbox_neutralHadronE();
+	if (pfjets_METToolbox_photonE_branch != 0) pfjets_METToolbox_photonE();
 	if (evt_bs_covMatrix_branch != 0) evt_bs_covMatrix();
 	if (els_mc3dr_branch != 0) els_mc3dr();
 	if (els_mcdr_branch != 0) els_mcdr();
@@ -8693,6 +9785,15 @@ void LoadAllBranches()
 	if (els_chi2_branch != 0) els_chi2();
 	if (els_ckf_chi2_branch != 0) els_ckf_chi2();
 	if (els_ckf_ndof_branch != 0) els_ckf_ndof();
+	if (els_clusterMaxDR_branch != 0) els_clusterMaxDR();
+	if (els_clusterMaxDRDEta_branch != 0) els_clusterMaxDRDEta();
+	if (els_clusterMaxDRDPhi_branch != 0) els_clusterMaxDRDPhi();
+	if (els_clusterMaxDRRawEnergy_branch != 0) els_clusterMaxDRRawEnergy();
+	if (els_clustersMeanDEtaToSeed_branch != 0) els_clustersMeanDEtaToSeed();
+	if (els_clustersMeanDPhiToSeed_branch != 0) els_clustersMeanDPhiToSeed();
+	if (els_clustersMeanDRToSeed_branch != 0) els_clustersMeanDRToSeed();
+	if (els_clustersMeanRawEnergy_branch != 0) els_clustersMeanRawEnergy();
+	if (els_clustersRMSRawEnergy_branch != 0) els_clustersRMSRawEnergy();
 	if (els_d0_branch != 0) els_d0();
 	if (els_d0Err_branch != 0) els_d0Err();
 	if (els_d0corr_branch != 0) els_d0corr();
@@ -8765,6 +9866,37 @@ void LoadAllBranches()
 	if (els_ptErrGsf_branch != 0) els_ptErrGsf();
 	if (els_r9_branch != 0) els_r9();
 	if (els_r9_full5x5_branch != 0) els_r9_full5x5();
+	if (els_scIsEB_branch != 0) els_scIsEB();
+	if (els_scPreshowerEnergyPlane1_branch != 0) els_scPreshowerEnergyPlane1();
+	if (els_scPreshowerEnergyPlane2_branch != 0) els_scPreshowerEnergyPlane2();
+	if (els_scR_branch != 0) els_scR();
+	if (els_scSeed2x5LeftRightAsym_branch != 0) els_scSeed2x5LeftRightAsym();
+	if (els_scSeed2x5TopBottomAsym_branch != 0) els_scSeed2x5TopBottomAsym();
+	if (els_scSeedCryEta_branch != 0) els_scSeedCryEta();
+	if (els_scSeedCryIeta_branch != 0) els_scSeedCryIeta();
+	if (els_scSeedCryIphi_branch != 0) els_scSeedCryIphi();
+	if (els_scSeedCryIx_branch != 0) els_scSeedCryIx();
+	if (els_scSeedCryIy_branch != 0) els_scSeedCryIy();
+	if (els_scSeedCryPhi_branch != 0) els_scSeedCryPhi();
+	if (els_scSeedCryX_branch != 0) els_scSeedCryX();
+	if (els_scSeedCryY_branch != 0) els_scSeedCryY();
+	if (els_scSeedE2nd_branch != 0) els_scSeedE2nd();
+	if (els_scSeedE2x5Bottom_branch != 0) els_scSeedE2x5Bottom();
+	if (els_scSeedE2x5Left_branch != 0) els_scSeedE2x5Left();
+	if (els_scSeedE2x5Right_branch != 0) els_scSeedE2x5Right();
+	if (els_scSeedE2x5Top_branch != 0) els_scSeedE2x5Top();
+	if (els_scSeedE3x3_branch != 0) els_scSeedE3x3();
+	if (els_scSeedEBottom_branch != 0) els_scSeedEBottom();
+	if (els_scSeedELeft_branch != 0) els_scSeedELeft();
+	if (els_scSeedERight_branch != 0) els_scSeedERight();
+	if (els_scSeedETop_branch != 0) els_scSeedETop();
+	if (els_scSeedEmax_branch != 0) els_scSeedEmax();
+	if (els_scSeedEta_branch != 0) els_scSeedEta();
+	if (els_scSeedLeftRightAsym_branch != 0) els_scSeedLeftRightAsym();
+	if (els_scSeedPhi_branch != 0) els_scSeedPhi();
+	if (els_scSeedSigmaIetaIphi_branch != 0) els_scSeedSigmaIetaIphi();
+	if (els_scSeedSize_branch != 0) els_scSeedSize();
+	if (els_scSeedTopBottomAsym_branch != 0) els_scSeedTopBottomAsym();
 	if (els_sigmaEtaEta_branch != 0) els_sigmaEtaEta();
 	if (els_sigmaEtaEta_full5x5_branch != 0) els_sigmaEtaEta_full5x5();
 	if (els_sigmaIEtaIEta_branch != 0) els_sigmaIEtaIEta();
@@ -8926,6 +10058,7 @@ void LoadAllBranches()
 	if (mus_z0corr_branch != 0) mus_z0corr();
 	if (pfcands_dz_branch != 0) pfcands_dz();
 	if (pfcands_mass_branch != 0) pfcands_mass();
+	if (pfcands_phiAtVtx_branch != 0) pfcands_phiAtVtx();
 	if (pfjets_area_branch != 0) pfjets_area();
 	if (pfjets_chargedEmE_branch != 0) pfjets_chargedEmE();
 	if (pfjets_chargedHadronE_branch != 0) pfjets_chargedHadronE();
@@ -8956,6 +10089,15 @@ void LoadAllBranches()
 	if (pfjets_puppi_undoJEC_branch != 0) pfjets_puppi_undoJEC();
 	if (taus_pf_mass_branch != 0) taus_pf_mass();
 	if (photons_chargedHadronIso_branch != 0) photons_chargedHadronIso();
+	if (photons_clusterMaxDR_branch != 0) photons_clusterMaxDR();
+	if (photons_clusterMaxDRDEta_branch != 0) photons_clusterMaxDRDEta();
+	if (photons_clusterMaxDRDPhi_branch != 0) photons_clusterMaxDRDPhi();
+	if (photons_clusterMaxDRRawEnergy_branch != 0) photons_clusterMaxDRRawEnergy();
+	if (photons_clustersMeanDEtaToSeed_branch != 0) photons_clustersMeanDEtaToSeed();
+	if (photons_clustersMeanDPhiToSeed_branch != 0) photons_clustersMeanDPhiToSeed();
+	if (photons_clustersMeanDRToSeed_branch != 0) photons_clustersMeanDRToSeed();
+	if (photons_clustersMeanRawEnergy_branch != 0) photons_clustersMeanRawEnergy();
+	if (photons_clustersRMSRawEnergy_branch != 0) photons_clustersRMSRawEnergy();
 	if (photons_e1x5_branch != 0) photons_e1x5();
 	if (photons_e2x5Max_branch != 0) photons_e2x5Max();
 	if (photons_e3x3_branch != 0) photons_e3x3();
@@ -8998,6 +10140,42 @@ void LoadAllBranches()
 	if (photons_recoChargedHadronIso_branch != 0) photons_recoChargedHadronIso();
 	if (photons_recoNeutralHadronIso_branch != 0) photons_recoNeutralHadronIso();
 	if (photons_recoPhotonIso_branch != 0) photons_recoPhotonIso();
+	if (photonsscEtaWidth_branch != 0) photonsscEtaWidth();
+	if (photons_scIsEB_branch != 0) photons_scIsEB();
+	if (photonsscPhiWidth_branch != 0) photonsscPhiWidth();
+	if (photons_scPreshowerEnergyPlane1_branch != 0) photons_scPreshowerEnergyPlane1();
+	if (photons_scPreshowerEnergyPlane2_branch != 0) photons_scPreshowerEnergyPlane2();
+	if (photons_scR_branch != 0) photons_scR();
+	if (photons_scSeed2x5LeftRightAsym_branch != 0) photons_scSeed2x5LeftRightAsym();
+	if (photons_scSeed2x5TopBottomAsym_branch != 0) photons_scSeed2x5TopBottomAsym();
+	if (photonsscSeedCalibratedEnergy_branch != 0) photonsscSeedCalibratedEnergy();
+	if (photons_scSeedCryEta_branch != 0) photons_scSeedCryEta();
+	if (photons_scSeedCryIeta_branch != 0) photons_scSeedCryIeta();
+	if (photons_scSeedCryIphi_branch != 0) photons_scSeedCryIphi();
+	if (photons_scSeedCryIx_branch != 0) photons_scSeedCryIx();
+	if (photons_scSeedCryIy_branch != 0) photons_scSeedCryIy();
+	if (photons_scSeedCryPhi_branch != 0) photons_scSeedCryPhi();
+	if (photons_scSeedCryX_branch != 0) photons_scSeedCryX();
+	if (photons_scSeedCryY_branch != 0) photons_scSeedCryY();
+	if (photons_scSeedE2nd_branch != 0) photons_scSeedE2nd();
+	if (photons_scSeedE2x5Bottom_branch != 0) photons_scSeedE2x5Bottom();
+	if (photons_scSeedE2x5Left_branch != 0) photons_scSeedE2x5Left();
+	if (photons_scSeedE2x5Right_branch != 0) photons_scSeedE2x5Right();
+	if (photons_scSeedE2x5Top_branch != 0) photons_scSeedE2x5Top();
+	if (photons_scSeedE3x3_branch != 0) photons_scSeedE3x3();
+	if (photons_scSeedEBottom_branch != 0) photons_scSeedEBottom();
+	if (photons_scSeedELeft_branch != 0) photons_scSeedELeft();
+	if (photons_scSeedERight_branch != 0) photons_scSeedERight();
+	if (photons_scSeedETop_branch != 0) photons_scSeedETop();
+	if (photons_scSeedEmax_branch != 0) photons_scSeedEmax();
+	if (photons_scSeedEta_branch != 0) photons_scSeedEta();
+	if (photons_scSeedLeftRightAsym_branch != 0) photons_scSeedLeftRightAsym();
+	if (photons_scSeedPhi_branch != 0) photons_scSeedPhi();
+	if (photonsscSeedRawEnergy_branch != 0) photonsscSeedRawEnergy();
+	if (photons_scSeedSigmaIetaIphi_branch != 0) photons_scSeedSigmaIetaIphi();
+	if (photonsscSeedSigmaIphiIphi_branch != 0) photonsscSeedSigmaIphiIphi();
+	if (photons_scSeedSize_branch != 0) photons_scSeedSize();
+	if (photons_scSeedTopBottomAsym_branch != 0) photons_scSeedTopBottomAsym();
 	if (photons_sigmaEtaEta_branch != 0) photons_sigmaEtaEta();
 	if (photons_sigmaIEtaIEta_branch != 0) photons_sigmaIEtaIEta();
 	if (photons_tkIsoHollow03_branch != 0) photons_tkIsoHollow03();
@@ -9038,12 +10216,33 @@ void LoadAllBranches()
 	if (vtxs_xError_branch != 0) vtxs_xError();
 	if (vtxs_yError_branch != 0) vtxs_yError();
 	if (vtxs_zError_branch != 0) vtxs_zError();
-	if (pfjets_nonCHS_bDiscriminators_branch != 0) pfjets_nonCHS_bDiscriminators();
+	if (els_clusterCalibEnergy_branch != 0) els_clusterCalibEnergy();
+	if (els_clusterDEtaToCentroid_branch != 0) els_clusterDEtaToCentroid();
+	if (els_clusterDEtaToSeed_branch != 0) els_clusterDEtaToSeed();
+	if (els_clusterDPhiToCentroid_branch != 0) els_clusterDPhiToCentroid();
+	if (els_clusterDPhiToSeed_branch != 0) els_clusterDPhiToSeed();
+	if (els_clusterEta_branch != 0) els_clusterEta();
+	if (els_clusterPhi_branch != 0) els_clusterPhi();
+	if (els_clusterRawEnergy_branch != 0) els_clusterRawEnergy();
+	if (els_psClusterEta_branch != 0) els_psClusterEta();
+	if (els_psClusterPhi_branch != 0) els_psClusterPhi();
+	if (els_psClusterRawEnergy_branch != 0) els_psClusterRawEnergy();
 	if (mus_stationShowerDeltaR_branch != 0) mus_stationShowerDeltaR();
 	if (mus_stationShowerSizeT_branch != 0) mus_stationShowerSizeT();
 	if (pfjets_bDiscriminators_branch != 0) pfjets_bDiscriminators();
 	if (pfjets_puppi_bDiscriminators_branch != 0) pfjets_puppi_bDiscriminators();
 	if (taus_pf_IDs_branch != 0) taus_pf_IDs();
+	if (photons_clusterCalibEnergy_branch != 0) photons_clusterCalibEnergy();
+	if (photons_clusterDEtaToCentroid_branch != 0) photons_clusterDEtaToCentroid();
+	if (photons_clusterDEtaToSeed_branch != 0) photons_clusterDEtaToSeed();
+	if (photons_clusterDPhiToCentroid_branch != 0) photons_clusterDPhiToCentroid();
+	if (photons_clusterDPhiToSeed_branch != 0) photons_clusterDPhiToSeed();
+	if (photons_clusterEta_branch != 0) photons_clusterEta();
+	if (photons_clusterPhi_branch != 0) photons_clusterPhi();
+	if (photons_clusterRawEnergy_branch != 0) photons_clusterRawEnergy();
+	if (photons_psClusterEta_branch != 0) photons_psClusterEta();
+	if (photons_psClusterPhi_branch != 0) photons_psClusterPhi();
+	if (photons_psClusterRawEnergy_branch != 0) photons_psClusterRawEnergy();
 	if (puInfo_instLumi_branch != 0) puInfo_instLumi();
 	if (vtxs_covMatrix_branch != 0) vtxs_covMatrix();
 	if (evt_bsType_branch != 0) evt_bsType();
@@ -9074,14 +10273,13 @@ void LoadAllBranches()
 	if (pdfinfo_id1_branch != 0) pdfinfo_id1();
 	if (pdfinfo_id2_branch != 0) pdfinfo_id2();
 	if (sparm_subProcessId_branch != 0) sparm_subProcessId();
-	if (pfjets_nonCHS_chargedHadronMultiplicity_branch != 0) pfjets_nonCHS_chargedHadronMultiplicity();
-	if (pfjets_nonCHS_chargedMultiplicity_branch != 0) pfjets_nonCHS_chargedMultiplicity();
-	if (pfjets_nonCHS_electronMultiplicity_branch != 0) pfjets_nonCHS_electronMultiplicity();
-	if (pfjets_nonCHS_muonMultiplicity_branch != 0) pfjets_nonCHS_muonMultiplicity();
-	if (pfjets_nonCHS_neutralHadronMultiplicity_branch != 0) pfjets_nonCHS_neutralHadronMultiplicity();
-	if (pfjets_nonCHS_neutralMultiplicity_branch != 0) pfjets_nonCHS_neutralMultiplicity();
-	if (pfjets_nonCHS_partonFlavour_branch != 0) pfjets_nonCHS_partonFlavour();
-	if (pfjets_nonCHS_photonMultiplicity_branch != 0) pfjets_nonCHS_photonMultiplicity();
+	if (pfjets_METToolbox_chargedHadronMultiplicity_branch != 0) pfjets_METToolbox_chargedHadronMultiplicity();
+	if (pfjets_METToolbox_chargedMultiplicity_branch != 0) pfjets_METToolbox_chargedMultiplicity();
+	if (pfjets_METToolbox_electronMultiplicity_branch != 0) pfjets_METToolbox_electronMultiplicity();
+	if (pfjets_METToolbox_muonMultiplicity_branch != 0) pfjets_METToolbox_muonMultiplicity();
+	if (pfjets_METToolbox_neutralHadronMultiplicity_branch != 0) pfjets_METToolbox_neutralHadronMultiplicity();
+	if (pfjets_METToolbox_neutralMultiplicity_branch != 0) pfjets_METToolbox_neutralMultiplicity();
+	if (pfjets_METToolbox_photonMultiplicity_branch != 0) pfjets_METToolbox_photonMultiplicity();
 	if (ak8jets_mc_id_branch != 0) ak8jets_mc_id();
 	if (els_mc3_id_branch != 0) els_mc3_id();
 	if (els_mc3idx_branch != 0) els_mc3idx();
@@ -9110,6 +10308,8 @@ void LoadAllBranches()
 	if (photons_mc_id_branch != 0) photons_mc_id();
 	if (photons_mcidx_branch != 0) photons_mcidx();
 	if (photons_mc_motherid_branch != 0) photons_mc_motherid();
+	if (els_N_ECALClusters_branch != 0) els_N_ECALClusters();
+	if (els_N_PSClusters_branch != 0) els_N_PSClusters();
 	if (els_category_branch != 0) els_category();
 	if (els_charge_branch != 0) els_charge();
 	if (els_ckf_charge_branch != 0) els_ckf_charge();
@@ -9118,6 +10318,9 @@ void LoadAllBranches()
 	if (els_exp_innerlayers_branch != 0) els_exp_innerlayers();
 	if (els_exp_outerlayers_branch != 0) els_exp_outerlayers();
 	if (els_fiduciality_branch != 0) els_fiduciality();
+	if (els_isEB_branch != 0) els_isEB();
+	if (els_isEcalDriven_branch != 0) els_isEcalDriven();
+	if (els_isTrackerDriven_branch != 0) els_isTrackerDriven();
 	if (els_lostHits_branch != 0) els_lostHits();
 	if (els_lost_pixelhits_branch != 0) els_lost_pixelhits();
 	if (els_mc_patMatch_id_branch != 0) els_mc_patMatch_id();
@@ -9238,7 +10441,10 @@ void LoadAllBranches()
 	if (pfjets_puppi_partonFlavour_branch != 0) pfjets_puppi_partonFlavour();
 	if (pfjets_puppi_photonMultiplicity_branch != 0) pfjets_puppi_photonMultiplicity();
 	if (taus_pf_charge_branch != 0) taus_pf_charge();
+	if (photons_N_ECALClusters_branch != 0) photons_N_ECALClusters();
+	if (photons_N_PSClusters_branch != 0) photons_N_PSClusters();
 	if (photons_fiduciality_branch != 0) photons_fiduciality();
+	if (photons_isEB_branch != 0) photons_isEB();
 	if (photons_photonID_loose_branch != 0) photons_photonID_loose();
 	if (photons_photonID_tight_branch != 0) photons_photonID_tight();
 	if (puInfo_bunchCrossing_branch != 0) puInfo_bunchCrossing();
@@ -9251,7 +10457,9 @@ void LoadAllBranches()
 	if (ak8jets_partonFlavour_branch != 0) ak8jets_partonFlavour();
 	if (vtxs_isFake_branch != 0) vtxs_isFake();
 	if (vtxs_isValid_branch != 0) vtxs_isValid();
-	if (pfjets_nonCHS_pfcandIndicies_branch != 0) pfjets_nonCHS_pfcandIndicies();
+	if (pfjets_METToolbox_pfcandIndicies_branch != 0) pfjets_METToolbox_pfcandIndicies();
+	if (els_clusterInDynDPhi_branch != 0) els_clusterInDynDPhi();
+	if (els_clusterInMustache_branch != 0) els_clusterInMustache();
 	if (els_PFCand_idx_branch != 0) els_PFCand_idx();
 	if (genps_lepdaughter_id_branch != 0) genps_lepdaughter_id();
 	if (genps_lepdaughter_idx_branch != 0) genps_lepdaughter_idx();
@@ -9260,6 +10468,8 @@ void LoadAllBranches()
 	if (mus_nStationHits_branch != 0) mus_nStationHits();
 	if (pfjets_pfcandIndicies_branch != 0) pfjets_pfcandIndicies();
 	if (pfjets_puppi_pfcandIndicies_branch != 0) pfjets_puppi_pfcandIndicies();
+	if (photons_clusterInDynDPhi_branch != 0) photons_clusterInDynDPhi();
+	if (photons_clusterInMustache_branch != 0) photons_clusterInMustache();
 	if (photons_PFCand_idx_branch != 0) photons_PFCand_idx();
 	if (convs_nHitsBeforeVtx_branch != 0) convs_nHitsBeforeVtx();
 	if (convs_tkalgo_branch != 0) convs_tkalgo();
@@ -9312,7 +10522,6 @@ void LoadAllBranches()
 	if (evt_run_branch != 0) evt_run();
 	if (evt_ngenjetsNoMuNoNu_branch != 0) evt_ngenjetsNoMuNoNu();
 	if (genps_signalProcessID_branch != 0) genps_signalProcessID();
-	if (evt_ngenjets_branch != 0) evt_ngenjets();
 	if (mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg_version_branch != 0) mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg_version();
 	if (mus_HLT_IsoMu24_eta2p1_L1sMu16Eta2p1_version_branch != 0) mus_HLT_IsoMu24_eta2p1_L1sMu16Eta2p1_version();
 	if (mus_HLT_IsoMu24_eta2p1_version_branch != 0) mus_HLT_IsoMu24_eta2p1_version();
@@ -9380,6 +10589,7 @@ void LoadAllBranches()
 	if (els_HLT_Mu8_Ele17_branch != 0) els_HLT_Mu8_Ele17();
 	if (els_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg_branch != 0) els_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg();
 	if (els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg_branch != 0) els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg();
+	if (hlt_l1prescales_branch != 0) hlt_l1prescales();
 	if (hlt_prescales_branch != 0) hlt_prescales();
 	if (mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg_branch != 0) mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg();
 	if (mus_HLT_IsoMu24_eta2p1_branch != 0) mus_HLT_IsoMu24_eta2p1();
@@ -9439,19 +10649,6 @@ void LoadAllBranches()
 			hlt_bits_isLoaded = true;
 		}
 		return hlt_bits_;
-	}
-	const vector<TString> &pfjets_nonCHS_bDiscriminatorNames()
-	{
-		if (not pfjets_nonCHS_bDiscriminatorNames_isLoaded) {
-			if (pfjets_nonCHS_bDiscriminatorNames_branch != 0) {
-				pfjets_nonCHS_bDiscriminatorNames_branch->GetEntry(index);
-			} else { 
-				printf("branch pfjets_nonCHS_bDiscriminatorNames_branch does not exist!\n");
-				exit(1);
-			}
-			pfjets_nonCHS_bDiscriminatorNames_isLoaded = true;
-		}
-		return pfjets_nonCHS_bDiscriminatorNames_;
 	}
 	const vector<TString> &evt_CMS3tag()
 	{
@@ -9556,6 +10753,19 @@ void LoadAllBranches()
 			sparm_names_isLoaded = true;
 		}
 		return sparm_names_;
+	}
+	const vector<vector<TString> > &hlt_trigObjs_filters()
+	{
+		if (not hlt_trigObjs_filters_isLoaded) {
+			if (hlt_trigObjs_filters_branch != 0) {
+				hlt_trigObjs_filters_branch->GetEntry(index);
+			} else { 
+				printf("branch hlt_trigObjs_filters_branch does not exist!\n");
+				exit(1);
+			}
+			hlt_trigObjs_filters_isLoaded = true;
+		}
+		return hlt_trigObjs_filters_;
 	}
 	bool &hcalnoise_HasBadRBXTS4TS5()
 	{
@@ -9999,6 +11209,32 @@ void LoadAllBranches()
 		}
 		return mus_updatedSta_;
 	}
+	const vector<bool> &pfcands_isGlobalMuon()
+	{
+		if (not pfcands_isGlobalMuon_isLoaded) {
+			if (pfcands_isGlobalMuon_branch != 0) {
+				pfcands_isGlobalMuon_branch->GetEntry(index);
+			} else { 
+				printf("branch pfcands_isGlobalMuon_branch does not exist!\n");
+				exit(1);
+			}
+			pfcands_isGlobalMuon_isLoaded = true;
+		}
+		return pfcands_isGlobalMuon_;
+	}
+	const vector<bool> &pfcands_isStandAloneMuon()
+	{
+		if (not pfcands_isStandAloneMuon_isLoaded) {
+			if (pfcands_isStandAloneMuon_branch != 0) {
+				pfcands_isStandAloneMuon_branch->GetEntry(index);
+			} else { 
+				printf("branch pfcands_isStandAloneMuon_branch does not exist!\n");
+				exit(1);
+			}
+			pfcands_isStandAloneMuon_isLoaded = true;
+		}
+		return pfcands_isStandAloneMuon_;
+	}
 	const vector<bool> &photons_haspixelSeed()
 	{
 		if (not photons_haspixelSeed_isLoaded) {
@@ -10011,6 +11247,71 @@ void LoadAllBranches()
 			photons_haspixelSeed_isLoaded = true;
 		}
 		return photons_haspixelSeed_;
+	}
+	const vector<vector<bool> > &hlt_trigObjs_passLast()
+	{
+		if (not hlt_trigObjs_passLast_isLoaded) {
+			if (hlt_trigObjs_passLast_branch != 0) {
+				hlt_trigObjs_passLast_branch->GetEntry(index);
+			} else { 
+				printf("branch hlt_trigObjs_passLast_branch does not exist!\n");
+				exit(1);
+			}
+			hlt_trigObjs_passLast_isLoaded = true;
+		}
+		return hlt_trigObjs_passLast_;
+	}
+	float &evt_METToolbox_pfmet()
+	{
+		if (not evt_METToolbox_pfmet_isLoaded) {
+			if (evt_METToolbox_pfmet_branch != 0) {
+				evt_METToolbox_pfmet_branch->GetEntry(index);
+			} else { 
+				printf("branch evt_METToolbox_pfmet_branch does not exist!\n");
+				exit(1);
+			}
+			evt_METToolbox_pfmet_isLoaded = true;
+		}
+		return evt_METToolbox_pfmet_;
+	}
+	float &evt_METToolbox_pfmetPhi()
+	{
+		if (not evt_METToolbox_pfmetPhi_isLoaded) {
+			if (evt_METToolbox_pfmetPhi_branch != 0) {
+				evt_METToolbox_pfmetPhi_branch->GetEntry(index);
+			} else { 
+				printf("branch evt_METToolbox_pfmetPhi_branch does not exist!\n");
+				exit(1);
+			}
+			evt_METToolbox_pfmetPhi_isLoaded = true;
+		}
+		return evt_METToolbox_pfmetPhi_;
+	}
+	float &evt_METToolbox_pfmetPhi_raw()
+	{
+		if (not evt_METToolbox_pfmetPhi_raw_isLoaded) {
+			if (evt_METToolbox_pfmetPhi_raw_branch != 0) {
+				evt_METToolbox_pfmetPhi_raw_branch->GetEntry(index);
+			} else { 
+				printf("branch evt_METToolbox_pfmetPhi_raw_branch does not exist!\n");
+				exit(1);
+			}
+			evt_METToolbox_pfmetPhi_raw_isLoaded = true;
+		}
+		return evt_METToolbox_pfmetPhi_raw_;
+	}
+	float &evt_METToolbox_pfmet_raw()
+	{
+		if (not evt_METToolbox_pfmet_raw_isLoaded) {
+			if (evt_METToolbox_pfmet_raw_branch != 0) {
+				evt_METToolbox_pfmet_raw_branch->GetEntry(index);
+			} else { 
+				printf("branch evt_METToolbox_pfmet_raw_branch does not exist!\n");
+				exit(1);
+			}
+			evt_METToolbox_pfmet_raw_isLoaded = true;
+		}
+		return evt_METToolbox_pfmet_raw_;
 	}
 	float &evt_bs_Xwidth()
 	{
@@ -10870,44 +12171,44 @@ void LoadAllBranches()
 		}
 		return pdfinfo_x2_;
 	}
-	float &evt_fixgrid_rho_all()
+	float &pfcandsevt_fixgrid_rho_all()
 	{
-		if (not evt_fixgrid_rho_all_isLoaded) {
-			if (evt_fixgrid_rho_all_branch != 0) {
-				evt_fixgrid_rho_all_branch->GetEntry(index);
+		if (not pfcandsevt_fixgrid_rho_all_isLoaded) {
+			if (pfcandsevt_fixgrid_rho_all_branch != 0) {
+				pfcandsevt_fixgrid_rho_all_branch->GetEntry(index);
 			} else { 
-				printf("branch evt_fixgrid_rho_all_branch does not exist!\n");
+				printf("branch pfcandsevt_fixgrid_rho_all_branch does not exist!\n");
 				exit(1);
 			}
-			evt_fixgrid_rho_all_isLoaded = true;
+			pfcandsevt_fixgrid_rho_all_isLoaded = true;
 		}
-		return evt_fixgrid_rho_all_;
+		return pfcandsevt_fixgrid_rho_all_;
 	}
-	float &evt_fixgrid_rho_ctr()
+	float &pfcandsevt_fixgrid_rho_ctr()
 	{
-		if (not evt_fixgrid_rho_ctr_isLoaded) {
-			if (evt_fixgrid_rho_ctr_branch != 0) {
-				evt_fixgrid_rho_ctr_branch->GetEntry(index);
+		if (not pfcandsevt_fixgrid_rho_ctr_isLoaded) {
+			if (pfcandsevt_fixgrid_rho_ctr_branch != 0) {
+				pfcandsevt_fixgrid_rho_ctr_branch->GetEntry(index);
 			} else { 
-				printf("branch evt_fixgrid_rho_ctr_branch does not exist!\n");
+				printf("branch pfcandsevt_fixgrid_rho_ctr_branch does not exist!\n");
 				exit(1);
 			}
-			evt_fixgrid_rho_ctr_isLoaded = true;
+			pfcandsevt_fixgrid_rho_ctr_isLoaded = true;
 		}
-		return evt_fixgrid_rho_ctr_;
+		return pfcandsevt_fixgrid_rho_ctr_;
 	}
-	float &evt_fixgrid_rho_fwd()
+	float &pfcandsevt_fixgrid_rho_fwd()
 	{
-		if (not evt_fixgrid_rho_fwd_isLoaded) {
-			if (evt_fixgrid_rho_fwd_branch != 0) {
-				evt_fixgrid_rho_fwd_branch->GetEntry(index);
+		if (not pfcandsevt_fixgrid_rho_fwd_isLoaded) {
+			if (pfcandsevt_fixgrid_rho_fwd_branch != 0) {
+				pfcandsevt_fixgrid_rho_fwd_branch->GetEntry(index);
 			} else { 
-				printf("branch evt_fixgrid_rho_fwd_branch does not exist!\n");
+				printf("branch pfcandsevt_fixgrid_rho_fwd_branch does not exist!\n");
 				exit(1);
 			}
-			evt_fixgrid_rho_fwd_isLoaded = true;
+			pfcandsevt_fixgrid_rho_fwd_isLoaded = true;
 		}
-		return evt_fixgrid_rho_fwd_;
+		return pfcandsevt_fixgrid_rho_fwd_;
 	}
 	float &evt_calomet()
 	{
@@ -11143,18 +12444,18 @@ void LoadAllBranches()
 		}
 		return evt_bsp4_;
 	}
-	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &pfjets_nonCHS_p4()
+	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &pfjets_METToolbox_p4()
 	{
-		if (not pfjets_nonCHS_p4_isLoaded) {
-			if (pfjets_nonCHS_p4_branch != 0) {
-				pfjets_nonCHS_p4_branch->GetEntry(index);
+		if (not pfjets_METToolbox_p4_isLoaded) {
+			if (pfjets_METToolbox_p4_branch != 0) {
+				pfjets_METToolbox_p4_branch->GetEntry(index);
 			} else { 
-				printf("branch pfjets_nonCHS_p4_branch does not exist!\n");
+				printf("branch pfjets_METToolbox_p4_branch does not exist!\n");
 				exit(1);
 			}
-			pfjets_nonCHS_p4_isLoaded = true;
+			pfjets_METToolbox_p4_isLoaded = true;
 		}
-		return pfjets_nonCHS_p4_;
+		return pfjets_METToolbox_p4_;
 	}
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &ak8jets_mc_gp_p4()
 	{
@@ -11428,19 +12729,6 @@ void LoadAllBranches()
 			genps_prod_vtx_isLoaded = true;
 		}
 		return genps_prod_vtx_;
-	}
-	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &genjets_p4()
-	{
-		if (not genjets_p4_isLoaded) {
-			if (genjets_p4_branch != 0) {
-				genjets_p4_branch->GetEntry(index);
-			} else { 
-				printf("branch genjets_p4_branch does not exist!\n");
-				exit(1);
-			}
-			genjets_p4_isLoaded = true;
-		}
-		return genjets_p4_;
 	}
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &hyp_ll_p4()
 	{
@@ -11806,187 +13094,148 @@ void LoadAllBranches()
 		}
 		return taus_pf_signalcands_p4_;
 	}
-	const vector<float> &pfjets_nonCHS_area()
+	const vector<float> &pfjets_METToolbox_area()
 	{
-		if (not pfjets_nonCHS_area_isLoaded) {
-			if (pfjets_nonCHS_area_branch != 0) {
-				pfjets_nonCHS_area_branch->GetEntry(index);
+		if (not pfjets_METToolbox_area_isLoaded) {
+			if (pfjets_METToolbox_area_branch != 0) {
+				pfjets_METToolbox_area_branch->GetEntry(index);
 			} else { 
-				printf("branch pfjets_nonCHS_area_branch does not exist!\n");
+				printf("branch pfjets_METToolbox_area_branch does not exist!\n");
 				exit(1);
 			}
-			pfjets_nonCHS_area_isLoaded = true;
+			pfjets_METToolbox_area_isLoaded = true;
 		}
-		return pfjets_nonCHS_area_;
+		return pfjets_METToolbox_area_;
 	}
-	const vector<float> &pfjets_nonCHS_chargedEmE()
+	const vector<float> &pfjets_METToolbox_chargedEmE()
 	{
-		if (not pfjets_nonCHS_chargedEmE_isLoaded) {
-			if (pfjets_nonCHS_chargedEmE_branch != 0) {
-				pfjets_nonCHS_chargedEmE_branch->GetEntry(index);
+		if (not pfjets_METToolbox_chargedEmE_isLoaded) {
+			if (pfjets_METToolbox_chargedEmE_branch != 0) {
+				pfjets_METToolbox_chargedEmE_branch->GetEntry(index);
 			} else { 
-				printf("branch pfjets_nonCHS_chargedEmE_branch does not exist!\n");
+				printf("branch pfjets_METToolbox_chargedEmE_branch does not exist!\n");
 				exit(1);
 			}
-			pfjets_nonCHS_chargedEmE_isLoaded = true;
+			pfjets_METToolbox_chargedEmE_isLoaded = true;
 		}
-		return pfjets_nonCHS_chargedEmE_;
+		return pfjets_METToolbox_chargedEmE_;
 	}
-	const vector<float> &pfjets_nonCHS_chargedHadronE()
+	const vector<float> &pfjets_METToolbox_chargedHadronE()
 	{
-		if (not pfjets_nonCHS_chargedHadronE_isLoaded) {
-			if (pfjets_nonCHS_chargedHadronE_branch != 0) {
-				pfjets_nonCHS_chargedHadronE_branch->GetEntry(index);
+		if (not pfjets_METToolbox_chargedHadronE_isLoaded) {
+			if (pfjets_METToolbox_chargedHadronE_branch != 0) {
+				pfjets_METToolbox_chargedHadronE_branch->GetEntry(index);
 			} else { 
-				printf("branch pfjets_nonCHS_chargedHadronE_branch does not exist!\n");
+				printf("branch pfjets_METToolbox_chargedHadronE_branch does not exist!\n");
 				exit(1);
 			}
-			pfjets_nonCHS_chargedHadronE_isLoaded = true;
+			pfjets_METToolbox_chargedHadronE_isLoaded = true;
 		}
-		return pfjets_nonCHS_chargedHadronE_;
+		return pfjets_METToolbox_chargedHadronE_;
 	}
-	const vector<float> &pfjets_nonCHS_electronE()
+	const vector<float> &pfjets_METToolbox_electronE()
 	{
-		if (not pfjets_nonCHS_electronE_isLoaded) {
-			if (pfjets_nonCHS_electronE_branch != 0) {
-				pfjets_nonCHS_electronE_branch->GetEntry(index);
+		if (not pfjets_METToolbox_electronE_isLoaded) {
+			if (pfjets_METToolbox_electronE_branch != 0) {
+				pfjets_METToolbox_electronE_branch->GetEntry(index);
 			} else { 
-				printf("branch pfjets_nonCHS_electronE_branch does not exist!\n");
+				printf("branch pfjets_METToolbox_electronE_branch does not exist!\n");
 				exit(1);
 			}
-			pfjets_nonCHS_electronE_isLoaded = true;
+			pfjets_METToolbox_electronE_isLoaded = true;
 		}
-		return pfjets_nonCHS_electronE_;
+		return pfjets_METToolbox_electronE_;
 	}
-	const vector<float> &pfjets_nonCHS_hfEmE()
+	const vector<float> &pfjets_METToolbox_hfEmE()
 	{
-		if (not pfjets_nonCHS_hfEmE_isLoaded) {
-			if (pfjets_nonCHS_hfEmE_branch != 0) {
-				pfjets_nonCHS_hfEmE_branch->GetEntry(index);
+		if (not pfjets_METToolbox_hfEmE_isLoaded) {
+			if (pfjets_METToolbox_hfEmE_branch != 0) {
+				pfjets_METToolbox_hfEmE_branch->GetEntry(index);
 			} else { 
-				printf("branch pfjets_nonCHS_hfEmE_branch does not exist!\n");
+				printf("branch pfjets_METToolbox_hfEmE_branch does not exist!\n");
 				exit(1);
 			}
-			pfjets_nonCHS_hfEmE_isLoaded = true;
+			pfjets_METToolbox_hfEmE_isLoaded = true;
 		}
-		return pfjets_nonCHS_hfEmE_;
+		return pfjets_METToolbox_hfEmE_;
 	}
-	const vector<float> &pfjets_nonCHS_hfHadronE()
+	const vector<float> &pfjets_METToolbox_hfHadronE()
 	{
-		if (not pfjets_nonCHS_hfHadronE_isLoaded) {
-			if (pfjets_nonCHS_hfHadronE_branch != 0) {
-				pfjets_nonCHS_hfHadronE_branch->GetEntry(index);
+		if (not pfjets_METToolbox_hfHadronE_isLoaded) {
+			if (pfjets_METToolbox_hfHadronE_branch != 0) {
+				pfjets_METToolbox_hfHadronE_branch->GetEntry(index);
 			} else { 
-				printf("branch pfjets_nonCHS_hfHadronE_branch does not exist!\n");
+				printf("branch pfjets_METToolbox_hfHadronE_branch does not exist!\n");
 				exit(1);
 			}
-			pfjets_nonCHS_hfHadronE_isLoaded = true;
+			pfjets_METToolbox_hfHadronE_isLoaded = true;
 		}
-		return pfjets_nonCHS_hfHadronE_;
+		return pfjets_METToolbox_hfHadronE_;
 	}
-	const vector<float> &pfjets_nonCHS_mass()
+	const vector<float> &pfjets_METToolbox_mass()
 	{
-		if (not pfjets_nonCHS_mass_isLoaded) {
-			if (pfjets_nonCHS_mass_branch != 0) {
-				pfjets_nonCHS_mass_branch->GetEntry(index);
+		if (not pfjets_METToolbox_mass_isLoaded) {
+			if (pfjets_METToolbox_mass_branch != 0) {
+				pfjets_METToolbox_mass_branch->GetEntry(index);
 			} else { 
-				printf("branch pfjets_nonCHS_mass_branch does not exist!\n");
+				printf("branch pfjets_METToolbox_mass_branch does not exist!\n");
 				exit(1);
 			}
-			pfjets_nonCHS_mass_isLoaded = true;
+			pfjets_METToolbox_mass_isLoaded = true;
 		}
-		return pfjets_nonCHS_mass_;
+		return pfjets_METToolbox_mass_;
 	}
-	const vector<float> &pfjets_nonCHS_muonE()
+	const vector<float> &pfjets_METToolbox_muonE()
 	{
-		if (not pfjets_nonCHS_muonE_isLoaded) {
-			if (pfjets_nonCHS_muonE_branch != 0) {
-				pfjets_nonCHS_muonE_branch->GetEntry(index);
+		if (not pfjets_METToolbox_muonE_isLoaded) {
+			if (pfjets_METToolbox_muonE_branch != 0) {
+				pfjets_METToolbox_muonE_branch->GetEntry(index);
 			} else { 
-				printf("branch pfjets_nonCHS_muonE_branch does not exist!\n");
+				printf("branch pfjets_METToolbox_muonE_branch does not exist!\n");
 				exit(1);
 			}
-			pfjets_nonCHS_muonE_isLoaded = true;
+			pfjets_METToolbox_muonE_isLoaded = true;
 		}
-		return pfjets_nonCHS_muonE_;
+		return pfjets_METToolbox_muonE_;
 	}
-	const vector<float> &pfjets_nonCHS_neutralEmE()
+	const vector<float> &pfjets_METToolbox_neutralEmE()
 	{
-		if (not pfjets_nonCHS_neutralEmE_isLoaded) {
-			if (pfjets_nonCHS_neutralEmE_branch != 0) {
-				pfjets_nonCHS_neutralEmE_branch->GetEntry(index);
+		if (not pfjets_METToolbox_neutralEmE_isLoaded) {
+			if (pfjets_METToolbox_neutralEmE_branch != 0) {
+				pfjets_METToolbox_neutralEmE_branch->GetEntry(index);
 			} else { 
-				printf("branch pfjets_nonCHS_neutralEmE_branch does not exist!\n");
+				printf("branch pfjets_METToolbox_neutralEmE_branch does not exist!\n");
 				exit(1);
 			}
-			pfjets_nonCHS_neutralEmE_isLoaded = true;
+			pfjets_METToolbox_neutralEmE_isLoaded = true;
 		}
-		return pfjets_nonCHS_neutralEmE_;
+		return pfjets_METToolbox_neutralEmE_;
 	}
-	const vector<float> &pfjets_nonCHS_neutralHadronE()
+	const vector<float> &pfjets_METToolbox_neutralHadronE()
 	{
-		if (not pfjets_nonCHS_neutralHadronE_isLoaded) {
-			if (pfjets_nonCHS_neutralHadronE_branch != 0) {
-				pfjets_nonCHS_neutralHadronE_branch->GetEntry(index);
+		if (not pfjets_METToolbox_neutralHadronE_isLoaded) {
+			if (pfjets_METToolbox_neutralHadronE_branch != 0) {
+				pfjets_METToolbox_neutralHadronE_branch->GetEntry(index);
 			} else { 
-				printf("branch pfjets_nonCHS_neutralHadronE_branch does not exist!\n");
+				printf("branch pfjets_METToolbox_neutralHadronE_branch does not exist!\n");
 				exit(1);
 			}
-			pfjets_nonCHS_neutralHadronE_isLoaded = true;
+			pfjets_METToolbox_neutralHadronE_isLoaded = true;
 		}
-		return pfjets_nonCHS_neutralHadronE_;
+		return pfjets_METToolbox_neutralHadronE_;
 	}
-	const vector<float> &pfjets_nonCHS_pfCombinedInclusiveSecondaryVertexV2BJetTag()
+	const vector<float> &pfjets_METToolbox_photonE()
 	{
-		if (not pfjets_nonCHS_pfCombinedInclusiveSecondaryVertexV2BJetTag_isLoaded) {
-			if (pfjets_nonCHS_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch != 0) {
-				pfjets_nonCHS_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch->GetEntry(index);
+		if (not pfjets_METToolbox_photonE_isLoaded) {
+			if (pfjets_METToolbox_photonE_branch != 0) {
+				pfjets_METToolbox_photonE_branch->GetEntry(index);
 			} else { 
-				printf("branch pfjets_nonCHS_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch does not exist!\n");
+				printf("branch pfjets_METToolbox_photonE_branch does not exist!\n");
 				exit(1);
 			}
-			pfjets_nonCHS_pfCombinedInclusiveSecondaryVertexV2BJetTag_isLoaded = true;
+			pfjets_METToolbox_photonE_isLoaded = true;
 		}
-		return pfjets_nonCHS_pfCombinedInclusiveSecondaryVertexV2BJetTag_;
-	}
-	const vector<float> &pfjets_nonCHS_photonE()
-	{
-		if (not pfjets_nonCHS_photonE_isLoaded) {
-			if (pfjets_nonCHS_photonE_branch != 0) {
-				pfjets_nonCHS_photonE_branch->GetEntry(index);
-			} else { 
-				printf("branch pfjets_nonCHS_photonE_branch does not exist!\n");
-				exit(1);
-			}
-			pfjets_nonCHS_photonE_isLoaded = true;
-		}
-		return pfjets_nonCHS_photonE_;
-	}
-	const vector<float> &pfjets_nonCHS_pileupJetId()
-	{
-		if (not pfjets_nonCHS_pileupJetId_isLoaded) {
-			if (pfjets_nonCHS_pileupJetId_branch != 0) {
-				pfjets_nonCHS_pileupJetId_branch->GetEntry(index);
-			} else { 
-				printf("branch pfjets_nonCHS_pileupJetId_branch does not exist!\n");
-				exit(1);
-			}
-			pfjets_nonCHS_pileupJetId_isLoaded = true;
-		}
-		return pfjets_nonCHS_pileupJetId_;
-	}
-	const vector<float> &pfjets_nonCHS_undoJEC()
-	{
-		if (not pfjets_nonCHS_undoJEC_isLoaded) {
-			if (pfjets_nonCHS_undoJEC_branch != 0) {
-				pfjets_nonCHS_undoJEC_branch->GetEntry(index);
-			} else { 
-				printf("branch pfjets_nonCHS_undoJEC_branch does not exist!\n");
-				exit(1);
-			}
-			pfjets_nonCHS_undoJEC_isLoaded = true;
-		}
-		return pfjets_nonCHS_undoJEC_;
+		return pfjets_METToolbox_photonE_;
 	}
 	const vector<float> &evt_bs_covMatrix()
 	{
@@ -12260,6 +13509,123 @@ void LoadAllBranches()
 			els_ckf_ndof_isLoaded = true;
 		}
 		return els_ckf_ndof_;
+	}
+	const vector<float> &els_clusterMaxDR()
+	{
+		if (not els_clusterMaxDR_isLoaded) {
+			if (els_clusterMaxDR_branch != 0) {
+				els_clusterMaxDR_branch->GetEntry(index);
+			} else { 
+				printf("branch els_clusterMaxDR_branch does not exist!\n");
+				exit(1);
+			}
+			els_clusterMaxDR_isLoaded = true;
+		}
+		return els_clusterMaxDR_;
+	}
+	const vector<float> &els_clusterMaxDRDEta()
+	{
+		if (not els_clusterMaxDRDEta_isLoaded) {
+			if (els_clusterMaxDRDEta_branch != 0) {
+				els_clusterMaxDRDEta_branch->GetEntry(index);
+			} else { 
+				printf("branch els_clusterMaxDRDEta_branch does not exist!\n");
+				exit(1);
+			}
+			els_clusterMaxDRDEta_isLoaded = true;
+		}
+		return els_clusterMaxDRDEta_;
+	}
+	const vector<float> &els_clusterMaxDRDPhi()
+	{
+		if (not els_clusterMaxDRDPhi_isLoaded) {
+			if (els_clusterMaxDRDPhi_branch != 0) {
+				els_clusterMaxDRDPhi_branch->GetEntry(index);
+			} else { 
+				printf("branch els_clusterMaxDRDPhi_branch does not exist!\n");
+				exit(1);
+			}
+			els_clusterMaxDRDPhi_isLoaded = true;
+		}
+		return els_clusterMaxDRDPhi_;
+	}
+	const vector<float> &els_clusterMaxDRRawEnergy()
+	{
+		if (not els_clusterMaxDRRawEnergy_isLoaded) {
+			if (els_clusterMaxDRRawEnergy_branch != 0) {
+				els_clusterMaxDRRawEnergy_branch->GetEntry(index);
+			} else { 
+				printf("branch els_clusterMaxDRRawEnergy_branch does not exist!\n");
+				exit(1);
+			}
+			els_clusterMaxDRRawEnergy_isLoaded = true;
+		}
+		return els_clusterMaxDRRawEnergy_;
+	}
+	const vector<float> &els_clustersMeanDEtaToSeed()
+	{
+		if (not els_clustersMeanDEtaToSeed_isLoaded) {
+			if (els_clustersMeanDEtaToSeed_branch != 0) {
+				els_clustersMeanDEtaToSeed_branch->GetEntry(index);
+			} else { 
+				printf("branch els_clustersMeanDEtaToSeed_branch does not exist!\n");
+				exit(1);
+			}
+			els_clustersMeanDEtaToSeed_isLoaded = true;
+		}
+		return els_clustersMeanDEtaToSeed_;
+	}
+	const vector<float> &els_clustersMeanDPhiToSeed()
+	{
+		if (not els_clustersMeanDPhiToSeed_isLoaded) {
+			if (els_clustersMeanDPhiToSeed_branch != 0) {
+				els_clustersMeanDPhiToSeed_branch->GetEntry(index);
+			} else { 
+				printf("branch els_clustersMeanDPhiToSeed_branch does not exist!\n");
+				exit(1);
+			}
+			els_clustersMeanDPhiToSeed_isLoaded = true;
+		}
+		return els_clustersMeanDPhiToSeed_;
+	}
+	const vector<float> &els_clustersMeanDRToSeed()
+	{
+		if (not els_clustersMeanDRToSeed_isLoaded) {
+			if (els_clustersMeanDRToSeed_branch != 0) {
+				els_clustersMeanDRToSeed_branch->GetEntry(index);
+			} else { 
+				printf("branch els_clustersMeanDRToSeed_branch does not exist!\n");
+				exit(1);
+			}
+			els_clustersMeanDRToSeed_isLoaded = true;
+		}
+		return els_clustersMeanDRToSeed_;
+	}
+	const vector<float> &els_clustersMeanRawEnergy()
+	{
+		if (not els_clustersMeanRawEnergy_isLoaded) {
+			if (els_clustersMeanRawEnergy_branch != 0) {
+				els_clustersMeanRawEnergy_branch->GetEntry(index);
+			} else { 
+				printf("branch els_clustersMeanRawEnergy_branch does not exist!\n");
+				exit(1);
+			}
+			els_clustersMeanRawEnergy_isLoaded = true;
+		}
+		return els_clustersMeanRawEnergy_;
+	}
+	const vector<float> &els_clustersRMSRawEnergy()
+	{
+		if (not els_clustersRMSRawEnergy_isLoaded) {
+			if (els_clustersRMSRawEnergy_branch != 0) {
+				els_clustersRMSRawEnergy_branch->GetEntry(index);
+			} else { 
+				printf("branch els_clustersRMSRawEnergy_branch does not exist!\n");
+				exit(1);
+			}
+			els_clustersRMSRawEnergy_isLoaded = true;
+		}
+		return els_clustersRMSRawEnergy_;
 	}
 	const vector<float> &els_d0()
 	{
@@ -13196,6 +14562,409 @@ void LoadAllBranches()
 			els_r9_full5x5_isLoaded = true;
 		}
 		return els_r9_full5x5_;
+	}
+	const vector<float> &els_scIsEB()
+	{
+		if (not els_scIsEB_isLoaded) {
+			if (els_scIsEB_branch != 0) {
+				els_scIsEB_branch->GetEntry(index);
+			} else { 
+				printf("branch els_scIsEB_branch does not exist!\n");
+				exit(1);
+			}
+			els_scIsEB_isLoaded = true;
+		}
+		return els_scIsEB_;
+	}
+	const vector<float> &els_scPreshowerEnergyPlane1()
+	{
+		if (not els_scPreshowerEnergyPlane1_isLoaded) {
+			if (els_scPreshowerEnergyPlane1_branch != 0) {
+				els_scPreshowerEnergyPlane1_branch->GetEntry(index);
+			} else { 
+				printf("branch els_scPreshowerEnergyPlane1_branch does not exist!\n");
+				exit(1);
+			}
+			els_scPreshowerEnergyPlane1_isLoaded = true;
+		}
+		return els_scPreshowerEnergyPlane1_;
+	}
+	const vector<float> &els_scPreshowerEnergyPlane2()
+	{
+		if (not els_scPreshowerEnergyPlane2_isLoaded) {
+			if (els_scPreshowerEnergyPlane2_branch != 0) {
+				els_scPreshowerEnergyPlane2_branch->GetEntry(index);
+			} else { 
+				printf("branch els_scPreshowerEnergyPlane2_branch does not exist!\n");
+				exit(1);
+			}
+			els_scPreshowerEnergyPlane2_isLoaded = true;
+		}
+		return els_scPreshowerEnergyPlane2_;
+	}
+	const vector<float> &els_scR()
+	{
+		if (not els_scR_isLoaded) {
+			if (els_scR_branch != 0) {
+				els_scR_branch->GetEntry(index);
+			} else { 
+				printf("branch els_scR_branch does not exist!\n");
+				exit(1);
+			}
+			els_scR_isLoaded = true;
+		}
+		return els_scR_;
+	}
+	const vector<float> &els_scSeed2x5LeftRightAsym()
+	{
+		if (not els_scSeed2x5LeftRightAsym_isLoaded) {
+			if (els_scSeed2x5LeftRightAsym_branch != 0) {
+				els_scSeed2x5LeftRightAsym_branch->GetEntry(index);
+			} else { 
+				printf("branch els_scSeed2x5LeftRightAsym_branch does not exist!\n");
+				exit(1);
+			}
+			els_scSeed2x5LeftRightAsym_isLoaded = true;
+		}
+		return els_scSeed2x5LeftRightAsym_;
+	}
+	const vector<float> &els_scSeed2x5TopBottomAsym()
+	{
+		if (not els_scSeed2x5TopBottomAsym_isLoaded) {
+			if (els_scSeed2x5TopBottomAsym_branch != 0) {
+				els_scSeed2x5TopBottomAsym_branch->GetEntry(index);
+			} else { 
+				printf("branch els_scSeed2x5TopBottomAsym_branch does not exist!\n");
+				exit(1);
+			}
+			els_scSeed2x5TopBottomAsym_isLoaded = true;
+		}
+		return els_scSeed2x5TopBottomAsym_;
+	}
+	const vector<float> &els_scSeedCryEta()
+	{
+		if (not els_scSeedCryEta_isLoaded) {
+			if (els_scSeedCryEta_branch != 0) {
+				els_scSeedCryEta_branch->GetEntry(index);
+			} else { 
+				printf("branch els_scSeedCryEta_branch does not exist!\n");
+				exit(1);
+			}
+			els_scSeedCryEta_isLoaded = true;
+		}
+		return els_scSeedCryEta_;
+	}
+	const vector<float> &els_scSeedCryIeta()
+	{
+		if (not els_scSeedCryIeta_isLoaded) {
+			if (els_scSeedCryIeta_branch != 0) {
+				els_scSeedCryIeta_branch->GetEntry(index);
+			} else { 
+				printf("branch els_scSeedCryIeta_branch does not exist!\n");
+				exit(1);
+			}
+			els_scSeedCryIeta_isLoaded = true;
+		}
+		return els_scSeedCryIeta_;
+	}
+	const vector<float> &els_scSeedCryIphi()
+	{
+		if (not els_scSeedCryIphi_isLoaded) {
+			if (els_scSeedCryIphi_branch != 0) {
+				els_scSeedCryIphi_branch->GetEntry(index);
+			} else { 
+				printf("branch els_scSeedCryIphi_branch does not exist!\n");
+				exit(1);
+			}
+			els_scSeedCryIphi_isLoaded = true;
+		}
+		return els_scSeedCryIphi_;
+	}
+	const vector<float> &els_scSeedCryIx()
+	{
+		if (not els_scSeedCryIx_isLoaded) {
+			if (els_scSeedCryIx_branch != 0) {
+				els_scSeedCryIx_branch->GetEntry(index);
+			} else { 
+				printf("branch els_scSeedCryIx_branch does not exist!\n");
+				exit(1);
+			}
+			els_scSeedCryIx_isLoaded = true;
+		}
+		return els_scSeedCryIx_;
+	}
+	const vector<float> &els_scSeedCryIy()
+	{
+		if (not els_scSeedCryIy_isLoaded) {
+			if (els_scSeedCryIy_branch != 0) {
+				els_scSeedCryIy_branch->GetEntry(index);
+			} else { 
+				printf("branch els_scSeedCryIy_branch does not exist!\n");
+				exit(1);
+			}
+			els_scSeedCryIy_isLoaded = true;
+		}
+		return els_scSeedCryIy_;
+	}
+	const vector<float> &els_scSeedCryPhi()
+	{
+		if (not els_scSeedCryPhi_isLoaded) {
+			if (els_scSeedCryPhi_branch != 0) {
+				els_scSeedCryPhi_branch->GetEntry(index);
+			} else { 
+				printf("branch els_scSeedCryPhi_branch does not exist!\n");
+				exit(1);
+			}
+			els_scSeedCryPhi_isLoaded = true;
+		}
+		return els_scSeedCryPhi_;
+	}
+	const vector<float> &els_scSeedCryX()
+	{
+		if (not els_scSeedCryX_isLoaded) {
+			if (els_scSeedCryX_branch != 0) {
+				els_scSeedCryX_branch->GetEntry(index);
+			} else { 
+				printf("branch els_scSeedCryX_branch does not exist!\n");
+				exit(1);
+			}
+			els_scSeedCryX_isLoaded = true;
+		}
+		return els_scSeedCryX_;
+	}
+	const vector<float> &els_scSeedCryY()
+	{
+		if (not els_scSeedCryY_isLoaded) {
+			if (els_scSeedCryY_branch != 0) {
+				els_scSeedCryY_branch->GetEntry(index);
+			} else { 
+				printf("branch els_scSeedCryY_branch does not exist!\n");
+				exit(1);
+			}
+			els_scSeedCryY_isLoaded = true;
+		}
+		return els_scSeedCryY_;
+	}
+	const vector<float> &els_scSeedE2nd()
+	{
+		if (not els_scSeedE2nd_isLoaded) {
+			if (els_scSeedE2nd_branch != 0) {
+				els_scSeedE2nd_branch->GetEntry(index);
+			} else { 
+				printf("branch els_scSeedE2nd_branch does not exist!\n");
+				exit(1);
+			}
+			els_scSeedE2nd_isLoaded = true;
+		}
+		return els_scSeedE2nd_;
+	}
+	const vector<float> &els_scSeedE2x5Bottom()
+	{
+		if (not els_scSeedE2x5Bottom_isLoaded) {
+			if (els_scSeedE2x5Bottom_branch != 0) {
+				els_scSeedE2x5Bottom_branch->GetEntry(index);
+			} else { 
+				printf("branch els_scSeedE2x5Bottom_branch does not exist!\n");
+				exit(1);
+			}
+			els_scSeedE2x5Bottom_isLoaded = true;
+		}
+		return els_scSeedE2x5Bottom_;
+	}
+	const vector<float> &els_scSeedE2x5Left()
+	{
+		if (not els_scSeedE2x5Left_isLoaded) {
+			if (els_scSeedE2x5Left_branch != 0) {
+				els_scSeedE2x5Left_branch->GetEntry(index);
+			} else { 
+				printf("branch els_scSeedE2x5Left_branch does not exist!\n");
+				exit(1);
+			}
+			els_scSeedE2x5Left_isLoaded = true;
+		}
+		return els_scSeedE2x5Left_;
+	}
+	const vector<float> &els_scSeedE2x5Right()
+	{
+		if (not els_scSeedE2x5Right_isLoaded) {
+			if (els_scSeedE2x5Right_branch != 0) {
+				els_scSeedE2x5Right_branch->GetEntry(index);
+			} else { 
+				printf("branch els_scSeedE2x5Right_branch does not exist!\n");
+				exit(1);
+			}
+			els_scSeedE2x5Right_isLoaded = true;
+		}
+		return els_scSeedE2x5Right_;
+	}
+	const vector<float> &els_scSeedE2x5Top()
+	{
+		if (not els_scSeedE2x5Top_isLoaded) {
+			if (els_scSeedE2x5Top_branch != 0) {
+				els_scSeedE2x5Top_branch->GetEntry(index);
+			} else { 
+				printf("branch els_scSeedE2x5Top_branch does not exist!\n");
+				exit(1);
+			}
+			els_scSeedE2x5Top_isLoaded = true;
+		}
+		return els_scSeedE2x5Top_;
+	}
+	const vector<float> &els_scSeedE3x3()
+	{
+		if (not els_scSeedE3x3_isLoaded) {
+			if (els_scSeedE3x3_branch != 0) {
+				els_scSeedE3x3_branch->GetEntry(index);
+			} else { 
+				printf("branch els_scSeedE3x3_branch does not exist!\n");
+				exit(1);
+			}
+			els_scSeedE3x3_isLoaded = true;
+		}
+		return els_scSeedE3x3_;
+	}
+	const vector<float> &els_scSeedEBottom()
+	{
+		if (not els_scSeedEBottom_isLoaded) {
+			if (els_scSeedEBottom_branch != 0) {
+				els_scSeedEBottom_branch->GetEntry(index);
+			} else { 
+				printf("branch els_scSeedEBottom_branch does not exist!\n");
+				exit(1);
+			}
+			els_scSeedEBottom_isLoaded = true;
+		}
+		return els_scSeedEBottom_;
+	}
+	const vector<float> &els_scSeedELeft()
+	{
+		if (not els_scSeedELeft_isLoaded) {
+			if (els_scSeedELeft_branch != 0) {
+				els_scSeedELeft_branch->GetEntry(index);
+			} else { 
+				printf("branch els_scSeedELeft_branch does not exist!\n");
+				exit(1);
+			}
+			els_scSeedELeft_isLoaded = true;
+		}
+		return els_scSeedELeft_;
+	}
+	const vector<float> &els_scSeedERight()
+	{
+		if (not els_scSeedERight_isLoaded) {
+			if (els_scSeedERight_branch != 0) {
+				els_scSeedERight_branch->GetEntry(index);
+			} else { 
+				printf("branch els_scSeedERight_branch does not exist!\n");
+				exit(1);
+			}
+			els_scSeedERight_isLoaded = true;
+		}
+		return els_scSeedERight_;
+	}
+	const vector<float> &els_scSeedETop()
+	{
+		if (not els_scSeedETop_isLoaded) {
+			if (els_scSeedETop_branch != 0) {
+				els_scSeedETop_branch->GetEntry(index);
+			} else { 
+				printf("branch els_scSeedETop_branch does not exist!\n");
+				exit(1);
+			}
+			els_scSeedETop_isLoaded = true;
+		}
+		return els_scSeedETop_;
+	}
+	const vector<float> &els_scSeedEmax()
+	{
+		if (not els_scSeedEmax_isLoaded) {
+			if (els_scSeedEmax_branch != 0) {
+				els_scSeedEmax_branch->GetEntry(index);
+			} else { 
+				printf("branch els_scSeedEmax_branch does not exist!\n");
+				exit(1);
+			}
+			els_scSeedEmax_isLoaded = true;
+		}
+		return els_scSeedEmax_;
+	}
+	const vector<float> &els_scSeedEta()
+	{
+		if (not els_scSeedEta_isLoaded) {
+			if (els_scSeedEta_branch != 0) {
+				els_scSeedEta_branch->GetEntry(index);
+			} else { 
+				printf("branch els_scSeedEta_branch does not exist!\n");
+				exit(1);
+			}
+			els_scSeedEta_isLoaded = true;
+		}
+		return els_scSeedEta_;
+	}
+	const vector<float> &els_scSeedLeftRightAsym()
+	{
+		if (not els_scSeedLeftRightAsym_isLoaded) {
+			if (els_scSeedLeftRightAsym_branch != 0) {
+				els_scSeedLeftRightAsym_branch->GetEntry(index);
+			} else { 
+				printf("branch els_scSeedLeftRightAsym_branch does not exist!\n");
+				exit(1);
+			}
+			els_scSeedLeftRightAsym_isLoaded = true;
+		}
+		return els_scSeedLeftRightAsym_;
+	}
+	const vector<float> &els_scSeedPhi()
+	{
+		if (not els_scSeedPhi_isLoaded) {
+			if (els_scSeedPhi_branch != 0) {
+				els_scSeedPhi_branch->GetEntry(index);
+			} else { 
+				printf("branch els_scSeedPhi_branch does not exist!\n");
+				exit(1);
+			}
+			els_scSeedPhi_isLoaded = true;
+		}
+		return els_scSeedPhi_;
+	}
+	const vector<float> &els_scSeedSigmaIetaIphi()
+	{
+		if (not els_scSeedSigmaIetaIphi_isLoaded) {
+			if (els_scSeedSigmaIetaIphi_branch != 0) {
+				els_scSeedSigmaIetaIphi_branch->GetEntry(index);
+			} else { 
+				printf("branch els_scSeedSigmaIetaIphi_branch does not exist!\n");
+				exit(1);
+			}
+			els_scSeedSigmaIetaIphi_isLoaded = true;
+		}
+		return els_scSeedSigmaIetaIphi_;
+	}
+	const vector<float> &els_scSeedSize()
+	{
+		if (not els_scSeedSize_isLoaded) {
+			if (els_scSeedSize_branch != 0) {
+				els_scSeedSize_branch->GetEntry(index);
+			} else { 
+				printf("branch els_scSeedSize_branch does not exist!\n");
+				exit(1);
+			}
+			els_scSeedSize_isLoaded = true;
+		}
+		return els_scSeedSize_;
+	}
+	const vector<float> &els_scSeedTopBottomAsym()
+	{
+		if (not els_scSeedTopBottomAsym_isLoaded) {
+			if (els_scSeedTopBottomAsym_branch != 0) {
+				els_scSeedTopBottomAsym_branch->GetEntry(index);
+			} else { 
+				printf("branch els_scSeedTopBottomAsym_branch does not exist!\n");
+				exit(1);
+			}
+			els_scSeedTopBottomAsym_isLoaded = true;
+		}
+		return els_scSeedTopBottomAsym_;
 	}
 	const vector<float> &els_sigmaEtaEta()
 	{
@@ -15290,6 +17059,19 @@ void LoadAllBranches()
 		}
 		return pfcands_mass_;
 	}
+	const vector<float> &pfcands_phiAtVtx()
+	{
+		if (not pfcands_phiAtVtx_isLoaded) {
+			if (pfcands_phiAtVtx_branch != 0) {
+				pfcands_phiAtVtx_branch->GetEntry(index);
+			} else { 
+				printf("branch pfcands_phiAtVtx_branch does not exist!\n");
+				exit(1);
+			}
+			pfcands_phiAtVtx_isLoaded = true;
+		}
+		return pfcands_phiAtVtx_;
+	}
 	const vector<float> &pfjets_area()
 	{
 		if (not pfjets_area_isLoaded) {
@@ -15679,6 +17461,123 @@ void LoadAllBranches()
 			photons_chargedHadronIso_isLoaded = true;
 		}
 		return photons_chargedHadronIso_;
+	}
+	const vector<float> &photons_clusterMaxDR()
+	{
+		if (not photons_clusterMaxDR_isLoaded) {
+			if (photons_clusterMaxDR_branch != 0) {
+				photons_clusterMaxDR_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_clusterMaxDR_branch does not exist!\n");
+				exit(1);
+			}
+			photons_clusterMaxDR_isLoaded = true;
+		}
+		return photons_clusterMaxDR_;
+	}
+	const vector<float> &photons_clusterMaxDRDEta()
+	{
+		if (not photons_clusterMaxDRDEta_isLoaded) {
+			if (photons_clusterMaxDRDEta_branch != 0) {
+				photons_clusterMaxDRDEta_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_clusterMaxDRDEta_branch does not exist!\n");
+				exit(1);
+			}
+			photons_clusterMaxDRDEta_isLoaded = true;
+		}
+		return photons_clusterMaxDRDEta_;
+	}
+	const vector<float> &photons_clusterMaxDRDPhi()
+	{
+		if (not photons_clusterMaxDRDPhi_isLoaded) {
+			if (photons_clusterMaxDRDPhi_branch != 0) {
+				photons_clusterMaxDRDPhi_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_clusterMaxDRDPhi_branch does not exist!\n");
+				exit(1);
+			}
+			photons_clusterMaxDRDPhi_isLoaded = true;
+		}
+		return photons_clusterMaxDRDPhi_;
+	}
+	const vector<float> &photons_clusterMaxDRRawEnergy()
+	{
+		if (not photons_clusterMaxDRRawEnergy_isLoaded) {
+			if (photons_clusterMaxDRRawEnergy_branch != 0) {
+				photons_clusterMaxDRRawEnergy_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_clusterMaxDRRawEnergy_branch does not exist!\n");
+				exit(1);
+			}
+			photons_clusterMaxDRRawEnergy_isLoaded = true;
+		}
+		return photons_clusterMaxDRRawEnergy_;
+	}
+	const vector<float> &photons_clustersMeanDEtaToSeed()
+	{
+		if (not photons_clustersMeanDEtaToSeed_isLoaded) {
+			if (photons_clustersMeanDEtaToSeed_branch != 0) {
+				photons_clustersMeanDEtaToSeed_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_clustersMeanDEtaToSeed_branch does not exist!\n");
+				exit(1);
+			}
+			photons_clustersMeanDEtaToSeed_isLoaded = true;
+		}
+		return photons_clustersMeanDEtaToSeed_;
+	}
+	const vector<float> &photons_clustersMeanDPhiToSeed()
+	{
+		if (not photons_clustersMeanDPhiToSeed_isLoaded) {
+			if (photons_clustersMeanDPhiToSeed_branch != 0) {
+				photons_clustersMeanDPhiToSeed_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_clustersMeanDPhiToSeed_branch does not exist!\n");
+				exit(1);
+			}
+			photons_clustersMeanDPhiToSeed_isLoaded = true;
+		}
+		return photons_clustersMeanDPhiToSeed_;
+	}
+	const vector<float> &photons_clustersMeanDRToSeed()
+	{
+		if (not photons_clustersMeanDRToSeed_isLoaded) {
+			if (photons_clustersMeanDRToSeed_branch != 0) {
+				photons_clustersMeanDRToSeed_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_clustersMeanDRToSeed_branch does not exist!\n");
+				exit(1);
+			}
+			photons_clustersMeanDRToSeed_isLoaded = true;
+		}
+		return photons_clustersMeanDRToSeed_;
+	}
+	const vector<float> &photons_clustersMeanRawEnergy()
+	{
+		if (not photons_clustersMeanRawEnergy_isLoaded) {
+			if (photons_clustersMeanRawEnergy_branch != 0) {
+				photons_clustersMeanRawEnergy_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_clustersMeanRawEnergy_branch does not exist!\n");
+				exit(1);
+			}
+			photons_clustersMeanRawEnergy_isLoaded = true;
+		}
+		return photons_clustersMeanRawEnergy_;
+	}
+	const vector<float> &photons_clustersRMSRawEnergy()
+	{
+		if (not photons_clustersRMSRawEnergy_isLoaded) {
+			if (photons_clustersRMSRawEnergy_branch != 0) {
+				photons_clustersRMSRawEnergy_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_clustersRMSRawEnergy_branch does not exist!\n");
+				exit(1);
+			}
+			photons_clustersRMSRawEnergy_isLoaded = true;
+		}
+		return photons_clustersRMSRawEnergy_;
 	}
 	const vector<float> &photons_e1x5()
 	{
@@ -16226,6 +18125,474 @@ void LoadAllBranches()
 		}
 		return photons_recoPhotonIso_;
 	}
+	const vector<float> &photonsscEtaWidth()
+	{
+		if (not photonsscEtaWidth_isLoaded) {
+			if (photonsscEtaWidth_branch != 0) {
+				photonsscEtaWidth_branch->GetEntry(index);
+			} else { 
+				printf("branch photonsscEtaWidth_branch does not exist!\n");
+				exit(1);
+			}
+			photonsscEtaWidth_isLoaded = true;
+		}
+		return photonsscEtaWidth_;
+	}
+	const vector<float> &photons_scIsEB()
+	{
+		if (not photons_scIsEB_isLoaded) {
+			if (photons_scIsEB_branch != 0) {
+				photons_scIsEB_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_scIsEB_branch does not exist!\n");
+				exit(1);
+			}
+			photons_scIsEB_isLoaded = true;
+		}
+		return photons_scIsEB_;
+	}
+	const vector<float> &photonsscPhiWidth()
+	{
+		if (not photonsscPhiWidth_isLoaded) {
+			if (photonsscPhiWidth_branch != 0) {
+				photonsscPhiWidth_branch->GetEntry(index);
+			} else { 
+				printf("branch photonsscPhiWidth_branch does not exist!\n");
+				exit(1);
+			}
+			photonsscPhiWidth_isLoaded = true;
+		}
+		return photonsscPhiWidth_;
+	}
+	const vector<float> &photons_scPreshowerEnergyPlane1()
+	{
+		if (not photons_scPreshowerEnergyPlane1_isLoaded) {
+			if (photons_scPreshowerEnergyPlane1_branch != 0) {
+				photons_scPreshowerEnergyPlane1_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_scPreshowerEnergyPlane1_branch does not exist!\n");
+				exit(1);
+			}
+			photons_scPreshowerEnergyPlane1_isLoaded = true;
+		}
+		return photons_scPreshowerEnergyPlane1_;
+	}
+	const vector<float> &photons_scPreshowerEnergyPlane2()
+	{
+		if (not photons_scPreshowerEnergyPlane2_isLoaded) {
+			if (photons_scPreshowerEnergyPlane2_branch != 0) {
+				photons_scPreshowerEnergyPlane2_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_scPreshowerEnergyPlane2_branch does not exist!\n");
+				exit(1);
+			}
+			photons_scPreshowerEnergyPlane2_isLoaded = true;
+		}
+		return photons_scPreshowerEnergyPlane2_;
+	}
+	const vector<float> &photons_scR()
+	{
+		if (not photons_scR_isLoaded) {
+			if (photons_scR_branch != 0) {
+				photons_scR_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_scR_branch does not exist!\n");
+				exit(1);
+			}
+			photons_scR_isLoaded = true;
+		}
+		return photons_scR_;
+	}
+	const vector<float> &photons_scSeed2x5LeftRightAsym()
+	{
+		if (not photons_scSeed2x5LeftRightAsym_isLoaded) {
+			if (photons_scSeed2x5LeftRightAsym_branch != 0) {
+				photons_scSeed2x5LeftRightAsym_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_scSeed2x5LeftRightAsym_branch does not exist!\n");
+				exit(1);
+			}
+			photons_scSeed2x5LeftRightAsym_isLoaded = true;
+		}
+		return photons_scSeed2x5LeftRightAsym_;
+	}
+	const vector<float> &photons_scSeed2x5TopBottomAsym()
+	{
+		if (not photons_scSeed2x5TopBottomAsym_isLoaded) {
+			if (photons_scSeed2x5TopBottomAsym_branch != 0) {
+				photons_scSeed2x5TopBottomAsym_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_scSeed2x5TopBottomAsym_branch does not exist!\n");
+				exit(1);
+			}
+			photons_scSeed2x5TopBottomAsym_isLoaded = true;
+		}
+		return photons_scSeed2x5TopBottomAsym_;
+	}
+	const vector<float> &photonsscSeedCalibratedEnergy()
+	{
+		if (not photonsscSeedCalibratedEnergy_isLoaded) {
+			if (photonsscSeedCalibratedEnergy_branch != 0) {
+				photonsscSeedCalibratedEnergy_branch->GetEntry(index);
+			} else { 
+				printf("branch photonsscSeedCalibratedEnergy_branch does not exist!\n");
+				exit(1);
+			}
+			photonsscSeedCalibratedEnergy_isLoaded = true;
+		}
+		return photonsscSeedCalibratedEnergy_;
+	}
+	const vector<float> &photons_scSeedCryEta()
+	{
+		if (not photons_scSeedCryEta_isLoaded) {
+			if (photons_scSeedCryEta_branch != 0) {
+				photons_scSeedCryEta_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_scSeedCryEta_branch does not exist!\n");
+				exit(1);
+			}
+			photons_scSeedCryEta_isLoaded = true;
+		}
+		return photons_scSeedCryEta_;
+	}
+	const vector<float> &photons_scSeedCryIeta()
+	{
+		if (not photons_scSeedCryIeta_isLoaded) {
+			if (photons_scSeedCryIeta_branch != 0) {
+				photons_scSeedCryIeta_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_scSeedCryIeta_branch does not exist!\n");
+				exit(1);
+			}
+			photons_scSeedCryIeta_isLoaded = true;
+		}
+		return photons_scSeedCryIeta_;
+	}
+	const vector<float> &photons_scSeedCryIphi()
+	{
+		if (not photons_scSeedCryIphi_isLoaded) {
+			if (photons_scSeedCryIphi_branch != 0) {
+				photons_scSeedCryIphi_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_scSeedCryIphi_branch does not exist!\n");
+				exit(1);
+			}
+			photons_scSeedCryIphi_isLoaded = true;
+		}
+		return photons_scSeedCryIphi_;
+	}
+	const vector<float> &photons_scSeedCryIx()
+	{
+		if (not photons_scSeedCryIx_isLoaded) {
+			if (photons_scSeedCryIx_branch != 0) {
+				photons_scSeedCryIx_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_scSeedCryIx_branch does not exist!\n");
+				exit(1);
+			}
+			photons_scSeedCryIx_isLoaded = true;
+		}
+		return photons_scSeedCryIx_;
+	}
+	const vector<float> &photons_scSeedCryIy()
+	{
+		if (not photons_scSeedCryIy_isLoaded) {
+			if (photons_scSeedCryIy_branch != 0) {
+				photons_scSeedCryIy_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_scSeedCryIy_branch does not exist!\n");
+				exit(1);
+			}
+			photons_scSeedCryIy_isLoaded = true;
+		}
+		return photons_scSeedCryIy_;
+	}
+	const vector<float> &photons_scSeedCryPhi()
+	{
+		if (not photons_scSeedCryPhi_isLoaded) {
+			if (photons_scSeedCryPhi_branch != 0) {
+				photons_scSeedCryPhi_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_scSeedCryPhi_branch does not exist!\n");
+				exit(1);
+			}
+			photons_scSeedCryPhi_isLoaded = true;
+		}
+		return photons_scSeedCryPhi_;
+	}
+	const vector<float> &photons_scSeedCryX()
+	{
+		if (not photons_scSeedCryX_isLoaded) {
+			if (photons_scSeedCryX_branch != 0) {
+				photons_scSeedCryX_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_scSeedCryX_branch does not exist!\n");
+				exit(1);
+			}
+			photons_scSeedCryX_isLoaded = true;
+		}
+		return photons_scSeedCryX_;
+	}
+	const vector<float> &photons_scSeedCryY()
+	{
+		if (not photons_scSeedCryY_isLoaded) {
+			if (photons_scSeedCryY_branch != 0) {
+				photons_scSeedCryY_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_scSeedCryY_branch does not exist!\n");
+				exit(1);
+			}
+			photons_scSeedCryY_isLoaded = true;
+		}
+		return photons_scSeedCryY_;
+	}
+	const vector<float> &photons_scSeedE2nd()
+	{
+		if (not photons_scSeedE2nd_isLoaded) {
+			if (photons_scSeedE2nd_branch != 0) {
+				photons_scSeedE2nd_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_scSeedE2nd_branch does not exist!\n");
+				exit(1);
+			}
+			photons_scSeedE2nd_isLoaded = true;
+		}
+		return photons_scSeedE2nd_;
+	}
+	const vector<float> &photons_scSeedE2x5Bottom()
+	{
+		if (not photons_scSeedE2x5Bottom_isLoaded) {
+			if (photons_scSeedE2x5Bottom_branch != 0) {
+				photons_scSeedE2x5Bottom_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_scSeedE2x5Bottom_branch does not exist!\n");
+				exit(1);
+			}
+			photons_scSeedE2x5Bottom_isLoaded = true;
+		}
+		return photons_scSeedE2x5Bottom_;
+	}
+	const vector<float> &photons_scSeedE2x5Left()
+	{
+		if (not photons_scSeedE2x5Left_isLoaded) {
+			if (photons_scSeedE2x5Left_branch != 0) {
+				photons_scSeedE2x5Left_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_scSeedE2x5Left_branch does not exist!\n");
+				exit(1);
+			}
+			photons_scSeedE2x5Left_isLoaded = true;
+		}
+		return photons_scSeedE2x5Left_;
+	}
+	const vector<float> &photons_scSeedE2x5Right()
+	{
+		if (not photons_scSeedE2x5Right_isLoaded) {
+			if (photons_scSeedE2x5Right_branch != 0) {
+				photons_scSeedE2x5Right_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_scSeedE2x5Right_branch does not exist!\n");
+				exit(1);
+			}
+			photons_scSeedE2x5Right_isLoaded = true;
+		}
+		return photons_scSeedE2x5Right_;
+	}
+	const vector<float> &photons_scSeedE2x5Top()
+	{
+		if (not photons_scSeedE2x5Top_isLoaded) {
+			if (photons_scSeedE2x5Top_branch != 0) {
+				photons_scSeedE2x5Top_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_scSeedE2x5Top_branch does not exist!\n");
+				exit(1);
+			}
+			photons_scSeedE2x5Top_isLoaded = true;
+		}
+		return photons_scSeedE2x5Top_;
+	}
+	const vector<float> &photons_scSeedE3x3()
+	{
+		if (not photons_scSeedE3x3_isLoaded) {
+			if (photons_scSeedE3x3_branch != 0) {
+				photons_scSeedE3x3_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_scSeedE3x3_branch does not exist!\n");
+				exit(1);
+			}
+			photons_scSeedE3x3_isLoaded = true;
+		}
+		return photons_scSeedE3x3_;
+	}
+	const vector<float> &photons_scSeedEBottom()
+	{
+		if (not photons_scSeedEBottom_isLoaded) {
+			if (photons_scSeedEBottom_branch != 0) {
+				photons_scSeedEBottom_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_scSeedEBottom_branch does not exist!\n");
+				exit(1);
+			}
+			photons_scSeedEBottom_isLoaded = true;
+		}
+		return photons_scSeedEBottom_;
+	}
+	const vector<float> &photons_scSeedELeft()
+	{
+		if (not photons_scSeedELeft_isLoaded) {
+			if (photons_scSeedELeft_branch != 0) {
+				photons_scSeedELeft_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_scSeedELeft_branch does not exist!\n");
+				exit(1);
+			}
+			photons_scSeedELeft_isLoaded = true;
+		}
+		return photons_scSeedELeft_;
+	}
+	const vector<float> &photons_scSeedERight()
+	{
+		if (not photons_scSeedERight_isLoaded) {
+			if (photons_scSeedERight_branch != 0) {
+				photons_scSeedERight_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_scSeedERight_branch does not exist!\n");
+				exit(1);
+			}
+			photons_scSeedERight_isLoaded = true;
+		}
+		return photons_scSeedERight_;
+	}
+	const vector<float> &photons_scSeedETop()
+	{
+		if (not photons_scSeedETop_isLoaded) {
+			if (photons_scSeedETop_branch != 0) {
+				photons_scSeedETop_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_scSeedETop_branch does not exist!\n");
+				exit(1);
+			}
+			photons_scSeedETop_isLoaded = true;
+		}
+		return photons_scSeedETop_;
+	}
+	const vector<float> &photons_scSeedEmax()
+	{
+		if (not photons_scSeedEmax_isLoaded) {
+			if (photons_scSeedEmax_branch != 0) {
+				photons_scSeedEmax_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_scSeedEmax_branch does not exist!\n");
+				exit(1);
+			}
+			photons_scSeedEmax_isLoaded = true;
+		}
+		return photons_scSeedEmax_;
+	}
+	const vector<float> &photons_scSeedEta()
+	{
+		if (not photons_scSeedEta_isLoaded) {
+			if (photons_scSeedEta_branch != 0) {
+				photons_scSeedEta_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_scSeedEta_branch does not exist!\n");
+				exit(1);
+			}
+			photons_scSeedEta_isLoaded = true;
+		}
+		return photons_scSeedEta_;
+	}
+	const vector<float> &photons_scSeedLeftRightAsym()
+	{
+		if (not photons_scSeedLeftRightAsym_isLoaded) {
+			if (photons_scSeedLeftRightAsym_branch != 0) {
+				photons_scSeedLeftRightAsym_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_scSeedLeftRightAsym_branch does not exist!\n");
+				exit(1);
+			}
+			photons_scSeedLeftRightAsym_isLoaded = true;
+		}
+		return photons_scSeedLeftRightAsym_;
+	}
+	const vector<float> &photons_scSeedPhi()
+	{
+		if (not photons_scSeedPhi_isLoaded) {
+			if (photons_scSeedPhi_branch != 0) {
+				photons_scSeedPhi_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_scSeedPhi_branch does not exist!\n");
+				exit(1);
+			}
+			photons_scSeedPhi_isLoaded = true;
+		}
+		return photons_scSeedPhi_;
+	}
+	const vector<float> &photonsscSeedRawEnergy()
+	{
+		if (not photonsscSeedRawEnergy_isLoaded) {
+			if (photonsscSeedRawEnergy_branch != 0) {
+				photonsscSeedRawEnergy_branch->GetEntry(index);
+			} else { 
+				printf("branch photonsscSeedRawEnergy_branch does not exist!\n");
+				exit(1);
+			}
+			photonsscSeedRawEnergy_isLoaded = true;
+		}
+		return photonsscSeedRawEnergy_;
+	}
+	const vector<float> &photons_scSeedSigmaIetaIphi()
+	{
+		if (not photons_scSeedSigmaIetaIphi_isLoaded) {
+			if (photons_scSeedSigmaIetaIphi_branch != 0) {
+				photons_scSeedSigmaIetaIphi_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_scSeedSigmaIetaIphi_branch does not exist!\n");
+				exit(1);
+			}
+			photons_scSeedSigmaIetaIphi_isLoaded = true;
+		}
+		return photons_scSeedSigmaIetaIphi_;
+	}
+	const vector<float> &photonsscSeedSigmaIphiIphi()
+	{
+		if (not photonsscSeedSigmaIphiIphi_isLoaded) {
+			if (photonsscSeedSigmaIphiIphi_branch != 0) {
+				photonsscSeedSigmaIphiIphi_branch->GetEntry(index);
+			} else { 
+				printf("branch photonsscSeedSigmaIphiIphi_branch does not exist!\n");
+				exit(1);
+			}
+			photonsscSeedSigmaIphiIphi_isLoaded = true;
+		}
+		return photonsscSeedSigmaIphiIphi_;
+	}
+	const vector<float> &photons_scSeedSize()
+	{
+		if (not photons_scSeedSize_isLoaded) {
+			if (photons_scSeedSize_branch != 0) {
+				photons_scSeedSize_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_scSeedSize_branch does not exist!\n");
+				exit(1);
+			}
+			photons_scSeedSize_isLoaded = true;
+		}
+		return photons_scSeedSize_;
+	}
+	const vector<float> &photons_scSeedTopBottomAsym()
+	{
+		if (not photons_scSeedTopBottomAsym_isLoaded) {
+			if (photons_scSeedTopBottomAsym_branch != 0) {
+				photons_scSeedTopBottomAsym_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_scSeedTopBottomAsym_branch does not exist!\n");
+				exit(1);
+			}
+			photons_scSeedTopBottomAsym_isLoaded = true;
+		}
+		return photons_scSeedTopBottomAsym_;
+	}
 	const vector<float> &photons_sigmaEtaEta()
 	{
 		if (not photons_sigmaEtaEta_isLoaded) {
@@ -16746,18 +19113,148 @@ void LoadAllBranches()
 		}
 		return vtxs_zError_;
 	}
-	const vector<vector<float> > &pfjets_nonCHS_bDiscriminators()
+	const vector<vector<float> > &els_clusterCalibEnergy()
 	{
-		if (not pfjets_nonCHS_bDiscriminators_isLoaded) {
-			if (pfjets_nonCHS_bDiscriminators_branch != 0) {
-				pfjets_nonCHS_bDiscriminators_branch->GetEntry(index);
+		if (not els_clusterCalibEnergy_isLoaded) {
+			if (els_clusterCalibEnergy_branch != 0) {
+				els_clusterCalibEnergy_branch->GetEntry(index);
 			} else { 
-				printf("branch pfjets_nonCHS_bDiscriminators_branch does not exist!\n");
+				printf("branch els_clusterCalibEnergy_branch does not exist!\n");
 				exit(1);
 			}
-			pfjets_nonCHS_bDiscriminators_isLoaded = true;
+			els_clusterCalibEnergy_isLoaded = true;
 		}
-		return pfjets_nonCHS_bDiscriminators_;
+		return els_clusterCalibEnergy_;
+	}
+	const vector<vector<float> > &els_clusterDEtaToCentroid()
+	{
+		if (not els_clusterDEtaToCentroid_isLoaded) {
+			if (els_clusterDEtaToCentroid_branch != 0) {
+				els_clusterDEtaToCentroid_branch->GetEntry(index);
+			} else { 
+				printf("branch els_clusterDEtaToCentroid_branch does not exist!\n");
+				exit(1);
+			}
+			els_clusterDEtaToCentroid_isLoaded = true;
+		}
+		return els_clusterDEtaToCentroid_;
+	}
+	const vector<vector<float> > &els_clusterDEtaToSeed()
+	{
+		if (not els_clusterDEtaToSeed_isLoaded) {
+			if (els_clusterDEtaToSeed_branch != 0) {
+				els_clusterDEtaToSeed_branch->GetEntry(index);
+			} else { 
+				printf("branch els_clusterDEtaToSeed_branch does not exist!\n");
+				exit(1);
+			}
+			els_clusterDEtaToSeed_isLoaded = true;
+		}
+		return els_clusterDEtaToSeed_;
+	}
+	const vector<vector<float> > &els_clusterDPhiToCentroid()
+	{
+		if (not els_clusterDPhiToCentroid_isLoaded) {
+			if (els_clusterDPhiToCentroid_branch != 0) {
+				els_clusterDPhiToCentroid_branch->GetEntry(index);
+			} else { 
+				printf("branch els_clusterDPhiToCentroid_branch does not exist!\n");
+				exit(1);
+			}
+			els_clusterDPhiToCentroid_isLoaded = true;
+		}
+		return els_clusterDPhiToCentroid_;
+	}
+	const vector<vector<float> > &els_clusterDPhiToSeed()
+	{
+		if (not els_clusterDPhiToSeed_isLoaded) {
+			if (els_clusterDPhiToSeed_branch != 0) {
+				els_clusterDPhiToSeed_branch->GetEntry(index);
+			} else { 
+				printf("branch els_clusterDPhiToSeed_branch does not exist!\n");
+				exit(1);
+			}
+			els_clusterDPhiToSeed_isLoaded = true;
+		}
+		return els_clusterDPhiToSeed_;
+	}
+	const vector<vector<float> > &els_clusterEta()
+	{
+		if (not els_clusterEta_isLoaded) {
+			if (els_clusterEta_branch != 0) {
+				els_clusterEta_branch->GetEntry(index);
+			} else { 
+				printf("branch els_clusterEta_branch does not exist!\n");
+				exit(1);
+			}
+			els_clusterEta_isLoaded = true;
+		}
+		return els_clusterEta_;
+	}
+	const vector<vector<float> > &els_clusterPhi()
+	{
+		if (not els_clusterPhi_isLoaded) {
+			if (els_clusterPhi_branch != 0) {
+				els_clusterPhi_branch->GetEntry(index);
+			} else { 
+				printf("branch els_clusterPhi_branch does not exist!\n");
+				exit(1);
+			}
+			els_clusterPhi_isLoaded = true;
+		}
+		return els_clusterPhi_;
+	}
+	const vector<vector<float> > &els_clusterRawEnergy()
+	{
+		if (not els_clusterRawEnergy_isLoaded) {
+			if (els_clusterRawEnergy_branch != 0) {
+				els_clusterRawEnergy_branch->GetEntry(index);
+			} else { 
+				printf("branch els_clusterRawEnergy_branch does not exist!\n");
+				exit(1);
+			}
+			els_clusterRawEnergy_isLoaded = true;
+		}
+		return els_clusterRawEnergy_;
+	}
+	const vector<vector<float> > &els_psClusterEta()
+	{
+		if (not els_psClusterEta_isLoaded) {
+			if (els_psClusterEta_branch != 0) {
+				els_psClusterEta_branch->GetEntry(index);
+			} else { 
+				printf("branch els_psClusterEta_branch does not exist!\n");
+				exit(1);
+			}
+			els_psClusterEta_isLoaded = true;
+		}
+		return els_psClusterEta_;
+	}
+	const vector<vector<float> > &els_psClusterPhi()
+	{
+		if (not els_psClusterPhi_isLoaded) {
+			if (els_psClusterPhi_branch != 0) {
+				els_psClusterPhi_branch->GetEntry(index);
+			} else { 
+				printf("branch els_psClusterPhi_branch does not exist!\n");
+				exit(1);
+			}
+			els_psClusterPhi_isLoaded = true;
+		}
+		return els_psClusterPhi_;
+	}
+	const vector<vector<float> > &els_psClusterRawEnergy()
+	{
+		if (not els_psClusterRawEnergy_isLoaded) {
+			if (els_psClusterRawEnergy_branch != 0) {
+				els_psClusterRawEnergy_branch->GetEntry(index);
+			} else { 
+				printf("branch els_psClusterRawEnergy_branch does not exist!\n");
+				exit(1);
+			}
+			els_psClusterRawEnergy_isLoaded = true;
+		}
+		return els_psClusterRawEnergy_;
 	}
 	const vector<vector<float> > &mus_stationShowerDeltaR()
 	{
@@ -16823,6 +19320,149 @@ void LoadAllBranches()
 			taus_pf_IDs_isLoaded = true;
 		}
 		return taus_pf_IDs_;
+	}
+	const vector<vector<float> > &photons_clusterCalibEnergy()
+	{
+		if (not photons_clusterCalibEnergy_isLoaded) {
+			if (photons_clusterCalibEnergy_branch != 0) {
+				photons_clusterCalibEnergy_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_clusterCalibEnergy_branch does not exist!\n");
+				exit(1);
+			}
+			photons_clusterCalibEnergy_isLoaded = true;
+		}
+		return photons_clusterCalibEnergy_;
+	}
+	const vector<vector<float> > &photons_clusterDEtaToCentroid()
+	{
+		if (not photons_clusterDEtaToCentroid_isLoaded) {
+			if (photons_clusterDEtaToCentroid_branch != 0) {
+				photons_clusterDEtaToCentroid_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_clusterDEtaToCentroid_branch does not exist!\n");
+				exit(1);
+			}
+			photons_clusterDEtaToCentroid_isLoaded = true;
+		}
+		return photons_clusterDEtaToCentroid_;
+	}
+	const vector<vector<float> > &photons_clusterDEtaToSeed()
+	{
+		if (not photons_clusterDEtaToSeed_isLoaded) {
+			if (photons_clusterDEtaToSeed_branch != 0) {
+				photons_clusterDEtaToSeed_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_clusterDEtaToSeed_branch does not exist!\n");
+				exit(1);
+			}
+			photons_clusterDEtaToSeed_isLoaded = true;
+		}
+		return photons_clusterDEtaToSeed_;
+	}
+	const vector<vector<float> > &photons_clusterDPhiToCentroid()
+	{
+		if (not photons_clusterDPhiToCentroid_isLoaded) {
+			if (photons_clusterDPhiToCentroid_branch != 0) {
+				photons_clusterDPhiToCentroid_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_clusterDPhiToCentroid_branch does not exist!\n");
+				exit(1);
+			}
+			photons_clusterDPhiToCentroid_isLoaded = true;
+		}
+		return photons_clusterDPhiToCentroid_;
+	}
+	const vector<vector<float> > &photons_clusterDPhiToSeed()
+	{
+		if (not photons_clusterDPhiToSeed_isLoaded) {
+			if (photons_clusterDPhiToSeed_branch != 0) {
+				photons_clusterDPhiToSeed_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_clusterDPhiToSeed_branch does not exist!\n");
+				exit(1);
+			}
+			photons_clusterDPhiToSeed_isLoaded = true;
+		}
+		return photons_clusterDPhiToSeed_;
+	}
+	const vector<vector<float> > &photons_clusterEta()
+	{
+		if (not photons_clusterEta_isLoaded) {
+			if (photons_clusterEta_branch != 0) {
+				photons_clusterEta_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_clusterEta_branch does not exist!\n");
+				exit(1);
+			}
+			photons_clusterEta_isLoaded = true;
+		}
+		return photons_clusterEta_;
+	}
+	const vector<vector<float> > &photons_clusterPhi()
+	{
+		if (not photons_clusterPhi_isLoaded) {
+			if (photons_clusterPhi_branch != 0) {
+				photons_clusterPhi_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_clusterPhi_branch does not exist!\n");
+				exit(1);
+			}
+			photons_clusterPhi_isLoaded = true;
+		}
+		return photons_clusterPhi_;
+	}
+	const vector<vector<float> > &photons_clusterRawEnergy()
+	{
+		if (not photons_clusterRawEnergy_isLoaded) {
+			if (photons_clusterRawEnergy_branch != 0) {
+				photons_clusterRawEnergy_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_clusterRawEnergy_branch does not exist!\n");
+				exit(1);
+			}
+			photons_clusterRawEnergy_isLoaded = true;
+		}
+		return photons_clusterRawEnergy_;
+	}
+	const vector<vector<float> > &photons_psClusterEta()
+	{
+		if (not photons_psClusterEta_isLoaded) {
+			if (photons_psClusterEta_branch != 0) {
+				photons_psClusterEta_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_psClusterEta_branch does not exist!\n");
+				exit(1);
+			}
+			photons_psClusterEta_isLoaded = true;
+		}
+		return photons_psClusterEta_;
+	}
+	const vector<vector<float> > &photons_psClusterPhi()
+	{
+		if (not photons_psClusterPhi_isLoaded) {
+			if (photons_psClusterPhi_branch != 0) {
+				photons_psClusterPhi_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_psClusterPhi_branch does not exist!\n");
+				exit(1);
+			}
+			photons_psClusterPhi_isLoaded = true;
+		}
+		return photons_psClusterPhi_;
+	}
+	const vector<vector<float> > &photons_psClusterRawEnergy()
+	{
+		if (not photons_psClusterRawEnergy_isLoaded) {
+			if (photons_psClusterRawEnergy_branch != 0) {
+				photons_psClusterRawEnergy_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_psClusterRawEnergy_branch does not exist!\n");
+				exit(1);
+			}
+			photons_psClusterRawEnergy_isLoaded = true;
+		}
+		return photons_psClusterRawEnergy_;
 	}
 	const vector<vector<float> > &puInfo_instLumi()
 	{
@@ -17214,109 +19854,96 @@ void LoadAllBranches()
 		}
 		return sparm_subProcessId_;
 	}
-	const vector<int> &pfjets_nonCHS_chargedHadronMultiplicity()
+	const vector<int> &pfjets_METToolbox_chargedHadronMultiplicity()
 	{
-		if (not pfjets_nonCHS_chargedHadronMultiplicity_isLoaded) {
-			if (pfjets_nonCHS_chargedHadronMultiplicity_branch != 0) {
-				pfjets_nonCHS_chargedHadronMultiplicity_branch->GetEntry(index);
+		if (not pfjets_METToolbox_chargedHadronMultiplicity_isLoaded) {
+			if (pfjets_METToolbox_chargedHadronMultiplicity_branch != 0) {
+				pfjets_METToolbox_chargedHadronMultiplicity_branch->GetEntry(index);
 			} else { 
-				printf("branch pfjets_nonCHS_chargedHadronMultiplicity_branch does not exist!\n");
+				printf("branch pfjets_METToolbox_chargedHadronMultiplicity_branch does not exist!\n");
 				exit(1);
 			}
-			pfjets_nonCHS_chargedHadronMultiplicity_isLoaded = true;
+			pfjets_METToolbox_chargedHadronMultiplicity_isLoaded = true;
 		}
-		return pfjets_nonCHS_chargedHadronMultiplicity_;
+		return pfjets_METToolbox_chargedHadronMultiplicity_;
 	}
-	const vector<int> &pfjets_nonCHS_chargedMultiplicity()
+	const vector<int> &pfjets_METToolbox_chargedMultiplicity()
 	{
-		if (not pfjets_nonCHS_chargedMultiplicity_isLoaded) {
-			if (pfjets_nonCHS_chargedMultiplicity_branch != 0) {
-				pfjets_nonCHS_chargedMultiplicity_branch->GetEntry(index);
+		if (not pfjets_METToolbox_chargedMultiplicity_isLoaded) {
+			if (pfjets_METToolbox_chargedMultiplicity_branch != 0) {
+				pfjets_METToolbox_chargedMultiplicity_branch->GetEntry(index);
 			} else { 
-				printf("branch pfjets_nonCHS_chargedMultiplicity_branch does not exist!\n");
+				printf("branch pfjets_METToolbox_chargedMultiplicity_branch does not exist!\n");
 				exit(1);
 			}
-			pfjets_nonCHS_chargedMultiplicity_isLoaded = true;
+			pfjets_METToolbox_chargedMultiplicity_isLoaded = true;
 		}
-		return pfjets_nonCHS_chargedMultiplicity_;
+		return pfjets_METToolbox_chargedMultiplicity_;
 	}
-	const vector<int> &pfjets_nonCHS_electronMultiplicity()
+	const vector<int> &pfjets_METToolbox_electronMultiplicity()
 	{
-		if (not pfjets_nonCHS_electronMultiplicity_isLoaded) {
-			if (pfjets_nonCHS_electronMultiplicity_branch != 0) {
-				pfjets_nonCHS_electronMultiplicity_branch->GetEntry(index);
+		if (not pfjets_METToolbox_electronMultiplicity_isLoaded) {
+			if (pfjets_METToolbox_electronMultiplicity_branch != 0) {
+				pfjets_METToolbox_electronMultiplicity_branch->GetEntry(index);
 			} else { 
-				printf("branch pfjets_nonCHS_electronMultiplicity_branch does not exist!\n");
+				printf("branch pfjets_METToolbox_electronMultiplicity_branch does not exist!\n");
 				exit(1);
 			}
-			pfjets_nonCHS_electronMultiplicity_isLoaded = true;
+			pfjets_METToolbox_electronMultiplicity_isLoaded = true;
 		}
-		return pfjets_nonCHS_electronMultiplicity_;
+		return pfjets_METToolbox_electronMultiplicity_;
 	}
-	const vector<int> &pfjets_nonCHS_muonMultiplicity()
+	const vector<int> &pfjets_METToolbox_muonMultiplicity()
 	{
-		if (not pfjets_nonCHS_muonMultiplicity_isLoaded) {
-			if (pfjets_nonCHS_muonMultiplicity_branch != 0) {
-				pfjets_nonCHS_muonMultiplicity_branch->GetEntry(index);
+		if (not pfjets_METToolbox_muonMultiplicity_isLoaded) {
+			if (pfjets_METToolbox_muonMultiplicity_branch != 0) {
+				pfjets_METToolbox_muonMultiplicity_branch->GetEntry(index);
 			} else { 
-				printf("branch pfjets_nonCHS_muonMultiplicity_branch does not exist!\n");
+				printf("branch pfjets_METToolbox_muonMultiplicity_branch does not exist!\n");
 				exit(1);
 			}
-			pfjets_nonCHS_muonMultiplicity_isLoaded = true;
+			pfjets_METToolbox_muonMultiplicity_isLoaded = true;
 		}
-		return pfjets_nonCHS_muonMultiplicity_;
+		return pfjets_METToolbox_muonMultiplicity_;
 	}
-	const vector<int> &pfjets_nonCHS_neutralHadronMultiplicity()
+	const vector<int> &pfjets_METToolbox_neutralHadronMultiplicity()
 	{
-		if (not pfjets_nonCHS_neutralHadronMultiplicity_isLoaded) {
-			if (pfjets_nonCHS_neutralHadronMultiplicity_branch != 0) {
-				pfjets_nonCHS_neutralHadronMultiplicity_branch->GetEntry(index);
+		if (not pfjets_METToolbox_neutralHadronMultiplicity_isLoaded) {
+			if (pfjets_METToolbox_neutralHadronMultiplicity_branch != 0) {
+				pfjets_METToolbox_neutralHadronMultiplicity_branch->GetEntry(index);
 			} else { 
-				printf("branch pfjets_nonCHS_neutralHadronMultiplicity_branch does not exist!\n");
+				printf("branch pfjets_METToolbox_neutralHadronMultiplicity_branch does not exist!\n");
 				exit(1);
 			}
-			pfjets_nonCHS_neutralHadronMultiplicity_isLoaded = true;
+			pfjets_METToolbox_neutralHadronMultiplicity_isLoaded = true;
 		}
-		return pfjets_nonCHS_neutralHadronMultiplicity_;
+		return pfjets_METToolbox_neutralHadronMultiplicity_;
 	}
-	const vector<int> &pfjets_nonCHS_neutralMultiplicity()
+	const vector<int> &pfjets_METToolbox_neutralMultiplicity()
 	{
-		if (not pfjets_nonCHS_neutralMultiplicity_isLoaded) {
-			if (pfjets_nonCHS_neutralMultiplicity_branch != 0) {
-				pfjets_nonCHS_neutralMultiplicity_branch->GetEntry(index);
+		if (not pfjets_METToolbox_neutralMultiplicity_isLoaded) {
+			if (pfjets_METToolbox_neutralMultiplicity_branch != 0) {
+				pfjets_METToolbox_neutralMultiplicity_branch->GetEntry(index);
 			} else { 
-				printf("branch pfjets_nonCHS_neutralMultiplicity_branch does not exist!\n");
+				printf("branch pfjets_METToolbox_neutralMultiplicity_branch does not exist!\n");
 				exit(1);
 			}
-			pfjets_nonCHS_neutralMultiplicity_isLoaded = true;
+			pfjets_METToolbox_neutralMultiplicity_isLoaded = true;
 		}
-		return pfjets_nonCHS_neutralMultiplicity_;
+		return pfjets_METToolbox_neutralMultiplicity_;
 	}
-	const vector<int> &pfjets_nonCHS_partonFlavour()
+	const vector<int> &pfjets_METToolbox_photonMultiplicity()
 	{
-		if (not pfjets_nonCHS_partonFlavour_isLoaded) {
-			if (pfjets_nonCHS_partonFlavour_branch != 0) {
-				pfjets_nonCHS_partonFlavour_branch->GetEntry(index);
+		if (not pfjets_METToolbox_photonMultiplicity_isLoaded) {
+			if (pfjets_METToolbox_photonMultiplicity_branch != 0) {
+				pfjets_METToolbox_photonMultiplicity_branch->GetEntry(index);
 			} else { 
-				printf("branch pfjets_nonCHS_partonFlavour_branch does not exist!\n");
+				printf("branch pfjets_METToolbox_photonMultiplicity_branch does not exist!\n");
 				exit(1);
 			}
-			pfjets_nonCHS_partonFlavour_isLoaded = true;
+			pfjets_METToolbox_photonMultiplicity_isLoaded = true;
 		}
-		return pfjets_nonCHS_partonFlavour_;
-	}
-	const vector<int> &pfjets_nonCHS_photonMultiplicity()
-	{
-		if (not pfjets_nonCHS_photonMultiplicity_isLoaded) {
-			if (pfjets_nonCHS_photonMultiplicity_branch != 0) {
-				pfjets_nonCHS_photonMultiplicity_branch->GetEntry(index);
-			} else { 
-				printf("branch pfjets_nonCHS_photonMultiplicity_branch does not exist!\n");
-				exit(1);
-			}
-			pfjets_nonCHS_photonMultiplicity_isLoaded = true;
-		}
-		return pfjets_nonCHS_photonMultiplicity_;
+		return pfjets_METToolbox_photonMultiplicity_;
 	}
 	const vector<int> &ak8jets_mc_id()
 	{
@@ -17682,6 +20309,32 @@ void LoadAllBranches()
 		}
 		return photons_mc_motherid_;
 	}
+	const vector<int> &els_N_ECALClusters()
+	{
+		if (not els_N_ECALClusters_isLoaded) {
+			if (els_N_ECALClusters_branch != 0) {
+				els_N_ECALClusters_branch->GetEntry(index);
+			} else { 
+				printf("branch els_N_ECALClusters_branch does not exist!\n");
+				exit(1);
+			}
+			els_N_ECALClusters_isLoaded = true;
+		}
+		return els_N_ECALClusters_;
+	}
+	const vector<int> &els_N_PSClusters()
+	{
+		if (not els_N_PSClusters_isLoaded) {
+			if (els_N_PSClusters_branch != 0) {
+				els_N_PSClusters_branch->GetEntry(index);
+			} else { 
+				printf("branch els_N_PSClusters_branch does not exist!\n");
+				exit(1);
+			}
+			els_N_PSClusters_isLoaded = true;
+		}
+		return els_N_PSClusters_;
+	}
 	const vector<int> &els_category()
 	{
 		if (not els_category_isLoaded) {
@@ -17785,6 +20438,45 @@ void LoadAllBranches()
 			els_fiduciality_isLoaded = true;
 		}
 		return els_fiduciality_;
+	}
+	const vector<int> &els_isEB()
+	{
+		if (not els_isEB_isLoaded) {
+			if (els_isEB_branch != 0) {
+				els_isEB_branch->GetEntry(index);
+			} else { 
+				printf("branch els_isEB_branch does not exist!\n");
+				exit(1);
+			}
+			els_isEB_isLoaded = true;
+		}
+		return els_isEB_;
+	}
+	const vector<int> &els_isEcalDriven()
+	{
+		if (not els_isEcalDriven_isLoaded) {
+			if (els_isEcalDriven_branch != 0) {
+				els_isEcalDriven_branch->GetEntry(index);
+			} else { 
+				printf("branch els_isEcalDriven_branch does not exist!\n");
+				exit(1);
+			}
+			els_isEcalDriven_isLoaded = true;
+		}
+		return els_isEcalDriven_;
+	}
+	const vector<int> &els_isTrackerDriven()
+	{
+		if (not els_isTrackerDriven_isLoaded) {
+			if (els_isTrackerDriven_branch != 0) {
+				els_isTrackerDriven_branch->GetEntry(index);
+			} else { 
+				printf("branch els_isTrackerDriven_branch does not exist!\n");
+				exit(1);
+			}
+			els_isTrackerDriven_isLoaded = true;
+		}
+		return els_isTrackerDriven_;
 	}
 	const vector<int> &els_lostHits()
 	{
@@ -19346,6 +22038,32 @@ void LoadAllBranches()
 		}
 		return taus_pf_charge_;
 	}
+	const vector<int> &photons_N_ECALClusters()
+	{
+		if (not photons_N_ECALClusters_isLoaded) {
+			if (photons_N_ECALClusters_branch != 0) {
+				photons_N_ECALClusters_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_N_ECALClusters_branch does not exist!\n");
+				exit(1);
+			}
+			photons_N_ECALClusters_isLoaded = true;
+		}
+		return photons_N_ECALClusters_;
+	}
+	const vector<int> &photons_N_PSClusters()
+	{
+		if (not photons_N_PSClusters_isLoaded) {
+			if (photons_N_PSClusters_branch != 0) {
+				photons_N_PSClusters_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_N_PSClusters_branch does not exist!\n");
+				exit(1);
+			}
+			photons_N_PSClusters_isLoaded = true;
+		}
+		return photons_N_PSClusters_;
+	}
 	const vector<int> &photons_fiduciality()
 	{
 		if (not photons_fiduciality_isLoaded) {
@@ -19358,6 +22076,19 @@ void LoadAllBranches()
 			photons_fiduciality_isLoaded = true;
 		}
 		return photons_fiduciality_;
+	}
+	const vector<int> &photons_isEB()
+	{
+		if (not photons_isEB_isLoaded) {
+			if (photons_isEB_branch != 0) {
+				photons_isEB_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_isEB_branch does not exist!\n");
+				exit(1);
+			}
+			photons_isEB_isLoaded = true;
+		}
+		return photons_isEB_;
 	}
 	const vector<int> &photons_photonID_loose()
 	{
@@ -19515,18 +22246,44 @@ void LoadAllBranches()
 		}
 		return vtxs_isValid_;
 	}
-	const vector<vector<int> > &pfjets_nonCHS_pfcandIndicies()
+	const vector<vector<int> > &pfjets_METToolbox_pfcandIndicies()
 	{
-		if (not pfjets_nonCHS_pfcandIndicies_isLoaded) {
-			if (pfjets_nonCHS_pfcandIndicies_branch != 0) {
-				pfjets_nonCHS_pfcandIndicies_branch->GetEntry(index);
+		if (not pfjets_METToolbox_pfcandIndicies_isLoaded) {
+			if (pfjets_METToolbox_pfcandIndicies_branch != 0) {
+				pfjets_METToolbox_pfcandIndicies_branch->GetEntry(index);
 			} else { 
-				printf("branch pfjets_nonCHS_pfcandIndicies_branch does not exist!\n");
+				printf("branch pfjets_METToolbox_pfcandIndicies_branch does not exist!\n");
 				exit(1);
 			}
-			pfjets_nonCHS_pfcandIndicies_isLoaded = true;
+			pfjets_METToolbox_pfcandIndicies_isLoaded = true;
 		}
-		return pfjets_nonCHS_pfcandIndicies_;
+		return pfjets_METToolbox_pfcandIndicies_;
+	}
+	const vector<vector<int> > &els_clusterInDynDPhi()
+	{
+		if (not els_clusterInDynDPhi_isLoaded) {
+			if (els_clusterInDynDPhi_branch != 0) {
+				els_clusterInDynDPhi_branch->GetEntry(index);
+			} else { 
+				printf("branch els_clusterInDynDPhi_branch does not exist!\n");
+				exit(1);
+			}
+			els_clusterInDynDPhi_isLoaded = true;
+		}
+		return els_clusterInDynDPhi_;
+	}
+	const vector<vector<int> > &els_clusterInMustache()
+	{
+		if (not els_clusterInMustache_isLoaded) {
+			if (els_clusterInMustache_branch != 0) {
+				els_clusterInMustache_branch->GetEntry(index);
+			} else { 
+				printf("branch els_clusterInMustache_branch does not exist!\n");
+				exit(1);
+			}
+			els_clusterInMustache_isLoaded = true;
+		}
+		return els_clusterInMustache_;
 	}
 	const vector<vector<int> > &els_PFCand_idx()
 	{
@@ -19631,6 +22388,32 @@ void LoadAllBranches()
 			pfjets_puppi_pfcandIndicies_isLoaded = true;
 		}
 		return pfjets_puppi_pfcandIndicies_;
+	}
+	const vector<vector<int> > &photons_clusterInDynDPhi()
+	{
+		if (not photons_clusterInDynDPhi_isLoaded) {
+			if (photons_clusterInDynDPhi_branch != 0) {
+				photons_clusterInDynDPhi_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_clusterInDynDPhi_branch does not exist!\n");
+				exit(1);
+			}
+			photons_clusterInDynDPhi_isLoaded = true;
+		}
+		return photons_clusterInDynDPhi_;
+	}
+	const vector<vector<int> > &photons_clusterInMustache()
+	{
+		if (not photons_clusterInMustache_isLoaded) {
+			if (photons_clusterInMustache_branch != 0) {
+				photons_clusterInMustache_branch->GetEntry(index);
+			} else { 
+				printf("branch photons_clusterInMustache_branch does not exist!\n");
+				exit(1);
+			}
+			photons_clusterInMustache_isLoaded = true;
+		}
+		return photons_clusterInMustache_;
 	}
 	const vector<vector<int> > &photons_PFCand_idx()
 	{
@@ -20307,19 +23090,6 @@ void LoadAllBranches()
 			genps_signalProcessID_isLoaded = true;
 		}
 		return genps_signalProcessID_;
-	}
-	unsigned int &evt_ngenjets()
-	{
-		if (not evt_ngenjets_isLoaded) {
-			if (evt_ngenjets_branch != 0) {
-				evt_ngenjets_branch->GetEntry(index);
-			} else { 
-				printf("branch evt_ngenjets_branch does not exist!\n");
-				exit(1);
-			}
-			evt_ngenjets_isLoaded = true;
-		}
-		return evt_ngenjets_;
 	}
 	unsigned int &mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg_version()
 	{
@@ -21192,6 +23962,19 @@ void LoadAllBranches()
 		}
 		return els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg_;
 	}
+	const vector<unsigned int> &hlt_l1prescales()
+	{
+		if (not hlt_l1prescales_isLoaded) {
+			if (hlt_l1prescales_branch != 0) {
+				hlt_l1prescales_branch->GetEntry(index);
+			} else { 
+				printf("branch hlt_l1prescales_branch does not exist!\n");
+				exit(1);
+			}
+			hlt_l1prescales_isLoaded = true;
+		}
+		return hlt_l1prescales_;
+	}
 	const vector<unsigned int> &hlt_prescales()
 	{
 		if (not hlt_prescales_isLoaded) {
@@ -21690,7 +24473,6 @@ extern CMS3 cms3;
 namespace tas {
 	const vector<string> &genweightsID();
 	const TBits &hlt_bits();
-	const vector<TString> &pfjets_nonCHS_bDiscriminatorNames();
 	const vector<TString> &evt_CMS3tag();
 	const vector<TString> &evt_dataset();
 	const vector<TString> &hlt_trigNames();
@@ -21699,6 +24481,7 @@ namespace tas {
 	const vector<TString> &taus_pf_IDnames();
 	const vector<TString> &sparm_comment();
 	const vector<TString> &sparm_names();
+	const vector<vector<TString> > &hlt_trigObjs_filters();
 	const bool &hcalnoise_HasBadRBXTS4TS5();
 	const bool &evt_cscTightHaloId();
 	const bool &evt_hbheFilter();
@@ -21733,7 +24516,14 @@ namespace tas {
 	const vector<bool> &mus_isRPCMuon();
 	const vector<bool> &mus_tightMatch();
 	const vector<bool> &mus_updatedSta();
+	const vector<bool> &pfcands_isGlobalMuon();
+	const vector<bool> &pfcands_isStandAloneMuon();
 	const vector<bool> &photons_haspixelSeed();
+	const vector<vector<bool> > &hlt_trigObjs_passLast();
+	const float &evt_METToolbox_pfmet();
+	const float &evt_METToolbox_pfmetPhi();
+	const float &evt_METToolbox_pfmetPhi_raw();
+	const float &evt_METToolbox_pfmet_raw();
 	const float &evt_bs_Xwidth();
 	const float &evt_bs_XwidthErr();
 	const float &evt_bs_Ywidth();
@@ -21800,9 +24590,9 @@ namespace tas {
 	const float &pdfinfo_scale();
 	const float &pdfinfo_x1();
 	const float &pdfinfo_x2();
-	const float &evt_fixgrid_rho_all();
-	const float &evt_fixgrid_rho_ctr();
-	const float &evt_fixgrid_rho_fwd();
+	const float &pfcandsevt_fixgrid_rho_all();
+	const float &pfcandsevt_fixgrid_rho_ctr();
+	const float &pfcandsevt_fixgrid_rho_fwd();
 	const float &evt_calomet();
 	const float &evt_calometPhi();
 	const float &evt_pfmet();
@@ -21821,7 +24611,7 @@ namespace tas {
 	const float &sparm_weight();
 	const float &sparm_xsec();
 	const ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> >  &evt_bsp4();
-	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &pfjets_nonCHS_p4();
+	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &pfjets_METToolbox_p4();
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &ak8jets_mc_gp_p4();
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &ak8jets_mc_p4();
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &els_mc_motherp4();
@@ -21843,7 +24633,6 @@ namespace tas {
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &genjets_p4NoMuNoNu();
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &genps_p4();
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &genps_prod_vtx();
-	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &genjets_p4();
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &hyp_ll_p4();
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &hyp_lt_p4();
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &hyp_p4();
@@ -21872,20 +24661,17 @@ namespace tas {
 	const vector<vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > > &hlt_trigObjs_p4();
 	const vector<vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > > &taus_pf_isocands_p4();
 	const vector<vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > > &taus_pf_signalcands_p4();
-	const vector<float> &pfjets_nonCHS_area();
-	const vector<float> &pfjets_nonCHS_chargedEmE();
-	const vector<float> &pfjets_nonCHS_chargedHadronE();
-	const vector<float> &pfjets_nonCHS_electronE();
-	const vector<float> &pfjets_nonCHS_hfEmE();
-	const vector<float> &pfjets_nonCHS_hfHadronE();
-	const vector<float> &pfjets_nonCHS_mass();
-	const vector<float> &pfjets_nonCHS_muonE();
-	const vector<float> &pfjets_nonCHS_neutralEmE();
-	const vector<float> &pfjets_nonCHS_neutralHadronE();
-	const vector<float> &pfjets_nonCHS_pfCombinedInclusiveSecondaryVertexV2BJetTag();
-	const vector<float> &pfjets_nonCHS_photonE();
-	const vector<float> &pfjets_nonCHS_pileupJetId();
-	const vector<float> &pfjets_nonCHS_undoJEC();
+	const vector<float> &pfjets_METToolbox_area();
+	const vector<float> &pfjets_METToolbox_chargedEmE();
+	const vector<float> &pfjets_METToolbox_chargedHadronE();
+	const vector<float> &pfjets_METToolbox_electronE();
+	const vector<float> &pfjets_METToolbox_hfEmE();
+	const vector<float> &pfjets_METToolbox_hfHadronE();
+	const vector<float> &pfjets_METToolbox_mass();
+	const vector<float> &pfjets_METToolbox_muonE();
+	const vector<float> &pfjets_METToolbox_neutralEmE();
+	const vector<float> &pfjets_METToolbox_neutralHadronE();
+	const vector<float> &pfjets_METToolbox_photonE();
 	const vector<float> &evt_bs_covMatrix();
 	const vector<float> &els_mc3dr();
 	const vector<float> &els_mcdr();
@@ -21907,6 +24693,15 @@ namespace tas {
 	const vector<float> &els_chi2();
 	const vector<float> &els_ckf_chi2();
 	const vector<float> &els_ckf_ndof();
+	const vector<float> &els_clusterMaxDR();
+	const vector<float> &els_clusterMaxDRDEta();
+	const vector<float> &els_clusterMaxDRDPhi();
+	const vector<float> &els_clusterMaxDRRawEnergy();
+	const vector<float> &els_clustersMeanDEtaToSeed();
+	const vector<float> &els_clustersMeanDPhiToSeed();
+	const vector<float> &els_clustersMeanDRToSeed();
+	const vector<float> &els_clustersMeanRawEnergy();
+	const vector<float> &els_clustersRMSRawEnergy();
 	const vector<float> &els_d0();
 	const vector<float> &els_d0Err();
 	const vector<float> &els_d0corr();
@@ -21979,6 +24774,37 @@ namespace tas {
 	const vector<float> &els_ptErrGsf();
 	const vector<float> &els_r9();
 	const vector<float> &els_r9_full5x5();
+	const vector<float> &els_scIsEB();
+	const vector<float> &els_scPreshowerEnergyPlane1();
+	const vector<float> &els_scPreshowerEnergyPlane2();
+	const vector<float> &els_scR();
+	const vector<float> &els_scSeed2x5LeftRightAsym();
+	const vector<float> &els_scSeed2x5TopBottomAsym();
+	const vector<float> &els_scSeedCryEta();
+	const vector<float> &els_scSeedCryIeta();
+	const vector<float> &els_scSeedCryIphi();
+	const vector<float> &els_scSeedCryIx();
+	const vector<float> &els_scSeedCryIy();
+	const vector<float> &els_scSeedCryPhi();
+	const vector<float> &els_scSeedCryX();
+	const vector<float> &els_scSeedCryY();
+	const vector<float> &els_scSeedE2nd();
+	const vector<float> &els_scSeedE2x5Bottom();
+	const vector<float> &els_scSeedE2x5Left();
+	const vector<float> &els_scSeedE2x5Right();
+	const vector<float> &els_scSeedE2x5Top();
+	const vector<float> &els_scSeedE3x3();
+	const vector<float> &els_scSeedEBottom();
+	const vector<float> &els_scSeedELeft();
+	const vector<float> &els_scSeedERight();
+	const vector<float> &els_scSeedETop();
+	const vector<float> &els_scSeedEmax();
+	const vector<float> &els_scSeedEta();
+	const vector<float> &els_scSeedLeftRightAsym();
+	const vector<float> &els_scSeedPhi();
+	const vector<float> &els_scSeedSigmaIetaIphi();
+	const vector<float> &els_scSeedSize();
+	const vector<float> &els_scSeedTopBottomAsym();
 	const vector<float> &els_sigmaEtaEta();
 	const vector<float> &els_sigmaEtaEta_full5x5();
 	const vector<float> &els_sigmaIEtaIEta();
@@ -22140,6 +24966,7 @@ namespace tas {
 	const vector<float> &mus_z0corr();
 	const vector<float> &pfcands_dz();
 	const vector<float> &pfcands_mass();
+	const vector<float> &pfcands_phiAtVtx();
 	const vector<float> &pfjets_area();
 	const vector<float> &pfjets_chargedEmE();
 	const vector<float> &pfjets_chargedHadronE();
@@ -22170,6 +24997,15 @@ namespace tas {
 	const vector<float> &pfjets_puppi_undoJEC();
 	const vector<float> &taus_pf_mass();
 	const vector<float> &photons_chargedHadronIso();
+	const vector<float> &photons_clusterMaxDR();
+	const vector<float> &photons_clusterMaxDRDEta();
+	const vector<float> &photons_clusterMaxDRDPhi();
+	const vector<float> &photons_clusterMaxDRRawEnergy();
+	const vector<float> &photons_clustersMeanDEtaToSeed();
+	const vector<float> &photons_clustersMeanDPhiToSeed();
+	const vector<float> &photons_clustersMeanDRToSeed();
+	const vector<float> &photons_clustersMeanRawEnergy();
+	const vector<float> &photons_clustersRMSRawEnergy();
 	const vector<float> &photons_e1x5();
 	const vector<float> &photons_e2x5Max();
 	const vector<float> &photons_e3x3();
@@ -22212,6 +25048,42 @@ namespace tas {
 	const vector<float> &photons_recoChargedHadronIso();
 	const vector<float> &photons_recoNeutralHadronIso();
 	const vector<float> &photons_recoPhotonIso();
+	const vector<float> &photonsscEtaWidth();
+	const vector<float> &photons_scIsEB();
+	const vector<float> &photonsscPhiWidth();
+	const vector<float> &photons_scPreshowerEnergyPlane1();
+	const vector<float> &photons_scPreshowerEnergyPlane2();
+	const vector<float> &photons_scR();
+	const vector<float> &photons_scSeed2x5LeftRightAsym();
+	const vector<float> &photons_scSeed2x5TopBottomAsym();
+	const vector<float> &photonsscSeedCalibratedEnergy();
+	const vector<float> &photons_scSeedCryEta();
+	const vector<float> &photons_scSeedCryIeta();
+	const vector<float> &photons_scSeedCryIphi();
+	const vector<float> &photons_scSeedCryIx();
+	const vector<float> &photons_scSeedCryIy();
+	const vector<float> &photons_scSeedCryPhi();
+	const vector<float> &photons_scSeedCryX();
+	const vector<float> &photons_scSeedCryY();
+	const vector<float> &photons_scSeedE2nd();
+	const vector<float> &photons_scSeedE2x5Bottom();
+	const vector<float> &photons_scSeedE2x5Left();
+	const vector<float> &photons_scSeedE2x5Right();
+	const vector<float> &photons_scSeedE2x5Top();
+	const vector<float> &photons_scSeedE3x3();
+	const vector<float> &photons_scSeedEBottom();
+	const vector<float> &photons_scSeedELeft();
+	const vector<float> &photons_scSeedERight();
+	const vector<float> &photons_scSeedETop();
+	const vector<float> &photons_scSeedEmax();
+	const vector<float> &photons_scSeedEta();
+	const vector<float> &photons_scSeedLeftRightAsym();
+	const vector<float> &photons_scSeedPhi();
+	const vector<float> &photonsscSeedRawEnergy();
+	const vector<float> &photons_scSeedSigmaIetaIphi();
+	const vector<float> &photonsscSeedSigmaIphiIphi();
+	const vector<float> &photons_scSeedSize();
+	const vector<float> &photons_scSeedTopBottomAsym();
 	const vector<float> &photons_sigmaEtaEta();
 	const vector<float> &photons_sigmaIEtaIEta();
 	const vector<float> &photons_tkIsoHollow03();
@@ -22252,12 +25124,33 @@ namespace tas {
 	const vector<float> &vtxs_xError();
 	const vector<float> &vtxs_yError();
 	const vector<float> &vtxs_zError();
-	const vector<vector<float> > &pfjets_nonCHS_bDiscriminators();
+	const vector<vector<float> > &els_clusterCalibEnergy();
+	const vector<vector<float> > &els_clusterDEtaToCentroid();
+	const vector<vector<float> > &els_clusterDEtaToSeed();
+	const vector<vector<float> > &els_clusterDPhiToCentroid();
+	const vector<vector<float> > &els_clusterDPhiToSeed();
+	const vector<vector<float> > &els_clusterEta();
+	const vector<vector<float> > &els_clusterPhi();
+	const vector<vector<float> > &els_clusterRawEnergy();
+	const vector<vector<float> > &els_psClusterEta();
+	const vector<vector<float> > &els_psClusterPhi();
+	const vector<vector<float> > &els_psClusterRawEnergy();
 	const vector<vector<float> > &mus_stationShowerDeltaR();
 	const vector<vector<float> > &mus_stationShowerSizeT();
 	const vector<vector<float> > &pfjets_bDiscriminators();
 	const vector<vector<float> > &pfjets_puppi_bDiscriminators();
 	const vector<vector<float> > &taus_pf_IDs();
+	const vector<vector<float> > &photons_clusterCalibEnergy();
+	const vector<vector<float> > &photons_clusterDEtaToCentroid();
+	const vector<vector<float> > &photons_clusterDEtaToSeed();
+	const vector<vector<float> > &photons_clusterDPhiToCentroid();
+	const vector<vector<float> > &photons_clusterDPhiToSeed();
+	const vector<vector<float> > &photons_clusterEta();
+	const vector<vector<float> > &photons_clusterPhi();
+	const vector<vector<float> > &photons_clusterRawEnergy();
+	const vector<vector<float> > &photons_psClusterEta();
+	const vector<vector<float> > &photons_psClusterPhi();
+	const vector<vector<float> > &photons_psClusterRawEnergy();
 	const vector<vector<float> > &puInfo_instLumi();
 	const vector<vector<float> > &vtxs_covMatrix();
 	const int &evt_bsType();
@@ -22288,14 +25181,13 @@ namespace tas {
 	const int &pdfinfo_id1();
 	const int &pdfinfo_id2();
 	const int &sparm_subProcessId();
-	const vector<int> &pfjets_nonCHS_chargedHadronMultiplicity();
-	const vector<int> &pfjets_nonCHS_chargedMultiplicity();
-	const vector<int> &pfjets_nonCHS_electronMultiplicity();
-	const vector<int> &pfjets_nonCHS_muonMultiplicity();
-	const vector<int> &pfjets_nonCHS_neutralHadronMultiplicity();
-	const vector<int> &pfjets_nonCHS_neutralMultiplicity();
-	const vector<int> &pfjets_nonCHS_partonFlavour();
-	const vector<int> &pfjets_nonCHS_photonMultiplicity();
+	const vector<int> &pfjets_METToolbox_chargedHadronMultiplicity();
+	const vector<int> &pfjets_METToolbox_chargedMultiplicity();
+	const vector<int> &pfjets_METToolbox_electronMultiplicity();
+	const vector<int> &pfjets_METToolbox_muonMultiplicity();
+	const vector<int> &pfjets_METToolbox_neutralHadronMultiplicity();
+	const vector<int> &pfjets_METToolbox_neutralMultiplicity();
+	const vector<int> &pfjets_METToolbox_photonMultiplicity();
 	const vector<int> &ak8jets_mc_id();
 	const vector<int> &els_mc3_id();
 	const vector<int> &els_mc3idx();
@@ -22324,6 +25216,8 @@ namespace tas {
 	const vector<int> &photons_mc_id();
 	const vector<int> &photons_mcidx();
 	const vector<int> &photons_mc_motherid();
+	const vector<int> &els_N_ECALClusters();
+	const vector<int> &els_N_PSClusters();
 	const vector<int> &els_category();
 	const vector<int> &els_charge();
 	const vector<int> &els_ckf_charge();
@@ -22332,6 +25226,9 @@ namespace tas {
 	const vector<int> &els_exp_innerlayers();
 	const vector<int> &els_exp_outerlayers();
 	const vector<int> &els_fiduciality();
+	const vector<int> &els_isEB();
+	const vector<int> &els_isEcalDriven();
+	const vector<int> &els_isTrackerDriven();
 	const vector<int> &els_lostHits();
 	const vector<int> &els_lost_pixelhits();
 	const vector<int> &els_mc_patMatch_id();
@@ -22452,7 +25349,10 @@ namespace tas {
 	const vector<int> &pfjets_puppi_partonFlavour();
 	const vector<int> &pfjets_puppi_photonMultiplicity();
 	const vector<int> &taus_pf_charge();
+	const vector<int> &photons_N_ECALClusters();
+	const vector<int> &photons_N_PSClusters();
 	const vector<int> &photons_fiduciality();
+	const vector<int> &photons_isEB();
 	const vector<int> &photons_photonID_loose();
 	const vector<int> &photons_photonID_tight();
 	const vector<int> &puInfo_bunchCrossing();
@@ -22465,7 +25365,9 @@ namespace tas {
 	const vector<int> &ak8jets_partonFlavour();
 	const vector<int> &vtxs_isFake();
 	const vector<int> &vtxs_isValid();
-	const vector<vector<int> > &pfjets_nonCHS_pfcandIndicies();
+	const vector<vector<int> > &pfjets_METToolbox_pfcandIndicies();
+	const vector<vector<int> > &els_clusterInDynDPhi();
+	const vector<vector<int> > &els_clusterInMustache();
 	const vector<vector<int> > &els_PFCand_idx();
 	const vector<vector<int> > &genps_lepdaughter_id();
 	const vector<vector<int> > &genps_lepdaughter_idx();
@@ -22474,6 +25376,8 @@ namespace tas {
 	const vector<vector<int> > &mus_nStationHits();
 	const vector<vector<int> > &pfjets_pfcandIndicies();
 	const vector<vector<int> > &pfjets_puppi_pfcandIndicies();
+	const vector<vector<int> > &photons_clusterInDynDPhi();
+	const vector<vector<int> > &photons_clusterInMustache();
 	const vector<vector<int> > &photons_PFCand_idx();
 	const vector<vector<int> > &convs_nHitsBeforeVtx();
 	const vector<vector<int> > &convs_tkalgo();
@@ -22526,7 +25430,6 @@ namespace tas {
 	const unsigned int &evt_run();
 	const unsigned int &evt_ngenjetsNoMuNoNu();
 	const unsigned int &genps_signalProcessID();
-	const unsigned int &evt_ngenjets();
 	const unsigned int &mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg_version();
 	const unsigned int &mus_HLT_IsoMu24_eta2p1_L1sMu16Eta2p1_version();
 	const unsigned int &mus_HLT_IsoMu24_eta2p1_version();
@@ -22594,6 +25497,7 @@ namespace tas {
 	const vector<unsigned int> &els_HLT_Mu8_Ele17();
 	const vector<unsigned int> &els_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg();
 	const vector<unsigned int> &els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg();
+	const vector<unsigned int> &hlt_l1prescales();
 	const vector<unsigned int> &hlt_prescales();
 	const vector<unsigned int> &mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg();
 	const vector<unsigned int> &mus_HLT_IsoMu24_eta2p1();

@@ -1,5 +1,7 @@
 #include "MetSelections.h"
 #include "Math/VectorUtil.h"
+#include "Tools/jetcorr/FactorizedJetCorrector.h"
+#include "Tools/JetCorrector.h"
 
 using namespace tas;
 
@@ -53,4 +55,84 @@ bool hbheNoiseFilter(int minZeros) {
     if(hcalnoise_isolatedNoiseSumE()>=50.0) return false;
     if(hcalnoise_isolatedNoiseSumEt()>=25.0) return false;
     return true;
+}
+
+// takes in a string with the list of JECs you want to use to correct MET
+// Make sure you have the right number of JECs supplied, or it will return uncorrected MET
+pair <float, float> getT1CHSMET( std::vector<std::string> jetcorr_filenames ){
+  float golf_met    = cms3.evt_METToolbox_pfmet_raw();
+  float golf_metPhi = cms3.evt_METToolbox_pfmetPhi_raw();
+  float golf_metx   = golf_met * cos(golf_metPhi);
+  float golf_mety   = golf_met * sin(golf_metPhi);
+		
+  FactorizedJetCorrector * jet_corrector;
+  if( jetcorr_filenames.size() < 3 ){
+	cout<<"Not enough JECs supplied, will not correct MET. Check your JECs, currently using: "<<endl;
+	for( size_t jecind = 0; jecind < jetcorr_filenames.size(); jecind++ ){
+	  cout<<jetcorr_filenames.at(jecind)<<endl;		  
+	}
+	return make_pair(golf_met, golf_metPhi);
+  }	  
+
+  jet_corrector  = makeJetCorrector(jetcorr_filenames);
+
+  //Run over same jets that were produced with MET tools
+  for(unsigned int iJet = 0; iJet < cms3.pfjets_METToolbox_p4().size(); iJet++){
+
+	// // get uncorrected jet p4 to use as input for corrections
+	LorentzVector jetp4_uncorr = cms3.pfjets_METToolbox_p4().at(iJet);		  
+	float emfrac = (cms3.pfjets_METToolbox_chargedEmE().at(iJet) + cms3.pfjets_METToolbox_neutralEmE().at(iJet)) / jetp4_uncorr.E();
+
+	if (emfrac > 0.9                  ) continue; // veto events with EM fraction > 0.9
+	if( abs(jetp4_uncorr.eta()) > 9.9 ) continue; // veto jets with eta > 9.9
+
+	// get L1FastL2L3 total correction
+	jet_corrector->setRho   ( cms3.evt_fixgridfastjet_all_rho()      );
+	jet_corrector->setJetA  ( cms3.pfjets_METToolbox_area().at(iJet) );
+	jet_corrector->setJetPt ( jetp4_uncorr.pt()                      );
+	jet_corrector->setJetEta( jetp4_uncorr.eta()                     );
+
+	//Note the subcorrections are stored with corr_vals(N) = corr(N)*corr(N-1)*...*corr(1)
+	vector<float> corr_vals = jet_corrector->getSubCorrections();
+
+	double corr             = corr_vals.at(corr_vals.size()-1); // All corrections
+	double corr_l1          = corr_vals.at(0);                  // offset correction
+		  
+	//
+	// remove SA or global muons from jets before correcting
+	//
+	for (unsigned int imu = 0; imu < cms3.mus_p4().size(); imu++)
+	  {
+		int index = cms3.mus_pfidx().at(imu);
+		if (index < 0) continue;
+
+		bool is_global     = !(((cms3.mus_type().at(imu)) & (1<<1)) == 0);
+		bool is_standalone = !(((cms3.mus_type().at(imu)) & (1<<3)) == 0);
+		if (!is_global && !is_standalone) continue;
+            
+		if (std::find(cms3.pfjets_METToolbox_pfcandIndicies().at(iJet).begin(),
+					  cms3.pfjets_METToolbox_pfcandIndicies().at(iJet).end(), index) == cms3.pfjets_METToolbox_pfcandIndicies().at(iJet).end()) continue;
+
+		jetp4_uncorr -= cms3.pfcands_p4()   .at(index);
+	  }
+
+	// // Alternative way to do muon corrections: NEEDS VALIDATION
+	// for (unsigned int pfcind = 0; pfcind < cms3.pfjets_METToolbox_pfcandIndicies().at(iJet).size(); pfcind++){
+	// 	int index = cms3.pfjets_METToolbox_pfcandIndicies().at(pfcind);
+	// 	if( !cms3.pfcands_isGlobalMuon()    .at(index)) continue;
+	// 	if( !cms3.pfcands_isStandAloneMuon().at(index)) continue;
+	// 	jetp4_uncorr -= cms3.pfcands_p4()   .at(index);
+	// }
+			  
+	if (corr * jetp4_uncorr.pt() > 10.){		  
+	  golf_metx += jetp4_uncorr.px() * ( corr_l1 - corr );
+	  golf_mety += jetp4_uncorr.py() * ( corr_l1 - corr );
+	}
+
+  }
+	  
+  golf_met    = std::sqrt(pow(golf_metx, 2) + pow(golf_mety, 2));
+  golf_metPhi = std::atan2(golf_mety, golf_metx);
+
+  return make_pair(golf_met, golf_metPhi);
 }
