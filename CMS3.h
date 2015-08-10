@@ -51,7 +51,6 @@ protected:
 	vector<vector<TString> > hlt_trigObjs_filters_;
 	TBranch *hlt_trigObjs_filters_branch;
 	bool hlt_trigObjs_filters_isLoaded;
-	bool hlt_trigObjs_filters_isLoaded;           
 	bool hcalnoise_HasBadRBXTS4TS5_;
 	TBranch *hcalnoise_HasBadRBXTS4TS5_branch;
 	bool hcalnoise_HasBadRBXTS4TS5_isLoaded;
@@ -178,9 +177,6 @@ protected:
 	float evt_METToolbox_pfmet_raw_;
 	TBranch *evt_METToolbox_pfmet_raw_branch;
 	bool evt_METToolbox_pfmet_raw_isLoaded;
-	vector<vector<bool> > hlt_trigObjs_passLast_;         
-	TBranch *hlt_trigObjs_passLast_branch;                
-	bool hlt_trigObjs_passLast_isLoaded;                  
 	float evt_bs_Xwidth_;
 	TBranch *evt_bs_Xwidth_branch;
 	bool evt_bs_Xwidth_isLoaded;
@@ -379,15 +375,15 @@ protected:
 	float pdfinfo_x2_;
 	TBranch *pdfinfo_x2_branch;
 	bool pdfinfo_x2_isLoaded;
-	float pfcandsevt_fixgrid_rho_all_;
-	TBranch *pfcandsevt_fixgrid_rho_all_branch;
-	bool pfcandsevt_fixgrid_rho_all_isLoaded;
-	float pfcandsevt_fixgrid_rho_ctr_;
-	TBranch *pfcandsevt_fixgrid_rho_ctr_branch;
-	bool pfcandsevt_fixgrid_rho_ctr_isLoaded;
-	float pfcandsevt_fixgrid_rho_fwd_;
-	TBranch *pfcandsevt_fixgrid_rho_fwd_branch;
-	bool pfcandsevt_fixgrid_rho_fwd_isLoaded;
+	float evt_fixgrid_rho_all_;
+	TBranch *evt_fixgrid_rho_all_branch;
+	bool evt_fixgrid_rho_all_isLoaded;
+	float evt_fixgrid_rho_ctr_;
+	TBranch *evt_fixgrid_rho_ctr_branch;
+	bool evt_fixgrid_rho_ctr_isLoaded;
+	float evt_fixgrid_rho_fwd_;
+	TBranch *evt_fixgrid_rho_fwd_branch;
+	bool evt_fixgrid_rho_fwd_isLoaded;
 	float evt_calomet_;
 	TBranch *evt_calomet_branch;
 	bool evt_calomet_isLoaded;
@@ -1507,9 +1503,6 @@ protected:
 	vector<float> pfcands_mass_;
 	TBranch *pfcands_mass_branch;
 	bool pfcands_mass_isLoaded;
-	vector<float> pfcands_phiAtVtx_;
-	TBranch *pfcands_phiAtVtx_branch;
-	bool pfcands_phiAtVtx_isLoaded;
 	vector<float> pfjets_area_;
 	TBranch *pfjets_area_branch;
 	bool pfjets_area_isLoaded;
@@ -3106,9 +3099,6 @@ protected:
 	vector<unsigned int> hlt_prescales_;
 	TBranch *hlt_prescales_branch;
 	bool hlt_prescales_isLoaded;
-	vector<unsigned int> hlt_l1prescales_;
-	TBranch *hlt_l1prescales_branch;
-	bool hlt_l1prescales_isLoaded;
 	vector<unsigned int> mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg_;
 	TBranch *mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg_branch;
 	bool mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg_isLoaded;
@@ -4035,20 +4025,20 @@ void Init(TTree *tree) {
 		pdfinfo_x2_branch = tree->GetBranch(tree->GetAlias("pdfinfo_x2"));
 		if (pdfinfo_x2_branch) {pdfinfo_x2_branch->SetAddress(&pdfinfo_x2_);}
 	}
-	pfcandsevt_fixgrid_rho_all_branch = 0;
-	if (tree->GetAlias("pfcandsevt_fixgrid_rho_all") != 0) {
-		pfcandsevt_fixgrid_rho_all_branch = tree->GetBranch(tree->GetAlias("pfcandsevt_fixgrid_rho_all"));
-		if (pfcandsevt_fixgrid_rho_all_branch) {pfcandsevt_fixgrid_rho_all_branch->SetAddress(&pfcandsevt_fixgrid_rho_all_);}
+	evt_fixgrid_rho_all_branch = 0;
+	if (tree->GetAlias("evt_fixgrid_rho_all") != 0) {
+		evt_fixgrid_rho_all_branch = tree->GetBranch(tree->GetAlias("evt_fixgrid_rho_all"));
+		if (evt_fixgrid_rho_all_branch) {evt_fixgrid_rho_all_branch->SetAddress(&evt_fixgrid_rho_all_);}
 	}
-	pfcandsevt_fixgrid_rho_ctr_branch = 0;
-	if (tree->GetAlias("pfcandsevt_fixgrid_rho_ctr") != 0) {
-		pfcandsevt_fixgrid_rho_ctr_branch = tree->GetBranch(tree->GetAlias("pfcandsevt_fixgrid_rho_ctr"));
-		if (pfcandsevt_fixgrid_rho_ctr_branch) {pfcandsevt_fixgrid_rho_ctr_branch->SetAddress(&pfcandsevt_fixgrid_rho_ctr_);}
+	evt_fixgrid_rho_ctr_branch = 0;
+	if (tree->GetAlias("evt_fixgrid_rho_ctr") != 0) {
+		evt_fixgrid_rho_ctr_branch = tree->GetBranch(tree->GetAlias("evt_fixgrid_rho_ctr"));
+		if (evt_fixgrid_rho_ctr_branch) {evt_fixgrid_rho_ctr_branch->SetAddress(&evt_fixgrid_rho_ctr_);}
 	}
-	pfcandsevt_fixgrid_rho_fwd_branch = 0;
-	if (tree->GetAlias("pfcandsevt_fixgrid_rho_fwd") != 0) {
-		pfcandsevt_fixgrid_rho_fwd_branch = tree->GetBranch(tree->GetAlias("pfcandsevt_fixgrid_rho_fwd"));
-		if (pfcandsevt_fixgrid_rho_fwd_branch) {pfcandsevt_fixgrid_rho_fwd_branch->SetAddress(&pfcandsevt_fixgrid_rho_fwd_);}
+	evt_fixgrid_rho_fwd_branch = 0;
+	if (tree->GetAlias("evt_fixgrid_rho_fwd") != 0) {
+		evt_fixgrid_rho_fwd_branch = tree->GetBranch(tree->GetAlias("evt_fixgrid_rho_fwd"));
+		if (evt_fixgrid_rho_fwd_branch) {evt_fixgrid_rho_fwd_branch->SetAddress(&evt_fixgrid_rho_fwd_);}
 	}
 	evt_calomet_branch = 0;
 	if (tree->GetAlias("evt_calomet") != 0) {
@@ -5679,11 +5669,6 @@ void Init(TTree *tree) {
 	if (tree->GetAlias("pfcands_mass") != 0) {
 		pfcands_mass_branch = tree->GetBranch(tree->GetAlias("pfcands_mass"));
 		if (pfcands_mass_branch) {pfcands_mass_branch->SetAddress(&pfcands_mass_);}
-	}
-	pfcands_phiAtVtx_branch = 0;
-	if (tree->GetAlias("pfcands_phiAtVtx") != 0) {
-		pfcands_phiAtVtx_branch = tree->GetBranch(tree->GetAlias("pfcands_phiAtVtx"));
-		if (pfcands_phiAtVtx_branch) {pfcands_phiAtVtx_branch->SetAddress(&pfcands_phiAtVtx_);}
 	}
 	pfjets_area_branch = 0;
 	if (tree->GetAlias("pfjets_area") != 0) {
@@ -8345,11 +8330,6 @@ void Init(TTree *tree) {
 		hlt_prescales_branch = tree->GetBranch(tree->GetAlias("hlt_prescales"));
 		if (hlt_prescales_branch) {hlt_prescales_branch->SetAddress(&hlt_prescales_);}
 	}
-	hlt_l1prescales_branch = 0;
-	if (tree->GetAlias("hlt_l1prescales") != 0) {
-		hlt_l1prescales_branch = tree->GetBranch(tree->GetAlias("hlt_l1prescales"));
-		if (hlt_l1prescales_branch) {hlt_l1prescales_branch->SetAddress(&hlt_l1prescales_);}
-	}
 	mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg_branch = 0;
 	if (tree->GetAlias("mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg") != 0) {
 		mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg_branch = tree->GetBranch(tree->GetAlias("mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg"));
@@ -8630,9 +8610,9 @@ void GetEntry(unsigned int idx)
 		pdfinfo_scale_isLoaded = false;
 		pdfinfo_x1_isLoaded = false;
 		pdfinfo_x2_isLoaded = false;
-		pfcandsevt_fixgrid_rho_all_isLoaded = false;
-		pfcandsevt_fixgrid_rho_ctr_isLoaded = false;
-		pfcandsevt_fixgrid_rho_fwd_isLoaded = false;
+		evt_fixgrid_rho_all_isLoaded = false;
+		evt_fixgrid_rho_ctr_isLoaded = false;
+		evt_fixgrid_rho_fwd_isLoaded = false;
 		evt_calomet_isLoaded = false;
 		evt_calometPhi_isLoaded = false;
 		evt_pfmet_isLoaded = false;
@@ -9006,7 +8986,6 @@ void GetEntry(unsigned int idx)
 		mus_z0corr_isLoaded = false;
 		pfcands_dz_isLoaded = false;
 		pfcands_mass_isLoaded = false;
-		pfcands_phiAtVtx_isLoaded = false;
 		pfjets_area_isLoaded = false;
 		pfjets_chargedEmE_isLoaded = false;
 		pfjets_chargedHadronE_isLoaded = false;
@@ -9539,7 +9518,6 @@ void GetEntry(unsigned int idx)
 		els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg_isLoaded = false;
 		hlt_l1prescales_isLoaded = false;
 		hlt_prescales_isLoaded = false;
-		hlt_l1prescales_isLoaded = false;
 		mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg_isLoaded = false;
 		mus_HLT_IsoMu24_eta2p1_isLoaded = false;
 		mus_HLT_IsoMu24_eta2p1_L1sMu16Eta2p1_isLoaded = false;
@@ -9695,9 +9673,9 @@ void LoadAllBranches()
 	if (pdfinfo_scale_branch != 0) pdfinfo_scale();
 	if (pdfinfo_x1_branch != 0) pdfinfo_x1();
 	if (pdfinfo_x2_branch != 0) pdfinfo_x2();
-	if (pfcandsevt_fixgrid_rho_all_branch != 0) pfcandsevt_fixgrid_rho_all();
-	if (pfcandsevt_fixgrid_rho_ctr_branch != 0) pfcandsevt_fixgrid_rho_ctr();
-	if (pfcandsevt_fixgrid_rho_fwd_branch != 0) pfcandsevt_fixgrid_rho_fwd();
+	if (evt_fixgrid_rho_all_branch != 0) evt_fixgrid_rho_all();
+	if (evt_fixgrid_rho_ctr_branch != 0) evt_fixgrid_rho_ctr();
+	if (evt_fixgrid_rho_fwd_branch != 0) evt_fixgrid_rho_fwd();
 	if (evt_calomet_branch != 0) evt_calomet();
 	if (evt_calometPhi_branch != 0) evt_calometPhi();
 	if (evt_pfmet_branch != 0) evt_pfmet();
@@ -10071,7 +10049,6 @@ void LoadAllBranches()
 	if (mus_z0corr_branch != 0) mus_z0corr();
 	if (pfcands_dz_branch != 0) pfcands_dz();
 	if (pfcands_mass_branch != 0) pfcands_mass();
-	if (pfcands_phiAtVtx_branch != 0) pfcands_phiAtVtx();
 	if (pfjets_area_branch != 0) pfjets_area();
 	if (pfjets_chargedEmE_branch != 0) pfjets_chargedEmE();
 	if (pfjets_chargedHadronE_branch != 0) pfjets_chargedHadronE();
@@ -10604,7 +10581,6 @@ void LoadAllBranches()
 	if (els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg_branch != 0) els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg();
 	if (hlt_l1prescales_branch != 0) hlt_l1prescales();
 	if (hlt_prescales_branch != 0) hlt_prescales();
-	if (hlt_l1prescales_branch != 0) hlt_l1prescales();
 	if (mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg_branch != 0) mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg();
 	if (mus_HLT_IsoMu24_eta2p1_branch != 0) mus_HLT_IsoMu24_eta2p1();
 	if (mus_HLT_IsoMu24_eta2p1_L1sMu16Eta2p1_branch != 0) mus_HLT_IsoMu24_eta2p1_L1sMu16Eta2p1();
@@ -12185,44 +12161,44 @@ void LoadAllBranches()
 		}
 		return pdfinfo_x2_;
 	}
-	float &pfcandsevt_fixgrid_rho_all()
+	float &evt_fixgrid_rho_all()
 	{
-		if (not pfcandsevt_fixgrid_rho_all_isLoaded) {
-			if (pfcandsevt_fixgrid_rho_all_branch != 0) {
-				pfcandsevt_fixgrid_rho_all_branch->GetEntry(index);
+		if (not evt_fixgrid_rho_all_isLoaded) {
+			if (evt_fixgrid_rho_all_branch != 0) {
+				evt_fixgrid_rho_all_branch->GetEntry(index);
 			} else { 
-				printf("branch pfcandsevt_fixgrid_rho_all_branch does not exist!\n");
+				printf("branch evt_fixgrid_rho_all_branch does not exist!\n");
 				exit(1);
 			}
-			pfcandsevt_fixgrid_rho_all_isLoaded = true;
+			evt_fixgrid_rho_all_isLoaded = true;
 		}
-		return pfcandsevt_fixgrid_rho_all_;
+		return evt_fixgrid_rho_all_;
 	}
-	float &pfcandsevt_fixgrid_rho_ctr()
+	float &evt_fixgrid_rho_ctr()
 	{
-		if (not pfcandsevt_fixgrid_rho_ctr_isLoaded) {
-			if (pfcandsevt_fixgrid_rho_ctr_branch != 0) {
-				pfcandsevt_fixgrid_rho_ctr_branch->GetEntry(index);
+		if (not evt_fixgrid_rho_ctr_isLoaded) {
+			if (evt_fixgrid_rho_ctr_branch != 0) {
+				evt_fixgrid_rho_ctr_branch->GetEntry(index);
 			} else { 
-				printf("branch pfcandsevt_fixgrid_rho_ctr_branch does not exist!\n");
+				printf("branch evt_fixgrid_rho_ctr_branch does not exist!\n");
 				exit(1);
 			}
-			pfcandsevt_fixgrid_rho_ctr_isLoaded = true;
+			evt_fixgrid_rho_ctr_isLoaded = true;
 		}
-		return pfcandsevt_fixgrid_rho_ctr_;
+		return evt_fixgrid_rho_ctr_;
 	}
-	float &pfcandsevt_fixgrid_rho_fwd()
+	float &evt_fixgrid_rho_fwd()
 	{
-		if (not pfcandsevt_fixgrid_rho_fwd_isLoaded) {
-			if (pfcandsevt_fixgrid_rho_fwd_branch != 0) {
-				pfcandsevt_fixgrid_rho_fwd_branch->GetEntry(index);
+		if (not evt_fixgrid_rho_fwd_isLoaded) {
+			if (evt_fixgrid_rho_fwd_branch != 0) {
+				evt_fixgrid_rho_fwd_branch->GetEntry(index);
 			} else { 
-				printf("branch pfcandsevt_fixgrid_rho_fwd_branch does not exist!\n");
+				printf("branch evt_fixgrid_rho_fwd_branch does not exist!\n");
 				exit(1);
 			}
-			pfcandsevt_fixgrid_rho_fwd_isLoaded = true;
+			evt_fixgrid_rho_fwd_isLoaded = true;
 		}
-		return pfcandsevt_fixgrid_rho_fwd_;
+		return evt_fixgrid_rho_fwd_;
 	}
 	float &evt_calomet()
 	{
@@ -17072,19 +17048,6 @@ void LoadAllBranches()
 			pfcands_mass_isLoaded = true;
 		}
 		return pfcands_mass_;
-	}
-	const vector<float> &pfcands_phiAtVtx()
-	{
-		if (not pfcands_phiAtVtx_isLoaded) {
-			if (pfcands_phiAtVtx_branch != 0) {
-				pfcands_phiAtVtx_branch->GetEntry(index);
-			} else { 
-				printf("branch pfcands_phiAtVtx_branch does not exist!\n");
-				exit(1);
-			}
-			pfcands_phiAtVtx_isLoaded = true;
-		}
-		return pfcands_phiAtVtx_;
 	}
 	const vector<float> &pfjets_area()
 	{
@@ -24002,19 +23965,6 @@ void LoadAllBranches()
 		}
 		return hlt_prescales_;
 	}
-	const vector<unsigned int> &hlt_l1prescales()
-	{
-		if (not hlt_l1prescales_isLoaded) {
-			if (hlt_l1prescales_branch != 0) {
-				hlt_l1prescales_branch->GetEntry(index);
-			} else { 
-				printf("branch hlt_l1prescales_branch does not exist!\n");
-				exit(1);
-			}
-			hlt_l1prescales_isLoaded = true;
-		}
-		return hlt_l1prescales_;
-	}
 	const vector<unsigned int> &mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg()
 	{
 		if (not mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg_isLoaded) {
@@ -24617,9 +24567,9 @@ namespace tas {
 	const float &pdfinfo_scale();
 	const float &pdfinfo_x1();
 	const float &pdfinfo_x2();
-	const float &pfcandsevt_fixgrid_rho_all();
-	const float &pfcandsevt_fixgrid_rho_ctr();
-	const float &pfcandsevt_fixgrid_rho_fwd();
+	const float &evt_fixgrid_rho_all();
+	const float &evt_fixgrid_rho_ctr();
+	const float &evt_fixgrid_rho_fwd();
 	const float &evt_calomet();
 	const float &evt_calometPhi();
 	const float &evt_pfmet();
@@ -24993,7 +24943,6 @@ namespace tas {
 	const vector<float> &mus_z0corr();
 	const vector<float> &pfcands_dz();
 	const vector<float> &pfcands_mass();
-	const vector<float> &pfcands_phiAtVtx();
 	const vector<float> &pfjets_area();
 	const vector<float> &pfjets_chargedEmE();
 	const vector<float> &pfjets_chargedHadronE();
@@ -25526,7 +25475,6 @@ namespace tas {
 	const vector<unsigned int> &els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg();
 	const vector<unsigned int> &hlt_l1prescales();
 	const vector<unsigned int> &hlt_prescales();
-	const vector<unsigned int> &hlt_l1prescales();
 	const vector<unsigned int> &mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg();
 	const vector<unsigned int> &mus_HLT_IsoMu24_eta2p1();
 	const vector<unsigned int> &mus_HLT_IsoMu24_eta2p1_L1sMu16Eta2p1();

@@ -120,9 +120,9 @@ namespace tas {
 	const float &pdfinfo_scale() { return cms3.pdfinfo_scale(); }
 	const float &pdfinfo_x1() { return cms3.pdfinfo_x1(); }
 	const float &pdfinfo_x2() { return cms3.pdfinfo_x2(); }
-	const float &pfcandsevt_fixgrid_rho_all() { return cms3.pfcandsevt_fixgrid_rho_all(); }
-	const float &pfcandsevt_fixgrid_rho_ctr() { return cms3.pfcandsevt_fixgrid_rho_ctr(); }
-	const float &pfcandsevt_fixgrid_rho_fwd() { return cms3.pfcandsevt_fixgrid_rho_fwd(); }
+	const float &evt_fixgrid_rho_all() { return cms3.evt_fixgrid_rho_all(); }
+	const float &evt_fixgrid_rho_ctr() { return cms3.evt_fixgrid_rho_ctr(); }
+	const float &evt_fixgrid_rho_fwd() { return cms3.evt_fixgrid_rho_fwd(); }
 	const float &evt_calomet() { return cms3.evt_calomet(); }
 	const float &evt_calometPhi() { return cms3.evt_calometPhi(); }
 	const float &evt_pfmet() { return cms3.evt_pfmet(); }
@@ -496,7 +496,6 @@ namespace tas {
 	const vector<float> &mus_z0corr() { return cms3.mus_z0corr(); }
 	const vector<float> &pfcands_dz() { return cms3.pfcands_dz(); }
 	const vector<float> &pfcands_mass() { return cms3.pfcands_mass(); }
-	const vector<float> &pfcands_phiAtVtx() { return cms3.pfcands_phiAtVtx(); }
 	const vector<float> &pfjets_area() { return cms3.pfjets_area(); }
 	const vector<float> &pfjets_chargedEmE() { return cms3.pfjets_chargedEmE(); }
 	const vector<float> &pfjets_chargedHadronE() { return cms3.pfjets_chargedHadronE(); }
@@ -1029,7 +1028,6 @@ namespace tas {
 	const vector<unsigned int> &els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg() { return cms3.els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg(); }
 	const vector<unsigned int> &hlt_l1prescales() { return cms3.hlt_l1prescales(); }
 	const vector<unsigned int> &hlt_prescales() { return cms3.hlt_prescales(); }
-	const vector<unsigned int> &hlt_l1prescales() { return cms3.hlt_l1prescales(); }
 	const vector<unsigned int> &mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg() { return cms3.mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg(); }
 	const vector<unsigned int> &mus_HLT_IsoMu24_eta2p1() { return cms3.mus_HLT_IsoMu24_eta2p1(); }
 	const vector<unsigned int> &mus_HLT_IsoMu24_eta2p1_L1sMu16Eta2p1() { return cms3.mus_HLT_IsoMu24_eta2p1_L1sMu16Eta2p1(); }
