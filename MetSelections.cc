@@ -84,7 +84,7 @@ bool passesMETfilter(){
   if (!filt_cscBeamHalo()) return false;
   
   //HBHE noise filter (re-run by user)
-  if (!hbheNoiseFilter(10)) return false;
+  if (!hbheNoiseFilter()) return false;
 
   //ee badSC noise filter NEW
   if (!filt_eeBadSc()) return false;
