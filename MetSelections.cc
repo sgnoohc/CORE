@@ -1,5 +1,9 @@
+#include <iostream>
+
 #include "MetSelections.h"
+
 #include "Math/VectorUtil.h"
+
 #include "Tools/jetcorr/FactorizedJetCorrector.h"
 #include "Tools/JetCorrector.h"
 
@@ -57,24 +61,13 @@ bool hbheNoiseFilter(int minZeros) {
   return true;
 }
 
-// takes in a string with the list of JECs you want to use to correct MET
-// Make sure you have the right number of JECs supplied, or it will return uncorrected MET
-pair <float, float> getT1CHSMET( std::vector<std::string> jetcorr_filenames ){
-  float golf_met    = cms3.evt_METToolbox_pfmet_raw();
-  float golf_metPhi = cms3.evt_METToolbox_pfmetPhi_raw();
-  float golf_metx   = golf_met * cos(golf_metPhi);
-  float golf_mety   = golf_met * sin(golf_metPhi);
-		
-  FactorizedJetCorrector * jet_corrector;
-  if( jetcorr_filenames.size() < 3 ){
-	cout<<"Not enough JECs supplied, will not correct MET. Check your JECs, currently using: "<<endl;
-	for( size_t jecind = 0; jecind < jetcorr_filenames.size(); jecind++ ){
-	  cout<<jetcorr_filenames.at(jecind)<<endl;		  
-	}
-	return make_pair(golf_met, golf_metPhi);
-  }	  
-
-  jet_corrector  = makeJetCorrector(jetcorr_filenames);
+// takes in an already initialized FactorizedJetCorrector object
+// and returns T1 Corrected MET using the CHS jet collection
+pair <float, float> getT1CHSMET(   FactorizedJetCorrector * jet_corrector ){
+  float T1_met    = cms3.evt_METToolbox_pfmet_raw();
+  float T1_metPhi = cms3.evt_METToolbox_pfmetPhi_raw();
+  float T1_metx   = T1_met * cos(T1_metPhi);
+  float T1_mety   = T1_met * sin(T1_metPhi);
 
   //Run over same jets that were produced with MET tools
   for(unsigned int iJet = 0; iJet < cms3.pfjets_METToolbox_p4().size(); iJet++){
@@ -98,43 +91,41 @@ pair <float, float> getT1CHSMET( std::vector<std::string> jetcorr_filenames ){
 	double corr             = corr_vals.at(corr_vals.size()-1); // All corrections
 	double corr_l1          = corr_vals.at(0);                  // offset correction
 		  
-	//
+	//	
 	// remove SA or global muons from jets before correcting
 	//
-	for (unsigned int imu = 0; imu < cms3.mus_p4().size(); imu++)
-	  {
-		int index = cms3.mus_pfidx().at(imu);
-		if (index < 0) continue;
+	// for (unsigned int imu = 0; imu < cms3.mus_p4().size(); imu++)
+	//   {
+	// 	int index = cms3.mus_pfidx().at(imu);
+	// 	if (index < 0) continue;
+	// 	bool is_global     = !(((cms3.mus_type().at(imu)) & (1<<1)) == 0);
+	// 	bool is_standalone = !(((cms3.mus_type().at(imu)) & (1<<3)) == 0);
+	// 	if (!(is_global || is_standalone)) continue;            
+	// 	if (std::find(cms3.pfjets_METToolbox_pfcandIndicies().at(iJet).begin(),
+	// 				  cms3.pfjets_METToolbox_pfcandIndicies().at(iJet).end(), index) == cms3.pfjets_METToolbox_pfcandIndicies().at(iJet).end()) continue;
+	// 	jetp4_uncorr -= cms3.pfcands_p4()   .at(index);
+	//   }
 
-		bool is_global     = !(((cms3.mus_type().at(imu)) & (1<<1)) == 0);
-		bool is_standalone = !(((cms3.mus_type().at(imu)) & (1<<3)) == 0);
-		if (!is_global && !is_standalone) continue;
-            
-		if (std::find(cms3.pfjets_METToolbox_pfcandIndicies().at(iJet).begin(),
-					  cms3.pfjets_METToolbox_pfcandIndicies().at(iJet).end(), index) == cms3.pfjets_METToolbox_pfcandIndicies().at(iJet).end()) continue;
-
+	// Alternative way to do muon corrections, done by MET group
+	for (unsigned int pfcind = 0; pfcind < cms3.pfjets_METToolbox_pfcandIndicies().at(iJet).size(); pfcind++){
+	  int index = cms3.pfjets_METToolbox_pfcandIndicies().at(iJet).at(pfcind);
+	  if( cms3.pfcands_isGlobalMuon()    .at(index) ||
+		  cms3.pfcands_isStandAloneMuon().at(index)){
 		jetp4_uncorr -= cms3.pfcands_p4()   .at(index);
 	  }
-
-	// // Alternative way to do muon corrections: NEEDS VALIDATION
-	// for (unsigned int pfcind = 0; pfcind < cms3.pfjets_METToolbox_pfcandIndicies().at(iJet).size(); pfcind++){
-	// 	int index = cms3.pfjets_METToolbox_pfcandIndicies().at(pfcind);
-	// 	if( !cms3.pfcands_isGlobalMuon()    .at(index)) continue;
-	// 	if( !cms3.pfcands_isStandAloneMuon().at(index)) continue;
-	// 	jetp4_uncorr -= cms3.pfcands_p4()   .at(index);
-	// }
+	}
 			  
 	if (corr * jetp4_uncorr.pt() > 10.){		  
-	  golf_metx += jetp4_uncorr.px() * ( corr_l1 - corr );
-	  golf_mety += jetp4_uncorr.py() * ( corr_l1 - corr );
+	  T1_metx += jetp4_uncorr.px() * ( corr_l1 - corr );
+	  T1_mety += jetp4_uncorr.py() * ( corr_l1 - corr );
 	}
 
   }
 	  
-  golf_met    = std::sqrt(pow(golf_metx, 2) + pow(golf_mety, 2));
-  golf_metPhi = std::atan2(golf_mety, golf_metx);
+  T1_met    = std::sqrt(pow(T1_metx, 2) + pow(T1_mety, 2));
+  T1_metPhi = std::atan2(T1_mety, T1_metx);
 
-  return make_pair(golf_met, golf_metPhi);
+  return make_pair(T1_met, T1_metPhi);
 }
 
 pair<float,float> MET3p0() { 
