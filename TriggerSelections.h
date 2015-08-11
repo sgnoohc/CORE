@@ -16,11 +16,14 @@ int getTriggerIndex(const char* arg);
 int getTriggerPatternIndex(const char* arg);
 bool matchToHLTFilter(const char* arg, const char* filt, const LorentzVector &obj);
 int HLT_prescale( const char* arg );
+void setHLTBranch(const char* pattern, const LorentzVector& p4, int& HLTbranch);
+void setHLTBranch(const char* pattern, bool legMatch, int& HLTbranch);
 
 int nHLTObjects(const char*);
 LorentzVector p4HLTObject(const char*, int) ;
 //trigger ID definitions
 //http://cmslxr.fnal.gov/source/DataFormats/HLTReco/interface/TriggerTypeDefs.h
 int idHLTObject(const char*, int) ;
+
 
 #endif

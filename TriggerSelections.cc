@@ -389,3 +389,25 @@ int idHLTObject(const char* arg, int objNumber){
   return hlt_trigObjs_id().at(trigIndx).at(objNumber);
 
 }
+
+//0,1,N mean respectively not passes, passed unprescaled, passed with prescale N 
+//the sign tells if the object matched one of the trigger legs (positive match, negative no match)
+void setHLTBranch(const char* pattern, const LorentzVector& p4, int& HLTbranch){
+  TString name_HLT = triggerName(pattern);
+  if (name_HLT=="TRIGGER_NOT_FOUND"){HLTbranch=0;return;}
+  if (cms3.passHLTTrigger(name_HLT)) {
+    HLTbranch = (tas::evt_isRealData() ? HLT_prescale(name_HLT) : 1);
+    if (passHLTTrigger(name_HLT,p4)==0) HLTbranch*=-1;
+  } else HLTbranch = 0;
+}
+
+void setHLTBranch(const char* pattern, bool legMatch, int& HLTbranch) {
+  TString name_HLT = triggerName(pattern);
+  if (name_HLT=="TRIGGER_NOT_FOUND"){HLTbranch=0;return;}
+  if (cms3.passHLTTrigger(name_HLT)) {
+    HLTbranch = (tas::evt_isRealData() ? HLT_prescale(name_HLT) : 1);
+    if (legMatch==0) HLTbranch*=-1;
+  }
+  else HLTbranch = 0;
+}
+
