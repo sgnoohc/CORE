@@ -177,6 +177,18 @@ protected:
 	float evt_METToolbox_pfmet_raw_;
 	TBranch *evt_METToolbox_pfmet_raw_branch;
 	bool evt_METToolbox_pfmet_raw_isLoaded;
+	float evt_METToolboxNoHF_pfmet_;
+	TBranch *evt_METToolboxNoHF_pfmet_branch;
+	bool evt_METToolboxNoHF_pfmet_isLoaded;
+	float evt_METToolboxNoHF_pfmetPhi_;
+	TBranch *evt_METToolboxNoHF_pfmetPhi_branch;
+	bool evt_METToolboxNoHF_pfmetPhi_isLoaded;
+	float evt_METToolboxNoHF_pfmetPhi_raw_;
+	TBranch *evt_METToolboxNoHF_pfmetPhi_raw_branch;
+	bool evt_METToolboxNoHF_pfmetPhi_raw_isLoaded;
+	float evt_METToolboxNoHF_pfmet_raw_;
+	TBranch *evt_METToolboxNoHF_pfmet_raw_branch;
+	bool evt_METToolboxNoHF_pfmet_raw_isLoaded;
 	float evt_bs_Xwidth_;
 	TBranch *evt_bs_Xwidth_branch;
 	bool evt_bs_Xwidth_isLoaded;
@@ -711,6 +723,9 @@ protected:
 	vector<float> els_clustersRMSRawEnergy_;
 	TBranch *els_clustersRMSRawEnergy_branch;
 	bool els_clustersRMSRawEnergy_isLoaded;
+	vector<float> els_conv_vtx_prob_;
+	TBranch *els_conv_vtx_prob_branch;
+	bool els_conv_vtx_prob_isLoaded;
 	vector<float> els_d0_;
 	TBranch *els_d0_branch;
 	bool els_d0_isLoaded;
@@ -1080,15 +1095,9 @@ protected:
 	vector<float> isotracks_dz_;
 	TBranch *isotracks_dz_branch;
 	bool isotracks_dz_isLoaded;
-	vector<float> isotracks_dzAssociatedPV_;
-	TBranch *isotracks_dzAssociatedPV_branch;
-	bool isotracks_dzAssociatedPV_isLoaded;
 	vector<float> isotracks_mass_;
 	TBranch *isotracks_mass_branch;
 	bool isotracks_mass_isLoaded;
-	vector<float> isotracks_puppiWeight_;
-	TBranch *isotracks_puppiWeight_branch;
-	bool isotracks_puppiWeight_isLoaded;
 	vector<float> isotracks_relIso_;
 	TBranch *isotracks_relIso_branch;
 	bool isotracks_relIso_isLoaded;
@@ -1506,15 +1515,9 @@ protected:
 	vector<float> pfcands_dz_;
 	TBranch *pfcands_dz_branch;
 	bool pfcands_dz_isLoaded;
-	vector<float> pfcands_dzAssociatedPV_;
-	TBranch *pfcands_dzAssociatedPV_branch;
-	bool pfcands_dzAssociatedPV_isLoaded;
 	vector<float> pfcands_mass_;
 	TBranch *pfcands_mass_branch;
 	bool pfcands_mass_isLoaded;
-	vector<float> pfcands_puppiWeight_;
-	TBranch *pfcands_puppiWeight_branch;
-	bool pfcands_puppiWeight_isLoaded;
 	vector<float> pfjets_area_;
 	TBranch *pfjets_area_branch;
 	bool pfjets_area_isLoaded;
@@ -2391,9 +2394,6 @@ protected:
 	vector<int> hyp_type_;
 	TBranch *hyp_type_branch;
 	bool hyp_type_isLoaded;
-	vector<int> isotracks_IdAssociatedPV_;
-	TBranch *isotracks_IdAssociatedPV_branch;
-	bool isotracks_IdAssociatedPV_isLoaded;
 	vector<int> isotracks_charge_;
 	TBranch *isotracks_charge_branch;
 	bool isotracks_charge_isLoaded;
@@ -2607,9 +2607,6 @@ protected:
 	vector<int> mus_validPixelHits_;
 	TBranch *mus_validPixelHits_branch;
 	bool mus_validPixelHits_isLoaded;
-	vector<int> pfcands_IdAssociatedPV_;
-	TBranch *pfcands_IdAssociatedPV_branch;
-	bool pfcands_IdAssociatedPV_isLoaded;
 	vector<int> pfcands_charge_;
 	TBranch *pfcands_charge_branch;
 	bool pfcands_charge_isLoaded;
@@ -2772,15 +2769,9 @@ protected:
 	vector<unsigned char> isotracks_fromPV_;
 	TBranch *isotracks_fromPV_branch;
 	bool isotracks_fromPV_isLoaded;
-	vector<unsigned char> isotracks_pvAssociationQuality_;
-	TBranch *isotracks_pvAssociationQuality_branch;
-	bool isotracks_pvAssociationQuality_isLoaded;
 	vector<unsigned char> pfcands_fromPV_;
 	TBranch *pfcands_fromPV_branch;
 	bool pfcands_fromPV_isLoaded;
-	vector<unsigned char> pfcands_pvAssociationQuality_;
-	TBranch *pfcands_pvAssociationQuality_branch;
-	bool pfcands_pvAssociationQuality_isLoaded;
 	unsigned int els_HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg_version_;
 	TBranch *els_HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg_version_branch;
 	bool els_HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg_version_isLoaded;
@@ -3719,6 +3710,26 @@ void Init(TTree *tree) {
 		evt_METToolbox_pfmet_raw_branch = tree->GetBranch(tree->GetAlias("evt_METToolbox_pfmet_raw"));
 		if (evt_METToolbox_pfmet_raw_branch) {evt_METToolbox_pfmet_raw_branch->SetAddress(&evt_METToolbox_pfmet_raw_);}
 	}
+	evt_METToolboxNoHF_pfmet_branch = 0;
+	if (tree->GetAlias("evt_METToolboxNoHF_pfmet") != 0) {
+		evt_METToolboxNoHF_pfmet_branch = tree->GetBranch(tree->GetAlias("evt_METToolboxNoHF_pfmet"));
+		if (evt_METToolboxNoHF_pfmet_branch) {evt_METToolboxNoHF_pfmet_branch->SetAddress(&evt_METToolboxNoHF_pfmet_);}
+	}
+	evt_METToolboxNoHF_pfmetPhi_branch = 0;
+	if (tree->GetAlias("evt_METToolboxNoHF_pfmetPhi") != 0) {
+		evt_METToolboxNoHF_pfmetPhi_branch = tree->GetBranch(tree->GetAlias("evt_METToolboxNoHF_pfmetPhi"));
+		if (evt_METToolboxNoHF_pfmetPhi_branch) {evt_METToolboxNoHF_pfmetPhi_branch->SetAddress(&evt_METToolboxNoHF_pfmetPhi_);}
+	}
+	evt_METToolboxNoHF_pfmetPhi_raw_branch = 0;
+	if (tree->GetAlias("evt_METToolboxNoHF_pfmetPhi_raw") != 0) {
+		evt_METToolboxNoHF_pfmetPhi_raw_branch = tree->GetBranch(tree->GetAlias("evt_METToolboxNoHF_pfmetPhi_raw"));
+		if (evt_METToolboxNoHF_pfmetPhi_raw_branch) {evt_METToolboxNoHF_pfmetPhi_raw_branch->SetAddress(&evt_METToolboxNoHF_pfmetPhi_raw_);}
+	}
+	evt_METToolboxNoHF_pfmet_raw_branch = 0;
+	if (tree->GetAlias("evt_METToolboxNoHF_pfmet_raw") != 0) {
+		evt_METToolboxNoHF_pfmet_raw_branch = tree->GetBranch(tree->GetAlias("evt_METToolboxNoHF_pfmet_raw"));
+		if (evt_METToolboxNoHF_pfmet_raw_branch) {evt_METToolboxNoHF_pfmet_raw_branch->SetAddress(&evt_METToolboxNoHF_pfmet_raw_);}
+	}
 	evt_bs_Xwidth_branch = 0;
 	if (tree->GetAlias("evt_bs_Xwidth") != 0) {
 		evt_bs_Xwidth_branch = tree->GetBranch(tree->GetAlias("evt_bs_Xwidth"));
@@ -4374,6 +4385,11 @@ void Init(TTree *tree) {
 		els_clustersRMSRawEnergy_branch = tree->GetBranch(tree->GetAlias("els_clustersRMSRawEnergy"));
 		if (els_clustersRMSRawEnergy_branch) {els_clustersRMSRawEnergy_branch->SetAddress(&els_clustersRMSRawEnergy_);}
 	}
+	els_conv_vtx_prob_branch = 0;
+	if (tree->GetAlias("els_conv_vtx_prob") != 0) {
+		els_conv_vtx_prob_branch = tree->GetBranch(tree->GetAlias("els_conv_vtx_prob"));
+		if (els_conv_vtx_prob_branch) {els_conv_vtx_prob_branch->SetAddress(&els_conv_vtx_prob_);}
+	}
 	els_d0_branch = 0;
 	if (tree->GetAlias("els_d0") != 0) {
 		els_d0_branch = tree->GetBranch(tree->GetAlias("els_d0"));
@@ -4989,20 +5005,10 @@ void Init(TTree *tree) {
 		isotracks_dz_branch = tree->GetBranch(tree->GetAlias("isotracks_dz"));
 		if (isotracks_dz_branch) {isotracks_dz_branch->SetAddress(&isotracks_dz_);}
 	}
-	isotracks_dzAssociatedPV_branch = 0;
-	if (tree->GetAlias("isotracks_dzAssociatedPV") != 0) {
-		isotracks_dzAssociatedPV_branch = tree->GetBranch(tree->GetAlias("isotracks_dzAssociatedPV"));
-		if (isotracks_dzAssociatedPV_branch) {isotracks_dzAssociatedPV_branch->SetAddress(&isotracks_dzAssociatedPV_);}
-	}
 	isotracks_mass_branch = 0;
 	if (tree->GetAlias("isotracks_mass") != 0) {
 		isotracks_mass_branch = tree->GetBranch(tree->GetAlias("isotracks_mass"));
 		if (isotracks_mass_branch) {isotracks_mass_branch->SetAddress(&isotracks_mass_);}
-	}
-	isotracks_puppiWeight_branch = 0;
-	if (tree->GetAlias("isotracks_puppiWeight") != 0) {
-		isotracks_puppiWeight_branch = tree->GetBranch(tree->GetAlias("isotracks_puppiWeight"));
-		if (isotracks_puppiWeight_branch) {isotracks_puppiWeight_branch->SetAddress(&isotracks_puppiWeight_);}
 	}
 	isotracks_relIso_branch = 0;
 	if (tree->GetAlias("isotracks_relIso") != 0) {
@@ -5699,20 +5705,10 @@ void Init(TTree *tree) {
 		pfcands_dz_branch = tree->GetBranch(tree->GetAlias("pfcands_dz"));
 		if (pfcands_dz_branch) {pfcands_dz_branch->SetAddress(&pfcands_dz_);}
 	}
-	pfcands_dzAssociatedPV_branch = 0;
-	if (tree->GetAlias("pfcands_dzAssociatedPV") != 0) {
-		pfcands_dzAssociatedPV_branch = tree->GetBranch(tree->GetAlias("pfcands_dzAssociatedPV"));
-		if (pfcands_dzAssociatedPV_branch) {pfcands_dzAssociatedPV_branch->SetAddress(&pfcands_dzAssociatedPV_);}
-	}
 	pfcands_mass_branch = 0;
 	if (tree->GetAlias("pfcands_mass") != 0) {
 		pfcands_mass_branch = tree->GetBranch(tree->GetAlias("pfcands_mass"));
 		if (pfcands_mass_branch) {pfcands_mass_branch->SetAddress(&pfcands_mass_);}
-	}
-	pfcands_puppiWeight_branch = 0;
-	if (tree->GetAlias("pfcands_puppiWeight") != 0) {
-		pfcands_puppiWeight_branch = tree->GetBranch(tree->GetAlias("pfcands_puppiWeight"));
-		if (pfcands_puppiWeight_branch) {pfcands_puppiWeight_branch->SetAddress(&pfcands_puppiWeight_);}
 	}
 	pfjets_area_branch = 0;
 	if (tree->GetAlias("pfjets_area") != 0) {
@@ -7174,11 +7170,6 @@ void Init(TTree *tree) {
 		hyp_type_branch = tree->GetBranch(tree->GetAlias("hyp_type"));
 		if (hyp_type_branch) {hyp_type_branch->SetAddress(&hyp_type_);}
 	}
-	isotracks_IdAssociatedPV_branch = 0;
-	if (tree->GetAlias("isotracks_IdAssociatedPV") != 0) {
-		isotracks_IdAssociatedPV_branch = tree->GetBranch(tree->GetAlias("isotracks_IdAssociatedPV"));
-		if (isotracks_IdAssociatedPV_branch) {isotracks_IdAssociatedPV_branch->SetAddress(&isotracks_IdAssociatedPV_);}
-	}
 	isotracks_charge_branch = 0;
 	if (tree->GetAlias("isotracks_charge") != 0) {
 		isotracks_charge_branch = tree->GetBranch(tree->GetAlias("isotracks_charge"));
@@ -7534,11 +7525,6 @@ void Init(TTree *tree) {
 		mus_validPixelHits_branch = tree->GetBranch(tree->GetAlias("mus_validPixelHits"));
 		if (mus_validPixelHits_branch) {mus_validPixelHits_branch->SetAddress(&mus_validPixelHits_);}
 	}
-	pfcands_IdAssociatedPV_branch = 0;
-	if (tree->GetAlias("pfcands_IdAssociatedPV") != 0) {
-		pfcands_IdAssociatedPV_branch = tree->GetBranch(tree->GetAlias("pfcands_IdAssociatedPV"));
-		if (pfcands_IdAssociatedPV_branch) {pfcands_IdAssociatedPV_branch->SetAddress(&pfcands_IdAssociatedPV_);}
-	}
 	pfcands_charge_branch = 0;
 	if (tree->GetAlias("pfcands_charge") != 0) {
 		pfcands_charge_branch = tree->GetBranch(tree->GetAlias("pfcands_charge"));
@@ -7809,20 +7795,10 @@ void Init(TTree *tree) {
 		isotracks_fromPV_branch = tree->GetBranch(tree->GetAlias("isotracks_fromPV"));
 		if (isotracks_fromPV_branch) {isotracks_fromPV_branch->SetAddress(&isotracks_fromPV_);}
 	}
-	isotracks_pvAssociationQuality_branch = 0;
-	if (tree->GetAlias("isotracks_pvAssociationQuality") != 0) {
-		isotracks_pvAssociationQuality_branch = tree->GetBranch(tree->GetAlias("isotracks_pvAssociationQuality"));
-		if (isotracks_pvAssociationQuality_branch) {isotracks_pvAssociationQuality_branch->SetAddress(&isotracks_pvAssociationQuality_);}
-	}
 	pfcands_fromPV_branch = 0;
 	if (tree->GetAlias("pfcands_fromPV") != 0) {
 		pfcands_fromPV_branch = tree->GetBranch(tree->GetAlias("pfcands_fromPV"));
 		if (pfcands_fromPV_branch) {pfcands_fromPV_branch->SetAddress(&pfcands_fromPV_);}
-	}
-	pfcands_pvAssociationQuality_branch = 0;
-	if (tree->GetAlias("pfcands_pvAssociationQuality") != 0) {
-		pfcands_pvAssociationQuality_branch = tree->GetBranch(tree->GetAlias("pfcands_pvAssociationQuality"));
-		if (pfcands_pvAssociationQuality_branch) {pfcands_pvAssociationQuality_branch->SetAddress(&pfcands_pvAssociationQuality_);}
 	}
 	els_HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg_version_branch = 0;
 	if (tree->GetAlias("els_HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg_version") != 0) {
@@ -8608,6 +8584,10 @@ void GetEntry(unsigned int idx)
 		evt_METToolbox_pfmetPhi_isLoaded = false;
 		evt_METToolbox_pfmetPhi_raw_isLoaded = false;
 		evt_METToolbox_pfmet_raw_isLoaded = false;
+		evt_METToolboxNoHF_pfmet_isLoaded = false;
+		evt_METToolboxNoHF_pfmetPhi_isLoaded = false;
+		evt_METToolboxNoHF_pfmetPhi_raw_isLoaded = false;
+		evt_METToolboxNoHF_pfmet_raw_isLoaded = false;
 		evt_bs_Xwidth_isLoaded = false;
 		evt_bs_XwidthErr_isLoaded = false;
 		evt_bs_Ywidth_isLoaded = false;
@@ -8786,6 +8766,7 @@ void GetEntry(unsigned int idx)
 		els_clustersMeanDRToSeed_isLoaded = false;
 		els_clustersMeanRawEnergy_isLoaded = false;
 		els_clustersRMSRawEnergy_isLoaded = false;
+		els_conv_vtx_prob_isLoaded = false;
 		els_d0_isLoaded = false;
 		els_d0Err_isLoaded = false;
 		els_d0corr_isLoaded = false;
@@ -8909,9 +8890,7 @@ void GetEntry(unsigned int idx)
 		genps_mass_isLoaded = false;
 		genweights_isLoaded = false;
 		isotracks_dz_isLoaded = false;
-		isotracks_dzAssociatedPV_isLoaded = false;
 		isotracks_mass_isLoaded = false;
-		isotracks_puppiWeight_isLoaded = false;
 		isotracks_relIso_isLoaded = false;
 		mus_bs2d_isLoaded = false;
 		mus_bs2derr_isLoaded = false;
@@ -9051,9 +9030,7 @@ void GetEntry(unsigned int idx)
 		mus_z0Err_isLoaded = false;
 		mus_z0corr_isLoaded = false;
 		pfcands_dz_isLoaded = false;
-		pfcands_dzAssociatedPV_isLoaded = false;
 		pfcands_mass_isLoaded = false;
-		pfcands_puppiWeight_isLoaded = false;
 		pfjets_area_isLoaded = false;
 		pfjets_chargedEmE_isLoaded = false;
 		pfjets_chargedHadronE_isLoaded = false;
@@ -9346,7 +9323,6 @@ void GetEntry(unsigned int idx)
 		hyp_lt_id_isLoaded = false;
 		hyp_lt_index_isLoaded = false;
 		hyp_type_isLoaded = false;
-		isotracks_IdAssociatedPV_isLoaded = false;
 		isotracks_charge_isLoaded = false;
 		isotracks_particleId_isLoaded = false;
 		mus_algo_isLoaded = false;
@@ -9418,7 +9394,6 @@ void GetEntry(unsigned int idx)
 		mus_type_isLoaded = false;
 		mus_validHits_isLoaded = false;
 		mus_validPixelHits_isLoaded = false;
-		pfcands_IdAssociatedPV_isLoaded = false;
 		pfcands_charge_isLoaded = false;
 		pfcands_particleId_isLoaded = false;
 		pfjets_chargedHadronMultiplicity_isLoaded = false;
@@ -9473,9 +9448,7 @@ void GetEntry(unsigned int idx)
 		convs_tkidx_isLoaded = false;
 		ak8jets_pfcandIndicies_isLoaded = false;
 		isotracks_fromPV_isLoaded = false;
-		isotracks_pvAssociationQuality_isLoaded = false;
 		pfcands_fromPV_isLoaded = false;
-		pfcands_pvAssociationQuality_isLoaded = false;
 		els_HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg_version_isLoaded = false;
 		els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV0p54PF_ElectronLeg_version_isLoaded = false;
 		els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV0p5PF_ElectronLeg_version_isLoaded = false;
@@ -9679,6 +9652,10 @@ void LoadAllBranches()
 	if (evt_METToolbox_pfmetPhi_branch != 0) evt_METToolbox_pfmetPhi();
 	if (evt_METToolbox_pfmetPhi_raw_branch != 0) evt_METToolbox_pfmetPhi_raw();
 	if (evt_METToolbox_pfmet_raw_branch != 0) evt_METToolbox_pfmet_raw();
+	if (evt_METToolboxNoHF_pfmet_branch != 0) evt_METToolboxNoHF_pfmet();
+	if (evt_METToolboxNoHF_pfmetPhi_branch != 0) evt_METToolboxNoHF_pfmetPhi();
+	if (evt_METToolboxNoHF_pfmetPhi_raw_branch != 0) evt_METToolboxNoHF_pfmetPhi_raw();
+	if (evt_METToolboxNoHF_pfmet_raw_branch != 0) evt_METToolboxNoHF_pfmet_raw();
 	if (evt_bs_Xwidth_branch != 0) evt_bs_Xwidth();
 	if (evt_bs_XwidthErr_branch != 0) evt_bs_XwidthErr();
 	if (evt_bs_Ywidth_branch != 0) evt_bs_Ywidth();
@@ -9857,6 +9834,7 @@ void LoadAllBranches()
 	if (els_clustersMeanDRToSeed_branch != 0) els_clustersMeanDRToSeed();
 	if (els_clustersMeanRawEnergy_branch != 0) els_clustersMeanRawEnergy();
 	if (els_clustersRMSRawEnergy_branch != 0) els_clustersRMSRawEnergy();
+	if (els_conv_vtx_prob_branch != 0) els_conv_vtx_prob();
 	if (els_d0_branch != 0) els_d0();
 	if (els_d0Err_branch != 0) els_d0Err();
 	if (els_d0corr_branch != 0) els_d0corr();
@@ -9980,9 +9958,7 @@ void LoadAllBranches()
 	if (genps_mass_branch != 0) genps_mass();
 	if (genweights_branch != 0) genweights();
 	if (isotracks_dz_branch != 0) isotracks_dz();
-	if (isotracks_dzAssociatedPV_branch != 0) isotracks_dzAssociatedPV();
 	if (isotracks_mass_branch != 0) isotracks_mass();
-	if (isotracks_puppiWeight_branch != 0) isotracks_puppiWeight();
 	if (isotracks_relIso_branch != 0) isotracks_relIso();
 	if (mus_bs2d_branch != 0) mus_bs2d();
 	if (mus_bs2derr_branch != 0) mus_bs2derr();
@@ -10122,9 +10098,7 @@ void LoadAllBranches()
 	if (mus_z0Err_branch != 0) mus_z0Err();
 	if (mus_z0corr_branch != 0) mus_z0corr();
 	if (pfcands_dz_branch != 0) pfcands_dz();
-	if (pfcands_dzAssociatedPV_branch != 0) pfcands_dzAssociatedPV();
 	if (pfcands_mass_branch != 0) pfcands_mass();
-	if (pfcands_puppiWeight_branch != 0) pfcands_puppiWeight();
 	if (pfjets_area_branch != 0) pfjets_area();
 	if (pfjets_chargedEmE_branch != 0) pfjets_chargedEmE();
 	if (pfjets_chargedHadronE_branch != 0) pfjets_chargedHadronE();
@@ -10417,7 +10391,6 @@ void LoadAllBranches()
 	if (hyp_lt_id_branch != 0) hyp_lt_id();
 	if (hyp_lt_index_branch != 0) hyp_lt_index();
 	if (hyp_type_branch != 0) hyp_type();
-	if (isotracks_IdAssociatedPV_branch != 0) isotracks_IdAssociatedPV();
 	if (isotracks_charge_branch != 0) isotracks_charge();
 	if (isotracks_particleId_branch != 0) isotracks_particleId();
 	if (mus_algo_branch != 0) mus_algo();
@@ -10489,7 +10462,6 @@ void LoadAllBranches()
 	if (mus_type_branch != 0) mus_type();
 	if (mus_validHits_branch != 0) mus_validHits();
 	if (mus_validPixelHits_branch != 0) mus_validPixelHits();
-	if (pfcands_IdAssociatedPV_branch != 0) pfcands_IdAssociatedPV();
 	if (pfcands_charge_branch != 0) pfcands_charge();
 	if (pfcands_particleId_branch != 0) pfcands_particleId();
 	if (pfjets_chargedHadronMultiplicity_branch != 0) pfjets_chargedHadronMultiplicity();
@@ -10544,9 +10516,7 @@ void LoadAllBranches()
 	if (convs_tkidx_branch != 0) convs_tkidx();
 	if (ak8jets_pfcandIndicies_branch != 0) ak8jets_pfcandIndicies();
 	if (isotracks_fromPV_branch != 0) isotracks_fromPV();
-	if (isotracks_pvAssociationQuality_branch != 0) isotracks_pvAssociationQuality();
 	if (pfcands_fromPV_branch != 0) pfcands_fromPV();
-	if (pfcands_pvAssociationQuality_branch != 0) pfcands_pvAssociationQuality();
 	if (els_HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg_version_branch != 0) els_HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg_version();
 	if (els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV0p54PF_ElectronLeg_version_branch != 0) els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV0p54PF_ElectronLeg_version();
 	if (els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV0p5PF_ElectronLeg_version_branch != 0) els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV0p5PF_ElectronLeg_version();
@@ -11382,6 +11352,58 @@ void LoadAllBranches()
 			evt_METToolbox_pfmet_raw_isLoaded = true;
 		}
 		return evt_METToolbox_pfmet_raw_;
+	}
+	float &evt_METToolboxNoHF_pfmet()
+	{
+		if (not evt_METToolboxNoHF_pfmet_isLoaded) {
+			if (evt_METToolboxNoHF_pfmet_branch != 0) {
+				evt_METToolboxNoHF_pfmet_branch->GetEntry(index);
+			} else { 
+				printf("branch evt_METToolboxNoHF_pfmet_branch does not exist!\n");
+				exit(1);
+			}
+			evt_METToolboxNoHF_pfmet_isLoaded = true;
+		}
+		return evt_METToolboxNoHF_pfmet_;
+	}
+	float &evt_METToolboxNoHF_pfmetPhi()
+	{
+		if (not evt_METToolboxNoHF_pfmetPhi_isLoaded) {
+			if (evt_METToolboxNoHF_pfmetPhi_branch != 0) {
+				evt_METToolboxNoHF_pfmetPhi_branch->GetEntry(index);
+			} else { 
+				printf("branch evt_METToolboxNoHF_pfmetPhi_branch does not exist!\n");
+				exit(1);
+			}
+			evt_METToolboxNoHF_pfmetPhi_isLoaded = true;
+		}
+		return evt_METToolboxNoHF_pfmetPhi_;
+	}
+	float &evt_METToolboxNoHF_pfmetPhi_raw()
+	{
+		if (not evt_METToolboxNoHF_pfmetPhi_raw_isLoaded) {
+			if (evt_METToolboxNoHF_pfmetPhi_raw_branch != 0) {
+				evt_METToolboxNoHF_pfmetPhi_raw_branch->GetEntry(index);
+			} else { 
+				printf("branch evt_METToolboxNoHF_pfmetPhi_raw_branch does not exist!\n");
+				exit(1);
+			}
+			evt_METToolboxNoHF_pfmetPhi_raw_isLoaded = true;
+		}
+		return evt_METToolboxNoHF_pfmetPhi_raw_;
+	}
+	float &evt_METToolboxNoHF_pfmet_raw()
+	{
+		if (not evt_METToolboxNoHF_pfmet_raw_isLoaded) {
+			if (evt_METToolboxNoHF_pfmet_raw_branch != 0) {
+				evt_METToolboxNoHF_pfmet_raw_branch->GetEntry(index);
+			} else { 
+				printf("branch evt_METToolboxNoHF_pfmet_raw_branch does not exist!\n");
+				exit(1);
+			}
+			evt_METToolboxNoHF_pfmet_raw_isLoaded = true;
+		}
+		return evt_METToolboxNoHF_pfmet_raw_;
 	}
 	float &evt_bs_Xwidth()
 	{
@@ -13697,6 +13719,19 @@ void LoadAllBranches()
 		}
 		return els_clustersRMSRawEnergy_;
 	}
+	const vector<float> &els_conv_vtx_prob()
+	{
+		if (not els_conv_vtx_prob_isLoaded) {
+			if (els_conv_vtx_prob_branch != 0) {
+				els_conv_vtx_prob_branch->GetEntry(index);
+			} else { 
+				printf("branch els_conv_vtx_prob_branch does not exist!\n");
+				exit(1);
+			}
+			els_conv_vtx_prob_isLoaded = true;
+		}
+		return els_conv_vtx_prob_;
+	}
 	const vector<float> &els_d0()
 	{
 		if (not els_d0_isLoaded) {
@@ -15296,19 +15331,6 @@ void LoadAllBranches()
 		}
 		return isotracks_dz_;
 	}
-	const vector<float> &isotracks_dzAssociatedPV()
-	{
-		if (not isotracks_dzAssociatedPV_isLoaded) {
-			if (isotracks_dzAssociatedPV_branch != 0) {
-				isotracks_dzAssociatedPV_branch->GetEntry(index);
-			} else { 
-				printf("branch isotracks_dzAssociatedPV_branch does not exist!\n");
-				exit(1);
-			}
-			isotracks_dzAssociatedPV_isLoaded = true;
-		}
-		return isotracks_dzAssociatedPV_;
-	}
 	const vector<float> &isotracks_mass()
 	{
 		if (not isotracks_mass_isLoaded) {
@@ -15321,19 +15343,6 @@ void LoadAllBranches()
 			isotracks_mass_isLoaded = true;
 		}
 		return isotracks_mass_;
-	}
-	const vector<float> &isotracks_puppiWeight()
-	{
-		if (not isotracks_puppiWeight_isLoaded) {
-			if (isotracks_puppiWeight_branch != 0) {
-				isotracks_puppiWeight_branch->GetEntry(index);
-			} else { 
-				printf("branch isotracks_puppiWeight_branch does not exist!\n");
-				exit(1);
-			}
-			isotracks_puppiWeight_isLoaded = true;
-		}
-		return isotracks_puppiWeight_;
 	}
 	const vector<float> &isotracks_relIso()
 	{
@@ -17142,19 +17151,6 @@ void LoadAllBranches()
 		}
 		return pfcands_dz_;
 	}
-	const vector<float> &pfcands_dzAssociatedPV()
-	{
-		if (not pfcands_dzAssociatedPV_isLoaded) {
-			if (pfcands_dzAssociatedPV_branch != 0) {
-				pfcands_dzAssociatedPV_branch->GetEntry(index);
-			} else { 
-				printf("branch pfcands_dzAssociatedPV_branch does not exist!\n");
-				exit(1);
-			}
-			pfcands_dzAssociatedPV_isLoaded = true;
-		}
-		return pfcands_dzAssociatedPV_;
-	}
 	const vector<float> &pfcands_mass()
 	{
 		if (not pfcands_mass_isLoaded) {
@@ -17167,19 +17163,6 @@ void LoadAllBranches()
 			pfcands_mass_isLoaded = true;
 		}
 		return pfcands_mass_;
-	}
-	const vector<float> &pfcands_puppiWeight()
-	{
-		if (not pfcands_puppiWeight_isLoaded) {
-			if (pfcands_puppiWeight_branch != 0) {
-				pfcands_puppiWeight_branch->GetEntry(index);
-			} else { 
-				printf("branch pfcands_puppiWeight_branch does not exist!\n");
-				exit(1);
-			}
-			pfcands_puppiWeight_isLoaded = true;
-		}
-		return pfcands_puppiWeight_;
 	}
 	const vector<float> &pfjets_area()
 	{
@@ -20977,19 +20960,6 @@ void LoadAllBranches()
 		}
 		return hyp_type_;
 	}
-	const vector<int> &isotracks_IdAssociatedPV()
-	{
-		if (not isotracks_IdAssociatedPV_isLoaded) {
-			if (isotracks_IdAssociatedPV_branch != 0) {
-				isotracks_IdAssociatedPV_branch->GetEntry(index);
-			} else { 
-				printf("branch isotracks_IdAssociatedPV_branch does not exist!\n");
-				exit(1);
-			}
-			isotracks_IdAssociatedPV_isLoaded = true;
-		}
-		return isotracks_IdAssociatedPV_;
-	}
 	const vector<int> &isotracks_charge()
 	{
 		if (not isotracks_charge_isLoaded) {
@@ -21913,19 +21883,6 @@ void LoadAllBranches()
 		}
 		return mus_validPixelHits_;
 	}
-	const vector<int> &pfcands_IdAssociatedPV()
-	{
-		if (not pfcands_IdAssociatedPV_isLoaded) {
-			if (pfcands_IdAssociatedPV_branch != 0) {
-				pfcands_IdAssociatedPV_branch->GetEntry(index);
-			} else { 
-				printf("branch pfcands_IdAssociatedPV_branch does not exist!\n");
-				exit(1);
-			}
-			pfcands_IdAssociatedPV_isLoaded = true;
-		}
-		return pfcands_IdAssociatedPV_;
-	}
 	const vector<int> &pfcands_charge()
 	{
 		if (not pfcands_charge_isLoaded) {
@@ -22628,19 +22585,6 @@ void LoadAllBranches()
 		}
 		return isotracks_fromPV_;
 	}
-	const vector<unsigned char> &isotracks_pvAssociationQuality()
-	{
-		if (not isotracks_pvAssociationQuality_isLoaded) {
-			if (isotracks_pvAssociationQuality_branch != 0) {
-				isotracks_pvAssociationQuality_branch->GetEntry(index);
-			} else { 
-				printf("branch isotracks_pvAssociationQuality_branch does not exist!\n");
-				exit(1);
-			}
-			isotracks_pvAssociationQuality_isLoaded = true;
-		}
-		return isotracks_pvAssociationQuality_;
-	}
 	const vector<unsigned char> &pfcands_fromPV()
 	{
 		if (not pfcands_fromPV_isLoaded) {
@@ -22653,19 +22597,6 @@ void LoadAllBranches()
 			pfcands_fromPV_isLoaded = true;
 		}
 		return pfcands_fromPV_;
-	}
-	const vector<unsigned char> &pfcands_pvAssociationQuality()
-	{
-		if (not pfcands_pvAssociationQuality_isLoaded) {
-			if (pfcands_pvAssociationQuality_branch != 0) {
-				pfcands_pvAssociationQuality_branch->GetEntry(index);
-			} else { 
-				printf("branch pfcands_pvAssociationQuality_branch does not exist!\n");
-				exit(1);
-			}
-			pfcands_pvAssociationQuality_isLoaded = true;
-		}
-		return pfcands_pvAssociationQuality_;
 	}
 	unsigned int &els_HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg_version()
 	{
@@ -24685,6 +24616,10 @@ namespace tas {
 	const float &evt_METToolbox_pfmetPhi();
 	const float &evt_METToolbox_pfmetPhi_raw();
 	const float &evt_METToolbox_pfmet_raw();
+	const float &evt_METToolboxNoHF_pfmet();
+	const float &evt_METToolboxNoHF_pfmetPhi();
+	const float &evt_METToolboxNoHF_pfmetPhi_raw();
+	const float &evt_METToolboxNoHF_pfmet_raw();
 	const float &evt_bs_Xwidth();
 	const float &evt_bs_XwidthErr();
 	const float &evt_bs_Ywidth();
@@ -24863,6 +24798,7 @@ namespace tas {
 	const vector<float> &els_clustersMeanDRToSeed();
 	const vector<float> &els_clustersMeanRawEnergy();
 	const vector<float> &els_clustersRMSRawEnergy();
+	const vector<float> &els_conv_vtx_prob();
 	const vector<float> &els_d0();
 	const vector<float> &els_d0Err();
 	const vector<float> &els_d0corr();
@@ -24986,9 +24922,7 @@ namespace tas {
 	const vector<float> &genps_mass();
 	const vector<float> &genweights();
 	const vector<float> &isotracks_dz();
-	const vector<float> &isotracks_dzAssociatedPV();
 	const vector<float> &isotracks_mass();
-	const vector<float> &isotracks_puppiWeight();
 	const vector<float> &isotracks_relIso();
 	const vector<float> &mus_bs2d();
 	const vector<float> &mus_bs2derr();
@@ -25128,9 +25062,7 @@ namespace tas {
 	const vector<float> &mus_z0Err();
 	const vector<float> &mus_z0corr();
 	const vector<float> &pfcands_dz();
-	const vector<float> &pfcands_dzAssociatedPV();
 	const vector<float> &pfcands_mass();
-	const vector<float> &pfcands_puppiWeight();
 	const vector<float> &pfjets_area();
 	const vector<float> &pfjets_chargedEmE();
 	const vector<float> &pfjets_chargedHadronE();
@@ -25423,7 +25355,6 @@ namespace tas {
 	const vector<int> &hyp_lt_id();
 	const vector<int> &hyp_lt_index();
 	const vector<int> &hyp_type();
-	const vector<int> &isotracks_IdAssociatedPV();
 	const vector<int> &isotracks_charge();
 	const vector<int> &isotracks_particleId();
 	const vector<int> &mus_algo();
@@ -25495,7 +25426,6 @@ namespace tas {
 	const vector<int> &mus_type();
 	const vector<int> &mus_validHits();
 	const vector<int> &mus_validPixelHits();
-	const vector<int> &pfcands_IdAssociatedPV();
 	const vector<int> &pfcands_charge();
 	const vector<int> &pfcands_particleId();
 	const vector<int> &pfjets_chargedHadronMultiplicity();
@@ -25550,9 +25480,7 @@ namespace tas {
 	const vector<vector<int> > &convs_tkidx();
 	const vector<vector<int> > &ak8jets_pfcandIndicies();
 	const vector<unsigned char> &isotracks_fromPV();
-	const vector<unsigned char> &isotracks_pvAssociationQuality();
 	const vector<unsigned char> &pfcands_fromPV();
-	const vector<unsigned char> &pfcands_pvAssociationQuality();
 	const unsigned int &els_HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg_version();
 	const unsigned int &els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV0p54PF_ElectronLeg_version();
 	const unsigned int &els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV0p5PF_ElectronLeg_version();
