@@ -10,7 +10,9 @@ using namespace WWAnalysis;
 
 int WWAnalysis::convertCMS3tag(TString tagName) 
 {
-  
+
+  if (tagName.Length() == 0) return -1;
+  if (!tagName.BeginsWith("CMS3")) return 9999999;
   TString t1(tagName[6]);
   TString t2(tagName[7]);
   TString t3(tagName[9]);
@@ -25,6 +27,7 @@ float WWAnalysis::getGenHT(bool is_b_a_jet)
 {
 
   float ht_gen = 0.;
+  if (tas::evt_isRealData()) return ht_gen;
   for (size_t gidx = 0; gidx < tas::genps_p4().size(); gidx++){
     if (tas::genps_status().at(gidx) != 23) continue;
     int id = abs(tas::genps_id().at(gidx));
@@ -123,11 +126,6 @@ Z_result_t WWAnalysis::makesExtraZ(int iHyp){
   if (ele_idx.size() > 0) {
     for (unsigned int eidx = 0; eidx < tas::els_p4().size(); eidx++) {
 
-      bool is_hyp_lep = false;
-      for (unsigned int vidx = 0; vidx < ele_idx.size(); vidx++) {
-        if (eidx == ele_idx.at(vidx)) is_hyp_lep = true;                
-      }
-      if (is_hyp_lep) continue;
       if (fabs(tas::els_p4().at(eidx).eta()) > 2.4) continue;
       if (tas::els_p4().at(eidx).pt() < 7) continue;
 
@@ -150,11 +148,6 @@ Z_result_t WWAnalysis::makesExtraZ(int iHyp){
   if (mu_idx.size() > 0) {
     for (unsigned int midx = 0; midx < tas::mus_p4().size(); midx++) {
 
-      bool is_hyp_lep = false;
-      for (unsigned int vidx = 0; vidx < mu_idx.size(); vidx++) {
-        if (midx == mu_idx.at(vidx)) is_hyp_lep = true;                
-      }
-      if (is_hyp_lep) continue;
       if (fabs(tas::mus_p4().at(midx).eta()) > 2.4) continue;
       if (tas::mus_p4().at(midx).pt() < 5.) continue;
 
@@ -164,7 +157,7 @@ Z_result_t WWAnalysis::makesExtraZ(int iHyp){
         if (tas::mus_charge().at(midx) * tas::mus_charge().at(mu_idx.at(vidx)) > 0) continue;
         LorentzVector zp4 = tas::mus_p4().at(midx) + tas::mus_p4().at(mu_idx.at(vidx));
         float zcandmass = sqrt(fabs(zp4.mass2()));
-        if (fabs(zcandmass-91.) < 15.){
+        if (fabs(zcandmass-91.1875) < 15.){
           result.result = true; 
           result.id = -sgn(tas::mus_charge().at(midx))*13;
           result.idx = midx;  
@@ -177,12 +170,12 @@ Z_result_t WWAnalysis::makesExtraZ(int iHyp){
   return result;
 }
 
-std::pair <vector <Jet>, vector <Jet> > WWAnalysis::WWJetsCalculator(TString CMS3tag){
+std::pair <vector <Jet>, vector <Jet> > WWAnalysis::WWJetsCalculator(vector<LorentzVector> JetCollection, TString CMS3tag){
   vector <Jet> result_jets;
   vector <Jet> result_btags;
 
-  for (unsigned int i = 0; i < tas::pfjets_p4().size(); i++){
-    LorentzVector jet = tas::pfjets_p4().at(i);
+  for (unsigned int i = 0; i < JetCollection.size(); i++){
+    LorentzVector jet = JetCollection.at(i);
     
     //Kinematic jet cuts
     if (jet.pt() < 25.) continue;
@@ -214,10 +207,7 @@ std::pair <vector <Jet>, vector <Jet> > WWAnalysis::WWJetsCalculator(TString CMS
     
     //Get discriminator
     float disc;
-    //    if (convertCMS3tag(CMS3tag) >= 70403)
     disc = tas::pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag().at(i);
-    //    else 
-    //      disc = tas::pfjets_combinedInclusiveSecondaryVertexV2BJetTag().at(i);
 
     //Save jets that make it this far
     if (jet.pt() >= 30.) {
@@ -225,7 +215,7 @@ std::pair <vector <Jet>, vector <Jet> > WWAnalysis::WWJetsCalculator(TString CMS
     }
 
     //Save b-tags that make it this far
-    if (disc < 0.814) continue;
+    if (disc < 0.605) continue;
     result_btags.push_back(Jet(i,disc)); 
 
   }
@@ -454,8 +444,8 @@ bool WWAnalysis::isGoodMuon(unsigned int muidx){
 }
 
 int WWAnalysis::lepMotherID(Lep lep){
-  if (abs(lep.pdgId()) != abs(lep.mc_id())) return 0; 
   if (tas::evt_isRealData()) return 1;
+  if (abs(lep.pdgId()) != abs(lep.mc_id())) return 0; 
   else if (isFromZ(lep.pdgId(),lep.idx()) || isFromW(lep.pdgId(),lep.idx())){
     if (sgn(lep.pdgId()) == sgn(lep.mc_id())) return 1;
     else return 2;
@@ -558,10 +548,10 @@ hyp_result_t WWAnalysis::chooseBestHyp(bool expt, bool verbose){
   vector <int> good_hyps_zv; //same sign, tight tight, fail Z veto
   for (unsigned int i = 0; i < tas::hyp_type().size(); i++){
     int good_hyp_result = isGoodHyp(i, verbose);
-    if (good_hyp_result == 3) good_hyps_ss.push_back(i); 
+    if (good_hyp_result == 4) good_hyps_os.push_back(i); 
     else if (good_hyp_result == 2) good_hyps_sf.push_back(i); 
     else if (good_hyp_result == 1) good_hyps_df.push_back(i); 
-    else if (good_hyp_result == 4) good_hyps_os.push_back(i); 
+    else if (good_hyp_result == 3) good_hyps_ss.push_back(i); 
     else if (good_hyp_result == 5) good_hyps_fr.push_back(i); 
     else if (good_hyp_result == 6) good_hyps_zv.push_back(i); 
   }
@@ -625,7 +615,8 @@ hyp_result_t WWAnalysis::chooseBestHyp(bool expt, bool verbose){
 vector <particle_t> WWAnalysis::getGenPair(bool verbose){
 
   vector <particle_t> gen_particles;
-
+  if (tas::evt_isRealData()) return gen_particles;
+  
   //First get all gen leptons 
   for (unsigned int gidx = 0; gidx < tas::genps_p4().size(); gidx++){
     if (tas::genps_status().at(gidx) != 1) continue;
@@ -825,4 +816,83 @@ float WWAnalysis::coneCorrPt(int id, int idx){
   float B = abs(id)==11 ? 0.70 : 0.68;
   float C = abs(id)==11 ? 7.00 : 6.70;
   return ((ptrel > C) ? lep_p4.pt()*(1 + std::max((float)0, miniIso - A)) : std::max(lep_p4.pt(), jet_p4.pt() * B));
+}
+
+
+int WWAnalysis::getHighPtTriggerPrescale(LorentzVector& p4, int& idx, int& id)  {
+
+  int temp;
+  int retval = 0;
+  
+  if (id == 13) {
+    
+    setHLTBranch("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v"             , p4, temp);
+    if (temp >= 0) retval += temp; 
+    setHLTBranch("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v" , tas::mus_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_MuonLeg().at(idx), temp);
+    if (temp >= 0) retval += 2*temp; 
+    setHLTBranch("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v"  , tas::mus_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_MuonLeg().at(idx) , temp);
+    if (temp >= 0) retval += 4*temp; 
+    setHLTBranch("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v"           , p4, temp);
+    if (temp >= 0) retval += 8*temp; 
+
+  } else if (id == 11) {
+    
+    setHLTBranch("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v"       ,  p4, temp);
+    if (temp >= 0) retval += temp; 
+    setHLTBranch("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v" , tas::els_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_ElectronLeg().at(idx), temp);
+    if (temp >= 0) retval += 2*temp; 
+    setHLTBranch("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v"  , tas::els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg().at(idx) , temp);
+    if (temp >= 0) retval += 4*temp; 
+    
+  }
+
+  return retval;
+}
+
+int WWAnalysis::getLowPtTriggerPrescale(LorentzVector& p4, int& idx, int& id) {
+
+  int temp;
+  int retval = 0;
+  
+  if (id == 13) {
+    
+    setHLTBranch("HLT_DoubleMu8_Mass8_PFHT300_v"                     , tas::mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg().at(idx)                      , temp);
+    if (temp >= 0) retval += temp; 
+    setHLTBranch("HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_v"     , tas::mus_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_MuonLeg().at(idx)      , temp);
+    if (temp >= 0) retval += 2*temp; 
+
+  } else if (id == 11) {
+    
+    setHLTBranch("HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT300_v"   , tas::els_HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg().at(idx), temp);
+    if (temp >= 0) retval += temp; 
+    setHLTBranch("HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_v"     , tas::els_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg().at(idx)  , temp);
+    if (temp >= 0) retval += 2*temp; 
+    
+  }
+
+  return retval;
+}
+
+void WWAnalysis::setHLTBranch(const char* pattern, const LorentzVector& p4, int& HLTbranch) {
+  TString name_HLT = triggerName(pattern);
+  if (name_HLT=="TRIGGER_NOT_FOUND") {
+    HLTbranch=0;
+    return;
+  }
+  if (tas::passHLTTrigger(name_HLT)) {
+    HLTbranch = HLT_prescale(name_HLT);
+    if (passHLTTrigger(name_HLT,p4)==0) HLTbranch*=-1;
+  } else HLTbranch = 0;
+}
+
+void WWAnalysis::setHLTBranch(const char* pattern, bool legMatch, int& HLTbranch) {
+  TString name_HLT = triggerName(pattern);
+  if (name_HLT=="TRIGGER_NOT_FOUND"){
+    HLTbranch=0;
+    return;
+  }
+  if (tas::passHLTTrigger(name_HLT)) {
+    HLTbranch = HLT_prescale(name_HLT);
+    if (legMatch==0) HLTbranch*=-1;
+  } else HLTbranch = 0;
 }
