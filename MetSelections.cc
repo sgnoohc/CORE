@@ -179,7 +179,7 @@ pair <float, float> getT1CHSMET3p0(   FactorizedJetCorrector * jet_corrector ){
   //Run over same jets that were produced with MET tools
   for(unsigned int iJet = 0; iJet < cms3.pfjets_METToolbox_p4().size(); iJet++){
 
-	if( cms3.pfjets_METToolbox_p4().eta() > 3.0 ) continue;// only use jets with eta<3.0 to correct MET 3.0
+	if( cms3.pfjets_METToolbox_p4().at(iJet).eta() > 3.0 ) continue;// only use jets with eta<3.0 to correct MET 3.0
 	
 	// // get uncorrected jet p4 to use as input for corrections
 	LorentzVector jetp4_uncorr = cms3.pfjets_METToolbox_p4().at(iJet);		  
