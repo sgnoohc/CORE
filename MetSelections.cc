@@ -44,6 +44,7 @@ bool hbheNoiseFilter(int minZeros) {
     if(hcalnoise_maxHPDHits()>=17) return false;
     if(hcalnoise_maxHPDNoOtherHits()>=10) return false;
     if(hcalnoise_maxZeros()>=minZeros) return false;
+    if(hcalnoise_HasBadRBXTS4TS5()) return false;
     if(hcalnoise_numIsolatedNoiseChannels()>=10) return false;
     if(hcalnoise_isolatedNoiseSumE()>=50.0) return false;
     if(hcalnoise_isolatedNoiseSumEt()>=25.0) return false;
