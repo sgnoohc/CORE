@@ -758,8 +758,8 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
 
     case(WW_medium_v1):
       if (electronID(elIdx, WW_medium_noiso_v1)==0) return false; 
-      if (elIDCacheSet) return passMultiIso(0.14, 0.68, 6.7, elID_cache.getMiniiso(elIdx), elID_cache.getPtratio(elIdx), elID_cache.getPtrel(elIdx) );
-      else return passMultiIso(11, elIdx, 0.14, 0.68, 6.7);
+      if (elIDCacheSet) return passMultiIso(0.10, 0.70, 7.0, elID_cache.getMiniiso(elIdx), elID_cache.getPtratio(elIdx), elID_cache.getPtrel(elIdx) );
+      else return passMultiIso(11, elIdx, 0.10, 0.70, 7.0);
       break;
 
     case(WW_medium_looseMVA_noip_v1): 
@@ -771,8 +771,8 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
 	    return false;
       }
       if (!globalEleMVAreader->passesElectronMVAid(elIdx, id_level)) return false;
-      if (elIDCacheSet) return passMultiIso(0.14, 0.68, 6.7, elID_cache.getMiniiso(elIdx), elID_cache.getPtratio(elIdx), elID_cache.getPtrel(elIdx) );
-      else return passMultiIso(11, elIdx, 0.14, 0.68, 6.7);
+      if (elIDCacheSet) return passMultiIso(0.10, 0.70, 7.0, elID_cache.getMiniiso(elIdx), elID_cache.getPtratio(elIdx), elID_cache.getPtrel(elIdx) );
+      else return passMultiIso(11, elIdx, 0.10, 0.70, 7.0);
       break;
 
    /////////////////////
@@ -1487,9 +1487,9 @@ bool readMVA::passesElectronMVAid(unsigned int index, id_level_t id_level){
   case(WW_fo_noiso_v1):
   case(WW_medium_noiso_v1):
   case(WW_medium_noip_v1):
-    if (aeta < 0.8) return disc > 0.40;
-    if ((aeta >= 0.8 && aeta <= 1.479)) return disc > 0.40;
-    if (aeta > 1.479) return disc > 0.0;
+    if (aeta < 0.8) return disc > 0.73;
+    if ((aeta >= 0.8 && aeta <= 1.479)) return disc > 0.57;
+    if (aeta > 1.479) return disc > -0.55;
     break;
 
   default:
