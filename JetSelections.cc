@@ -143,6 +143,8 @@ bool isTightPFJetLepVeto_50nsV1(unsigned int pfJetIdx){
   float pfjet_nhf_  = pfjets_neutralHadronE()[pfJetIdx] / (pfjets_undoJEC().at(pfJetIdx)*pfjets_p4()[pfJetIdx].energy());
   float pfjet_nef_  = pfjets_neutralEmE()[pfJetIdx] / (pfjets_undoJEC().at(pfJetIdx)*pfjets_p4()[pfJetIdx].energy());
   float pfjet_eta  = fabs(pfjets_p4()[pfJetIdx].eta());
+  float pfjet_cef_  = pfjets_chargedEmE()[pfJetIdx] / (pfjets_undoJEC().at(pfJetIdx)*pfjets_p4()[pfJetIdx].energy());
+  float pfjet_muf_  = pfjets_muonE()[pfJetIdx] / (pfjets_undoJEC().at(pfJetIdx)*pfjets_p4()[pfJetIdx].energy());
 
   if (pfjet_eta <= 3.0){
 	if (pfjet_nef_ >= 0.90) return false;
