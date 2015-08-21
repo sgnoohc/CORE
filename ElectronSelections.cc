@@ -298,7 +298,8 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       break;
 
     case(STOP_veto_v2):
-      if (!isVetoElectronPOGphys14_v2(elIdx)) return false;
+      if (!isVetoElectronPOGphys14noIso_v2(elIdx)) return false;
+      if ( elMiniRelIso(elIdx, true, 0.0, true, false) >= 0.2) return false;
       return true;
       break;
 
