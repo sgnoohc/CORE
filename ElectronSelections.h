@@ -25,6 +25,11 @@ bool isVetoElectronPOGphys14_v2(unsigned int elIdx);
 bool isLooseElectronPOGphys14_v2(unsigned int elIdx);
 bool isMediumElectronPOGphys14_v2(unsigned int elIdx);
 bool isTightElectronPOGphys14_v2(unsigned int elIdx);
+//Aug 17 Updated Ids with no Iso requirement
+bool isVetoElectronPOGspring15_v1(unsigned int elIdx);
+bool isLooseElectronPOGspring15_v1(unsigned int elIdx);
+bool isMediumElectronPOGspring15_v1(unsigned int elIdx);
+bool isTightElectronPOGspring15_v1(unsigned int elIdx);
 
 //POG IDs for phys14 with no Iso requirement
 bool isVetoElectronPOGphys14noIso(unsigned int elIdx);
@@ -36,6 +41,11 @@ bool isVetoElectronPOGphys14noIso_v2(unsigned int elIdx);
 bool isLooseElectronPOGphys14noIso_v2(unsigned int elIdx);
 bool isMediumElectronPOGphys14noIso_v2(unsigned int elIdx);
 bool isTightElectronPOGphys14noIso_v2(unsigned int elIdx);
+//Aug 17 Updated Ids with no Iso requirement
+bool isVetoElectronPOGspring15noIso_v1(unsigned int elIdx);
+bool isLooseElectronPOGspring15noIso_v1(unsigned int elIdx);
+bool isMediumElectronPOGspring15noIso_v1(unsigned int elIdx);
+bool isTightElectronPOGspring15noIso_v1(unsigned int elIdx);
 
 //Tightest ID passed by electron
 int eleTightID(unsigned int elIdx, analysis_t analysis, int version = 1);

@@ -3,11 +3,6 @@
 using namespace tas;
 using namespace WWAnalysis;
 
-//Development Notes
-  //Original Author: Alex (UCSB), who stole functions from Indara, Jason, Giuseppe
-  //Note: these functions are currently only for the WW analysis!
-  //Be careful that IDs, etc. are OK before stealing for other analyses
-
 int WWAnalysis::convertCMS3tag(TString tagName) 
 {
 
@@ -182,7 +177,7 @@ std::pair <vector <Jet>, vector <Jet> > WWAnalysis::WWJetsCalculator(vector<Lore
     if (fabs(jet.eta()) > 2.4) continue;
     
     //Require loose jet ID
-    if (!isLoosePFJet(i)) continue;
+    if (!isLoosePFJet_50nsV1(i)) continue;
     
     //Jet cleaning -- electrons
     bool jetIsLep = false;
@@ -208,7 +203,8 @@ std::pair <vector <Jet>, vector <Jet> > WWAnalysis::WWJetsCalculator(vector<Lore
     //Get discriminator
     float disc;
     disc = tas::pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag().at(i);
-
+    //disc = tas::pfjets_bDiscriminators().at(i).at(6);
+    
     //Save jets that make it this far
     if (jet.pt() >= 30.) {
       result_jets.push_back(Jet(i,disc));
@@ -373,37 +369,37 @@ int WWAnalysis::signalRegion(int njets, int nbtags, float met, float ht, float m
 
 bool WWAnalysis::isGoodVetoElectronNoIso(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 7.) return false;
-  if (!electronID(elidx, WW_veto_noiso_v1)) return false;
+  if (!electronID(elidx, WW_veto_noiso_v2)) return false;
   return true;
 }
 
 bool WWAnalysis::isGoodVetoElectron(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 7.) return false;
-  if (!electronID(elidx, WW_veto_v1)) return false;
+  if (!electronID(elidx, WW_veto_v2)) return false;
   return true;
 }
 
 bool WWAnalysis::isFakableElectronNoIso(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 10.) return false;
-  if (!electronID(elidx, WW_fo_looseMVA_noiso_v1)) return false;
+  if (!electronID(elidx, WW_fo_noiso_v2)) return false;
   return true;
 }
 
 bool WWAnalysis::isFakableElectron(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 10.) return false;
-  if (!electronID(elidx, WW_fo_looseMVA_v1)) return false;
+  if (!electronID(elidx, WW_fo_v2)) return false;
   return true;
 }
 
 bool WWAnalysis::isGoodElectronNoIso(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 10.) return false;
-  if (!electronID(elidx, WW_medium_noiso_v1)) return false;
+  if (!electronID(elidx, WW_medium_noiso_v2)) return false;
   return true;
 }
 
 bool WWAnalysis::isGoodElectron(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 10.) return false;
-  if (!electronID(elidx, WW_medium_v1)) return false;
+  if (!electronID(elidx, WW_medium_v2)) return false;
   return true;
 }
 

@@ -164,7 +164,7 @@ float muMiniRelIsoCMS3_EA(unsigned int idx) {
 float eleRelIso03(unsigned int elIdx, analysis_t analysis){
   if (analysis == HAD ) return eleRelIso03DB(elIdx);
   if (analysis == STOP) return eleRelIso03DB(elIdx);
-  if (analysis == WW  ) return eleRelIso03EA(elIdx);
+  if (analysis == WW  ) return eleRelIso03_90ContEA(elIdx);
   if (analysis == SS  ) return eleRelIso03EA(elIdx);
   if (analysis == ZMET) return eleRelIso03EA(elIdx);
 
@@ -190,11 +190,32 @@ float elEA03(unsigned int elIdx) {
   return ea;
 }
 
+float el90ContEA03(unsigned int elIdx) {
+  float ea = 0.;
+  if      (fabs(els_p4().at(elIdx).eta())<=1.000) ea = 0.1752;
+  else if (fabs(els_p4().at(elIdx).eta())<=1.479) ea = 0.1862;
+  else if (fabs(els_p4().at(elIdx).eta())<=2.000) ea = 0.1411;
+  else if (fabs(els_p4().at(elIdx).eta())<=2.200) ea = 0.1534;
+  else if (fabs(els_p4().at(elIdx).eta())<=2.300) ea = 0.1903;
+  else if (fabs(els_p4().at(elIdx).eta())<=2.400) ea = 0.2243;
+  else if (fabs(els_p4().at(elIdx).eta())<=2.500) ea = 0.2687;
+  return ea;
+}
+
 float eleRelIso03EA(unsigned int elIdx){
   float chiso = els_pfChargedHadronIso().at(elIdx);
   float nhiso = els_pfNeutralHadronIso().at(elIdx);
   float emiso = els_pfPhotonIso().at(elIdx);
   float ea    = elEA03(elIdx);
+  float absiso = chiso + std::max(float(0.0), nhiso + emiso - evt_fixgridfastjet_all_rho() * ea);
+  return absiso/(els_p4().at(elIdx).pt());
+}
+
+float eleRelIso03_90ContEA(unsigned int elIdx){
+  float chiso = els_pfChargedHadronIso().at(elIdx);
+  float nhiso = els_pfNeutralHadronIso().at(elIdx);
+  float emiso = els_pfPhotonIso().at(elIdx);
+  float ea    = el90ContEA03(elIdx);
   float absiso = chiso + std::max(float(0.0), nhiso + emiso - evt_fixgridfastjet_all_rho() * ea);
   return absiso/(els_p4().at(elIdx).pt());
 }
