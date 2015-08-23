@@ -291,12 +291,12 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
    /// WW veto v2   ///
    ////////////////////
 
-    case(WW_veto_noiso_v1):
+    case(WW_veto_noiso_v2):
 
       return isVetoElectronPOGspring15noIso_v1(elIdx);
       break;
 
-    case(WW_veto_v1):
+    case(WW_veto_v2):
 
       return isVetoElectronPOGspring15_v1(elIdx);
       break;
