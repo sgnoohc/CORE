@@ -53,6 +53,13 @@ LorentzVector closestJet(const LorentzVector& lep_p4, float dRmin, float maxAbsE
   else return LorentzVector();
 }
 
+float getMiniDR(float pt) {
+  float dr = 0.2;
+  if (pt>50) dr = 10./pt;
+  if (pt>200) dr = 0.05;
+  return dr;
+}
+
 float muRelIso03DB(unsigned int muIdx){
   float chiso     = mus_isoR03_pf_ChargedHadronPt().at(muIdx);
   float nhiso     = mus_isoR03_pf_NeutralHadronEt().at(muIdx);
@@ -109,7 +116,7 @@ float muRelIso03_noCorr(unsigned int muIdx){
   return absiso/(mus_p4().at(muIdx).pt());
 }
 
-float muRelIsoCustomCone(unsigned int muIdx, float dr, bool useVetoCones, float ptthresh, bool useDBcor, bool useEAcor){
+float muRelIsoCustomCone(unsigned int muIdx, float dr, bool useVetoCones, float ptthresh, bool useDBcor, bool useEAcor, float mindr){
   float chiso     = 0.;
   float nhiso     = 0.;
   float emiso     = 0.;
@@ -122,6 +129,7 @@ float muRelIsoCustomCone(unsigned int muIdx, float dr, bool useVetoCones, float 
 
   for (unsigned int i=0; i<pfcands_particleId().size(); ++i){
     float thisDR = fabs(ROOT::Math::VectorUtil::DeltaR(pfcands_p4().at(i),mus_p4().at(muIdx)));
+    if (thisDR<mindr) continue;
     if (thisDR>dr) continue;  
     if ( fabs(pfcands_particleId().at(i))==211 ) {
       if (pfcands_fromPV().at(i) > 1 && (!useVetoCones || thisDR > deadcone_ch) ) chiso+=pfcands_p4().at(i).pt();
@@ -139,9 +147,7 @@ float muRelIsoCustomCone(unsigned int muIdx, float dr, bool useVetoCones, float 
 
 float muMiniRelIso(unsigned int idx, bool useVetoCones, float ptthresh, bool useDBcor, bool useEAcor){
   float pt = mus_p4().at(idx).pt();
-  float dr = 0.2;
-  if (pt>50) dr = 10./pt;
-  if (pt>200) dr = 0.05;
+  float dr = getMiniDR(pt);
   return  muRelIsoCustomCone(idx,dr,useVetoCones,ptthresh,useDBcor,useEAcor);
 }
 
@@ -153,12 +159,16 @@ float muMiniRelIsoCMS3_DB(unsigned int idx) {
 
 float muMiniRelIsoCMS3_EA(unsigned int idx) {
   float pt = mus_p4().at(idx).pt();
-  float dr = 0.2;
-  if (pt>50) dr = 10./pt;
-  if (pt>200) dr = 0.05;
+  float dr = getMiniDR(pt);
   float correction = evt_fixgridfastjet_all_rho() * muEA03(idx) * (dr/0.3) * (dr/0.3);
   float absiso = mus_miniIso_ch().at(idx) + std::max(float(0.0), mus_miniIso_nh().at(idx) + mus_miniIso_em().at(idx) - correction);
   return absiso/(mus_p4().at(idx).pt());
+}
+
+float muRelIsoAn04(unsigned int idx, bool useDBcor) {
+  float pt = mus_p4().at(idx).pt();
+  float dr = getMiniDR(pt);
+  return muRelIsoCustomCone(idx, 0.4, false, 0.0, useDBcor, false, dr);
 }
 
 float eleRelIso03(unsigned int elIdx, analysis_t analysis){
@@ -228,7 +238,7 @@ float eleRelIso03_noCorr(unsigned int elIdx){
   return absiso/(els_p4().at(elIdx).pt());
 }
 
-float elRelIsoCustomCone(unsigned int elIdx, float dr, bool useVetoCones, float ptthresh, bool useDBcor, bool useEAcor){
+float elRelIsoCustomCone(unsigned int elIdx, float dr, bool useVetoCones, float ptthresh, bool useDBcor, bool useEAcor, float mindr){
   float chiso     = 0.;
   float nhiso     = 0.;
   float emiso     = 0.;
@@ -245,6 +255,7 @@ float elRelIsoCustomCone(unsigned int elIdx, float dr, bool useVetoCones, float 
   }
   for (unsigned int i=0; i<pfcands_particleId().size(); ++i){
     float thisDR = fabs(ROOT::Math::VectorUtil::DeltaR(pfcands_p4().at(i),els_p4().at(elIdx)));
+    if ( thisDR<mindr ) continue;
     if ( thisDR>dr ) continue;  
     if ( fabs(pfcands_particleId().at(i))==211 ) {
       if (pfcands_fromPV().at(i) > 1 && (!useVetoCones || thisDR > deadcone_ch) ) chiso+=pfcands_p4().at(i).pt();
@@ -261,9 +272,7 @@ float elRelIsoCustomCone(unsigned int elIdx, float dr, bool useVetoCones, float 
 float elMiniRelIso(unsigned int idx, bool useVetoCones, float ptthresh, bool useDBcor, bool useEAcor){
 
   float pt = els_p4().at(idx).pt();
-  float dr = 0.2;
-  if (pt>50) dr = 10./pt;
-  if (pt>200) dr = 0.05;
+  float dr = getMiniDR(pt);
   return elRelIsoCustomCone(idx,dr,useVetoCones,ptthresh,useDBcor,useEAcor);
 }
 
@@ -275,10 +284,15 @@ float elMiniRelIsoCMS3_DB(unsigned int idx) {
 
 float elMiniRelIsoCMS3_EA(unsigned int idx) {
   float pt = els_p4().at(idx).pt();
-  float dr = 0.2;
-  if (pt>50) dr = 10./pt;
-  if (pt>200) dr = 0.05;
+  float dr = getMiniDR(pt);
   float correction = evt_fixgridfastjet_all_rho() * elEA03(idx) * (dr/0.3) * (dr/0.3);
   float absiso = els_miniIso_ch().at(idx) + std::max(float(0.0), els_miniIso_nh().at(idx) + els_miniIso_em().at(idx) - correction);
   return absiso/(els_p4().at(idx).pt());
 }
+
+float elRelIsoAn04(unsigned int idx, bool useDBcor) {
+  float pt = els_p4().at(idx).pt();
+  float dr = getMiniDR(pt);
+  return elRelIsoCustomCone(idx, 0.4, false, 0.0, useDBcor, false, dr);
+}
+

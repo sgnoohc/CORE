@@ -1,5 +1,6 @@
 #include "Math/VectorUtil.h"
 #include "IsoTrackVeto.h"
+#include "IsolationTools.h"
 #include "CMS3.h"
 
 float TrackIso(int thisPf, float coneR, float deltaZCut){
@@ -22,13 +23,11 @@ float TrackIso(int thisPf, float coneR, float deltaZCut){
 
 float MiniTrackIso(int thisPf, float deltaZCut){
   float pt = cms3.pfcands_p4().at(thisPf).pt();
-  float dr = 0.2;
-  if (pt>50) dr = 10./pt;
-  if (pt>200) dr = 0.05;
+  float dr = getMiniDR(pt);
   return TrackIso(thisPf,dr,deltaZCut);
 }
 
-PFCandIsoResults PFCandPFIso(int thisPf, float coneR, float deltaZCut) {
+PFCandIsoResults PFCandPFIso(int thisPf, float coneR, float deltaZCut, bool useFromPV, float mindr) {
 
   PFCandIsoResults res;
   res.chiso = 0.;
@@ -40,12 +39,13 @@ PFCandIsoResults PFCandPFIso(int thisPf, float coneR, float deltaZCut) {
 
     if( ipf == thisPf ) continue; // skip this PFCandidate
     double dr=ROOT::Math::VectorUtil::DeltaR( cms3.pfcands_p4().at(ipf) , cms3.pfcands_p4().at(thisPf) );
+    if( dr < mindr ) continue; // skip pfcands inside inner radius
     if( dr > coneR ) continue; // skip pfcands outside the cone                                     
 
     float pt = cms3.pfcands_p4().at(ipf).pt();
     int particleId = cms3.pfcands_particleId().at(ipf);
     if( abs(particleId) == 211 && pt>=0.0 ) {
-      if (fabs(cms3.pfcands_dz().at(ipf)) < deltaZCut) res.chiso += pt;
+      if ((fabs(cms3.pfcands_dz().at(ipf)) < deltaZCut) || (useFromPV && cms3.pfcands_fromPV().at(ipf) > 1)) res.chiso += pt;
       else res.PUpt += pt;
     }
     else if (abs(particleId) == 130) res.nhiso += pt;
@@ -57,9 +57,14 @@ PFCandIsoResults PFCandPFIso(int thisPf, float coneR, float deltaZCut) {
 
 PFCandIsoResults PFCandMiniPFIso(int thisPf, float deltaZCut){
   float pt = cms3.pfcands_p4().at(thisPf).pt();
-  float dr = 0.2;
-  if (pt>50) dr = 10./pt;
-  if (pt>200) dr = 0.05;
+  float dr = getMiniDR(pt);
   return PFCandPFIso(thisPf,dr,deltaZCut);
 }
 
+float PFCandRelIsoAn04(int thisPf, bool useDBcor) {
+  float pt = cms3.pfcands_p4().at(thisPf).pt();
+  PFCandIsoResults results = PFCandPFIso(thisPf, 0.4, 0.0, true, 0.3);
+  if (useDBcor) return (results.chiso + std::max(float(0.0), results.nhiso + results.phiso - float(0.5)*results.PUpt))/pt;
+  else return (results.chiso + results.nhiso + results.phiso)/pt;
+
+}
