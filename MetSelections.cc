@@ -45,21 +45,21 @@ metStruct trackerMET(float deltaZCut, const std::vector<LorentzVector>* jets) {
 }
 
 bool hbheNoiseFilter(int minZeros) {
-  // http://cmslxr.fnal.gov/lxr/source/CommonTools/RecoAlgos/plugins/HBHENoiseFilter.cc?v=CMSSW_7_4_1
-  // by default (false --> reject), maxZeros() cut will never cause a lost event
-  if(hcalnoise_minE2Over10TS()<-999.0) return false;
-  if(hcalnoise_maxE2Over10TS()>999.0) return false;
-  if(hcalnoise_maxRBXHits()>=999) return false;
-  if(hcalnoise_min25GeVHitTime()<-9999.0) return false;
-  if(hcalnoise_max25GeVHitTime()>9999.0) return false;
-  if(hcalnoise_minRBXEMF()<-999.0) return false;
-  if(hcalnoise_maxHPDHits()>=17) return false;
-  if(hcalnoise_maxHPDNoOtherHits()>=10) return false;
-  if(hcalnoise_maxZeros()>=minZeros) return false;
-  if(hcalnoise_numIsolatedNoiseChannels()>=10) return false;
-  if(hcalnoise_isolatedNoiseSumE()>=50.0) return false;
-  if(hcalnoise_isolatedNoiseSumEt()>=25.0) return false;
-  return true;
+    // http://cmslxr.fnal.gov/lxr/source/CommonTools/RecoAlgos/plugins/HBHENoiseFilterResultProducer.cc?v=CMSSW_7_4_1
+    // by default (false --> reject), maxZeros() cut will never cause a lost event
+    if(hcalnoise_maxHPDHits()>=17) return false;
+    if(hcalnoise_maxHPDNoOtherHits()>=10) return false;
+    if(hcalnoise_maxZeros()>=minZeros) return false;
+    if(hcalnoise_HasBadRBXTS4TS5()) return false;
+    return true;
+}
+
+bool hbheIsoNoiseFilter() {
+    // false = reject event
+    if(hcalnoise_numIsolatedNoiseChannels()>=10) return false;
+    if(hcalnoise_isolatedNoiseSumE()>=50.0) return false;
+    if(hcalnoise_isolatedNoiseSumEt()>=25.0) return false;
+    return true;
 }
 
 // takes in an already initialized FactorizedJetCorrector object
@@ -199,21 +199,6 @@ pair <float, float> getT1CHSMET3p0(   FactorizedJetCorrector * jet_corrector ){
 
 	double corr             = corr_vals.at(corr_vals.size()-1); // All corrections
 	double corr_l1          = corr_vals.at(0);                  // offset correction
-		  
-	//	
-	// remove SA or global muons from jets before correcting
-	//
-	// for (unsigned int imu = 0; imu < cms3.mus_p4().size(); imu++)
-	//   {
-	// 	int index = cms3.mus_pfidx().at(imu);
-	// 	if (index < 0) continue;
-	// 	bool is_global     = !(((cms3.mus_type().at(imu)) & (1<<1)) == 0);
-	// 	bool is_standalone = !(((cms3.mus_type().at(imu)) & (1<<3)) == 0);
-	// 	if (!(is_global || is_standalone)) continue;            
-	// 	if (std::find(cms3.pfjets_METToolbox_pfcandIndicies().at(iJet).begin(),
-	// 				  cms3.pfjets_METToolbox_pfcandIndicies().at(iJet).end(), index) == cms3.pfjets_METToolbox_pfcandIndicies().at(iJet).end()) continue;
-	// 	jetp4_uncorr -= cms3.pfcands_p4()   .at(index);
-	//   }
 
 	// Alternative way to do muon corrections, done by MET group
 	for (unsigned int pfcind = 0; pfcind < cms3.pfjets_METToolbox_pfcandIndicies().at(iJet).size(); pfcind++){
