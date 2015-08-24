@@ -138,7 +138,7 @@ bool isTightPFJet_50nsV1(unsigned int pfJetIdx){
 	if (pfjet_nhf_ >= 0.90) return false;
   }
 
-  if (!isLoosePFJetV2(pfJetIdx)) return false;
+  if (!isLoosePFJet_50nsV1(pfJetIdx)) return false;
 
   return true;
 }
@@ -160,7 +160,7 @@ bool isTightPFJetLepVeto_50nsV1(unsigned int pfJetIdx){
 	if (pfjet_muf_ >= 0.8        ) return false;
   }
 
-  if (!isLoosePFJetV2(pfJetIdx)) return false;
+  if (!isLoosePFJet_50nsV1(pfJetIdx)) return false;
 
   return true;
 }

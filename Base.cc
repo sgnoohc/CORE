@@ -100,6 +100,12 @@ analysis_t whichAnalysis(id_level_t id_level){
     case (WW_medium_noip_v1):
     case (WW_fo_noiso_noip_v1):
     case (WW_medium_looseMVA_noip_v1):
+    case (WW_veto_noiso_v2):
+    case (WW_veto_v2):
+    case (WW_fo_noiso_v2):
+    case (WW_fo_v2):
+    case (WW_medium_noiso_v2):
+    case (WW_medium_v2):
       return WW;
       break;
     default:

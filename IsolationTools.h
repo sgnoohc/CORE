@@ -12,6 +12,8 @@ float ptRel(const LorentzVector& lepp4, const LorentzVector& jetp4, bool subtrac
 float getPtRel(int id, int idx, bool subtractLep);
 LorentzVector closestJet(const LorentzVector& lep_p4, float dRmin=0.4, float maxAbsEta=2.4);
 
+float getMiniDR(float pt);
+
 //Muon
 float muRelIso03DB(unsigned int muIdx);
 float muRelIso04DB(unsigned int muIdx);
@@ -19,22 +21,26 @@ float muRelIso03(unsigned int muIdx, analysis_t analysis);
 float muRelIso04(unsigned int muIdx, analysis_t analysis);
 float muEA03(unsigned int muIdx);
 float muRelIso03EA(unsigned int muIdx);
-float muRelIsoCustomCone(unsigned int idx, float dr, bool useVetoCones=true, float ptthresh = 0.5, bool useDBcor=false, bool useEAcor=false);
+float muRelIsoCustomCone(unsigned int idx, float dr, bool useVetoCones=true, float ptthresh = 0.5, bool useDBcor=false, bool useEAcor=false, float mindr = -1.);
 float muMiniRelIso(unsigned int idx, bool useVetoCones=true, float ptthresh = 0.5, bool useDBcor=false, bool useEAcor=false);
 float muMiniRelIsoCMS3_EA(unsigned int idx);
 float muMiniRelIsoCMS3_DB(unsigned int idx);
 float muRelIso03_noCorr(unsigned int muIdx);
+float muRelIsoAn04(unsigned int idx, bool useDBcor= true);
 
 
 //Electron
 float eleRelIso03(unsigned int elIdx, analysis_t analysis);
 float eleRelIso03DB(unsigned int elIdx);
 float elEA03(unsigned int elIdx);
+float el90ContEA03(unsigned int elIdx);
 float eleRelIso03EA(unsigned int elIdx);
-float elRelIsoCustomCone(unsigned int idx, float dr, bool useVetoCones=true, float ptthresh = 0.0, bool useDBcor=false, bool useEAcor=false);
+float eleRelIso03_90ContEA(unsigned int elIdx);
+float elRelIsoCustomCone(unsigned int idx, float dr, bool useVetoCones=true, float ptthresh = 0.0, bool useDBcor=false, bool useEAcor=false, float mindr = -1.);
 float elMiniRelIso(unsigned int idx, bool useVetoCones=true, float ptthresh = 0.0, bool useDBcor=false, bool useEAcor=false);
 float elMiniRelIsoCMS3_EA(unsigned int idx);
 float elMiniRelIsoCMS3_DB(unsigned int idx);
 float eleRelIso03_noCorr(unsigned int elIdx);
+float elRelIsoAn04(unsigned int idx, bool useDBcor= true);
 
 #endif

@@ -88,7 +88,7 @@ int lepMotherID(Lep lep);
 int lepMotherID_inSituFR(Lep lep);
 
 //Jet selection function
-std::pair <vector <Jet>, vector <Jet> > WWJetsCalculator(TString CMS3tag);
+std::pair <vector <Jet>, vector <Jet> > WWJetsCalculator(std::vector<LorentzVector> JetCollection, TString CMS3tag);
 int WWJetsCounter(float ptmin);
 
 // Calculate generator ht
@@ -161,8 +161,13 @@ private:
   float csvivf_;
 };
 
-int convertCMS3tag(TString tagName);
+ int convertCMS3tag(TString tagName) ;
+ int getHighPtTriggerPrescale(LorentzVector& p4, int& idx, int& id) ;
+ int getLowPtTriggerPrescale(LorentzVector& p4, int& idx, int& id) ;
+ void setHLTBranch(const char* pattern, const LorentzVector& p4, int& HLTbranch);
+ void setHLTBranch(const char* pattern, bool legMatch, int& HLTbranch);
 
 }
+
 
 #endif

@@ -93,7 +93,14 @@ enum id_level_t {
   WW_medium_noiso_v1, 
   WW_medium_v1, 
   WW_tight_noiso_v1, 
-  WW_tight_v1
+  WW_tight_v1,
+
+  WW_veto_noiso_v2, 
+  WW_veto_v2, 
+  WW_fo_noiso_v2, 
+  WW_fo_v2, 
+  WW_medium_noiso_v2, 
+  WW_medium_v2
 
 };
 
