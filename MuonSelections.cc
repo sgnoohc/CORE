@@ -431,6 +431,25 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
 	  return true;
       break;
 
+   //////////////////////
+   /// ZMET medium v1 ///
+   //////////////////////
+  
+    case(ZMET_mediumMu_v1):
+      if (!isMediumMuonPOG(muIdx)                             ) return false;
+	  if (fabs(mus_dxyPV()             .at(muIdx)) >  0.05    ) return false;
+	  if (fabs(mus_dzPV()              .at(muIdx)) >  0.1     ) return false;
+	  if( muMiniRelIso( muIdx, true, 0.5, false, true ) > 0.1 ) return false;
+	  else return true;
+      break;
+
+    case(ZMET_mediumMu_noiso_v1):
+      if (!isMediumMuonPOG(muIdx)                             ) return false;
+	  if (fabs(mus_dxyPV()             .at(muIdx)) >  0.05    ) return false;
+	  if (fabs(mus_dzPV()              .at(muIdx)) >  0.1     ) return false;
+	  else return true;
+      break;
+
    /////////////////////
    /// ZMET tight v1 ///
    /////////////////////

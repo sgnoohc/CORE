@@ -74,6 +74,10 @@ analysis_t whichAnalysis(id_level_t id_level){
     case (STOP_tight_v2):
       return STOP;
       break;
+    case (ZMET_mediumMu_v1):
+    case (ZMET_mediumMu_noiso_v1):
+    case (ZMET_tightMVA_v1):
+    case (ZMET_tightMVA_noiso_v1):
     case (ZMET_loose_v2):
     case (ZMET_loose_noiso_v2):
     case (ZMET_loose_v1):
