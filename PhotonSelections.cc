@@ -100,6 +100,7 @@ bool photonID(unsigned int phIdx, id_level_t id_level){
 	// match to pfjet w/ neutral EM fraction > 70%
 	// reject photons within electron with pT > 10 within cone of dR < 0.2
 	// Reject photons aligned to MET within 0.14 radians in phi
+	else return true;
 	break;
 
 	///////////////

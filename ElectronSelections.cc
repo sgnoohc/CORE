@@ -886,10 +886,38 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       return true;
       break;
 
+	//////////////////////
+	/// ZMET MVA id v1 ///
+	//////////////////////
+
+    case(ZMET_tightMVA_v1):
+	  if( electronID(elIdx, ZMET_tightMVA_noiso_v1)==0 ) return false; // tight MVA id no iso
+	  // if( elMiniRelIso( elIdx, true, 0.0, false, true ) != elMiniRelIsoCMS3_EA( elIdx ) ){ // this is a check. delete me later
+	  // 	std::cout<<"pfcandiso: "<< elMiniRelIso( elIdx, true, 0.0, false, true ) << endl;
+	  // 	std::cout<<"cms3iso:   "<< elMiniRelIsoCMS3_EA( elIdx ) << endl;
+	  // }	  
+	  // // if( elMiniRelIso( elIdx, true, 0.0, false, true ) > 0.1 ) return false;
+	  if( elMiniRelIsoCMS3_EA( elIdx ) > 0.1           ) return false; // minireliso < 0.1
+	  else return true;
+	  break;
+
+    case(ZMET_tightMVA_noiso_v1):
+	  if (globalEleMVAreader==0) {
+		cout << "readMVA=0, please create and init it (e.g with createAndInitMVA function)" << endl;
+		return false;
+	  }
+	  if (fabs(els_etaSC()     .at(elIdx)) >  2.5 ) return false;
+	  if (els_conv_vtx_flag()  .at(elIdx)         ) return false;
+	  if (els_exp_innerlayers().at(elIdx)  >  0   ) return false;
+	  if (fabs(els_dzPV()      .at(elIdx)) >= 0.1 ) return false;
+	  if (fabs(els_dxyPV()     .at(elIdx)) >= 0.05) return false;
+	  if (!globalEleMVAreader->passesElectronMVAid(elIdx, SS_medium_noip_v3)) return false; //tight MVA working point 
+	  else return true;
+	  break;
+	  
 	/////////////////////
 	/// ZMET loose v1 ///
 	/////////////////////
-
 
   case(ZMET_loose_v2):
 	if( !isLooseElectronPOGphys14noIso(elIdx)               ) return false;
