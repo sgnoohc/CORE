@@ -43,4 +43,13 @@ float elMiniRelIsoCMS3_DB(unsigned int idx);
 float eleRelIso03_noCorr(unsigned int elIdx);
 float elRelIsoAn04(unsigned int idx, bool useDBcor= true);
 
+//Photon
+float photon_CHEA03(   int photonIdx );
+float photon_NHEA03(   int photonIdx );
+float photon_EMEA03(   int photonIdx );
+float photonCHIso03EA( int photonIdx );
+float photonNHIso03EA( int photonIdx );
+float photonEMIso03EA( int photonIdx );
+
+
 #endif
