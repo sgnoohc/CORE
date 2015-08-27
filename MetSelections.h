@@ -13,10 +13,14 @@ struct metStruct{
   float sumet;
 };
 
+class FactorizedJetCorrector;
+
 metStruct trackerMET(float deltaZCut = 0.2, const std::vector<LorentzVector>* jets = 0);
 bool hbheNoiseFilter(int minZeros = 999);
 bool hbheIsoNoiseFilter();
+pair <float, float> getT1CHSMET( FactorizedJetCorrector * jet_corrector );
 pair<float,float> MET3p0(); // tracker style MET with no particles with eta > 3.0
 bool passesMETfilter();
+pair <float, float> getT1CHSMET3p0( FactorizedJetCorrector * jet_corrector );
 
 #endif
