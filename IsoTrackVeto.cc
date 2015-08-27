@@ -3,7 +3,7 @@
 #include "IsolationTools.h"
 #include "CMS3.h"
 
-float TrackIso(int thisPf, float coneR, float deltaZCut){
+float TrackIso(int thisPf, float coneR, float deltaZCut, bool useFromPV, bool useLeptons){
 
   float absIso = 0.0;
   
@@ -13,7 +13,9 @@ float TrackIso(int thisPf, float coneR, float deltaZCut){
     if(cms3.pfcands_charge().at(ipf) == 0 ) continue; // skip neutrals
     double dr=ROOT::Math::VectorUtil::DeltaR( cms3.pfcands_p4().at(ipf) , cms3.pfcands_p4().at(thisPf) );
     if( dr > coneR ) continue; // skip pfcands outside the cone                                     
-    if( cms3.pfcands_p4().at(ipf).pt()>=0.0 && fabs(cms3.pfcands_dz().at(ipf)) < deltaZCut) absIso += cms3.pfcands_p4().at(ipf).pt();
+    if( cms3.pfcands_p4().at(ipf).pt()>=0.0 && (useLeptons || abs(cms3.pfcands_particleId().at(ipf)) == 211) && 
+	( (fabs(cms3.pfcands_dz().at(ipf)) < deltaZCut) || (useFromPV && cms3.pfcands_fromPV().at(ipf) > 1)) )
+      absIso += cms3.pfcands_p4().at(ipf).pt();
 
   }
 
