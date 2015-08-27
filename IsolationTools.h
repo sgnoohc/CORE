@@ -28,7 +28,6 @@ float muMiniRelIsoCMS3_DB(unsigned int idx);
 float muRelIso03_noCorr(unsigned int muIdx);
 float muRelIsoAn04(unsigned int idx, bool useDBcor= true);
 
-
 //Electron
 float eleRelIso03(unsigned int elIdx, analysis_t analysis);
 float eleRelIso03DB(unsigned int elIdx);
@@ -50,6 +49,5 @@ float photon_EMEA03(   int photonIdx );
 float photonCHIso03EA( int photonIdx );
 float photonNHIso03EA( int photonIdx );
 float photonEMIso03EA( int photonIdx );
-
 
 #endif

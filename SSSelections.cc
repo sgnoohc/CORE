@@ -668,7 +668,7 @@ int isGoodHyp(int iHyp, IsolationMethods isoCase, bool expt, bool verbose){
   if (!hypsFromFirstGoodVertex(iHyp)) return 0;
 
   //Finished for events that fail z veto
-  if (extraZ) return 6;
+  if (passed_id_numer_lt && passed_id_numer_ll && extraZ) return 6;
 
   //Results
   else if (passed_id_numer_lt && passed_id_numer_ll && isss) return 3;  // 3 if both numer pass, SS
