@@ -296,3 +296,82 @@ float elRelIsoAn04(unsigned int idx, bool useDBcor) {
   return elRelIsoCustomCone(idx, 0.4, false, 0.0, useDBcor, false, dr);
 }
 
+//////////////////////
+// Photon Isolation //
+//////////////////////
+
+// from https://indico.cern.ch/event/369239/contribution/2/attachments/1134693/1623149/spring15_pcb.pdf
+float photon_CHEA03( int photonIdx )
+{
+  float eta = cms3.photons_p4().at(photonIdx).eta();
+  float EA = -999;
+  
+  if(       abs(eta) < 1.0   ){ EA = 0.0157;
+  }else if( abs(eta) < 1.479 ){ EA = 0.0143;
+  }else if( abs(eta) < 2.0   ){ EA = 0.0115;
+  }else if( abs(eta) < 2.2   ){ EA = 0.0094;
+  }else if( abs(eta) < 2.3   ){ EA = 0.0095;
+  }else if( abs(eta) < 2.4   ){ EA = 0.0068;
+  }else if( abs(eta) > 2.4   ){ EA = 0.0053;
+  }
+  
+  return EA;
+}
+
+float photon_NHEA03( int photonIdx )
+{
+  float eta = cms3.photons_p4().at(photonIdx).eta();
+  float EA = -999;
+  
+  if(       abs(eta) < 1.0   ){ EA = 0.0143;
+  }else if( abs(eta) < 1.479 ){ EA = 0.0210;
+  }else if( abs(eta) < 2.0   ){ EA = 0.0148;
+  }else if( abs(eta) < 2.2   ){ EA = 0.0082;
+  }else if( abs(eta) < 2.3   ){ EA = 0.0124;
+  }else if( abs(eta) < 2.4   ){ EA = 0.0186;
+  }else if( abs(eta) > 2.4   ){ EA = 0.0320;
+  }
+  
+  return EA;
+}
+
+float photon_EMEA03( int photonIdx )
+{
+  float eta = cms3.photons_p4().at(photonIdx).eta();
+  float EA = -999;
+  
+  if(       abs(eta) < 1.0   ){ EA = 0.0725;
+  }else if( abs(eta) < 1.479 ){ EA = 0.0604;
+  }else if( abs(eta) < 2.0   ){ EA = 0.0320;
+  }else if( abs(eta) < 2.2   ){ EA = 0.0512;
+  }else if( abs(eta) < 2.3   ){ EA = 0.0766;
+  }else if( abs(eta) < 2.4   ){ EA = 0.0949;
+  }else if( abs(eta) > 2.4   ){ EA = 0.1160;
+  }
+  
+  return EA;
+}
+
+float photonCHIso03EA( int photonIdx )
+{
+  float chiso = photons_recoChargedHadronIso().at(photonIdx);
+  float ea    = photon_CHEA03(photonIdx);
+  float CHIso = std::max(float(0.0), chiso - evt_fixgridfastjet_all_rho() * ea);
+  return CHIso;
+}
+
+float photonNHIso03EA( int photonIdx )
+{
+  float nhiso = photons_recoNeutralHadronIso().at(photonIdx);
+  float ea    = photon_NHEA03(photonIdx);
+  float NHIso = std::max(float(0.0), nhiso - evt_fixgridfastjet_all_rho() * ea);
+  return NHIso;
+}
+
+float photonEMIso03EA( int photonIdx )
+{
+  float emiso = photons_recoPhotonIso().at(photonIdx);
+  float ea    = photon_EMEA03(photonIdx);
+  float EMIso = std::max(float(0.0), emiso - evt_fixgridfastjet_all_rho() * ea);
+  return EMIso;
+}
