@@ -1,12 +1,8 @@
 #ifndef MCSELECTIONS_H
 #define MCSELECTIONS_H
-
 #include "CMS3.h"
 #include "TString.h"
 #include "Base.h"
-#include "TDatabasePDG.h"
-#include "TFile.h"
-#include "TTree.h"
 
 //Nicely formatted dump of gen-level particles
 int  dumpDocLines();
@@ -26,5 +22,6 @@ int getSourceId(int genpIdx);
 bool useSourceId(int sourceId);
 bool terminateSourceId(int motherId);
 bool terminateMotherId(int motherId);
+
 
 #endif

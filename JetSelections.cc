@@ -104,7 +104,6 @@ bool isLoosePFJet_50nsV1(unsigned int pfJetIdx){
   float pfjet_nhf_  = pfjets_neutralHadronE()[pfJetIdx] / (pfjets_undoJEC().at(pfJetIdx)*pfjets_p4()[pfJetIdx].energy());
   float pfjet_cef_  = pfjets_chargedEmE()[pfJetIdx] / (pfjets_undoJEC().at(pfJetIdx)*pfjets_p4()[pfJetIdx].energy());
   float pfjet_nef_  = pfjets_neutralEmE()[pfJetIdx] / (pfjets_undoJEC().at(pfJetIdx)*pfjets_p4()[pfJetIdx].energy());
-
   int   pfjet_cm_  = pfjets_chargedMultiplicity()[pfJetIdx];
   int   pfjet_nm_  = pfjets_neutralMultiplicity()[pfJetIdx];
   float pfjet_eta  = fabs(pfjets_p4()[pfJetIdx].eta());
