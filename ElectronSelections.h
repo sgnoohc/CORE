@@ -57,7 +57,7 @@ int tightChargeEle(unsigned int elIdx);
 //Electron MVA ID
 class readMVA {
   public:
-    void InitMVA(string path);
+    void InitMVA(string path, bool v25ns = false);
     float MVA(unsigned int index); 
     bool passesElectronMVAid(unsigned int index, id_level_t id_level);
     void DumpValues();
@@ -92,6 +92,11 @@ class readMVA {
     float ele_isbarrel_;       
     float ele_isendcap_;       
     float scl_eta_;            
+    //additional variables for 25ns version    
+    float ele_gsfhits_;
+    float ele_expectedMissingInnerHits_;
+    float ele_convVtxFitProbability_;
+    float dummySpectator_;
 
 };
 

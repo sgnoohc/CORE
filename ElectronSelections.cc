@@ -1507,31 +1507,36 @@ int tightChargeEle(unsigned int elIdx){
 }
 
 void readMVA::DumpValues(){
-  cout << "ele_kfhits:           " << ele_kfhits_             << endl;
-  cout << "ele_oldsigmaietaieta: " << ele_oldsigmaietaieta_   << endl;
-  cout << "ele_oldsigmaiphiiphi: " << ele_oldsigmaiphiiphi_   << endl;
-  cout << "ele_oldcircularity:   " << ele_oldcircularity_     << endl;
-  cout << "ele_oldr9:            " << ele_oldr9_              << endl;
-  cout << "ele_scletawidth:      " << ele_scletawidth_        << endl;
-  cout << "ele_sclphiwidth:      " << ele_sclphiwidth_        << endl;
-  cout << "ele_he:               " << ele_he_                 << endl;
-  cout << "ele_kfchi2:           " << ele_kfchi2_             << endl;
-  cout << "ele_chi2_hits:        " << ele_chi2_hits_          << endl;
-  cout << "ele_fbrem:            " << ele_fbrem_              << endl;
-  cout << "ele_ep:               " << ele_ep_                 << endl;
-  cout << "ele_eelepout:         " << ele_eelepout_           << endl;
-  cout << "ele_IoEmIop:          " << ele_IoEmIop_            << endl;
-  cout << "ele_deltaetain:       " << ele_deltaetain_         << endl;
-  cout << "ele_deltaphiin:       " << ele_deltaphiin_         << endl;
-  cout << "ele_deltaetaseed:     " << ele_deltaetaseed_       << endl;
-  cout << "ele_psEoverEraw:      " << ele_psEoverEraw_        << endl;
-  cout << "ele_pT:               " << ele_pT_                 << endl;
-  cout << "ele_isbarrel:         " << ele_isbarrel_           << endl;
-  cout << "ele_isendcap:         " << ele_isendcap_           << endl;
-  cout << "scl_eta:              " << scl_eta_                << endl;
+  cout << "ele_kfhits:                   " << ele_kfhits_                   << endl;
+  cout << "ele_oldsigmaietaieta:         " << ele_oldsigmaietaieta_         << endl;
+  cout << "ele_oldsigmaiphiiphi:         " << ele_oldsigmaiphiiphi_         << endl;
+  cout << "ele_oldcircularity:           " << ele_oldcircularity_           << endl;
+  cout << "ele_oldr9:                    " << ele_oldr9_                    << endl;
+  cout << "ele_scletawidth:              " << ele_scletawidth_              << endl;
+  cout << "ele_sclphiwidth:              " << ele_sclphiwidth_              << endl;
+  cout << "ele_he:                       " << ele_he_                       << endl;
+  cout << "ele_kfchi2:                   " << ele_kfchi2_                   << endl;
+  cout << "ele_chi2_hits:                " << ele_chi2_hits_                << endl;
+  cout << "ele_fbrem:                    " << ele_fbrem_                    << endl;
+  cout << "ele_ep:                       " << ele_ep_                       << endl;
+  cout << "ele_eelepout:                 " << ele_eelepout_                 << endl;
+  cout << "ele_IoEmIop:                  " << ele_IoEmIop_                  << endl;
+  cout << "ele_deltaetain:               " << ele_deltaetain_               << endl;
+  cout << "ele_deltaphiin:               " << ele_deltaphiin_               << endl;
+  cout << "ele_deltaetaseed:             " << ele_deltaetaseed_             << endl;
+  cout << "ele_psEoverEraw:              " << ele_psEoverEraw_              << endl;
+  cout << "ele_pT:                       " << ele_pT_                       << endl;
+  cout << "ele_isbarrel:                 " << ele_isbarrel_                 << endl;
+  cout << "ele_isendcap:                 " << ele_isendcap_                 << endl;
+  cout << "scl_eta:                      " << scl_eta_                      << endl;
+  //additional variables for 25ns version    
+  cout << "ele_gsfhits:                  " << ele_gsfhits_                  << endl;
+  cout << "ele_expectedMissingInnerHits: " << ele_expectedMissingInnerHits_ << endl;
+  cout << "ele_convVtxFitProbability:    " << ele_convVtxFitProbability_    << endl;
+
 }
 
-void readMVA::InitMVA(string path){
+void readMVA::InitMVA(string path, bool v25ns){
 
   //Declare all variables
   ele_kfhits_           = 0;  
@@ -1556,6 +1561,10 @@ void readMVA::InitMVA(string path){
   ele_isbarrel_         = 0; 
   ele_isendcap_         = 0; 
   scl_eta_              = 0; 
+  //additional variables for 25ns version    
+  ele_gsfhits_                  = 0;
+  ele_expectedMissingInnerHits_ = 0;
+  ele_convVtxFitProbability_    = 0;
 
   //Declare Reader
   TMVA::Reader *reader1 = new TMVA::Reader();
@@ -1575,41 +1584,83 @@ void readMVA::InitMVA(string path){
   TMVA::gConfig().SetSilent( kTRUE );
 
   //Find files
-  files.push_back(Form("%s/data/EIDmva_EE_10_oldscenario2phys14_BDT.weights.xml" , path.c_str()));
-  files.push_back(Form("%s/data/EIDmva_EB1_10_oldscenario2phys14_BDT.weights.xml", path.c_str()));
-  files.push_back(Form("%s/data/EIDmva_EB2_10_oldscenario2phys14_BDT.weights.xml", path.c_str()));
-  files.push_back(Form("%s/data/EIDmva_EE_5_oldscenario2phys14_BDT.weights.xml"  , path.c_str()));
-  files.push_back(Form("%s/data/EIDmva_EB1_5_oldscenario2phys14_BDT.weights.xml" , path.c_str()));
-  files.push_back(Form("%s/data/EIDmva_EB2_5_oldscenario2phys14_BDT.weights.xml" , path.c_str()));
+  TString version = "oldscenario2phys14";
+  if (v25ns) version = "oldNonTrigSpring15_ConvVarCwoBoolean_TMVA412_FullStatLowPt_PairNegWeightsGlobal";
+  files.push_back(Form("%s/data/EIDmva_EE_10_%s_BDT.weights.xml" , path.c_str(), version.Data()));
+  files.push_back(Form("%s/data/EIDmva_EB1_10_%s_BDT.weights.xml", path.c_str(), version.Data()));
+  files.push_back(Form("%s/data/EIDmva_EB2_10_%s_BDT.weights.xml", path.c_str(), version.Data()));
+  files.push_back(Form("%s/data/EIDmva_EE_5_%s_BDT.weights.xml"  , path.c_str(), version.Data()));
+  files.push_back(Form("%s/data/EIDmva_EB1_5_%s_BDT.weights.xml" , path.c_str(), version.Data()));
+  files.push_back(Form("%s/data/EIDmva_EB2_5_%s_BDT.weights.xml" , path.c_str(), version.Data()));
 
   //Loop over Files
   for (unsigned int i = 0; i < 6; i++){
 
-    //Add all variables to reader
-    readers[i]->AddVariable( "ele_kfhits"           , &ele_kfhits_           );
-    readers[i]->AddVariable( "ele_oldsigmaietaieta" , &ele_oldsigmaietaieta_ );
-    readers[i]->AddVariable( "ele_oldsigmaiphiiphi" , &ele_oldsigmaiphiiphi_ );
-    readers[i]->AddVariable( "ele_oldcircularity"   , &ele_oldcircularity_   );
-    readers[i]->AddVariable( "ele_oldr9"            , &ele_oldr9_            );
-    readers[i]->AddVariable( "ele_scletawidth"      , &ele_scletawidth_      );
-    readers[i]->AddVariable( "ele_sclphiwidth"      , &ele_sclphiwidth_      );
-    readers[i]->AddVariable( "ele_he"               , &ele_he_               );
-    if (i == 0 || i == 3){
-      readers[i]->AddVariable( "ele_psEoverEraw"      , &ele_psEoverEraw_      );
+    //order of variables matter
+    if (v25ns) {
+      //Add all variables to reader
+      readers[i]->AddVariable( "ele_oldsigmaietaieta" , &ele_oldsigmaietaieta_ );
+      readers[i]->AddVariable( "ele_oldsigmaiphiiphi" , &ele_oldsigmaiphiiphi_ );
+      readers[i]->AddVariable( "ele_oldcircularity"   , &ele_oldcircularity_   );
+      readers[i]->AddVariable( "ele_oldr9"            , &ele_oldr9_            );
+      readers[i]->AddVariable( "ele_scletawidth"      , &ele_scletawidth_      );
+      readers[i]->AddVariable( "ele_sclphiwidth"      , &ele_sclphiwidth_      );
+      readers[i]->AddVariable( "ele_he"               , &ele_he_               );
+      if (i == 0 || i == 3){
+	readers[i]->AddVariable( "ele_psEoverEraw"      , &ele_psEoverEraw_      );
+      }
+      readers[i]->AddVariable( "ele_kfhits"           , &ele_kfhits_           );
+      readers[i]->AddVariable( "ele_kfchi2"           , &ele_kfchi2_           );
+      readers[i]->AddVariable( "ele_gsfchi2"          , &ele_chi2_hits_        );
+      readers[i]->AddVariable( "ele_fbrem"            , &ele_fbrem_            );
+      readers[i]->AddVariable( "ele_gsfhits"                       ,  &ele_gsfhits_                  );
+      readers[i]->AddVariable( "ele_expected_inner_hits"           ,  &ele_expectedMissingInnerHits_ );
+      readers[i]->AddVariable( "ele_conversionVertexFitProbability",  &ele_convVtxFitProbability_    );
+      readers[i]->AddVariable( "ele_ep"               , &ele_ep_               );
+      readers[i]->AddVariable( "ele_eelepout"         , &ele_eelepout_         );
+      readers[i]->AddVariable( "ele_IoEmIop"          , &ele_IoEmIop_          );
+      readers[i]->AddVariable( "ele_deltaetain"       , &ele_deltaetain_       );
+      readers[i]->AddVariable( "ele_deltaphiin"       , &ele_deltaphiin_       );
+      readers[i]->AddVariable( "ele_deltaetaseed"     , &ele_deltaetaseed_     );
+
+      readers[i]->AddSpectator("ele_pT"               , &ele_pT_               );
+      readers[i]->AddSpectator("ele_isbarrel"         , &ele_isbarrel_         );
+      readers[i]->AddSpectator("ele_isendcap"         , &ele_isendcap_         );
+      readers[i]->AddSpectator("scl_eta"              , &scl_eta_              );
+      readers[i]->AddSpectator("ele_eClass",                 &dummySpectator_);
+      readers[i]->AddSpectator("ele_pfRelIso",               &dummySpectator_);
+      readers[i]->AddSpectator("ele_expected_inner_hits",    &dummySpectator_);
+      readers[i]->AddSpectator("ele_vtxconv",                &dummySpectator_);
+      readers[i]->AddSpectator("mc_event_weight",            &dummySpectator_);
+      readers[i]->AddSpectator("mc_ele_CBmatching_category", &dummySpectator_);
+
+    } else {
+      //Add all variables to reader
+      readers[i]->AddVariable( "ele_kfhits"           , &ele_kfhits_           );
+      readers[i]->AddVariable( "ele_oldsigmaietaieta" , &ele_oldsigmaietaieta_ );
+      readers[i]->AddVariable( "ele_oldsigmaiphiiphi" , &ele_oldsigmaiphiiphi_ );
+      readers[i]->AddVariable( "ele_oldcircularity"   , &ele_oldcircularity_   );
+      readers[i]->AddVariable( "ele_oldr9"            , &ele_oldr9_            );
+      readers[i]->AddVariable( "ele_scletawidth"      , &ele_scletawidth_      );
+      readers[i]->AddVariable( "ele_sclphiwidth"      , &ele_sclphiwidth_      );
+      readers[i]->AddVariable( "ele_he"               , &ele_he_               );
+      if (i == 0 || i == 3){
+	readers[i]->AddVariable( "ele_psEoverEraw"      , &ele_psEoverEraw_      );
+      }
+      readers[i]->AddVariable( "ele_kfchi2"           , &ele_kfchi2_           );
+      readers[i]->AddVariable( "ele_chi2_hits"        , &ele_chi2_hits_        );
+      readers[i]->AddVariable( "ele_fbrem"            , &ele_fbrem_            );
+      readers[i]->AddVariable( "ele_ep"               , &ele_ep_               );
+      readers[i]->AddVariable( "ele_eelepout"         , &ele_eelepout_         );
+      readers[i]->AddVariable( "ele_IoEmIop"          , &ele_IoEmIop_          );
+      readers[i]->AddVariable( "ele_deltaetain"       , &ele_deltaetain_       );
+      readers[i]->AddVariable( "ele_deltaphiin"       , &ele_deltaphiin_       );
+      readers[i]->AddVariable( "ele_deltaetaseed"     , &ele_deltaetaseed_     );
+      readers[i]->AddSpectator("ele_pT"               , &ele_pT_               );
+      readers[i]->AddSpectator("ele_isbarrel"         , &ele_isbarrel_         );
+      readers[i]->AddSpectator("ele_isendcap"         , &ele_isendcap_         );
+      readers[i]->AddSpectator("scl_eta"              , &scl_eta_              );
     }
-    readers[i]->AddVariable( "ele_kfchi2"           , &ele_kfchi2_           );
-    readers[i]->AddVariable( "ele_chi2_hits"        , &ele_chi2_hits_        );
-    readers[i]->AddVariable( "ele_fbrem"            , &ele_fbrem_            );
-    readers[i]->AddVariable( "ele_ep"               , &ele_ep_               );
-    readers[i]->AddVariable( "ele_eelepout"         , &ele_eelepout_         );
-    readers[i]->AddVariable( "ele_IoEmIop"          , &ele_IoEmIop_          );
-    readers[i]->AddVariable( "ele_deltaetain"       , &ele_deltaetain_       );
-    readers[i]->AddVariable( "ele_deltaphiin"       , &ele_deltaphiin_       );
-    readers[i]->AddVariable( "ele_deltaetaseed"     , &ele_deltaetaseed_     );
-    readers[i]->AddSpectator("ele_pT"               , &ele_pT_               );
-    readers[i]->AddSpectator("ele_isbarrel"         , &ele_isbarrel_         );
-    readers[i]->AddSpectator("ele_isendcap"         , &ele_isendcap_         );
-    readers[i]->AddSpectator("scl_eta"              , &scl_eta_              );
 
     //Book MVA
     readers[i]->BookMVA("BDT", files[i]);
@@ -1644,6 +1695,11 @@ float readMVA::MVA(unsigned int index){
   ele_isbarrel_         = fabs(tas::els_etaSC().at(index)) < 1.479 ? 1 : 0; 
   ele_isendcap_         = fabs(tas::els_etaSC().at(index)) > 1.479 ? 1 : 0; 
   scl_eta_              = tas::els_etaSC().at(index); 
+  //additional variables for 25ns version    
+  ele_gsfhits_                  = tas::els_validHits().at(index);
+  ele_expectedMissingInnerHits_ = tas::els_exp_innerlayers().at(index);
+  ele_convVtxFitProbability_    = tas::els_conv_vtx_prob().at(index);
+  dummySpectator_ = 999;
 
   //bindVariables  
   if(ele_fbrem_ < -1.) ele_fbrem_ = -1.;
