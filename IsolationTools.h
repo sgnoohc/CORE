@@ -10,6 +10,7 @@ bool passMultiIso(int id, int idx, float cutMiniIso, float cutPtRatio, float cut
 
 float ptRel(const LorentzVector& lepp4, const LorentzVector& jetp4, bool subtractLep = false);
 float getPtRel(int id, int idx, bool subtractLep);
+int closestJetIdx(const LorentzVector& lep_p4, float dRmin=0.4, float maxAbsEta=2.4);
 LorentzVector closestJet(const LorentzVector& lep_p4, float dRmin=0.4, float maxAbsEta=2.4);
 
 float getMiniDR(float pt);

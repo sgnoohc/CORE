@@ -38,7 +38,7 @@ float ptRel(const LorentzVector& lepp4, const LorentzVector& jetp4, bool subtrac
   return ptrel;
 }
 
-LorentzVector closestJet(const LorentzVector& lep_p4, float dRmin, float maxAbsEta) {
+int closestJetIdx(const LorentzVector& lep_p4, float dRmin, float maxAbsEta) {
   int closestIdx = -1;
   for (unsigned int pfjidx=0;pfjidx<pfjets_p4().size();++pfjidx) {
     LorentzVector jet_p4 = pfjets_p4().at(pfjidx);
@@ -49,6 +49,11 @@ LorentzVector closestJet(const LorentzVector& lep_p4, float dRmin, float maxAbsE
       dRmin = tmp_dRmin;
     }
   }
+  return closestIdx;
+}
+
+LorentzVector closestJet(const LorentzVector& lep_p4, float dRmin, float maxAbsEta) {
+  int closestIdx = closestJetIdx(lep_p4,dRmin,maxAbsEta);
   if (closestIdx>=0) return pfjets_p4().at(closestIdx);
   else return LorentzVector();
 }
