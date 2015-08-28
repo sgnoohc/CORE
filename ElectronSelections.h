@@ -102,7 +102,7 @@ class readMVA {
 
 };
 
-void createAndInitMVA(std::string pathToCORE);
+void createAndInitMVA(std::string pathToCORE, bool v25ns = false);
 float getMVAoutput(unsigned int index = 0);
 
 struct elIDcache {

@@ -1795,9 +1795,9 @@ bool readMVA::passesElectronMVAid(unsigned int index, id_level_t id_level){
 
 }
 
-void createAndInitMVA(std::string pathToCORE){
+void createAndInitMVA(std::string pathToCORE, bool v25ns){
   globalEleMVAreader = new readMVA();
-  globalEleMVAreader->InitMVA(pathToCORE); 
+  globalEleMVAreader->InitMVA(pathToCORE, v25ns); 
 }
 
 float getMVAoutput(unsigned int index){
