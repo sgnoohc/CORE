@@ -98,6 +98,8 @@ class readMVA {
     float ele_convVtxFitProbability_;
     float dummySpectator_;
 
+    bool v25ns_;
+
 };
 
 void createAndInitMVA(std::string pathToCORE);

@@ -1538,6 +1538,8 @@ void readMVA::DumpValues(){
 
 void readMVA::InitMVA(string path, bool v25ns){
 
+  v25ns_ = v25ns;
+
   //Declare all variables
   ele_kfhits_           = 0;  
   ele_oldsigmaietaieta_ = 0;  
@@ -1597,7 +1599,7 @@ void readMVA::InitMVA(string path, bool v25ns){
   for (unsigned int i = 0; i < 6; i++){
 
     //order of variables matter
-    if (v25ns) {
+    if (v25ns_) {
       //Add all variables to reader
       readers[i]->AddVariable( "ele_oldsigmaietaieta" , &ele_oldsigmaietaieta_ );
       readers[i]->AddVariable( "ele_oldsigmaiphiiphi" , &ele_oldsigmaiphiiphi_ );
@@ -1696,9 +1698,11 @@ float readMVA::MVA(unsigned int index){
   ele_isendcap_         = fabs(tas::els_etaSC().at(index)) > 1.479 ? 1 : 0; 
   scl_eta_              = tas::els_etaSC().at(index); 
   //additional variables for 25ns version    
-  ele_gsfhits_                  = tas::els_validHits().at(index);
-  ele_expectedMissingInnerHits_ = tas::els_exp_innerlayers().at(index);
-  ele_convVtxFitProbability_    = tas::els_conv_vtx_prob().at(index);
+  if (v25ns_) {
+    ele_gsfhits_                  = tas::els_validHits().at(index);
+    ele_expectedMissingInnerHits_ = tas::els_exp_innerlayers().at(index);
+    ele_convVtxFitProbability_    = tas::els_conv_vtx_prob().at(index);
+  }
   dummySpectator_ = 999;
 
   //bindVariables  
