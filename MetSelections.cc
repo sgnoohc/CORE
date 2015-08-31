@@ -54,6 +54,16 @@ bool hbheNoiseFilter(int minZeros) {
     return true;
 }
 
+bool hbheNoiseFilter_25ns(int minZeros) {
+    // http://cmslxr.fnal.gov/lxr/source/CommonTools/RecoAlgos/plugins/HBHENoiseFilterResultProducer.cc?v=CMSSW_7_4_1
+    // by default (false --> reject), maxZeros() cut will never cause a lost event
+    if(hcalnoise_maxHPDHits()>=17) return false;
+    if(hcalnoise_maxHPDNoOtherHits()>=10) return false;
+    if(hcalnoise_maxZeros()>=minZeros) return false;
+    if(hcalnoise_HasBadRBXRechitR45Loose()) return false;
+    return true;
+}
+
 bool hbheIsoNoiseFilter() {
     // false = reject event
     if(hcalnoise_numIsolatedNoiseChannels()>=10) return false;
