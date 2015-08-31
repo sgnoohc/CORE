@@ -251,12 +251,12 @@ namespace tas {
 	const vector<float> &els_mass() { return cms3.els_mass(); }
 	const vector<float> &els_mc_patMatch_dr() { return cms3.els_mc_patMatch_dr(); }
 	const vector<float> &els_mva() { return cms3.els_mva(); }
- 	const vector<float> &els_miniIso_ch() { return cms3.els_miniIso_ch(); }
+/* 	const vector<float> &els_miniIso_ch() { return cms3.els_miniIso_ch(); }
  	const vector<float> &els_miniIso_db() { return cms3.els_miniIso_db(); }
  	const vector<float> &els_miniIso_em() { return cms3.els_miniIso_em(); }
  	const vector<float> &els_miniIso_nh() { return cms3.els_miniIso_nh(); }
  	const vector<float> &els_miniIso_uncor() { return cms3.els_miniIso_uncor(); }
-	const vector<float> &els_ndof() { return cms3.els_ndof(); }
+*/	const vector<float> &els_ndof() { return cms3.els_ndof(); }
 	const vector<float> &els_pfChargedHadronIso() { return cms3.els_pfChargedHadronIso(); }
 	const vector<float> &els_pfNeutralHadronIso() { return cms3.els_pfNeutralHadronIso(); }
 	const vector<float> &els_pfPUIso() { return cms3.els_pfPUIso(); }
@@ -393,12 +393,12 @@ namespace tas {
 	const vector<float> &mus_localDistance() { return cms3.mus_localDistance(); }
 	const vector<float> &mus_mass() { return cms3.mus_mass(); }
 	const vector<float> &mus_mc_patMatch_dr() { return cms3.mus_mc_patMatch_dr(); }
- 	const vector<float> &mus_miniIso_ch() { return cms3.mus_miniIso_ch(); }
+/* 	const vector<float> &mus_miniIso_ch() { return cms3.mus_miniIso_ch(); }
  	const vector<float> &mus_miniIso_db() { return cms3.mus_miniIso_db(); }
  	const vector<float> &mus_miniIso_em() { return cms3.mus_miniIso_em(); }
  	const vector<float> &mus_miniIso_nh() { return cms3.mus_miniIso_nh(); }
  	const vector<float> &mus_miniIso_uncor() { return cms3.mus_miniIso_uncor(); }
-	const vector<float> &mus_ndof() { return cms3.mus_ndof(); }
+*/	const vector<float> &mus_ndof() { return cms3.mus_ndof(); }
 	const vector<float> &mus_overlapCompat() { return cms3.mus_overlapCompat(); }
 	const vector<float> &mus_phiErr() { return cms3.mus_phiErr(); }
 	const vector<float> &mus_ptErr() { return cms3.mus_ptErr(); }

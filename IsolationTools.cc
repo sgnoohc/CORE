@@ -140,7 +140,7 @@ float muMiniRelIso(unsigned int idx, bool useVetoCones, float ptthresh, bool use
   return  muRelIsoCustomCone(idx,dr,useVetoCones,ptthresh,useDBcor,useEAcor);
 }
 
-float muMiniRelIsoCMS3_DB(unsigned int idx) {
+/*float muMiniRelIsoCMS3_DB(unsigned int idx) {
   float correction = 0.5 * mus_miniIso_db().at(idx);
   float absiso = mus_miniIso_ch().at(idx) + std::max(float(0.0), mus_miniIso_nh().at(idx) + mus_miniIso_em().at(idx) - correction);
   return absiso/(mus_p4().at(idx).pt());
@@ -155,7 +155,7 @@ float muMiniRelIsoCMS3_EA(unsigned int idx) {
   float absiso = mus_miniIso_ch().at(idx) + std::max(float(0.0), mus_miniIso_nh().at(idx) + mus_miniIso_em().at(idx) - correction);
   return absiso/(mus_p4().at(idx).pt());
 }
-
+*/
 float eleRelIso03(unsigned int elIdx, analysis_t analysis){
   if (analysis == HAD ) return eleRelIso03DB(elIdx);
   if (analysis == STOP) return eleRelIso03DB(elIdx);
@@ -242,7 +242,7 @@ float elMiniRelIso(unsigned int idx, bool useVetoCones, float ptthresh, bool use
   return elRelIsoCustomCone(idx,dr,useVetoCones,ptthresh,useDBcor,useEAcor);
 }
 
-float elMiniRelIsoCMS3_DB(unsigned int idx) {
+/*float elMiniRelIsoCMS3_DB(unsigned int idx) {
   float correction = 0.5 * els_miniIso_db().at(idx);
   float absiso = els_miniIso_ch().at(idx) + std::max(float(0.0), els_miniIso_nh().at(idx) + els_miniIso_em().at(idx) - correction);
   return absiso/(els_p4().at(idx).pt());
@@ -256,4 +256,4 @@ float elMiniRelIsoCMS3_EA(unsigned int idx) {
   float correction = evt_fixgridfastjet_all_rho() * elEA03(idx) * (dr/0.3) * (dr/0.3);
   float absiso = els_miniIso_ch().at(idx) + std::max(float(0.0), els_miniIso_nh().at(idx) + els_miniIso_em().at(idx) - correction);
   return absiso/(els_p4().at(idx).pt());
-}
+}*/
