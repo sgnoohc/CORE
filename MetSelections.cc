@@ -158,7 +158,7 @@ pair<float,float> MET3p0() {
   return make_pair( met_pt, met_phi ); 
 }
 
-bool passesMETfilter(){
+bool passesMETfilter(bool is25){
 
   //primary vertex filter (re-run by user)
   if (firstGoodVertex() == -1) return false;
@@ -167,7 +167,8 @@ bool passesMETfilter(){
   if (!filt_cscBeamHalo()) return false;
   
   //HBHE noise filter (re-run by user)
-  if (!hbheNoiseFilter()) return false;
+  if (!is25 && !hbheNoiseFilter()) return false;
+  if ( is25 && !hbheNoiseFilter_25ns()) return false;
 
   //ee badSC noise filter NEW
   if (!filt_eeBadSc()) return false;
