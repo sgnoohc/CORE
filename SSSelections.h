@@ -10,6 +10,7 @@
 #include "MCSelections.h"
 #include "IsolationTools.h"
 #include "Math/VectorUtil.h"
+#include "Tools/JetCorrector.h"
 
 const static float ptCutHigh = 25.;
 const static float ptCutLow = 10.;
@@ -100,7 +101,10 @@ int lepMotherID(Lep lep);
 int lepMotherID_inSituFR(Lep lep);
 
 //Jet selection function
-std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator();
+std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector* jetCorr);
+
+//Correcting the MET
+LorentzVector correctedMET(FactorizedJetCorrector* jetCorr);
 
 //Sorting functions
 bool ptsort (int i,int j);
@@ -152,7 +156,7 @@ private:
 };
 
 struct Jet {
-  Jet(int idxx):idx_(idxx){}
+  Jet(int idxx, float JEC_ = -9999):idx_(idxx){ JEC = JEC_; }
   LorentzVector p4() {return cms3.pfjets_p4()[idx_]/**cms3.pfjets_corL1FastL2L3()[idx_]*/;}//fixme
   float pt() {return p4().pt();}
   float eta() {return p4().eta();}
@@ -164,8 +168,10 @@ struct Jet {
   LorentzVector genjet_p4() {return cms3.pfjets_mc_p4()[idx_];}
   LorentzVector genps_p4() {return cms3.pfjets_mc_gp_p4()[idx_];}
   int idx() {return idx_;}
+  float jec() { return JEC;} 
 private:
   int idx_;
+  float JEC;
 };
 
 #endif
