@@ -171,13 +171,21 @@ bool passHLTTrigger(const char* arg, const LorentzVector &obj){
   // 1. (OLD). Objects only present if full HLT path has passed
   // 2. (NEW). Objects present even if only passed part of HLT path
   // For case 2 we will need to check the new branch "hlt_trigObjs_passLast)
-  //CASE2: std::vector<bool> trigObjsPassHLT = hlt_trigObjs_passLast()[trigIdx];
+  TString tag(evt_CMS3tag().at(0));
+  bool hasPassLastBranch = true;
+  std::vector<bool> trigObjsPassHLT;
+  if (tag.Contains("CMS3_V07-04-01") || tag.Contains("CMS3_V07-04-02") || tag.Contains("CMS3_V07-04-03") || 
+      tag.Contains("CMS3_V07-04-04") || tag.Contains("CMS3_V07-04-05") || tag.Contains("CMS3_V07-04-06") || tag.Contains("CMS3_V07-04-07"))
+    hasPassLastBranch = false;
+  if (hasPassLastBranch) trigObjsPassHLT = hlt_trigObjs_passLast()[trigIdx];
     
   // does the trigger match this lepton
   float drMin = 999.99;
   for (size_t i = 0; i < trigObjs.size(); ++i)
   {
-    //CASE2: if (!trigObjsPassHLT[i]) continue;
+    if (hasPassLastBranch) {
+      if (!trigObjsPassHLT[i]) continue;
+    }
     float dr = ROOT::Math::VectorUtil::DeltaR(trigObjs[i], obj);
     if (dr < drMin) drMin = dr;
   }
