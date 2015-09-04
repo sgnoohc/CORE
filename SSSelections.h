@@ -168,6 +168,7 @@ struct Jet {
   LorentzVector genjet_p4() {return cms3.pfjets_mc_p4()[idx_];}
   LorentzVector genps_p4() {return cms3.pfjets_mc_gp_p4()[idx_];}
   int idx() {return idx_;}
+  float undo_jec() { return tas::pfjets_undoJEC().at(idx_); } 
   float jec() { return JEC;} 
 private:
   int idx_;
