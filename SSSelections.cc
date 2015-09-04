@@ -1013,7 +1013,7 @@ LorentzVector correctedMET(FactorizedJetCorrector* jetCorr){
     
     //Add to jet vector
     uncorrected_jets += jet; 
-    corrected_jets += jet*JEC; 
+    corrected_jets += jet*JEC*tas::pfjets_undoJEC().at(i); 
 
     //Calculate it
     newMET -= corrected_jets - uncorrected_jets; 
