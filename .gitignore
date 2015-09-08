@@ -1,5 +1,7 @@
 *.o
 CMS3_CORE.so
-Tools
 CORE-run1
+Tools/dorky/*.so
+Tools/dorky/*.d
+.nfs*
 *.pcm

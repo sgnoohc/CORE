@@ -1,5 +1,5 @@
-#ifndef SSSELECTIONS_H
-#define SSSELECTIONS_H
+#ifndef WWSELECTIONS_H
+#define WWSELECTIONS_H
 #include "CMS3.h"
 #include "ElectronSelections.h"
 #include "MuonSelections.h"
@@ -10,23 +10,21 @@
 #include "MCSelections.h"
 #include "IsolationTools.h"
 #include "Math/VectorUtil.h"
-#include "Tools/JetCorrector.h"
 
+namespace WWAnalysis {
+  
 const static float ptCutHigh = 25.;
 const static float ptCutLow = 10.;
-const static float ptRelCut = 14.;
-const static float ptRelCutLoose = 6.;
 
 //Enums
 enum anal_type_t { HighHigh = 0, HighLow = 1, LowLow = 2, Undefined = -1 };
 enum hyp_type_t { EE, MM, EM, UNASSIGNED }; 
-enum est_type_t { MCSS, FLIPMC, SFAKEMC, DFAKEMC, FLIPDD, SFAKEDD, DFAKEDD, ALLMC }; 
+enum est_type_t { MCWW, FLIPMC, SFAKEMC, DFAKEMC, FLIPDD, SFAKEDD, DFAKEDD, ALLMC }; 
 //fixme: put WF and FSR in different categories
 enum LeptonCategories { Prompt = 0, PromptWS = 1, PromptWF = 2, PromptFSR = 2, 
 			FakeLightTrue = 3, FakeC = 4, FakeB = 5, FakeLightFake = 6, FakeHiPtGamma = 7, 
 			FakeUnknown = 8, FakeLowPtGamma = 9, All9999 = 10,
 			Other = 11, End = 12};
-enum IsolationMethods { Standard = 0, PtRel = 1, MiniIso = 2 , NewMiniIso = 3 , MultiIso = 4 };
 
 //Structs
 struct hyp_result_t { int best_hyp; int hyp_class; };
@@ -44,13 +42,13 @@ template <typename T> int sgn(T val){
 float coneCorrPt(int id, int idx);
 
 //Main Object selections
-bool isGoodLepton(int id, int idx, IsolationMethods isoCase);
-bool isDenominatorLepton(int id, int idx, IsolationMethods isoCase);
-bool isVetoLepton(int id, int idx, IsolationMethods isoCase);
+ bool isGoodLepton(int id, int idx);
+ bool isDenominatorLepton(int id, int idx);
+ bool isVetoLepton(int id, int idx);
 
 //Hyp selections
-hyp_result_t chooseBestHyp(IsolationMethods isoCase, bool expt, bool verbose=false);
-int isGoodHyp(int iHyp, IsolationMethods isoCase, bool expt, bool verbose=false);
+hyp_result_t chooseBestHyp(bool expt, bool verbose=false);
+int isGoodHyp(int iHyp, bool expt, bool verbose=false);
 bool makesExtraGammaStar(int iHyp);
 Z_result_t makesExtraZ(int iHyp);
 bool hypsFromFirstGoodVertex(size_t hypIdx, float dz_cut = 1.0);
@@ -65,17 +63,10 @@ int signalRegion(int njets, int nbtags, float met, float ht, float mt_min, float
 //More Lepton selections
 bool isGoodLeptonNoIso(int id, int idx);
 bool isGoodLeptonIso(int id, int idx);
-bool isGoodLeptonMiniIso(int id, int idx);
-bool isGoodLeptonNewMiniIso(int id, int idx, int level);
-bool isGoodLeptonIsoOrPtRel(int id, int idx);
 bool isDenominatorLeptonNoIso(int id, int idx);
 bool isDenominatorLeptonIso(int id, int idx);
-bool isDenominatorLeptonMiniIso(int id, int idx);
-bool isDenominatorLeptonNewMiniIso(int id, int idx);
-bool isDenominatorLeptonIsoOrPtRel(int id, int idx);
 bool isVetoLeptonNoIso(int id, int idx);
 bool isVetoLeptonIso(int id, int idx);
-bool isVetoLeptonIsoOrPtRel(int id, int idx);
 bool isGoodVetoElectronNoIso(unsigned int elidx);
 bool isGoodVetoElectron(unsigned int elidx);
 bool isFakableElectronNoIso(unsigned int elidx);
@@ -88,20 +79,20 @@ bool isFakableMuonNoIso(unsigned int muidx);
 bool isFakableMuon(unsigned int muidx);
 bool isGoodMuonNoIso(unsigned int muidx);
 bool isGoodMuon(unsigned int muidx);
-bool isIsolatedLepton(int id, int idx);
 bool isLooseIsolatedLepton(int id, int idx);
-bool isMiniIsolatedLepton(int id, int idx);
-bool isLooseMiniIsolatedLepton(int id, int idx);
-bool isNewMiniIsolatedLepton(int id, int idx, int level);
-bool isLooseNewMiniIsolatedLepton(int id, int idx);
-bool isInSituFRLepton(int lep_id, int lep_idx, bool expt);
+bool isIsolatedLepton(int id, int idx);
+bool isInSituFRLepton(int lep_id, int lep_idx, bool expt = false);
 
 //MC truth functions
 int lepMotherID(Lep lep);
 int lepMotherID_inSituFR(Lep lep);
 
 //Jet selection function
-std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector* jetCorr, bool doCorr = 0);
+std::pair <vector <Jet>, vector <Jet> > WWJetsCalculator(std::vector<LorentzVector> JetCollection, TString CMS3tag);
+int WWJetsCounter(float ptmin);
+
+// Calculate generator ht
+float getGenHT(bool is_b_a_jet = true);
 
 //Sorting functions
 bool ptsort (int i,int j);
@@ -117,8 +108,8 @@ struct Lep {
   float pt() {return abs(pdgid_)==11 ? cms3.els_p4().at(idx_).pt() : cms3.mus_p4().at(idx_).pt();}
   float eta() {return abs(pdgid_)==11 ? cms3.els_p4().at(idx_).eta() : cms3.mus_p4().at(idx_).eta();}
   LorentzVector p4() {return abs(pdgid_)==11 ? cms3.els_p4().at(idx_) : cms3.mus_p4().at(idx_);}
-  float relIso03() { return abs(pdgid_)==11 ? eleRelIso03(idx_, SS) : muRelIso03(idx_, SS);}
-  float miniRelIso() { return abs(pdgid_)==11 ? elMiniRelIso(idx_, false, 0.0, false, true) : muMiniRelIso(idx_, false, 0.5, false, true);}
+  float relIso03() { return abs(pdgid_)==11 ? eleRelIso03(idx_, WW) : muRelIso03(idx_, WW);}
+  float miniRelIso() { return abs(pdgid_)==11 ? elMiniRelIsoCMS3_EA(idx_) : muMiniRelIsoCMS3_DB(idx_);}
   float dxyPV() { return abs(pdgid_)==11 ? cms3.els_dxyPV().at(idx_) : cms3.mus_dxyPV().at(idx_);}
   float dzPV() { return abs(pdgid_)==11 ? cms3.els_dzPV().at(idx_) : cms3.mus_dzPV().at(idx_);}
   float d0Err() { return abs(pdgid_)==11 ? cms3.els_d0Err().at(idx_) : cms3.mus_d0Err().at(idx_);}
@@ -153,24 +144,30 @@ private:
 };
 
 struct Jet {
-  public: 
-    Jet(int idxx, float JEC_ = -9999):idx_(idxx){JEC = JEC_; }
-    LorentzVector p4() {return cms3.pfjets_p4()[idx_]/**cms3.pfjets_corL1FastL2L3()[idx_]*/;}//fixme
-    float pt() {return p4().pt();}
-    float eta() {return p4().eta();}
-    float phi() {return p4().phi();}
-    float csv() {return tas::getbtagvalue("pfCombinedSecondaryVertexV2BJetTags",idx_);}
-    float csvivf() {return cms3.pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag()[idx_];}
-    bool isBtag() {return csvivf()>0.814;}
-    int   mc3_id() {return cms3.pfjets_mc3_id()[idx_];}
-    LorentzVector genjet_p4() {return cms3.pfjets_mc_p4()[idx_];}
-    LorentzVector genps_p4() {return cms3.pfjets_mc_gp_p4()[idx_];}
-    int idx() {return idx_;}
-    float jec() { return JEC;} 
-    float undo_jec() { return tas::pfjets_undoJEC().at(idx_); } 
-  private:
-    int idx_;
-    float JEC;
+Jet(int idxx,float csvivff):idx_(idxx),csvivf_(csvivff){}
+  LorentzVector p4() {return cms3.pfjets_p4()[idx_]/**cms3.pfjets_corL1FastL2L3()[idx_]*/;}//fixme
+  float pt() {return p4().pt();}
+  float eta() {return p4().eta();}
+  float phi() {return p4().phi();}
+  float csv() {return 0.;}
+  float csvivf() {return csvivf_;}
+  bool isBtag() {return csvivf()>0.814;}
+  int   mc3_id() {return cms3.pfjets_mc3_id()[idx_];}
+  LorentzVector genjet_p4() {return cms3.pfjets_mc_p4()[idx_];}
+  LorentzVector genps_p4() {return cms3.pfjets_mc_gp_p4()[idx_];}
+  int idx() {return idx_;}
+private:
+  int idx_;
+  float csvivf_;
 };
+
+ int convertCMS3tag(TString tagName) ;
+ int getHighPtTriggerPrescale(LorentzVector& p4, int& idx, int& id) ;
+ int getLowPtTriggerPrescale(LorentzVector& p4, int& idx, int& id) ;
+ void setHLTBranch(const char* pattern, const LorentzVector& p4, int& HLTbranch);
+ void setHLTBranch(const char* pattern, bool legMatch, int& HLTbranch);
+
+}
+
 
 #endif
