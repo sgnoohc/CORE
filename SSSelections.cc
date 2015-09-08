@@ -149,15 +149,25 @@ Z_result_t makesExtraZ(int iHyp){
   return result;
 }
 
-std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector* jetCorr){
+std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector* jetCorr, bool doCorr){
   vector <Jet> result_jets;
   vector <Jet> result_btags;
 
   for (unsigned int i = 0; i < tas::pfjets_p4().size(); i++){
     LorentzVector jet = tas::pfjets_p4().at(i);
+
+    //Jet Corr
+    jetCorr->setJetEta(jet.eta()); 
+    jetCorr->setJetPt(jet.pt()); 
+    jetCorr->setJetA(tas::pfjets_area().at(i)); 
+    jetCorr->setRho(tas::evt_fixgrid_all_rho()); 
+    float JEC = jetCorr->getCorrection(); 
+
+    //Jet pT to use
+    float pt = doCorr ? jet.pt()*JEC*tas::pfjets_undoJEC().at(i) : jet.pt();
     
     //Kinematic jet cuts
-    if (jet.pt() < 25.) continue;
+    if (pt < 25.) continue;
     if (fabs(jet.eta()) > 2.4) continue;
 
     //Require loose jet ID
@@ -185,17 +195,10 @@ std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector*
     if (jetIsLep == true) continue;
     
     //Get discriminator
-    float disc = tas::pfjets_combinedInclusiveSecondaryVertexV2BJetTag().at(i);
-
-    //Jet Corr
-    jetCorr->setJetEta(jet.eta()); 
-    jetCorr->setJetPt(jet.pt()); 
-    jetCorr->setJetA(tas::pfjets_area().at(i)); 
-    jetCorr->setRho(tas::evt_fixgrid_all_rho()); 
-    float JEC = jetCorr->getCorrection(); 
+    float disc = tas::pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag().at(i);
 
     //Save jets that make it this far
-    if (jet.pt() >= 40.) {
+    if (pt >= 40.) {
       result_jets.push_back(Jet(i, JEC));
     }
 
