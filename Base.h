@@ -50,6 +50,14 @@ enum id_level_t {
   HAD_medium_v2, 
   HAD_tight_noiso_v2, 
   HAD_tight_v2, 
+  HAD_veto_noiso_v3,
+  HAD_veto_v3, 
+  HAD_loose_noiso_v3, 
+  HAD_loose_v3, 
+  HAD_medium_noiso_v3, 
+  HAD_medium_v3, 
+  HAD_tight_noiso_v3, 
+  HAD_tight_v3,
 
   STOP_veto_v1, 
   STOP_loose_v1, 
@@ -61,6 +69,10 @@ enum id_level_t {
   STOP_medium_v2,
   STOP_tight_v2,
 
+  ZMET_mediumMu_v1, 
+  ZMET_mediumMu_noiso_v1, 
+  ZMET_tightMVA_v1, 
+  ZMET_tightMVA_noiso_v1, 
   ZMET_loose_v1, 
   ZMET_loose_noiso_v1, 
   ZMET_loose_v2, 
@@ -69,7 +81,30 @@ enum id_level_t {
   ZMET_tight_noiso_v1, 
   ZMET_tight_v2, 
   ZMET_tight_noiso_v2, 
-  ZMET_photon_v1
+  ZMET_photon_v1,
+
+  WW_veto_noiso_v1, 
+  WW_veto_v1, 
+  WW_veto_noiso_noip_v1,
+  WW_fo_looseMVA_noiso_noip_v1,
+  WW_medium_looseMVA_noip_v1,
+  WW_medium_noip_v1,
+  WW_fo_noiso_noip_v1,
+  WW_fo_noiso_v1, 
+  WW_fo_v1, 
+  WW_fo_looseMVA_noiso_v1, 
+  WW_fo_looseMVA_v1, 
+  WW_medium_noiso_v1, 
+  WW_medium_v1, 
+  WW_tight_noiso_v1, 
+  WW_tight_v1,
+
+  WW_veto_noiso_v2, 
+  WW_veto_v2, 
+  WW_fo_noiso_v2, 
+  WW_fo_v2, 
+  WW_medium_noiso_v2, 
+  WW_medium_v2
 
 };
 

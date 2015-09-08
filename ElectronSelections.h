@@ -25,6 +25,11 @@ bool isVetoElectronPOGphys14_v2(unsigned int elIdx);
 bool isLooseElectronPOGphys14_v2(unsigned int elIdx);
 bool isMediumElectronPOGphys14_v2(unsigned int elIdx);
 bool isTightElectronPOGphys14_v2(unsigned int elIdx);
+//Aug 17 Updated Ids with no Iso requirement
+bool isVetoElectronPOGspring15_v1(unsigned int elIdx);
+bool isLooseElectronPOGspring15_v1(unsigned int elIdx);
+bool isMediumElectronPOGspring15_v1(unsigned int elIdx);
+bool isTightElectronPOGspring15_v1(unsigned int elIdx);
 
 //POG IDs for phys14 with no Iso requirement
 bool isVetoElectronPOGphys14noIso(unsigned int elIdx);
@@ -36,6 +41,11 @@ bool isVetoElectronPOGphys14noIso_v2(unsigned int elIdx);
 bool isLooseElectronPOGphys14noIso_v2(unsigned int elIdx);
 bool isMediumElectronPOGphys14noIso_v2(unsigned int elIdx);
 bool isTightElectronPOGphys14noIso_v2(unsigned int elIdx);
+//Aug 17 Updated Ids with no Iso requirement
+bool isVetoElectronPOGspring15noIso_v1(unsigned int elIdx);
+bool isLooseElectronPOGspring15noIso_v1(unsigned int elIdx);
+bool isMediumElectronPOGspring15noIso_v1(unsigned int elIdx);
+bool isTightElectronPOGspring15noIso_v1(unsigned int elIdx);
 
 //Tightest ID passed by electron
 int eleTightID(unsigned int elIdx, analysis_t analysis, int version = 1);
@@ -47,7 +57,7 @@ int tightChargeEle(unsigned int elIdx);
 //Electron MVA ID
 class readMVA {
   public:
-    void InitMVA(string path);
+    void InitMVA(string path, bool v25ns = false);
     float MVA(unsigned int index); 
     bool passesElectronMVAid(unsigned int index, id_level_t id_level);
     void DumpValues();
@@ -82,10 +92,43 @@ class readMVA {
     float ele_isbarrel_;       
     float ele_isendcap_;       
     float scl_eta_;            
+    //additional variables for 25ns version    
+    float ele_gsfhits_;
+    float ele_expectedMissingInnerHits_;
+    float ele_convVtxFitProbability_;
+    float dummySpectator_;
+
+    bool v25ns_;
 
 };
 
-void createAndInitMVA(std::string pathToCORE);
+void createAndInitMVA(std::string pathToCORE, bool v25ns = false);
 float getMVAoutput(unsigned int index = 0);
+
+struct elIDcache {
+public:
+  void  setCacheValues(int idx, float mva, float miniiso, float ptratio, float ptrel) {
+    idx_ = idx;
+    mva_ = mva;
+    miniiso_ = miniiso;
+    ptratio_ = ptratio;
+    ptrel_ = ptrel;
+  }
+  //make sure it was set for this electron before returning
+  float getMVA(int idx) {assert(idx==idx_); return mva_;}
+  float getMiniiso(int idx) {assert(idx==idx_); return miniiso_;}
+  float getPtratio(int idx) {assert(idx==idx_); return ptratio_;}
+  float getPtrel(int idx) {assert(idx==idx_); return ptrel_;}
+private:
+  int idx_;
+  float mva_;
+  float miniiso_;
+  float ptratio_;
+  float ptrel_;
+};
+namespace elID {
+  void setCache(int idx, float mva, float miniiso, float ptratio, float ptrel);
+  void unsetCache();
+}
 
 #endif

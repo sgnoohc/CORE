@@ -4,14 +4,18 @@
 using namespace std;
 using namespace tas;
 
+bool passMultiIso(float cutMiniIso, float cutPtRatio, float cutPtRel, float miniIsoValue, float ptRatioValue, float ptRelValue){
+  return (miniIsoValue < cutMiniIso && (ptRatioValue>cutPtRatio || ptRelValue > cutPtRel));
+}
+
 bool passMultiIso(int id, int idx, float cutMiniIso, float cutPtRatio, float cutPtRel){
   const LorentzVector& lep_p4 = abs(id)==11 ? els_p4().at(idx) : mus_p4().at(idx);
   const LorentzVector& jet_p4 = closestJet(lep_p4,0.4,2.4);
-  float miniIso = abs(id)==11 ? elMiniRelIso(idx, true, 0.0, false, true) : muMiniRelIso(idx, true, 0.5, false, true);
+  float miniIso = abs(id)==11 ? elMiniRelIsoCMS3_EA(idx) : muMiniRelIsoCMS3_EA(idx);
   float closeJetPt = jet_p4.pt();
   float ptratio = ( closeJetPt>0. ? lep_p4.pt()/closeJetPt : 1.);
   float ptrel = ptRel(lep_p4, jet_p4, true);
-  return (miniIso < cutMiniIso && (ptratio>cutPtRatio || ptrel > cutPtRel));
+  return passMultiIso(cutMiniIso, cutPtRatio, cutPtRel, miniIso, ptratio, ptrel);
 }
 
 bool passPtRel(int id, int idx, float cut, bool subtractLep) {
@@ -34,7 +38,7 @@ float ptRel(const LorentzVector& lepp4, const LorentzVector& jetp4, bool subtrac
   return ptrel;
 }
 
-LorentzVector closestJet(const LorentzVector& lep_p4, float dRmin, float maxAbsEta) {
+int closestJetIdx(const LorentzVector& lep_p4, float dRmin, float maxAbsEta) {
   int closestIdx = -1;
   for (unsigned int pfjidx=0;pfjidx<pfjets_p4().size();++pfjidx) {
     LorentzVector jet_p4 = pfjets_p4().at(pfjidx);
@@ -45,8 +49,20 @@ LorentzVector closestJet(const LorentzVector& lep_p4, float dRmin, float maxAbsE
       dRmin = tmp_dRmin;
     }
   }
+  return closestIdx;
+}
+
+LorentzVector closestJet(const LorentzVector& lep_p4, float dRmin, float maxAbsEta) {
+  int closestIdx = closestJetIdx(lep_p4,dRmin,maxAbsEta);
   if (closestIdx>=0) return pfjets_p4().at(closestIdx);
   else return LorentzVector();
+}
+
+float getMiniDR(float pt) {
+  float dr = 0.2;
+  if (pt>50) dr = 10./pt;
+  if (pt>200) dr = 0.05;
+  return dr;
 }
 
 float muRelIso03DB(unsigned int muIdx){
@@ -68,6 +84,7 @@ float muRelIso04DB(unsigned int muIdx){
 }
 
 float muRelIso03(unsigned int muIdx, analysis_t analysis){
+  if (analysis == WW  ) return muRelIso03EA(muIdx);
   if (analysis == SS  ) return muRelIso03EA(muIdx);
   if (analysis == ZMET) return muRelIso03EA(muIdx);
   return muRelIso03DB(muIdx);
@@ -104,7 +121,7 @@ float muRelIso03_noCorr(unsigned int muIdx){
   return absiso/(mus_p4().at(muIdx).pt());
 }
 
-float muRelIsoCustomCone(unsigned int muIdx, float dr, bool useVetoCones, float ptthresh, bool useDBcor, bool useEAcor){
+float muRelIsoCustomCone(unsigned int muIdx, float dr, bool useVetoCones, float ptthresh, bool useDBcor, bool useEAcor, float mindr){
   float chiso     = 0.;
   float nhiso     = 0.;
   float emiso     = 0.;
@@ -117,6 +134,7 @@ float muRelIsoCustomCone(unsigned int muIdx, float dr, bool useVetoCones, float 
 
   for (unsigned int i=0; i<pfcands_particleId().size(); ++i){
     float thisDR = fabs(ROOT::Math::VectorUtil::DeltaR(pfcands_p4().at(i),mus_p4().at(muIdx)));
+    if (thisDR<mindr) continue;
     if (thisDR>dr) continue;  
     if ( fabs(pfcands_particleId().at(i))==211 ) {
       if (pfcands_fromPV().at(i) > 1 && (!useVetoCones || thisDR > deadcone_ch) ) chiso+=pfcands_p4().at(i).pt();
@@ -134,13 +152,11 @@ float muRelIsoCustomCone(unsigned int muIdx, float dr, bool useVetoCones, float 
 
 float muMiniRelIso(unsigned int idx, bool useVetoCones, float ptthresh, bool useDBcor, bool useEAcor){
   float pt = mus_p4().at(idx).pt();
-  float dr = 0.2;
-  if (pt>50) dr = 10./pt;
-  if (pt>200) dr = 0.05;
+  float dr = getMiniDR(pt);
   return  muRelIsoCustomCone(idx,dr,useVetoCones,ptthresh,useDBcor,useEAcor);
 }
 
-/*float muMiniRelIsoCMS3_DB(unsigned int idx) {
+float muMiniRelIsoCMS3_DB(unsigned int idx) {
   float correction = 0.5 * mus_miniIso_db().at(idx);
   float absiso = mus_miniIso_ch().at(idx) + std::max(float(0.0), mus_miniIso_nh().at(idx) + mus_miniIso_em().at(idx) - correction);
   return absiso/(mus_p4().at(idx).pt());
@@ -148,18 +164,22 @@ float muMiniRelIso(unsigned int idx, bool useVetoCones, float ptthresh, bool use
 
 float muMiniRelIsoCMS3_EA(unsigned int idx) {
   float pt = mus_p4().at(idx).pt();
-  float dr = 0.2;
-  if (pt>50) dr = 10./pt;
-  if (pt>200) dr = 0.05;
+  float dr = getMiniDR(pt);
   float correction = evt_fixgridfastjet_all_rho() * muEA03(idx) * (dr/0.3) * (dr/0.3);
   float absiso = mus_miniIso_ch().at(idx) + std::max(float(0.0), mus_miniIso_nh().at(idx) + mus_miniIso_em().at(idx) - correction);
   return absiso/(mus_p4().at(idx).pt());
 }
-*/
+
+float muRelIsoAn04(unsigned int idx, bool useDBcor) {
+  float pt = mus_p4().at(idx).pt();
+  float dr = getMiniDR(pt);
+  return muRelIsoCustomCone(idx, 0.4, false, 0.0, useDBcor, false, dr);
+}
+
 float eleRelIso03(unsigned int elIdx, analysis_t analysis){
   if (analysis == HAD ) return eleRelIso03DB(elIdx);
   if (analysis == STOP) return eleRelIso03DB(elIdx);
-  if (analysis == WW  ) return eleRelIso03EA(elIdx);
+  if (analysis == WW  ) return eleRelIso03_90ContEA(elIdx);
   if (analysis == SS  ) return eleRelIso03EA(elIdx);
   if (analysis == ZMET) return eleRelIso03EA(elIdx);
 
@@ -185,11 +205,32 @@ float elEA03(unsigned int elIdx) {
   return ea;
 }
 
+float el90ContEA03(unsigned int elIdx) {
+  float ea = 0.;
+  if      (fabs(els_p4().at(elIdx).eta())<=1.000) ea = 0.1752;
+  else if (fabs(els_p4().at(elIdx).eta())<=1.479) ea = 0.1862;
+  else if (fabs(els_p4().at(elIdx).eta())<=2.000) ea = 0.1411;
+  else if (fabs(els_p4().at(elIdx).eta())<=2.200) ea = 0.1534;
+  else if (fabs(els_p4().at(elIdx).eta())<=2.300) ea = 0.1903;
+  else if (fabs(els_p4().at(elIdx).eta())<=2.400) ea = 0.2243;
+  else if (fabs(els_p4().at(elIdx).eta())<=2.500) ea = 0.2687;
+  return ea;
+}
+
 float eleRelIso03EA(unsigned int elIdx){
   float chiso = els_pfChargedHadronIso().at(elIdx);
   float nhiso = els_pfNeutralHadronIso().at(elIdx);
   float emiso = els_pfPhotonIso().at(elIdx);
   float ea    = elEA03(elIdx);
+  float absiso = chiso + std::max(float(0.0), nhiso + emiso - evt_fixgridfastjet_all_rho() * ea);
+  return absiso/(els_p4().at(elIdx).pt());
+}
+
+float eleRelIso03_90ContEA(unsigned int elIdx){
+  float chiso = els_pfChargedHadronIso().at(elIdx);
+  float nhiso = els_pfNeutralHadronIso().at(elIdx);
+  float emiso = els_pfPhotonIso().at(elIdx);
+  float ea    = el90ContEA03(elIdx);
   float absiso = chiso + std::max(float(0.0), nhiso + emiso - evt_fixgridfastjet_all_rho() * ea);
   return absiso/(els_p4().at(elIdx).pt());
 }
@@ -202,7 +243,7 @@ float eleRelIso03_noCorr(unsigned int elIdx){
   return absiso/(els_p4().at(elIdx).pt());
 }
 
-float elRelIsoCustomCone(unsigned int elIdx, float dr, bool useVetoCones, float ptthresh, bool useDBcor, bool useEAcor){
+float elRelIsoCustomCone(unsigned int elIdx, float dr, bool useVetoCones, float ptthresh, bool useDBcor, bool useEAcor, float mindr){
   float chiso     = 0.;
   float nhiso     = 0.;
   float emiso     = 0.;
@@ -212,14 +253,14 @@ float elRelIsoCustomCone(unsigned int elIdx, float dr, bool useVetoCones, float 
   float deadcone_pu = 0.;
   float deadcone_ph = 0.;
   // veto cones only in the endcap for electrons
-  //if (useVetoCones && fabs(els_p4().at(elIdx).eta()) > 1.479) {
-  if (useVetoCones && fabs(els_etaSC().at(elIdx) ) > 1.479) {
+  if (useVetoCones && fabs(els_etaSC().at(elIdx)) > 1.479) {
     deadcone_ch = 0.015;
     deadcone_pu = 0.015;
     deadcone_ph = 0.08;
   }
   for (unsigned int i=0; i<pfcands_particleId().size(); ++i){
     float thisDR = fabs(ROOT::Math::VectorUtil::DeltaR(pfcands_p4().at(i),els_p4().at(elIdx)));
+    if ( thisDR<mindr ) continue;
     if ( thisDR>dr ) continue;  
     if ( fabs(pfcands_particleId().at(i))==211 ) {
       if (pfcands_fromPV().at(i) > 1 && (!useVetoCones || thisDR > deadcone_ch) ) chiso+=pfcands_p4().at(i).pt();
@@ -236,13 +277,11 @@ float elRelIsoCustomCone(unsigned int elIdx, float dr, bool useVetoCones, float 
 float elMiniRelIso(unsigned int idx, bool useVetoCones, float ptthresh, bool useDBcor, bool useEAcor){
 
   float pt = els_p4().at(idx).pt();
-  float dr = 0.2;
-  if (pt>50) dr = 10./pt;
-  if (pt>200) dr = 0.05;
+  float dr = getMiniDR(pt);
   return elRelIsoCustomCone(idx,dr,useVetoCones,ptthresh,useDBcor,useEAcor);
 }
 
-/*float elMiniRelIsoCMS3_DB(unsigned int idx) {
+float elMiniRelIsoCMS3_DB(unsigned int idx) {
   float correction = 0.5 * els_miniIso_db().at(idx);
   float absiso = els_miniIso_ch().at(idx) + std::max(float(0.0), els_miniIso_nh().at(idx) + els_miniIso_em().at(idx) - correction);
   return absiso/(els_p4().at(idx).pt());
@@ -250,10 +289,94 @@ float elMiniRelIso(unsigned int idx, bool useVetoCones, float ptthresh, bool use
 
 float elMiniRelIsoCMS3_EA(unsigned int idx) {
   float pt = els_p4().at(idx).pt();
-  float dr = 0.2;
-  if (pt>50) dr = 10./pt;
-  if (pt>200) dr = 0.05;
+  float dr = getMiniDR(pt);
   float correction = evt_fixgridfastjet_all_rho() * elEA03(idx) * (dr/0.3) * (dr/0.3);
   float absiso = els_miniIso_ch().at(idx) + std::max(float(0.0), els_miniIso_nh().at(idx) + els_miniIso_em().at(idx) - correction);
   return absiso/(els_p4().at(idx).pt());
-}*/
+}
+
+float elRelIsoAn04(unsigned int idx, bool useDBcor) {
+  float pt = els_p4().at(idx).pt();
+  float dr = getMiniDR(pt);
+  return elRelIsoCustomCone(idx, 0.4, false, 0.0, useDBcor, false, dr);
+}
+
+//////////////////////
+// Photon Isolation //
+//////////////////////
+
+// from https://indico.cern.ch/event/369239/contribution/2/attachments/1134693/1623149/spring15_pcb.pdf
+float photon_CHEA03( int photonIdx )
+{
+  float eta = cms3.photons_p4().at(photonIdx).eta();
+  float EA = -999;
+  
+  if(       abs(eta) < 1.0   ){ EA = 0.0157;
+  }else if( abs(eta) < 1.479 ){ EA = 0.0143;
+  }else if( abs(eta) < 2.0   ){ EA = 0.0115;
+  }else if( abs(eta) < 2.2   ){ EA = 0.0094;
+  }else if( abs(eta) < 2.3   ){ EA = 0.0095;
+  }else if( abs(eta) < 2.4   ){ EA = 0.0068;
+  }else if( abs(eta) > 2.4   ){ EA = 0.0053;
+  }
+  
+  return EA;
+}
+
+float photon_NHEA03( int photonIdx )
+{
+  float eta = cms3.photons_p4().at(photonIdx).eta();
+  float EA = -999;
+  
+  if(       abs(eta) < 1.0   ){ EA = 0.0143;
+  }else if( abs(eta) < 1.479 ){ EA = 0.0210;
+  }else if( abs(eta) < 2.0   ){ EA = 0.0148;
+  }else if( abs(eta) < 2.2   ){ EA = 0.0082;
+  }else if( abs(eta) < 2.3   ){ EA = 0.0124;
+  }else if( abs(eta) < 2.4   ){ EA = 0.0186;
+  }else if( abs(eta) > 2.4   ){ EA = 0.0320;
+  }
+  
+  return EA;
+}
+
+float photon_EMEA03( int photonIdx )
+{
+  float eta = cms3.photons_p4().at(photonIdx).eta();
+  float EA = -999;
+  
+  if(       abs(eta) < 1.0   ){ EA = 0.0725;
+  }else if( abs(eta) < 1.479 ){ EA = 0.0604;
+  }else if( abs(eta) < 2.0   ){ EA = 0.0320;
+  }else if( abs(eta) < 2.2   ){ EA = 0.0512;
+  }else if( abs(eta) < 2.3   ){ EA = 0.0766;
+  }else if( abs(eta) < 2.4   ){ EA = 0.0949;
+  }else if( abs(eta) > 2.4   ){ EA = 0.1160;
+  }
+  
+  return EA;
+}
+
+float photonCHIso03EA( int photonIdx )
+{
+  float chiso = photons_recoChargedHadronIso().at(photonIdx);
+  float ea    = photon_CHEA03(photonIdx);
+  float CHIso = std::max(float(0.0), chiso - evt_fixgridfastjet_all_rho() * ea);
+  return CHIso;
+}
+
+float photonNHIso03EA( int photonIdx )
+{
+  float nhiso = photons_recoNeutralHadronIso().at(photonIdx);
+  float ea    = photon_NHEA03(photonIdx);
+  float NHIso = std::max(float(0.0), nhiso - evt_fixgridfastjet_all_rho() * ea);
+  return NHIso;
+}
+
+float photonEMIso03EA( int photonIdx )
+{
+  float emiso = photons_recoPhotonIso().at(photonIdx);
+  float ea    = photon_EMEA03(photonIdx);
+  float EMIso = std::max(float(0.0), emiso - evt_fixgridfastjet_all_rho() * ea);
+  return EMIso;
+}

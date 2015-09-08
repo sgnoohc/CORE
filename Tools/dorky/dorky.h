@@ -15,6 +15,7 @@ namespace duplicate_removal {
      };
      extern std::set<DorkyEventIdentifier> already_seen;
      bool is_duplicate (const DorkyEventIdentifier &id);
+     void clear_list();
 }
 
 #endif
