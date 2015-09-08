@@ -26,7 +26,7 @@ all: $(LIB)
 clean:
 	rm -f *.o \
 	rm -f *.d \
-	rm -f *.so \ 
+	rm -f *.so \
 	rm -f Tools/*.o \ 
 	rm -f Tools/*.d \
 	rm -f Tools/*.so \
