@@ -101,7 +101,7 @@ int lepMotherID(Lep lep);
 int lepMotherID_inSituFR(Lep lep);
 
 //Jet selection function
-std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector* jetCorr);
+std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector* jetCorr, bool doCorr);
 
 //Correcting the MET
 LorentzVector correctedMET(FactorizedJetCorrector* jetCorr);
