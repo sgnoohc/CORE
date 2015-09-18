@@ -227,7 +227,7 @@ int getTriggerPatternIndex(const char* arg){
 }
 
 // This function does not require the full trigger path to have passed. 
-bool matchToHLTFilter(const char* arg, const char* filt, const LorentzVector &obj, float drMin_, double* ptMatch){
+bool matchToHLTFilter(const char* arg, const char* filt, const LorentzVector &obj, float drMin_, float *ptMatch){
 
   // put the trigger name into a string
   TString HLTTrigger( arg );
