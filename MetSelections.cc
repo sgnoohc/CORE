@@ -91,7 +91,7 @@ pair <float, float> getT1CHSMET(   FactorizedJetCorrector * jet_corrector ){
 	if( abs(jetp4_uncorr.eta()) > 9.9 ) continue; // veto jets with eta > 9.9
 
 	// get L1FastL2L3 total correction
-	jet_corrector->setRho   ( cms3.evt_fixgridfastjet_all_rho()      );
+	jet_corrector->setRho   ( cms3.evt_fixgridfastjetMETTools_all_rho()      );
 	jet_corrector->setJetA  ( cms3.pfjets_METToolbox_area().at(iJet) );
 	jet_corrector->setJetPt ( jetp4_uncorr.pt()                      );
 	jet_corrector->setJetEta( jetp4_uncorr.eta()                     );
