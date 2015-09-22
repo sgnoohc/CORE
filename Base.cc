@@ -86,6 +86,7 @@ analysis_t whichAnalysis(id_level_t id_level){
     case (ZMET_tight_noiso_v2):
     case (ZMET_tight_v1):
     case (ZMET_tight_noiso_v1):
+    case (ZMET_photon_v2):
     case (ZMET_photon_v1):
       return ZMET;
       break;
