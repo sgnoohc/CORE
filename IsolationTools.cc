@@ -38,13 +38,13 @@ float ptRel(const LorentzVector& lepp4, const LorentzVector& jetp4, bool subtrac
   return ptrel;
 }
 
-int closestJetIdx(const LorentzVector& lep_p4, float dRmin, float maxAbsEta) {
+int closestJetIdx(const LorentzVector& lep_p4, float dRmin, float maxAbsEta){
   int closestIdx = -1;
-  for (unsigned int pfjidx=0;pfjidx<pfjets_p4().size();++pfjidx) {
+  for (unsigned int pfjidx=0; pfjidx<pfjets_p4().size(); ++pfjidx){
     LorentzVector jet_p4 = pfjets_p4().at(pfjidx);
-    if (fabs(jet_p4.eta())>maxAbsEta) continue;
+    if (fabs(jet_p4.eta()) > maxAbsEta) continue;
     float tmp_dRmin = ROOT::Math::VectorUtil::DeltaR(jet_p4, lep_p4);
-    if ( tmp_dRmin < dRmin) {
+    if (tmp_dRmin < dRmin){
       closestIdx = pfjidx;
       dRmin = tmp_dRmin;
     }
@@ -52,7 +52,7 @@ int closestJetIdx(const LorentzVector& lep_p4, float dRmin, float maxAbsEta) {
   return closestIdx;
 }
 
-LorentzVector closestJet(const LorentzVector& lep_p4, float dRmin, float maxAbsEta) {
+LorentzVector closestJet(const LorentzVector& lep_p4, float dRmin, float maxAbsEta){
   int closestIdx = closestJetIdx(lep_p4,dRmin,maxAbsEta);
   if (closestIdx>=0) return pfjets_p4().at(closestIdx);
   else return LorentzVector();
