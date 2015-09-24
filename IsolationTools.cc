@@ -6,6 +6,7 @@ using namespace std;
 using namespace tas;
 
 FactorizedJetCorrector *jetCorrAG = 0;
+FactorizedJetCorrector *jetCorrAG2 = 0;
 
 bool passMultiIso(float cutMiniIso, float cutPtRatio, float cutPtRel, float miniIsoValue, float ptRatioValue, float ptRelValue){
   return (miniIsoValue < cutMiniIso && (ptRatioValue>cutPtRatio || ptRelValue > cutPtRel));
@@ -55,27 +56,38 @@ int closestJetIdx(const LorentzVector& lep_p4, float dRmin, float maxAbsEta){
   return closestIdx;
 }
 
-LorentzVector closestJet(const LorentzVector& lep_p4, float dRmin, float maxAbsEta, bool L1Corr){
+LorentzVector closestJet(const LorentzVector& lep_p4, float dRmin, float maxAbsEta, int whichCorr){
   int closestIdx = closestJetIdx(lep_p4,dRmin,maxAbsEta);
   if (closestIdx < 0) return LorentzVector();
   LorentzVector jet = pfjets_p4().at(closestIdx);
+  
+  if (whichCorr == 0) return jet; 
 
   //Calculate JEC
   float JEC = 1.0;
-  if (L1Corr){
-    if (jetCorrAG == 0){
-      std::vector<std::string> filenames;
-      filenames.push_back("CORE/Tools/jetcorr/data/run2_25ns/Summer15_25nsV2_DATA_L1FastJet_AK4PFchs.txt");
-      jetCorrAG = makeJetCorrector(filenames);
-    }
-    jetCorrAG->setJetEta(jet.eta()); 
-    jetCorrAG->setJetPt(jet.pt()); 
-    jetCorrAG->setJetA(tas::pfjets_area().at(closestIdx)); 
-    jetCorrAG->setRho(tas::evt_fixgridfastjet_centralneutral_rho()); 
-    JEC = jetCorrAG->getCorrection(); 
+  if (jetCorrAG == 0){
+    std::vector<std::string> filenames;
+    filenames.push_back("CORE/Tools/jetcorr/data/run2_25ns/Summer15_25nsV2_DATA_L1FastJet_AK4PFchs.txt");
+    jetCorrAG = makeJetCorrector(filenames);
   }
+  if (jetCorrAG2 == 0){
+    std::vector<std::string> filenames;
+    filenames.push_back("CORE/Tools/jetcorr/data/run2_25ns/Summer15_25nsV2_DATA_L2L3Residual_AK4PFchs.txt");
+    jetCorrAG2 = makeJetCorrector(filenames);
+  }
+  jetCorrAG->setJetEta(jet.eta()); 
+  jetCorrAG->setJetPt(jet.pt()); 
+  jetCorrAG->setJetA(tas::pfjets_area().at(closestIdx)); 
+  jetCorrAG->setRho(tas::evt_fixgridfastjet_centralneutral_rho()); 
+  jetCorrAG2->setJetEta(jet.eta()); 
+  jetCorrAG2->setJetPt(jet.pt()); 
+  jetCorrAG2->setJetA(tas::pfjets_area().at(closestIdx)); 
+  jetCorrAG2->setRho(tas::evt_fixgridfastjet_centralneutral_rho()); 
+  JEC1 = jetCorrAG->getCorrection(); 
+  JEC2 = jetCorrAG2->getCorrection(); 
 
-  return jet*JEC;
+  if (whichCorr == 1) return jet*JEC1;
+  return (jet*JEC1 - lep_p4)*JEC2 + lep_p4;
 }
 
 float getMiniDR(float pt) {
