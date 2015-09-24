@@ -224,21 +224,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
 
     case(SS_veto_noiso_v4):
       //trigger match cuts
-      if (fabs(els_etaSC().at(elIdx)) <= 1.479){
-        if (fabs(els_dEtaIn().at(elIdx)) >= 0.01) return false; 
-        if (fabs(els_dPhiIn().at(elIdx)) >= 0.15) return false; 
-        if (fabs( (1.0/els_ecalEnergy().at(elIdx)) - (els_eOverPIn().at(elIdx)/els_ecalEnergy().at(elIdx)) ) >= 0.05) return false;
-        if (els_sigmaIEtaIEta_full5x5().at(elIdx) >= 0.011) return false; 
-        if (els_hOverE().at(elIdx) >= 0.12) return false; 
-      }
-      else if ((fabs(els_etaSC().at(elIdx)) > 1.479) && (fabs(els_etaSC().at(elIdx)) < 2.5)){
-        if (fabs(els_dEtaIn().at(elIdx)) >= 0.01) return false; 
-        if (fabs(els_dPhiIn().at(elIdx)) >= 0.1) return false; 
-        if (fabs( (1.0/els_ecalEnergy().at(elIdx)) - (els_eOverPIn().at(elIdx)/els_ecalEnergy().at(elIdx)) ) >= 0.05) return false;
-        if (els_sigmaIEtaIEta_full5x5().at(elIdx) >= 0.031) return false; 
-        if (els_hOverE().at(elIdx) >= 0.1) return false; 
-      }
-      else return false;
+      if (!isTriggerSafenoIso_v1(elIdx)) return false;
       if (fabs(els_etaSC().at(elIdx)) > 2.5) return false;
       if (els_conv_vtx_flag().at(elIdx)) return false;
       if (els_exp_innerlayers().at(elIdx) > 1) return false;

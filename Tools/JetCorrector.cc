@@ -24,6 +24,7 @@ class FactorizedJetCorrector *makeJetCorrector (const std::vector<std::string> &
         JetCorrectorParameters JetCorPar(corr_name);
         // printf("%s\n", corr_name);
         vParam.push_back(JetCorrectorParameters(corr_name));
+        pclose(f);
     }
     return new FactorizedJetCorrector(vParam);
 }
