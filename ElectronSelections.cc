@@ -1869,7 +1869,7 @@ bool isTriggerSafenoIso_v1(unsigned int elIdx) {
 
 bool isTriggerSafe_v1(unsigned int elIdx) {
 
-  if (!isTriggerSafenoIso_v1()) return false;
+  if (!isTriggerSafenoIso_v1(elIdx)) return false;
 
   if (els_ecalPFClusterIso().at(elIdx) >= 0.45) return false;
   if (els_hcalPFClusterIso().at(elIdx) >= 0.25) return false;
