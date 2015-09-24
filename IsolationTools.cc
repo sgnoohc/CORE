@@ -55,24 +55,25 @@ int closestJetIdx(const LorentzVector& lep_p4, float dRmin, float maxAbsEta){
 
 LorentzVector closestJet(const LorentzVector& lep_p4, float dRmin, float maxAbsEta, bool L1Corr){
   int closestIdx = closestJetIdx(lep_p4,dRmin,maxAbsEta);
+  if (closestIdx < 0) return LorentzVector();
   LorentzVector jet = pfjets_p4().at(closestIdx);
 
   //Calculate JEC
   float JEC = 1.0;
-  if (L1Corr){
-    std::vector<std::string> filenames;
-    filenames.push_back("Tools/jetcorr/data/run2_25ns/Summer15_25nsV2_DATA_L1FastJet_AK4PFchs.txt");
-    FactorizedJetCorrector *jetCorrAG;
-    jetCorrAG = makeJetCorrector(filenames);
-    jetCorrAG->setJetEta(jet.eta()); 
-    jetCorrAG->setJetPt(jet.pt()); 
-    jetCorrAG->setJetA(tas::pfjets_area().at(closestIdx)); 
-    jetCorrAG->setRho(tas::evt_fixgridfastjet_centralneutral_rho()); 
-    JEC = jetCorrAG->getCorrection(); 
-  }
+  //if (L1Corr){
+  //  std::vector<std::string> filenames;
+  //  filenames.push_back("CORE/Tools/jetcorr/data/run2_25ns/Summer15_25nsV2_DATA_L1FastJet_AK4PFchs.txt");
+  //  FactorizedJetCorrector *jetCorrAG;
+  //  jetCorrAG = makeJetCorrector(filenames);
+  //  jetCorrAG->setJetEta(jet.eta()); 
+  //  jetCorrAG->setJetPt(jet.pt()); 
+  //  jetCorrAG->setJetA(tas::pfjets_area().at(closestIdx)); 
+  //  jetCorrAG->setRho(tas::evt_fixgridfastjet_centralneutral_rho()); 
+  //  JEC = jetCorrAG->getCorrection(); 
+  //  delete jetCorrAG;
+  //}
 
-  if (closestIdx>=0) return jet*JEC;
-  else return LorentzVector();
+  return jet*JEC;
 }
 
 float getMiniDR(float pt) {
