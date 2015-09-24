@@ -5,6 +5,8 @@
 using namespace std;
 using namespace tas;
 
+FactorizedJetCorrector *jetCorrAG = 0;
+
 bool passMultiIso(float cutMiniIso, float cutPtRatio, float cutPtRel, float miniIsoValue, float ptRatioValue, float ptRelValue){
   return (miniIsoValue < cutMiniIso && (ptRatioValue>cutPtRatio || ptRelValue > cutPtRel));
 }
@@ -60,18 +62,18 @@ LorentzVector closestJet(const LorentzVector& lep_p4, float dRmin, float maxAbsE
 
   //Calculate JEC
   float JEC = 1.0;
-  //if (L1Corr){
-  //  std::vector<std::string> filenames;
-  //  filenames.push_back("CORE/Tools/jetcorr/data/run2_25ns/Summer15_25nsV2_DATA_L1FastJet_AK4PFchs.txt");
-  //  FactorizedJetCorrector *jetCorrAG;
-  //  jetCorrAG = makeJetCorrector(filenames);
-  //  jetCorrAG->setJetEta(jet.eta()); 
-  //  jetCorrAG->setJetPt(jet.pt()); 
-  //  jetCorrAG->setJetA(tas::pfjets_area().at(closestIdx)); 
-  //  jetCorrAG->setRho(tas::evt_fixgridfastjet_centralneutral_rho()); 
-  //  JEC = jetCorrAG->getCorrection(); 
-  //  delete jetCorrAG;
-  //}
+  if (L1Corr){
+    if (jetCorrAG == 0){
+      std::vector<std::string> filenames;
+      filenames.push_back("CORE/Tools/jetcorr/data/run2_25ns/Summer15_25nsV2_DATA_L1FastJet_AK4PFchs.txt");
+      jetCorrAG = makeJetCorrector(filenames);
+    }
+    jetCorrAG->setJetEta(jet.eta()); 
+    jetCorrAG->setJetPt(jet.pt()); 
+    jetCorrAG->setJetA(tas::pfjets_area().at(closestIdx)); 
+    jetCorrAG->setRho(tas::evt_fixgridfastjet_centralneutral_rho()); 
+    JEC = jetCorrAG->getCorrection(); 
+  }
 
   return jet*JEC;
 }
