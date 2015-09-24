@@ -165,22 +165,6 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
    ////////////////////
 
     case(SS_veto_noiso_v2):
-      //trigger match cuts
-      if (fabs(els_etaSC().at(elIdx)) <= 1.479){
-        if (fabs(els_dEtaIn().at(elIdx)) >= 0.01) return false; 
-        if (fabs(els_dPhiIn().at(elIdx)) >= 0.15) return false; 
-        if (fabs( (1.0/els_ecalEnergy().at(elIdx)) - (els_eOverPIn().at(elIdx)/els_ecalEnergy().at(elIdx)) ) >= 0.05) return false;
-        if (els_sigmaIEtaIEta_full5x5().at(elIdx) >= 0.011) return false; 
-        if (els_hOverE().at(elIdx) >= 0.12) return false; 
-      }
-      else if ((fabs(els_etaSC().at(elIdx)) > 1.479) && (fabs(els_etaSC().at(elIdx)) < 2.5)){
-        if (fabs(els_dEtaIn().at(elIdx)) >= 0.01) return false; 
-        if (fabs(els_dPhiIn().at(elIdx)) >= 0.1) return false; 
-        if (fabs( (1.0/els_ecalEnergy().at(elIdx)) - (els_eOverPIn().at(elIdx)/els_ecalEnergy().at(elIdx)) ) >= 0.05) return false;
-        if (els_sigmaIEtaIEta_full5x5().at(elIdx) >= 0.031) return false; 
-        if (els_hOverE().at(elIdx) >= 0.1) return false; 
-      }
-      else return false;
       if (fabs(els_etaSC().at(elIdx)) > 2.4) return false;
       if (els_conv_vtx_flag().at(elIdx)) return false;
       if (els_exp_innerlayers().at(elIdx) > 1) return false;
@@ -204,24 +188,6 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
    ////////////////////
 
     case(SS_veto_noiso_v3):
-      //trigger match cuts fixme and fix noip below
-      /*
-      if (fabs(els_etaSC().at(elIdx)) <= 1.479){
-        if (fabs(els_dEtaIn().at(elIdx)) >= 0.01) return false; 
-        if (fabs(els_dPhiIn().at(elIdx)) >= 0.15) return false; 
-        if (fabs( (1.0/els_ecalEnergy().at(elIdx)) - (els_eOverPIn().at(elIdx)/els_ecalEnergy().at(elIdx)) ) >= 0.05) return false;
-        if (els_sigmaIEtaIEta_full5x5().at(elIdx) >= 0.011) return false; 
-        if (els_hOverE().at(elIdx) >= 0.12) return false; 
-      }
-      else if ((fabs(els_etaSC().at(elIdx)) > 1.479) && (fabs(els_etaSC().at(elIdx)) < 2.5)){
-        if (fabs(els_dEtaIn().at(elIdx)) >= 0.01) return false; 
-        if (fabs(els_dPhiIn().at(elIdx)) >= 0.1) return false; 
-        if (fabs( (1.0/els_ecalEnergy().at(elIdx)) - (els_eOverPIn().at(elIdx)/els_ecalEnergy().at(elIdx)) ) >= 0.05) return false;
-        if (els_sigmaIEtaIEta_full5x5().at(elIdx) >= 0.031) return false; 
-        if (els_hOverE().at(elIdx) >= 0.1) return false; 
-      }
-      else return false;
-      */
       if (fabs(els_etaSC().at(elIdx)) > 2.5) return false;
       if (els_conv_vtx_flag().at(elIdx)) return false;
       if (els_exp_innerlayers().at(elIdx) > 1) return false;
@@ -241,6 +207,57 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       break;
 
     case(SS_veto_noiso_noip_v3):
+      if (fabs(els_etaSC().at(elIdx)) > 2.5) return false;
+      if (els_conv_vtx_flag().at(elIdx)) return false;
+      if (els_exp_innerlayers().at(elIdx) > 1) return false;
+      //if (fabs(els_dzPV().at(elIdx)) >= 0.1) return false; 
+      if (globalEleMVAreader==0){
+	    cout << "readMVA=0, please create and init it (e.g with createAndInitMVA function)" << endl;
+	    return false;
+      }
+      return globalEleMVAreader->passesElectronMVAid(elIdx, id_level);
+      break;
+
+   //////////////////
+   /// SS veto v4 ///
+   //////////////////
+
+    case(SS_veto_noiso_v4):
+      //trigger match cuts
+      if (fabs(els_etaSC().at(elIdx)) <= 1.479){
+        if (fabs(els_dEtaIn().at(elIdx)) >= 0.01) return false; 
+        if (fabs(els_dPhiIn().at(elIdx)) >= 0.15) return false; 
+        if (fabs( (1.0/els_ecalEnergy().at(elIdx)) - (els_eOverPIn().at(elIdx)/els_ecalEnergy().at(elIdx)) ) >= 0.05) return false;
+        if (els_sigmaIEtaIEta_full5x5().at(elIdx) >= 0.011) return false; 
+        if (els_hOverE().at(elIdx) >= 0.12) return false; 
+      }
+      else if ((fabs(els_etaSC().at(elIdx)) > 1.479) && (fabs(els_etaSC().at(elIdx)) < 2.5)){
+        if (fabs(els_dEtaIn().at(elIdx)) >= 0.01) return false; 
+        if (fabs(els_dPhiIn().at(elIdx)) >= 0.1) return false; 
+        if (fabs( (1.0/els_ecalEnergy().at(elIdx)) - (els_eOverPIn().at(elIdx)/els_ecalEnergy().at(elIdx)) ) >= 0.05) return false;
+        if (els_sigmaIEtaIEta_full5x5().at(elIdx) >= 0.031) return false; 
+        if (els_hOverE().at(elIdx) >= 0.1) return false; 
+      }
+      else return false;
+      if (fabs(els_etaSC().at(elIdx)) > 2.5) return false;
+      if (els_conv_vtx_flag().at(elIdx)) return false;
+      if (els_exp_innerlayers().at(elIdx) > 1) return false;
+      if (fabs(els_dxyPV().at(elIdx)) >= 0.05) return false;
+      if (fabs(els_dzPV().at(elIdx)) >= 0.1) return false; 
+      if (globalEleMVAreader==0){
+	    cout << "readMVA=0, please create and init it (e.g with createAndInitMVA function)" << endl;
+	    return false;
+      }
+      return globalEleMVAreader->passesElectronMVAid(elIdx, id_level);
+      break;
+
+    case(SS_veto_v4):
+      if (electronID(elIdx, SS_veto_noiso_v4)==0) return false; 
+      if (elMiniRelIsoCMS3_EA(elIdx) >= 0.40) return false;
+      return true;
+      break;
+
+    case(SS_veto_noiso_noip_v4):
       if (fabs(els_etaSC().at(elIdx)) > 2.5) return false;
       if (els_conv_vtx_flag().at(elIdx)) return false;
       if (els_exp_innerlayers().at(elIdx) > 1) return false;
@@ -453,11 +470,13 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       break;
 
    ///////////////////
-   /// SS FO v3 /// same as medium, but looser iso and option for looser MVA cut
+   /// SS FO v4 /// same as medium, but looser iso and option for looser MVA cut
    ///////////////////
 
     case(SS_fo_noiso_v3):
     case(SS_fo_looseMVA_noiso_v3):
+    case(SS_fo_noiso_v4):
+    case(SS_fo_looseMVA_noiso_v4):
       if (electronID(elIdx, SS_veto_noiso_v3)==0) return false;//make sure it's tighter than veto
       if (globalEleMVAreader==0){
 	    cout << "readMVA=0, please create and init it (e.g with createAndInitMVA function)" << endl;
@@ -777,7 +796,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
    ////////////////////
 
     case(SS_medium_noiso_v4):
-      if (electronID(elIdx, SS_fo_noiso_v3)==0) return false;//make sure it's tighter than FO
+      if (electronID(elIdx, SS_fo_noiso_v4)==0) return false;//make sure it's tighter than FO
       if (globalEleMVAreader==0) {
 	    cout << "readMVA=0, please create and init it (e.g with createAndInitMVA function)" << endl;
 	    return false;
@@ -791,7 +810,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       return globalEleMVAreader->passesElectronMVAid(elIdx, id_level);
 
     case(SS_medium_v4):
-      if (electronID(elIdx, SS_medium_noiso_v3)==0) return false; 
+      if (electronID(elIdx, SS_medium_noiso_v4)==0) return false; 
       if (elIDCacheSet) return passMultiIso(0.10, 0.76, 7.0, elID_cache.getMiniiso(elIdx), elID_cache.getPtratio(elIdx), elID_cache.getPtrel(elIdx) );
       else return passMultiIso(11, elIdx, 0.10, 0.76, 7.0);
       break;
@@ -1808,6 +1827,20 @@ bool readMVA::passesElectronMVAid(unsigned int index, id_level_t id_level){
     if (aeta < 0.8) return disc > 0.73;
     if ((aeta >= 0.8 && aeta <= 1.479)) return disc > 0.57;
     if (aeta > 1.479) return disc > 0.05;
+    break;
+
+  case(SS_veto_noiso_v4):
+  case (SS_veto_noiso_noip_v4):
+  case(SS_fo_looseMVA_noiso_v4):
+  case (SS_fo_looseMVA_noiso_noip_v4):
+    return true;
+    break;
+
+  case(SS_medium_noiso_v4):
+  case(SS_medium_noip_v4):
+    if (aeta < 0.8) return disc > 0.87;
+    if ((aeta >= 0.8 && aeta <= 1.479)) return disc > 0.60;
+    if (aeta > 1.479) return disc > 0.17;
     break;
 
   case (WW_veto_noiso_v1):

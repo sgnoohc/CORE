@@ -1,5 +1,6 @@
 #include "Math/VectorUtil.h"
 #include "IsolationTools.h"
+#include "Tools/JetCorrector.h"
 
 using namespace std;
 using namespace tas;
@@ -10,7 +11,7 @@ bool passMultiIso(float cutMiniIso, float cutPtRatio, float cutPtRel, float mini
 
 bool passMultiIso(int id, int idx, float cutMiniIso, float cutPtRatio, float cutPtRel){
   const LorentzVector& lep_p4 = abs(id)==11 ? els_p4().at(idx) : mus_p4().at(idx);
-  const LorentzVector& jet_p4 = closestJet(lep_p4,0.4,2.4);
+  const LorentzVector& jet_p4 = closestJet(lep_p4,0.4,2.4,1);
   float miniIso = abs(id)==11 ? elMiniRelIsoCMS3_EA(idx) : muMiniRelIsoCMS3_EA(idx);
   float closeJetPt = jet_p4.pt();
   float ptratio = ( closeJetPt>0. ? lep_p4.pt()/closeJetPt : 1.);
@@ -24,7 +25,7 @@ bool passPtRel(int id, int idx, float cut, bool subtractLep) {
 
 float getPtRel(int id, int idx, bool subtractLep) {
   LorentzVector lep_p4 = abs(id)==11 ? els_p4().at(idx) : mus_p4().at(idx);
-  LorentzVector jet_p4 = closestJet(lep_p4,0.4,2.4);
+  LorentzVector jet_p4 = closestJet(lep_p4,0.4,2.4,1);
   return ptRel(lep_p4, jet_p4, subtractLep);
 }
 
@@ -52,9 +53,25 @@ int closestJetIdx(const LorentzVector& lep_p4, float dRmin, float maxAbsEta){
   return closestIdx;
 }
 
-LorentzVector closestJet(const LorentzVector& lep_p4, float dRmin, float maxAbsEta){
+LorentzVector closestJet(const LorentzVector& lep_p4, float dRmin, float maxAbsEta, bool L1Corr){
   int closestIdx = closestJetIdx(lep_p4,dRmin,maxAbsEta);
-  if (closestIdx>=0) return pfjets_p4().at(closestIdx);
+  LorentzVector jet = pfjets_p4().at(closestIdx);
+
+  //Calculate JEC
+  float JEC = 1.0;
+  if (L1Corr){
+    std::vector<std::string> filenames;
+    filenames.push_back("Tools/jetcorr/data/run2_25ns/Summer15_25nsV2_DATA_L1FastJet_AK4PFchs.txt");
+    FactorizedJetCorrector *jetCorrAG;
+    jetCorrAG = makeJetCorrector(filenames);
+    jetCorrAG->setJetEta(jet.eta()); 
+    jetCorrAG->setJetPt(jet.pt()); 
+    jetCorrAG->setJetA(tas::pfjets_area().at(closestIdx)); 
+    jetCorrAG->setRho(tas::evt_fixgridfastjet_centralneutral_rho()); 
+    JEC = jetCorrAG->getCorrection(); 
+  }
+
+  if (closestIdx>=0) return jet*JEC;
   else return LorentzVector();
 }
 
