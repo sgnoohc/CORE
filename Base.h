@@ -92,6 +92,7 @@ enum id_level_t {
   ZMET_tight_noiso_v1, 
   ZMET_tight_v2, 
   ZMET_tight_noiso_v2, 
+  ZMET_photon_v2,
   ZMET_photon_v1,
 
   //WW
