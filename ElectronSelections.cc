@@ -1881,3 +1881,33 @@ float getMVAoutput(unsigned int index){
   }
   return globalEleMVAreader->MVA(index);
 }
+
+bool isTriggerSafenoIso_v1(unsigned int elIdx) {
+
+  if (fabs(els_etaSC().at(elIdx)) <= 1.479) {
+    if (els_sigmaIEtaIEta_full5x5().at(elIdx) >= 0.011) return false;
+    if (els_hOverE().at(elIdx) >= 0.08) return false;
+    if (fabs(els_dEtaIn().at(elIdx)) >= 0.01) return false;
+    if (fabs(els_dPhiIn().at(elIdx)) >= 0.04) return false;
+    if (fabs( (1.0/els_ecalEnergy().at(elIdx)) - (els_eOverPIn().at(elIdx)/els_ecalEnergy().at(elIdx)) ) >= 0.01) return false;
+  } else if ((fabs(els_etaSC().at(elIdx)) > 1.479) && (fabs(els_etaSC().at(elIdx)) < 2.5)) {
+    if (els_sigmaIEtaIEta_full5x5().at(elIdx) >= 0.031) return false;
+    if (els_hOverE().at(elIdx) >= 0.08) return false;
+    if (fabs(els_dEtaIn().at(elIdx)) >= 0.01) return false;
+    if (fabs(els_dPhiIn().at(elIdx)) >= 0.08) return false;
+    if (fabs( (1.0/els_ecalEnergy().at(elIdx)) - (els_eOverPIn().at(elIdx)/els_ecalEnergy().at(elIdx)) ) >= 0.01) return false;
+  }
+  return true;
+}
+
+bool isTriggerSafe_v1(unsigned int elIdx) {
+
+  if (!isTriggerSafenoIso_v1(elIdx)) return false;
+
+  if (els_ecalPFClusterIso().at(elIdx) >= 0.45) return false;
+  if (els_hcalPFClusterIso().at(elIdx) >= 0.25) return false;
+  if (els_tkIso().at(elIdx) >= 0.2) return false;
+
+  return true;
+
+}
