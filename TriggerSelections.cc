@@ -227,7 +227,7 @@ int getTriggerPatternIndex(const char* arg){
 }
 
 // This function does not require the full trigger path to have passed. 
-bool matchToHLTFilter(const char* arg, const char* filt, const LorentzVector &obj, float drMin_){
+bool matchToHLTFilter(const char* arg, const char* filt, const LorentzVector &obj, float drMin_, float *ptMatch){
 
   // put the trigger name into a string
   TString HLTTrigger( arg );
@@ -251,7 +251,10 @@ bool matchToHLTFilter(const char* arg, const char* filt, const LorentzVector &ob
     if ( ! trigObjsFilters[i].Contains(HLTFilter) ) continue;
 
     float dr = ROOT::Math::VectorUtil::DeltaR(trigObjs[i], obj);
-    if (dr < drMin) drMin = dr;
+    if (dr < drMin) {
+      drMin = dr;
+      *ptMatch = trigObjs[i].pt();
+    }
   }
 
   // if the closest trigger object
