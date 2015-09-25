@@ -26,7 +26,6 @@ enum LeptonCategories { Prompt = 0, PromptWS = 1, PromptWF = 2, PromptFSR = 2,
 			FakeLightTrue = 3, FakeC = 4, FakeB = 5, FakeLightFake = 6, FakeHiPtGamma = 7, 
 			FakeUnknown = 8, FakeLowPtGamma = 9, All9999 = 10,
 			Other = 11, End = 12};
-enum IsolationMethods { Standard = 0, PtRel = 1, MiniIso = 2 , NewMiniIso = 3 , MultiIso = 4 };
 
 //Structs
 struct hyp_result_t { int best_hyp; int hyp_class; };
@@ -44,13 +43,13 @@ template <typename T> int sgn(T val){
 float coneCorrPt(int id, int idx);
 
 //Main Object selections
-bool isGoodLepton(int id, int idx, IsolationMethods isoCase);
-bool isDenominatorLepton(int id, int idx, IsolationMethods isoCase);
-bool isVetoLepton(int id, int idx, IsolationMethods isoCase);
+bool isGoodLepton(int id, int idx);
+bool isDenominatorLepton(int id, int idx);
+bool isVetoLepton(int id, int idx);
 
 //Hyp selections
-hyp_result_t chooseBestHyp(IsolationMethods isoCase, bool expt, bool verbose=false);
-int isGoodHyp(int iHyp, IsolationMethods isoCase, bool expt, bool verbose=false);
+hyp_result_t chooseBestHyp(bool expt, bool verbose=false);
+int isGoodHyp(int iHyp, bool expt, bool verbose=false);
 bool makesExtraGammaStar(int iHyp);
 Z_result_t makesExtraZ(int iHyp);
 bool hypsFromFirstGoodVertex(size_t hypIdx, float dz_cut = 1.0);
