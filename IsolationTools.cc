@@ -64,7 +64,6 @@ LorentzVector closestJet(const LorentzVector& lep_p4, float dRmin, float maxAbsE
   if (whichCorr == 0) return jet; 
 
   //Calculate JEC
-  float JEC = 1.0;
   if (jetCorrAG == 0){
     std::vector<std::string> filenames;
     filenames.push_back("CORE/Tools/jetcorr/data/run2_25ns/Summer15_25nsV2_DATA_L1FastJet_AK4PFchs.txt");
@@ -83,8 +82,8 @@ LorentzVector closestJet(const LorentzVector& lep_p4, float dRmin, float maxAbsE
   jetCorrAG2->setJetPt(jet.pt()); 
   jetCorrAG2->setJetA(tas::pfjets_area().at(closestIdx)); 
   jetCorrAG2->setRho(tas::evt_fixgridfastjet_centralneutral_rho()); 
-  JEC1 = jetCorrAG->getCorrection(); 
-  JEC2 = jetCorrAG2->getCorrection(); 
+  float JEC1 = jetCorrAG->getCorrection(); 
+  float JEC2 = jetCorrAG2->getCorrection(); 
 
   if (whichCorr == 1) return jet*JEC1;
   return (jet*JEC1 - lep_p4)*JEC2 + lep_p4;
