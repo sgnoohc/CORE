@@ -79,8 +79,10 @@ FactorizedJetCorrector::FactorizedJetCorrector(const std::string& fLevels, const
 //------------------------------------------------------------------------
 //--- FactorizedJetCorrector constructor ---------------------------------
 //------------------------------------------------------------------------
+
 FactorizedJetCorrector::FactorizedJetCorrector(const std::vector<JetCorrectorParameters>& fParameters)
 {
+
   mJetEta = -9999;
   mJetPt  = -9999;
   mJetPhi = -9999;
@@ -140,6 +142,7 @@ FactorizedJetCorrector::~FactorizedJetCorrector()
   for(unsigned i=0;i<mCorrectors.size();i++)
     delete mCorrectors[i];
 }
+
 //------------------------------------------------------------------------ 
 //--- initialises the correctors -----------------------------------------
 //------------------------------------------------------------------------
