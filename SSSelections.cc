@@ -516,6 +516,9 @@ int signalRegion(int njets, int nbtags, float met, float ht, float mt_min, float
 
   //Otherwise undefined
   cout << "WARNING: SR UNDEFINED (should never get here)" << endl;
+  cout << "  --> lepton pts are: " << lep1pt << " " << lep2pt << endl;
+  cout << "  --> ht & met are: " << ht << " " << met << endl;
+  cout << "  --> njets & nbtags: " << njets << " " << nbtags << endl;
   return -1;
 }
 
