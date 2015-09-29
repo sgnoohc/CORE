@@ -53,7 +53,7 @@ int isGoodHyp(int iHyp, bool expt, bool verbose=false);
 bool makesExtraGammaStar(int iHyp);
 Z_result_t makesExtraZ(int iHyp);
 bool hypsFromFirstGoodVertex(size_t hypIdx, float dz_cut = 1.0);
-std::pair<particle_t, int> getThirdLepton(int hyp);
+std::pair<Lep, int> getThirdLepton(int hyp, int id = 0, int idx = -1);
 std::vector<particle_t> getGenPair(bool verbose=false);
 
 //Signal region selections

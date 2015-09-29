@@ -846,20 +846,20 @@ vector <particle_t> getGenPair(bool verbose){
 
 }
 
-pair<particle_t, int> getThirdLepton(int hyp){
+pair<Lep, int> getThirdLepton(int hyp, int id3, int idx3){
 
   //If hyp_class == 6, save the lepton that triggered the Z veto (so long as it is veto or higher)
-  Z_result_t Zresult = makesExtraZ(hyp);
-  if (Zresult.result == true){
-    particle_t result;
-    result.id = Zresult.id;
-    result.idx = Zresult.idx;
-    result.p4 = abs(result.id) == 11 ? tas::els_p4().at(result.idx) : tas::mus_p4().at(result.idx);
-    int quality = 0;
-    if (abs(result.id) == 11 ? !isGoodVetoElectron(result.idx) : !isGoodVetoMuon(result.idx)) quality = -1;
-    if (abs(result.id) == 11 ? isFakableElectron(result.idx) : isFakableMuon(result.idx)) quality = 1;
-    if (abs(result.id) == 11 ? isGoodElectron(result.idx) : isGoodMuon(result.idx)) quality = 2;
-    if (quality >= 0) return pair<particle_t, int>(result, quality);
+  //Only if doing 3rd lepton (already got it for fourth)
+  if (idx3 < 0){
+    Z_result_t Zresult = makesExtraZ(hyp);
+    if (Zresult.result == true){
+      Lep result = Lep(Zresult.id, Zresult.idx); 
+      int quality = 0;
+      if (abs(result.pdgId()) == 11 ? !isGoodVetoElectron(result.idx()) : !isGoodVetoMuon(result.idx())) quality = -1;
+      if (abs(result.pdgId()) == 11 ? isFakableElectron(result.idx()) : isFakableMuon(result.idx())) quality = 1;
+      if (abs(result.pdgId()) == 11 ? isGoodElectron(result.idx()) : isGoodMuon(result.idx())) quality = 2;
+      if (quality >= 0) return pair<Lep, int>(result, quality);
+    }
   }
   
   //Otherwise, find the highest-quality lepton possible. 
@@ -882,6 +882,7 @@ pair<particle_t, int> getThirdLepton(int hyp){
     //Remove electrons already selected
     if (abs(ll_id) == 11 && ll_idx == i) continue; 
     if (abs(lt_id) == 11 && lt_idx == i) continue; 
+    if (abs(id3) == 11 && (unsigned)idx3 == i) continue; 
 
     //Remove electrons that fail kinematically
     if (tas::els_p4().at(i).pt() < 20) continue;
@@ -908,6 +909,7 @@ pair<particle_t, int> getThirdLepton(int hyp){
     //Remove electrons already selected
     if (abs(ll_id) == 13 && ll_idx == i) continue; 
     if (abs(lt_id) == 13 && lt_idx == i) continue; 
+    if (abs(id3) == 13 && (unsigned)idx3 == i) continue; 
    
     //Remove electrons that fail kinematically
     if (tas::mus_p4().at(i).pt() < 20) continue;
@@ -929,12 +931,8 @@ pair<particle_t, int> getThirdLepton(int hyp){
 
   }//Muon loop
 
-  particle_t result;
-  result.id = lep3_id_;
-  result.p4 = lep3_p4_;
-  result.idx = lep3_idx_;
-
-  return pair<particle_t, int>(result, quality);
+  Lep result = Lep(lep3_id_, lep3_idx_);
+  return pair<Lep, int>(result, quality);
 
 }
 
