@@ -72,8 +72,8 @@ LorentzVector closestJet(const LorentzVector& lep_p4, float dRmin, float maxAbsE
   }
   if (jetCorrAG2 == 0){
     std::vector<std::string> filenames;
-    filenames.push_back(Form("CORE/Tools/jetcorr/data/run2_25ns/Summer15_25nsV2_%s_L1FastJet_AK4PFchs.txt", dataOrMC.c_str()));
     filenames.push_back(Form("CORE/Tools/jetcorr/data/run2_25ns/Summer15_25nsV2_%s_L2Relative_AK4PFchs.txt", dataOrMC.c_str()));
+    filenames.push_back(Form("CORE/Tools/jetcorr/data/run2_25ns/Summer15_25nsV2_%s_L3Absolute_AK4PFchs.txt", dataOrMC.c_str()));
     filenames.push_back(Form("CORE/Tools/jetcorr/data/run2_25ns/Summer15_25nsV2_%s_L2L3Residual_AK4PFchs.txt", dataOrMC.c_str()));
     jetCorrAG2 = makeJetCorrector(filenames);
   }
