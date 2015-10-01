@@ -1,3 +1,5 @@
+// from: https://github.com/cms-sw/cmssw/blob/CMSSW_7_4_X/RecoBTag/PerformanceDB/test/BTagCalibrationStandalone.cc
+
 #include "BTagCalibrationStandalone.h"
 #include <iostream>
 #include <exception>
@@ -379,6 +381,11 @@ double BTagCalibrationReader::eval(BTagEntry::JetFlavor jf,
     eta = -eta;
   }
 
+  // check for existence of selected flavor, to avoid crash with no explanation
+  if (tmpData_.count(jf) == 0) {
+    std::cout << "BTagCalibrationReader::eval(): WARNING: scale factors not found for jet flavor: " << jf << std::endl;
+    return 1.;
+  }
   // search linearly through eta, pt and discr ranges and eval
   // future: find some clever data structure based on intervals
   const std::vector<TmpEntry> &entries = tmpData_.at(jf);
