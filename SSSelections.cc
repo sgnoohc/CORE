@@ -7,6 +7,77 @@ using namespace tas;
   //Note: these functions are currently only for the SS analysis!
   //Be careful that IDs, etc. are OK before stealing for other analyses
 
+Lep getFourthLepton(int iHyp){
+
+  std::vector<unsigned int> ele_idx;
+  std::vector<unsigned int> mu_idx;
+  
+  Lep fourthLepton = Lep(0,0);
+  float min = 10000000;
+
+  int lt_id           = tas::hyp_lt_id().at(iHyp);
+  int ll_id           = tas::hyp_ll_id().at(iHyp);
+  unsigned int lt_idx = tas::hyp_lt_index().at(iHyp);
+  unsigned int ll_idx = tas::hyp_ll_index().at(iHyp);
+
+  (abs(lt_id) == 11) ? ele_idx.push_back(lt_idx) : mu_idx.push_back(lt_idx);
+  (abs(ll_id) == 11) ? ele_idx.push_back(ll_idx) : mu_idx.push_back(ll_idx);
+
+  if (ele_idx.size() + mu_idx.size() != 2) {
+    std::cout << "ERROR: don't have 2 leptons in hypothesis!!!  Exiting..." << std::endl;
+    return fourthLepton;
+  }
+      
+  if (ele_idx.size() > 0){
+    for (unsigned int eidx = 0; eidx < tas::els_p4().size(); eidx++) {
+      bool is_hyp_lep = false;
+      for (unsigned int vidx = 0; vidx < ele_idx.size(); vidx++){
+          if (eidx == ele_idx.at(vidx)) is_hyp_lep = true;
+      }
+      if (is_hyp_lep) continue;
+      if (fabs(tas::els_p4().at(eidx).eta()) > 2.4) continue;
+      if (tas::els_p4().at(eidx).pt() < 7.0) continue;
+      if (!isGoodVetoElectron(eidx)) continue;
+
+      for (unsigned int vidx = 0; vidx < ele_idx.size(); vidx++) {
+          if (tas::els_charge().at(eidx) * tas::els_charge().at(ele_idx.at(vidx)) > 0) continue;
+          LorentzVector gamma_p4 = tas::els_p4().at(eidx) + tas::els_p4().at(ele_idx.at(vidx));
+          float gammacandmass = sqrt(fabs(gamma_p4.mass2()));
+          if (gammacandmass < min){
+            min = gammacandmass; 
+            fourthLepton = Lep(-11*els_charge().at(eidx), eidx);
+          }
+      }
+    } 
+  }
+
+  if (mu_idx.size() > 0){
+    for (unsigned int midx = 0; midx < tas::mus_p4().size(); midx++) {
+      bool is_hyp_lep = false;
+      for (unsigned int vidx = 0; vidx < mu_idx.size(); vidx++) {
+        if (midx == mu_idx.at(vidx)) is_hyp_lep = true; 
+      }
+
+      if (is_hyp_lep) continue;
+      if (fabs(tas::mus_p4().at(midx).eta()) > 2.4) continue;
+      if (tas::mus_p4().at(midx).pt() < 5.0) continue;
+      if (!isGoodVetoMuon(midx)) continue;
+
+      for (unsigned int vidx = 0; vidx < mu_idx.size(); vidx++) {
+          if (tas::mus_charge().at(midx) * tas::mus_charge().at(mu_idx.at(vidx)) > 0) continue;
+          LorentzVector gamma_p4 = tas::mus_p4().at(midx) + tas::mus_p4().at(mu_idx.at(vidx));
+          float gammacandmass = sqrt(fabs(gamma_p4.mass2()));
+          if (gammacandmass < min){
+            min = gammacandmass; 
+            fourthLepton = Lep(-13*mus_charge().at(midx), midx);
+          }
+      }
+    }
+  }
+
+  return fourthLepton;
+}
+
 bool makesExtraGammaStar(int iHyp){
 
   std::vector<unsigned int> ele_idx;
@@ -434,7 +505,7 @@ int signalRegion(int njets, int nbtags, float met, float ht, float mt_min, float
       if (nbtags >= 3 && mt_min < 120 && met >= 200) return 27; 
       if (nbtags >= 3) return 29;
     }
-    if (ht > 300 && ht < 1600){
+    if (ht > 300 && ht < 1125){
       if (nbtags == 0){
         if (mt_min < 120 && met < 200 && njets <= 4) return 2; 
         if (mt_min < 120 && met < 200 && njets > 4) return 4; 
@@ -846,20 +917,17 @@ vector <particle_t> getGenPair(bool verbose){
 
 }
 
-pair<Lep, int> getThirdLepton(int hyp, int id3, int idx3){
+pair<Lep, int> getThirdLepton(int hyp){
 
   //If hyp_class == 6, save the lepton that triggered the Z veto (so long as it is veto or higher)
-  //Only if doing 3rd lepton (already got it for fourth)
-  if (idx3 < 0){
-    Z_result_t Zresult = makesExtraZ(hyp);
-    if (Zresult.result == true){
-      Lep result = Lep(Zresult.id, Zresult.idx); 
-      int quality = 0;
-      if (abs(result.pdgId()) == 11 ? !isGoodVetoElectron(result.idx()) : !isGoodVetoMuon(result.idx())) quality = -1;
-      if (abs(result.pdgId()) == 11 ? isFakableElectron(result.idx()) : isFakableMuon(result.idx())) quality = 1;
-      if (abs(result.pdgId()) == 11 ? isGoodElectron(result.idx()) : isGoodMuon(result.idx())) quality = 2;
-      if (quality >= 0) return pair<Lep, int>(result, quality);
-    }
+  Z_result_t Zresult = makesExtraZ(hyp);
+  if (Zresult.result == true){
+    Lep result = Lep(Zresult.id, Zresult.idx); 
+    int quality = 0;
+    if (abs(result.pdgId()) == 11 ? !isGoodVetoElectron(result.idx()) : !isGoodVetoMuon(result.idx())) quality = -1;
+    if (abs(result.pdgId()) == 11 ? isFakableElectron(result.idx()) : isFakableMuon(result.idx())) quality = 1;
+    if (abs(result.pdgId()) == 11 ? isGoodElectron(result.idx()) : isGoodMuon(result.idx())) quality = 2;
+    if (quality >= 0) return pair<Lep, int>(result, quality);
   }
   
   //Otherwise, find the highest-quality lepton possible. 
@@ -882,7 +950,6 @@ pair<Lep, int> getThirdLepton(int hyp, int id3, int idx3){
     //Remove electrons already selected
     if (abs(ll_id) == 11 && ll_idx == i) continue; 
     if (abs(lt_id) == 11 && lt_idx == i) continue; 
-    if (abs(id3) == 11 && (unsigned)idx3 == i) continue; 
 
     //Remove electrons that fail kinematically
     if (tas::els_p4().at(i).pt() < 20) continue;
@@ -909,7 +976,6 @@ pair<Lep, int> getThirdLepton(int hyp, int id3, int idx3){
     //Remove electrons already selected
     if (abs(ll_id) == 13 && ll_idx == i) continue; 
     if (abs(lt_id) == 13 && lt_idx == i) continue; 
-    if (abs(id3) == 13 && (unsigned)idx3 == i) continue; 
    
     //Remove electrons that fail kinematically
     if (tas::mus_p4().at(i).pt() < 20) continue;
