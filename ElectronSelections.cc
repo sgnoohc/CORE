@@ -1919,9 +1919,14 @@ bool readMVA::passesElectronMVAid(unsigned int index, id_level_t id_level){
 
   case(SS_veto_noiso_v4):
   case (SS_veto_noiso_noip_v4):
+    return true;
+    break;
+
   case(SS_fo_looseMVA_noiso_v4):
   case (SS_fo_looseMVA_noiso_noip_v4):
-    return true;
+    if (aeta < 0.8) return disc > -0.38;
+    if ((aeta >= 0.8 && aeta <= 1.479)) return disc > -0.49;
+    if (aeta > 1.479) return disc > -0.49;
     break;
 
   case(SS_medium_noiso_v4):

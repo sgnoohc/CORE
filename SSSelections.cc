@@ -492,8 +492,8 @@ int signalRegion(int njets, int nbtags, float met, float ht, float mt_min, float
 
   //High-high
   if (lep_pt == HighHigh){
-    if (met > 300) return 31;
-    if (ht > 1125) return 32; 
+    if (met >= 300) return 31;
+    if (ht >= 1125) return 32; 
     if (ht < 300){
       if (nbtags == 0 && mt_min < 120 && met < 200 && njets <= 4) return 1; 
       if (nbtags == 0) return 3; 
@@ -505,7 +505,7 @@ int signalRegion(int njets, int nbtags, float met, float ht, float mt_min, float
       if (nbtags >= 3 && mt_min < 120 && met >= 200) return 27; 
       if (nbtags >= 3) return 29;
     }
-    if (ht > 300 && ht < 1125){
+    if (ht >= 300 && ht < 1125){
       if (nbtags == 0){
         if (mt_min < 120 && met < 200 && njets <= 4) return 2; 
         if (mt_min < 120 && met < 200 && njets > 4) return 4; 
@@ -540,8 +540,8 @@ int signalRegion(int njets, int nbtags, float met, float ht, float mt_min, float
   
   //High-Low
   if (lep_pt == HighLow){
-    if (met > 300) return 25;
-    if (ht > 1125) return 26;
+    if (met >= 300) return 25;
+    if (ht >= 1125) return 26;
     if (ht < 300){ 
       if (nbtags == 0 && met < 200 && njets <= 4) return 1; 
       if (mt_min < 120 && nbtags == 0) return 3;
@@ -553,7 +553,7 @@ int signalRegion(int njets, int nbtags, float met, float ht, float mt_min, float
       if (mt_min < 120 && nbtags >= 3) return 21;
       if (mt_min >= 120) return 23; 
     }  
-    if (ht > 300){
+    if (ht >= 300){
       if (nbtags == 0 && mt_min < 120 && met < 200 && njets <= 4) return 2; 
       if (nbtags == 0 && mt_min < 120 && met < 200 && njets > 4) return 4; 
       if (nbtags == 0 && mt_min < 120 && met < 500 && njets <= 4) return 5; 
