@@ -97,6 +97,29 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
       break;
 
    ///////////////////
+   /// SS veto v4 ///
+   ///////////////////
+  
+    case(SS_veto_noiso_v4):
+      if (fabs(mus_p4().at(muIdx).eta()) > 2.4) return false;
+      if (fabs(mus_dxyPV().at(muIdx)) > 0.05) return false;
+      if (fabs(mus_dzPV().at(muIdx)) > 0.1) return false;
+      return isLooseMuonPOG(muIdx);
+      break;
+
+    case(SS_veto_v4):
+      if (muonID(muIdx, SS_veto_noiso_v4)==0) return false;
+      if (muMiniRelIsoCMS3_EA(muIdx) > 0.40) return false;
+      return true;
+      break;
+
+    case(SS_veto_noiso_noip_v4):
+      if (fabs(mus_p4().at(muIdx).eta()) > 2.4) return false;
+      //if (fabs(mus_dzPV().at(muIdx)) > 0.1) return false;
+      return isLooseMuonPOG(muIdx);
+      break;
+
+   ///////////////////
    /// WW veto v1 ///
    ///////////////////
   
@@ -223,6 +246,32 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
 
    case(SS_fo_v3):
       if (!muonID(muIdx, SS_fo_noiso_v3)) return false;
+      if (muMiniRelIsoCMS3_EA(muIdx) > 0.40) return false;
+      return true;
+      break;
+
+   ///////////////////
+   /// SS FO v4   ///  same as tight, but looser iso
+   ///////////////////
+
+    case(SS_fo_noiso_v4):
+      if (!muonID(muIdx, SS_veto_noiso_v4)) return false;
+      if (fabs(mus_dxyPV().at(muIdx)) > 0.05) return false;
+      if (fabs(mus_ip3d().at(muIdx))/mus_ip3derr().at(muIdx) >= 4) return false;
+      if (fabs(mus_dzPV().at(muIdx)) > 0.1) return false;
+      if (mus_ptErr().at(muIdx)/mus_trk_p4().at(muIdx).pt() >= 0.2) return false;
+      return isMediumMuonPOG(muIdx);
+      break;
+
+    case(SS_fo_noiso_noip_v4):
+      if (!muonID(muIdx, SS_veto_noiso_noip_v4)) return false;
+      if (fabs(mus_dzPV().at(muIdx)) > 0.1) return false;
+      if (mus_ptErr().at(muIdx)/mus_trk_p4().at(muIdx).pt() >= 0.2) return false;
+      return isMediumMuonPOG(muIdx);
+      break;
+
+   case(SS_fo_v4):
+      if (!muonID(muIdx, SS_fo_noiso_v4)) return false;
       if (muMiniRelIsoCMS3_EA(muIdx) > 0.40) return false;
       return true;
       break;
