@@ -10,7 +10,6 @@ analysis_t whichAnalysis(id_level_t id_level){
     case (SS_fo_v1):
     case (SS_medium_noiso_v1):
     case (SS_medium_v1):
-    case (SS_fo_looseMVA_noiso_v4):
     case (SS_tight_noiso_v1):
     case (SS_tight_v1):
     case (SS_veto_noiso_v2):
@@ -21,41 +20,51 @@ analysis_t whichAnalysis(id_level_t id_level){
     case (SS_medium_v2):
     case (SS_tight_noiso_v2):
     case (SS_tight_v2):
+    case (SS_veto_noiso_noip_v3):
     case (SS_veto_noiso_v3):
-    case (SS_veto_noiso_v4):
     case (SS_veto_v3):
-    case (SS_veto_v4):
+    case (SS_fo_looseMVA_noiso_noip_v3):
+    case (SS_fo_looseMVA_noiso_v3):
+    case (SS_fo_looseMVA_v3):
+    case (SS_fo_noiso_noip_v3):
     case (SS_fo_noiso_v3):
-    case (SS_fo_noiso_v4):
     case (SS_fo_v3):
-    case (SS_fo_v4):
+    case (SS_medium_looseMVA_noip_v3):
+    case (SS_medium_noip_v3):
     case (SS_medium_noiso_v3):
     case (SS_medium_v3):
     case (SS_tight_noiso_v3):
     case (SS_tight_v3):
-    case (SS_veto_noiso_noip_v3):
     case (SS_veto_noiso_noip_v4):
-    case (SS_fo_looseMVA_noiso_noip_v3):
-    case (SS_fo_looseMVA_noiso_v3):
-    case (SS_fo_looseMVA_v3):
-    case (SS_medium_noip_v3):
-    case (SS_fo_noiso_noip_v3):
+    case (SS_veto_noiso_v4):
+    case (SS_veto_v4):
+    case (SS_fo_looseMVA_noiso_noip_v4):
+    case (SS_fo_looseMVA_noiso_v4):
+    case (SS_fo_looseMVA_v4):
     case (SS_fo_noiso_noip_v4):
-    case (SS_medium_looseMVA_noip_v3):
+    case (SS_fo_noiso_v4):
+    case (SS_fo_v4):
+    case (SS_medium_looseMVA_noip_v4):
+    case (SS_medium_noip_v4):
     case (SS_medium_noiso_v4):
     case (SS_medium_v4):
-    case (SS_medium_looseMVA_noip_v4): 
-    case (SS_medium_noip_v4):
     case (SS_tight_noiso_v4):
     case (SS_tight_v4):
-    case (SS_fo_looseMVA_v4):
+    case (SS_veto_noiso_noip_v5):
+    case (SS_veto_noiso_v5):
+    case (SS_veto_v5):
+    case (SS_fo_looseMVA_noiso_noip_v5):
+    case (SS_fo_looseMVA_noiso_v5):
+    case (SS_fo_looseMVA_v5):
+    case (SS_fo_noiso_noip_v5):
+    case (SS_fo_noiso_v5):
+    case (SS_fo_v5):
+    case (SS_medium_looseMVA_noip_v5):
+    case (SS_medium_noip_v5):
     case (SS_medium_noiso_v5):
     case (SS_medium_v5):
-    case (SS_medium_looseMVA_noip_v5): 
-    case (SS_medium_noip_v5):
     case (SS_tight_noiso_v5):
     case (SS_tight_v5):
-    case (SS_fo_looseMVA_v5):
       return SS;
       break;
     case (HAD_veto_noiso_v1):
