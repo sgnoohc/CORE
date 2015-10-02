@@ -1929,6 +1929,9 @@ bool readMVA::passesElectronMVAid(unsigned int index, id_level_t id_level){
     if (aeta > 1.479) return disc > -0.49;
     break;
 
+
+  case (SS_fo_noiso_v4):
+  case (SS_fo_v4):
   case(SS_medium_noiso_v4):
   case(SS_medium_noip_v4):
     if (aeta < 0.8) return disc > 0.87;
@@ -1955,7 +1958,7 @@ bool readMVA::passesElectronMVAid(unsigned int index, id_level_t id_level){
     break;
 
   default:
-    cout << "WARNING: bad id level" << endl;
+    cout << "WARNING: bad id level " << id_level << endl;
     break;
   }
   return -99999;
