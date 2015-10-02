@@ -1934,6 +1934,8 @@ bool readMVA::passesElectronMVAid(unsigned int index, id_level_t id_level){
   case (SS_fo_v4):
   case(SS_medium_noiso_v4):
   case(SS_medium_noip_v4):
+  case(SS_medium_noiso_v5):
+  case(SS_medium_noip_v5):
     if (aeta < 0.8) return disc > 0.87;
     if ((aeta >= 0.8 && aeta <= 1.479)) return disc > 0.60;
     if (aeta > 1.479) return disc > 0.17;
