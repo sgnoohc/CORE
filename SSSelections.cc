@@ -292,88 +292,17 @@ bool isIsolatedLepton(int id, int idx){
   if (abs(id) == 13) return muRelIso03(idx, SS) < 0.1;
   return false;
 }
-bool isLooseMiniIsolatedLepton(int id, int idx){
-  if (abs(id) == 11) {
-    if (getPtRel(id, idx, true)>6.) return elMiniRelIsoCMS3_EA(idx) < 0.5;
-    return eleRelIso03(idx, SS) < 0.5;
-  }
-  if (abs(id) == 13) {
-    if (getPtRel(id, idx, true)>6.) return muMiniRelIsoCMS3_EA(idx) < 0.5;
-    return muRelIso03(idx, SS) < 0.5;
-  }
-  return false;
-}
-bool isMiniIsolatedLepton(int id, int idx){
-  if (abs(id) == 11) {
-    if (getPtRel(id, idx, true)>6.) return elMiniRelIsoCMS3_EA(idx) < 0.05;
-    return eleRelIso03(idx, SS) < 0.1;
-  }
-  if (abs(id) == 13) {
-    if (getPtRel(id, idx, true)>6.) return muMiniRelIsoCMS3_EA(idx) < 0.05;
-    return muRelIso03(idx, SS) < 0.1;
-  }
-  return false;
-}
-
-bool isLooseNewMiniIsolatedLepton(int id, int idx){
-  if (abs(id) == 11) {
-    return elMiniRelIsoCMS3_EA(idx) < 0.4;
-  }
-  if (abs(id) == 13) {
-    return muMiniRelIsoCMS3_EA(idx) < 0.4;
-  }
-  return false;
-}
-
-//level: 0 for default, 1 for L, 2 for T, 
-bool isNewMiniIsolatedLepton(int id, int idx, int level){
-  float elMiniRelIsoCuts[4] = { 0.075, 0.10 }; 
-  float elptratioCuts[4] = {0.725, 0.70 };
-  float elptRelCuts[4] = {7.0, 7.0 };
-  float muMiniRelIsoCuts[4] = { 0.10, 0.14 }; 
-  float muptratioCuts[4] = {0.70, 0.68 };
-  float muptRelCuts[4] = {7.0, 6.7 };
-  if (abs(id) == 11) {
-    return passMultiIso(id, idx, elMiniRelIsoCuts[level], elptratioCuts[level], elptRelCuts[level]);
-  }
-  if (abs(id) == 13) {
-    return passMultiIso(id, idx, muMiniRelIsoCuts[level], muptratioCuts[level], muptRelCuts[level]);
-  }
-  return false;
-}
 
 bool isGoodLepton(int id, int idx){
-  return isGoodLeptonNewMiniIso(id,idx,1); 
+  if (abs(id) == 11) return isGoodElectron(idx);
+  else if (abs(id) == 13) return isGoodMuon(idx);
+  return false;
 }
 
 bool isGoodLeptonNoIso(int id, int idx){
   if (abs(id) == 11) return isGoodElectronNoIso(idx);
   else if (abs(id) == 13) return isGoodMuonNoIso(idx);
   return false;
-}
-
-bool isGoodLeptonIso(int id, int idx){
-  if (isGoodLeptonNoIso(id,idx)==0) return false;
-  if (isIsolatedLepton(id,idx)==0) return false;
-  return true;
-}
-
-bool isGoodLeptonMiniIso(int id, int idx){
-  if (isGoodLeptonNoIso(id,idx)==0) return false;
-  if (isMiniIsolatedLepton(id,idx)==0) return false;
-  return true;
-}
-
-bool isGoodLeptonNewMiniIso(int id, int idx, int level){
-  if (isGoodLeptonNoIso(id,idx)==0) return false;
-  if (isNewMiniIsolatedLepton(id,idx,level)==0) return false;
-  return true;
-}
-
-bool isGoodLeptonIsoOrPtRel(int id, int idx){
-  if (isGoodLeptonNoIso(id,idx)==0) return false;
-  if (isIsolatedLepton(id,idx)==0 && passPtRel(id,idx,ptRelCut,true)==0) return false;
-  return true;
 }
 
 bool isInSituFRLepton(int id, int idx, bool expt){
@@ -388,13 +317,9 @@ bool isInSituFRLepton(int id, int idx, bool expt){
 }
 
 bool isDenominatorLepton(int id, int idx){
-  return isDenominatorLeptonNewMiniIso(id,idx);
-}
-
-bool isDenominatorLeptonMiniIso(int id, int idx){
-  if (isDenominatorLeptonNoIso(id,idx)==0) return false;
-  if (isLooseMiniIsolatedLepton(id,idx)==0) return false;
-  return true;
+  if (abs(id) == 11) return isFakableElectron(idx);
+  else if (abs(id) == 13) return isFakableMuon(idx);
+  else return false;
 }
 
 bool isDenominatorLeptonNoIso(int id, int idx){
@@ -403,44 +328,16 @@ bool isDenominatorLeptonNoIso(int id, int idx){
   else return false;
 }
 
-bool isDenominatorLeptonIso(int id, int idx){
-  if (isDenominatorLeptonNoIso(id,idx)==0) return false;
-  if (isLooseIsolatedLepton(id,idx)==0) return false;
-  return true;
-}
-
-bool isDenominatorLeptonNewMiniIso(int id, int idx){
-  if (isDenominatorLeptonNoIso(id,idx)==0) return false;
-  if (isLooseNewMiniIsolatedLepton(id,idx)==0) return false;
-  return true;
-}
-
-bool isDenominatorLeptonIsoOrPtRel(int id, int idx){
-  if (isDenominatorLeptonNoIso(id,idx)==0) return false;
-  if (isLooseIsolatedLepton(id,idx)==0 && passPtRel(id,idx,ptRelCutLoose,true)==0) return false;
-  return true;
-}
-
 bool isVetoLepton(int id, int idx){
-  return isVetoLeptonIso(id,idx);
+  if (abs(id) == 11) return isGoodVetoElectron(idx);
+  else if (abs(id) == 13) return isGoodVetoMuon(idx);
+  return false;
 }
 
 bool isVetoLeptonNoIso(int id, int idx){
   if (abs(id) == 11) return isGoodVetoElectronNoIso(idx);
   else if (abs(id) == 13) return isGoodVetoMuonNoIso(idx);
   return false;
-}
-
-bool isVetoLeptonIso(int id, int idx){
-  if (isVetoLeptonNoIso(id,idx)==0) return false;
-  if (isLooseIsolatedLepton(id,idx)==0) return false;
-  return true;
-}
-
-bool isVetoLeptonIsoOrPtRel(int id, int idx){
-  if (isVetoLeptonNoIso(id,idx)==0) return false;
-  if (isLooseIsolatedLepton(id,idx)==0 && passPtRel(id,idx,ptRelCut,true)==0) return false;
-  return true;
 }
 
 bool hypsFromFirstGoodVertex(size_t hypIdx, float dz_cut){

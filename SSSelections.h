@@ -64,18 +64,8 @@ int signalRegion(int njets, int nbtags, float met, float ht, float mt_min, float
 
 //More Lepton selections
 bool isGoodLeptonNoIso(int id, int idx);
-bool isGoodLeptonIso(int id, int idx);
-bool isGoodLeptonMiniIso(int id, int idx);
-bool isGoodLeptonNewMiniIso(int id, int idx, int level);
-bool isGoodLeptonIsoOrPtRel(int id, int idx);
 bool isDenominatorLeptonNoIso(int id, int idx);
-bool isDenominatorLeptonIso(int id, int idx);
-bool isDenominatorLeptonMiniIso(int id, int idx);
-bool isDenominatorLeptonNewMiniIso(int id, int idx);
-bool isDenominatorLeptonIsoOrPtRel(int id, int idx);
 bool isVetoLeptonNoIso(int id, int idx);
-bool isVetoLeptonIso(int id, int idx);
-bool isVetoLeptonIsoOrPtRel(int id, int idx);
 bool isGoodVetoElectronNoIso(unsigned int elidx);
 bool isGoodVetoElectron(unsigned int elidx);
 bool isFakableElectronNoIso(unsigned int elidx);
@@ -90,10 +80,6 @@ bool isGoodMuonNoIso(unsigned int muidx);
 bool isGoodMuon(unsigned int muidx);
 bool isIsolatedLepton(int id, int idx);
 bool isLooseIsolatedLepton(int id, int idx);
-bool isMiniIsolatedLepton(int id, int idx);
-bool isLooseMiniIsolatedLepton(int id, int idx);
-bool isNewMiniIsolatedLepton(int id, int idx, int level);
-bool isLooseNewMiniIsolatedLepton(int id, int idx);
 bool isInSituFRLepton(int lep_id, int lep_idx, bool expt);
 
 //MC truth functions
