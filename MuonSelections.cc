@@ -437,7 +437,7 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
 
    case(SS_tight_v5):
       if (muonID(muIdx, SS_tight_noiso_v3)==0) return false;
-      if (muIDCacheSet) return passMultiIso(0.14, 0.73, 7.3, muID_cache.getMiniiso(muIdx), muID_cache.getPtratio(muIdx), muID_cache.getPtrel(muIdx) );
+      if (muIDCacheSet) return passMultiIso(0.16, 0.76, 7.2, muID_cache.getMiniiso(muIdx), muID_cache.getPtratio(muIdx), muID_cache.getPtrel(muIdx) );
       else return passMultiIso(13, muIdx, 0.16, 0.76, 7.2, 1);
       break;
 

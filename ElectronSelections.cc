@@ -981,7 +981,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
 
     case(SS_medium_v5):
       if (electronID(elIdx, SS_medium_noiso_v4)==0) return false; 
-      if (elIDCacheSet) return passMultiIso(0.10, 0.76, 7.6, elID_cache.getMiniiso(elIdx), elID_cache.getPtratio(elIdx), elID_cache.getPtrel(elIdx) );
+      if (elIDCacheSet) return passMultiIso(0.12, 0.80, 7.2, elID_cache.getMiniiso(elIdx), elID_cache.getPtratio(elIdx), elID_cache.getPtrel(elIdx) );
       else return passMultiIso(11, elIdx, 0.12, 0.80, 7.2, 1);
       break;
 
