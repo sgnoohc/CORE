@@ -908,10 +908,10 @@ bool lepsort (Lep i,Lep j) {
 
 bool jetptsort (Jet i,Jet j) { return (i.pt()>j.pt()); }
 
-float coneCorrPt(int id, int idx){
+float coneCorrPt(int id, int idx, int whichCorr){
   float miniIso = abs(id)==11 ? elMiniRelIsoCMS3_EA(idx) : muMiniRelIsoCMS3_EA(idx);
   LorentzVector lep_p4 = abs(id)==11 ? els_p4().at(idx) : mus_p4().at(idx);
-  LorentzVector jet_p4  = closestJet(lep_p4, 0.4, 2.4);
+  LorentzVector jet_p4  = closestJet(lep_p4, 0.4, 2.4, 1);//fixme
   float ptrel = ptRel(lep_p4, jet_p4, true);
   float A = abs(id)==11 ? 0.10 : 0.14;
   float B = abs(id)==11 ? 0.70 : 0.68;

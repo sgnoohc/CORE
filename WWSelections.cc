@@ -262,13 +262,13 @@ int WWAnalysis::WWJetsCounter(float ptmin){
 }
 
 bool WWAnalysis::isLooseIsolatedLepton(int id, int idx){
-  if (abs(id) == 11) return passMultiIso(11, idx, 0.23, 0.60, 5.8);
-  if (abs(id) == 13) return passMultiIso(13, idx, 0.23, 0.60, 5.8);
+  if (abs(id) == 11) return passMultiIso(11, idx, 0.23, 0.60, 5.8, 0, 0);
+  if (abs(id) == 13) return passMultiIso(13, idx, 0.23, 0.60, 5.8, 0, 0);
   return false;
 }
 bool WWAnalysis::isIsolatedLepton(int id, int idx){
-  if (abs(id) == 11) return passMultiIso(11, idx, 0.14, 0.68, 6.7);
-  if (abs(id) == 13) return passMultiIso(13, idx, 0.22, 0.63, 6.0);
+  if (abs(id) == 11) return passMultiIso(11, idx, 0.14, 0.68, 6.7, 0, 0);
+  if (abs(id) == 13) return passMultiIso(13, idx, 0.22, 0.63, 6.0, 0, 0);
   return false;
 }
 
@@ -806,7 +806,7 @@ bool WWAnalysis::jetptsort (Jet i,Jet j) { return (i.pt()>j.pt()); }
 float WWAnalysis::coneCorrPt(int id, int idx){
   float miniIso = abs(id)==11 ? elMiniRelIso(idx, true, 0.0, false, true) : muMiniRelIso(idx, true, 0.5, false, true);
   LorentzVector lep_p4 = abs(id)==11 ? els_p4().at(idx) : mus_p4().at(idx);
-  LorentzVector jet_p4  = closestJet(lep_p4, 0.4, 2.4);
+  LorentzVector jet_p4  = closestJet(lep_p4, 0.4, 2.4, 0);
   float ptrel = ptRel(lep_p4, jet_p4, true);
   float A = abs(id)==11 ? 0.10 : 0.14;
   float B = abs(id)==11 ? 0.70 : 0.68;

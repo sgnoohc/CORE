@@ -4,14 +4,14 @@
 #include "CMS3.h"
 #include "Base.h"
 
-bool passPtRel(int id, int idx, float cut, bool subtractLep);
-bool passMultiIso(float cutMiniIso, float cutPtRatio, float cutPtRel, float miniIsoValue, float ptRatioValue, float ptRelValue);
-bool passMultiIso(int id, int idx, float cutMiniIso, float cutPtRatio, float cutPtRel, int eaversion = 0);
+bool passPtRel(int id, int idx, float cut, bool subtractLep, int whichCorr);
+bool passMultiIsoCuts(float cutMiniIso, float cutPtRatio, float cutPtRel, float miniIsoValue, float ptRatioValue, float ptRelValue);
+bool passMultiIso(int id, int idx, float cutMiniIso, float cutPtRatio, float cutPtRel, int eaversion, int whichCorr);
 
 float ptRel(const LorentzVector& lepp4, const LorentzVector& jetp4, bool subtractLep = false);
-float getPtRel(int id, int idx, bool subtractLep);
-int closestJetIdx(const LorentzVector& lep_p4, float dRmin=0.4, float maxAbsEta=2.4);
-LorentzVector closestJet(const LorentzVector& lep_p4, float dRmin=0.4, float maxAbsEta=2.4, int whichCorr = 1);  
+float getPtRel(int id, int idx, bool subtractLep, int whichCorr);
+int closestJetIdx(const LorentzVector& lep_p4, float dRmin, float maxAbsEta);
+LorentzVector closestJet(const LorentzVector& lep_p4, float dRmin, float maxAbsEta, int whichCorr);  
 
 float getMiniDR(float pt);
 

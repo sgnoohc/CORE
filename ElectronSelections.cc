@@ -899,8 +899,8 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
 
     case(SS_medium_v3):
       if (electronID(elIdx, SS_medium_noiso_v3)==0) return false; 
-      if (elIDCacheSet) return passMultiIso(0.10, 0.70, 7.0, elID_cache.getMiniiso(elIdx), elID_cache.getPtratio(elIdx), elID_cache.getPtrel(elIdx) );
-      else return passMultiIso(11, elIdx, 0.10, 0.70, 7.0);
+      if (elIDCacheSet) return passMultiIsoCuts(0.10, 0.70, 7.0, elID_cache.getMiniiso(elIdx), elID_cache.getPtratio(elIdx), elID_cache.getPtrel(elIdx) );
+      else return passMultiIso(11, elIdx, 0.10, 0.70, 7.0, 0, 0);
       break;
 
     case(SS_medium_looseMVA_noip_v3): 
@@ -940,8 +940,8 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
 
     case(SS_medium_v4):
       if (electronID(elIdx, SS_medium_noiso_v4)==0) return false; 
-      if (elIDCacheSet) return passMultiIso(0.10, 0.76, 7.6, elID_cache.getMiniiso(elIdx), elID_cache.getPtratio(elIdx), elID_cache.getPtrel(elIdx) );
-      else return passMultiIso(11, elIdx, 0.10, 0.76, 7.6, 1);
+      if (elIDCacheSet) return passMultiIsoCuts(0.10, 0.76, 7.6, elID_cache.getMiniiso(elIdx), elID_cache.getPtratio(elIdx), elID_cache.getPtrel(elIdx) );
+      else return passMultiIso(11, elIdx, 0.10, 0.76, 7.6, 1, 1);
       break;
 
     case(SS_medium_looseMVA_noip_v4): 
@@ -966,7 +966,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
    ////////////////////
 
     case(SS_medium_noiso_v5):
-      if (electronID(elIdx, SS_fo_noiso_v4)==0) return false;//make sure it's tighter than FO
+      if (electronID(elIdx, SS_fo_noiso_v5)==0) return false;//make sure it's tighter than FO
       if (globalEleMVAreader==0) {
 	    cout << "readMVA=0, please create and init it (e.g with createAndInitMVA function)" << endl;
 	    return false;
@@ -980,14 +980,14 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       return globalEleMVAreader->passesElectronMVAid(elIdx, id_level);
 
     case(SS_medium_v5):
-      if (electronID(elIdx, SS_medium_noiso_v4)==0) return false; 
-      if (elIDCacheSet) return passMultiIso(0.12, 0.80, 7.2, elID_cache.getMiniiso(elIdx), elID_cache.getPtratio(elIdx), elID_cache.getPtrel(elIdx) );
-      else return passMultiIso(11, elIdx, 0.12, 0.80, 7.2, 1);
+      if (electronID(elIdx, SS_medium_noiso_v5)==0) return false; 
+      if (elIDCacheSet) return passMultiIsoCuts(0.12, 0.80, 7.2, elID_cache.getMiniiso(elIdx), elID_cache.getPtratio(elIdx), elID_cache.getPtrel(elIdx) );
+      else return passMultiIso(11, elIdx, 0.12, 0.80, 7.2, 1, 2);
       break;
 
     case(SS_medium_looseMVA_noip_v5): 
     case(SS_medium_noip_v5):
-      if (electronID(elIdx, SS_fo_looseMVA_noiso_noip_v3)==0) return false;//make sure it's tighter than FO
+      if (electronID(elIdx, SS_fo_looseMVA_noiso_noip_v5)==0) return false;//make sure it's tighter than FO
       if (globalEleMVAreader==0){
 	    cout << "readMVA=0, please create and init it (e.g with createAndInitMVA function)" << endl;
 	    return false;
@@ -1018,8 +1018,8 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
 
     case(WW_medium_v1):
       if (electronID(elIdx, WW_medium_noiso_v1)==0) return false; 
-      if (elIDCacheSet) return passMultiIso(0.10, 0.70, 7.0, elID_cache.getMiniiso(elIdx), elID_cache.getPtratio(elIdx), elID_cache.getPtrel(elIdx) );
-      else return passMultiIso(11, elIdx, 0.10, 0.70, 7.0);
+      if (elIDCacheSet) return passMultiIsoCuts(0.10, 0.70, 7.0, elID_cache.getMiniiso(elIdx), elID_cache.getPtratio(elIdx), elID_cache.getPtrel(elIdx) );
+      else return passMultiIso(11, elIdx, 0.10, 0.70, 7.0, 0, 0);
       break;
 
     case(WW_medium_looseMVA_noip_v1): 
@@ -1031,8 +1031,8 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
 	    return false;
       }
       if (!globalEleMVAreader->passesElectronMVAid(elIdx, id_level)) return false;
-      if (elIDCacheSet) return passMultiIso(0.10, 0.70, 7.0, elID_cache.getMiniiso(elIdx), elID_cache.getPtratio(elIdx), elID_cache.getPtrel(elIdx) );
-      else return passMultiIso(11, elIdx, 0.10, 0.70, 7.0);
+      if (elIDCacheSet) return passMultiIsoCuts(0.10, 0.70, 7.0, elID_cache.getMiniiso(elIdx), elID_cache.getPtratio(elIdx), elID_cache.getPtrel(elIdx) );
+      else return passMultiIso(11, elIdx, 0.10, 0.70, 7.0, 0, 0);
       break;
       
    ////////////////////

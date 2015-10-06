@@ -8,27 +8,27 @@ using namespace tas;
 FactorizedJetCorrector *jetCorrAG3 = 0;
 FactorizedJetCorrector *jetCorrAG2 = 0;
 
-bool passMultiIso(float cutMiniIso, float cutPtRatio, float cutPtRel, float miniIsoValue, float ptRatioValue, float ptRelValue){
+bool passMultiIsoCuts(float cutMiniIso, float cutPtRatio, float cutPtRel, float miniIsoValue, float ptRatioValue, float ptRelValue){
   return (miniIsoValue < cutMiniIso && (ptRatioValue>cutPtRatio || ptRelValue > cutPtRel));
 }
 
-bool passMultiIso(int id, int idx, float cutMiniIso, float cutPtRatio, float cutPtRel, int eaversion){
+bool passMultiIso(int id, int idx, float cutMiniIso, float cutPtRatio, float cutPtRel, int eaversion, int whichCorr){
   const LorentzVector& lep_p4 = abs(id)==11 ? els_p4().at(idx) : mus_p4().at(idx);
-  const LorentzVector& jet_p4 = closestJet(lep_p4,0.4,2.4,1);
+  const LorentzVector& jet_p4 = closestJet(lep_p4,0.4,2.4,whichCorr);
   float miniIso = abs(id)==11 ? elMiniRelIsoCMS3_EA(idx,eaversion) : muMiniRelIsoCMS3_EA(idx,eaversion);
   float closeJetPt = jet_p4.pt();
   float ptratio = ( closeJetPt>0. ? lep_p4.pt()/closeJetPt : 1.);
   float ptrel = ptRel(lep_p4, jet_p4, true);
-  return passMultiIso(cutMiniIso, cutPtRatio, cutPtRel, miniIso, ptratio, ptrel);
+  return passMultiIsoCuts(cutMiniIso, cutPtRatio, cutPtRel, miniIso, ptratio, ptrel);
 }
 
-bool passPtRel(int id, int idx, float cut, bool subtractLep) {
-  return getPtRel(id, idx, subtractLep) > cut;
+bool passPtRel(int id, int idx, float cut, bool subtractLep, int whichCorr) {
+  return getPtRel(id, idx, subtractLep, whichCorr) > cut;
 }
 
-float getPtRel(int id, int idx, bool subtractLep) {
+float getPtRel(int id, int idx, bool subtractLep, int whichCorr) {
   LorentzVector lep_p4 = abs(id)==11 ? els_p4().at(idx) : mus_p4().at(idx);
-  LorentzVector jet_p4 = closestJet(lep_p4,0.4,2.4,1);
+  LorentzVector jet_p4 = closestJet(lep_p4,0.4,2.4,whichCorr);
   return ptRel(lep_p4, jet_p4, subtractLep);
 }
 
