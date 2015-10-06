@@ -13,7 +13,7 @@ LIB=CMS3_CORE.so
 #
 
 $(LIB): $(OBJECTS) 
-	$(LD) $(LDFLAGS) $(SOFLAGS) $(OBJECTS) $(ROOTLIBS) -lTMVA -lXMLIO -lMLP -lTreePlayer -o $@
+	$(LD) $(LDFLAGS) $(SOFLAGS) $(OBJECTS) $(ROOTLIBS) -lTMVA -lEG -lGenVector -lXMLIO -lMLP -lTreePlayer -o $@
 
 %.o:	%.cc
 	$(CXX) $(CXXFLAGS) -c $< -o $@
