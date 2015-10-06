@@ -11,6 +11,10 @@ bool isTightPFJet(unsigned int pfJetIdx);
 bool isLoosePFJetV2(unsigned int pfJetIdx);
 bool isTightPFJetV2(unsigned int pfJetIdx);
 
+bool isLoosePFJet_50nsV1(unsigned int pfJetIdx);
+bool isTightPFJet_50nsV1(unsigned int pfJetIdx);
+bool isTightPFJetLepVeto_50nsV1(unsigned int pfJetIdx);
+
 bool loosePileupJetId(unsigned int pfJetIdx);
 
 bool JetIsElectron(LorentzVector pfJet, id_level_t id_level, float ptcut = 7., float deltaR = 0.4);

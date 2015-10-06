@@ -7,7 +7,7 @@ analysis_t whichAnalysis(id_level_t id_level){
     case (SS_veto_noiso_v1):
     case (SS_veto_v1):
     case (SS_fo_noiso_v1):
-	case (SS_fo_v1):
+    case (SS_fo_v1):
     case (SS_medium_noiso_v1):
     case (SS_medium_v1):
     case (SS_tight_noiso_v1):
@@ -20,21 +20,51 @@ analysis_t whichAnalysis(id_level_t id_level){
     case (SS_medium_v2):
     case (SS_tight_noiso_v2):
     case (SS_tight_v2):
+    case (SS_veto_noiso_noip_v3):
     case (SS_veto_noiso_v3):
     case (SS_veto_v3):
+    case (SS_fo_looseMVA_noiso_noip_v3):
+    case (SS_fo_looseMVA_noiso_v3):
+    case (SS_fo_looseMVA_v3):
+    case (SS_fo_noiso_noip_v3):
     case (SS_fo_noiso_v3):
     case (SS_fo_v3):
+    case (SS_medium_looseMVA_noip_v3):
+    case (SS_medium_noip_v3):
     case (SS_medium_noiso_v3):
     case (SS_medium_v3):
     case (SS_tight_noiso_v3):
     case (SS_tight_v3):
-    case (SS_veto_noiso_noip_v3):
-    case (SS_fo_looseMVA_noiso_noip_v3):
-    case (SS_fo_looseMVA_noiso_v3):
-    case (SS_fo_looseMVA_v3):
-    case (SS_medium_noip_v3):
-    case (SS_fo_noiso_noip_v3):
-    case (SS_medium_looseMVA_noip_v3):
+    case (SS_veto_noiso_noip_v4):
+    case (SS_veto_noiso_v4):
+    case (SS_veto_v4):
+    case (SS_fo_looseMVA_noiso_noip_v4):
+    case (SS_fo_looseMVA_noiso_v4):
+    case (SS_fo_looseMVA_v4):
+    case (SS_fo_noiso_noip_v4):
+    case (SS_fo_noiso_v4):
+    case (SS_fo_v4):
+    case (SS_medium_looseMVA_noip_v4):
+    case (SS_medium_noip_v4):
+    case (SS_medium_noiso_v4):
+    case (SS_medium_v4):
+    case (SS_tight_noiso_v4):
+    case (SS_tight_v4):
+    case (SS_veto_noiso_noip_v5):
+    case (SS_veto_noiso_v5):
+    case (SS_veto_v5):
+    case (SS_fo_looseMVA_noiso_noip_v5):
+    case (SS_fo_looseMVA_noiso_v5):
+    case (SS_fo_looseMVA_v5):
+    case (SS_fo_noiso_noip_v5):
+    case (SS_fo_noiso_v5):
+    case (SS_fo_v5):
+    case (SS_medium_looseMVA_noip_v5):
+    case (SS_medium_noip_v5):
+    case (SS_medium_noiso_v5):
+    case (SS_medium_v5):
+    case (SS_tight_noiso_v5):
+    case (SS_tight_v5):
       return SS;
       break;
     case (HAD_veto_noiso_v1):
@@ -53,6 +83,14 @@ analysis_t whichAnalysis(id_level_t id_level){
     case (HAD_medium_v2):
     case (HAD_tight_noiso_v2):
     case (HAD_tight_v2):
+    case (HAD_veto_noiso_v3):
+    case (HAD_veto_v3):
+    case (HAD_loose_noiso_v3):
+    case (HAD_loose_v3):
+    case (HAD_medium_noiso_v3):
+    case (HAD_medium_v3):
+    case (HAD_tight_noiso_v3):
+    case (HAD_tight_v3):
       return HAD;
       break;
     case (STOP_veto_v1):
@@ -66,6 +104,10 @@ analysis_t whichAnalysis(id_level_t id_level){
     case (STOP_tight_v2):
       return STOP;
       break;
+    case (ZMET_mediumMu_v1):
+    case (ZMET_mediumMu_noiso_v1):
+    case (ZMET_tightMVA_v1):
+    case (ZMET_tightMVA_noiso_v1):
     case (ZMET_loose_v2):
     case (ZMET_loose_noiso_v2):
     case (ZMET_loose_v1):
@@ -74,8 +116,32 @@ analysis_t whichAnalysis(id_level_t id_level){
     case (ZMET_tight_noiso_v2):
     case (ZMET_tight_v1):
     case (ZMET_tight_noiso_v1):
+    case (ZMET_photon_v2):
     case (ZMET_photon_v1):
       return ZMET;
+      break;
+    case (WW_veto_noiso_v1):
+    case (WW_veto_v1):
+    case (WW_fo_noiso_v1):
+    case (WW_fo_v1):
+    case (WW_medium_noiso_v1):
+    case (WW_medium_v1):
+    case (WW_tight_noiso_v1):
+    case (WW_tight_v1):
+    case (WW_veto_noiso_noip_v1):
+    case (WW_fo_looseMVA_noiso_noip_v1):
+    case (WW_fo_looseMVA_noiso_v1):
+    case (WW_fo_looseMVA_v1):
+    case (WW_medium_noip_v1):
+    case (WW_fo_noiso_noip_v1):
+    case (WW_medium_looseMVA_noip_v1):
+    case (WW_veto_noiso_v2):
+    case (WW_veto_v2):
+    case (WW_fo_noiso_v2):
+    case (WW_fo_v2):
+    case (WW_medium_noiso_v2):
+    case (WW_medium_v2):
+      return WW;
       break;
     default:
       std::cout << "Warning! Not sure which analysis you're doing!" << std::endl;

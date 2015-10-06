@@ -10,6 +10,7 @@
 #include "MCSelections.h"
 #include "IsolationTools.h"
 #include "Math/VectorUtil.h"
+#include "Tools/JetCorrector.h"
 
 const static float ptCutHigh = 25.;
 const static float ptCutLow = 10.;
@@ -25,7 +26,6 @@ enum LeptonCategories { Prompt = 0, PromptWS = 1, PromptWF = 2, PromptFSR = 2,
 			FakeLightTrue = 3, FakeC = 4, FakeB = 5, FakeLightFake = 6, FakeHiPtGamma = 7, 
 			FakeUnknown = 8, FakeLowPtGamma = 9, All9999 = 10,
 			Other = 11, End = 12};
-enum IsolationMethods { Standard = 0, PtRel = 1, MiniIso = 2 , NewMiniIso = 3 , MultiIso = 4 };
 
 //Structs
 struct hyp_result_t { int best_hyp; int hyp_class; };
@@ -43,17 +43,18 @@ template <typename T> int sgn(T val){
 float coneCorrPt(int id, int idx);
 
 //Main Object selections
-bool isGoodLepton(int id, int idx, IsolationMethods isoCase);
-bool isDenominatorLepton(int id, int idx, IsolationMethods isoCase);
-bool isVetoLepton(int id, int idx, IsolationMethods isoCase);
+bool isGoodLepton(int id, int idx);
+bool isDenominatorLepton(int id, int idx);
+bool isVetoLepton(int id, int idx);
 
 //Hyp selections
-hyp_result_t chooseBestHyp(IsolationMethods isoCase, bool verbose=false);
-int isGoodHyp(int iHyp, IsolationMethods isoCase, bool verbose=false);
+hyp_result_t chooseBestHyp(bool expt, bool verbose=false);
+int isGoodHyp(int iHyp, bool expt, bool verbose=false);
 bool makesExtraGammaStar(int iHyp);
 Z_result_t makesExtraZ(int iHyp);
 bool hypsFromFirstGoodVertex(size_t hypIdx, float dz_cut = 1.0);
-std::pair<particle_t, int> getThirdLepton(int hyp);
+std::pair<Lep, int> getThirdLepton(int hyp);
+Lep getFourthLepton(int hyp);
 std::vector<particle_t> getGenPair(bool verbose=false);
 
 //Signal region selections
@@ -63,18 +64,8 @@ int signalRegion(int njets, int nbtags, float met, float ht, float mt_min, float
 
 //More Lepton selections
 bool isGoodLeptonNoIso(int id, int idx);
-bool isGoodLeptonIso(int id, int idx);
-bool isGoodLeptonMiniIso(int id, int idx);
-bool isGoodLeptonNewMiniIso(int id, int idx, int level);
-bool isGoodLeptonIsoOrPtRel(int id, int idx);
 bool isDenominatorLeptonNoIso(int id, int idx);
-bool isDenominatorLeptonIso(int id, int idx);
-bool isDenominatorLeptonMiniIso(int id, int idx);
-bool isDenominatorLeptonNewMiniIso(int id, int idx);
-bool isDenominatorLeptonIsoOrPtRel(int id, int idx);
 bool isVetoLeptonNoIso(int id, int idx);
-bool isVetoLeptonIso(int id, int idx);
-bool isVetoLeptonIsoOrPtRel(int id, int idx);
 bool isGoodVetoElectronNoIso(unsigned int elidx);
 bool isGoodVetoElectron(unsigned int elidx);
 bool isFakableElectronNoIso(unsigned int elidx);
@@ -89,18 +80,14 @@ bool isGoodMuonNoIso(unsigned int muidx);
 bool isGoodMuon(unsigned int muidx);
 bool isIsolatedLepton(int id, int idx);
 bool isLooseIsolatedLepton(int id, int idx);
-bool isMiniIsolatedLepton(int id, int idx);
-bool isLooseMiniIsolatedLepton(int id, int idx);
-bool isNewMiniIsolatedLepton(int id, int idx, int level);
-bool isLooseNewMiniIsolatedLepton(int id, int idx);
-bool isInSituFRLepton(int lep_id, int lep_idx);
+bool isInSituFRLepton(int lep_id, int lep_idx, bool expt);
 
 //MC truth functions
 int lepMotherID(Lep lep);
 int lepMotherID_inSituFR(Lep lep);
 
 //Jet selection function
-std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator();
+std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector* jetCorr, bool doCorr = 0);
 
 //Sorting functions
 bool ptsort (int i,int j);
@@ -152,20 +139,24 @@ private:
 };
 
 struct Jet {
-  Jet(int idxx):idx_(idxx){}
-  LorentzVector p4() {return cms3.pfjets_p4()[idx_]/**cms3.pfjets_corL1FastL2L3()[idx_]*/;}//fixme
-  float pt() {return p4().pt();}
-  float eta() {return p4().eta();}
-  float phi() {return p4().phi();}
-  float csv() {return cms3.pfjets_pfCombinedSecondaryVertexBJetTag()[idx_];}
-  float csvivf() {return cms3.pfjets_combinedInclusiveSecondaryVertexV2BJetTag()[idx_];}
-  bool isBtag() {return csvivf()>0.814;}
-  int   mc3_id() {return cms3.pfjets_mc3_id()[idx_];}
-  LorentzVector genjet_p4() {return cms3.pfjets_mc_p4()[idx_];}
-  LorentzVector genps_p4() {return cms3.pfjets_mc_gp_p4()[idx_];}
-  int idx() {return idx_;}
-private:
-  int idx_;
+  public: 
+    Jet(int idxx, float JEC_ = -9999):idx_(idxx){JEC = JEC_; }
+    LorentzVector p4() {return cms3.pfjets_p4()[idx_]/**cms3.pfjets_corL1FastL2L3()[idx_]*/;}//fixme
+    float pt() {return p4().pt();}
+    float eta() {return p4().eta();}
+    float phi() {return p4().phi();}
+    float csv() {return tas::getbtagvalue("pfCombinedSecondaryVertexV2BJetTags",idx_);}
+    float csvivf() {return cms3.pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag()[idx_];}
+    bool isBtag() {return csvivf()>0.814;}
+    int   mc3_id() {return cms3.pfjets_mc3_id()[idx_];}
+    LorentzVector genjet_p4() {return cms3.pfjets_mc_p4()[idx_];}
+    LorentzVector genps_p4() {return cms3.pfjets_mc_gp_p4()[idx_];}
+    int idx() {return idx_;}
+    float jec() { return JEC;} 
+    float undo_jec() { return tas::pfjets_undoJEC().at(idx_); } 
+  private:
+    int idx_;
+    float JEC;
 };
 
 #endif
