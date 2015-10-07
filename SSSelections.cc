@@ -249,7 +249,7 @@ std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector*
     for (unsigned int eidx = 0; eidx < tas::els_p4().size(); eidx++){
       LorentzVector electron = tas::els_p4().at(eidx);
       if (electron.pt() < 10) continue;
-      if (!isGoodVetoElectron(eidx)) continue;
+      if (!isFakableElectron(eidx)) continue;
       if (ROOT::Math::VectorUtil::DeltaR(jet, electron) > 0.4) continue;
       jetIsLep = true;
     }
@@ -259,7 +259,7 @@ std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector*
     for (unsigned int muidx = 0; muidx < tas::mus_p4().size(); muidx++){
       LorentzVector muon = tas::mus_p4().at(muidx);
       if (muon.pt() < 10) continue;
-      if (!isGoodVetoMuon(muidx)) continue;
+      if (!isFakableMuon(muidx)) continue;
       if (ROOT::Math::VectorUtil::DeltaR(jet, muon) > 0.4) continue;
       jetIsLep = true;
     }
@@ -492,73 +492,73 @@ int signalRegion(int njets, int nbtags, float met, float ht, float mt_min, float
 
 bool isGoodVetoElectronNoIso(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 7.) return false;
-  if (!electronID(elidx, SS_veto_noiso_v4)) return false;
+  if (!electronID(elidx, SS_veto_noiso_v5)) return false;
   return true;
 }
 
 bool isGoodVetoElectron(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 7.) return false;
-  if (!electronID(elidx, SS_veto_v4)) return false;
+  if (!electronID(elidx, SS_veto_v5)) return false;
   return true;
 }
 
 bool isFakableElectronNoIso(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 10.) return false;
-  if (!electronID(elidx, SS_fo_looseMVA_noiso_v4)) return false;
+  if (!electronID(elidx, SS_fo_looseMVA_noiso_v5)) return false;
   return true;
 }
 
 bool isFakableElectron(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 10.) return false;
-  if (!electronID(elidx, SS_fo_looseMVA_v4)) return false;
+  if (!electronID(elidx, SS_fo_looseMVA_v5)) return false;
   return true;
 }
 
 bool isGoodElectronNoIso(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 10.) return false;
-  if (!electronID(elidx, SS_medium_noiso_v4)) return false;
+  if (!electronID(elidx, SS_medium_noiso_v5)) return false;
   return true;
 }
 
 bool isGoodElectron(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 10.) return false;
-  if (!electronID(elidx, SS_medium_v4)) return false;
+  if (!electronID(elidx, SS_medium_v5)) return false;
   return true;
 }
 
 bool isGoodVetoMuonNoIso(unsigned int muidx){
   if (mus_p4().at(muidx).pt() < 5.)         return false;
-  if (!muonID(muidx, SS_veto_noiso_v4))     return false;
+  if (!muonID(muidx, SS_veto_noiso_v5))     return false;
   return true;
 }
 
 bool isGoodVetoMuon(unsigned int muidx){
   if (mus_p4().at(muidx).pt() < 5.)         return false;
-  if (!muonID(muidx, SS_veto_v4))           return false;
+  if (!muonID(muidx, SS_veto_v5))           return false;
   return true;
 }
 
 bool isFakableMuonNoIso(unsigned int muidx){
   if (mus_p4().at(muidx).pt() < 10.)        return false;
-  if (!muonID(muidx, SS_fo_noiso_v4))       return false;
+  if (!muonID(muidx, SS_fo_noiso_v5))       return false;
   return true;
 }
 
 bool isFakableMuon(unsigned int muidx){
   if (mus_p4().at(muidx).pt() < 10.)        return false;
-  if (!muonID(muidx, SS_fo_v4))             return false;
+  if (!muonID(muidx, SS_fo_v5))             return false;
   return true;
 }
 
 bool isGoodMuonNoIso(unsigned int muidx){
   if (mus_p4().at(muidx).pt() < 10.)        return false;
-  if (!muonID(muidx, SS_tight_noiso_v4))    return false;
+  if (!muonID(muidx, SS_tight_noiso_v5))    return false;
   return true;
 }
 
 bool isGoodMuon(unsigned int muidx){
   if (mus_p4().at(muidx).pt() < 10.)        return false;
-  if (!muonID(muidx, SS_tight_v4))          return false;
+  if (!muonID(muidx, SS_tight_v5))          return false;
   return true;
 }
 
@@ -908,13 +908,13 @@ bool lepsort (Lep i,Lep j) {
 
 bool jetptsort (Jet i,Jet j) { return (i.pt()>j.pt()); }
 
-float coneCorrPt(int id, int idx){//, int whichCorr
-  float miniIso = abs(id)==11 ? elMiniRelIsoCMS3_EA(idx) : muMiniRelIsoCMS3_EA(idx);
+float coneCorrPt(int id, int idx){
+  float miniIso = abs(id)==11 ? elMiniRelIsoCMS3_EA(idx, ssEAversion) : muMiniRelIsoCMS3_EA(idx, ssEAversion);
   LorentzVector lep_p4 = abs(id)==11 ? els_p4().at(idx) : mus_p4().at(idx);
-  LorentzVector jet_p4  = closestJet(lep_p4, 0.4, 2.4, 1);//fixme
+  LorentzVector jet_p4  = closestJet(lep_p4, 0.4, 2.4, ssWhichCorr);
   float ptrel = ptRel(lep_p4, jet_p4, true);
-  float A = abs(id)==11 ? 0.10 : 0.14;
-  float B = abs(id)==11 ? 0.70 : 0.68;
-  float C = abs(id)==11 ? 7.00 : 6.70;
+  float A = abs(id)==11 ? 0.12 : 0.16;
+  float B = abs(id)==11 ? 0.80 : 0.76;
+  float C = abs(id)==11 ? 7.20 : 7.20;
   return ((ptrel > C) ? lep_p4.pt()*(1 + std::max((float)0, miniIso - A)) : std::max(lep_p4.pt(), jet_p4.pt() * B));
 }

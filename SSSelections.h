@@ -14,8 +14,8 @@
 
 const static float ptCutHigh = 25.;
 const static float ptCutLow = 10.;
-const static float ptRelCut = 14.;
-const static float ptRelCutLoose = 6.;
+const static int   ssWhichCorr = 2;
+const static int   ssEAversion = 1;
 
 //Enums
 enum anal_type_t { HighHigh = 0, HighLow = 1, LowLow = 2, Undefined = -1 };

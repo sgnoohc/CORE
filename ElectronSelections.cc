@@ -1920,7 +1920,7 @@ float readMVA::MVA(unsigned int index){
   ele_fbrem_            = tas::els_fbrem().at(index);
   ele_ep_               = tas::els_eOverPIn().at(index);
   ele_eelepout_         = tas::els_eOverPOut().at(index);
-  ele_IoEmIop_          = (tas::els_ecalEnergy().at(index) != 0 && tas::els_p4().at(index).P() != 0) ? 1.0/tas::els_ecalEnergy().at(index) - 1.0/tas::els_p4().at(index).P() : 999999;
+  ele_IoEmIop_          = (tas::els_ecalEnergy().at(index) != 0 && tas::els_p4In().at(index).P() != 0) ? 1.0/tas::els_ecalEnergy().at(index) - 1.0/tas::els_p4In().at(index).P() : 999999;
   ele_deltaetain_       = fabs(tas::els_dEtaIn().at(index));
   ele_deltaphiin_       = fabs(tas::els_dPhiIn().at(index));
   ele_deltaetaseed_     = fabs(tas::els_dEtaOut().at(index));
@@ -1930,7 +1930,7 @@ float readMVA::MVA(unsigned int index){
   scl_eta_              = tas::els_etaSC().at(index); 
   //additional variables for 25ns version    
   if (v25ns_) {
-    ele_gsfhits_                  = tas::els_validHits().at(index);
+    ele_gsfhits_                  = tas::els_nlayers().at(index);
     ele_expectedMissingInnerHits_ = tas::els_exp_innerlayers().at(index);
     ele_convVtxFitProbability_    = tas::els_conv_vtx_prob().at(index);
   }
@@ -2011,9 +2011,9 @@ bool readMVA::passesElectronMVAid(unsigned int index, id_level_t id_level){
   case (SS_fo_looseMVA_noiso_noip_v4):
   case(SS_fo_looseMVA_noiso_v5):
   case (SS_fo_looseMVA_noiso_noip_v5):
-    if (aeta < 0.8) return disc > -0.38;
-    if ((aeta >= 0.8 && aeta <= 1.479)) return disc > -0.49;
-    if (aeta > 1.479) return disc > -0.49;
+    if (aeta < 0.8) return disc > -0.70;
+    if ((aeta >= 0.8 && aeta <= 1.479)) return disc > -0.83;
+    if (aeta > 1.479) return disc > -0.92;
     break;
 
 
