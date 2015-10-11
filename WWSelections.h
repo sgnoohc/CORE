@@ -88,8 +88,7 @@ int lepMotherID(Lep lep);
 int lepMotherID_inSituFR(Lep lep);
 
 //Jet selection function
-std::pair <vector <Jet>, vector <Jet> > WWJetsCalculator(std::vector<LorentzVector> JetCollection, TString CMS3tag);
-int WWJetsCounter(float ptmin);
+ std::pair <vector <Jet>, vector <Jet> > WWJetsCalculator(std::vector<LorentzVector> JetCollection, std::vector<float>& CSVv2, std::vector<float>& CSVsl, std::vector<float>& CSVtche);
 
 // Calculate generator ht
 float getGenHT(bool is_b_a_jet = true);

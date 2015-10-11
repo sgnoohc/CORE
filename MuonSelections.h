@@ -18,6 +18,8 @@ int muTightID(unsigned int muIdx, analysis_t analysis, int version = 1);
 // tight charge requirement
 int tightChargeMuon(unsigned int muIdx);
 
+bool PassSoftMuonCut(unsigned int muIdx);
+
 struct muIDcache {
 public:
   void  setCacheValues(int idx, float miniiso, float ptratio, float ptrel) {
