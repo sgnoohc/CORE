@@ -143,21 +143,23 @@ private:
 };
 
 struct Jet {
-Jet(int idxx,float csvivff):idx_(idxx),csvivf_(csvivff){}
-  LorentzVector p4() {return cms3.pfjets_p4()[idx_]/**cms3.pfjets_corL1FastL2L3()[idx_]*/;}//fixme
+  Jet(int idxx,float CSVv2,float CSV):idx_(idxx),_CSVv2(CSVv2),_CSVsl(CSVsl),_CSVtche(CSVtche) {}
+  LorentzVector p4() {return cms3.pfjets_p4()[idx_];}
   float pt() {return p4().pt();}
   float eta() {return p4().eta();}
   float phi() {return p4().phi();}
-  float csv() {return 0.;}
-  float csvivf() {return csvivf_;}
-  bool isBtag() {return csvivf()>0.814;}
   int   mc3_id() {return cms3.pfjets_mc3_id()[idx_];}
   LorentzVector genjet_p4() {return cms3.pfjets_mc_p4()[idx_];}
   LorentzVector genps_p4() {return cms3.pfjets_mc_gp_p4()[idx_];}
+  float pileup_jet_id() {return cms3.pfjets_pileupJetId()[idx_];}
+  int parton_flavor() {return cms3.pfjets_partonFlavour()[idx_];}
+  float CSVv2() {return _CSVv2;}
+  float CSVsl() {return _CSVsl;}
+  float CSVtche() {return _CSVtche;}
   int idx() {return idx_;}
 private:
   int idx_;
-  float csvivf_;
+  float _CSVv2,_CSVsl,_CSVtche;
 };
 
  int convertCMS3tag(TString tagName) ;

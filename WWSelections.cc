@@ -154,7 +154,7 @@ Z_result_t WWAnalysis::makesExtraZ(int iHyp){
   return result;
 }
 
-std::pair <vector <Jet>, vector <Jet> > WWAnalysis::WWJetsCalculator(vector<LorentzVector> JetCollection, vector<float>& CSVv2, vector<float>& CSVsl, vector<float>& CSVtche){
+std::pair <vector <Jet>, vector <Jet> > WWAnalysis::WWJetsCalculator(vector<LorentzVector> JetCollection){
   vector <Jet> result_jets;
   vector <Jet> result_btags;
 
@@ -192,20 +192,20 @@ std::pair <vector <Jet>, vector <Jet> > WWAnalysis::WWJetsCalculator(vector<Lore
       jetIsLep = true;
     }
     if (jetIsLep == true) continue;      
-
-    //Get discriminator
-    float disc = -9999.;
-    if (fabs(jet.eta()) <= 2.4) disc = tas::pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag().at(i);
-    
-    CSVv2.push_back(tas::getbtagvalue("pfCombinedInclusiveSecondaryVertexV2BJetTags",i));
-    CSVsl.push_back(tas::getbtagvalue("pfCombinedSecondaryVertexSoftLeptonBJetTags",i));
-    CSVtche.push_back(tas::getbtagvalue("pfTrackCountingHighEffBJetTags",i));
-    
+        
     //Save jets that make it this far
-    result_jets.push_back(Jet(i,disc));
+    result_jets.push_back(Jet(i,
+			      tas::getbtagvalue("pfCombinedInclusiveSecondaryVertexV2BJetTags",i),
+			      tas::getbtagvalue("pfCombinedSecondaryVertexSoftLeptonBJetTags",i),
+			      tas::getbtagvalue("pfTrackCountingHighEffBJetTags",i),
+			      ));
 
-    if (disc < 0.890) continue;
-    result_btags.push_back(Jet(i,disc)); 
+    if (disc < 0.605) continue;
+    result_btags.push_back(Jet(i,
+			       tas::getbtagvalue("pfCombinedInclusiveSecondaryVertexV2BJetTags",i),
+			       tas::getbtagvalue("pfCombinedSecondaryVertexSoftLeptonBJetTags",i),
+			       tas::getbtagvalue("pfTrackCountingHighEffBJetTags",i),
+			       )); 
 
   }
   std::pair <vector <Jet>, vector <Jet> > result = std::make_pair(result_jets, result_btags);
@@ -766,7 +766,7 @@ bool WWAnalysis::jetptsort (Jet i,Jet j) { return (i.pt()>j.pt()); }
 float WWAnalysis::coneCorrPt(int id, int idx){
   float miniIso = abs(id)==11 ? elMiniRelIsoCMS3_EA(idx, 1) : muMiniRelIsoCMS3_EA(idx, 1);
   LorentzVector lep_p4 = abs(id)==11 ? els_p4().at(idx) : mus_p4().at(idx);
-  LorentzVector jet_p4  = closestJet(lep_p4, 0.4, 2.4, 2);
+  LorentzVector jet_p4  = closestJet(lep_p4, 0.4, 2.4, 1);
   float ptrel = ptRel(lep_p4, jet_p4, true);
   float A = abs(id)==11 ? 0.12 : 0.16;
   float B = abs(id)==11 ? 0.80 : 0.76;
