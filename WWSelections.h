@@ -88,7 +88,7 @@ int lepMotherID(Lep lep);
 int lepMotherID_inSituFR(Lep lep);
 
 //Jet selection function
- std::pair <vector <Jet>, vector <Jet> > WWJetsCalculator(std::vector<LorentzVector> JetCollection, std::vector<float>& CSVv2, std::vector<float>& CSVsl, std::vector<float>& CSVtche);
+ std::pair <vector <Jet>, vector <Jet> > WWJetsCalculator(std::vector<LorentzVector> JetCollection);
 
 // Calculate generator ht
 float getGenHT(bool is_b_a_jet = true);
@@ -143,7 +143,7 @@ private:
 };
 
 struct Jet {
-  Jet(int idxx,float CSVv2,float CSV):idx_(idxx),_CSVv2(CSVv2),_CSVsl(CSVsl),_CSVtche(CSVtche) {}
+Jet(int idxx,float __CSVv2,float __CSVsl,float __CSVtche):idx_(idxx),_CSVv2(__CSVv2),_CSVsl(__CSVsl),_CSVtche(__CSVtche) {}
   LorentzVector p4() {return cms3.pfjets_p4()[idx_];}
   float pt() {return p4().pt();}
   float eta() {return p4().eta();}

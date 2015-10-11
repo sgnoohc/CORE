@@ -158,9 +158,6 @@ std::pair <vector <Jet>, vector <Jet> > WWAnalysis::WWJetsCalculator(vector<Lore
   vector <Jet> result_jets;
   vector <Jet> result_btags;
 
-  CSVv2.clear();
-  CSVsl.clear();
-  CSVtche.clear();
   
   for (unsigned int i = 0; i < JetCollection.size(); i++){
     LorentzVector jet = JetCollection.at(i);
@@ -194,18 +191,18 @@ std::pair <vector <Jet>, vector <Jet> > WWAnalysis::WWJetsCalculator(vector<Lore
     if (jetIsLep == true) continue;      
         
     //Save jets that make it this far
-    result_jets.push_back(Jet(i,
-			      tas::getbtagvalue("pfCombinedInclusiveSecondaryVertexV2BJetTags",i),
-			      tas::getbtagvalue("pfCombinedSecondaryVertexSoftLeptonBJetTags",i),
-			      tas::getbtagvalue("pfTrackCountingHighEffBJetTags",i),
-			      ));
+    //    result_jets.push_back(Jet(i,
+    //			      tas::getbtagvalue("pfCombinedInclusiveSecondaryVertexV2BJetTags",i),
+    //			      tas::getbtagvalue("pfCombinedSecondaryVertexSoftLeptonBJetTags",i),
+    //			      tas::getbtagvalue("pfTrackCountingHighEffBJetTags",i),
+    //			      ));
 
-    if (disc < 0.605) continue;
-    result_btags.push_back(Jet(i,
-			       tas::getbtagvalue("pfCombinedInclusiveSecondaryVertexV2BJetTags",i),
-			       tas::getbtagvalue("pfCombinedSecondaryVertexSoftLeptonBJetTags",i),
-			       tas::getbtagvalue("pfTrackCountingHighEffBJetTags",i),
-			       )); 
+    //    if (disc < 0.605) continue;
+    //    result_btags.push_back(Jet(i,
+    //			       tas::getbtagvalue("pfCombinedInclusiveSecondaryVertexV2BJetTags",i),
+    //			       tas::getbtagvalue("pfCombinedSecondaryVertexSoftLeptonBJetTags",i),
+    //			       tas::getbtagvalue("pfTrackCountingHighEffBJetTags",i),
+    //			       )); 
 
   }
   std::pair <vector <Jet>, vector <Jet> > result = std::make_pair(result_jets, result_btags);
