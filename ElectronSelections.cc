@@ -417,6 +417,24 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       break;
 
 
+   ////////////////////
+   /// HAD veto v4 ////
+   ////////////////////
+
+    // use Spring15 POG veto ID
+    case(HAD_veto_noiso_v4):
+      if (!isVetoElectronPOGspring15noIso_v1(elIdx)) return false;
+      return true;
+      break;
+
+    // updated EA values
+    case(HAD_veto_v4):
+      if (electronID(elIdx, HAD_veto_noiso_v4)==0) return false;
+      if (elMiniRelIsoCMS3_EA(elIdx,1) > 0.1) return false; 
+      return true;
+      break;
+
+
    /////////////////////
    /// STOP veto v1 ////
    /////////////////////
@@ -748,6 +766,24 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       return true;
       break;
 
+   ////////////////////
+   /// HAD loose v4 ////
+   ////////////////////
+
+    // use Spring15 POG loose ID
+    case(HAD_loose_noiso_v4):
+      if (!isLooseElectronPOGspring15noIso_v1(elIdx)) return false;
+      return true;
+      break;
+
+    // updated EA values
+    case(HAD_loose_v4):
+      if (electronID(elIdx, HAD_loose_noiso_v4)==0) return false;
+      if (elMiniRelIsoCMS3_EA(elIdx,1) > 0.1) return false; 
+      return true;
+      break;
+
+
    //////////////////////
    /// STOP sync      ///
    //////////////////////
@@ -823,6 +859,24 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       if (elMiniRelIsoCMS3_EA(elIdx) > 0.1) return false; 
       return true;
       break;
+
+   ////////////////////
+   /// HAD medium v4 ////
+   ////////////////////
+
+    // use Spring15 POG medium ID
+    case(HAD_medium_noiso_v4):
+      if (!isMediumElectronPOGspring15noIso_v1(elIdx)) return false;
+      return true;
+      break;
+
+    // updated EA values
+    case(HAD_medium_v4):
+      if (electronID(elIdx, HAD_medium_noiso_v4)==0) return false;
+      if (elMiniRelIsoCMS3_EA(elIdx,1) > 0.1) return false; 
+      return true;
+      break;
+
 
    ////////////////////
    /// SS medium v1 ///
@@ -1120,6 +1174,24 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       if (elMiniRelIsoCMS3_EA(elIdx) > 0.1) return false; 
       return true;
       break;
+
+   ////////////////////
+   /// HAD tight v4 ////
+   ////////////////////
+
+    // use Spring15 POG tight ID
+    case(HAD_tight_noiso_v4):
+      if (!isTightElectronPOGspring15noIso_v1(elIdx)) return false;
+      return true;
+      break;
+
+    // updated EA values
+    case(HAD_tight_v4):
+      if (electronID(elIdx, HAD_tight_noiso_v4)==0) return false;
+      if (elMiniRelIsoCMS3_EA(elIdx,1) > 0.1) return false; 
+      return true;
+      break;
+
 
 	//////////////////////
 	/// ZMET MVA id v1 ///
@@ -1717,6 +1789,12 @@ int eleTightID(unsigned int elIdx, analysis_t analysis, int version){
         if (electronID(elIdx, HAD_medium_v3)) return 2;
         if (electronID(elIdx, HAD_loose_v3)) return 1;
         if (electronID(elIdx, HAD_veto_v3)) return 0;
+      }
+      if (version == 4){
+        if (electronID(elIdx, HAD_tight_v4)) return 3;
+        if (electronID(elIdx, HAD_medium_v4)) return 2;
+        if (electronID(elIdx, HAD_loose_v4)) return 1;
+        if (electronID(elIdx, HAD_veto_v4)) return 0;
       }
       break;
     case (STOP):
