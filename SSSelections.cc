@@ -229,14 +229,16 @@ std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector*
 
     //Jet Corr
     jetCorr->setJetEta(jet.eta()); 
-    jetCorr->setJetPt(jet.pt()); 
+    jetCorr->setJetPt(jet.pt()*tas::pfjets_undoJEC().at(i)); 
     jetCorr->setJetA(tas::pfjets_area().at(i)); 
-    jetCorr->setRho(tas::evt_fixgrid_all_rho()); 
+    jetCorr->setRho(tas::evt_fixgridfastjet_all_rho()); 
     float JEC = jetCorr->getCorrection(); 
 
     //Jet pT to use
     float pt = doCorr ? jet.pt()*JEC*tas::pfjets_undoJEC().at(i) : jet.pt();
     
+    // if (tas::evt_event()==40405) cout << "jet pT=" << pt << " pTraw=" << jet.pt()*tas::pfjets_undoJEC().at(i) << " eta=" << jet.eta() << " phi=" << jet.phi() << " area=" << tas::pfjets_area().at(i) << " rho=" << tas::evt_fixgridfastjet_all_rho() << " L1L2L3=" << JEC << endl;
+
     //Kinematic jet cuts
     if (pt < 25.) continue;
     if (fabs(jet.eta()) > 2.4) continue;
