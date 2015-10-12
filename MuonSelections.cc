@@ -164,6 +164,23 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
       return isLooseMuonPOG(muIdx);
       break;
 
+   ///////////////////
+   /// WW veto v2 ////
+   ///////////////////
+  
+    case(WW_veto_noiso_v2):
+      if (fabs(mus_p4().at(muIdx).eta()) > 2.4) return false;
+      if (fabs(mus_dxyPV().at(muIdx)) > 0.02) return false;
+      if (fabs(mus_dzPV().at(muIdx)) > 0.1) return false;
+      return isLooseMuonPOG(muIdx);
+      break;
+
+    case(WW_veto_v2):
+      if (muonID(muIdx, WW_veto_noiso_v2)==0) return false;
+      if (muRelIso04DB(muIdx) > 0.40) return false;
+      return true;
+      break;
+
    ////////////////////
    /// HAD loose v1 ///
    ////////////////////
@@ -347,6 +364,21 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
       break;
 
    ///////////////////
+   /// WW FO v2    ///  same as tight, but looser iso
+   ///////////////////
+
+    case(WW_fo_noiso_v2):
+      if (!muonID(muIdx, WW_veto_noiso_v2)) return false;
+      return isMediumMuonPOG(muIdx);
+      break;
+
+   case(WW_fo_v2):
+      if (!muonID(muIdx, WW_fo_noiso_v2)) return false;
+      if (muRelIso04DB(muIdx) > 0.40) return false;
+      return true;
+      break;
+
+   ///////////////////
    /// SS tight v1 ///
    ///////////////////
   
@@ -454,6 +486,20 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
       if (muonID(muIdx, WW_medium_noiso_v1)==0) return false;
       if (muIDCacheSet) return passMultiIsoCuts(0.14, 0.68, 7.0, muID_cache.getMiniiso(muIdx), muID_cache.getPtratio(muIdx), muID_cache.getPtrel(muIdx) );
       else return passMultiIso(13, muIdx, 0.14, 0.68, 7.0, 0, 0);
+      break;
+
+   ////////////////////
+   /// WW medium v2 ///
+   ////////////////////
+  
+    case(WW_medium_noiso_v2):
+      if (muonID(muIdx, WW_fo_noiso_v2)==0) return false;//make sure it's tighter than FO
+      return isMediumMuonPOG(muIdx);
+      break;
+
+   case(WW_medium_v2):
+      if (muonID(muIdx, WW_medium_noiso_v2)==0) return false;
+      if (muRelIso04DB(muIdx) > 0.12) return false;
       break;
 
    /////////////////////
@@ -632,9 +678,9 @@ int muTightID(unsigned int muIdx, analysis_t analysis, int version){
       if (!isLooseMuonPOG(muIdx)) return 0;
       break;
     case (WW):
-      if (muonID(muIdx, WW_medium_v1)) return 2;
-      if (muonID(muIdx, WW_fo_v1))     return 1;
-      if (muonID(muIdx, WW_veto_v1))   return 0;
+      if (muonID(muIdx, WW_medium_v2)) return 2;
+      if (muonID(muIdx, WW_fo_v2))     return 1;
+      if (muonID(muIdx, WW_veto_v2))   return 0;
       break;
     case (SS):
       if (muonID(muIdx, SS_tight_v4)) return 2;  
@@ -672,3 +718,15 @@ int tightChargeMuon(unsigned int muIdx){
   else                                                                  return 0;
 }
 
+bool PassSoftMuonCut(unsigned int muIdx) {
+    
+  if (mus_p4().at(muIdx).pt() <= 3) return false;
+  if (((mus_type().at(muIdx)) & (1<<2)) == 0) return false;
+  if (!mus_pid_TMLastStationTight().at(muIdx)) return false;
+  if (mus_nlayers().at(muIdx) <= 5) return false;
+  if (fabs(mus_dxyPV().at(muIdx)) > 0.2) return false;
+  if (fabs(mus_dzPV().at(muIdx)) > 0.5) return false;
+  if ((mus_iso03_emEt().at(muIdx)+mus_iso03_hadEt().at(muIdx)+mus_iso03_sumPt().at(muIdx)) < 0.10*mus_p4().at(muIdx).pt() && mus_p4().at(muIdx).pt() > 20.) return false;
+  return true;
+
+}

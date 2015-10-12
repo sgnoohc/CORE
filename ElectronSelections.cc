@@ -354,9 +354,8 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
 
     case(WW_veto_v2):
 
-      return isVetoElectronPOGspring15_v1(elIdx);
+      if (!isVetoElectronPOGspring15_v1(elIdx)) return false;
       break;
-
       
    ////////////////////
    /// HAD veto v1 ////
@@ -687,12 +686,15 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
 
     case(WW_fo_noiso_v2):
 
+      if (!isTriggerSafenoIso_v1(elIdx)) return false;
       return isLooseElectronPOGspring15noIso_v1(elIdx);
       break;
 
     case(WW_fo_v2):
 
-      return isLooseElectronPOGspring15_v1(elIdx);
+      if (!isTriggerSafe_v1(elIdx)) return false;
+      if (!isLooseElectronPOGspring15_v1(elIdx)) return false;
+      return true;
       break;
 
    ////////////////////
@@ -1041,12 +1043,14 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
 
     case(WW_medium_noiso_v2):
 
+      if (!isTriggerSafenoIso_v1(elIdx)) return false;
       return isMediumElectronPOGspring15noIso_v1(elIdx);
       break;
 
     case(WW_medium_v2):
 
-      return isMediumElectronPOGspring15_v1(elIdx);
+      if (!isTriggerSafe_v1(elIdx)) return false;
+      if (!isMediumElectronPOGspring15_v1(elIdx)) return false;
       break;
 
    /////////////////////
