@@ -244,7 +244,7 @@ std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector*
     if (fabs(jet.eta()) > 2.4) continue;
 
     //Require loose jet ID
-    if (!isLoosePFJet(i)) continue;
+    if (!isLoosePFJet_50nsV1(i)) continue;
     
     //Jet cleaning -- electrons
     bool jetIsLep = false;
