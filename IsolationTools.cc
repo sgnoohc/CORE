@@ -98,8 +98,8 @@ LorentzVector closestJet(const LorentzVector& lep_p4, float dRmin, float maxAbsE
   float JEC1 = jetCorrAG3->getCorrection(); 
   float JEC2 = jetCorrAG2->getCorrection(); 
 
-  if (whichCorr == 1) return jet*JEC1;
-  return (jet*JEC1 - lep_p4)*JEC2 + lep_p4;
+  if (whichCorr == 1) return rawjet*JEC1;
+  return (rawjet*JEC1 - lep_p4)*JEC2 + lep_p4;
 }
 
 float getMiniDR(float pt) {
