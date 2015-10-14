@@ -1761,6 +1761,46 @@ bool isTightElectronPOGspring15noIso_v1(unsigned int elIdx){
   return true;
 }
 
+
+// Implementation taken from:
+// cut values: https://github.com/ikrav/cmssw/blob/egm_id_7.4.12_v1/RecoEgamma/ElectronIdentification/python/Identification/heepElectronID_HEEPV60_cff.py
+// list of cuts modules: https://github.com/ikrav/cmssw/blob/egm_id_7.4.12_v1/RecoEgamma/ElectronIdentification/python/Identification/heepElectronID_tools.py#L258
+// cut modules: https://github.com/ikrav/cmssw/tree/egm_id_7.4.12_v1/RecoEgamma/ElectronIdentification/plugins/cuts
+bool isHEEPV60(unsigned int elIdx){
+  if (fabs(els_etaSC().at(elIdx)) <= 1.4442){ 
+    if (els_isEcalDriven()                                                   .at(elIdx)   == false  ) return false;
+    if (fabs(els_dEtaIn().at(elIdx) - els_etaSC().at(elIdx) + els_scSeedEta().at(elIdx))  >=  0.004 ) return false;
+    if (fabs(els_dPhiIn()                                                    .at(elIdx))  >=  0.06  ) return false;
+    if (els_hOverE().at(elIdx) >= 1/els_eSC().at(elIdx) + 0.05                                      ) return false;
+    if ( els_e2x5Max_full5x5().at(elIdx) / els_e5x5_full5x5().at(elIdx) <= 0.94 &&
+	 els_e1x5_full5x5().at(elIdx)    / els_e5x5_full5x5().at(elIdx) <= 0.83                     ) return false;
+    if ( (els_ecalIso().at(elIdx) + els_hcalDepth1TowerSumEt().at(elIdx) ) 
+	 >= 2 + 0.03*els_p4().at(elIdx).pt() + 0.28 * evt_fixgridfastjet_all_rho()                  ) return false;
+    if (els_tkIso()                                                          .at(elIdx)   >=  5     ) return false;
+    if (els_exp_innerlayers()                                                .at(elIdx)   > 1       ) return false;
+    if (fabs(els_dxyPV()                                                     .at(elIdx))  >= 0.02   ) return false;                                 
+  }
+  else if ((fabs(els_etaSC().at(elIdx)) > 1.566) && (fabs(els_etaSC().at(elIdx)) < 2.5)){       // Endcap
+    if (els_isEcalDriven()                                                   .at(elIdx)   == false  ) return false;
+    if (fabs(els_dEtaIn().at(elIdx) - els_etaSC().at(elIdx) + els_scSeedEta().at(elIdx))  >=  0.006 ) return false;
+    if (fabs(els_dPhiIn()                                                    .at(elIdx))  >=  0.06  ) return false;
+    if (els_hOverE().at(elIdx) >= 5/els_eSC().at(elIdx) + 0.05                                      ) return false;
+    if (els_sigmaIEtaIEta_full5x5()                                          .at(elIdx)   >=  0.03  ) return false;
+    if ( els_p4().at(elIdx).pt() < 50 && 
+	 ( (els_ecalIso().at(elIdx) + els_hcalDepth1TowerSumEt().at(elIdx))  
+	   >= 2.5 + 0.28 * evt_fixgridfastjet_all_rho() )                                           ) return false;
+    if ( els_p4().at(elIdx).pt() > 50 &&
+	 ( (els_ecalIso().at(elIdx) + els_hcalDepth1TowerSumEt().at(elIdx)) 
+	   >= 2   + 0.03*(els_p4().at(elIdx).pt()-50) + 0.28 * evt_fixgridfastjet_all_rho() )       ) return false;
+    if (els_tkIso()                                                          .at(elIdx)   >=  5     ) return false;
+    if (els_exp_innerlayers()                                                .at(elIdx)   > 1       ) return false;
+    if (fabs(els_dxyPV()                                                     .at(elIdx))  >= 0.05   ) return false;     
+  }
+  else return false; // HEEP does not use the crack region
+  return true;
+  
+}
+
 int eleTightID(unsigned int elIdx, analysis_t analysis, int version){
   switch (analysis){
     case (POG):
