@@ -188,10 +188,16 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
     case(HAD_loose_noiso_v1):
     case(HAD_loose_noiso_v2):
     case(HAD_loose_noiso_v3):
-    case(HAD_loose_noiso_v4):
       if (!isLooseMuonPOG(muIdx)) return false;
       if (fabs(mus_dxyPV().at(muIdx)) > 0.5) return false;
       if (fabs(mus_dzPV().at(muIdx)) > 1.0) return false;
+      return true;
+      break;
+
+    case(HAD_loose_noiso_v4):
+      if (!isLooseMuonPOG(muIdx)) return false;
+      if (fabs(mus_dxyPV().at(muIdx)) > 0.2) return false;
+      if (fabs(mus_dzPV().at(muIdx)) > 0.5) return false;
       return true;
       break;
 
