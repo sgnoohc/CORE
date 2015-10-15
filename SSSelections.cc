@@ -237,35 +237,12 @@ std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector*
     //Jet pT to use
     float pt = doCorr ? jet.pt()*JEC*tas::pfjets_undoJEC().at(i) : jet.pt();
     
-    // if (tas::evt_event()==40405) cout << "jet pT=" << pt << " pTraw=" << jet.pt()*tas::pfjets_undoJEC().at(i) << " eta=" << jet.eta() << " phi=" << jet.phi() << " area=" << tas::pfjets_area().at(i) << " rho=" << tas::evt_fixgridfastjet_all_rho() << " L1L2L3=" << JEC << endl;
-
     //Kinematic jet cuts
     if (pt < 25.) continue;
     if (fabs(jet.eta()) > 2.4) continue;
 
     //Require loose jet ID
     if (!isLoosePFJet_50nsV1(i)) continue;
-    
-    //Jet cleaning -- electrons
-    bool jetIsLep = false;
-    for (unsigned int eidx = 0; eidx < tas::els_p4().size(); eidx++){
-      LorentzVector electron = tas::els_p4().at(eidx);
-      if (electron.pt() < 10) continue;
-      if (!isFakableElectron(eidx)) continue;
-      if (ROOT::Math::VectorUtil::DeltaR(jet, electron) > 0.4) continue;
-      jetIsLep = true;
-    }
-    if (jetIsLep == true) continue;
-    
-    //Jet cleaning -- muons
-    for (unsigned int muidx = 0; muidx < tas::mus_p4().size(); muidx++){
-      LorentzVector muon = tas::mus_p4().at(muidx);
-      if (muon.pt() < 10) continue;
-      if (!isFakableMuon(muidx)) continue;
-      if (ROOT::Math::VectorUtil::DeltaR(jet, muon) > 0.4) continue;
-      jetIsLep = true;
-    }
-    if (jetIsLep == true) continue;
     
     //Get discriminator
     float disc = tas::pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag().at(i);
@@ -278,8 +255,71 @@ std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector*
     //Save b-tags that make it this far
     if (disc < 0.814) continue;
     result_btags.push_back(Jet(i, JEC)); 
-
   }
+
+  //Jet cleaning -- electrons
+  for (unsigned int eidx = 0; eidx < tas::els_p4().size(); eidx++){
+    LorentzVector electron = tas::els_p4().at(eidx);
+    if (electron.pt() < 10) continue;
+    if (!isFakableElectron(eidx)) continue;
+    //Clean jets
+    float dRmin = 10000;
+    int removeJet = -1; 
+    for (unsigned int iJet = 0; iJet < result_jets.size(); iJet++){
+      Jet jet = result_jets.at(iJet); 
+      float dR = ROOT::Math::VectorUtil::DeltaR(jet.p4(), electron);
+      if (dR < dRmin){
+        dRmin = dR; 
+        if (dR < 0.4) removeJet = iJet;
+      }
+    }
+    if (removeJet >= 0) result_jets.erase(result_jets.begin()+removeJet); 
+    //Clean btags
+    dRmin = 10000;
+    removeJet = -1; 
+    for (unsigned int iJet = 0; iJet < result_btags.size(); iJet++){
+      Jet btag = result_btags.at(iJet); 
+      float dR = ROOT::Math::VectorUtil::DeltaR(btag.p4(), electron);
+      if (dR < dRmin){
+        dRmin = dR; 
+        if (dR < 0.4) removeJet = iJet;
+      }
+    }
+    if (removeJet >= 0) result_btags.erase(result_btags.begin()+removeJet); 
+  }
+  
+  //Jet cleaning -- muons
+  for (unsigned int muidx = 0; muidx < tas::mus_p4().size(); muidx++){
+    LorentzVector muon = tas::mus_p4().at(muidx);
+    if (muon.pt() < 10) continue;
+    if (!isFakableMuon(muidx)) continue;
+    //Clean jets
+    float dRmin = 10000;
+    int removeJet = -1; 
+    for (unsigned int iJet = 0; iJet < result_jets.size(); iJet++){
+      Jet jet = result_jets.at(iJet); 
+      float dR = ROOT::Math::VectorUtil::DeltaR(jet.p4(), muon);
+      if (dR < dRmin){
+        dRmin = dR; 
+        if (dR < 0.4) removeJet = iJet;
+      }
+    }
+    if (removeJet >= 0) result_jets.erase(result_jets.begin()+removeJet); 
+    //Clean btags
+    dRmin = 10000;
+    removeJet = -1; 
+    for (unsigned int iJet = 0; iJet < result_btags.size(); iJet++){
+      Jet btag = result_btags.at(iJet); 
+      float dR = ROOT::Math::VectorUtil::DeltaR(btag.p4(), muon);
+      if (dR < dRmin){
+        dRmin = dR; 
+        if (dR < 0.4) removeJet = iJet;
+      }
+    }
+    if (removeJet >= 0) result_btags.erase(result_btags.begin()+removeJet); 
+  }
+
+  //Now we're done
   std::pair <vector <Jet>, vector <Jet> > result = std::make_pair(result_jets, result_btags);
   return result;
 }
