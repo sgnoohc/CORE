@@ -46,6 +46,8 @@ bool isVetoElectronPOGspring15noIso_v1(unsigned int elIdx);
 bool isLooseElectronPOGspring15noIso_v1(unsigned int elIdx);
 bool isMediumElectronPOGspring15noIso_v1(unsigned int elIdx);
 bool isTightElectronPOGspring15noIso_v1(unsigned int elIdx);
+//Oct 14 Added HEEP ID
+bool isHEEPV60(unsigned int elIdx);
 
 // Trigger safe cuts https://indico.cern.ch/event/433322/contribution/0/attachments/1126592/1608583/trigger-match-cuts_v3.pdf
 bool isTriggerSafenoIso_v1(unsigned int elIdx);
