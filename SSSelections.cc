@@ -309,11 +309,11 @@ bool isGoodLeptonNoIso(int id, int idx){
 
 bool isInSituFRLepton(int id, int idx, bool expt){
   if (abs(id) == 11){
-    if (!expt && !electronID(idx, SS_medium_noip_v3) && !electronID(idx, SS_medium_v3)) return false;
-    if (expt && !electronID(idx, SS_medium_looseMVA_noip_v3) && !electronID(idx, SS_medium_v3)) return false;
+    if (!expt && !electronID(idx, SS_medium_noip_v5) && !electronID(idx, SS_medium_v5)) return false;
+    if (expt && !electronID(idx, SS_medium_looseMVA_noip_v5) && !electronID(idx, SS_medium_v5)) return false;
   }
   if (abs(id) == 13){
-    if (!muonID(idx, SS_fo_noiso_noip_v3) && !muonID(idx, SS_fo_noiso_v3)) return false;
+    if (!muonID(idx, SS_fo_noiso_noip_v5) && !muonID(idx, SS_fo_noiso_v5)) return false;
   }
   return true;
 }
