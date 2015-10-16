@@ -265,8 +265,8 @@ float elEA03(unsigned int elIdx, int version) {
     if      (fabs(els_etaSC().at(elIdx))<=1.000) ea = 0.1752;
     else if (fabs(els_etaSC().at(elIdx))<=1.479) ea = 0.1862;
     else if (fabs(els_etaSC().at(elIdx))<=2.000) ea = 0.1411;
-    else if (fabs(els_etaSC().at(elIdx))<=2.300) ea = 0.1534;
-    else if (fabs(els_etaSC().at(elIdx))<=2.200) ea = 0.1903;
+    else if (fabs(els_etaSC().at(elIdx))<=2.200) ea = 0.1534;
+    else if (fabs(els_etaSC().at(elIdx))<=2.300) ea = 0.1903;
     else if (fabs(els_etaSC().at(elIdx))<=2.400) ea = 0.2243;
     else if (fabs(els_etaSC().at(elIdx))<=2.500) ea = 0.2687;
   }
