@@ -165,6 +165,40 @@ bool isTightPFJetLepVeto_50nsV1(unsigned int pfJetIdx){
   return true;
 }
 
+bool isMonoPFJet_MT2(unsigned int pfJetIdx){
+
+  float pfjet_chf_  = pfjets_chargedHadronE()[pfJetIdx] / (pfjets_undoJEC().at(pfJetIdx)*pfjets_p4()[pfJetIdx].energy());
+  float pfjet_nhf_  = pfjets_neutralHadronE()[pfJetIdx] / (pfjets_undoJEC().at(pfJetIdx)*pfjets_p4()[pfJetIdx].energy());
+  float pfjet_nef_  = pfjets_neutralEmE()[pfJetIdx] / (pfjets_undoJEC().at(pfJetIdx)*pfjets_p4()[pfJetIdx].energy());
+  float pfjet_eta  = fabs(pfjets_p4()[pfJetIdx].eta());
+
+  if (pfjet_eta > 3.0) return false;
+  if (pfjet_chf_ <= 0.05) return false;
+  if (pfjet_nhf_ >= 0.70) return false;
+  if (pfjet_nef_ >= 0.80) return false;
+
+  if (!isTightPFJet_50nsV1(pfJetIdx)) return false;
+
+  return true;
+}
+
+bool isMonoPFJet_Monojet(unsigned int pfJetIdx){
+
+  float pfjet_chf_  = pfjets_chargedHadronE()[pfJetIdx] / (pfjets_undoJEC().at(pfJetIdx)*pfjets_p4()[pfJetIdx].energy());
+  float pfjet_nhf_  = pfjets_neutralHadronE()[pfJetIdx] / (pfjets_undoJEC().at(pfJetIdx)*pfjets_p4()[pfJetIdx].energy());
+  float pfjet_nef_  = pfjets_neutralEmE()[pfJetIdx] / (pfjets_undoJEC().at(pfJetIdx)*pfjets_p4()[pfJetIdx].energy());
+  float pfjet_eta  = fabs(pfjets_p4()[pfJetIdx].eta());
+
+  if (pfjet_eta > 3.0) return false;
+  if (pfjet_chf_ <= 0.20) return false;
+  if (pfjet_nhf_ >= 0.70) return false;
+  if (pfjet_nef_ >= 0.70) return false;
+
+  if (!isMonoPFJet_MT2(pfJetIdx)) return false;
+
+  return true;
+}
+
 bool loosePileupJetId(unsigned int pfJetIdx){
 
   float eta = fabs(pfjets_p4().at(pfJetIdx).eta());

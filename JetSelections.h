@@ -14,6 +14,8 @@ bool isTightPFJetV2(unsigned int pfJetIdx);
 bool isLoosePFJet_50nsV1(unsigned int pfJetIdx);
 bool isTightPFJet_50nsV1(unsigned int pfJetIdx);
 bool isTightPFJetLepVeto_50nsV1(unsigned int pfJetIdx);
+bool isMonoPFJet_MT2(unsigned int pfJetIdx);
+bool isMonoPFJet_Monojet(unsigned int pfJetIdx);
 
 bool loosePileupJetId(unsigned int pfJetIdx);
 
