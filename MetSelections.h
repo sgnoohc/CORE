@@ -22,6 +22,7 @@ bool hbheIsoNoiseFilter();
 pair <float, float> getT1CHSMET( FactorizedJetCorrector * jet_corrector );
 pair <float, float> getT1CHSMET_fromMINIAOD( FactorizedJetCorrector * jet_corrector );
 pair<float,float> MET3p0(); // tracker style MET with no particles with eta > 3.0
+pair <float, float> getT1PUPPIMET_fromMINIAOD( FactorizedJetCorrector * jet_corrector );
 bool passesMETfilter(bool is25 = 1);
 pair <float, float> getT1CHSMET3p0( FactorizedJetCorrector * jet_corrector );
 

@@ -349,12 +349,14 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
 
     case(WW_veto_noiso_v2):
 
-      return isVetoElectronPOGspring15noIso_v1(elIdx);
+      if (!isVetoElectronPOGspring15noIso_v1(elIdx)) return false;
+      return true;
       break;
 
     case(WW_veto_v2):
 
       if (!isVetoElectronPOGspring15_v1(elIdx)) return false;
+      return true;
       break;
       
    ////////////////////
@@ -704,14 +706,29 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
 
     case(WW_fo_noiso_v2):
 
+      //      if (electronID(elIdx, WW_veto_noiso_v2)==0) return false; 
       if (!isTriggerSafenoIso_v1(elIdx)) return false;
-      return isLooseElectronPOGspring15noIso_v1(elIdx);
+      if (fabs(els_etaSC().at(elIdx)) <= 1.479){                                                    // Barrel 
+	if (fabs(els_dxyPV()            .at(elIdx))                       >= 0.1) return false;// abs(d0)                                 
+	if (fabs(els_dzPV()             .at(elIdx))                       >= 0.373) return false;// abs(dz)                                 
+	if (els_exp_innerlayers()       .at(elIdx)                        > 2        ) return false;// expectedMissingInnerHits 
+	if (els_conv_vtx_flag()         .at(elIdx)                                   ) return false;// pass conversion veto    
+      }
+      else if ((fabs(els_etaSC().at(elIdx)) > 1.479) && (fabs(els_etaSC().at(elIdx)) < 2.5)){       // Endcap
+	if (fabs(els_dxyPV()            .at(elIdx))                       >= 0.2) return false;// abs(d0)                                 
+	if (fabs(els_dzPV()             .at(elIdx))                       >= 0.602) return false;// abs(dz)                                  
+	if (els_exp_innerlayers()       .at(elIdx)                        > 1        ) return false;// expectedMissingInnerHits
+	if (els_conv_vtx_flag()         .at(elIdx)                                   ) return false;// pass conversion veto    
+      }
+      else return false;
+      return true;
+
       break;
 
     case(WW_fo_v2):
 
+      if (electronID(elIdx, WW_fo_noiso_v2)==0) return false; 
       if (!isTriggerSafe_v1(elIdx)) return false;
-      if (!isLooseElectronPOGspring15_v1(elIdx)) return false;
       return true;
       break;
 
@@ -1098,13 +1115,15 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
     case(WW_medium_noiso_v2):
 
       if (!isTriggerSafenoIso_v1(elIdx)) return false;
-      return isMediumElectronPOGspring15noIso_v1(elIdx);
+      if (!isTightElectronPOGspring15noIso_v1(elIdx)) return false;
+      return true;
       break;
 
     case(WW_medium_v2):
 
       if (!isTriggerSafe_v1(elIdx)) return false;
-      if (!isMediumElectronPOGspring15_v1(elIdx)) return false;
+      if (!isTightElectronPOGspring15_v1(elIdx)) return false;
+      return true;
       break;
 
    /////////////////////
