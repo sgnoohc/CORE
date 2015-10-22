@@ -41,8 +41,8 @@ bool passElectronSelection_ZMET(int index ){
 bool passElectronSelection_ZMET_v4(int index, bool vetoTransition, bool eta24 ){
   if( fabs(cms3.els_p4().at(index).pt()) < 10.0    ) return false; // pT > 15 GeV - Minimum pT cut
   if( vetoTransition
-	  && fabs(cms3.els_etaSC().at(index)) > 1.4442
-	  && fabs(cms3.els_etaSC().at(index)) < 1.566  ) return false; // veto x-ition region
+	  && fabs(cms3.els_p4().at(index).eta()) > 1.4
+	  && fabs(cms3.els_p4().at(index).eta()) < 1.6  ) return false; // veto x-ition region
   if( eta24
 	  && fabs(cms3.els_p4()[index].eta()) > 2.4    ) return false; // eta < 2.4
   // if( overlapMuon_ZMET_v1( index, 15.0 )           ) return false; // overlap removal
@@ -121,8 +121,8 @@ bool passMuonSelection_ZMET(int index ){
 bool passMuonSelection_ZMET_v4(int index, bool vetoTransition, bool eta24 ){
   if( fabs(cms3.mus_p4().at(index).pt()) < 10.0       ) return false; // pT > 10 GeV - Minimum pT cut
   if( vetoTransition
-	  && fabs(cms3.mus_p4().at(index).eta()) > 1.4442
-	  && fabs(cms3.mus_p4().at(index).eta()) < 1.566  ) return false; // veto x-ition region
+	  && fabs(cms3.mus_p4().at(index).eta()) > 1.4
+	  && fabs(cms3.mus_p4().at(index).eta()) < 1.6  ) return false; // veto x-ition region
   if( eta24
 	  && fabs(cms3.mus_p4().at(index).eta()) > 2.4    ) return false; // eta < 2.4
   if( !muonID( index, ZMET_mediumMu_v2 )              ) return false; // medium Muon ID  
@@ -132,8 +132,8 @@ bool passMuonSelection_ZMET_v4(int index, bool vetoTransition, bool eta24 ){
 bool passMuonSelection_ZMET_v3(int index, bool vetoTransition, bool eta24 ){
   if( fabs(cms3.mus_p4().at(index).pt()) < 15.0       ) return false; // pT > 10 GeV - Minimum pT cut
   if( vetoTransition
-	  && fabs(cms3.mus_p4().at(index).eta()) > 1.4442
-	  && fabs(cms3.mus_p4().at(index).eta()) < 1.566  ) return false; // veto x-ition region
+  	  && fabs(cms3.mus_p4().at(index).eta()) > 1.4442
+  	  && fabs(cms3.mus_p4().at(index).eta()) < 1.566  ) return false; // veto x-ition region
   if( eta24
 	  && fabs(cms3.mus_p4().at(index).eta()) > 2.4    ) return false; // eta < 2.4
   if( !muonID( index, ZMET_mediumMu_v1 )              ) return false; // medium Muon ID  

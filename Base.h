@@ -121,6 +121,7 @@ enum id_level_t {
   ZMET_mediumMu_v1, 
   ZMET_mediumMu_noiso_v1, 
   ZMET_tightMVA_v2, 
+  ZMET_tightMVA_noiso_v2, 
   ZMET_tightMVA_v1, 
   ZMET_tightMVA_noiso_v1, 
   ZMET_loose_v1, 

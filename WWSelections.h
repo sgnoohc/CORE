@@ -88,7 +88,7 @@ int lepMotherID(Lep lep);
 int lepMotherID_inSituFR(Lep lep);
 
 //Jet selection function
- std::pair <vector <Jet>, vector <Jet> > WWJetsCalculator(std::vector<LorentzVector> JetCollection);
+ std::pair <vector <Jet>, vector <Jet> > WWJetsCalculator(std::vector<LorentzVector> JetCollection, bool use_puppi = false);
 
 // Calculate generator ht
 float getGenHT(bool is_b_a_jet = true);
@@ -143,23 +143,26 @@ private:
 };
 
 struct Jet {
-Jet(int idxx,float __CSVv2,float __CSVsl,float __CSVtche):idx_(idxx),_CSVv2(__CSVv2),_CSVsl(__CSVsl),_CSVtche(__CSVtche) {}
-  LorentzVector p4() {return cms3.pfjets_p4()[idx_];}
+Jet(int idxx,float __CSVv2,float __CSVsm,float __CSVse,float __CSVtche,bool is_puppi = false):idx_(idxx),_CSVv2(__CSVv2),_CSVsm(__CSVsm),_CSVse(__CSVse),_CSVtche(__CSVtche),_is_puppi(is_puppi) {}
+  LorentzVector p4() { if(_is_puppi) return cms3.pfjets_puppi_p4()[idx_]; else return cms3.pfjets_p4()[idx_]; }
   float pt() {return p4().pt();}
   float eta() {return p4().eta();}
   float phi() {return p4().phi();}
-  int   mc3_id() {return cms3.pfjets_mc3_id()[idx_];}
-  LorentzVector genjet_p4() {return cms3.pfjets_mc_p4()[idx_];}
-  LorentzVector genps_p4() {return cms3.pfjets_mc_gp_p4()[idx_];}
-  float pileup_jet_id() {return cms3.pfjets_pileupJetId()[idx_];}
-  int parton_flavor() {return cms3.pfjets_partonFlavour()[idx_];}
+  int   mc3_id() { if(_is_puppi) return -1; else return cms3.pfjets_mc3_id()[idx_]; }
+  LorentzVector genjet_p4() { if(_is_puppi) return LorentzVector(0,0,0,0); else return cms3.pfjets_mc_p4()[idx_]; }
+  LorentzVector genps_p4() { if(_is_puppi) return LorentzVector(0,0,0,0); else return cms3.pfjets_mc_gp_p4()[idx_]; }
+  float pileup_jet_id() { if(_is_puppi) return cms3.pfjets_puppi_pileupJetId()[idx_]; else return cms3.pfjets_pileupJetId()[idx_]; }
+  int parton_flavor() { if(_is_puppi) return cms3.pfjets_puppi_partonFlavour()[idx_]; else return cms3.pfjets_partonFlavour()[idx_]; }
+  int hadron_flavor() { if(_is_puppi) return cms3.pfjets_puppi_hadronFlavour()[idx_]; else return cms3.pfjets_hadronFlavour()[idx_]; }
   float CSVv2() {return _CSVv2;}
-  float CSVsl() {return _CSVsl;}
+  float CSVsm() {return _CSVsm;}
+  float CSVse() {return _CSVse;}
   float CSVtche() {return _CSVtche;}
   int idx() {return idx_;}
 private:
   int idx_;
-  float _CSVv2,_CSVsl,_CSVtche;
+  float _CSVv2,_CSVsm,_CSVse,_CSVtche;
+  bool _is_puppi;
 };
 
  int convertCMS3tag(TString tagName) ;
