@@ -520,7 +520,7 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
 
    case(WW_medium_v2):
       if (muonID(muIdx, WW_fo_v2)==0) return false;
-      if (muRelIso04DB(muIdx) > 0.12) return false;
+      if (muRelIso04DB(muIdx) > 0.15) return false;
       return true;
       break;
 
