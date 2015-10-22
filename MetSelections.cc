@@ -232,6 +232,26 @@ bool passesMETfilter(bool is25){
 
 }
 
+bool passesMETfilterv2(){
+
+  //primary vertex filter (re-run by user)
+  if (firstGoodVertex() == -1) return false;
+
+  //CSC beam halo filter -- this should be replaced with txt list of events, will be updated when available
+  if (!filt_cscBeamHalo()) return false;
+  
+  //HBHE noise filter (re-run by user)
+  if (!hbheNoiseFilter_25ns()) return false;
+  if (!hbheIsoNoiseFilter())   return false;
+
+  //ee badSC noise filter NEW
+  if (!filt_eeBadSc()) return false;
+
+  //Otherwise good
+  return true;
+
+}
+
 // takes in an already initialized FactorizedJetCorrector object
 // and returns T1 Corrected MET using the CHS jet collection
 // THIS FUNCTION IS NOT VALIDATED CURRENTLY!
