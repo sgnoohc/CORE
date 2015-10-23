@@ -290,7 +290,7 @@ bool passesMETfilterv2(){
   if (firstGoodVertex() == -1) return false;
 
   //CSC beam halo filter -- this should be replaced with txt list of events, will be updated when available
-  if (!filt_cscBeamHalo()) return false;
+  //if (!filt_cscBeamHalo()) return false;
   
   //HBHE noise filter (re-run by user)
   if (!hbheNoiseFilter_25ns()) return false;
