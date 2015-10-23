@@ -220,7 +220,7 @@ Z_result_t makesExtraZ(int iHyp){
   return result;
 }
 
-std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector* jetCorr, bool doCorr){
+std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector* jetCorr, bool doCorr, bool saveAllPt){
   vector <Jet> result_jets;
   vector <Jet> result_btags;
 
@@ -248,12 +248,12 @@ std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector*
     float disc = tas::pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag().at(i);
 
     //Save jets that make it this far
-    if (pt >= 40.) {
+    if (pt >= 40. || saveAllPt) {
       result_jets.push_back(Jet(i, JEC));
     }
 
     //Save b-tags that make it this far
-    if (disc < 0.814) continue;
+    if (disc < btagCut) continue;
     result_btags.push_back(Jet(i, JEC)); 
   }
 

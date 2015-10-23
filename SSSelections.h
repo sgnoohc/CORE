@@ -16,6 +16,7 @@ const static float ptCutHigh = 25.;
 const static float ptCutLow = 10.;
 const static int   ssWhichCorr = 2;
 const static int   ssEAversion = 1;
+const static float btagCut = 0.814;//fixme should be 0.890
 
 //Enums
 enum anal_type_t { HighHigh = 0, HighLow = 1, LowLow = 2, Undefined = -1 };
@@ -87,7 +88,7 @@ int lepMotherID(Lep lep);
 int lepMotherID_inSituFR(Lep lep);
 
 //Jet selection function
-std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector* jetCorr, bool doCorr = 0);
+std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector* jetCorr, bool doCorr = 0, bool saveAllPt=0);
 
 //Sorting functions
 bool ptsort (int i,int j);
@@ -147,13 +148,14 @@ struct Jet {
     float phi() {return p4().phi();}
     float csv() {return tas::getbtagvalue("pfCombinedSecondaryVertexV2BJetTags",idx_);}
     float csvivf() {return cms3.pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag()[idx_];}
-    bool isBtag() {return csvivf()>0.814;}
+    bool isBtag() {return csvivf()>btagCut;}
     int   mc3_id() {return cms3.pfjets_mc3_id()[idx_];}
     LorentzVector genjet_p4() {return cms3.pfjets_mc_p4()[idx_];}
     LorentzVector genps_p4() {return cms3.pfjets_mc_gp_p4()[idx_];}
     int idx() {return idx_;}
     float jec() { return JEC;} 
     float undo_jec() { return tas::pfjets_undoJEC().at(idx_); } 
+    int mcFlavor() { return cms3.pfjets_partonFlavour().at(idx_); }
   private:
     int idx_;
     float JEC;
