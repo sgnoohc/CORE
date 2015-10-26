@@ -257,9 +257,6 @@ std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector*
     result_btags.push_back(Jet(i, JEC)); 
   }
 
-  cout << "nBtags: " << result_btags.size() << endl;
-  for (unsigned int i = 0; i < result_btags.size(); i++){ cout << "b-tag pt: " << result_btags.at(i).p4().pt() << endl; } 
-
   //Jet cleaning -- electrons
   for (unsigned int eidx = 0; eidx < tas::els_p4().size(); eidx++){
     LorentzVector electron = tas::els_p4().at(eidx);
