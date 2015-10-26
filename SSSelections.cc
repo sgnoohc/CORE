@@ -257,6 +257,9 @@ std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector*
     result_btags.push_back(Jet(i, JEC)); 
   }
 
+  cout << "nBtags: " << result_btags.size() << endl;
+  for (unsigned int i = 0; i < result_btags.size(); i++){ cout << "b-tag pt: " << result_btags.at(i).p4().pt() << endl; } 
+
   //Jet cleaning -- electrons
   for (unsigned int eidx = 0; eidx < tas::els_p4().size(); eidx++){
     LorentzVector electron = tas::els_p4().at(eidx);
@@ -287,6 +290,8 @@ std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector*
     }
     if (removeJet >= 0) result_btags.erase(result_btags.begin()+removeJet); 
   }
+  cout << "nBtags: " << result_btags.size() << endl;
+  for (unsigned int i = 0; i < result_btags.size(); i++){ cout << "b-tag pt: " << result_btags.at(i).p4().pt() << endl; } 
   
   //Jet cleaning -- muons
   for (unsigned int muidx = 0; muidx < tas::mus_p4().size(); muidx++){
@@ -316,8 +321,13 @@ std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector*
         if (dR < 0.4) removeJet = iJet;
       }
     }
-    if (removeJet >= 0) result_btags.erase(result_btags.begin()+removeJet); 
+    if (removeJet >= 0){
+      cout << "erasing it due to muon with pT = " << muon.pt() << " and dR " << dRmin << endl;
+      result_btags.erase(result_btags.begin()+removeJet); 
+    }
   }
+  cout << "nBtags: " << result_btags.size() << endl;
+  for (unsigned int i = 0; i < result_btags.size(); i++){ cout << "b-tag pt: " << result_btags.at(i).p4().pt() << endl; } 
 
   //Now we're done
   std::pair <vector <Jet>, vector <Jet> > result = std::make_pair(result_jets, result_btags);
