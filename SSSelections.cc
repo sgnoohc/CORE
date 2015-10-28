@@ -257,7 +257,7 @@ std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector*
     result_btags.push_back(Jet(i, JEC)); 
   }
 
-  //Now clean the jets
+  ////Now clean the jets
   vector <bool> keep_jets  = cleanJets(result_jets); 
   vector <bool> keep_btags = cleanJets(result_btags); 
 
@@ -271,7 +271,7 @@ std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector*
   //Remove btags that were not kept
   j = 0; 
   for (unsigned int i = 0; i < keep_btags.size(); i++){
-    if (!keep_btags[i]) result_btags.erase(result_jets.begin()+j); 
+    if (!keep_btags[i]) result_btags.erase(result_btags.begin()+j); 
     else j++; 
   }
 
