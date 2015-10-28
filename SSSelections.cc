@@ -399,11 +399,11 @@ bool hypsFromFirstGoodVertex(size_t hypIdx, float dz_cut){
   return false;
 }
 
-anal_type_t analysisCategory(float lep1pt, float lep2pt){
-  if      (lep1pt > ptCutHigh && lep2pt > ptCutHigh) return HighHigh;
-  else if (lep1pt > ptCutHigh && lep2pt > ptCutLow)  return HighLow;
-  else if (lep2pt > ptCutHigh && lep1pt > ptCutLow)  return HighLow;
-  else if (lep1pt > ptCutLow  && lep2pt > ptCutLow)  return LowLow;
+anal_type_t analysisCategory(int id1, int id2, float lep1pt, float lep2pt){
+  if      (lep1pt > ptCutHigh     && lep2pt > ptCutHigh)      return HighHigh;
+  else if (lep1pt > ptCutHigh     && lep2pt > ptCutLowAG(id2))  return HighLow;
+  else if (lep2pt > ptCutHigh     && lep1pt > ptCutLowAG(id1))  return HighLow;
+  else if (lep1pt > ptCutLowAG(id1) && lep2pt > ptCutLowAG(id2))  return LowLow;
   return Undefined;
 }
 
@@ -421,10 +421,10 @@ int baselineRegion(int njets, int nbtags, float met, float ht, float lep1_pt, fl
   else                  return 3;
 }
 
-int signalRegion(int njets, int nbtags, float met, float ht, float mt_min, float lep1pt, float lep2pt){
+int signalRegion(int njets, int nbtags, float met, float ht, float mt_min, int id1, int id2, float lep1pt, float lep2pt){
   
   //Calculate lep_pt
-  anal_type_t lep_pt = analysisCategory(lep1pt, lep2pt); 
+  anal_type_t lep_pt = analysisCategory(id1, id2, lep1pt, lep2pt); 
 
   //Reject events out of kinematic acceptance
   if (met < 50) return -1; 
@@ -644,7 +644,7 @@ int isGoodHyp(int iHyp, bool expt, bool verbose){
   bool truth_inSituFR = passed_id_inSituFR_lt && passed_id_inSituFR_ll;
 
   //Verbose info:
-  if (verbose && pt_ll > ptCutLow && pt_lt > ptCutLow){
+  if (verbose && pt_ll > ptCutLowAG(id_ll) && pt_lt > ptCutLowAG(id_lt)){
     cout << "hyp " << iHyp << " leptons: " << id_ll << " " << pt_ll << " (idx: " << idx_ll << ") " << id_lt << " " << pt_lt << " (idx: " << idx_lt << ")" << endl;
     cout << "   isss: " << isss << endl;
     cout << "   extraZ: " << extraZ << endl;
@@ -961,4 +961,8 @@ float coneCorrPt(int id, int idx){
   float B = abs(id)==11 ? 0.80 : 0.76;
   float C = abs(id)==11 ? 7.20 : 7.20;
   return ((ptrel > C) ? lep_p4.pt()*(1 + std::max((float)0, miniIso - A)) : std::max(lep_p4.pt(), jet_p4.pt() * B));
+}
+
+float ptCutLowAG(int id){
+  return ((abs(id) == 11) ? 15 : 10); 
 }

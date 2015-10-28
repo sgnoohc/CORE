@@ -13,10 +13,11 @@
 #include "Tools/JetCorrector.h"
 
 const static float ptCutHigh = 25.;
-const static float ptCutLow = 10.;
 const static int   ssWhichCorr = 2;
 const static int   ssEAversion = 1;
 const static float btagCut = 0.814;//fixme should be 0.890
+
+float ptCutLowAG(int id);
 
 //Enums
 enum anal_type_t { HighHigh = 0, HighLow = 1, LowLow = 2, Undefined = -1 };
@@ -59,9 +60,9 @@ Lep getFourthLepton(int hyp);
 std::vector<particle_t> getGenPair(bool verbose=false);
 
 //Signal region selections
-anal_type_t analysisCategory(float lep1pt, float lep2pt);
+anal_type_t analysisCategory(int id1, int id2, float lep1pt, float lep2pt);
 int baselineRegion(int njets, int nbtags, float met, float ht, float lep1_pt, float lep2_pt);
-int signalRegion(int njets, int nbtags, float met, float ht, float mt_min, float lep1pt, float lep2pt);
+int signalRegion(int njets, int nbtags, float met, float ht, float mt_min, int id1, int id2, float lep1pt, float lep2pt);
 
 //More Lepton selections
 bool isGoodLeptonNoIso(int id, int idx);
@@ -88,7 +89,7 @@ int lepMotherID(Lep lep);
 int lepMotherID_inSituFR(Lep lep);
 
 //Jet selection function
-std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector* jetCorr, bool doCorr = 0, bool saveAllPt=0);
+std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector* jetCorr, bool doCorr = 0, bool saveAllPt = 0);
 
 //Sorting functions
 bool ptsort (int i,int j);
