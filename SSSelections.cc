@@ -257,14 +257,39 @@ std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector*
     result_btags.push_back(Jet(i, JEC)); 
   }
 
+  //Now clean the jets
+  vector <bool> keep_jets  = cleanJets(result_jets); 
+  vector <bool> keep_btags = cleanJets(result_btags); 
+
+  //Remove jets that were not kept
+  int j = 0; 
+  for (unsigned int i = 0; i < keep_jets.size(); i++){
+    if (!keep_jets[i]) result_jets.erase(result_jets.begin()+j); 
+    else j++; 
+  }
+
+  //Remove btags that were not kept
+  j = 0; 
+  for (unsigned int i = 0; i < keep_btags.size(); i++){
+    if (!keep_btags[i]) result_btags.erase(result_jets.begin()+j); 
+    else j++; 
+  }
+
+  //Return results
+  std::pair <vector <Jet>, vector <Jet> > result = std::make_pair(result_jets, result_btags);
+  return result;
+}
+
+vector <bool> cleanJets(vector <Jet> result_jets){
+  vector <bool> result;
   //Jet cleaning -- electrons
+   int removeJet = -1; 
   for (unsigned int eidx = 0; eidx < tas::els_p4().size(); eidx++){
     LorentzVector electron = tas::els_p4().at(eidx);
     if (electron.pt() < 10) continue;
     if (!isFakableElectron(eidx)) continue;
     //Clean jets
     float dRmin = 10000;
-    int removeJet = -1; 
     for (unsigned int iJet = 0; iJet < result_jets.size(); iJet++){
       Jet jet = result_jets.at(iJet); 
       float dR = ROOT::Math::VectorUtil::DeltaR(jet.p4(), electron);
@@ -273,19 +298,10 @@ std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector*
         if (dR < 0.4) removeJet = iJet;
       }
     }
-    if (removeJet >= 0) result_jets.erase(result_jets.begin()+removeJet); 
-    //Clean btags
-    dRmin = 10000;
-    removeJet = -1; 
-    for (unsigned int iJet = 0; iJet < result_btags.size(); iJet++){
-      Jet btag = result_btags.at(iJet); 
-      float dR = ROOT::Math::VectorUtil::DeltaR(btag.p4(), electron);
-      if (dR < dRmin){
-        dRmin = dR; 
-        if (dR < 0.4) removeJet = iJet;
-      }
-    }
-    if (removeJet >= 0) result_btags.erase(result_btags.begin()+removeJet); 
+  }
+  for (unsigned int i = 0; i < result_jets.size(); i++){
+    if (i == (unsigned)removeJet) result.push_back(false);  
+    else result.push_back(true); 
   }
   
   //Jet cleaning -- muons
@@ -295,7 +311,7 @@ std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector*
     if (!isFakableMuon(muidx)) continue;
     //Clean jets
     float dRmin = 10000;
-    int removeJet = -1; 
+    removeJet = -1; 
     for (unsigned int iJet = 0; iJet < result_jets.size(); iJet++){
       Jet jet = result_jets.at(iJet); 
       float dR = ROOT::Math::VectorUtil::DeltaR(jet.p4(), muon);
@@ -304,26 +320,11 @@ std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector*
         if (dR < 0.4) removeJet = iJet;
       }
     }
-    if (removeJet >= 0) result_jets.erase(result_jets.begin()+removeJet); 
-    //Clean btags
-    dRmin = 10000;
-    removeJet = -1; 
-    for (unsigned int iJet = 0; iJet < result_btags.size(); iJet++){
-      Jet btag = result_btags.at(iJet); 
-      float dR = ROOT::Math::VectorUtil::DeltaR(btag.p4(), muon);
-      if (dR < dRmin){
-        dRmin = dR; 
-        if (dR < 0.4) removeJet = iJet;
-      }
-    }
-    if (removeJet >= 0){
-      result_btags.erase(result_btags.begin()+removeJet); 
-    }
+    if (removeJet >= 0) result[removeJet] = false; 
   }
 
   //Now we're done
-  std::pair <vector <Jet>, vector <Jet> > result = std::make_pair(result_jets, result_btags);
-  return result;
+  return result; 
 }
 
 bool isLooseIsolatedLepton(int id, int idx){
