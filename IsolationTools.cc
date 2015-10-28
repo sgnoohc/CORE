@@ -14,7 +14,7 @@ bool passMultiIsoCuts(float cutMiniIso, float cutPtRatio, float cutPtRel, float 
 
 bool passMultiIso(int id, int idx, float cutMiniIso, float cutPtRatio, float cutPtRel, int eaversion, int whichCorr){
   const LorentzVector& lep_p4 = abs(id)==11 ? els_p4().at(idx) : mus_p4().at(idx);
-  const LorentzVector& jet_p4 = closestJet(lep_p4,0.4,2.4,whichCorr);
+  const LorentzVector& jet_p4 = closestJet(lep_p4,0.4,3.0,whichCorr);
   float miniIso = abs(id)==11 ? elMiniRelIsoCMS3_EA(idx,eaversion) : muMiniRelIsoCMS3_EA(idx,eaversion);
   float closeJetPt = jet_p4.pt();
   float ptratio = ( closeJetPt>0. ? lep_p4.pt()/closeJetPt : 1.);
@@ -28,7 +28,7 @@ bool passPtRel(int id, int idx, float cut, bool subtractLep, int whichCorr) {
 
 float getPtRel(int id, int idx, bool subtractLep, int whichCorr) {
   LorentzVector lep_p4 = abs(id)==11 ? els_p4().at(idx) : mus_p4().at(idx);
-  LorentzVector jet_p4 = closestJet(lep_p4,0.4,2.4,whichCorr);
+  LorentzVector jet_p4 = closestJet(lep_p4,0.4,3.0,whichCorr);
   return ptRel(lep_p4, jet_p4, subtractLep);
 }
 
