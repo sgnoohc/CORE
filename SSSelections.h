@@ -15,7 +15,7 @@
 const static float ptCutHigh = 25.;
 const static int   ssWhichCorr = 2;
 const static int   ssEAversion = 1;
-const static float btagCut = 0.814;//fixme should be 0.890
+const static float btagCut = 0.890;
 
 float ptCutLowAG(int id);
 
