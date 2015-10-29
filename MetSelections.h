@@ -14,13 +14,14 @@ struct metStruct{
 };
 
 class FactorizedJetCorrector;
+class JetCorrectionUncertainty;
 
 metStruct trackerMET(float deltaZCut = 0.2, const std::vector<LorentzVector>* jets = 0);
 bool hbheNoiseFilter(int minZeros = 999);
 bool hbheNoiseFilter_25ns(int minZeros = 999);
 bool hbheIsoNoiseFilter();
 pair <float, float> getT1CHSMET( FactorizedJetCorrector * jet_corrector );
-pair <float, float> getT1CHSMET_fromMINIAOD( FactorizedJetCorrector * jet_corrector );
+pair <float, float> getT1CHSMET_fromMINIAOD( FactorizedJetCorrector * jet_corrector, JetCorrectionUncertainty* jecUnc = 0, bool uncUp = true );
 pair<float,float> MET3p0(); // tracker style MET with no particles with eta > 3.0
 pair <float, float> getT1PUPPIMET_fromMINIAOD( FactorizedJetCorrector * jet_corrector );
 bool passesMETfilter(bool is25 = 1);

@@ -7,6 +7,7 @@
 
 #include "Tools/jetcorr/FactorizedJetCorrector.h"
 #include "Tools/JetCorrector.h"
+#include "Tools/jetcorr/JetCorrectionUncertainty.h"
 
 using namespace tas;
 
@@ -141,7 +142,7 @@ pair <float, float> getT1CHSMET( FactorizedJetCorrector * jet_corrector ){
 
 // takes in an already initialized FactorizedJetCorrector object
 // and returns T1 Corrected MET using the CHS jet collection from miniAOD
-pair <float, float> getT1CHSMET_fromMINIAOD( FactorizedJetCorrector * jet_corrector ){
+pair <float, float> getT1CHSMET_fromMINIAOD( FactorizedJetCorrector * jet_corrector, JetCorrectionUncertainty* jecUnc, bool uncUp ){
   float T1_met    = cms3.evt_pfmet_raw();
   float T1_metPhi = cms3.evt_pfmetPhi_raw();
   float T1_metx   = T1_met * cos(T1_metPhi);
@@ -168,7 +169,15 @@ pair <float, float> getT1CHSMET_fromMINIAOD( FactorizedJetCorrector * jet_correc
 
 	double corr             = corr_vals.at(corr_vals.size()-1); // All corrections
 	double corr_l1          = corr_vals.at(0);                  // offset correction
-		  
+
+	if (jecUnc != 0) {
+	  jecUnc->setJetEta(jetp4_uncorr.eta()); 
+	  jecUnc->setJetPt(jetp4_uncorr.pt()*corr); 
+	  double unc = jecUnc->getUncertainty(true);
+	  if (uncUp) corr=corr*(1+unc);
+	  else  corr=corr*(1-unc);
+	}
+	  
 	//	
 	// remove SA or global muons from jets before correcting
 	//
