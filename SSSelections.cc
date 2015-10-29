@@ -220,7 +220,8 @@ Z_result_t makesExtraZ(int iHyp){
   return result;
 }
 
-std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector* jetCorr, bool doCorr, bool saveAllPt){
+//doCorr: 0-built-in, 1-corrected, 2-raw
+std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector* jetCorr, int doCorr, bool saveAllPt){
   vector <Jet> result_jets;
   vector <Jet> result_btags;
 
@@ -235,7 +236,9 @@ std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector*
     float JEC = jetCorr->getCorrection(); 
 
     //Jet pT to use
-    float pt = doCorr ? jet.pt()*JEC*tas::pfjets_undoJEC().at(i) : jet.pt();
+    float pt = jet.pt(); 
+    if (doCorr == 1) pt = jet.pt()*tas::pfjets_undoJEC().at(i)*JEC;
+    if (doCorr == 2) pt = jet.pt()*tas::pfjets_undoJEC().at(i);
     
     //Kinematic jet cuts
     if (pt < 25.) continue;
