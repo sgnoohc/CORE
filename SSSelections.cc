@@ -666,8 +666,8 @@ int isGoodHyp(int iHyp, bool expt, bool verbose){
   }
 
   //Kinematic Cuts
-  if (pt_ll < 10) return 0;
-  if (pt_lt < 10) return 0;
+  if (pt_ll < ptCutLowAG(id_ll)) return 0; 
+  if (pt_lt < ptCutLowAG(id_lt)) return 0; 
   if (abs(id_ll) == 11 && fabs(eta_ll) > 2.5) return 0;
   if (abs(id_lt) == 11 && fabs(eta_lt) > 2.5) return 0;
   if (abs(id_ll) == 13 && fabs(eta_ll) > 2.4) return 0;
