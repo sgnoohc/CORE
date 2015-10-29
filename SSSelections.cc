@@ -292,6 +292,7 @@ vector <bool> cleanJets(vector <Jet> result_jets){
     float dRmin = 10000;
     for (unsigned int iJet = 0; iJet < result_jets.size(); iJet++){
       Jet jet = result_jets.at(iJet); 
+      if (jet.idx() < 0) continue; 
       float dR = ROOT::Math::VectorUtil::DeltaR(jet.p4(), electron);
       if (dR < dRmin){
         dRmin = dR; 
@@ -314,6 +315,7 @@ vector <bool> cleanJets(vector <Jet> result_jets){
     removeJet = -1; 
     for (unsigned int iJet = 0; iJet < result_jets.size(); iJet++){
       Jet jet = result_jets.at(iJet); 
+      if (jet.idx() < 0) continue; 
       float dR = ROOT::Math::VectorUtil::DeltaR(jet.p4(), muon);
       if (dR < dRmin){
         dRmin = dR; 
