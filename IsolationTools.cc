@@ -91,11 +91,11 @@ LorentzVector closestJet(const LorentzVector& lep_p4, float dRmin, float maxAbsE
   jetCorrAG3->setJetPt(rawjet.pt()); 
   jetCorrAG3->setJetA(tas::pfjets_area().at(closestIdx)); 
   jetCorrAG3->setRho(tas::evt_fixgridfastjet_all_rho()); 
+  float JEC1 = jetCorrAG3->getCorrection(); 
   jetCorrAG2->setJetEta(rawjet.eta()); 
-  jetCorrAG2->setJetPt(rawjet.pt()); 
+  jetCorrAG2->setJetPt(rawjet.pt()*JEC1); 
   jetCorrAG2->setJetA(tas::pfjets_area().at(closestIdx)); 
   jetCorrAG2->setRho(tas::evt_fixgridfastjet_all_rho()); 
-  float JEC1 = jetCorrAG3->getCorrection(); 
   float JEC2 = jetCorrAG2->getCorrection(); 
 
   if (whichCorr == 1) return rawjet*JEC1;
