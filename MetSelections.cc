@@ -9,6 +9,11 @@
 #include "Tools/JetCorrector.h"
 #include "Tools/jetcorr/JetCorrectionUncertainty.h"
 
+// maybe be needed for JetCorrectionUncertainty
+#include "Tools/jetcorr/Utilities.icc"
+#include "Tools/jetcorr/JetCorrectionUncertainty.icc"
+#include "Tools/jetcorr/SimpleJetCorrectionUncertainty.icc"
+
 using namespace tas;
 
 metStruct trackerMET(float deltaZCut, const std::vector<LorentzVector>* jets) {
@@ -75,7 +80,7 @@ bool hbheIsoNoiseFilter() {
 
 // takes in an already initialized FactorizedJetCorrector object
 // and returns T1 Corrected MET using the CHS jet collection
-pair <float, float> getT1CHSMET( FactorizedJetCorrector * jet_corrector ){
+pair <float, float> getT1CHSMET( FactorizedJetCorrector * jet_corrector, JetCorrectionUncertainty* jecUnc, bool uncUp ){
   float T1_met    = cms3.evt_METToolbox_pfmet_raw();
   float T1_metPhi = cms3.evt_METToolbox_pfmetPhi_raw();
   float T1_metx   = T1_met * cos(T1_metPhi);
@@ -103,6 +108,14 @@ pair <float, float> getT1CHSMET( FactorizedJetCorrector * jet_corrector ){
 	double corr             = corr_vals.at(corr_vals.size()-1); // All corrections
 	double corr_l1          = corr_vals.at(0);                  // offset correction
 		  
+	if (jecUnc != 0) {
+	  jecUnc->setJetEta(jetp4_uncorr.eta()); 
+	  jecUnc->setJetPt(jetp4_uncorr.pt()*corr); 
+	  double unc = jecUnc->getUncertainty(true);
+	  if (uncUp) corr=corr*(1+unc);
+	  else  corr=corr*(1-unc);
+	}
+	  
 	//	
 	// remove SA or global muons from jets before correcting
 	//
