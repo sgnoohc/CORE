@@ -111,7 +111,7 @@ pair <float, float> getT1CHSMET( FactorizedJetCorrector * jet_corrector, JetCorr
 	double corr             = corr_vals.at(corr_vals.size()-1); // All corrections
 	double corr_l1          = corr_vals.at(0);                  // offset correction
 		  
-	if (jecUnc != 0) {
+	if (jecUnc != 0 && fabs(jetp4_uncorr.eta()) < 5.4) {
 	  jecUnc->setJetEta(jetp4_uncorr.eta()); 
 	  jecUnc->setJetPt(jetp4_uncorr.pt()*corr); 
 	  double unc = jecUnc->getUncertainty(true);
@@ -196,7 +196,7 @@ pair <float, float> getT1CHSMET_fromMINIAOD( FactorizedJetCorrector * jet_correc
 	double corr             = corr_vals.at(corr_vals.size()-1); // All corrections
 	double corr_l1          = corr_vals.at(0);                  // offset correction
 
-	if (jecUnc != 0) {
+	if (jecUnc != 0 && fabs(jetp4_uncorr.eta()) < 5.4) {
 	  jecUnc->setJetEta(jetp4_uncorr.eta()); 
 	  jecUnc->setJetPt(jetp4_uncorr.pt()*corr); 
 	  double unc = jecUnc->getUncertainty(true);
