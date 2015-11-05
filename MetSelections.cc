@@ -20,14 +20,14 @@ RawBlameHistory     404 lines (314 sloc)  15.3 KB
 #include "Math/VectorUtil.h"
 #include "MetSelections.h"
 
-#include "Tools/jetcorr/FactorizedJetCorrector.h"
 #include "Tools/JetCorrector.h"
+#include "Tools/jetcorr/FactorizedJetCorrector.h"
 #include "Tools/jetcorr/JetCorrectionUncertainty.h"
 
-// maybe be needed for JetCorrectionUncertainty
 #include "Tools/jetcorr/Utilities.icc"
 #include "Tools/jetcorr/JetCorrectionUncertainty.icc"
 #include "Tools/jetcorr/SimpleJetCorrectionUncertainty.icc"
+
 
 using namespace tas;
 
@@ -95,14 +95,11 @@ bool hbheIsoNoiseFilter() {
 
 // takes in an already initialized FactorizedJetCorrector object
 // and returns T1 Corrected MET using the CHS jet collection
-// NOTE: option for unclustered uncertainty is NOT official, just a guess.  Use 1 for UP, -1 for DOWN
-pair <float, float> getT1CHSMET( FactorizedJetCorrector * jet_corrector, JetCorrectionUncertainty* jecUnc, bool uncUp, int doUnclusteredUnc ){
+pair <float, float> getT1CHSMET( FactorizedJetCorrector * jet_corrector ){
   float T1_met    = cms3.evt_METToolbox_pfmet_raw();
   float T1_metPhi = cms3.evt_METToolbox_pfmetPhi_raw();
   float T1_metx   = T1_met * cos(T1_metPhi);
   float T1_mety   = T1_met * sin(T1_metPhi);
-  float unclustered_metx   = T1_met * cos(T1_metPhi);
-  float unclustered_mety   = T1_met * sin(T1_metPhi);
 
   //Run over same jets that were produced with MET tools
   for(unsigned int iJet = 0; iJet < cms3.pfjets_METToolbox_p4().size(); iJet++){
@@ -126,14 +123,6 @@ pair <float, float> getT1CHSMET( FactorizedJetCorrector * jet_corrector, JetCorr
 	double corr             = corr_vals.at(corr_vals.size()-1); // All corrections
 	double corr_l1          = corr_vals.at(0);                  // offset correction
 		  
-	if (jecUnc != 0 && fabs(jetp4_uncorr.eta()) < 5.4) {
-	  jecUnc->setJetEta(jetp4_uncorr.eta()); 
-	  jecUnc->setJetPt(jetp4_uncorr.pt()*corr); 
-	  double unc = jecUnc->getUncertainty(true);
-	  if (uncUp) corr=corr*(1+unc);
-	  else  corr=corr*(1-unc);
-	}
-	  
 	//	
 	// remove SA or global muons from jets before correcting
 	//
@@ -161,15 +150,8 @@ pair <float, float> getT1CHSMET( FactorizedJetCorrector * jet_corrector, JetCorr
 	if (corr * jetp4_uncorr.pt() > 10.){		  
 	  T1_metx += jetp4_uncorr.px() * ( corr_l1 - corr );
 	  T1_mety += jetp4_uncorr.py() * ( corr_l1 - corr );
-	  unclustered_metx += jetp4_uncorr.px();
-	  unclustered_mety += jetp4_uncorr.py();
 	}
 
-  }
-	  
-  if (doUnclusteredUnc != 0) {
-    T1_metx -= unclustered_metx * 0.10 * (float)doUnclusteredUnc; // using 10% from 8 TeV
-    T1_mety -= unclustered_mety * 0.10 * (float)doUnclusteredUnc; // using 10% from 8 TeV
   }
 	  
   T1_met    = std::sqrt(pow(T1_metx, 2) + pow(T1_mety, 2));
