@@ -453,6 +453,12 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       return true;
       break;
 
+    case(STOP_veto_v3):
+      if (!isVetoElectronPOGspring15noIso_v1(elIdx)) return false;
+      //if ( elMiniRelIso(elIdx, true, 0.0, true, false) > 0.2) return false;
+      if (  elMiniRelIsoCMS3_EA(elIdx,1)      > 0.2) return false;
+      return true;
+      break;
 
    /////////////////////
    /// STOP loose    ///
@@ -471,6 +477,11 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       return true;
       break;
 
+    case(STOP_loose_v3):
+      if (!isLooseElectronPOGspring15noIso_v1(elIdx)) return false;
+      if (  elMiniRelIsoCMS3_EA(elIdx,1)      > 0.2) return false;
+      return true;
+      break;
    ///////////////////
    /// SS FO v1 /// same as medium, but no SIP3D cut and looser iso
    ///////////////////
@@ -826,6 +837,13 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       return true;
       break;
 
+    case(STOP_medium_v3):
+      if (!isMediumElectronPOGspring15noIso_v1(elIdx)) return false;
+      //if ( elMiniRelIso(elIdx, true, 0.0, true, false) > 0.1) return false;
+      if (  elMiniRelIsoCMS3_EA(elIdx,1)        > 0.1) return false;
+      return true;
+      break;
+
    /////////////////////
    /// HAD medium v1 ///
    /////////////////////
@@ -1140,6 +1158,13 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       if (!isTightElectronPOGphys14noIso_v2(elIdx)) return false;
       //if ( elMiniRelIso(elIdx, true, 0.0, true, false) > 0.1) return false;
       if (  elMiniRelIsoCMS3_DB(elIdx)       > 0.1) return false;
+      return true;
+      break;
+
+    case(STOP_tight_v3):
+      if (!isTightElectronPOGspring15noIso_v1(elIdx)) return false;
+      //if ( elMiniRelIso(elIdx, true, 0.0, true, false) > 0.1) return false;
+      if (  elMiniRelIsoCMS3_EA(elIdx,1)       > 0.1) return false;
       return true;
       break;
 
