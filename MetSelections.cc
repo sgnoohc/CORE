@@ -1,3 +1,18 @@
+Skip to content
+This repository  
+Search
+Pull requests
+Issues
+Gist
+ @cwelke
+ Unwatch 32
+  Star 0
+ Fork 0 cmstas/CORE
+ Tree: fd93554d74  CORE/MetSelections.cc
+a919515  2 days ago
+@olivito olivito add eta protection for jets outside uncertainty range
+5 contributors @cwelke @cag51 @olivito @cerati @aminnj
+RawBlameHistory     404 lines (314 sloc)  15.3 KB
 #include <iostream>
 
 #include "MetSelections.h"
@@ -165,16 +180,52 @@ pair <float, float> getT1CHSMET( FactorizedJetCorrector * jet_corrector, JetCorr
 
 // takes in an already initialized FactorizedJetCorrector object
 // and returns T1 Corrected MET using the CHS jet collection from miniAOD
-// NOTE: option for unclustered uncertainty is NOT official, just a guess.  Use 1 for UP, -1 for DOWN
-pair <float, float> getT1CHSMET_fromMINIAOD( FactorizedJetCorrector * jet_corrector, JetCorrectionUncertainty* jecUnc, bool uncUp, int doUnclusteredUnc ){
+pair <float, float> getT1CHSMET_fromMINIAOD( FactorizedJetCorrector * jet_corrector, JetCorrectionUncertainty* jecUnc, bool uncUp ){
   float T1_met    = cms3.evt_pfmet_raw();
   float T1_metPhi = cms3.evt_pfmetPhi_raw();
   float T1_metx   = T1_met * cos(T1_metPhi);
   float T1_mety   = T1_met * sin(T1_metPhi);
-  float unclustered_metx   = T1_met * cos(T1_metPhi);
-  float unclustered_mety   = T1_met * sin(T1_metPhi);
 
-  //Run over same jets that were produced with MET tools
+  LorentzVector jetp4_unshift_vsum(0,0,0,0);
+  LorentzVector jetp4_shifted_vsum(0,0,0,0);
+  
+  for(unsigned int iJet = 0; iJet < cms3.pfjets_p4().size(); iJet++){
+
+	LorentzVector jetp4_uncorr = cms3.pfjets_p4().at(iJet)*cms3.pfjets_undoJEC().at(iJet);
+
+	// get L1FastL2L3 total correction
+	jet_corrector->setRho   ( cms3.evt_fixgridfastjet_all_rho()      );
+	jet_corrector->setJetA  ( cms3.pfjets_area().at(iJet) );
+	jet_corrector->setJetPt ( jetp4_uncorr.pt()                      );
+	jet_corrector->setJetEta( jetp4_uncorr.eta()                     );
+
+	//Note the subcorrections are stored with corr_vals(N) = corr(N)*corr(N-1)*...*corr(1)
+	vector<float> corr_vals = jet_corrector->getSubCorrections();
+
+	double corr             = corr_vals.at(corr_vals.size()-1); // All corrections
+
+	double shift = 0.0;
+	if (jecUnc != 0) {
+	  jecUnc->setJetEta(jetp4_uncorr.eta()); 
+	  jecUnc->setJetPt(jetp4_uncorr.pt()*corr); 
+	  double unc = jecUnc->getUncertainty(true);
+	  if( cms3.evt_isRealData() && corr_vals.size() == 4 ) shift = sqrt(unc*unc + pow((corr_vals.at(corr_vals.size()-1)/corr_vals.at(corr_vals.size()-2)-1.),2));	  
+	  else                                                 shift = unc;
+	}
+
+	double totalshift = 1.0;
+	if (jecUnc != 0) {
+	  if (uncUp) totalshift += shift;
+	  else  totalshift      -= shift;
+	}
+
+	if ( corr * jetp4_uncorr.pt() > 15. ){		  
+	  jetp4_unshift_vsum += jetp4_uncorr*corr;
+	  jetp4_shifted_vsum += jetp4_uncorr*corr*totalshift;
+	}				  
+
+  }
+
   for(unsigned int iJet = 0; iJet < cms3.pfjets_p4().size(); iJet++){
 
 	// // get uncorrected jet p4 to use as input for corrections
@@ -196,14 +247,6 @@ pair <float, float> getT1CHSMET_fromMINIAOD( FactorizedJetCorrector * jet_correc
 	double corr             = corr_vals.at(corr_vals.size()-1); // All corrections
 	double corr_l1          = corr_vals.at(0);                  // offset correction
 
-	if (jecUnc != 0 && fabs(jetp4_uncorr.eta()) < 5.4) {
-	  jecUnc->setJetEta(jetp4_uncorr.eta()); 
-	  jecUnc->setJetPt(jetp4_uncorr.pt()*corr); 
-	  double unc = jecUnc->getUncertainty(true);
-	  if (uncUp) corr=corr*(1+unc);
-	  else  corr=corr*(1-unc);
-	}
-	  
 	//	
 	// remove SA or global muons from jets before correcting
 	//
@@ -214,21 +257,19 @@ pair <float, float> getT1CHSMET_fromMINIAOD( FactorizedJetCorrector * jet_correc
 		jetp4_uncorr -= cms3.pfcands_p4()   .at(index);
 	  }
 	}
-			  
-	if (corr * jetp4_uncorr.pt() > 15.){		  
+
+	if ( corr * jetp4_uncorr.pt() > 15. ){		  
 	  T1_metx += jetp4_uncorr.px() * ( corr_l1 - corr );
 	  T1_mety += jetp4_uncorr.py() * ( corr_l1 - corr );
-	  unclustered_metx += jetp4_uncorr.px();
-	  unclustered_mety += jetp4_uncorr.py();
 	}
 
   }
-	  
-  if (doUnclusteredUnc != 0) {
-    T1_metx -= unclustered_metx * 0.10 * (float)doUnclusteredUnc; // using 10% from 8 TeV
-    T1_mety -= unclustered_mety * 0.10 * (float)doUnclusteredUnc; // using 10% from 8 TeV
-  }
-	  
+
+  T1_metx += jetp4_unshift_vsum.px();
+  T1_mety += jetp4_unshift_vsum.py();
+  T1_metx -= jetp4_shifted_vsum.px();
+  T1_mety -= jetp4_shifted_vsum.py();
+
   T1_met    = std::sqrt(pow(T1_metx, 2) + pow(T1_mety, 2));
   T1_metPhi = std::atan2(T1_mety, T1_metx);
 
@@ -400,4 +441,3 @@ pair <float, float> getT1CHSMET3p0(   FactorizedJetCorrector * jet_corrector ){
 
   return make_pair(T1_met, T1_metPhi);
 }
-
