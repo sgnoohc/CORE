@@ -260,7 +260,7 @@ std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector*
     result_btags.push_back(Jet(i, JEC)); 
   }
 
-  ////Now clean the jets
+  //Now clean the jets
   vector <bool> keep_jets  = cleanJets(result_jets); 
   vector <bool> keep_btags = cleanJets(result_btags); 
 
@@ -294,6 +294,7 @@ vector <bool> cleanJets(vector <Jet> result_jets){
     //Clean jets
     float dRmin = 10000;
     for (unsigned int iJet = 0; iJet < result_jets.size(); iJet++){
+      if (result.size() > 0 && result.at(iJet) == 0) continue;
       Jet jet = result_jets.at(iJet); 
       if (jet.idx() < 0) continue; 
       float dR = ROOT::Math::VectorUtil::DeltaR(jet.p4(), electron);
@@ -302,12 +303,14 @@ vector <bool> cleanJets(vector <Jet> result_jets){
         if (dR < 0.4) removeJet = iJet;
       }
     }
+    if (removeJet >= 0 && result.size() == 0){
+      for (unsigned int i = 0; i < result_jets.size(); i++){
+        if (i == (unsigned)removeJet){ result.push_back(false); }
+        else result.push_back(true); 
+      }
+    }
+    else if (removeJet >= 0) result[removeJet] = false; 
   }
-  for (unsigned int i = 0; i < result_jets.size(); i++){
-    if (i == (unsigned)removeJet) result.push_back(false);  
-    else result.push_back(true); 
-  }
-  
   //Jet cleaning -- muons
   for (unsigned int muidx = 0; muidx < tas::mus_p4().size(); muidx++){
     LorentzVector muon = tas::mus_p4().at(muidx);
@@ -317,6 +320,7 @@ vector <bool> cleanJets(vector <Jet> result_jets){
     float dRmin = 10000;
     removeJet = -1; 
     for (unsigned int iJet = 0; iJet < result_jets.size(); iJet++){
+      if (result.size() > 0 && result.at(iJet) == 0) continue;
       Jet jet = result_jets.at(iJet); 
       if (jet.idx() < 0) continue; 
       float dR = ROOT::Math::VectorUtil::DeltaR(jet.p4(), muon);
