@@ -541,6 +541,15 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
    return true;
    break;
 
+   case(STOP_loose_v3):
+     if (!isLooseMuonPOG(muIdx)) return false;
+     if (fabs(mus_dxyPV()             .at(muIdx)) >  0.1   ) return false;
+     if (fabs(mus_dzPV()              .at(muIdx)) >  0.5   ) return false;
+     //if (muMiniRelIso(muIdx, true, 0.5, true, false) > 0.2) return false;
+     if (muMiniRelIsoCMS3_EA(muIdx,1)                   > 0.2) return false;
+   return true;
+   break;
+
    /////////////////////
    /// STOP medium ///
    /////////////////////
@@ -569,12 +578,13 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
       if (muRelIso03DB(muIdx) >= 0.15) return false;
        return true;
        break;
+
     case(STOP_tight_v2):
       if (!isTightMuonPOG(muIdx)) return false;
       if (fabs(mus_dxyPV()             .at(muIdx)) >  0.02  ) return false;
       if (fabs(mus_dzPV()              .at(muIdx)) >  0.1   ) return false;
       //if (muMiniRelIso(muIdx, true, 0.5, true, false) > 0.1) return false;
-      if (muMiniRelIsoCMS3_DB(muIdx)                   > 0.1) return false;
+      if (muMiniRelIsoCMS3_EA(muIdx,1)                   > 0.1) return false;
        return true;
        break;
 
