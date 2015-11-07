@@ -285,6 +285,9 @@ std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector*
 
 vector <bool> cleanJets(vector <Jet> result_jets){
   vector <bool> result;
+  for (unsigned int i = 0; i < result_jets.size(); i++){ 
+    result.push_back(1); 
+  }
   //Jet cleaning -- electrons
    int removeJet = -1; 
   for (unsigned int eidx = 0; eidx < tas::els_p4().size(); eidx++){
@@ -303,13 +306,7 @@ vector <bool> cleanJets(vector <Jet> result_jets){
         if (dR < 0.4) removeJet = iJet;
       }
     }
-    if (removeJet >= 0 && result.size() == 0){
-      for (unsigned int i = 0; i < result_jets.size(); i++){
-        if (i == (unsigned)removeJet){ result.push_back(false); }
-        else result.push_back(true); 
-      }
-    }
-    else if (removeJet >= 0) result[removeJet] = false; 
+    if (removeJet >= 0) result[removeJet] = false; 
   }
   //Jet cleaning -- muons
   for (unsigned int muidx = 0; muidx < tas::mus_p4().size(); muidx++){
