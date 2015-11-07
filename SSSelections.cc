@@ -329,7 +329,13 @@ vector <bool> cleanJets(vector <Jet> result_jets){
         if (dR < 0.4) removeJet = iJet;
       }
     }
-    if (removeJet >= 0) result[removeJet] = false; 
+    if (removeJet >= 0 && result.size() == 0){
+      for (unsigned int i = 0; i < result_jets.size(); i++){
+        if (i == (unsigned)removeJet){ result.push_back(false); }
+        else result.push_back(true); 
+      }
+    }
+    else if (removeJet >= 0) result[removeJet] = false; 
   }
 
   //Now we're done
