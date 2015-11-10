@@ -143,7 +143,7 @@ private:
 };
 
 struct Jet {
-Jet(int idxx,float __CSVv2,float __CSVsm,float __CSVse,float __CSVtche,bool is_puppi = false):idx_(idxx),_CSVv2(__CSVv2),_CSVsm(__CSVsm),_CSVse(__CSVse),_CSVtche(__CSVtche),_is_puppi(is_puppi) {}
+Jet(int idxx,float __CSVv2,float __CSVsm,float __CSVse,float __CSVtche,bool is_puppi):idx_(idxx),_CSVv2(__CSVv2),_CSVsm(__CSVsm),_CSVse(__CSVse),_CSVtche(__CSVtche),_is_puppi(is_puppi) {}
   LorentzVector p4() { if(_is_puppi) return cms3.pfjets_puppi_p4()[idx_]; else return cms3.pfjets_p4()[idx_]; }
   float pt() {return p4().pt();}
   float eta() {return p4().eta();}

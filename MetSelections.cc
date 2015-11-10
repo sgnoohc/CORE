@@ -425,3 +425,57 @@ pair <float, float> getT1CHSMET3p0(   FactorizedJetCorrector * jet_corrector ){
 
   return make_pair(T1_met, T1_metPhi);
 }
+
+metStruct METpuppi() {
+
+  double pX(0), pY(0), set(0);
+  for (unsigned int i=0; i<pfcands_p4().size(); ++i){
+    
+    pX -= pfcands_p4().at(i).px()*pfcands_puppiWeight().at(i);
+    pY -= pfcands_p4().at(i).py()*pfcands_puppiWeight().at(i);
+    set += pfcands_p4().at(i).pt()*pfcands_puppiWeight().at(i);
+
+  }
+  
+  metStruct met;
+  met.met     = sqrt(pX * pX + pY * pY);
+  met.metphi  = atan2(pY, pX);
+  met.metx = pX;
+  met.mety = pY;
+  met.sumet = set;
+  return met;
+}
+
+metStruct trackerMETpuppi(float deltaZCut, const std::vector<LorentzVector>* jets) {
+
+  if ( vtxs_isFake().empty() ) return metStruct();
+  double pX(0), pY(0);
+  
+  for (unsigned int i=0; i<pfcands_particleId().size(); ++i){
+    if ( pfcands_charge().at(i)==0 ) continue;
+    if ( jets ){
+      bool matched = false;
+      for ( std::vector<LorentzVector>::const_iterator jet = jets->begin(); jet != jets->end(); ++jet )
+    	if ( fabs(ROOT::Math::VectorUtil::DeltaR(pfcands_p4().at(i),*jet))<0.5 ) matched=true;
+      if (matched) continue;
+    }
+    
+    if ( fabs(pfcands_dz().at(i)) > deltaZCut) continue;
+    
+    pX -= pfcands_p4().at(i).px()*pfcands_puppiWeight().at(i);
+    pY -= pfcands_p4().at(i).py()*pfcands_puppiWeight().at(i);
+  }
+  
+  if (jets){
+    for ( std::vector<LorentzVector>::const_iterator jet = jets->begin(); jet != jets->end(); ++jet ){
+      pX -= jet->px();
+      pY -= jet->py();
+    }
+  }
+  metStruct met;
+  met.met     = sqrt(pX * pX + pY * pY);
+  met.metphi  = atan2(pY, pX);
+  met.metx = pX;
+  met.mety = pY;
+  return met;
+}

@@ -17,6 +17,8 @@ class FactorizedJetCorrector;
 class JetCorrectionUncertainty;
 
 metStruct trackerMET(float deltaZCut = 0.2, const std::vector<LorentzVector>* jets = 0);
+metStruct trackerMETpuppi(float deltaZCut = 0.2, const std::vector<LorentzVector>* jets = 0);
+metStruct METpuppi();
 bool hbheNoiseFilter(int minZeros = 999);
 bool hbheNoiseFilter_25ns(int minZeros = 999);
 bool hbheIsoNoiseFilter();
