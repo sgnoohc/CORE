@@ -616,7 +616,7 @@ bool isGoodMuon(unsigned int muidx){
 int lepMotherID(Lep lep){
   if (abs(lep.pdgId()) != abs(lep.mc_id())) return 0; 
   if (tas::evt_isRealData()) return 1;
-  else if (isFromZ(lep.pdgId(),lep.idx()) || isFromW(lep.pdgId(),lep.idx())){
+  else if (isFromSUSY(lep.pdgId(),lep.idx()) ||isFromZ(lep.pdgId(),lep.idx()) || isFromW(lep.pdgId(),lep.idx())){
     if (sgn(lep.pdgId()) == sgn(lep.mc_id())) return 1;
     else return 2;
   }

@@ -12,6 +12,7 @@
 int  dumpDocLines();
 
 //Parentage functions
+bool isFromSUSY(int id, int idx);
 bool isFromW(int id, int idx);
 bool isFromZ(int id, int idx);
 bool isFromB(int id, int idx);
