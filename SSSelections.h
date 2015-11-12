@@ -50,8 +50,8 @@ bool isDenominatorLepton(int id, int idx);
 bool isVetoLepton(int id, int idx);
 
 //Hyp selections
-hyp_result_t chooseBestHyp(bool expt, bool verbose=false);
-int isGoodHyp(int iHyp, bool expt, bool verbose=false);
+hyp_result_t chooseBestHyp(bool verbose=false);
+int isGoodHyp(int iHyp, bool verbose=false);
 bool makesExtraGammaStar(int iHyp);
 Z_result_t makesExtraZ(int iHyp);
 bool hypsFromFirstGoodVertex(size_t hypIdx, float dz_cut = 1.0);
@@ -82,7 +82,7 @@ bool isGoodMuonNoIso(unsigned int muidx);
 bool isGoodMuon(unsigned int muidx);
 bool isIsolatedLepton(int id, int idx);
 bool isLooseIsolatedLepton(int id, int idx);
-bool isInSituFRLepton(int lep_id, int lep_idx, bool expt);
+bool isInSituFRLepton(int lep_id, int lep_idx);
 
 //MC truth functions
 int lepMotherID(Lep lep);

@@ -356,10 +356,9 @@ bool isGoodLeptonNoIso(int id, int idx){
   return false;
 }
 
-bool isInSituFRLepton(int id, int idx, bool expt){
+bool isInSituFRLepton(int id, int idx){
   if (abs(id) == 11){
-    if (!expt && !electronID(idx, SS_medium_noip_v5) && !electronID(idx, SS_medium_v5)) return false;
-    if (expt && !electronID(idx, SS_medium_looseMVA_noip_v5) && !electronID(idx, SS_medium_v5)) return false;
+    if (!electronID(idx, SS_medium_noip_v5) && !electronID(idx, SS_medium_v5)) return false;
   }
   if (abs(id) == 13){
     if (!muonID(idx, SS_fo_noiso_noip_v5) && !muonID(idx, SS_fo_noiso_v5)) return false;
@@ -625,7 +624,7 @@ int lepMotherID(Lep lep){
   return 0;
 }
 
-int isGoodHyp(int iHyp, bool expt, bool verbose){
+int isGoodHyp(int iHyp, bool verbose){
 
   //Bunch o' variables
   float pt_ll = tas::hyp_ll_p4().at(iHyp).pt(); 
@@ -642,8 +641,8 @@ int isGoodHyp(int iHyp, bool expt, bool verbose){
   bool passed_id_numer_lt = isGoodLepton(id_lt, idx_lt);
   bool passed_id_denom_ll = isDenominatorLepton(id_ll, idx_ll);
   bool passed_id_denom_lt = isDenominatorLepton(id_lt, idx_lt);
-  bool passed_id_inSituFR_ll = isInSituFRLepton(id_ll, idx_ll, expt);
-  bool passed_id_inSituFR_lt = isInSituFRLepton(id_lt, idx_lt, expt);
+  bool passed_id_inSituFR_ll = isInSituFRLepton(id_ll, idx_ll);
+  bool passed_id_inSituFR_lt = isInSituFRLepton(id_lt, idx_lt);
   bool extraZ = makesExtraZ(iHyp).result;
   bool extraGammaStar = makesExtraGammaStar(iHyp);
 
@@ -695,7 +694,7 @@ int isGoodHyp(int iHyp, bool expt, bool verbose){
   return 0; //non-highpass OS
 }
 
-hyp_result_t chooseBestHyp(bool expt, bool verbose){
+hyp_result_t chooseBestHyp(bool verbose){
 
   //List of good hyps
   vector <int> good_hyps_ss; //same sign, tight tight
@@ -705,7 +704,7 @@ hyp_result_t chooseBestHyp(bool expt, bool verbose){
   vector <int> good_hyps_os; //opposite sign, tight tight
   vector <int> good_hyps_zv; //same sign, tight tight, fail Z veto
   for (unsigned int i = 0; i < tas::hyp_type().size(); i++){
-    int good_hyp_result = isGoodHyp(i, expt, verbose);
+    int good_hyp_result = isGoodHyp(i, verbose);
     if (good_hyp_result == 3) good_hyps_ss.push_back(i); 
     else if (good_hyp_result == 2) good_hyps_sf.push_back(i); 
     else if (good_hyp_result == 1) good_hyps_df.push_back(i); 
