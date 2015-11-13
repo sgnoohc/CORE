@@ -558,7 +558,7 @@ int signalRegionRed(int njets, int nbtags, float met, float ht, float mt_min, in
       if (nbtags == 0 && mt_min < 120 && met < 200 && njets <= 4) return 1; 
       if (nbtags == 0) return 3; 
       if (nbtags == 1 && mt_min < 120 && met < 200 && njets <= 4) return 6; 
-      if (nbtags == 1) return 9; 
+      if (nbtags == 1) return 8; 
       if (nbtags == 2 && mt_min < 120 && met < 200 && njets <= 4) return 11; 
       if (nbtags == 2) return 13; 
       if (nbtags >= 3 && mt_min < 120 && met < 200) return 16; 
@@ -573,7 +573,7 @@ int signalRegionRed(int njets, int nbtags, float met, float ht, float mt_min, in
       } 
       if (nbtags == 1){
         if (mt_min < 120 && met < 200 && njets <= 4) return 7; 
-        if (mt_min < 120 && met < 200 && njets > 4) return 8; 
+        if (mt_min < 120 && met < 200 && njets > 4) return 9; 
         return 10;
       } 
       if (nbtags == 2){
