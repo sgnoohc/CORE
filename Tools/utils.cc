@@ -9,7 +9,7 @@ float DeltaR(float eta1, float eta2, float phi1, float phi2){
 }
 
 float DeltaR(LorentzVector v1, LorentzVector v2){
-  return DeltaR(v1.eta(), v1.phi(), v2.eta(), v2.phi()); 
+  return DeltaR(v1.eta(), v2.eta(), v1.phi(), v2.phi()); 
 }
 
 float DeltaPhi(float phi1, float phi2){
