@@ -12,6 +12,10 @@ void eventFilter::loadBadEventList( std::string listname )
 
   std::ifstream filterFile;
   filterFile.open(listname.c_str());
+  if (!filterFile.is_open()) {
+    std::cout << "eventFilter::loadBadEventList: ERROR: couldn't open file: " << listname << std::endl;
+    return;
+  }
   unsigned long int run = 0;
   unsigned long int lumi = 0;
   unsigned long int event = 0;
