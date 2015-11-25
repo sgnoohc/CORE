@@ -28,4 +28,7 @@ bool useSourceId(int sourceId);
 bool terminateSourceId(int motherId);
 bool terminateMotherId(int motherId);
 
+// top pt reweighting
+float topPtWeight(float pt_top, float pt_tbar);
+
 #endif
