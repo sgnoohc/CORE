@@ -1074,5 +1074,6 @@ float coneCorrPt(int id, int idx){
 }
 
 float ptCutLowAG(int id){
-  return ((abs(id) == 11) ? 15 : 10); 
+  return 10;
+  //return ((abs(id) == 11) ? 15 : 10); 
 }
