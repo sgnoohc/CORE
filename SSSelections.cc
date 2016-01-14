@@ -221,7 +221,7 @@ Z_result_t makesExtraZ(int iHyp){
 }
 
 //doCorr: 0-built-in, 1-corrected, 2-raw
-std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector* jetCorr, int doCorr, bool saveAllPt){
+std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector* jetCorr, int doCorr, bool isFastsim, bool saveAllPt){
   vector <Jet> result_jets;
   vector <Jet> result_btags;
 
@@ -245,7 +245,7 @@ std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector*
     if (fabs(jet.eta()) > 2.4) continue;
 
     //Require loose jet ID
-    if (!isLoosePFJet_50nsV1(i)) continue;
+    if (!isFastsim && !isLoosePFJet_50nsV1(i)) continue;
     
     //Get discriminator
     float disc = tas::pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag().at(i);
