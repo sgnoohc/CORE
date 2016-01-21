@@ -728,6 +728,71 @@ int lepMotherID(Lep lep){
   return 0;
 }
 
+pair <int, int> lepMotherID_v2(Lep lep){
+  int id_reco = lep.pdgId();  
+  if (abs(id_reco) != 11 && abs(id_reco) != 13) return make_pair(0, 0); 
+  int idx_reco = lep.idx(); 
+  LorentzVector recop4 = (abs(id_reco) == 11) ? tas::els_p4().at(idx_reco) : tas::mus_p4().at(idx_reco);  
+
+  //First, see if CMS3 matches the particle to the right type, or can't match it at all.  If it does, just use that
+  int gen_idx = (abs(id_reco) == 11) ? tas::els_mc3idx().at(idx_reco) : tas::mus_mc3idx().at(idx_reco); 
+  int ourID = (gen_idx >= 0) ? tas::genps_id().at(gen_idx) : -9999;
+  int idx = -1;
+  int id = -1; 
+  if ((abs(ourID) == abs(id_reco)) || ourID == -9999){
+    idx = gen_idx;
+    id = ourID; 
+  }
+  //Otherwise, have to loop over gen using Lesya's method
+  else {
+    bool goodOne = false;
+    float dR_best = 1000;
+    for (unsigned int iGen = 0; iGen < tas::genps_p4().size(); iGen++){
+      float dR = DeltaR(tas::genps_p4().at(iGen), recop4);  
+      //First see if this one is closer than alternatives
+      if (dR < dR_best && goodOne == false){ 
+        dR_best = dR; 
+        idx = iGen;
+        id = tas::genps_id().at(iGen); 
+      }
+      //Now regardless of that, see if we can get a "good" match
+      if (dR > 0.2) continue;
+      if (abs(tas::genps_id().at(iGen)) != abs(id_reco)) continue;
+      if (abs(tas::genps_status().at(iGen)) != 1) continue; 
+      if (dR < dR_best || !goodOne){
+        goodOne = true;
+        dR_best = dR; 
+        idx = iGen;
+        id = tas::genps_id().at(iGen); 
+      }
+    }
+  }
+ 
+  //If you get here and idx < 0, failed to match
+  if (idx < 0) return make_pair(0, idx); 
+
+  //Mother & Grandma ID
+  int mother_id = tas::genps_id_mother().at(idx);
+  int grandma_id = tas::genps_id_mother().at(tas::genps_idx_mother().at(idx));  
+
+  //Now we are matched, classify it
+  if ((abs(id) != abs(id_reco)) && abs(id) != 22) return make_pair(0, idx); 
+  if (tas::evt_isRealData()) return make_pair(1, idx);
+  if (abs(id) == 22){
+    if (tas::genps_isPromptFinalState().at(idx) || tas::genps_isHardProcess().at(idx)) return make_pair(-3, idx);
+    else return make_pair(0, idx); 
+  }
+  //If you get here, we have a well-matched MC particle.  Now check its pedigree.
+  if (tas::genps_isPromptFinalState().at(idx) || tas::genps_isHardProcess().at(idx) || (abs(id) == abs(id_reco) && (abs(mother_id) == 24 || abs(mother_id) == 23 || abs(mother_id) == 1000024 || (abs(mother_id) == 15 && (abs(grandma_id) == 24 || abs(grandma_id) == 23 || abs(grandma_id) == 1000024))))){
+    if (sgn(id_reco) == sgn(id)) return make_pair(1, idx);
+    else return make_pair(2, idx);
+  }
+  else if (idIsBeauty(mother_id)) return make_pair(-1, idx);
+  else if ( idIsCharm(mother_id)) return make_pair(-2, idx);
+  return make_pair(0, idx);
+
+}
+
 int isGoodHyp(int iHyp, bool verbose){
 
   //Bunch o' variables
