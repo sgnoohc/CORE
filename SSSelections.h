@@ -11,6 +11,7 @@
 #include "IsolationTools.h"
 #include "Math/VectorUtil.h"
 #include "Tools/JetCorrector.h"
+#include "Tools/utils.h"
 
 const static float ptCutHigh = 25.;
 const static int   ssWhichCorr = 2;
@@ -87,6 +88,7 @@ bool isInSituFRLepton(int lep_id, int lep_idx);
 
 //MC truth functions
 int lepMotherID(Lep lep);
+pair <int, int> lepMotherID_v2(Lep lep);
 int lepMotherID_inSituFR(Lep lep);
 
 //Jet selection function
