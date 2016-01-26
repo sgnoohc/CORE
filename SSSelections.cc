@@ -778,7 +778,7 @@ pair <int, int> lepMotherID_v2(Lep lep){
   //Now we are matched, classify it
   if ((abs(id) != abs(id_reco)) && abs(id) != 22) return make_pair(0, idx); 
   if (tas::evt_isRealData()) return make_pair(1, idx);
-  if (abs(id) == 22 || (abs(id) == abs(id_reco) && abs(mother_id) == 22)){
+  if (abs(id) == 22 || tas::genps_isDirectPromptTauDecayProductFinalState().at(idx) || (abs(id) == abs(id_reco) && abs(mother_id) == 22)){
     if (tas::genps_isPromptFinalState().at(idx) || tas::genps_isHardProcess().at(idx)) return make_pair(-3, idx);
     else return make_pair(0, idx); 
   }
