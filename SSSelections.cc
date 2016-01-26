@@ -783,7 +783,7 @@ pair <int, int> lepMotherID_v2(Lep lep){
     else return make_pair(0, idx); 
   }
   //If you get here, we have a well-matched MC particle.  Now check its pedigree.
-  if (tas::genps_isPromptFinalState().at(idx) || tas::genps_isHardProcess().at(idx) || (abs(id) == abs(id_reco) && (abs(mother_id) == 24 || abs(mother_id) == 23 || abs(mother_id) == 1000024 || (abs(mother_id) == 15 && (abs(grandma_id) == 24 || abs(grandma_id) == 23 || abs(grandma_id) == 1000024))))){
+  if (tas::genps_isPromptFinalState().at(idx) || tas::genps_isDirectPromptTauDecayProductFinalState().at(idx) || tas::genps_isHardProcess().at(idx) || (abs(id) == abs(id_reco) && (abs(mother_id) == 24 || abs(mother_id) == 23 || abs(mother_id) == 1000024 || (abs(mother_id) == 15 && (abs(grandma_id) == 24 || abs(grandma_id) == 23 || abs(grandma_id) == 1000024))))){
     if (sgn(id_reco) == sgn(id)) return make_pair(1, idx);
     else return make_pair(2, idx);
   }
