@@ -2708,6 +2708,11 @@ void CMS3::Init(TTree *tree) {
 		pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch = tree->GetBranch(tree->GetAlias("pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag"));
 		if (pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch) {pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch->SetAddress(&pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_);}
 	}
+	pfjets_pfCombinedMVAV2BJetTags_branch = 0;
+	if (tree->GetAlias("pfjets_pfCombinedMVAV2BJetTags") != 0) {
+		pfjets_pfCombinedMVAV2BJetTags_branch = tree->GetBranch(tree->GetAlias("pfjets_pfCombinedMVAV2BJetTags"));
+		if (pfjets_pfCombinedMVAV2BJetTags_branch) {pfjets_pfCombinedMVAV2BJetTags_branch->SetAddress(&pfjets_pfCombinedMVAV2BJetTags_);}
+	}
 	pfjets_photonE_branch = 0;
 	if (tree->GetAlias("pfjets_photonE") != 0) {
 		pfjets_photonE_branch = tree->GetBranch(tree->GetAlias("pfjets_photonE"));
@@ -2777,6 +2782,11 @@ void CMS3::Init(TTree *tree) {
 	if (tree->GetAlias("pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag") != 0) {
 		pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch = tree->GetBranch(tree->GetAlias("pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag"));
 		if (pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch) {pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch->SetAddress(&pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag_);}
+	}
+	pfjets_puppi_pfCombinedMVAV2BJetTags_branch = 0;
+	if (tree->GetAlias("pfjets_puppi_pfCombinedMVAV2BJetTags") != 0) {
+		pfjets_puppi_pfCombinedMVAV2BJetTags_branch = tree->GetBranch(tree->GetAlias("pfjets_puppi_pfCombinedMVAV2BJetTags"));
+		if (pfjets_puppi_pfCombinedMVAV2BJetTags_branch) {pfjets_puppi_pfCombinedMVAV2BJetTags_branch->SetAddress(&pfjets_puppi_pfCombinedMVAV2BJetTags_);}
 	}
 	pfjets_puppi_photonE_branch = 0;
 	if (tree->GetAlias("pfjets_puppi_photonE") != 0) {
@@ -6050,6 +6060,7 @@ void CMS3::GetEntry(unsigned int idx)
 		pfjets_neutralEmE_isLoaded = false;
 		pfjets_neutralHadronE_isLoaded = false;
 		pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_isLoaded = false;
+		pfjets_pfCombinedMVAV2BJetTags_isLoaded = false;
 		pfjets_photonE_isLoaded = false;
 		pfjets_pileupJetId_isLoaded = false;
 		pfjets_undoJEC_isLoaded = false;
@@ -6064,6 +6075,7 @@ void CMS3::GetEntry(unsigned int idx)
 		pfjets_puppi_neutralEmE_isLoaded = false;
 		pfjets_puppi_neutralHadronE_isLoaded = false;
 		pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag_isLoaded = false;
+		pfjets_puppi_pfCombinedMVAV2BJetTags_isLoaded = false;
 		pfjets_puppi_photonE_isLoaded = false;
 		pfjets_puppi_pileupJetId_isLoaded = false;
 		pfjets_puppi_undoJEC_isLoaded = false;
@@ -7155,6 +7167,7 @@ void CMS3::LoadAllBranches()
 	if (pfjets_neutralEmE_branch != 0) pfjets_neutralEmE();
 	if (pfjets_neutralHadronE_branch != 0) pfjets_neutralHadronE();
 	if (pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch != 0) pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag();
+	if (pfjets_pfCombinedMVAV2BJetTags_branch != 0) pfjets_pfCombinedMVAV2BJetTags();
 	if (pfjets_photonE_branch != 0) pfjets_photonE();
 	if (pfjets_pileupJetId_branch != 0) pfjets_pileupJetId();
 	if (pfjets_undoJEC_branch != 0) pfjets_undoJEC();
@@ -7169,6 +7182,7 @@ void CMS3::LoadAllBranches()
 	if (pfjets_puppi_neutralEmE_branch != 0) pfjets_puppi_neutralEmE();
 	if (pfjets_puppi_neutralHadronE_branch != 0) pfjets_puppi_neutralHadronE();
 	if (pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch != 0) pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag();
+	if (pfjets_puppi_pfCombinedMVAV2BJetTags_branch != 0) pfjets_puppi_pfCombinedMVAV2BJetTags();
 	if (pfjets_puppi_photonE_branch != 0) pfjets_puppi_photonE();
 	if (pfjets_puppi_pileupJetId_branch != 0) pfjets_puppi_pileupJetId();
 	if (pfjets_puppi_undoJEC_branch != 0) pfjets_puppi_undoJEC();
@@ -14749,6 +14763,19 @@ void CMS3::LoadAllBranches()
 		}
 		return pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_;
 	}
+	const vector<float> &CMS3::pfjets_pfCombinedMVAV2BJetTags()
+	{
+		if (not pfjets_pfCombinedMVAV2BJetTags_isLoaded) {
+			if (pfjets_pfCombinedMVAV2BJetTags_branch != 0) {
+				pfjets_pfCombinedMVAV2BJetTags_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_pfCombinedMVAV2BJetTags_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_pfCombinedMVAV2BJetTags_isLoaded = true;
+		}
+		return pfjets_pfCombinedMVAV2BJetTags_;
+	}
 	const vector<float> &CMS3::pfjets_photonE()
 	{
 		if (not pfjets_photonE_isLoaded) {
@@ -14930,6 +14957,19 @@ void CMS3::LoadAllBranches()
 			pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag_isLoaded = true;
 		}
 		return pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag_;
+	}
+	const vector<float> &CMS3::pfjets_puppi_pfCombinedMVAV2BJetTags()
+	{
+		if (not pfjets_puppi_pfCombinedMVAV2BJetTags_isLoaded) {
+			if (pfjets_puppi_pfCombinedMVAV2BJetTags_branch != 0) {
+				pfjets_puppi_pfCombinedMVAV2BJetTags_branch->GetEntry(index);
+			} else { 
+				printf("branch pfjets_puppi_pfCombinedMVAV2BJetTags_branch does not exist!\n");
+				exit(1);
+			}
+			pfjets_puppi_pfCombinedMVAV2BJetTags_isLoaded = true;
+		}
+		return pfjets_puppi_pfCombinedMVAV2BJetTags_;
 	}
 	const vector<float> &CMS3::pfjets_puppi_photonE()
 	{
@@ -22633,6 +22673,7 @@ namespace tas {
 	const vector<float> &pfjets_neutralEmE() { return cms3.pfjets_neutralEmE(); }
 	const vector<float> &pfjets_neutralHadronE() { return cms3.pfjets_neutralHadronE(); }
 	const vector<float> &pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag() { return cms3.pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag(); }
+	const vector<float> &pfjets_pfCombinedMVAV2BJetTags() { return cms3.pfjets_pfCombinedMVAV2BJetTags(); }
 	const vector<float> &pfjets_photonE() { return cms3.pfjets_photonE(); }
 	const vector<float> &pfjets_pileupJetId() { return cms3.pfjets_pileupJetId(); }
 	const vector<float> &pfjets_undoJEC() { return cms3.pfjets_undoJEC(); }
@@ -22647,6 +22688,7 @@ namespace tas {
 	const vector<float> &pfjets_puppi_neutralEmE() { return cms3.pfjets_puppi_neutralEmE(); }
 	const vector<float> &pfjets_puppi_neutralHadronE() { return cms3.pfjets_puppi_neutralHadronE(); }
 	const vector<float> &pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag() { return cms3.pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag(); }
+	const vector<float> &pfjets_puppi_pfCombinedMVAV2BJetTags() { return cms3.pfjets_puppi_pfCombinedMVAV2BJetTags(); }
 	const vector<float> &pfjets_puppi_photonE() { return cms3.pfjets_puppi_photonE(); }
 	const vector<float> &pfjets_puppi_pileupJetId() { return cms3.pfjets_puppi_pileupJetId(); }
 	const vector<float> &pfjets_puppi_undoJEC() { return cms3.pfjets_puppi_undoJEC(); }

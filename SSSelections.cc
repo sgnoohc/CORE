@@ -439,7 +439,7 @@ int signalRegion(int njets, int nbtags, float met, float ht, float mt_min, int i
 
   //High-high
   if (lep_pt == HighHigh){
-    if (met >= 300) return 31;
+    if (met >= 300 && ht >= 300) return 31;
     if (ht >= 1125) return 32; 
     if (ht < 300){
       if (nbtags == 0 && mt_min < 120 && met < 200 && njets <= 4) return 1; 
@@ -487,7 +487,7 @@ int signalRegion(int njets, int nbtags, float met, float ht, float mt_min, int i
   
   //High-Low
   if (lep_pt == HighLow){
-    if (met >= 300) return 25;
+    if (met >= 300 && ht >= 300) return 25;
     if (ht >= 1125) return 26;
     if (ht < 300){ 
       if (nbtags == 0 && met < 200 && njets <= 4) return 1; 
@@ -790,12 +790,12 @@ pair <int, int> lepMotherID_v2(Lep lep){
   //Now we are matched, classify it
   if ((abs(id) != abs(id_reco)) && abs(id) != 22) return make_pair(0, idx); 
   if (tas::evt_isRealData()) return make_pair(1, idx);
-  if (abs(id) == 22 || (abs(id) == abs(id_reco) && abs(mother_id) == 22)){
-    if (tas::genps_isPromptFinalState().at(idx) || tas::genps_isHardProcess().at(idx)) return make_pair(-3, idx);
+  if (abs(id) == 22  || (abs(id) == abs(id_reco) && abs(mother_id) == 22)){
+    if (tas::genps_isPromptFinalState().at(idx) || tas::genps_isDirectPromptTauDecayProductFinalState().at(idx) || tas::genps_isHardProcess().at(idx)) return make_pair(-3, idx);
     else return make_pair(0, idx); 
   }
   //If you get here, we have a well-matched MC particle.  Now check its pedigree.
-  if (tas::genps_isPromptFinalState().at(idx) || tas::genps_isHardProcess().at(idx) || (abs(id) == abs(id_reco) && (abs(mother_id) == 24 || abs(mother_id) == 23 || abs(mother_id) == 1000024 || (abs(mother_id) == 15 && (abs(grandma_id) == 24 || abs(grandma_id) == 23 || abs(grandma_id) == 1000024))))){
+  if (tas::genps_isPromptFinalState().at(idx) || tas::genps_isDirectPromptTauDecayProductFinalState().at(idx) || tas::genps_isHardProcess().at(idx) || (abs(id) == abs(id_reco) && (abs(mother_id) == 24 || abs(mother_id) == 23 || abs(mother_id) == 1000024 || (abs(mother_id) == 15 && (abs(grandma_id) == 24 || abs(grandma_id) == 23 || abs(grandma_id) == 1000024))))){
     if (sgn(id_reco) == sgn(id)) return make_pair(1, idx);
     else return make_pair(2, idx);
   }
