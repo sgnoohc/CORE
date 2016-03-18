@@ -668,6 +668,12 @@ bool isFakableElectron(unsigned int elidx){
   return true;
 }
 
+bool isFakableElectron_no3chg(unsigned int elidx){
+  if (els_p4().at(elidx).pt() < 10.) return false;
+  if (!electronID(elidx, SS_fo_looseMVA_no3chg_v5)) return false;
+  return true;
+}
+
 bool isGoodElectronNoIso(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 10.) return false;
   if (!electronID(elidx, SS_medium_noiso_v5)) return false;
@@ -677,6 +683,12 @@ bool isGoodElectronNoIso(unsigned int elidx){
 bool isGoodElectron(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 10.) return false;
   if (!electronID(elidx, SS_medium_v5)) return false;
+  return true;
+}
+
+bool isGoodElectron_no3chg(unsigned int elidx){
+  if (els_p4().at(elidx).pt() < 10.) return false;
+  if (!electronID(elidx, SS_medium_no3chg_v5)) return false;
   return true;
 }
 
@@ -1033,6 +1045,90 @@ vector <particle_t> getGenPair(bool verbose){
 
 }
 
+pair<Lep, int> getThirdLepton_RA7(int hyp){
+
+  //If hyp_class == 6, save the lepton that triggered the Z veto (so long as it is veto or higher)
+  Z_result_t Zresult = makesExtraZ(hyp);
+  if (Zresult.result == true){
+    Lep result = Lep(Zresult.id, Zresult.idx); 
+    int quality = 0;
+    if (abs(result.pdgId()) == 11 ? !isGoodVetoElectron(result.idx()) : !isGoodVetoMuon(result.idx())) quality = -1;
+    if (abs(result.pdgId()) == 11 ? isFakableElectron_no3chg(result.idx()) : isFakableMuon(result.idx())) quality = 1;
+    if (abs(result.pdgId()) == 11 ? isGoodElectron_no3chg(result.idx()) : isGoodMuon(result.idx())) quality = 2;
+    if (quality >= 0) return pair<Lep, int>(result, quality);
+  }
+  
+  //Otherwise, find the highest-quality lepton possible. 
+
+  //Selected Lepton Information
+  int ll_id = tas::hyp_ll_id().at(hyp);
+  int lt_id = tas::hyp_lt_id().at(hyp);
+  unsigned int ll_idx = tas::hyp_ll_index().at(hyp);
+  unsigned int lt_idx = tas::hyp_lt_index().at(hyp);
+
+  //Store best lepton
+  int lep3_id_ = -1;
+  int lep3_idx_ = -1;
+  int quality = 0;
+  LorentzVector lep3_p4_; 
+
+  //Electron Loop 
+  for (unsigned int i = 0; i < tas::els_p4().size(); i++){
+
+    //Remove electrons already selected
+    if (abs(ll_id) == 11 && ll_idx == i) continue; 
+    if (abs(lt_id) == 11 && lt_idx == i) continue; 
+
+    //Remove electrons that fail kinematically
+    if (tas::els_p4().at(i).pt() < 20) continue;
+    if (fabs(tas::els_p4().at(i).eta()) > 2.4) continue;
+
+    //Remove electrons that fail loosest ID, determine tighter IDs
+    int quality_ = 0;
+    if (!isGoodVetoElectron(i)) continue;
+    if (isFakableElectron_no3chg(i)) quality_ = 1;
+    if (isGoodElectron_no3chg(i)) quality_ = 2;
+
+    //Choose the highest-quality, highest-pT electron 
+    if (quality_ > quality || (quality_ == quality && tas::els_p4().at(i).pt() > lep3_p4_.pt())){
+       quality = quality_;
+       lep3_p4_  = tas::els_p4().at(i); 
+       lep3_id_  = -11*tas::els_charge().at(i);
+       lep3_idx_ = i;
+    } 
+  }
+  
+  //Muon Loop
+  for (unsigned int i = 0; i < tas::mus_p4().size(); i++){
+
+    //Remove electrons already selected
+    if (abs(ll_id) == 13 && ll_idx == i) continue; 
+    if (abs(lt_id) == 13 && lt_idx == i) continue; 
+   
+    //Remove electrons that fail kinematically
+    if (tas::mus_p4().at(i).pt() < 20) continue;
+    if (fabs(tas::mus_p4().at(i).eta()) > 2.4) continue;
+
+    //Remove muons that fail ID
+    int quality_ = 0; 
+    if (!isGoodVetoMuon(i)) continue;
+    if (isFakableMuon(i)) quality_ = 1;
+    if (isGoodMuon(i)) quality_ = 2;
+
+    //Choose the highest-quality, highest-pT electron 
+    if (quality_ > quality || (quality_ == quality && tas::mus_p4().at(i).pt() > lep3_p4_.pt())){
+       quality = quality_;
+       lep3_p4_  = tas::mus_p4().at(i); 
+       lep3_id_  = -13*tas::mus_charge().at(i);
+       lep3_idx_ = i;
+    } 
+
+  }//Muon loop
+
+  Lep result = Lep(lep3_id_, lep3_idx_);
+  return pair<Lep, int>(result, quality);
+
+}
 pair<Lep, int> getThirdLepton(int hyp){
 
   //If hyp_class == 6, save the lepton that triggered the Z veto (so long as it is veto or higher)

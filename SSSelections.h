@@ -57,6 +57,7 @@ bool makesExtraGammaStar(int iHyp);
 Z_result_t makesExtraZ(int iHyp);
 bool hypsFromFirstGoodVertex(size_t hypIdx, float dz_cut = 1.0);
 std::pair<Lep, int> getThirdLepton(int hyp);
+std::pair<Lep, int> getThirdLepton_RA7(int hyp);
 Lep getFourthLepton(int hyp);
 std::vector<particle_t> getGenPair(bool verbose=false);
 
@@ -74,6 +75,7 @@ bool isGoodVetoElectronNoIso(unsigned int elidx);
 bool isGoodVetoElectron(unsigned int elidx);
 bool isFakableElectronNoIso(unsigned int elidx);
 bool isFakableElectron(unsigned int elidx);
+bool isFakableElectron_no3chg(unsigned int elidx);
 bool isGoodElectronNoIso(unsigned int elidx);
 bool isGoodElectron(unsigned int elidx);
 bool isGoodVetoMuonNoIso(unsigned int muidx);

@@ -70,6 +70,12 @@ enum id_level_t {
   SS_medium_v5,
   SS_tight_noiso_v5,
   SS_tight_v5,
+  SS_fo_looseMVA_noiso_noip_no3chg_v5,
+  SS_fo_noiso_no3chg_v5,
+  SS_fo_looseMVA_noiso_no3chg_v5,
+  SS_fo_looseMVA_no3chg_v5,
+  SS_medium_noiso_no3chg_v5,
+  SS_medium_no3chg_v5,
 
   //MT2
   HAD_veto_noiso_v1,
