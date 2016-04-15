@@ -1641,9 +1641,6 @@ protected:
 	vector<float> pfjets_neutralHadronE_;
 	TBranch *pfjets_neutralHadronE_branch;
 	bool pfjets_neutralHadronE_isLoaded;
-	vector<float> pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_;
-	TBranch *pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch;
-	bool pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_isLoaded;
 	vector<float> pfjets_pfCombinedMVAV2BJetTags_;
 	TBranch *pfjets_pfCombinedMVAV2BJetTags_branch;
 	bool pfjets_pfCombinedMVAV2BJetTags_isLoaded;
@@ -3871,7 +3868,6 @@ void LoadAllBranches();
 	const vector<float> &pfjets_muonE();
 	const vector<float> &pfjets_neutralEmE();
 	const vector<float> &pfjets_neutralHadronE();
-	const vector<float> &pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag();
 	const vector<float> &pfjets_pfCombinedMVAV2BJetTags();
 	const vector<float> &pfjets_photonE();
 	const vector<float> &pfjets_pileupJetId();
@@ -4985,7 +4981,6 @@ namespace tas {
 	const vector<float> &pfjets_muonE();
 	const vector<float> &pfjets_neutralEmE();
 	const vector<float> &pfjets_neutralHadronE();
-	const vector<float> &pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag();
 	const vector<float> &pfjets_pfCombinedMVAV2BJetTags();
 	const vector<float> &pfjets_photonE();
 	const vector<float> &pfjets_pileupJetId();

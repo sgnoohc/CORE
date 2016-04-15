@@ -154,7 +154,8 @@ struct Jet {
     float eta() {return p4().eta();}
     float phi() {return p4().phi();}
     float csv() {return tas::getbtagvalue("pfCombinedSecondaryVertexV2BJetTags",idx_);}
-    float csvivf() {return cms3.pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag()[idx_];}
+    float csvivf() {return tas::getbtagvalue("pfCombinedInclusiveSecondaryVertexV2BJetTags",idx_);}
+    // float csvivf() {return cms3.pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag()[idx_];}
     bool isBtag() {return csvivf()>btagCut;}
     int   mc3_id() {return cms3.pfjets_mc3_id()[idx_];}
     LorentzVector genjet_p4() {return cms3.pfjets_mc_p4()[idx_];}
