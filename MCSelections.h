@@ -30,5 +30,6 @@ bool terminateMotherId(int motherId);
 
 // top pt reweighting
 float topPtWeight(float pt_top, float pt_tbar);
+float topPtWeight_cutoff(float pt_top, float pt_tbar);
 
 #endif
