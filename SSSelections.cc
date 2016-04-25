@@ -248,8 +248,7 @@ std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector*
     if (!isFastsim && !isLoosePFJet_50nsV1(i)) continue;
     
     //Get discriminator
-    // float disc = tas::pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag().at(i);
-    float disc = tas::getbtagvalue("pfCombinedInclusiveSecondaryVertexV2BJetTags", i); 
+    float disc = tas::getbtagvalue("pfCombinedInclusiveSecondaryVertexV2BJetTags", i);
 
     //Save jets that make it this far
     if (pt >= 40. || saveAllPt) {
