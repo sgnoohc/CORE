@@ -801,6 +801,7 @@ pair <int, int> lepMotherID_v2(Lep lep){
   }
   else if (idIsBeauty(mother_id)) return make_pair(-1, idx);
   else if ( idIsCharm(mother_id)) return make_pair(-2, idx);
+  else if ( isFromLight(id, idx)) return make_pair(-4, idx);
   return make_pair(0, idx);
 
 }
