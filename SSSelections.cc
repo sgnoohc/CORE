@@ -728,6 +728,13 @@ bool isGoodMuon(unsigned int muidx){
   return true;
 }
 
+bool isFromLight_mother(int mc_id, int mc_motherid){
+  if (abs(mc_id) != 11 && abs(mc_id) != 13) return false;
+  if (abs(mc_motherid)>200 && abs(mc_motherid)<400) return true; 
+  if (abs(mc_motherid)>0 && abs(mc_motherid)<4) return true;
+  return false;
+}
+
 int lepMotherID(Lep lep){
   if (abs(lep.pdgId()) != abs(lep.mc_id())) return 0; 
   if (tas::evt_isRealData()) return 1;
@@ -801,7 +808,7 @@ pair <int, int> lepMotherID_v2(Lep lep){
   }
   else if (idIsBeauty(mother_id)) return make_pair(-1, idx);
   else if ( idIsCharm(mother_id)) return make_pair(-2, idx);
-  else if ( isFromLight(id, idx)) return make_pair(-4, idx);
+  else if ( isFromLight_mother(id, mother_id)) return make_pair(-4, idx);
   return make_pair(0, idx);
 
 }
