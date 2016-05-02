@@ -210,3 +210,35 @@ bool passPhotonSelection_ZMET_v1(int index, bool vetoTransition, bool eta24 ){
   if( !photonID(index, ZMET_photon_v1 ) ) return false;
   return true;
 }
+
+// This is meant to be passed as the third argument, the predicate, of the standard library sort algorithm
+inline bool sortbyCSV( pair<LorentzVector, float> &vec1, pair<LorentzVector, float> &vec2 ) {
+  return vec1.second > vec2.second;
+}
+
+
+float mbb_highest_csv(vector <LorentzVector> jets_p4, vector<float> jets_csv){
+
+  float mbb = 0.0;
+
+  if( jets_p4.size() < 2 ){ mbb = -99.0;}
+  else{
+
+	vector <pair<LorentzVector, float>> jet_csv_pairs;
+	for( size_t jetind = 0; jetind < jets_p4.size(); jetind++ ){
+	  if( jets_csv.at(jetind) > 0.890){
+		jet_csv_pairs.push_back(make_pair(jets_p4.at(jetind),jets_csv.at(jetind)));
+	  }
+	}
+
+	sort( jet_csv_pairs.begin(), jet_csv_pairs.end(), sortbyCSV);
+
+	if( jet_csv_pairs.size() > 1 ){
+	  mbb = (jet_csv_pairs.at(0).first + jet_csv_pairs.at(1).first).mass();
+	}else{
+	  mbb = -99.0;
+	}
+  
+  }
+  return mbb;
+}
