@@ -847,8 +847,8 @@ int isGoodHyp(int iHyp, bool verbose){
     cout << "   invt mass: " << (tas::hyp_ll_p4().at(iHyp) + tas::hyp_lt_p4().at(iHyp)).M() << endl;
     cout << "   passes eta: " << ((abs(id_ll) == 11 ? fabs(eta_ll) < 2.5 : fabs(eta_ll) < 2.4) && (abs(id_lt) == 11 ? fabs(eta_lt) < 2.5 : fabs(eta_lt) < 2.4)) << " etas are " << eta_ll << " and " << eta_lt << endl;
     cout << "   passes hypsFromFirstGoodVertex: " << hypsFromFirstGoodVertex(iHyp) << endl;
-    cout << "   lepton with pT " << pt_ll << " passes id: " << passed_id_numer_ll << endl;
-    cout << "   lepton with pT " << pt_lt << " passes id: " << passed_id_numer_lt << endl;
+    cout << "   lepton with pT " << pt_ll << " passes numer,denom id: " << passed_id_numer_ll << "," << passed_id_denom_ll << endl;
+    cout << "   lepton with pT " << pt_lt << " passes numer,denom id: " << passed_id_numer_lt << "," << passed_id_denom_lt << endl;
     cout << "   lowMassVeto: " << ((tas::hyp_ll_p4().at(iHyp) + tas::hyp_lt_p4().at(iHyp)).M() < 8) << endl;
     if (abs(id_ll) == 11) cout << "   lepton with pT " << pt_ll << " passes 3chg: " << threeChargeAgree(idx_ll) << endl;
     if (abs(id_lt) == 11) cout << "   lepton with pT " << pt_lt << " passes 3chg: " << threeChargeAgree(idx_lt) << endl;
@@ -871,8 +871,8 @@ int isGoodHyp(int iHyp, bool verbose){
   if (!hypsFromFirstGoodVertex(iHyp)) return 0;
 
   //Finished for events that fail z veto
-  if (extraZ) return 6;
-  if (extraGammaStar) return 6;
+  if (extraZ && isss && passed_id_numer_ll && passed_id_numer_lt) return 6;
+  if (extraGammaStar && isss && passed_id_numer_ll && passed_id_numer_lt) return 6;
 
   //Results
   else if (passed_id_numer_lt && passed_id_numer_ll && isss) return 3;  // 3 if both numer pass, SS
@@ -894,6 +894,7 @@ hyp_result_t chooseBestHyp(bool verbose){
   vector <int> good_hyps_zv; //same sign, tight tight, fail Z veto
   for (unsigned int i = 0; i < tas::hyp_type().size(); i++){
     int good_hyp_result = isGoodHyp(i, verbose);
+    if(verbose) std::cout << "hyp #" << i << " hyp_class: " << good_hyp_result << std::endl;
     if (good_hyp_result == 3) good_hyps_ss.push_back(i); 
     else if (good_hyp_result == 2) good_hyps_sf.push_back(i); 
     else if (good_hyp_result == 1) good_hyps_df.push_back(i); 
@@ -1243,6 +1244,6 @@ float coneCorrPt(int id, int idx){
 }
 
 float ptCutLowAG(int id){
-  return 10;
-  //return ((abs(id) == 11) ? 15 : 10); 
+  // return 10;
+  return ((abs(id) == 11) ? 15 : 10); 
 }
