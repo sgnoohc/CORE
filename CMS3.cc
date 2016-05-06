@@ -328,6 +328,11 @@ void CMS3::Init(TTree *tree) {
 		filt_cscBeamHalo_branch = tree->GetBranch(tree->GetAlias("filt_cscBeamHalo"));
 		if (filt_cscBeamHalo_branch) {filt_cscBeamHalo_branch->SetAddress(&filt_cscBeamHalo_);}
 	}
+	filt_cscBeamHalo2015_branch = 0;
+	if (tree->GetAlias("filt_cscBeamHalo2015") != 0) {
+		filt_cscBeamHalo2015_branch = tree->GetBranch(tree->GetAlias("filt_cscBeamHalo2015"));
+		if (filt_cscBeamHalo2015_branch) {filt_cscBeamHalo2015_branch->SetAddress(&filt_cscBeamHalo2015_);}
+	}
 	filt_ecalLaser_branch = 0;
 	if (tree->GetAlias("filt_ecalLaser") != 0) {
 		filt_ecalLaser_branch = tree->GetBranch(tree->GetAlias("filt_ecalLaser"));
@@ -352,6 +357,11 @@ void CMS3::Init(TTree *tree) {
 	if (tree->GetAlias("filt_hbheNoise") != 0) {
 		filt_hbheNoise_branch = tree->GetBranch(tree->GetAlias("filt_hbheNoise"));
 		if (filt_hbheNoise_branch) {filt_hbheNoise_branch->SetAddress(&filt_hbheNoise_);}
+	}
+	filt_hbheNoiseIso_branch = 0;
+	if (tree->GetAlias("filt_hbheNoiseIso") != 0) {
+		filt_hbheNoiseIso_branch = tree->GetBranch(tree->GetAlias("filt_hbheNoiseIso"));
+		if (filt_hbheNoiseIso_branch) {filt_hbheNoiseIso_branch->SetAddress(&filt_hbheNoiseIso_);}
 	}
 	filt_hcalLaser_branch = 0;
 	if (tree->GetAlias("filt_hcalLaser") != 0) {
@@ -5537,11 +5547,13 @@ void CMS3::GetEntry(unsigned int idx)
 		evt_cscTightHaloId_isLoaded = false;
 		evt_hbheFilter_isLoaded = false;
 		filt_cscBeamHalo_isLoaded = false;
+		filt_cscBeamHalo2015_isLoaded = false;
 		filt_ecalLaser_isLoaded = false;
 		filt_ecalTP_isLoaded = false;
 		filt_eeBadSc_isLoaded = false;
 		filt_goodVertices_isLoaded = false;
 		filt_hbheNoise_isLoaded = false;
+		filt_hbheNoiseIso_isLoaded = false;
 		filt_hcalLaser_isLoaded = false;
 		filt_metfilter_isLoaded = false;
 		filt_trackingFailure_isLoaded = false;
@@ -6644,11 +6656,13 @@ void CMS3::LoadAllBranches()
 	if (evt_cscTightHaloId_branch != 0) evt_cscTightHaloId();
 	if (evt_hbheFilter_branch != 0) evt_hbheFilter();
 	if (filt_cscBeamHalo_branch != 0) filt_cscBeamHalo();
+	if (filt_cscBeamHalo2015_branch != 0) filt_cscBeamHalo2015();
 	if (filt_ecalLaser_branch != 0) filt_ecalLaser();
 	if (filt_ecalTP_branch != 0) filt_ecalTP();
 	if (filt_eeBadSc_branch != 0) filt_eeBadSc();
 	if (filt_goodVertices_branch != 0) filt_goodVertices();
 	if (filt_hbheNoise_branch != 0) filt_hbheNoise();
+	if (filt_hbheNoiseIso_branch != 0) filt_hbheNoiseIso();
 	if (filt_hcalLaser_branch != 0) filt_hcalLaser();
 	if (filt_metfilter_branch != 0) filt_metfilter();
 	if (filt_trackingFailure_branch != 0) filt_trackingFailure();
@@ -7964,6 +7978,19 @@ void CMS3::LoadAllBranches()
 		}
 		return filt_cscBeamHalo_;
 	}
+	const bool &CMS3::filt_cscBeamHalo2015()
+	{
+		if (not filt_cscBeamHalo2015_isLoaded) {
+			if (filt_cscBeamHalo2015_branch != 0) {
+				filt_cscBeamHalo2015_branch->GetEntry(index);
+			} else { 
+				printf("branch filt_cscBeamHalo2015_branch does not exist!\n");
+				exit(1);
+			}
+			filt_cscBeamHalo2015_isLoaded = true;
+		}
+		return filt_cscBeamHalo2015_;
+	}
 	const bool &CMS3::filt_ecalLaser()
 	{
 		if (not filt_ecalLaser_isLoaded) {
@@ -8028,6 +8055,19 @@ void CMS3::LoadAllBranches()
 			filt_hbheNoise_isLoaded = true;
 		}
 		return filt_hbheNoise_;
+	}
+	const bool &CMS3::filt_hbheNoiseIso()
+	{
+		if (not filt_hbheNoiseIso_isLoaded) {
+			if (filt_hbheNoiseIso_branch != 0) {
+				filt_hbheNoiseIso_branch->GetEntry(index);
+			} else { 
+				printf("branch filt_hbheNoiseIso_branch does not exist!\n");
+				exit(1);
+			}
+			filt_hbheNoiseIso_isLoaded = true;
+		}
+		return filt_hbheNoiseIso_;
 	}
 	const bool &CMS3::filt_hcalLaser()
 	{
@@ -22150,11 +22190,13 @@ namespace tas {
 	const bool &evt_cscTightHaloId() { return cms3.evt_cscTightHaloId(); }
 	const bool &evt_hbheFilter() { return cms3.evt_hbheFilter(); }
 	const bool &filt_cscBeamHalo() { return cms3.filt_cscBeamHalo(); }
+	const bool &filt_cscBeamHalo2015() { return cms3.filt_cscBeamHalo2015(); }
 	const bool &filt_ecalLaser() { return cms3.filt_ecalLaser(); }
 	const bool &filt_ecalTP() { return cms3.filt_ecalTP(); }
 	const bool &filt_eeBadSc() { return cms3.filt_eeBadSc(); }
 	const bool &filt_goodVertices() { return cms3.filt_goodVertices(); }
 	const bool &filt_hbheNoise() { return cms3.filt_hbheNoise(); }
+	const bool &filt_hbheNoiseIso() { return cms3.filt_hbheNoiseIso(); }
 	const bool &filt_hcalLaser() { return cms3.filt_hcalLaser(); }
 	const bool &filt_metfilter() { return cms3.filt_metfilter(); }
 	const bool &filt_trackingFailure() { return cms3.filt_trackingFailure(); }
