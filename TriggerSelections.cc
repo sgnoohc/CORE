@@ -148,11 +148,11 @@ int HLT_prescale( const char* arg ){
 // for a specific object, specified by a p4
 //---------------------------------------------
 bool passHLTTrigger(const char* arg, const LorentzVector &obj){
-
+  bool verbose = false;
   // put the trigger name into a string
   TString HLTTrigger( arg );
   if (!passHLTTrigger(HLTTrigger)) return false;
-
+  if (verbose) cout<<"Pass "<<HLTTrigger<<endl;
   // find the index of this trigger
   int trigIdx = -1;
   vector<TString>::const_iterator begin_it = hlt_trigNames().begin();
@@ -166,7 +166,7 @@ bool passHLTTrigger(const char* arg, const LorentzVector &obj){
 
   // if no trigger objects then fail
   if (trigObjs.size() == 0) return false; 
-
+  if (verbose) cout<<"Found "<<trigObjs.size()<<" trigger objects"<<endl;
   // Two cases
   // 1. (OLD). Objects only present if full HLT path has passed
   // 2. (NEW). Objects present even if only passed part of HLT path
@@ -178,22 +178,24 @@ bool passHLTTrigger(const char* arg, const LorentzVector &obj){
       tag.Contains("CMS3_V07-04-04") || tag.Contains("CMS3_V07-04-05") || tag.Contains("CMS3_V07-04-06") || tag.Contains("CMS3_V07-04-07"))
     hasPassLastBranch = false;
   if (hasPassLastBranch) trigObjsPassHLT = hlt_trigObjs_passLast()[trigIdx];
-    
+  
   // does the trigger match this lepton
   float drMin = 999.99;
   for (size_t i = 0; i < trigObjs.size(); ++i)
   {
     if (hasPassLastBranch) {
+      if (verbose) cout<<"Looking at trigger object with pt/eta/phi"<<trigObjs[i].pt()<<"/"<<trigObjs[i].eta()<<"/"<<trigObjs[i].phi()<<". Passes? "<<trigObjsPassHLT[i] <<endl;
       if (!trigObjsPassHLT[i]) continue;
     }
     float dr = ROOT::Math::VectorUtil::DeltaR(trigObjs[i], obj);
     if (dr < drMin) drMin = dr;
+    if (verbose) cout<<"dr="<<dr<<", drMin="<<drMin<<endl;
   }
 
   // if the closest trigger object
   // is further than 0.1 then fail
   if (drMin > 0.1) return false;
-
+  if (verbose) cout<<"Pass trigger matching!"<<endl;
   // if we got to here then
   // the trigger passed, check the pre-scale
 
@@ -407,7 +409,8 @@ void setHLTBranch(const char* pattern, const LorentzVector& p4, int& HLTbranch){
   TString name_HLT = triggerName(pattern);
   if (name_HLT=="TRIGGER_NOT_FOUND"){HLTbranch=0;return;}
   if (cms3.passHLTTrigger(name_HLT)) {
-    HLTbranch = (tas::evt_isRealData() ? HLT_prescale(name_HLT) : 1);
+    HLTbranch = 1;//(tas::evt_isRealData() ? HLT_prescale(name_HLT) : 1); // Prescale broken in early 2016
+    //cout<<"Prescale not used, would have been: "<<HLT_prescale(name_HLT)<<endl;
     if (passHLTTrigger(name_HLT,p4)==0) HLTbranch*=-1;
   } else HLTbranch = 0;
 }
@@ -416,7 +419,8 @@ void setHLTBranch(const char* pattern, bool legMatch, int& HLTbranch) {
   TString name_HLT = triggerName(pattern);
   if (name_HLT=="TRIGGER_NOT_FOUND"){HLTbranch=0;return;}
   if (cms3.passHLTTrigger(name_HLT)) {
-    HLTbranch = (tas::evt_isRealData() ? HLT_prescale(name_HLT) : 1);
+    //HLTbranch = (tas::evt_isRealData() ? HLT_prescale(name_HLT) : 1); // Prescale broken in early 2016 
+    HLTbranch = 1;
     if (legMatch==0) HLTbranch*=-1;
   }
   else HLTbranch = 0;
