@@ -11,5 +11,8 @@ bool isTemplatePhoton( unsigned int phIdx );
 bool isLoosePhoton_Spring15_50ns( int photonIdx );
 bool isMediumPhoton_Spring15_50ns( int photonIdx );
 bool isTightPhoton_Spring15_50ns( int photonIdx );
+bool isLoosePhoton_Spring15_25ns( int photonIdx );
+bool isMediumPhoton_Spring15_25ns( int photonIdx );
+bool isTightPhoton_Spring15_25ns( int photonIdx );
 
 #endif

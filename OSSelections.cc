@@ -185,7 +185,19 @@ bool passMuonSelection_ZMET_v1(int index, bool vetoTransition, bool eta24 ){
 }
 
 bool passPhotonSelection_ZMET(int index ){
-  return passPhotonSelection_ZMET_v2(index, true, true);
+  return passPhotonSelection_ZMET_v3(index, true, true);
+}
+
+  bool passPhotonSelection_ZMET_v3(int index, bool vetoTransition, bool eta24 ){
+  if( fabs(cms3.photons_p4().at(index).pt()) < 22.0       ) return false; // pT > 22 GeV - Minimum pT cut
+  if( vetoTransition
+	  && fabs(cms3.photons_p4().at(index).eta()) > 1.4442
+	  && fabs(cms3.photons_p4().at(index).eta()) < 1.566  ) return false; // veto x-ition region
+  if( eta24
+	  && fabs(cms3.photons_p4().at(index).eta()) > 2.4    ) return false; // eta < 2.4
+  if( overlapElectron_ZMET_v1( index, 10.0 )              ) return false; // remove electrons from W
+  if( !photonID(index, ZMET_photon_v3 )                   ) return false;
+  return true;
 }
 
   bool passPhotonSelection_ZMET_v2(int index, bool vetoTransition, bool eta24 ){

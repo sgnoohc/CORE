@@ -124,6 +124,17 @@ bool photonID(unsigned int phIdx, id_level_t id_level){
 	// MET Templates //
 	///////////////////
   
+  case(ZMET_photon_v3):
+
+	if( !isTemplatePhoton( phIdx ) ) return false;
+	if( !isLoosePhoton_Spring15_25ns( phIdx ) ) return false;
+	// Following cuts done in analysis code.
+	// match to pfjet w/ neutral EM fraction > 70%
+	// reject photons within electron with pT > 10 within cone of dR < 0.2
+	// Reject photons aligned to MET within 0.14 radians in phi
+	else return true;
+	break;
+  
   case(ZMET_photon_v2):
 
 	if( !isTemplatePhoton( phIdx ) ) return false;
@@ -274,6 +285,119 @@ bool isTightPhoton_Spring15_50ns( int photonIdx )
 	if( chiso  > 0.65                         ) return false;
 	if( nhiso  > 0.93 + exp(0.0040*pt+0.9402) ) return false;
 	if( emiso  > 0.54 + 0.0041*pt             ) return false;
+  }
+  
+  return true;
+}
+
+
+// from https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedPhotonIdentificationRun2#Recommended_Working_points_for_2
+bool isLoosePhoton_Spring15_25ns( int photonIdx )
+{
+  
+  float eta = -999;  
+  try{
+	eta = cms3.photons_p4().at(photonIdx).eta();
+  }
+  catch( exception &e ){
+	std::cout<<"Error! no photon with photonIdx: "<<photonIdx<<std::endl;
+	return false;
+  }
+
+  float chiso = photonCHIso03EA(photonIdx);
+  float nhiso = photonNHIso03EA(photonIdx);
+  float emiso = photonEMIso03EA(photonIdx);
+
+  float sieie  = cms3.photons_full5x5_sigmaIEtaIEta().at(photonIdx);
+  float hovere = cms3.photons_full5x5_hOverE()       .at(photonIdx);
+  float pt     = cms3.photons_p4()                   .at(photonIdx).pt();
+  
+  if(       abs(eta) < 1.479 ){
+	if( hovere > 0.05                                    ) return false;
+	if( sieie  > 0.0102                                  ) return false;
+	if( chiso  > 3.32                                    ) return false;
+	if( nhiso  > 1.92 + 0.014  * pt + 0.000019*pow(pt,2) ) return false;
+	if( emiso  > 0.81 + 0.0053 * pt                      ) return false;
+  }else if( abs(eta) > 1.479 ){
+	if( hovere >  0.05                                    ) return false;
+	if( sieie  >  0.0274                                  ) return false;
+	if( chiso  >  1.97                                    ) return false;
+	if( nhiso  > 11.86 + 0.0139 * pt + 0.000025*pow(pt,2) ) return false;
+	if( emiso  >  0.83 + 0.0034 * pt                      ) return false;
+  }
+  
+  return true;
+}
+
+bool isMediumPhoton_Spring15_25ns( int photonIdx )
+{
+  
+  float eta = -999;  
+  try{
+	eta = cms3.photons_p4().at(photonIdx).eta();
+  }
+  catch( exception &e ){
+	std::cout<<"Error! no photon with photonIdx: "<<photonIdx<<std::endl;
+	return false;
+  }
+
+  float chiso = photonCHIso03EA(photonIdx);
+  float nhiso = photonNHIso03EA(photonIdx);
+  float emiso = photonEMIso03EA(photonIdx);
+
+  float sieie  = cms3.photons_full5x5_sigmaIEtaIEta().at(photonIdx);
+  float hovere = cms3.photons_full5x5_hOverE()       .at(photonIdx);
+  float pt     = cms3.photons_p4()                   .at(photonIdx).pt();
+  
+  if(       abs(eta) < 1.479 ){
+	if( hovere > 0.05                                    ) return false;
+	if( sieie  > 0.0102                                  ) return false;
+	if( chiso  > 1.37                                    ) return false;
+	if( nhiso  > 1.06 + 0.014  * pt + 0.000019*pow(pt,2) ) return false;
+	if( emiso  > 0.83 + 0.0034 * pt                      ) return false;
+  }else if( abs(eta) > 1.479 ){
+	if( hovere > 0.05                                    ) return false;
+	if( sieie  > 0.0268                                  ) return false;
+	if( chiso  > 1.10                                    ) return false;
+	if( nhiso  > 2.69 + 0.0139 * pt + 0.000025*pow(pt,2) ) return false;
+	if( emiso  > 0.39 + 0.0034 * pt                      ) return false;
+  }
+  
+  return true;
+}
+
+bool isTightPhoton_Spring15_25ns( int photonIdx )
+{
+  
+  float eta = -999;  
+  try{
+	eta = cms3.photons_p4().at(photonIdx).eta();
+  }
+  catch( exception &e ){
+	std::cout<<"Error! no photon with photonIdx: "<<photonIdx<<std::endl;
+	return false;
+  }
+
+  float chiso = photonCHIso03EA(photonIdx);
+  float nhiso = photonNHIso03EA(photonIdx);
+  float emiso = photonEMIso03EA(photonIdx);
+
+  float sieie  = cms3.photons_full5x5_sigmaIEtaIEta().at(photonIdx);
+  float hovere = cms3.photons_full5x5_hOverE()       .at(photonIdx);
+  float pt     = cms3.photons_p4()                   .at(photonIdx).pt();
+  
+  if(       abs(eta) < 1.479 ){
+	if( hovere > 0.05                                    ) return false;
+	if( sieie  > 0.0100                                  ) return false;
+	if( chiso  > 0.76                                    ) return false;
+	if( nhiso  > 0.97 + 0.014  * pt + 0.000019*pow(pt,2) ) return false;
+	if( emiso  > 0.08 + 0.0053 * pt                      ) return false;
+  }else if( abs(eta) > 1.479 ){
+	if( hovere > 0.05                                    ) return false;
+	if( sieie  > 0.0268                                  ) return false;
+	if( chiso  > 0.56                                    ) return false;
+	if( nhiso  > 2.09 + 0.0139 * pt + 0.000025*pow(pt,2) ) return false;
+	if( emiso  > 0.16 + 0.0034 * pt                      ) return false;
   }
   
   return true;
