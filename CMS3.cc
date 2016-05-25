@@ -1343,6 +1343,11 @@ void CMS3::Init(TTree *tree) {
 		els_d0phiCov_branch = tree->GetBranch(tree->GetAlias("els_d0phiCov"));
 		if (els_d0phiCov_branch) {els_d0phiCov_branch->SetAddress(&els_d0phiCov_);}
 	}
+	els_VIDNonTrigMvaValue_branch = 0;
+	if (tree->GetAlias("els_VIDNonTrigMvaValue") != 0) {
+		els_VIDNonTrigMvaValue_branch = tree->GetBranch(tree->GetAlias("els_VIDNonTrigMvaValue"));
+		if (els_VIDNonTrigMvaValue_branch) {els_VIDNonTrigMvaValue_branch->SetAddress(&els_VIDNonTrigMvaValue_);}
+	}
 	els_dEtaIn_branch = 0;
 	if (tree->GetAlias("els_dEtaIn") != 0) {
 		els_dEtaIn_branch = tree->GetBranch(tree->GetAlias("els_dEtaIn"));
@@ -5797,6 +5802,7 @@ void CMS3::GetEntry(unsigned int idx)
 		els_d0corr_isLoaded = false;
 		els_d0corrPhi_isLoaded = false;
 		els_d0phiCov_isLoaded = false;
+		els_VIDNonTrigMvaValue_isLoaded = false;
 		els_dEtaIn_isLoaded = false;
 		els_dEtaOut_isLoaded = false;
 		els_dPhiIn_isLoaded = false;
@@ -6906,6 +6912,7 @@ void CMS3::LoadAllBranches()
 	if (els_d0corr_branch != 0) els_d0corr();
 	if (els_d0corrPhi_branch != 0) els_d0corrPhi();
 	if (els_d0phiCov_branch != 0) els_d0phiCov();
+	if (els_VIDNonTrigMvaValue_branch != 0) els_VIDNonTrigMvaValue();
 	if (els_dEtaIn_branch != 0) els_dEtaIn();
 	if (els_dEtaOut_branch != 0) els_dEtaOut();
 	if (els_dPhiIn_branch != 0) els_dPhiIn();
@@ -11227,6 +11234,19 @@ void CMS3::LoadAllBranches()
 			els_d0phiCov_isLoaded = true;
 		}
 		return els_d0phiCov_;
+	}
+	const vector<float> &CMS3::els_VIDNonTrigMvaValue()
+	{
+		if (not els_VIDNonTrigMvaValue_isLoaded) {
+			if (els_VIDNonTrigMvaValue_branch != 0) {
+				els_VIDNonTrigMvaValue_branch->GetEntry(index);
+			} else { 
+				printf("branch els_VIDNonTrigMvaValue_branch does not exist!\n");
+				exit(1);
+			}
+			els_VIDNonTrigMvaValue_isLoaded = true;
+		}
+		return els_VIDNonTrigMvaValue_;
 	}
 	const vector<float> &CMS3::els_dEtaIn()
 	{
@@ -22440,6 +22460,7 @@ namespace tas {
 	const vector<float> &els_d0corr() { return cms3.els_d0corr(); }
 	const vector<float> &els_d0corrPhi() { return cms3.els_d0corrPhi(); }
 	const vector<float> &els_d0phiCov() { return cms3.els_d0phiCov(); }
+	const vector<float> &els_VIDNonTrigMvaValue() { return cms3.els_VIDNonTrigMvaValue(); }
 	const vector<float> &els_dEtaIn() { return cms3.els_dEtaIn(); }
 	const vector<float> &els_dEtaOut() { return cms3.els_dEtaOut(); }
 	const vector<float> &els_dPhiIn() { return cms3.els_dPhiIn(); }

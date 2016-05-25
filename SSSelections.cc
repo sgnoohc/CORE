@@ -373,7 +373,6 @@ bool isInSituFRLepton(int id, int idx){
 }
 
 bool isDenominatorLepton(int id, int idx){
-    bool verbose = false;
   if (abs(id) == 11) {
       return isFakableElectron(idx);
   }

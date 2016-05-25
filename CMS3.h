@@ -825,6 +825,9 @@ protected:
 	vector<float> els_d0phiCov_;
 	TBranch *els_d0phiCov_branch;
 	bool els_d0phiCov_isLoaded;
+	vector<float> els_VIDNonTrigMvaValue_;
+	TBranch *els_VIDNonTrigMvaValue_branch;
+	bool els_VIDNonTrigMvaValue_isLoaded;
 	vector<float> els_dEtaIn_;
 	TBranch *els_dEtaIn_branch;
 	bool els_dEtaIn_isLoaded;
@@ -3605,6 +3608,7 @@ void LoadAllBranches();
 	const vector<float> &els_d0corr();
 	const vector<float> &els_d0corrPhi();
 	const vector<float> &els_d0phiCov();
+	const vector<float> &els_VIDNonTrigMvaValue();
 	const vector<float> &els_dEtaIn();
 	const vector<float> &els_dEtaOut();
 	const vector<float> &els_dPhiIn();
@@ -4721,6 +4725,7 @@ namespace tas {
 	const vector<float> &els_d0corr();
 	const vector<float> &els_d0corrPhi();
 	const vector<float> &els_d0phiCov();
+	const vector<float> &els_VIDNonTrigMvaValue();
 	const vector<float> &els_dEtaIn();
 	const vector<float> &els_dEtaOut();
 	const vector<float> &els_dPhiIn();
