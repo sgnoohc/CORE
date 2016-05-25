@@ -224,6 +224,8 @@ Z_result_t makesExtraZ(int iHyp){
 std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector* jetCorr, int doCorr, bool isFastsim, bool saveAllPt){
   vector <Jet> result_jets;
   vector <Jet> result_btags;
+  vector <float> result_disc;
+  vector <float> result_corrpt;
 
   for (unsigned int i = 0; i < tas::pfjets_p4().size(); i++){
     LorentzVector jet = tas::pfjets_p4().at(i);
@@ -248,38 +250,42 @@ std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector*
     if (!isFastsim && !isLoosePFJet_50nsV1(i)) continue;
     
     //Get discriminator
-    float disc = tas::pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag().at(i);
+    float disc = tas::getbtagvalue("pfCombinedInclusiveSecondaryVertexV2BJetTags", i);
 
-    //Save jets that make it this far
-    if (pt >= 40. || saveAllPt) {
-      result_jets.push_back(Jet(i, JEC));
-    }
+    result_jets.push_back(Jet(i, JEC));
+    result_disc.push_back(disc);
+    result_corrpt.push_back(pt);
 
-    //Save b-tags that make it this far
-    if (disc < btagCut) continue;
-    result_btags.push_back(Jet(i, JEC)); 
   }
 
-  //Now clean the jets
-  vector <bool> keep_jets  = cleanJets(result_jets); 
-  vector <bool> keep_btags = cleanJets(result_btags); 
-
-  //Remove jets that were not kept
+  // Clean all jets inclusively
+  vector <bool> keep_jets = cleanJets(result_jets);
   int j = 0; 
   for (unsigned int i = 0; i < keep_jets.size(); i++){
-    if (!keep_jets[i]) result_jets.erase(result_jets.begin()+j); 
+    if (!keep_jets[i]) {
+        result_jets.erase(result_jets.begin()+j); 
+        result_disc.erase(result_disc.begin()+j); 
+        result_corrpt.erase(result_corrpt.begin()+j); 
+    }
     else j++; 
   }
 
-  //Remove btags that were not kept
-  j = 0; 
-  for (unsigned int i = 0; i < keep_btags.size(); i++){
-    if (!keep_btags[i]) result_btags.erase(result_btags.begin()+j); 
-    else j++; 
+  // Classify b-jets
+  for (unsigned int i = 0; i < result_jets.size(); i++){
+      float disc = result_disc.at(i);
+      if (disc < btagCut) continue;
+      result_btags.push_back(result_jets.at(i));
   }
 
-  //Return results
-  std::pair <vector <Jet>, vector <Jet> > result = std::make_pair(result_jets, result_btags);
+  // Only retain high pt jets if not saving all pts
+  vector<Jet> result_jets_cut;
+  for (unsigned int i = 0; i < result_jets.size(); i++){
+      if(!saveAllPt && (result_corrpt.at(i) < 40)) continue;
+      result_jets_cut.push_back(result_jets.at(i));
+  }
+
+  std::pair <vector <Jet>, vector <Jet> > result = std::make_pair(result_jets_cut, result_btags);
+
   return result;
 }
 
@@ -295,7 +301,7 @@ vector <bool> cleanJets(vector <Jet> result_jets){
     if (electron.pt() < 10) continue;
     if (!isFakableElectron(eidx)) continue;
     //Clean jets
-    float dRmin = 10000;
+    float dRmin = 0.4;
     for (unsigned int iJet = 0; iJet < result_jets.size(); iJet++){
       if (result.size() > 0 && result.at(iJet) == 0) continue;
       Jet jet = result_jets.at(iJet); 
@@ -303,7 +309,7 @@ vector <bool> cleanJets(vector <Jet> result_jets){
       float dR = ROOT::Math::VectorUtil::DeltaR(jet.p4(), electron);
       if (dR < dRmin){
         dRmin = dR; 
-        if (dR < 0.4) removeJet = iJet;
+        removeJet = iJet;
       }
     }
     if (removeJet >= 0) result[removeJet] = false; 
@@ -314,7 +320,7 @@ vector <bool> cleanJets(vector <Jet> result_jets){
     if (muon.pt() < 10) continue;
     if (!isFakableMuon(muidx)) continue;
     //Clean jets
-    float dRmin = 10000;
+    float dRmin = 0.4;
     removeJet = -1; 
     for (unsigned int iJet = 0; iJet < result_jets.size(); iJet++){
       if (result.size() > 0 && result.at(iJet) == 0) continue;
@@ -323,7 +329,7 @@ vector <bool> cleanJets(vector <Jet> result_jets){
       float dR = ROOT::Math::VectorUtil::DeltaR(jet.p4(), muon);
       if (dR < dRmin){
         dRmin = dR; 
-        if (dR < 0.4) removeJet = iJet;
+        removeJet = iJet;
       }
     }
     if (removeJet >= 0) result[removeJet] = false; 
@@ -367,8 +373,13 @@ bool isInSituFRLepton(int id, int idx){
 }
 
 bool isDenominatorLepton(int id, int idx){
-  if (abs(id) == 11) return isFakableElectron(idx);
-  else if (abs(id) == 13) return isFakableMuon(idx);
+    bool verbose = false;
+  if (abs(id) == 11) {
+      return isFakableElectron(idx);
+  }
+  else if (abs(id) == 13) {
+      return isFakableMuon(idx);
+  }
   else return false;
 }
 
@@ -436,6 +447,7 @@ int signalRegion(int njets, int nbtags, float met, float ht, float mt_min, int i
   if (met < 50) return -1; 
   if (njets < 2) return -1; 
   if (lep_pt != LowLow && met > 500 && ht < 300) return -1; 
+  if (lep_pt != LowLow && njets>=2 && met>300 && ht<300) return -1;
 
   //High-high
   if (lep_pt == HighHigh){
@@ -728,6 +740,13 @@ bool isGoodMuon(unsigned int muidx){
   return true;
 }
 
+bool isFromLight_mother(int mc_id, int mc_motherid){
+  if (abs(mc_id) != 11 && abs(mc_id) != 13) return false;
+  if (abs(mc_motherid)>200 && abs(mc_motherid)<400) return true; 
+  if (abs(mc_motherid)>0 && abs(mc_motherid)<4) return true;
+  return false;
+}
+
 int lepMotherID(Lep lep){
   if (abs(lep.pdgId()) != abs(lep.mc_id())) return 0; 
   if (tas::evt_isRealData()) return 1;
@@ -787,6 +806,7 @@ pair <int, int> lepMotherID_v2(Lep lep){
   int mother_id = tas::genps_id_mother().at(idx);
   int grandma_id = tas::genps_id_mother().at(tas::genps_idx_mother().at(idx));  
 
+
   //Now we are matched, classify it
   if ((abs(id) != abs(id_reco)) && abs(id) != 22) return make_pair(0, idx); 
   if (tas::evt_isRealData()) return make_pair(1, idx);
@@ -801,6 +821,7 @@ pair <int, int> lepMotherID_v2(Lep lep){
   }
   else if (idIsBeauty(mother_id)) return make_pair(-1, idx);
   else if ( idIsCharm(mother_id)) return make_pair(-2, idx);
+  else if ( isFromLight_mother(id, mother_id)) return make_pair(-4, idx);
   return make_pair(0, idx);
 
 }
@@ -839,8 +860,8 @@ int isGoodHyp(int iHyp, bool verbose){
     cout << "   invt mass: " << (tas::hyp_ll_p4().at(iHyp) + tas::hyp_lt_p4().at(iHyp)).M() << endl;
     cout << "   passes eta: " << ((abs(id_ll) == 11 ? fabs(eta_ll) < 2.5 : fabs(eta_ll) < 2.4) && (abs(id_lt) == 11 ? fabs(eta_lt) < 2.5 : fabs(eta_lt) < 2.4)) << " etas are " << eta_ll << " and " << eta_lt << endl;
     cout << "   passes hypsFromFirstGoodVertex: " << hypsFromFirstGoodVertex(iHyp) << endl;
-    cout << "   lepton with pT " << pt_ll << " passes id: " << passed_id_numer_ll << endl;
-    cout << "   lepton with pT " << pt_lt << " passes id: " << passed_id_numer_lt << endl;
+    cout << "   lepton with pT " << pt_ll << " passes numer,denom id: " << passed_id_numer_ll << "," << passed_id_denom_ll << endl;
+    cout << "   lepton with pT " << pt_lt << " passes numer,denom id: " << passed_id_numer_lt << "," << passed_id_denom_lt << endl;
     cout << "   lowMassVeto: " << ((tas::hyp_ll_p4().at(iHyp) + tas::hyp_lt_p4().at(iHyp)).M() < 8) << endl;
     if (abs(id_ll) == 11) cout << "   lepton with pT " << pt_ll << " passes 3chg: " << threeChargeAgree(idx_ll) << endl;
     if (abs(id_lt) == 11) cout << "   lepton with pT " << pt_lt << " passes 3chg: " << threeChargeAgree(idx_lt) << endl;
@@ -863,8 +884,8 @@ int isGoodHyp(int iHyp, bool verbose){
   if (!hypsFromFirstGoodVertex(iHyp)) return 0;
 
   //Finished for events that fail z veto
-  if (extraZ) return 6;
-  if (extraGammaStar) return 6;
+  if (extraZ && isss && passed_id_numer_ll && passed_id_numer_lt) return 6;
+  if (extraGammaStar && isss && passed_id_numer_ll && passed_id_numer_lt) return 6;
 
   //Results
   else if (passed_id_numer_lt && passed_id_numer_ll && isss) return 3;  // 3 if both numer pass, SS
@@ -886,6 +907,7 @@ hyp_result_t chooseBestHyp(bool verbose){
   vector <int> good_hyps_zv; //same sign, tight tight, fail Z veto
   for (unsigned int i = 0; i < tas::hyp_type().size(); i++){
     int good_hyp_result = isGoodHyp(i, verbose);
+    if(verbose) std::cout << "hyp #" << i << " hyp_class: " << good_hyp_result << std::endl;
     if (good_hyp_result == 3) good_hyps_ss.push_back(i); 
     else if (good_hyp_result == 2) good_hyps_sf.push_back(i); 
     else if (good_hyp_result == 1) good_hyps_df.push_back(i); 
@@ -1235,6 +1257,6 @@ float coneCorrPt(int id, int idx){
 }
 
 float ptCutLowAG(int id){
-  return 10;
-  //return ((abs(id) == 11) ? 15 : 10); 
+  // return 10;
+  return ((abs(id) == 11) ? 15 : 10); 
 }
