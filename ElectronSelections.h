@@ -63,7 +63,7 @@ int tightChargeEle(unsigned int elIdx);
 //Electron MVA ID
 class readMVA {
   public:
-    void InitMVA(string path, bool v25ns = false);
+    void InitMVA(string path, bool v25ns = false, bool use_miniaod = false);
     float MVA(unsigned int index); 
     bool passesElectronMVAid(unsigned int index, id_level_t id_level);
     void DumpValues();
@@ -105,11 +105,12 @@ class readMVA {
     float dummySpectator_;
 
     bool v25ns_;
+    bool use_miniaod_;
 
 };
 
-void createAndInitMVA(std::string pathToCORE, bool v25ns = false);
-float getMVAoutput(unsigned int index = 0);
+void createAndInitMVA(std::string pathToCORE, bool v25ns = false, bool use_miniaod = false);
+float getMVAoutput(unsigned int index = 0, bool use_miniaod = false);
 
 struct elIDcache {
 public:
