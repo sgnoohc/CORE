@@ -78,6 +78,41 @@ bool hbheIsoNoiseFilter() {
     return true;
 }
 
+bool badChargedCandidateFilter() {
+    // false = reject event
+    // based on https://github.com/cms-sw/cmssw/pull/14672/files for now
+    float minMuonTrackRelErr = 0.5;
+    float minMuonPt = 20.0;
+    float maxDR = 0.001;
+    float minPtDiffRel = -0.5;
+    for (unsigned int imu = 0; imu < cms3.mus_p4().size(); imu++)
+    {
+        if(cms3.mus_p4().at(imu).pt() < minMuonPt) continue;
+
+        LorentzVector trk_p4 = cms3.mus_trk_p4().at(imu);
+        float trk_pterr = cms3.mus_ptErr().at(imu);
+
+       // Consider only muons with large relative pt error
+       if(!(trk_pterr/trk_p4.pt() > minMuonTrackRelErr) ) continue;
+
+       for (unsigned int icand = 0; icand < pfcands_p4().size(); icand++){
+
+           int pdgId = pfcands_particleId().at(icand);
+           LorentzVector cand_p4 = pfcands_p4().at(icand);
+
+           if(abs(pdgId) != 211) continue;
+
+           if ((ROOT::Math::VectorUtil::DeltaR(trk_p4, cand_p4) < maxDR) &&
+                   (cand_p4.pt()-trk_p4.pt())/(0.5*(cand_p4.pt()+trk_p4.pt())) > minPtDiffRel) {
+               return false;
+           }
+
+       }
+    }
+
+    return true;
+}
+
 // takes in an already initialized FactorizedJetCorrector object
 // and returns T1 Corrected MET using the CHS jet collection
 // NOTE: option for unclustered uncertainty is NOT official, just a guess.  Use 1 for UP, -1 for DOWN
