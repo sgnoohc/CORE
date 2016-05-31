@@ -333,6 +333,16 @@ void CMS3::Init(TTree *tree) {
 		filt_cscBeamHalo2015_branch = tree->GetBranch(tree->GetAlias("filt_cscBeamHalo2015"));
 		if (filt_cscBeamHalo2015_branch) {filt_cscBeamHalo2015_branch->SetAddress(&filt_cscBeamHalo2015_);}
 	}
+	filt_globalTightHalo2016_branch = 0;
+	if (tree->GetAlias("filt_globalTightHalo2016") != 0) {
+		filt_globalTightHalo2016_branch = tree->GetBranch(tree->GetAlias("filt_globalTightHalo2016"));
+		if (filt_globalTightHalo2016_branch) {filt_globalTightHalo2016_branch->SetAddress(&filt_globalTightHalo2016_);}
+	}
+	filt_globalSuperTightHalo2016_branch = 0;
+	if (tree->GetAlias("filt_globalSuperTightHalo2016") != 0) {
+		filt_globalSuperTightHalo2016_branch = tree->GetBranch(tree->GetAlias("filt_globalSuperTightHalo2016"));
+		if (filt_globalSuperTightHalo2016_branch) {filt_globalSuperTightHalo2016_branch->SetAddress(&filt_globalSuperTightHalo2016_);}
+	}
 	filt_ecalLaser_branch = 0;
 	if (tree->GetAlias("filt_ecalLaser") != 0) {
 		filt_ecalLaser_branch = tree->GetBranch(tree->GetAlias("filt_ecalLaser"));
@@ -5553,6 +5563,8 @@ void CMS3::GetEntry(unsigned int idx)
 		evt_hbheFilter_isLoaded = false;
 		filt_cscBeamHalo_isLoaded = false;
 		filt_cscBeamHalo2015_isLoaded = false;
+		filt_globalTightHalo2016_isLoaded = false;
+		filt_globalSuperTightHalo2016_isLoaded = false;
 		filt_ecalLaser_isLoaded = false;
 		filt_ecalTP_isLoaded = false;
 		filt_eeBadSc_isLoaded = false;
@@ -6663,6 +6675,8 @@ void CMS3::LoadAllBranches()
 	if (evt_hbheFilter_branch != 0) evt_hbheFilter();
 	if (filt_cscBeamHalo_branch != 0) filt_cscBeamHalo();
 	if (filt_cscBeamHalo2015_branch != 0) filt_cscBeamHalo2015();
+	if (filt_globalTightHalo2016_branch != 0) filt_globalTightHalo2016();
+	if (filt_globalSuperTightHalo2016_branch != 0) filt_globalSuperTightHalo2016();
 	if (filt_ecalLaser_branch != 0) filt_ecalLaser();
 	if (filt_ecalTP_branch != 0) filt_ecalTP();
 	if (filt_eeBadSc_branch != 0) filt_eeBadSc();
@@ -7997,6 +8011,32 @@ void CMS3::LoadAllBranches()
 			filt_cscBeamHalo2015_isLoaded = true;
 		}
 		return filt_cscBeamHalo2015_;
+	}
+	const bool &CMS3::filt_globalTightHalo2016()
+	{
+		if (not filt_globalTightHalo2016_isLoaded) {
+			if (filt_globalTightHalo2016_branch != 0) {
+				filt_globalTightHalo2016_branch->GetEntry(index);
+			} else { 
+				printf("branch filt_globalTightHalo2016_branch does not exist!\n");
+				exit(1);
+			}
+			filt_globalTightHalo2016_isLoaded = true;
+		}
+		return filt_globalTightHalo2016_;
+	}
+	const bool &CMS3::filt_globalSuperTightHalo2016()
+	{
+		if (not filt_globalSuperTightHalo2016_isLoaded) {
+			if (filt_globalSuperTightHalo2016_branch != 0) {
+				filt_globalSuperTightHalo2016_branch->GetEntry(index);
+			} else { 
+				printf("branch filt_globalSuperTightHalo2016_branch does not exist!\n");
+				exit(1);
+			}
+			filt_globalSuperTightHalo2016_isLoaded = true;
+		}
+		return filt_globalSuperTightHalo2016_;
 	}
 	const bool &CMS3::filt_ecalLaser()
 	{
@@ -22211,6 +22251,8 @@ namespace tas {
 	const bool &evt_hbheFilter() { return cms3.evt_hbheFilter(); }
 	const bool &filt_cscBeamHalo() { return cms3.filt_cscBeamHalo(); }
 	const bool &filt_cscBeamHalo2015() { return cms3.filt_cscBeamHalo2015(); }
+	const bool &filt_globalTightHalo2016() { return cms3.filt_globalTightHalo2016(); }
+	const bool &filt_globalSuperTightHalo2016() { return cms3.filt_globalSuperTightHalo2016(); }
 	const bool &filt_ecalLaser() { return cms3.filt_ecalLaser(); }
 	const bool &filt_ecalTP() { return cms3.filt_ecalTP(); }
 	const bool &filt_eeBadSc() { return cms3.filt_eeBadSc(); }
