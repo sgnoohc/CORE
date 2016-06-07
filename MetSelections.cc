@@ -82,7 +82,7 @@ bool badChargedCandidateFilter() {
     // false = reject event
     // based on https://github.com/cms-sw/cmssw/pull/14672/files for now
     float minMuonTrackRelErr = 0.5;
-    float minMuonPt = 20.0;
+    float minMuonPt = 100.0;
     float maxDR = 0.001;
     float minPtDiffRel = -0.5;
     for (unsigned int imu = 0; imu < cms3.mus_p4().size(); imu++)
@@ -91,6 +91,9 @@ bool badChargedCandidateFilter() {
 
         LorentzVector trk_p4 = cms3.mus_trk_p4().at(imu);
         float trk_pterr = cms3.mus_ptErr().at(imu);
+
+        // reco::TrackBase::highPurity is bit 2...skip muon if inner track is high purity
+        if( (cms3.mus_qualityMask().at(imu) & (1 << 2))>>2 ) continue;
 
        // Consider only muons with large relative pt error
        if(!(trk_pterr/trk_p4.pt() > minMuonTrackRelErr) ) continue;
