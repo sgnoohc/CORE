@@ -31,7 +31,7 @@ bool isMediumMuonPOG(unsigned int muIdx){
   bool goodGlb = isGlobal && mus_gfit_chi2().at(muIdx)/mus_gfit_ndof().at(muIdx)<3. && 
                  mus_chi2LocalPosition().at(muIdx)<12. && mus_trkKink().at(muIdx)<20.;
   double validFraction = mus_validHits().at(muIdx)/(double)(mus_validHits().at(muIdx)+mus_lostHits().at(muIdx)+mus_exp_innerlayers().at(muIdx)+mus_exp_outerlayers().at(muIdx));
-  bool good = isLooseMuonPOG(muIdx) && validFraction >= 0.8 &&  mus_segmCompatibility().at(muIdx) >= (goodGlb ? 0.303 : 0.451);
+  bool good = isLooseMuonPOG(muIdx) && validFraction > 0.8 &&  mus_segmCompatibility().at(muIdx) >= (goodGlb ? 0.303 : 0.451);
   return good;
 }
 
