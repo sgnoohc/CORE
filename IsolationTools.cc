@@ -57,34 +57,35 @@ int closestJetIdx(const LorentzVector& lep_p4, float dRmin, float maxAbsEta){
 }
 
 LorentzVector closestJet(const LorentzVector& lep_p4, float dRmin, float maxAbsEta, int whichCorr){
+  std::string jecEra = "Spring16_25nsV3";
   int closestIdx = closestJetIdx(lep_p4,dRmin,maxAbsEta);
   if (closestIdx < 0) return LorentzVector();
   LorentzVector jet = pfjets_p4().at(closestIdx);
   LorentzVector rawjet = pfjets_p4().at(closestIdx)*pfjets_undoJEC().at(closestIdx);
-  
+
   if (whichCorr == 0) return jet; 
 
   //Calculate JEC
   if (jetCorrAG3 == 0){
     std::vector<std::string> filenames;
     if (tas::evt_isRealData() && whichCorr != 1) {
-      filenames.push_back("CORE/Tools/jetcorr/data/run2_25ns/Fall15_25nsV2_DATA_L1FastJet_AK4PFchs.txt");
+      filenames.push_back("CORE/Tools/jetcorr/data/run2_25ns/"+jecEra+"_DATA_L1FastJet_AK4PFchs.txt");
     } else {
-      filenames.push_back("CORE/Tools/jetcorr/data/run2_25ns/Fall15_25nsV2_MC_L1FastJet_AK4PFchs.txt");
+      filenames.push_back("CORE/Tools/jetcorr/data/run2_25ns/"+jecEra+"_MC_L1FastJet_AK4PFchs.txt");
     }
     jetCorrAG3 = makeJetCorrector(filenames);
   }
   if (jetCorrAG2 == 0){
     std::vector<std::string> filenames;
     if (tas::evt_isRealData()) { 
-      filenames.push_back("CORE/Tools/jetcorr/data/run2_25ns/Fall15_25nsV2_DATA_L2Relative_AK4PFchs.txt");
-      filenames.push_back("CORE/Tools/jetcorr/data/run2_25ns/Fall15_25nsV2_DATA_L3Absolute_AK4PFchs.txt");
-      filenames.push_back("CORE/Tools/jetcorr/data/run2_25ns/Fall15_25nsV2_DATA_L2L3Residual_AK4PFchs.txt");
+      filenames.push_back("CORE/Tools/jetcorr/data/run2_25ns/"+jecEra+"_DATA_L2Relative_AK4PFchs.txt");
+      filenames.push_back("CORE/Tools/jetcorr/data/run2_25ns/"+jecEra+"_DATA_L3Absolute_AK4PFchs.txt");
+      filenames.push_back("CORE/Tools/jetcorr/data/run2_25ns/"+jecEra+"_DATA_L2L3Residual_AK4PFchs.txt");
     } 
     else {
-      filenames.push_back("CORE/Tools/jetcorr/data/run2_25ns/Fall15_25nsV2_MC_L2Relative_AK4PFchs.txt");
-      filenames.push_back("CORE/Tools/jetcorr/data/run2_25ns/Fall15_25nsV2_MC_L3Absolute_AK4PFchs.txt");
-      filenames.push_back("CORE/Tools/jetcorr/data/run2_25ns/Fall15_25nsV2_MC_L2L3Residual_AK4PFchs.txt");
+      filenames.push_back("CORE/Tools/jetcorr/data/run2_25ns/"+jecEra+"_MC_L2Relative_AK4PFchs.txt");
+      filenames.push_back("CORE/Tools/jetcorr/data/run2_25ns/"+jecEra+"_MC_L3Absolute_AK4PFchs.txt");
+      filenames.push_back("CORE/Tools/jetcorr/data/run2_25ns/"+jecEra+"_MC_L2L3Residual_AK4PFchs.txt");
     }
     jetCorrAG2 = makeJetCorrector(filenames);
   }
