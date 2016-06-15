@@ -1224,7 +1224,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       return true;
       break;
 
-    case(WW_medium_v2):
+    case(WW_medium_v3):
 
       if (!isTriggerSafe_v2(elIdx)) return false;
       if (!isTightElectronPOGspring15_v1(elIdx)) return false;
