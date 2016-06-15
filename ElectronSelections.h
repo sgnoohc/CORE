@@ -53,6 +53,9 @@ bool isHEEPV60(unsigned int elIdx);
 bool isTriggerSafenoIso_v1(unsigned int elIdx);
 bool isTriggerSafe_v1(unsigned int elIdx);
 
+bool isTriggerSafenoIso_v2(unsigned int elIdx);
+bool isTriggerSafe_v2(unsigned int elIdx);
+
 //Tightest ID passed by electron
 int eleTightID(unsigned int elIdx, analysis_t analysis, int version = 1);
 

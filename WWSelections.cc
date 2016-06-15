@@ -191,62 +191,62 @@ bool WWAnalysis::isTightCharge(int id, int idx){
 }
 
 bool WWAnalysis::isGoodLepton(int id, int idx){
-  if (abs(id) == 11) return electronID(idx, WW_medium_v2);
-  else if (abs(id) == 13) return muonID(idx, WW_medium_v2);
+  if (abs(id) == 11) return electronID(idx, WW_medium_v3);
+  else if (abs(id) == 13) return muonID(idx, WW_medium_v3);
   return false;
 }
 
 bool WWAnalysis::isGoodLeptonNoIso(int id, int idx){
-  if (abs(id) == 11) return electronID(idx, WW_medium_noiso_v2);
-  else if (abs(id) == 13) return muonID(idx, WW_medium_noiso_v2);
+  if (abs(id) == 11) return electronID(idx, WW_medium_noiso_v3);
+  else if (abs(id) == 13) return muonID(idx, WW_medium_noiso_v3);
   return false;
 }
 
 bool WWAnalysis::isGoodLeptonIso(int id, int idx){
-  if (abs(id) == 11) return electronID(idx, WW_medium_v2);
-  else if (abs(id) == 13) return muonID(idx, WW_medium_v2);
+  if (abs(id) == 11) return electronID(idx, WW_medium_v3);
+  else if (abs(id) == 13) return muonID(idx, WW_medium_v3);
   return false;
 }
 
 bool WWAnalysis::isInSituFRLepton(int id, int idx, bool expt){
-  if (abs(id) == 11) return electronID(idx, WW_fo_v2);
-  else if (abs(id) == 13) return muonID(idx, WW_fo_v2);
+  if (abs(id) == 11) return electronID(idx, WW_fo_v3);
+  else if (abs(id) == 13) return muonID(idx, WW_fo_v3);
   return false;
 }
 
 bool WWAnalysis::isDenominatorLepton(int id, int idx){
-  if (abs(id) == 11) return electronID(idx, WW_fo_v2);
-  else if (abs(id) == 13) return muonID(idx, WW_fo_v2);
+  if (abs(id) == 11) return electronID(idx, WW_fo_v3);
+  else if (abs(id) == 13) return muonID(idx, WW_fo_v3);
   return false;
 }
 
 bool WWAnalysis::isDenominatorLeptonNoIso(int id, int idx){
-  if (abs(id) == 11) return electronID(idx, WW_fo_noiso_v2);
-  else if (abs(id) == 13) return muonID(idx, WW_fo_noiso_v2);
+  if (abs(id) == 11) return electronID(idx, WW_fo_noiso_v3);
+  else if (abs(id) == 13) return muonID(idx, WW_fo_noiso_v3);
   return false;
 }
 
 bool WWAnalysis::isDenominatorLeptonIso(int id, int idx){
-  if (abs(id) == 11) return electronID(idx, WW_fo_v2);
-  else if (abs(id) == 13) return muonID(idx, WW_fo_v2);
+  if (abs(id) == 11) return electronID(idx, WW_fo_v3);
+  else if (abs(id) == 13) return muonID(idx, WW_fo_v3);
   return false;
 }
 
 bool WWAnalysis::isVetoLepton(int id, int idx){
-  if (abs(id) == 11) return electronID(idx, WW_veto_v2);
-  else if (abs(id) == 13) return muonID(idx, WW_veto_v2);
+  if (abs(id) == 11) return electronID(idx, WW_fo_v3);
+  else if (abs(id) == 13) return muonID(idx, WW_fo_v3);
   return false;
 }
 
 bool WWAnalysis::isVetoLeptonNoIso(int id, int idx){
-  if (abs(id) == 11) return electronID(idx, WW_veto_noiso_v2);
-  else if (abs(id) == 13) return muonID(idx, WW_veto_noiso_v2);
+  if (abs(id) == 11) return electronID(idx, WW_fo_noiso_v3);
+  else if (abs(id) == 13) return muonID(idx, WW_fo_noiso_v3);
   return false;
 }
 
 bool WWAnalysis::isVetoLeptonIso(int id, int idx){
-  if (abs(id) == 11) return electronID(idx, WW_veto_v2);
-  else if (abs(id) == 13) return muonID(idx, WW_veto_v2);
+  if (abs(id) == 11) return electronID(idx, WW_fo_v3);
+  else if (abs(id) == 13) return muonID(idx, WW_fo_v3);
   return false;
 }
 
@@ -268,73 +268,73 @@ bool WWAnalysis::hypsFromFirstGoodVertex(size_t hypIdx, float dz_cut){
 
 bool WWAnalysis::isGoodVetoElectronNoIso(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 10.) return false;
-  if (!electronID(elidx, WW_veto_noiso_v2)) return false;
+  if (!electronID(elidx, WW_fo_noiso_v3)) return false;
   return true;
 }
 
 bool WWAnalysis::isGoodVetoElectron(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 10.) return false;
-  if (!electronID(elidx, WW_veto_v2)) return false;
+  if (!electronID(elidx, WW_fo_v3)) return false;
   return true;
 }
 
 bool WWAnalysis::isFakableElectronNoIso(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 10.) return false;
-  if (!electronID(elidx, WW_fo_noiso_v2)) return false;
+  if (!electronID(elidx, WW_fo_noiso_v3)) return false;
   return true;
 }
 
 bool WWAnalysis::isFakableElectron(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 10.) return false;
-  if (!electronID(elidx, WW_fo_v2)) return false;
+  if (!electronID(elidx, WW_fo_v3)) return false;
   return true;
 }
 
 bool WWAnalysis::isGoodElectronNoIso(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 10.) return false;
-  if (!electronID(elidx, WW_medium_noiso_v2)) return false;
+  if (!electronID(elidx, WW_medium_noiso_v3)) return false;
   return true;
 }
 
 bool WWAnalysis::isGoodElectron(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 10.) return false;
-  if (!electronID(elidx, WW_medium_v2)) return false;
+  if (!electronID(elidx, WW_medium_v3)) return false;
   return true;
 }
 
 bool WWAnalysis::isGoodVetoMuonNoIso(unsigned int muidx){
   if (mus_p4().at(muidx).pt() < 5.)         return false;
-  if (!muonID(muidx, WW_veto_noiso_v2))     return false;
+  if (!muonID(muidx, WW_fo_noiso_v3))     return false;
   return true;
 }
 
 bool WWAnalysis::isGoodVetoMuon(unsigned int muidx){
   if (mus_p4().at(muidx).pt() < 5.)         return false;
-  if (!muonID(muidx, WW_veto_v2))           return false;
+  if (!muonID(muidx, WW_fo_v3))           return false;
   return true;
 }
 
 bool WWAnalysis::isFakableMuonNoIso(unsigned int muidx){
   if (mus_p4().at(muidx).pt() < 10.)        return false;
-  if (!muonID(muidx, WW_fo_noiso_v2))       return false;
+  if (!muonID(muidx, WW_fo_noiso_v3))       return false;
   return true;
 }
 
 bool WWAnalysis::isFakableMuon(unsigned int muidx){
   if (mus_p4().at(muidx).pt() < 10.)        return false;
-  if (!muonID(muidx, WW_fo_v2))             return false;
+  if (!muonID(muidx, WW_fo_v3))             return false;
   return true;
 }
 
 bool WWAnalysis::isGoodMuonNoIso(unsigned int muidx){
   if (mus_p4().at(muidx).pt() < 10.)        return false;
-  if (!muonID(muidx, WW_medium_noiso_v2))    return false;
+  if (!muonID(muidx, WW_medium_noiso_v3))    return false;
   return true;
 }
 
 bool WWAnalysis::isGoodMuon(unsigned int muidx){
   if (mus_p4().at(muidx).pt() < 10.)        return false;
-  if (!muonID(muidx, WW_medium_v2))          return false;
+  if (!muonID(muidx, WW_medium_v3))          return false;
   return true;
 }
 

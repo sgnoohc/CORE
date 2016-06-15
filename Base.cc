@@ -163,6 +163,10 @@ analysis_t whichAnalysis(id_level_t id_level){
     case (WW_fo_v2):
     case (WW_medium_noiso_v2):
     case (WW_medium_v2):
+    case (WW_fo_noiso_v3):
+    case (WW_fo_v3):
+    case (WW_medium_noiso_v3):
+    case (WW_medium_v3):
       return WW;
       break;
     default:
