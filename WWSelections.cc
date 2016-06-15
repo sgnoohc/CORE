@@ -3,6 +3,7 @@
 using namespace tas;
 using namespace WWAnalysis;
 
+
 int WWAnalysis::convertCMS3tag(TString tagName) 
 {
 
@@ -16,6 +17,56 @@ int WWAnalysis::convertCMS3tag(TString tagName)
   TString t6(tagName[13]);
   return (t6.Atoi()+10*t5.Atoi()+100*t4.Atoi()+1000*t3.Atoi()+10000*t2.Atoi()+100000*t1.Atoi());
   
+}
+
+bool WWAnalysis::isGstar(size_t& gstar_idx, int& gstar_lep1_id, int& gstar_lep2_id) {
+
+  bool gstar = false;
+  bool gstar_lep1 = false;
+  bool gstar_lep2 = false;
+
+  for (size_t ipart=0; ipart<tas::genps_id().size(); ipart++)  {
+
+    if (tas::genps_id().at(ipart) == 22 && tas::genps_status().at(ipart) == 44 && tas::genps_isLastCopy().at(ipart)) { 
+      gstar = true; 
+      gstar_idx = ipart; 
+    } 
+
+    if (gstar && !gstar_lep2) {
+      if ((tas::genps_id().at(ipart) == 11 || tas::genps_id().at(ipart) == 13 || tas::genps_id().at(ipart) == 15) && (tas::genps_idx_simplemother().at(ipart) == static_cast<int>(gstar_idx))) {
+	gstar_lep2 = true;
+	gstar_lep2_id = tas::genps_id().at(ipart);
+	if (gstar_lep2_id == 15){
+	  gstar_lep2 = false;
+	  for (size_t ipart2=0; ipart2<genps_id().size(); ipart2++)  {
+	    if (genps_idx_simplemother().at(ipart2) == static_cast<int>(ipart) && (genps_id().at(ipart2) == 11 || genps_id().at(ipart2) == 13)) {
+	      gstar_lep2_id = genps_id().at(ipart2);
+	      gstar_lep2 = true;
+	    }
+	  }
+	}
+      }
+    }
+ 
+    if (gstar && !gstar_lep1) {
+      if ((tas::genps_id().at(ipart) == -11 || tas::genps_id().at(ipart) == -13 || tas::genps_id().at(ipart) == -15) && (tas::genps_idx_simplemother().at(ipart) == static_cast<int>(gstar_idx))) {
+	gstar_lep1 = true;
+	gstar_lep1_id = tas::genps_id().at(ipart);
+	if (gstar_lep1_id == -15){
+	  gstar_lep1 = false;
+	  for (size_t ipart2=0; ipart2<genps_id().size(); ipart2++)  {
+	    if (genps_idx_simplemother().at(ipart2) == static_cast<int>(ipart) && (genps_id().at(ipart2) == -11 || genps_id().at(ipart2) == -13)) {
+	      gstar_lep1_id = genps_id().at(ipart2);
+	      gstar_lep1 = true;
+	    }
+	  }
+	}      
+      } 
+    }
+
+  }
+
+  return gstar;
 }
 
 float WWAnalysis::getGenHT(bool is_b_a_jet)
@@ -33,161 +84,42 @@ float WWAnalysis::getGenHT(bool is_b_a_jet)
 
 }
 
-bool WWAnalysis::makesExtraGammaStar(int iHyp){
+float WWAnalysis::getWWpT()
+{
 
-  std::vector<unsigned int> ele_idx;
-  std::vector<unsigned int> mu_idx;
-
-  int lt_id           = tas::hyp_lt_id().at(iHyp);
-  int ll_id           = tas::hyp_ll_id().at(iHyp);
-  unsigned int lt_idx = tas::hyp_lt_index().at(iHyp);
-  unsigned int ll_idx = tas::hyp_ll_index().at(iHyp);
-
-  (abs(lt_id) == 11) ? ele_idx.push_back(lt_idx) : mu_idx.push_back(lt_idx);
-  (abs(ll_id) == 11) ? ele_idx.push_back(ll_idx) : mu_idx.push_back(ll_idx);
-
-  if (ele_idx.size() + mu_idx.size() != 2) {
-    std::cout << "ERROR: don't have 2 leptons in hypothesis!!!  Exiting..." << std::endl;
-    return false;
+  float wwpt = 0.;
+  LorentzVector ww;
+  if (tas::evt_isRealData()) return wwpt;
+  for (size_t gidx = 0; gidx < tas::genps_p4().size(); gidx++){
+    if (TMath::Abs(tas::genps_id().at(gidx)) != 24) continue;
+    if (!tas::genps_isLastCopy().at(gidx)) continue; // fromHardProcessBeforeFSR().at(gidx)) continue;
+    ww += tas::genps_p4().at(gidx);
   }
-      
-  if (ele_idx.size() > 0){
-    for (unsigned int eidx = 0; eidx < tas::els_p4().size(); eidx++) {
+  wwpt = ww.pt();
+  return wwpt;
 
-      bool is_hyp_lep = false;
-      for (unsigned int vidx = 0; vidx < ele_idx.size(); vidx++){
-	if (eidx == ele_idx.at(vidx)) is_hyp_lep = true;
-      }
-      if (is_hyp_lep) continue;
-
-      if (fabs(tas::els_p4().at(eidx).eta()) > 2.5) continue;
-      //      if (tas::els_p4().at(eidx).pt() < 7.0) continue;
-      //      if (!isGoodVetoElectron(eidx)) continue;
-      if (tas::els_p4().at(eidx).pt() < 10.0) continue;
-      if (!isFakableElectron(eidx)) continue;
-
-      for (unsigned int vidx = 0; vidx < ele_idx.size(); vidx++) {
-          if (tas::els_charge().at(eidx) * tas::els_charge().at(ele_idx.at(vidx)) > 0) continue;
-          LorentzVector gamma_p4 = tas::els_p4().at(eidx) + tas::els_p4().at(ele_idx.at(vidx));
-          float gammacandmass = sqrt(fabs(gamma_p4.mass2()));
-          if (gammacandmass < 12.0) return true;
-      }
-    } 
-  }
-
-  if (mu_idx.size() > 0){
-    for (unsigned int midx = 0; midx < tas::mus_p4().size(); midx++) {
-
-      bool is_hyp_lep = false;
-      for (unsigned int vidx = 0; vidx < mu_idx.size(); vidx++) {
-        if (midx == mu_idx.at(vidx)) is_hyp_lep = true; 
-      }
-      if (is_hyp_lep) continue;
-
-      if (fabs(tas::mus_p4().at(midx).eta()) > 2.4) continue;
-      //      if (tas::mus_p4().at(midx).pt() < 5.0) continue;
-      //      if (!isGoodVetoMuon(midx)) continue;
-      if (tas::mus_p4().at(midx).pt() < 10.0) continue;
-      if (!isFakableMuon(midx)) continue;
-
-      for (unsigned int vidx = 0; vidx < mu_idx.size(); vidx++) {
-          if (tas::mus_charge().at(midx) * tas::mus_charge().at(mu_idx.at(vidx)) > 0) continue;
-          LorentzVector gamma_p4 = tas::mus_p4().at(midx) + tas::mus_p4().at(mu_idx.at(vidx));
-          float gammacandmass = sqrt(fabs(gamma_p4.mass2()));
-          if (gammacandmass < 12.0) return true;
-      }
-    }
-  }
-
-  return false;
 }
 
-Z_result_t WWAnalysis::makesExtraZ(int iHyp){
+LorentzVector WWAnalysis::getZpT()
+{
 
-  Z_result_t result;
-  result.result = false;
-  result.id = 0;
-  result.idx = 0; 
-
-  std::vector<unsigned int> ele_idx;
-  std::vector<unsigned int> mu_idx;
-
-  int lt_id           = tas::hyp_lt_id().at(iHyp);
-  int ll_id           = tas::hyp_ll_id().at(iHyp);
-  unsigned int lt_idx = tas::hyp_lt_index().at(iHyp);
-  unsigned int ll_idx = tas::hyp_ll_index().at(iHyp);
-
-  (abs(lt_id) == 11) ? ele_idx.push_back(lt_idx) : mu_idx.push_back(lt_idx);
-  (abs(ll_id) == 11) ? ele_idx.push_back(ll_idx) : mu_idx.push_back(ll_idx);
-
-  if (ele_idx.size() + mu_idx.size() != 2) {
-    std::cout << "ERROR: don't have 2 leptons in hypothesis!!!  Exiting" << std::endl;
-    return result;
+  LorentzVector boson(0,0,0,0);
+  for (size_t ips=0; ips<genps_p4().size(); ips++) {
+    if (abs(genps_id().at(ips)) != 11 && abs(genps_id().at(ips)) != 13 && !genps_isDirectHardProcessTauDecayProductFinalState().at(ips)) continue;
+    if (!genps_isPromptFinalState().at(ips) && !genps_isDirectHardProcessTauDecayProductFinalState().at(ips)) continue;
+    boson +=  genps_p4().at(ips);
   }
-      
-  if (ele_idx.size() > 0) {
-    for (unsigned int eidx = 0; eidx < tas::els_p4().size(); eidx++) {
-
-      bool is_hyp_lep = false;
-      for (unsigned int vidx = 0; vidx < ele_idx.size(); vidx++) {
-        if (eidx == ele_idx.at(vidx)) is_hyp_lep = true;                
-      }
-      if (is_hyp_lep) continue;
-
-      if (fabs(tas::els_p4().at(eidx).eta()) > 2.5) continue;
-      //      if (tas::els_p4().at(eidx).pt() < 7) continue;
-      //      if (!isGoodVetoElectron(eidx)) continue;
-
-      if (tas::els_p4().at(eidx).pt() < 10.0) continue;
-      if (!isFakableElectron(eidx)) continue;
-
-      for (unsigned int vidx = 0; vidx < ele_idx.size(); vidx++) {
-        if (tas::els_charge().at(eidx) * tas::els_charge().at(ele_idx.at(vidx)) > 0) continue;
-        LorentzVector zp4 = tas::els_p4().at(eidx) + tas::els_p4().at(ele_idx.at(vidx));
-        float zcandmass = sqrt(fabs(zp4.mass2()));
-        if (fabs(zcandmass-91.1876) < 15.){
-          result.result = true; 
-          result.id = -sgn(tas::els_charge().at(eidx))*11;
-          result.idx = eidx;  
-          return result;
-        }
-      }
-    }
+  
+  for (size_t ips=0; ips<genps_p4().size(); ips++) {
+    if (abs(genps_id().at(ips)) != 22) continue;
+    if (!genps_isPromptFinalState().at(ips)) continue;
+    boson += genps_p4().at(ips);
   }
+  return boson;
 
-  if (mu_idx.size() > 0) {
-    for (unsigned int midx = 0; midx < tas::mus_p4().size(); midx++) {
-
-      bool is_hyp_lep = false;
-      for (unsigned int vidx = 0; vidx < mu_idx.size(); vidx++) {
-        if (midx == mu_idx.at(vidx)) is_hyp_lep = true;                
-      }
-      if (is_hyp_lep) continue;
-
-      if (fabs(tas::mus_p4().at(midx).eta()) > 2.4) continue;
-      //      if (tas::mus_p4().at(midx).pt() < 5.) continue;
-      //      if (!isGoodVetoMuon(midx)) continue;
-      if (tas::mus_p4().at(midx).pt() < 10.0) continue;
-      if (!isFakableMuon(midx)) continue;
-
-      for (unsigned int vidx = 0; vidx < mu_idx.size(); vidx++) {
-        if (tas::mus_charge().at(midx) * tas::mus_charge().at(mu_idx.at(vidx)) > 0) continue;
-        LorentzVector zp4 = tas::mus_p4().at(midx) + tas::mus_p4().at(mu_idx.at(vidx));
-        float zcandmass = sqrt(fabs(zp4.mass2()));
-        if (fabs(zcandmass-91.1876) < 15.){
-          result.result = true; 
-          result.id = -sgn(tas::mus_charge().at(midx))*13;
-          result.idx = midx;  
-          return result;
-        }
-      }
-    }
-  }
-
-  return result;
 }
 
-std::pair <vector <Jet>, vector <Jet> > WWAnalysis::WWJetsCalculator(vector<LorentzVector> JetCollection, bool use_puppi){
+std::pair <vector <Jet>, vector <Jet> > WWAnalysis::WWJetsCalculator(vector<LorentzVector> JetCollection){
   vector <Jet> result_jets;
   vector <Jet> result_btags;
 
@@ -196,12 +128,11 @@ std::pair <vector <Jet>, vector <Jet> > WWAnalysis::WWJetsCalculator(vector<Lore
     LorentzVector jet = JetCollection.at(i);
     
     //Kinematic jet cuts
-    if (jet.pt() < 15.) continue;
+    if (jet.pt() < 10.) continue;
     if (fabs(jet.eta()) > 4.7) continue;
     
     //Require loose jet ID
-    if (!isLoosePFJet_50nsV1(i, use_puppi)) continue;
-    //    if (!use_puppi && !loosePileupJetId_v2(i, use_puppi)) continue;
+    if (!isLoosePFJet_50nsV1(i)) continue;
 
     //Jet cleaning -- electrons
     bool jetIsLep = false;
@@ -226,20 +157,14 @@ std::pair <vector <Jet>, vector <Jet> > WWAnalysis::WWJetsCalculator(vector<Lore
         
     //Save jets that make it this far
     result_jets.push_back(Jet(i,
-    			      tas::getbtagvalue("pfCombinedInclusiveSecondaryVertexV2BJetTags",i, use_puppi),
-    			      tas::getbtagvalue("softPFMuonBJetTags",i, use_puppi),
-    			      tas::getbtagvalue("softPFElectronBJetTags",i, use_puppi),
-    			      tas::getbtagvalue("pfTrackCountingHighEffBJetTags",i, use_puppi), 
-			      use_puppi
+    			      tas::getbtagvalue("pfCombinedInclusiveSecondaryVertexV2BJetTags",i),
+    			      tas::getbtagvalue("pfCombinedMVAV2BJetTags",i)
     			      ));
-    float disc = tas::getbtagvalue("pfCombinedInclusiveSecondaryVertexV2BJetTags",i, use_puppi);
-    if (disc < 0.605 || fabs(jet.eta()) > 2.4) continue;
+    float disc = tas::getbtagvalue("pfCombinedMVAV2BJetTags",i);
+    if (disc < -0.715 || fabs(jet.eta()) > 2.4) continue;
     result_btags.push_back(Jet(i,
-    			       tas::getbtagvalue("pfCombinedInclusiveSecondaryVertexV2BJetTags",i, use_puppi),
-			       tas::getbtagvalue("softPFMuonBJetTags",i, use_puppi),
-			       tas::getbtagvalue("softPFElectronBJetTags",i, use_puppi),
-			       tas::getbtagvalue("pfTrackCountingHighEffBJetTags",i, use_puppi), 
-			       use_puppi
+    			       tas::getbtagvalue("pfCombinedInclusiveSecondaryVertexV2BJetTags",i),
+    			       tas::getbtagvalue("pfCombinedMVAV2BJetTags",i)
 			       )); 
     
   }
@@ -256,6 +181,12 @@ bool WWAnalysis::isLooseIsolatedLepton(int id, int idx){
 bool WWAnalysis::isIsolatedLepton(int id, int idx){
   if (abs(id) == 11) return (elMiniRelIsoCMS3_EA(idx) < 0.1);
   else if (abs(id) == 13) return (muMiniRelIsoCMS3_EA(idx) < 0.1);
+  return false;
+}
+
+bool WWAnalysis::isTightCharge(int id, int idx){
+  if (abs(id) == 11) return (threeChargeAgree(idx));
+  else if (abs(id) == 13) return (tas::mus_ptErr().at(idx)/tas::mus_trk_p4().at(idx).pt() < 0.2);
   return false;
 }
 
@@ -334,36 +265,15 @@ bool WWAnalysis::hypsFromFirstGoodVertex(size_t hypIdx, float dz_cut){
   return false;
 }
 
-anal_type_t WWAnalysis::analysisCategory(float lep1pt, float lep2pt){
-  if      (lep1pt > ptCutHigh && lep2pt > ptCutHigh) return HighHigh;
-  else if (lep1pt > ptCutHigh && lep2pt > ptCutLow)  return HighLow;
-  else if (lep2pt > ptCutHigh && lep1pt > ptCutLow)  return HighLow;
-  else if (lep1pt > ptCutLow  && lep2pt > ptCutLow)  return LowLow;
-  return Undefined;
-}
-
-int WWAnalysis::baselineRegion(int njets, int nbtags, float met, float ht, float lep1_pt, float lep2_pt){
-  //Kinematic cuts
-  //  if (lep1_pt < 20) return -1;
-  //  if (lep2_pt < 15) return -1;
-  //  if (met < 25) return -1;
-  return njets;
-}
-
-int WWAnalysis::signalRegion(int njets, int nbtags, float met, float ht, float mt_min, float lep1pt, float lep2pt){
-  
-  cout << "Still defined in private code" << endl;
-  return -1;
-}
 
 bool WWAnalysis::isGoodVetoElectronNoIso(unsigned int elidx){
-  if (els_p4().at(elidx).pt() < 7.) return false;
+  if (els_p4().at(elidx).pt() < 10.) return false;
   if (!electronID(elidx, WW_veto_noiso_v2)) return false;
   return true;
 }
 
 bool WWAnalysis::isGoodVetoElectron(unsigned int elidx){
-  if (els_p4().at(elidx).pt() < 7.) return false;
+  if (els_p4().at(elidx).pt() < 10.) return false;
   if (!electronID(elidx, WW_veto_v2)) return false;
   return true;
 }
@@ -470,33 +380,10 @@ int WWAnalysis::isGoodHyp(int iHyp, bool expt, bool verbose){
   bool passed_id_numer_lt = isGoodLepton(id_lt, idx_lt);
   bool passed_id_denom_ll = isDenominatorLepton(id_ll, idx_ll);
   bool passed_id_denom_lt = isDenominatorLepton(id_lt, idx_lt);
-  bool passed_id_inSituFR_ll = isInSituFRLepton(id_ll, idx_ll);
-  bool passed_id_inSituFR_lt = isInSituFRLepton(id_lt, idx_lt);
-  bool extraZ = makesExtraZ(iHyp).result;
-  bool extraGammaStar = makesExtraGammaStar(iHyp);
-
-  //pass in situ ID
-  bool truth_inSituFR = passed_id_inSituFR_lt && passed_id_inSituFR_ll;
-
-  //Verbose info:
-  if (verbose && pt_ll > ptCutLow && pt_lt > ptCutLow){
-    cout << "hyp " << iHyp << " leptons: " << id_ll << " " << pt_ll << " (idx: " << idx_ll << ") " << id_lt << " " << pt_lt << " (idx: " << idx_lt << ")" << endl;
-    cout << "   isos: " << isos << endl;
-    cout << "   extraZ: " << extraZ << endl;
-    cout << "   extraG: " << extraGammaStar << endl;
-    cout << "   invt mass: " << (tas::hyp_ll_p4().at(iHyp) + tas::hyp_lt_p4().at(iHyp)).M() << endl;
-    cout << "   passes eta: " << ((abs(id_ll) == 11 ? fabs(eta_ll) < 2.5 : fabs(eta_ll) < 2.4) && (abs(id_lt) == 11 ? fabs(eta_lt) < 2.5 : fabs(eta_lt) < 2.4)) << " etas are " << eta_ll << " and " << eta_lt << endl;
-    cout << "   passes hypsFromFirstGoodVertex: " << hypsFromFirstGoodVertex(iHyp) << endl;
-    cout << "   lepton with pT " << pt_ll << " passes id: " << passed_id_numer_ll << endl;
-    cout << "   lepton with pT " << pt_lt << " passes id: " << passed_id_numer_lt << endl;
-    cout << "   lowMassVeto: " << ((tas::hyp_ll_p4().at(iHyp) + tas::hyp_lt_p4().at(iHyp)).M() < 8) << endl;
-    if (abs(id_ll) == 11) cout << "   lepton with pT " << pt_ll << " passes 3chg: " << threeChargeAgree(idx_ll) << endl;
-    if (abs(id_lt) == 11) cout << "   lepton with pT " << pt_lt << " passes 3chg: " << threeChargeAgree(idx_lt) << endl;
-  }
 
   //Kinematic Cuts
-  if (pt_ll < 10) return 0;
-  if (pt_lt < 10) return 0;
+  if (pt_ll < 15) return 0;
+  if (pt_lt < 15) return 0;
   if (abs(id_ll) == 11 && fabs(eta_ll) > 2.5) return 0;
   if (abs(id_lt) == 11 && fabs(eta_lt) > 2.5) return 0;
   if (abs(id_ll) == 13 && fabs(eta_ll) > 2.4) return 0;
@@ -507,22 +394,14 @@ int WWAnalysis::isGoodHyp(int iHyp, bool expt, bool verbose){
   if (!passed_id_denom_lt && !passed_id_numer_lt) return 0;
 
   //Other cuts
-  if ((tas::hyp_ll_p4().at(iHyp) + tas::hyp_lt_p4().at(iHyp)).M() < 8) return 0; 
   if (!hypsFromFirstGoodVertex(iHyp)) return 0;
 
-  //Results // these are the "good ones"
-  //  if (extraZ) return 6;
-  //  else if (extraGammaStar) return 7;
-
   if (passed_id_numer_lt && passed_id_numer_ll && isos) return 4;  // 4 if both numer pass, WW
-  else if (!passed_id_numer_lt && !passed_id_numer_ll && passed_id_denom_lt && passed_id_denom_ll && isos == true) return 1; // 1 SS, if both denom and no numer pass
-  else if (((passed_id_numer_ll && passed_id_denom_lt) || (passed_id_numer_lt && passed_id_denom_ll)) && isos == true) return 2; //2 SS, one numer and one denom not numer
+  else if (!passed_id_numer_lt && !passed_id_numer_ll && passed_id_denom_lt && passed_id_denom_ll && isos == true) return 1; // 1 OS, if both denom and no numer pass
+  else if (((passed_id_numer_ll && passed_id_denom_lt) || (passed_id_numer_lt && passed_id_denom_ll)) && isos == true) return 2; //2 OS, one numer and one denom not numer
   else if (passed_id_numer_lt && passed_id_numer_ll && !isos) return 3;  // 3 if both numer pass, SS
-  else if (isos && truth_inSituFR) return 5;  // 5 if both pass inSituFR
-
-  //  else if (passed_id_numer_lt && passed_id_numer_ll && !isos && extraZ) return 8;
-  //  else if (passed_id_numer_lt && passed_id_numer_ll && !isos && extraGammaStar) return 9;
-
+  else if (!passed_id_numer_lt && !passed_id_numer_ll && passed_id_denom_lt && passed_id_denom_ll && !isos == true) return 5; // 1 SS, if both denom and no numer pass
+  else if (((passed_id_numer_ll && passed_id_denom_lt) || (passed_id_numer_lt && passed_id_denom_ll)) && !isos == true) return 6; //2 SS, one numer and one denom not numer
 
   return 0; //non-highpass SS
 }
@@ -537,15 +416,16 @@ hyp_result_t WWAnalysis::chooseBestHyp(bool expt, bool verbose){
   vector <int> good_hyps_os; //opposite sign, tight tight
   vector <int> good_hyps_zv; //same sign, tight tight, fail Z veto
   vector <int> good_hyps_gs; //same sign, tight tight, fail gamma* veto
+  //  cout << "RCLSA 1 " << tas::hyp_type().size() << endl;
   for (unsigned int i = 0; i < tas::hyp_type().size(); i++){
     int good_hyp_result = isGoodHyp(i, verbose);
+    //    cout << "RCLSA 2 " << i << " " << good_hyp_result << endl;
     if (good_hyp_result == 1) good_hyps_df.push_back(i); 
     else if (good_hyp_result == 2) good_hyps_sf.push_back(i); 
     else if (good_hyp_result == 3) good_hyps_ss.push_back(i); 
     else if (good_hyp_result == 4) good_hyps_os.push_back(i); 
     else if (good_hyp_result == 5) good_hyps_fr.push_back(i); 
     else if (good_hyp_result == 6) good_hyps_zv.push_back(i); 
-    else if (good_hyp_result == 7) good_hyps_gs.push_back(i); 
   }
 
   //hyp_class_ to track SS(3), SF(2), DF(1), OS(4), or none(0)
@@ -556,14 +436,6 @@ hyp_result_t WWAnalysis::chooseBestHyp(bool expt, bool verbose){
   if (good_hyps_os.size() != 0){
      good_hyps = good_hyps_os;
      hyp_class_ = 4;
-  }
-  else if (good_hyps_zv.size() != 0){
-    good_hyps = good_hyps_zv;
-    hyp_class_ = 6;
-  }
-  else if (good_hyps_gs.size() != 0){
-    good_hyps = good_hyps_zv;
-    hyp_class_ = 7;
   }
   else if (good_hyps_sf.size() != 0){
     good_hyps = good_hyps_sf;
@@ -579,6 +451,10 @@ hyp_result_t WWAnalysis::chooseBestHyp(bool expt, bool verbose){
   }
   else if (good_hyps_fr.size() != 0){
     good_hyps = good_hyps_fr;
+    hyp_class_ = 6;
+  }
+  else if (good_hyps_zv.size() != 0){
+    good_hyps = good_hyps_zv;
     hyp_class_ = 5;
   }
   else hyp_class_ = 0; 
@@ -706,19 +582,6 @@ vector <particle_t> WWAnalysis::getGenPair(bool verbose){
 
 pair<particle_t, int> WWAnalysis::getThirdLepton(int hyp){
 
-  //If hyp_class == 6, save the lepton that triggered the Z veto (so long as it is veto or higher)
-  //  Z_result_t Zresult = makesExtraZ(hyp);
-  //  if (Zresult.result == true){
-  //    particle_t result;
-  //    result.id = Zresult.id;
-  //    result.idx = Zresult.idx;
-  //    result.p4 = abs(result.id) == 11 ? tas::els_p4().at(result.idx) : tas::mus_p4().at(result.idx);
-  //    int quality = 0;
-  //    if (abs(result.id) == 11 ? !isGoodVetoElectron(result.idx) : !isGoodVetoMuon(result.idx)) quality = -1;
-  //    if (abs(result.id) == 11 ? isFakableElectron(result.idx) : isFakableMuon(result.idx)) quality = 1;
-  //    if (abs(result.id) == 11 ? isGoodElectron(result.idx) : isGoodMuon(result.idx)) quality = 2;
-  //    if (quality >= 0) return pair<particle_t, int>(result, quality);
-  //  }
   
   //Otherwise, find the highest-quality lepton possible. 
 
@@ -742,7 +605,7 @@ pair<particle_t, int> WWAnalysis::getThirdLepton(int hyp){
     if (abs(lt_id) == 11 && lt_idx == i) continue; 
 
     //Remove electrons that fail kinematically
-    if (tas::els_p4().at(i).pt() < 7) continue;
+    if (tas::els_p4().at(i).pt() < 10.) continue;
     if (fabs(tas::els_p4().at(i).eta()) > 2.5) continue;
 
     //Remove electrons that fail loosest ID, determine tighter IDs
@@ -756,6 +619,7 @@ pair<particle_t, int> WWAnalysis::getThirdLepton(int hyp){
        quality = quality_;
        lep3_p4_ = tas::els_p4().at(i); 
        lep3_id_ = -11*tas::els_charge().at(i);
+       lep3_idx_ = i;
     } 
   }
   
@@ -767,7 +631,7 @@ pair<particle_t, int> WWAnalysis::getThirdLepton(int hyp){
     if (abs(lt_id) == 13 && lt_idx == i) continue; 
    
     //Remove electrons that fail kinematically
-    if (tas::mus_p4().at(i).pt() < 7) continue;
+    if (tas::mus_p4().at(i).pt() < 10.) continue;
     if (fabs(tas::mus_p4().at(i).eta()) > 2.4) continue;
 
     //Remove muons that fail ID
@@ -780,7 +644,8 @@ pair<particle_t, int> WWAnalysis::getThirdLepton(int hyp){
     if (quality_ > quality || (quality_ == quality && tas::mus_p4().at(i).pt() > lep3_p4_.pt())){
        quality = quality_;
        lep3_p4_ = tas::mus_p4().at(i); 
-       lep3_id_ = -11*tas::mus_charge().at(i);
+       lep3_id_ = -13*tas::mus_charge().at(i);
+       lep3_idx_ = i;
     } 
 
   }//Muon loop
@@ -789,6 +654,87 @@ pair<particle_t, int> WWAnalysis::getThirdLepton(int hyp){
   result.id = lep3_id_;
   result.p4 = lep3_p4_;
   result.idx = lep3_idx_;
+
+  return pair<particle_t, int>(result, quality);
+
+}
+
+pair<particle_t, int> WWAnalysis::getFourthLepton(int hyp, int id3, int idx3){
+
+  
+  //Otherwise, find the highest-quality lepton possible. 
+
+  //Selected Lepton Information
+  int ll_id = tas::hyp_ll_id().at(hyp);
+  int lt_id = tas::hyp_lt_id().at(hyp);
+  unsigned int ll_idx = tas::hyp_ll_index().at(hyp);
+  unsigned int lt_idx = tas::hyp_lt_index().at(hyp);
+
+  //Store best lepton
+  int lep4_id_ = -1;
+  int lep4_idx_ = -1;
+  int quality = 0;
+  LorentzVector lep4_p4_; 
+
+  //Electron Loop 
+  for (unsigned int i = 0; i < tas::els_p4().size(); i++){
+
+    //Remove electrons already selected
+    if (abs(ll_id) == 11 && ll_idx == i) continue; 
+    if (abs(lt_id) == 11 && lt_idx == i) continue; 
+    if (abs(id3) == 11 && lt_idx == static_cast<unsigned int>(idx3)) continue; 
+
+    //Remove electrons that fail kinematically
+    if (tas::els_p4().at(i).pt() < 10.) continue;
+    if (fabs(tas::els_p4().at(i).eta()) > 2.5) continue;
+
+    //Remove electrons that fail loosest ID, determine tighter IDs
+    int quality_ = 0;
+    if (!isGoodVetoElectron(i)) continue;
+    if (isFakableElectron(i)) quality_ = 1;
+    if (isGoodElectron(i)) quality_ = 2;
+
+    //Choose the highest-quality, highest-pT electron 
+    if (quality_ > quality || (quality_ == quality && tas::els_p4().at(i).pt() > lep4_p4_.pt())){
+       quality = quality_;
+       lep4_p4_ = tas::els_p4().at(i); 
+       lep4_id_ = -11*tas::els_charge().at(i);
+       lep4_idx_ = i;
+    } 
+  }
+  
+  //Muon Loop
+  for (unsigned int i = 0; i < tas::mus_p4().size(); i++){
+
+    //Remove electrons already selected
+    if (abs(ll_id) == 13 && ll_idx == i) continue; 
+    if (abs(lt_id) == 13 && lt_idx == i) continue; 
+    if (abs(id3) == 13 && lt_idx == static_cast<unsigned int>(idx3)) continue; 
+   
+    //Remove electrons that fail kinematically
+    if (tas::mus_p4().at(i).pt() < 10.) continue;
+    if (fabs(tas::mus_p4().at(i).eta()) > 2.4) continue;
+
+    //Remove muons that fail ID
+    int quality_ = 0; 
+    if (!isGoodVetoMuon(i)) continue;
+    if (isFakableMuon(i)) quality_ = 1;
+    if (isGoodMuon(i)) quality_ = 2;
+
+    //Choose the highest-quality, highest-pT electron 
+    if (quality_ > quality || (quality_ == quality && tas::mus_p4().at(i).pt() > lep4_p4_.pt())){
+       quality = quality_;
+       lep4_p4_ = tas::mus_p4().at(i); 
+       lep4_id_ = -13*tas::mus_charge().at(i);
+       lep4_idx_ = i;
+    } 
+
+  }//Muon loop
+
+  particle_t result;
+  result.id = lep4_id_;
+  result.p4 = lep4_p4_;
+  result.idx = lep4_idx_;
 
   return pair<particle_t, int>(result, quality);
 
@@ -803,73 +749,13 @@ bool WWAnalysis::lepsort (Lep i,Lep j) {
 
 bool WWAnalysis::jetptsort (Jet i,Jet j) { return (i.pt()>j.pt()); }
 
-float WWAnalysis::coneCorrPt(int id, int idx){
-  float miniIso = abs(id)==11 ? elMiniRelIsoCMS3_EA(idx, 1) : muMiniRelIsoCMS3_EA(idx, 1);
-  LorentzVector lep_p4 = abs(id)==11 ? els_p4().at(idx) : mus_p4().at(idx);
-  LorentzVector jet_p4  = closestJet(lep_p4, 0.4, 2.4, 1);
-  float ptrel = ptRel(lep_p4, jet_p4, true);
-  float A = abs(id)==11 ? 0.12 : 0.16;
-  float B = abs(id)==11 ? 0.80 : 0.76;
-  float C = abs(id)==11 ? 7.20 : 7.20;
-  return ((ptrel > C) ? lep_p4.pt()*(1 + std::max((float)0, miniIso - A)) : std::max(lep_p4.pt(), jet_p4.pt() * B));
-}
-
-int WWAnalysis::getHighPtTriggerPrescale(LorentzVector& p4, int& idx, int& id)  {
-
-  //   int temp;
-  //   int retval = 0;
-  //   
-  //   if (id == 13) {
-  //     
-  //     setHLTBranch("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v"             , p4, temp);
-  //     if (temp >= 0) retval += temp; 
-  //     setHLTBranch("HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v" , tas::mus_HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_MuonLeg().at(idx), temp);
-  //     if (temp >= 0) retval += 2*temp; 
-  //     setHLTBranch("HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_v"  , tas::mus_HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_MuonLeg().at(idx) , temp);
-  //     if (temp >= 0) retval += 4*temp; 
-  //     setHLTBranch("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v"           , p4, temp);
-  //     if (temp >= 0) retval += 8*temp; 
-  // 
-  //   } else if (id == 11) {
-  //     
-  //     setHLTBranch("HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v"       ,  p4, temp);
-  //     if (temp >= 0) retval += temp; 
-  //     setHLTBranch("HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v" , tas::els_HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_ElectronLeg().at(idx), temp);
-  //     if (temp >= 0) retval += 2*temp; 
-  //     setHLTBranch("HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_v"  , tas::els_HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_ElectronLeg().at(idx) , temp);
-  //     if (temp >= 0) retval += 4*temp; 
-  //     
-  //   }
-  //   
-  //   return retval;
-  return 1;
-
+int WWAnalysis::getHighPtTriggerPrescale(int idx1, int id1, int idx2, int id2)  {
+  return 0;
 }
 
 int WWAnalysis::getLowPtTriggerPrescale(LorentzVector& p4, int& idx, int& id) {
 
-  //   int temp;
-  //   int retval = 0;
-  //   
-  //   if (id == 13) {
-  //     
-  //     setHLTBranch("HLT_DoubleMu8_Mass8_PFHT300_v"                     , tas::mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg().at(idx)                      , temp);
-  //     if (temp >= 0) retval += temp; 
-  //     setHLTBranch("HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_v"     , tas::mus_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_MuonLeg().at(idx)      , temp);
-  //     if (temp >= 0) retval += 2*temp; 
-  // 
-  //   } else if (id == 11) {
-  //     
-  //     setHLTBranch("HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT300_v"   , tas::els_HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg().at(idx), temp);
-  //     if (temp >= 0) retval += temp; 
-  //     setHLTBranch("HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_v"     , tas::els_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg().at(idx)  , temp);
-  //     if (temp >= 0) retval += 2*temp; 
-  //     
-  //   }
-  // 
-  //   return retval;
-
-  return 1;
+  return 0;
 }
 
 void WWAnalysis::setHLTBranch(const char* pattern, const LorentzVector& p4, int& HLTbranch) {
@@ -894,4 +780,14 @@ void WWAnalysis::setHLTBranch(const char* pattern, bool legMatch, int& HLTbranch
     HLTbranch = HLT_prescale(name_HLT);
     if (legMatch==0) HLTbranch*=-1;
   } else HLTbranch = 0;
+}
+
+bool WWAnalysis::PassSVSCut(unsigned int svsIdx) {
+  
+  if (tas::svs_prob().at(svsIdx) > 0.01 &&
+      tas::svs_p4().at(svsIdx).mass() < 6.5 &&
+      tas::svs_p4().at(svsIdx).mass() > 0.55 &&
+      tas::svs_distXYsig().at(svsIdx) > 10.) return true;
+  else return false;
+
 }

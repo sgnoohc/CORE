@@ -13,8 +13,6 @@
 
 namespace WWAnalysis {
   
-const static float ptCutHigh = 25.;
-const static float ptCutLow = 10.;
 
 //Enums
 enum anal_type_t { HighHigh = 0, HighLow = 1, LowLow = 2, Undefined = -1 };
@@ -49,18 +47,13 @@ float coneCorrPt(int id, int idx);
 //Hyp selections
 hyp_result_t chooseBestHyp(bool expt, bool verbose=false);
 int isGoodHyp(int iHyp, bool expt, bool verbose=false);
-bool makesExtraGammaStar(int iHyp);
-Z_result_t makesExtraZ(int iHyp);
 bool hypsFromFirstGoodVertex(size_t hypIdx, float dz_cut = 1.0);
 std::pair<particle_t, int> getThirdLepton(int hyp);
+std::pair<particle_t, int> getFourthLepton(int hyp, int id3, int idx3);
 std::vector<particle_t> getGenPair(bool verbose=false);
 
-//Signal region selections
-anal_type_t analysisCategory(float lep1pt, float lep2pt);
-int baselineRegion(int njets, int nbtags, float met, float ht, float lep1_pt, float lep2_pt);
-int signalRegion(int njets, int nbtags, float met, float ht, float mt_min, float lep1pt, float lep2pt);
-
 //More Lepton selections
+bool isTightCharge(int id, int idx);
 bool isGoodLeptonNoIso(int id, int idx);
 bool isGoodLeptonIso(int id, int idx);
 bool isDenominatorLeptonNoIso(int id, int idx);
@@ -88,10 +81,13 @@ int lepMotherID(Lep lep);
 int lepMotherID_inSituFR(Lep lep);
 
 //Jet selection function
- std::pair <vector <Jet>, vector <Jet> > WWJetsCalculator(std::vector<LorentzVector> JetCollection, bool use_puppi = false);
+ std::pair <vector <Jet>, vector <Jet> > WWJetsCalculator(std::vector<LorentzVector> JetCollection);
 
 // Calculate generator ht
 float getGenHT(bool is_b_a_jet = true);
+float getWWpT();
+LorentzVector getZpT();
+bool isGstar(size_t& gstar_idx, int& gstar_lep1_idx, int& gstar_lep2_idx);
 
 //Sorting functions
 bool ptsort (int i,int j);
@@ -143,34 +139,33 @@ private:
 };
 
 struct Jet {
-Jet(int idxx,float __CSVv2,float __CSVsm,float __CSVse,float __CSVtche,bool is_puppi):idx_(idxx),_CSVv2(__CSVv2),_CSVsm(__CSVsm),_CSVse(__CSVse),_CSVtche(__CSVtche),_is_puppi(is_puppi) {}
-  LorentzVector p4() { if(_is_puppi) return cms3.pfjets_puppi_p4()[idx_]; else return cms3.pfjets_p4()[idx_]; }
-  float pt() {return p4().pt();}
-  float eta() {return p4().eta();}
-  float phi() {return p4().phi();}
-  int   mc3_id() { if(_is_puppi) return -1; else return cms3.pfjets_mc3_id()[idx_]; }
-  LorentzVector genjet_p4() { if(_is_puppi) return LorentzVector(0,0,0,0); else return cms3.pfjets_mc_p4()[idx_]; }
-  LorentzVector genps_p4() { if(_is_puppi) return LorentzVector(0,0,0,0); else return cms3.pfjets_mc_gp_p4()[idx_]; }
-  float pileup_jet_id() { if(_is_puppi) return cms3.pfjets_puppi_pileupJetId()[idx_]; else return cms3.pfjets_pileupJetId()[idx_]; }
-  int parton_flavor() { if(_is_puppi) return cms3.pfjets_puppi_partonFlavour()[idx_]; else return cms3.pfjets_partonFlavour()[idx_]; }
-  int hadron_flavor() { if(_is_puppi) return cms3.pfjets_puppi_hadronFlavour()[idx_]; else return cms3.pfjets_hadronFlavour()[idx_]; }
-  float CSVv2() {return _CSVv2;}
-  float CSVsm() {return _CSVsm;}
-  float CSVse() {return _CSVse;}
-  float CSVtche() {return _CSVtche;}
-  int idx() {return idx_;}
+  Jet(int idx, float CSVv2, float MVAv2) : _idx(idx), _CSVv2(CSVv2), _MVAv2(MVAv2) {}
+  LorentzVector p4()        {return cms3.pfjets_p4()[_idx];}
+  float pt()                {return p4().pt();}
+  float eta()               {return p4().eta();}
+  float phi()               {return p4().phi();}
+  int   mc3_id()            {return cms3.pfjets_mc3_id()[_idx];}
+  LorentzVector genjet_p4() {return cms3.pfjets_mc_p4()[_idx];}
+  LorentzVector genps_p4()  {return cms3.pfjets_mc_gp_p4()[_idx];}
+  float pileup_jet_id()     {return cms3.pfjets_pileupJetId()[_idx];}
+  int parton_flavor()       {return cms3.pfjets_partonFlavour()[_idx];}
+  int hadron_flavor()       {return cms3.pfjets_hadronFlavour()[_idx];}
+  float CSVv2()             {return _CSVv2;}
+  float MVAv2()             {return _MVAv2;}
+  int idx()                 {return _idx;}
 private:
-  int idx_;
-  float _CSVv2,_CSVsm,_CSVse,_CSVtche;
-  bool _is_puppi;
+  int _idx;
+  float _CSVv2;
+  float _MVAv2;
 };
 
  int convertCMS3tag(TString tagName) ;
- int getHighPtTriggerPrescale(LorentzVector& p4, int& idx, int& id) ;
- int getLowPtTriggerPrescale(LorentzVector& p4, int& idx, int& id) ;
+ int getHighPtTriggerPrescale(int idx1, int id1, int idx2, int id2);
+ int getLowPtTriggerPrescale(LorentzVector& p4, int& idx, int& id);
  void setHLTBranch(const char* pattern, const LorentzVector& p4, int& HLTbranch);
  void setHLTBranch(const char* pattern, bool legMatch, int& HLTbranch);
 
+ bool PassSVSCut(unsigned int svsIdx);
 }
 
 
