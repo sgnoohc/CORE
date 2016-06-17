@@ -1,28 +1,34 @@
 // This is a function provided by Pablo used to decay a photon to two leptons.
 // The lepton spin correlations are taken into account in the decay products.
-//A snippet of code on how to implement this is provided below:
 
-//In this implementation, A test Z boson with pt = 100 GeV, eta = 0, phi = 0, mass 91.2GeV, and width 2 GeV
-
-// Initialize the two lepton daugthers
-// Particle lepton1(0, 0, 0, 0, 0);
-// Particle lepton2(0, 0, 0, 0, 0);
-
-// Again using SnT-compatible LorentzVectors
-// LorentzVector lep1_p4(0,0,0,0);
-// LorentzVector lep2_p4(0,0,0,0);
-
-// This is the particle that will decay
-// Particle iphoton(100, 0, 0, 91, 2);  
-
-// TRandom3 ran(0);
-// ProduceDecay(ran, &iphoton, &lepton1, &lepton2, 0.001, 0.001); 
-
-// These are the final particles in SnT-compatible LorentzVectors
-// lep1_p4.SetPx( lepton1.p.X()); lep1_p4.SetPy( lepton1.p.Y()); lep1_p4.SetPz( lepton1.p.Z()); lep1_p4.SetE ( lepton1.p.E());
-// lep2_p4.SetPx( lepton2.p.X()); lep2_p4.SetPy( lepton2.p.Y()); lep2_p4.SetPz( lepton2.p.Z()); lep2_p4.SetE ( lepton2.p.E());
 
 #include "SimPa.h"
+
+std::pair<LorentzVector, LorentzVector> returnDecayProducts( LorentzVector &motherParticle_p4 ){
+  //In this implementation, A test Z boson with mass 91.2GeV, and width 2 GeV is decayed
+  //using the kinematics of the mother particle provided
+
+  // Initialize the two lepton daugthers
+  Particle lepton1(0, 0, 0, 0, 0);
+  Particle lepton2(0, 0, 0, 0, 0);
+
+  // Again using SnT-compatible LorentzVectors
+  LorentzVector lep1_p4(0,0,0,0);
+  LorentzVector lep2_p4(0,0,0,0);
+
+  // This is the particle that will decay
+  Particle iphoton( motherParticle_p4.pt(), motherParticle_p4.eta(), motherParticle_p4.phi(), 91, 2);  
+
+  // TRandom3 ran(0);
+  ProduceDecay(ran, &iphoton, &lepton1, &lepton2, 0.001, 0.001); 
+
+  // These are the final particles in SnT-compatible LorentzVectors
+  lep1_p4.SetPx( lepton1.p.X()); lep1_p4.SetPy( lepton1.p.Y()); lep1_p4.SetPz( lepton1.p.Z()); lep1_p4.SetE ( lepton1.p.E());
+  lep2_p4.SetPx( lepton2.p.X()); lep2_p4.SetPy( lepton2.p.Y()); lep2_p4.SetPz( lepton2.p.Z()); lep2_p4.SetE ( lepton2.p.E());
+
+  return std::make_pair<lep1_p4, lep2_p4>;
+ 
+}
 
 Particle::Particle(Float_t pt, Float_t eta, Float_t phi, Float_t mass, Float_t width_) {  
   p.SetPtEtaPhiM(pt, eta, phi, mass);

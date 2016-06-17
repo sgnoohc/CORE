@@ -3,11 +3,13 @@
 
 #include "TRandom3.h"
 #include "TLorentzVector.h"
-#include "ZMET.h"
+#include "CMS3.h"
 
-typedef ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > LorentzVector;
+// typedef ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > LorentzVector;
 
-////////////Small wrapper for Particle//////////////////
+std::pair<LorentzVector, LorentzVector> returnDecayProducts( LorentzVector &motherParticle_p4 );
+
+  ////////////Small wrapper for Particle//////////////////
 class Particle {
 
 public:
