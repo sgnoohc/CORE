@@ -380,7 +380,7 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
       if (muMiniRelIsoCMS3_EA(muIdx) > 0.40) return false;
       return true;
       break;
-
+    
    ///////////////////
    /// WW FO v2    ///  same as tight, but looser iso
    ///////////////////
@@ -398,6 +398,25 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
       if (!isMediumMuonPOG(muIdx)) return false;
       return true;
       break;
+
+   ///////////////////
+   /// WW FO v3    ///  
+   ///////////////////
+
+  case(WW_fo_noiso_v3):
+    if (fabs(mus_p4().at(muIdx).eta()) > 2.4) return false;
+    if (mus_p4().at(muIdx).pt() > 20. ? fabs(mus_dxyPV().at(muIdx)) > 0.02 : fabs(mus_dxyPV().at(muIdx)) > 0.01) return false;
+    if (fabs(mus_dzPV().at(muIdx)) > 0.1) return false;
+    if (!isMediumMuonPOG(muIdx)) return false;
+    return true;
+    break;
+    
+  case(WW_fo_v3):
+    if (muonID(muIdx, WW_fo_noiso_v3)==0) return false;
+    if (mus_iso03_sumPt().at(muIdx)/mus_p4().at(muIdx).pt() > 0.4) return false;
+    if (muRelIso04DB(muIdx) > 0.40) return false;
+    return true;
+    break;
 
    ///////////////////
    /// SS tight v1 ///
@@ -520,6 +539,21 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
 
    case(WW_medium_v2):
       if (muonID(muIdx, WW_fo_v2)==0) return false;
+      if (muRelIso04DB(muIdx) > 0.15) return false;
+      return true;
+      break;
+
+   ////////////////////
+   /// WW medium v3 ///
+   ////////////////////
+  
+    case(WW_medium_noiso_v3):
+      if (muonID(muIdx, WW_fo_noiso_v3)==0) return false;//make sure it's tighter than FO
+      return true;
+      break;
+
+   case(WW_medium_v3):
+      if (muonID(muIdx, WW_fo_v3)==0) return false;
       if (muRelIso04DB(muIdx) > 0.15) return false;
       return true;
       break;
