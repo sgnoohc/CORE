@@ -5,8 +5,6 @@
 #include "TLorentzVector.h"
 #include "CMS3.h"
 
-// typedef ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > LorentzVector;
-
 std::pair<LorentzVector, LorentzVector> returnDecayProducts( LorentzVector &motherParticle_p4 );
 
   ////////////Small wrapper for Particle//////////////////
