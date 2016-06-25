@@ -4173,6 +4173,11 @@ void CMS3::Init(TTree *tree) {
 		mus_algo_branch = tree->GetBranch(tree->GetAlias("mus_algo"));
 		if (mus_algo_branch) {mus_algo_branch->SetAddress(&mus_algo_);}
 	}
+	mus_algoOrig_branch = 0;
+	if (tree->GetAlias("mus_algoOrig") != 0) {
+		mus_algoOrig_branch = tree->GetBranch(tree->GetAlias("mus_algoOrig"));
+		if (mus_algoOrig_branch) {mus_algoOrig_branch->SetAddress(&mus_algoOrig_);}
+	}
 	mus_charge_branch = 0;
 	if (tree->GetAlias("mus_charge") != 0) {
 		mus_charge_branch = tree->GetBranch(tree->GetAlias("mus_charge"));
@@ -6378,6 +6383,7 @@ void CMS3::GetEntry(unsigned int idx)
 		isotracks_charge_isLoaded = false;
 		isotracks_particleId_isLoaded = false;
 		mus_algo_isLoaded = false;
+		mus_algoOrig_isLoaded = false;
 		mus_charge_isLoaded = false;
 		mus_ecal_rawId_isLoaded = false;
 		mus_exp_innerlayers_isLoaded = false;
@@ -7490,6 +7496,7 @@ void CMS3::LoadAllBranches()
 	if (isotracks_charge_branch != 0) isotracks_charge();
 	if (isotracks_particleId_branch != 0) isotracks_particleId();
 	if (mus_algo_branch != 0) mus_algo();
+	if (mus_algoOrig_branch != 0) mus_algoOrig();
 	if (mus_charge_branch != 0) mus_charge();
 	if (mus_ecal_rawId_branch != 0) mus_ecal_rawId();
 	if (mus_exp_innerlayers_branch != 0) mus_exp_innerlayers();
@@ -18607,6 +18614,19 @@ void CMS3::LoadAllBranches()
 		}
 		return mus_algo_;
 	}
+	const vector<int> &CMS3::mus_algoOrig()
+	{
+		if (not mus_algoOrig_isLoaded) {
+			if (mus_algoOrig_branch != 0) {
+				mus_algoOrig_branch->GetEntry(index);
+			} else { 
+				printf("branch mus_algoOrig_branch does not exist!\n");
+				exit(1);
+			}
+			mus_algoOrig_isLoaded = true;
+		}
+		return mus_algoOrig_;
+	}
 	const vector<int> &CMS3::mus_charge()
 	{
 		if (not mus_charge_isLoaded) {
@@ -23066,6 +23086,7 @@ namespace tas {
 	const vector<int> &isotracks_charge() { return cms3.isotracks_charge(); }
 	const vector<int> &isotracks_particleId() { return cms3.isotracks_particleId(); }
 	const vector<int> &mus_algo() { return cms3.mus_algo(); }
+	const vector<int> &mus_algoOrig() { return cms3.mus_algoOrig(); }
 	const vector<int> &mus_charge() { return cms3.mus_charge(); }
 	const vector<int> &mus_ecal_rawId() { return cms3.mus_ecal_rawId(); }
 	const vector<int> &mus_exp_innerlayers() { return cms3.mus_exp_innerlayers(); }
