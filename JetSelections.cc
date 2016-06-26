@@ -265,3 +265,15 @@ bool loosePileupJetId_v2(unsigned int pfJetIdx, bool use_puppi){
     
   return false;
 }
+
+// returns true if the PFJet is BAD -- typically also require a pt > 20 cut in the analysis
+bool isBadFastsimJet(unsigned int pfJetIdx){
+
+  float pfjet_chf  = pfjets_chargedHadronE()[pfJetIdx] / (pfjets_undoJEC().at(pfJetIdx)*pfjets_p4()[pfJetIdx].energy());
+  float pfjet_eta  = fabs(pfjets_p4()[pfJetIdx].eta());
+  float pfjet_mcdr = pfjets_mcdr()[pfJetIdx];
+
+  if (pfjet_eta < 2.5 && pfjet_chf < 0.1 && fabs(pfjet_mcdr) > 0.3) return true;
+  return false;
+}
+

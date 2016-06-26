@@ -23,4 +23,6 @@ bool loosePileupJetId_v2(unsigned int pfJetIdx, bool use_puppi = false);
 bool JetIsElectron(LorentzVector pfJet, id_level_t id_level, float ptcut = 7., float deltaR = 0.4);
 bool JetIsMuon(LorentzVector pfJet, id_level_t id_level, float ptcut = 5., float deltaR = 0.4);
 
+bool isBadFastsimJet(unsigned int pfJetIdx);
+
 #endif
