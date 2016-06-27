@@ -98,7 +98,7 @@ bool badMuonFilter() {
 
         // reco::TrackBase::highPurity is bit 2...skip muon if inner track is high purity
         if( (cms3.mus_qualityMask().at(imu) & (1 << 2))>>2 ) continue;
-
+        
         // Consider only muons with large relative pt error
         if(!(trk_pterr/trk_p4.pt() > minMuonTrackRelErr) ) continue;
 
@@ -111,11 +111,10 @@ bool badMuonFilter() {
                 LorentzVector cand_p4 = pfcands_p4().at(icand);
 
                 if(cand_p4.pt() < minMuonPt) continue;
-
                 if(abs(pdgId) != 13) continue;
 
-                if (ROOT::Math::VectorUtil::DeltaR(trk_p4, cand_p4) < maxDR) {
-                    flagged = false;
+                if (ROOT::Math::VectorUtil::DeltaR(cms3.mus_p4().at(imu), cand_p4) < maxDR) {
+                    flagged = true;
                     break;
                 }
             } // loop over pfcands
