@@ -128,6 +128,25 @@ bool passElectronSelection_ZMET_v1(int index, bool vetoTransition, bool eta24 ){
   return true;
 }
 
+//This is the 3rd lepton veto ID to be in sync with the edge/multilepton group
+bool passElectronSelection_ZMET_thirdlepton_v1(int index, bool vetoTransition, bool eta24 ){
+  if( fabs(cms3.els_p4().at(index).pt()) < 10.0    ) return false; // pT > 10 GeV - Minimum pT cut
+  if( vetoTransition
+	  && fabs(cms3.els_p4().at(index).eta()) > 1.4
+	  && fabs(cms3.els_p4().at(index).eta()) < 1.6  ) return false; // veto x-ition region
+  if( eta24
+	  && fabs(cms3.els_p4()[index].eta()) > 2.5    ) return false; // eta < 2.5
+  if( !electronID( index, ZMET_looseMVA_v1 )       ) return false; // Electron ID  
+
+  //IP & trigger cuts to be compatible with multilepton baseline cuts
+  if (abs(els_dzPV()  .at(index)) >= 0.1                       ) return false;// dZ < 0.1
+  if (abs(els_dxyPV() .at(index)) >= 0.05                      ) return false;// dR < 0.05
+  if (abs(els_ip3d()  .at(index))/els_ip3derr().at(index) >= 8 ) return false;// SIP3D < 8
+  if( !electronPassesHLTEmulator(index)                        ) return false;// emulate trigger cuts
+  return true;
+}
+
+
 //~-~-~-~-~-~-~-~//
 //Muon selections//
 //~-~-~-~-~-~-~-~//
@@ -212,6 +231,21 @@ bool passMuonSelection_ZMET_v1(int index, bool vetoTransition, bool eta24 ){
   if( eta24
 	  && fabs(cms3.mus_p4().at(index).eta()) > 2.4    ) return false; // eta < 2.4
   if( !muonID( index, ZMET_tight_v1 )                 ) return false; // tight Muon ID  
+  return true;
+}
+
+// veto selection to be used on 3rd lepton to compare with edge/multilepton group
+bool passMuonSelection_ZMET_veto_v1(int index, bool vetoTransition, bool eta24 ){
+  if( fabs(cms3.mus_p4().at(index).pt()) < 10.0       ) return false; // pT > 10 GeV - Minimum pT cut
+  if( vetoTransition
+	  && fabs(cms3.mus_p4().at(index).eta()) > 1.4
+	  && fabs(cms3.mus_p4().at(index).eta()) < 1.6  ) return false; // veto x-ition region
+  if( eta24
+	  && fabs(cms3.mus_p4().at(index).eta()) > 2.4    ) return false; // eta < 2.4
+  if( !muonID( index, ZMET_mediumMu_veto_v2 )         ) return false; // medium Muon ID with looser iso
+
+  //IP cuts to be compatible with multilepton baseline cuts
+  if (abs(mus_ip3d().at(index))/mus_ip3derr().at(index) >= 8) return false;// sip3d < 8
   return true;
 }
 
