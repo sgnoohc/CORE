@@ -437,6 +437,144 @@ int baselineRegion(int njets, int nbtags, float met, float ht, int id1, int id2,
   else                  return 3;
 }
 
+int signalRegion2016(int njets, int nbtags, float met, float ht, float mt_min, int id1, int id2, float lep1pt, float lep2pt){
+
+    // For ICHEP
+    // In order, do the following:
+    // - merge HH27 into HH25
+    // - merge HL21 into HL19
+    // - split HH31 into HH31 with met<500 and HH33 with met>500
+    // - split HH32 into HH32 with ht<1300 and HH34 with ht>1300
+    // - split HL25 into HL25 with met<500 and HH27 with met>500
+    // - split HL26 into HL26 with ht<1300 and HH28 with ht>1300
+    // - at this point, HH27, HL21 will be empty, so shift all SR above those numbers down by 1
+  
+  //Calculate lep_pt
+  anal_type_t lep_pt = analysisCategory(id1, id2, lep1pt, lep2pt); 
+
+  int off = 1;
+
+  //Reject events out of kinematic acceptance
+  if (met < 50) return -1; 
+  if (njets < 2) return -1; 
+  if (lep_pt != LowLow && met > 500 && ht < 300) return -1; 
+  if (lep_pt != LowLow && njets>=2 && met>300 && ht<300) return -1;
+
+  //High-high
+  if (lep_pt == HighHigh){
+    if (met >= 300 && ht >= 300) {
+        if(met < 500) return 31-off;
+        else return 33-off;
+    }
+    if (ht >= 1125) {
+        if(ht < 1300) return 32-off;
+        else return 34-off;
+    }
+    if (ht < 300){
+      if (nbtags == 0 && mt_min < 120 && met < 200 && njets <= 4) return 1; 
+      if (nbtags == 0) return 3; 
+      if (nbtags == 1 && mt_min < 120 && met < 200 && njets <= 4) return 9; 
+      if (nbtags == 1) return 11; 
+      if (nbtags == 2 && mt_min < 120 && met < 200 && njets <= 4) return 17; 
+      if (nbtags == 2) return 19; 
+      if (nbtags >= 3 && mt_min < 120 && met < 200) return 25; 
+      if (nbtags >= 3 && mt_min < 120 && met >= 200) return 25; 
+      if (nbtags >= 3) return 29-off;
+    }
+    if (ht >= 300 && ht < 1125){
+      if (nbtags == 0){
+        if (mt_min < 120 && met < 200 && njets <= 4) return 2; 
+        if (mt_min < 120 && met < 200 && njets > 4) return 4; 
+        if (mt_min < 120 && met >= 200 && njets <= 4) return 5; 
+        if (mt_min < 120 && met >= 200 && njets > 4) return 6; 
+        if (mt_min >= 120 && met < 200 && njets <= 4) return 7;
+        return 8;
+      } 
+      if (nbtags == 1){
+        if (mt_min < 120 && met < 200 && njets <= 4) return 10; 
+        if (mt_min < 120 && met < 200 && njets > 4) return 12; 
+        if (mt_min < 120 && met >= 200 && njets <= 4) return 13; 
+        if (mt_min < 120 && met >= 200 && njets > 4) return 14; 
+        if (mt_min >= 120 && met < 200 && njets <= 4) return 15;
+        return 16;
+      } 
+      if (nbtags == 2){
+        if (mt_min < 120 && met < 200 && njets <= 4) return 18; 
+        if (mt_min < 120 && met < 200 && njets > 4) return 20; 
+        if (mt_min < 120 && met >= 200 && njets <= 4) return 21; 
+        if (mt_min < 120 && met >= 200 && njets > 4) return 22; 
+        if (mt_min >= 120 && met < 200 && njets <= 4) return 23;
+        return 24;
+      } 
+      if (nbtags >= 3){
+        if (mt_min < 120 && met < 200) return 26;
+        if (mt_min < 120 && met >= 200) return 28-off;
+        if (mt_min >= 120) return 30-off;
+      }
+    }
+  }
+  
+  //High-Low
+  if (lep_pt == HighLow){
+    if (met >= 300 && ht >= 300) {
+        if(met < 500) return 25-off;
+        else return 27-off;
+    }
+    if (ht >= 1125) {
+        if(ht < 1300) return 26-off;
+        else return 28-off;
+    }
+    if (ht < 300){ 
+      if (nbtags == 0 && met < 200 && njets <= 4) return 1; 
+      if (mt_min < 120 && nbtags == 0) return 3;
+      if (mt_min < 120 && nbtags == 1 && met < 200 && njets <= 4) return 7; 
+      if (mt_min < 120 && nbtags == 1) return 9;
+      if (mt_min < 120 && nbtags == 2 && met < 200 && njets <= 4) return 13; 
+      if (mt_min < 120 && nbtags == 2) return 15;
+      if (mt_min < 120 && nbtags >= 3 && met < 200) return 19; 
+      if (mt_min < 120 && nbtags >= 3) return 19;
+      if (mt_min >= 120) return 23-off;
+    }  
+    if (ht >= 300){
+      if (nbtags == 0 && mt_min < 120 && met < 200 && njets <= 4) return 2; 
+      if (nbtags == 0 && mt_min < 120 && met < 200 && njets > 4) return 4; 
+      if (nbtags == 0 && mt_min < 120 && met < 500 && njets <= 4) return 5; 
+      if (nbtags == 0 && mt_min < 120 && met < 500 && njets > 4) return 6; 
+      if (nbtags == 1 && mt_min < 120 && met < 200 && njets <= 4) return 8; 
+      if (nbtags == 1 && mt_min < 120 && met < 200 && njets > 4) return 10; 
+      if (nbtags == 1 && mt_min < 120 && met < 500 && njets <= 4) return 11; 
+      if (nbtags == 1 && mt_min < 120 && met < 500 && njets > 4) return 12; 
+      if (nbtags == 2 && mt_min < 120 && met < 200 && njets <= 4) return 14; 
+      if (nbtags == 2 && mt_min < 120 && met < 200 && njets > 4) return 16; 
+      if (nbtags == 2 && mt_min < 120 && met < 500 && njets <= 4) return 17; 
+      if (nbtags == 2 && mt_min < 120 && met < 500 && njets > 4) return 18; 
+      if (nbtags >= 3 && mt_min < 120 && met < 200) return 20; 
+      if (nbtags >= 3 && mt_min < 120 && met >= 200) return 22-off;
+      if (mt_min >= 120) return 24-off;
+    }
+  }
+
+  //Low-Low
+  if (lep_pt == LowLow){
+    if (ht < 300) return -1; 
+    if (mt_min > 120) return 8; 
+    if (nbtags == 0 && met < 200) return 1;
+    if (nbtags == 0 && met >= 200) return 2;
+    if (nbtags == 1 && met < 200) return 3;
+    if (nbtags == 1 && met >= 200) return 4;
+    if (nbtags == 2 && met < 200) return 5;
+    if (nbtags == 2 && met >= 200) return 6;
+    if (nbtags >= 3) return 7;
+  }
+
+  //Otherwise undefined
+  cout << "WARNING: SR UNDEFINED (should never get here)" << endl;
+  cout << "  --> lepton pts are: " << lep1pt << " " << lep2pt << endl;
+  cout << "  --> ht & met are: " << ht << " " << met << endl;
+  cout << "  --> njets & nbtags: " << njets << " " << nbtags << endl;
+  return -1;
+}
+
 int signalRegion(int njets, int nbtags, float met, float ht, float mt_min, int id1, int id2, float lep1pt, float lep2pt){
   
   //Calculate lep_pt
@@ -883,8 +1021,8 @@ int isGoodHyp(int iHyp, bool verbose){
   if (!hypsFromFirstGoodVertex(iHyp)) return 0;
 
   //Finished for events that fail z veto
-  if (extraZ && isss && passed_id_numer_ll && passed_id_numer_lt) return 6;
-  if (extraGammaStar && isss && passed_id_numer_ll && passed_id_numer_lt) return 6;
+  if (extraZ && isss) return 6;
+  if (extraGammaStar && isss) return 6;
 
   //Results
   else if (passed_id_numer_lt && passed_id_numer_ll && isss) return 3;  // 3 if both numer pass, SS
