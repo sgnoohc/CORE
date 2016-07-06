@@ -123,12 +123,15 @@ analysis_t whichAnalysis(id_level_t id_level){
       return STOP;
       break;
     case (ZMET_mediumMu_v2):
+    case (ZMET_mediumMu_veto_v2):
     case (ZMET_mediumMu_v1):
     case (ZMET_mediumMu_noiso_v1):
     case (ZMET_tightMVA_v2):
     case (ZMET_tightMVA_noiso_v2):
     case (ZMET_tightMVA_v1):
     case (ZMET_tightMVA_noiso_v1):
+    case (ZMET_looseMVA_v1):
+    case (ZMET_looseMVA_noiso_v1):
     case (ZMET_loose_v2):
     case (ZMET_loose_noiso_v2):
     case (ZMET_loose_v1):

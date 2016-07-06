@@ -22,6 +22,7 @@ metStruct METpuppi();
 bool hbheNoiseFilter(int minZeros = 999);
 bool hbheNoiseFilter_25ns(int minZeros = 999);
 bool hbheIsoNoiseFilter();
+bool badMuonFilter();
 bool badChargedCandidateFilter();
 pair <float, float> getT1CHSMET( FactorizedJetCorrector * jet_corrector, JetCorrectionUncertainty* jecUnc = 0, bool uncUp = true, int doUnclusteredUnc = 0 );
 pair <float, float> getT1CHSMET_fromMINIAOD( FactorizedJetCorrector * jet_corrector, JetCorrectionUncertainty* jecUnc = NULL, bool uncUp = 0, bool recompute_raw_met = false );

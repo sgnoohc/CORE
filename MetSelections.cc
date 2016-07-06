@@ -78,9 +78,61 @@ bool hbheIsoNoiseFilter() {
     return true;
 }
 
+bool badMuonFilter() {
+    // false = reject event
+    // based on https://twiki.cern.ch/twiki/bin/viewauth/CMS/MissingETOptionalFiltersRun2#snippet_on_how_to_flag_the_charg
+
+    float minMuonTrackRelErr = 0.5;
+    float minMuonPt = 100.0;
+    float maxDR = 0.001;
+    int suspiciousAlgo = 14;
+    bool flagged = false;
+
+    for (unsigned int imu = 0; imu < cms3.mus_p4().size(); imu++) {
+        bool foundBadTrack = false;
+
+        if(cms3.mus_trk_p4().at(imu).pt() < minMuonPt) continue;
+
+        LorentzVector trk_p4 = cms3.mus_trk_p4().at(imu);
+        float trk_pterr = cms3.mus_ptErr().at(imu);
+
+        // reco::TrackBase::highPurity is bit 2...skip muon if inner track is high purity
+        if( (cms3.mus_qualityMask().at(imu) & (1 << 2))>>2 ) continue;
+        
+        // Consider only muons with large relative pt error
+        if(!(trk_pterr/trk_p4.pt() > minMuonTrackRelErr) ) continue;
+
+        if(cms3.mus_algo().at(imu) == suspiciousAlgo && cms3.mus_algoOrig().at(imu) == suspiciousAlgo) foundBadTrack = true;
+
+        if(foundBadTrack) {
+            for (unsigned int icand = 0; icand < pfcands_p4().size(); icand++){
+
+                int pdgId = pfcands_particleId().at(icand);
+                LorentzVector cand_p4 = pfcands_p4().at(icand);
+
+                if(cand_p4.pt() < minMuonPt) continue;
+                if(abs(pdgId) != 13) continue;
+
+                if (ROOT::Math::VectorUtil::DeltaR(cms3.mus_p4().at(imu), cand_p4) < maxDR) {
+                    flagged = true;
+                    break;
+                }
+            } // loop over pfcands
+
+        }
+
+        if(flagged) break;
+
+    } // loop over muons
+
+    return !flagged;
+
+}
+
+
 bool badChargedCandidateFilter() {
     // false = reject event
-    // based on https://github.com/cms-sw/cmssw/pull/14672/files for now
+    // based on https://twiki.cern.ch/twiki/bin/viewauth/CMS/MissingETOptionalFiltersRun2#snippet_on_how_to_flag_the_charg
     float minMuonTrackRelErr = 0.5;
     float minMuonPt = 100.0;
     float maxDR = 0.001;

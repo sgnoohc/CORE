@@ -2520,6 +2520,9 @@ protected:
 	vector<int> isotracks_particleId_;
 	TBranch *isotracks_particleId_branch;
 	bool isotracks_particleId_isLoaded;
+	vector<int> mus_algoOrig_;
+	TBranch *mus_algoOrig_branch;
+	bool mus_algoOrig_isLoaded;
 	vector<int> mus_algo_;
 	TBranch *mus_algo_branch;
 	bool mus_algo_isLoaded;
@@ -4180,6 +4183,7 @@ void LoadAllBranches();
 	const vector<int> &isotracks_charge();
 	const vector<int> &isotracks_particleId();
 	const vector<int> &mus_algo();
+	const vector<int> &mus_algoOrig();
 	const vector<int> &mus_charge();
 	const vector<int> &mus_ecal_rawId();
 	const vector<int> &mus_exp_innerlayers();
@@ -5299,6 +5303,7 @@ namespace tas {
 	const vector<int> &isotracks_charge();
 	const vector<int> &isotracks_particleId();
 	const vector<int> &mus_algo();
+	const vector<int> &mus_algoOrig();
 	const vector<int> &mus_charge();
 	const vector<int> &mus_ecal_rawId();
 	const vector<int> &mus_exp_innerlayers();
