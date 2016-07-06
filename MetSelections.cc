@@ -473,6 +473,33 @@ bool passesMETfilterv2(){
 
 }
 
+bool passesMETfilters2016(bool isData){
+
+  //primary vertex filter (re-run by user)
+  if (firstGoodVertex() == -1) return false;
+
+  if (!filt_globalTightHalo2016()) return false;
+  
+  if (!filt_hbheNoise()) return false;
+  if (!filt_hbheNoiseIso())   return false;
+
+  if (!filt_ecalTP()) return false;
+  if (!filt_eeBadSc()) return false;
+
+  if (!filt_goodVertices()) return false;
+
+  if (!badChargedCandidateFilter()) return false;
+
+  // MC samples don't have algoOrig branch
+  if(isData) {
+      if (!badMuonFilter()) return false;
+  }
+
+  //Otherwise good
+  return true;
+
+}
+
 // takes in an already initialized FactorizedJetCorrector object
 // and returns T1 Corrected MET using the CHS jet collection
 // THIS FUNCTION IS NOT VALIDATED CURRENTLY!
