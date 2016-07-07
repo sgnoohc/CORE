@@ -5,6 +5,7 @@
 #include "Base.h"
 
 //POG IDs
+bool isMediumMuonPOG_forICHEP( unsigned int muIdx );
 bool isLooseMuonPOG(unsigned int muIdx);
 bool isMediumMuonPOG(unsigned int muIdx);
 bool isTightMuonPOG(unsigned int muIdx);

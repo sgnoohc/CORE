@@ -122,6 +122,8 @@ analysis_t whichAnalysis(id_level_t id_level){
     case (STOP_tight_v3):
       return STOP;
       break;
+    case (ZMET_mediumMu_v3):
+    case (ZMET_mediumMu_veto_v3):
     case (ZMET_mediumMu_v2):
     case (ZMET_mediumMu_veto_v2):
     case (ZMET_mediumMu_v1):

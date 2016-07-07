@@ -151,7 +151,21 @@ bool passElectronSelection_ZMET_thirdlepton_v1(int index, bool vetoTransition, b
 //Muon selections//
 //~-~-~-~-~-~-~-~//
 bool passMuonSelection_ZMET(int index ){
-  return passMuonSelection_ZMET_v5( index, true, true );
+  return passMuonSelection_ZMET_v6( index, true, true );
+}
+
+bool passMuonSelection_ZMET_v6(int index, bool vetoTransition, bool eta24 ){
+  if( fabs(cms3.mus_p4().at(index).pt()) < 10.0       ) return false; // pT > 10 GeV - Minimum pT cut
+  if( vetoTransition
+	  && fabs(cms3.mus_p4().at(index).eta()) > 1.4
+	  && fabs(cms3.mus_p4().at(index).eta()) < 1.6  ) return false; // veto x-ition region
+  if( eta24
+	  && fabs(cms3.mus_p4().at(index).eta()) > 2.4    ) return false; // eta < 2.4
+  if( !muonID( index, ZMET_mediumMu_v3 )              ) return false; // medium Muon ID  
+
+  //IP cuts to be compatible with multilepton baseline cuts
+  if (abs(mus_ip3d().at(index))/mus_ip3derr().at(index) >= 8) return false;// sip3d < 8
+  return true;
 }
 
 bool passMuonSelection_ZMET_v5(int index, bool vetoTransition, bool eta24 ){
@@ -231,6 +245,21 @@ bool passMuonSelection_ZMET_v1(int index, bool vetoTransition, bool eta24 ){
   if( eta24
 	  && fabs(cms3.mus_p4().at(index).eta()) > 2.4    ) return false; // eta < 2.4
   if( !muonID( index, ZMET_tight_v1 )                 ) return false; // tight Muon ID  
+  return true;
+}
+
+// veto selection to be used on 3rd lepton to compare with edge/multilepton group
+bool passMuonSelection_ZMET_veto_v2(int index, bool vetoTransition, bool eta24 ){
+  if( fabs(cms3.mus_p4().at(index).pt()) < 10.0       ) return false; // pT > 10 GeV - Minimum pT cut
+  if( vetoTransition
+	  && fabs(cms3.mus_p4().at(index).eta()) > 1.4
+	  && fabs(cms3.mus_p4().at(index).eta()) < 1.6  ) return false; // veto x-ition region
+  if( eta24
+	  && fabs(cms3.mus_p4().at(index).eta()) > 2.4    ) return false; // eta < 2.4
+  if( !muonID( index, ZMET_mediumMu_veto_v3 )         ) return false; // medium Muon ID with looser iso
+
+  //IP cuts to be compatible with multilepton baseline cuts
+  if (abs(mus_ip3d().at(index))/mus_ip3derr().at(index) >= 8) return false;// sip3d < 8
   return true;
 }
 

@@ -15,6 +15,16 @@ void muID::unsetCache() {
 
 using namespace tas;
 
+bool isMediumMuonPOG_forICHEP( unsigned int muIdx ){
+  bool isGlobal  = true;
+  if (((mus_type().at(muIdx)) & (1<<1)) == 0) isGlobal  = false;
+  bool goodGlb = isGlobal && mus_gfit_chi2().at(muIdx)/mus_gfit_ndof().at(muIdx)<3. && 
+                 mus_chi2LocalPosition().at(muIdx)<12. && mus_trkKink().at(muIdx)<20.;
+  double validFraction = mus_validHits().at(muIdx)/(double)(mus_validHits().at(muIdx)+mus_lostHits().at(muIdx)+mus_exp_innerlayers().at(muIdx)+mus_exp_outerlayers().at(muIdx));
+  bool good = isLooseMuonPOG(muIdx) && validFraction > 0.49 && mus_segmCompatibility().at(muIdx) >= (goodGlb ? 0.303 : 0.451);
+  return good;
+}
+
 bool isLooseMuonPOG(unsigned int muIdx){
   if (!mus_pid_PFMuon().at(muIdx)) return false;    
   bool isGlobal  = true;
@@ -709,6 +719,22 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
    //////////////////////
    /// ZMET medium v1 ///
    //////////////////////
+  
+    case(ZMET_mediumMu_v3):
+      if (!isMediumMuonPOG_forICHEP(muIdx)      ) return false;
+	  if (fabs(mus_dxyPV() .at(muIdx))   > 0.05 ) return false;
+	  if (fabs(mus_dzPV()  .at(muIdx))   > 0.1  ) return false;
+	  if (muMiniRelIsoCMS3_EA( muIdx, 1) > 0.2  ) return false;
+	  else return true;
+      break;
+  
+    case(ZMET_mediumMu_veto_v3):
+      if (!isMediumMuonPOG_forICHEP(muIdx)      ) return false;
+	  if (fabs(mus_dxyPV() .at(muIdx))   > 0.05 ) return false;
+	  if (fabs(mus_dzPV()  .at(muIdx))   > 0.1  ) return false;
+	  if (muMiniRelIsoCMS3_EA( muIdx, 1) > 0.4  ) return false;
+	  else return true;
+      break;
   
     case(ZMET_mediumMu_v2):
       if (!isMediumMuonPOG(muIdx)               ) return false;
