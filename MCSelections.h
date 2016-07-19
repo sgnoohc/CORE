@@ -32,4 +32,7 @@ bool terminateMotherId(int motherId);
 float topPtWeight(float pt_top, float pt_tbar);
 float topPtWeight_cutoff(float pt_top, float pt_tbar);
 
+// 2016 ISR recipe
+int get_nisrMatch ( const std::vector<LorentzVector>& clean_jets );
+
 #endif

@@ -1,4 +1,5 @@
 #include "MCSelections.h"
+#include "Math/VectorUtil.h"
 
 using namespace tas;
 
@@ -395,4 +396,42 @@ float topPtWeight_cutoff(float pt_top, float pt_tbar) {
   float weight_top = exp(0.156 - 0.00137 * pt_top_cutoff);
   float weight_tbar = exp(0.156 - 0.00137 * pt_tbar_cutoff);
   return sqrt( weight_top * weight_tbar );
+}
+
+//________________________________________________________________
+// code to get number of reco jets matched to ISR jets
+// inputs are jets with pt > 30, |eta| < 2.4, PF Loose ID, leptons removed
+// https://github.com/manuelfs/babymaker/blob/0136340602ee28caab14e3f6b064d1db81544a0a/bmaker/plugins/bmaker_full.cc#L1268-L1295
+int get_nisrMatch ( const std::vector<LorentzVector>& clean_jets ) {
+
+  //  bool verbose = false;
+  int nisr(0);
+  for (size_t ijet(0); ijet<clean_jets.size(); ijet++){
+
+    bool matched=false;
+    for (size_t imc = 0; imc < cms3.genps_id().size(); imc++) {
+     //   for (size_t imc(0); imc < genParticles->size(); imc++) {
+      if (matched) break;
+      if (cms3.genps_status().at(imc)!=23 || abs(cms3.genps_id().at(imc))>5) continue;
+      int momid = abs(cms3.genps_id_mother().at(imc));
+      if(!(momid==6 || momid==23 || momid==24 || momid==25 || momid>1e6)) continue; 
+      // check against daughter in case of hard initial splitting
+      // - since we don't save daughters, only mothers, we do a double loop here...
+      for (size_t jmc = 0; jmc < cms3.genps_id().size(); jmc++) {
+	if (cms3.genps_idx_mother().at(jmc) != int(imc) ) continue;
+	float dR = ROOT::Math::VectorUtil::DeltaR(clean_jets.at(ijet), cms3.genps_p4().at(jmc));
+        if(dR<0.3){
+          // if (verbose) cout<<"Jet: ("<<clean_jets[ijet].pt()<<", "<<clean_jets[ijet].eta()<<", "<<clean_jets[ijet].phi()
+	  // 		   <<"), MC: ("<<mc.daughter(idau)->pt()<<", "<<mc.daughter(idau)->eta()<<", "<<mc.daughter(idau)->phi()<<"), ID "<<mc.daughter(idau)->pdgId()<<". dR "<<dR <<endl;
+	  matched = true;
+	  break;
+        }
+      }
+    } // Loop over MC particles
+    if(!matched) {
+      nisr++;
+    }
+  } // Loop over jets
+
+  return nisr;
 }
