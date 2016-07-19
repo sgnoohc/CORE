@@ -435,3 +435,39 @@ int get_nisrMatch ( const std::vector<LorentzVector>& clean_jets ) {
 
   return nisr;
 }
+
+//________________________________________________________________
+// returns 2016 ICHEP ISR weight based on nisrMatch
+// s13 of https://indico.cern.ch/event/557678/contributions/2247944/attachments/1311994/1963568/16-07-19_ana_manuelf_isr.pdf
+float get_isrWeight( int nisrMatch ) {
+
+  if      (nisrMatch == 0) return 1.;
+  else if (nisrMatch == 1) return 0.882;
+  else if (nisrMatch == 2) return 0.792;
+  else if (nisrMatch == 3) return 0.702;
+  else if (nisrMatch == 4) return 0.648;
+  else if (nisrMatch == 5) return 0.601;
+  else if (nisrMatch >= 6) return 0.515;
+
+  // shouldn't get here
+  std::cout << "ERROR: get_isrWeight: bad input for nisrMatch: " << nisrMatch << std::endl;
+  return 1.;
+}
+
+//________________________________________________________________
+// returns 2016 ICHEP ISR weight uncertainty based on nisrMatch
+// s13 of https://indico.cern.ch/event/557678/contributions/2247944/attachments/1311994/1963568/16-07-19_ana_manuelf_isr.pdf
+float get_isrUnc( int nisrMatch ) {
+
+  if      (nisrMatch == 0) return 0.;
+  else if (nisrMatch == 1) return 0.059;
+  else if (nisrMatch == 2) return 0.104;
+  else if (nisrMatch == 3) return 0.149;
+  else if (nisrMatch == 4) return 0.176;
+  else if (nisrMatch == 5) return 0.199;
+  else if (nisrMatch >= 6) return 0.242;
+
+  // shouldn't get here
+  std::cout << "ERROR: get_isrUnc: bad input for nisrMatch: " << nisrMatch << std::endl;
+  return 0.;
+}
