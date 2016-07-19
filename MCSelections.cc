@@ -404,13 +404,11 @@ float topPtWeight_cutoff(float pt_top, float pt_tbar) {
 // https://github.com/manuelfs/babymaker/blob/0136340602ee28caab14e3f6b064d1db81544a0a/bmaker/plugins/bmaker_full.cc#L1268-L1295
 int get_nisrMatch ( const std::vector<LorentzVector>& clean_jets ) {
 
-  //  bool verbose = false;
   int nisr(0);
   for (size_t ijet(0); ijet<clean_jets.size(); ijet++){
 
     bool matched=false;
     for (size_t imc = 0; imc < cms3.genps_id().size(); imc++) {
-     //   for (size_t imc(0); imc < genParticles->size(); imc++) {
       if (matched) break;
       if (cms3.genps_status().at(imc)!=23 || abs(cms3.genps_id().at(imc))>5) continue;
       int momid = abs(cms3.genps_id_mother().at(imc));
@@ -421,8 +419,6 @@ int get_nisrMatch ( const std::vector<LorentzVector>& clean_jets ) {
 	if (cms3.genps_idx_mother().at(jmc) != int(imc) ) continue;
 	float dR = ROOT::Math::VectorUtil::DeltaR(clean_jets.at(ijet), cms3.genps_p4().at(jmc));
         if(dR<0.3){
-          // if (verbose) cout<<"Jet: ("<<clean_jets[ijet].pt()<<", "<<clean_jets[ijet].eta()<<", "<<clean_jets[ijet].phi()
-	  // 		   <<"), MC: ("<<mc.daughter(idau)->pt()<<", "<<mc.daughter(idau)->eta()<<", "<<mc.daughter(idau)->phi()<<"), ID "<<mc.daughter(idau)->pdgId()<<". dR "<<dR <<endl;
 	  matched = true;
 	  break;
         }
