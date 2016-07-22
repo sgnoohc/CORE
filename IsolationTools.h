@@ -51,6 +51,7 @@ float photon_EMEA03(   int photonIdx );
 float photonCHIso03EA( int photonIdx );
 float photonNHIso03EA( int photonIdx );
 float photonEMIso03EA( int photonIdx );
-
+float photonEcalpfClusterIso03EA( int photonIdx );
+float photonHcalpfClusterIso03EA( int photonIdx );
 
 #endif

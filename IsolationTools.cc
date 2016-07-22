@@ -452,3 +452,19 @@ float photonEMIso03EA( int photonIdx )
   float EMIso = std::max(float(0.0), emiso - evt_fixgridfastjet_all_rho() * ea);
   return EMIso;
 }
+
+float photonEcalpfClusterIso03EA( int photonIdx )
+{
+  float emiso = cms3.photons_ecalPFClusterIso().at(photonIdx);
+  float ea    = photon_EMEA03(photonIdx);
+  float EMIso = std::max(float(0.0), emiso - evt_fixgridfastjet_all_rho() * ea);
+  return EMIso;
+}
+
+float photonHcalpfClusterIso03EA( int photonIdx )
+{
+  float hciso = cms3.photons_hcalPFClusterIso().at(photonIdx);
+  float ea    = photon_NHEA03(photonIdx);
+  float HCIso = std::max(float(0.0), hciso - evt_fixgridfastjet_all_rho() * ea);
+  return HCIso;
+}
