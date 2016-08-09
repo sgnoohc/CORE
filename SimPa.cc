@@ -60,9 +60,12 @@ void ProduceDecay(TRandom ran, Particle *mom, Particle *d1, Particle *d2, Float_
   Float_t phi1;
   phi1 = ran.Uniform(0, 2.0*TMath::Pi());
 
-  Float_t theta1, u1;
-  u1 = ran.Uniform(0, 1.0);
-  theta1 = TMath::ACos(2.0*u1 - 1.0);
+  Float_t theta1, u1 = 100;
+
+  while(u1 > (2.0/(3.0*TMath::Pi())) * (1 + TMath::Cos(theta1)*TMath::Cos(theta1))) {
+	u1     = ran.Uniform(0, 4.0/(3.0*TMath::Pi()));
+	theta1 = ran.Uniform(0, TMath::Pi());
+  }
 
   Float_t phi2 = phi1 + TMath::Pi();
   Float_t theta2 = TMath::Pi() - theta1;
