@@ -4,6 +4,11 @@
 #include "TString.h"
 #include "Base.h"
 
+// Jet ID as of Sept. 11th based on this twiki: https://twiki.cern.ch/twiki/bin/view/CMS/JetID?rev=95
+bool isLoosePFJet_Summer16_v1(unsigned int pfJetIdx, bool use_puppi = false);
+bool isTightPFJet_Summer16_v1(unsigned int pfJetIdx);
+bool isTightPFJetLepVeto_Summer16_v1(unsigned int pfJetIdx);
+
 bool isLoosePFJet(unsigned int pfJetIdx);
 bool isMediumPFJet(unsigned int pfJetIdx);
 bool isTightPFJet(unsigned int pfJetIdx);

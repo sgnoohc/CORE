@@ -5,6 +5,77 @@
 
 using namespace tas;
 
+// Jet ID as of Sept. 11th based on this twiki: https://twiki.cern.ch/twiki/bin/view/CMS/JetID?rev=95
+bool isLoosePFJet_Summer16_v1(unsigned int pfJetIdx, bool use_puppi){
+
+  float pfjet_chf_  = !use_puppi ? pfjets_chargedHadronE()[pfJetIdx] / (pfjets_undoJEC().at(pfJetIdx)*pfjets_p4()[pfJetIdx].energy()) : pfjets_puppi_chargedHadronE()[pfJetIdx] / (pfjets_puppi_undoJEC().at(pfJetIdx)*pfjets_puppi_p4()[pfJetIdx].energy());
+  float pfjet_nhf_  = !use_puppi ? pfjets_neutralHadronE()[pfJetIdx] / (pfjets_undoJEC().at(pfJetIdx)*pfjets_p4()[pfJetIdx].energy()) : pfjets_puppi_neutralHadronE()[pfJetIdx] / (pfjets_puppi_undoJEC().at(pfJetIdx)*pfjets_puppi_p4()[pfJetIdx].energy());
+  float pfjet_cef_  = !use_puppi ? pfjets_chargedEmE()[pfJetIdx] / (pfjets_undoJEC().at(pfJetIdx)*pfjets_p4()[pfJetIdx].energy()) : pfjets_puppi_chargedEmE()[pfJetIdx] / (pfjets_puppi_undoJEC().at(pfJetIdx)*pfjets_puppi_p4()[pfJetIdx].energy());
+  float pfjet_nef_  = !use_puppi ? pfjets_neutralEmE()[pfJetIdx] / (pfjets_undoJEC().at(pfJetIdx)*pfjets_p4()[pfJetIdx].energy()) : pfjets_puppi_neutralEmE()[pfJetIdx] / (pfjets_puppi_undoJEC().at(pfJetIdx)*pfjets_puppi_p4()[pfJetIdx].energy());
+  int   pfjet_cm_  = !use_puppi ? pfjets_chargedMultiplicity()[pfJetIdx] : pfjets_puppi_chargedMultiplicity()[pfJetIdx];
+  int   pfjet_nm_  = !use_puppi ? pfjets_neutralMultiplicity()[pfJetIdx] : pfjets_puppi_neutralMultiplicity()[pfJetIdx];
+  float pfjet_eta  = !use_puppi ? fabs(pfjets_p4()[pfJetIdx].eta()) : fabs(pfjets_puppi_p4()[pfJetIdx].eta());
+
+  if (pfjet_eta <= 2.7){
+	if (pfjet_nhf_ >= 0.99       ) return false;
+	if (pfjet_nef_ >= 0.99       ) return false;
+	if (pfjet_cm_ + pfjet_nm_ < 2) return false;
+	// if (pfjet_muf_ >= 0.8        ) return false; removed again
+
+	if (pfjet_eta < 2.4){
+	  if (!(pfjet_cm_  >   0.  ) ) return false;
+	  if (!(pfjet_chf_ >   0.  ) ) return false;
+	  if (!(pfjet_cef_ <   0.99) ) return false;
+	}
+  }else if( pfjet_eta > 2.7 && pfjet_eta <= 3.0 ){
+	if (!(pfjet_nef_ < 0.9 ) ) return false;
+	if (!(pfjet_nm_  > 2   ) ) return false;
+  }else if( pfjet_eta > 3.0 ){
+	if (!(pfjet_nef_ < 0.9 ) ) return false;
+	if (!(pfjet_nm_  > 10  ) ) return false;
+  }
+
+  return true;
+}
+
+bool isTightPFJet_Summer16_v1(unsigned int pfJetIdx){
+
+  float pfjet_nhf_  = pfjets_neutralHadronE()[pfJetIdx] / (pfjets_undoJEC().at(pfJetIdx)*pfjets_p4()[pfJetIdx].energy());
+  float pfjet_nef_  = pfjets_neutralEmE()[pfJetIdx] / (pfjets_undoJEC().at(pfJetIdx)*pfjets_p4()[pfJetIdx].energy());
+  float pfjet_eta  = fabs(pfjets_p4()[pfJetIdx].eta());
+
+  if (pfjet_eta <= 2.7){
+	if (pfjet_nef_ >= 0.90) return false;
+	if (pfjet_nhf_ >= 0.90) return false;
+  }
+
+  if (!isLoosePFJet_Summer16_v1(pfJetIdx)) return false;
+
+  return true;
+}
+
+bool isTightPFJetLepVeto_Summer16_v1(unsigned int pfJetIdx){
+
+  float pfjet_nhf_  = pfjets_neutralHadronE()[pfJetIdx] / (pfjets_undoJEC().at(pfJetIdx)*pfjets_p4()[pfJetIdx].energy());
+  float pfjet_nef_  = pfjets_neutralEmE()[pfJetIdx] / (pfjets_undoJEC().at(pfJetIdx)*pfjets_p4()[pfJetIdx].energy());
+  float pfjet_cef_  = pfjets_chargedEmE()[pfJetIdx] / (pfjets_undoJEC().at(pfJetIdx)*pfjets_p4()[pfJetIdx].energy());
+  float pfjet_muf_  = pfjets_muonE()[pfJetIdx] / (pfjets_undoJEC().at(pfJetIdx)*pfjets_p4()[pfJetIdx].energy());
+  float pfjet_eta  = fabs(pfjets_p4()[pfJetIdx].eta());
+
+  if (pfjet_eta <= 2.7){
+	if (pfjet_nef_ >= 0.90) return false;
+	if (pfjet_nhf_ >= 0.90) return false;
+	if (pfjet_eta <= 2.4){
+	  if (pfjet_cef_ >= 0.90) return false;
+	}
+	if (pfjet_muf_ >= 0.8        ) return false;
+  }
+
+  if (!isLoosePFJet_Summer16_v1(pfJetIdx)) return false;
+
+  return true;
+}
+
 bool isLoosePFJet(unsigned int pfJetIdx){
 
   float pfjet_chf_  = pfjets_chargedHadronE()[pfJetIdx] / (pfjets_undoJEC().at(pfJetIdx)*pfjets_p4()[pfJetIdx].energy());
