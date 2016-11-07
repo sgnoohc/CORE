@@ -349,7 +349,7 @@ float mbb_highest_csv(vector <LorentzVector> jets_p4, vector<float> jets_csv){
 
 	vector <pair<LorentzVector, float>> jet_csv_pairs;
 	for( size_t jetind = 0; jetind < jets_p4.size(); jetind++ ){
-	  if( jets_csv.at(jetind) > 0.890){
+	  if( jets_csv.at(jetind) > 0.800){
 		jet_csv_pairs.push_back(make_pair(jets_p4.at(jetind),jets_csv.at(jetind)));
 	  }
 	}
