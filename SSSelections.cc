@@ -364,11 +364,12 @@ bool isGoodLeptonNoIso(int id, int idx){
 
 bool isInSituFRLepton(int id, int idx){
   if (abs(id) == 11){
-    if (!electronID(idx, SS_medium_noip_v5) && !electronID(idx, SS_medium_v5)) return false;
+    if (!electronID(idx, SS_medium_looseMVA_noip_v5) && !electronID(idx, SS_medium_v5)) return false;
   }
   if (abs(id) == 13){
     if (!muonID(idx, SS_fo_noiso_noip_v5) && !muonID(idx, SS_fo_noiso_v5)) return false;
   }
+
   return true;
 }
 
@@ -573,6 +574,207 @@ int signalRegion2016(int njets, int nbtags, float met, float ht, float mt_min, i
   cout << "  --> ht & met are: " << ht << " " << met << endl;
   cout << "  --> njets & nbtags: " << njets << " " << nbtags << endl;
   return -1;
+}
+
+int signalRegionChargeSplit(int njets, int nbtags, float met, float ht, float mt_min, int id1, int id2, float lep1pt, float lep2pt){
+
+  //Calculate lep_pt
+  anal_type_t lep_pt = analysisCategory(id1, id2, lep1pt, lep2pt); 
+
+  // remember that sgn(pdgid) != sgn(charge), it's flipped. so mad.
+  int mm = (id1 > 0);
+
+  //Reject events out of kinematic acceptance
+  if (met < 50) return -1; 
+  if (njets < 2) return -1; 
+  if (lep_pt != LowLow && met > 500 && ht < 300) return -1; 
+  if (lep_pt != LowLow && njets>=2 && met>300 && ht<300) return -1;
+
+  //High-high
+  if (lep_pt == HighHigh){
+    if (met >= 300 && ht >= 300) {
+        if(met < 500) return 42+mm;
+        else return 44+mm;
+    }
+    if (ht >= 1125) {
+        if(ht < 1300) return 46+mm;
+        else if(ht < 1600) return 48+mm;
+        else return 50+mm;
+    }
+    if (ht < 300){
+      if (nbtags == 0 && mt_min < 120 && met < 200 && njets <= 4) return 1; 
+      if (nbtags == 0) return 3; 
+      if (nbtags == 1 && mt_min < 120 && met < 200 && njets <= 4) return 11;
+      if (nbtags == 1) return 13+mm; 
+      if (nbtags == 2 && mt_min < 120 && met < 200 && njets <= 4) return 23; 
+      if (nbtags == 2) return 25+mm; 
+      if (nbtags >= 3 && mt_min < 120 && met < 200) return 35+mm; 
+      if (nbtags >= 3 && mt_min < 120 && met >= 200) return 35+mm; 
+      if (nbtags >= 3) return 40;
+    }
+    if (ht >= 300 && ht < 1125){
+      if (nbtags == 0){
+        if (mt_min < 120 && met < 200 && njets <= 4) return 2; 
+        if (mt_min < 120 && met < 200 && njets > 4) return 4; 
+        if (mt_min < 120 && met >= 200 && njets <= 4) return 5+mm; 
+        if (mt_min < 120 && met >= 200 && njets > 4) return 7; 
+        if (mt_min >= 120 && met < 200 && njets <= 4) return 8+mm;
+        return 10;
+      } 
+      if (nbtags == 1){
+        if (mt_min < 120 && met < 200 && njets <= 4) return 12; 
+        if (mt_min < 120 && met < 200 && njets > 4) return 15+mm; 
+        if (mt_min < 120 && met >= 200 && njets <= 4) return 17+mm; 
+        if (mt_min < 120 && met >= 200 && njets > 4) return 19; 
+        if (mt_min >= 120 && met < 200 && njets <= 4) return 20+mm;
+        return 22;
+      } 
+      if (nbtags == 2){
+        if (mt_min < 120 && met < 200 && njets <= 4) return 24; 
+        if (mt_min < 120 && met < 200 && njets > 4) return 27+mm; 
+        if (mt_min < 120 && met >= 200 && njets <= 4) return 29+mm; 
+        if (mt_min < 120 && met >= 200 && njets > 4) return 31; 
+        if (mt_min >= 120 && met < 200 && njets <= 4) return 32+mm;
+        return 34;
+      } 
+      if (nbtags >= 3){
+        if (mt_min < 120 && met < 200) return 37+mm;
+        if (mt_min < 120 && met >= 200) return 39;
+        if (mt_min >= 120) return 41;
+      }
+    }
+  }
+  
+  //High-Low
+  if (lep_pt == HighLow){
+    if (met >= 300 && ht >= 300) {
+        if(met < 500) return 34+mm;
+        else return 36+mm;
+    }
+    if (ht >= 1125) {
+        if(ht < 1300) return 38+mm;
+        else return 40+mm;
+    }
+    if (ht < 300){ 
+      if (nbtags == 0 && met < 200 && njets <= 4) return 1; 
+      if (mt_min < 120 && nbtags == 0) return 3;
+      if (mt_min < 120 && nbtags == 1 && met < 200 && njets <= 4) return 8; 
+      if (mt_min < 120 && nbtags == 1) return 10+mm;
+      if (mt_min < 120 && nbtags == 2 && met < 200 && njets <= 4) return 18; 
+      if (mt_min < 120 && nbtags == 2) return 20+mm;
+      if (mt_min < 120 && nbtags >= 3 && met < 200) return 27+mm; 
+      if (mt_min < 120 && nbtags >= 3) return 27+mm;
+      if (mt_min >= 120) return 32;
+    }  
+    if (ht >= 300){
+      if (nbtags == 0 && mt_min < 120 && met < 200 && njets <= 4) return 2; 
+      if (nbtags == 0 && mt_min < 120 && met < 200 && njets > 4) return 4; 
+      if (nbtags == 0 && mt_min < 120 && met < 500 && njets <= 4) return 5+mm; 
+      if (nbtags == 0 && mt_min < 120 && met < 500 && njets > 4) return 7; 
+      if (nbtags == 1 && mt_min < 120 && met < 200 && njets <= 4) return 9; 
+      if (nbtags == 1 && mt_min < 120 && met < 200 && njets > 4) return 12+mm; 
+      if (nbtags == 1 && mt_min < 120 && met < 500 && njets <= 4) return 14+mm; 
+      if (nbtags == 1 && mt_min < 120 && met < 500 && njets > 4) return 16+mm; 
+      if (nbtags == 2 && mt_min < 120 && met < 200 && njets <= 4) return 19; 
+      if (nbtags == 2 && mt_min < 120 && met < 200 && njets > 4) return 22+mm; 
+      if (nbtags == 2 && mt_min < 120 && met < 500 && njets <= 4) return 24+mm; 
+      if (nbtags == 2 && mt_min < 120 && met < 500 && njets > 4) return 26; 
+      if (nbtags >= 3 && mt_min < 120 && met < 200) return 29+mm; 
+      if (nbtags >= 3 && mt_min < 120 && met >= 200) return 31;
+      if (mt_min >= 120) return 33;
+    }
+  }
+
+  //Low-Low
+  if (lep_pt == LowLow){
+    if (ht < 300) return -1; 
+    if (mt_min > 120) return 8; 
+    if (nbtags == 0 && met < 200) return 1;
+    if (nbtags == 0 && met >= 200) return 2;
+    if (nbtags == 1 && met < 200) return 3;
+    if (nbtags == 1 && met >= 200) return 4;
+    if (nbtags == 2 && met < 200) return 5;
+    if (nbtags == 2 && met >= 200) return 6;
+    if (nbtags >= 3) return 7;
+  }
+
+  //Otherwise undefined
+  cout << "WARNING: SR UNDEFINED (should never get here)" << endl;
+  cout << "  --> lepton pts are: " << lep1pt << " " << lep2pt << endl;
+  cout << "  --> ht & met are: " << ht << " " << met << endl;
+  cout << "  --> njets & nbtags: " << njets << " " << nbtags << endl;
+  return -1;
+}
+
+int signalRegionChargeSplit_old(int njets, int nbtags, float met, float ht, float mt_min, int id1, int id2, float lep1pt, float lep2pt){
+    int sr = signalRegion2016(njets, nbtags, met, ht, mt_min, id1, id2, lep1pt, lep2pt);
+    anal_type_t lep_pt = analysisCategory(id1, id2, lep1pt, lep2pt); 
+
+    // if ++ don't put into the new signal regions at the end, just return the original signal region.
+    // remember that sgn(pdgid) != sgn(charge), it's flipped. so mad.
+    if (id1 < 0) return sr;
+
+    // split regions not dominated by fakes (and don't split any of the LL)
+    // and put them consecutively right after the last SR
+    //    split HH: 5 6 7 8 12 13 14 15 16 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33
+    //    split LL: 5 6 9 10 11 12 15 16 17 18 19 20 21 22 23 24 25 26 27
+    if (lep_pt == HighHigh) {
+        int off = 33;
+        if (sr ==  5) return off+1;
+        else if (sr ==  6) return off+2;
+        else if (sr ==  7) return off+3;
+        else if (sr ==  8) return off+4;
+        else if (sr == 12) return off+5;
+        else if (sr == 13) return off+6;
+        else if (sr == 14) return off+7;
+        else if (sr == 15) return off+8;
+        else if (sr == 16) return off+9;
+        else if (sr == 19) return off+10;
+        else if (sr == 20) return off+11;
+        else if (sr == 21) return off+12;
+        else if (sr == 22) return off+13;
+        else if (sr == 23) return off+14;
+        else if (sr == 24) return off+15;
+        else if (sr == 25) return off+16;
+        else if (sr == 26) return off+17;
+        else if (sr == 27) return off+18;
+        else if (sr == 28) return off+19;
+        else if (sr == 29) return off+20;
+        else if (sr == 30) return off+21;
+        else if (sr == 31) return off+22;
+        else if (sr == 32) return off+23;
+        else if (sr == 33) return off+24;
+        else return sr;
+
+    } else if (lep_pt == HighLow) {
+        int off = 27;
+        if (sr ==  5) return off+1;
+        else if (sr ==  6) return off+2;
+        else if (sr ==  9) return off+3;
+        else if (sr == 10) return off+4;
+        else if (sr == 11) return off+5;
+        else if (sr == 12) return off+6;
+        else if (sr == 15) return off+7;
+        else if (sr == 16) return off+8;
+        else if (sr == 17) return off+9;
+        else if (sr == 18) return off+10;
+        else if (sr == 19) return off+11;
+        else if (sr == 20) return off+12;
+        else if (sr == 21) return off+13;
+        else if (sr == 22) return off+14;
+        else if (sr == 23) return off+15;
+        else if (sr == 24) return off+16;
+        else if (sr == 25) return off+17;
+        else if (sr == 26) return off+18;
+        else if (sr == 27) return off+19;
+        else return sr;
+
+    } else if (lep_pt == LowLow) {
+        return sr ;
+
+    } 
+
+    return -1;
 }
 
 int signalRegion(int njets, int nbtags, float met, float ht, float mt_min, int id1, int id2, float lep1pt, float lep2pt){
@@ -1030,6 +1232,7 @@ int isGoodHyp(int iHyp, bool verbose){
   else if (((passed_id_numer_ll && passed_id_denom_lt) || (passed_id_numer_lt && passed_id_denom_ll)) && isss == true) return 2; //2 SS, one numer and one denom not numer
   else if (isss && truth_inSituFR) return 5;  // 5 if both pass inSituFR
   else if (passed_id_numer_lt && passed_id_numer_ll && !isss) return 4;  // 4 if both numer pass, OS
+  else if (!isss && truth_inSituFR) return 7;  // OS events for insitu (these would otherwise go to the trash)
   return 0; //non-highpass OS
 }
 
@@ -1042,6 +1245,7 @@ hyp_result_t chooseBestHyp(bool verbose){
   vector <int> good_hyps_df; //same sign, double fail
   vector <int> good_hyps_os; //opposite sign, tight tight
   vector <int> good_hyps_zv; //same sign, tight tight, fail Z veto
+  vector <int> good_hyps_osis; // opposite sign, loose insitu denom
   for (unsigned int i = 0; i < tas::hyp_type().size(); i++){
     int good_hyp_result = isGoodHyp(i, verbose);
     if(verbose) std::cout << "hyp #" << i << " hyp_class: " << good_hyp_result << std::endl;
@@ -1051,6 +1255,7 @@ hyp_result_t chooseBestHyp(bool verbose){
     else if (good_hyp_result == 4) good_hyps_os.push_back(i); 
     else if (good_hyp_result == 5) good_hyps_fr.push_back(i); 
     else if (good_hyp_result == 6) good_hyps_zv.push_back(i); 
+    else if (good_hyp_result == 7) good_hyps_osis.push_back(i); 
   }
 
   //hyp_class_ to track SS(3), SF(2), DF(1), OS(4), or none(0)
@@ -1081,6 +1286,10 @@ hyp_result_t chooseBestHyp(bool verbose){
   else if (good_hyps_fr.size() != 0){
     good_hyps = good_hyps_fr;
     hyp_class_ = 5;
+  }
+  else if (good_hyps_osis.size() != 0){
+    good_hyps = good_hyps_osis;
+    hyp_class_ = 7;
   }
   else hyp_class_ = 0; 
 
