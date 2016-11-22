@@ -2123,8 +2123,15 @@ void CMS3::Init(TTree *tree) {
 		mus_gfit_d0phiCov_branch = tree->GetBranch(tree->GetAlias("mus_gfit_d0phiCov"));
 		if (mus_gfit_d0phiCov_branch) {mus_gfit_d0phiCov_branch->SetAddress(&mus_gfit_d0phiCov_);}
 	}
-	mus_gfit_ndof_branch = 0;
+	mus_gfit_ndof_float_branch = 0;
+	bool mus_gfit_ndof_found_as_float = false;
 	if (tree->GetAlias("mus_gfit_ndof") != 0) {
+		mus_gfit_ndof_float_branch = tree->GetBranch(tree->GetAlias("mus_gfit_ndof"));
+		if (TString(mus_gfit_ndof_float_branch->GetClassName()).Contains("float")) mus_gfit_ndof_found_as_float = true;
+		if (mus_gfit_ndof_float_branch && mus_gfit_ndof_found_as_float) {mus_gfit_ndof_float_branch->SetAddress(&mus_gfit_ndof_float_);}
+	}
+	mus_gfit_ndof_branch = 0;
+	if ((tree->GetAlias("mus_gfit_ndof") != 0) && !mus_gfit_ndof_found_as_float) {
 		mus_gfit_ndof_branch = tree->GetBranch(tree->GetAlias("mus_gfit_ndof"));
 		if (mus_gfit_ndof_branch) {mus_gfit_ndof_branch->SetAddress(&mus_gfit_ndof_);}
 	}
@@ -5973,6 +5980,7 @@ void CMS3::GetEntry(unsigned int idx)
 		mus_gfit_d0corr_isLoaded = false;
 		mus_gfit_d0corrPhi_isLoaded = false;
 		mus_gfit_d0phiCov_isLoaded = false;
+		mus_gfit_ndof_float_isLoaded = false;
 		mus_gfit_ndof_isLoaded = false;
 		mus_gfit_qoverp_isLoaded = false;
 		mus_gfit_qoverpError_isLoaded = false;
@@ -7086,6 +7094,7 @@ void CMS3::LoadAllBranches()
 	if (mus_gfit_d0corr_branch != 0) mus_gfit_d0corr();
 	if (mus_gfit_d0corrPhi_branch != 0) mus_gfit_d0corrPhi();
 	if (mus_gfit_d0phiCov_branch != 0) mus_gfit_d0phiCov();
+	if (mus_gfit_ndof_float_branch != 0) mus_gfit_ndof_float();
 	if (mus_gfit_ndof_branch != 0) mus_gfit_ndof();
 	if (mus_gfit_qoverp_branch != 0) mus_gfit_qoverp();
 	if (mus_gfit_qoverpError_branch != 0) mus_gfit_qoverpError();
@@ -13284,7 +13293,20 @@ void CMS3::LoadAllBranches()
 		}
 		return mus_gfit_d0phiCov_;
 	}
-	const vector<float> &CMS3::mus_gfit_ndof()
+	const vector<float> &CMS3::mus_gfit_ndof_float()
+	{
+		if (not mus_gfit_ndof_float_isLoaded) {
+			if (mus_gfit_ndof_float_branch != 0) {
+				mus_gfit_ndof_float_branch->GetEntry(index);
+			} else { 
+				printf("branch mus_gfit_ndof_float_branch does not exist!\n");
+				exit(1);
+			}
+			mus_gfit_ndof_float_isLoaded = true;
+		}
+		return mus_gfit_ndof_float_;
+	}
+	const vector<int> &CMS3::mus_gfit_ndof()
 	{
 		if (not mus_gfit_ndof_isLoaded) {
 			if (mus_gfit_ndof_branch != 0) {
@@ -22676,7 +22698,8 @@ namespace tas {
 	const vector<float> &mus_gfit_d0corr() { return cms3.mus_gfit_d0corr(); }
 	const vector<float> &mus_gfit_d0corrPhi() { return cms3.mus_gfit_d0corrPhi(); }
 	const vector<float> &mus_gfit_d0phiCov() { return cms3.mus_gfit_d0phiCov(); }
-	const vector<float> &mus_gfit_ndof() { return cms3.mus_gfit_ndof(); }
+	const vector<float> &mus_gfit_ndof_float() { return cms3.mus_gfit_ndof_float(); }
+	const vector<int> &mus_gfit_ndof() { return cms3.mus_gfit_ndof(); }
 	const vector<float> &mus_gfit_qoverp() { return cms3.mus_gfit_qoverp(); }
 	const vector<float> &mus_gfit_qoverpError() { return cms3.mus_gfit_qoverpError(); }
 	const vector<float> &mus_gfit_z0() { return cms3.mus_gfit_z0(); }

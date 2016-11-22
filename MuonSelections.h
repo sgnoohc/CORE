@@ -44,4 +44,7 @@ namespace muID {
   void unsetCache();
 }
 
+// check CMS3 version to see which c++ type is stored in the ntuples for mus_gfit_ndof
+int get_mus_gfit_ndof( unsigned int muIdx );
+
 #endif

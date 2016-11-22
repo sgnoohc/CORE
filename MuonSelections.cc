@@ -18,7 +18,7 @@ using namespace tas;
 bool isMediumMuonPOG_forICHEP( unsigned int muIdx ){
   bool isGlobal  = true;
   if (((mus_type().at(muIdx)) & (1<<1)) == 0) isGlobal  = false;
-  bool goodGlb = isGlobal && mus_gfit_chi2().at(muIdx)/mus_gfit_ndof().at(muIdx)<3. && 
+  bool goodGlb = isGlobal && mus_gfit_chi2().at(muIdx)/get_mus_gfit_ndof(muIdx)<3. && 
                  mus_chi2LocalPosition().at(muIdx)<12. && mus_trkKink().at(muIdx)<20.;
   double validFraction = mus_validHits().at(muIdx)/(double)(mus_validHits().at(muIdx)+mus_lostHits().at(muIdx)+mus_exp_innerlayers().at(muIdx)+mus_exp_outerlayers().at(muIdx));
   bool good = isLooseMuonPOG(muIdx) && validFraction > 0.49 && mus_segmCompatibility().at(muIdx) >= (goodGlb ? 0.303 : 0.451);
@@ -38,7 +38,7 @@ bool isLooseMuonPOG(unsigned int muIdx){
 bool isMediumMuonPOG(unsigned int muIdx){
   bool isGlobal  = true;
   if (((mus_type().at(muIdx)) & (1<<1)) == 0) isGlobal  = false;
-  bool goodGlb = isGlobal && mus_gfit_chi2().at(muIdx)/mus_gfit_ndof().at(muIdx)<3. && 
+  bool goodGlb = isGlobal && mus_gfit_chi2().at(muIdx)/get_mus_gfit_ndof(muIdx)<3. && 
                  mus_chi2LocalPosition().at(muIdx)<12. && mus_trkKink().at(muIdx)<20.;
   double validFraction = mus_validHits().at(muIdx)/(double)(mus_validHits().at(muIdx)+mus_lostHits().at(muIdx)+mus_exp_innerlayers().at(muIdx)+mus_exp_outerlayers().at(muIdx));
   bool good = isLooseMuonPOG(muIdx) && validFraction > 0.8 &&  mus_segmCompatibility().at(muIdx) >= (goodGlb ? 0.303 : 0.451);
@@ -50,7 +50,7 @@ bool isTightMuonPOG(unsigned int muIdx){
   if (((mus_type()                 .at(muIdx))
 	   & (1<<1)) == 0                                 ) return false;//global muon
   if (mus_gfit_chi2()              .at(muIdx)		 
-	  /mus_gfit_ndof()             .at(muIdx)  >= 10  ) return false; 
+	  /get_mus_gfit_ndof          (muIdx)  >= 10  ) return false; 
   if (mus_gfit_validSTAHits()      .at(muIdx)  == 0   ) return false; 
   if (mus_numberOfMatchedStations().at(muIdx)  <  2   ) return false;
   if (mus_validPixelHits()         .at(muIdx)  == 0   ) return false;
@@ -258,7 +258,7 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
       if (fabs(mus_p4().at(muIdx).eta()) > 2.4) return false;
       if (!mus_pid_PFMuon().at(muIdx)) return false;    
       if (((mus_type().at(muIdx)) & (1<<1)) == 0) return false;//global muon
-      if (mus_gfit_chi2().at(muIdx)/mus_gfit_ndof().at(muIdx) >= 10) return false; 
+      if (mus_gfit_chi2().at(muIdx)/get_mus_gfit_ndof(muIdx) >= 10) return false; 
       if (mus_gfit_validSTAHits().at(muIdx) == 0) return false; 
       if (mus_numberOfMatchedStations().at(muIdx) < 2) return false;
       if (mus_validPixelHits().at(muIdx) == 0) return false;
@@ -436,7 +436,7 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
       if (fabs(mus_p4().at(muIdx).eta()) > 2.4) return false;
       if (!mus_pid_PFMuon().at(muIdx)) return false;    
       if (((mus_type().at(muIdx)) & (1<<1)) == 0) return false;//global muon
-      if (mus_gfit_chi2().at(muIdx)/mus_gfit_ndof().at(muIdx) >= 10) return false; 
+      if (mus_gfit_chi2().at(muIdx)/get_mus_gfit_ndof(muIdx) >= 10) return false; 
       if (mus_gfit_validSTAHits().at(muIdx) == 0) return false; 
       if (mus_numberOfMatchedStations().at(muIdx) < 2) return false;
       if (mus_validPixelHits().at(muIdx) == 0) return false;
@@ -870,4 +870,15 @@ bool PassSoftMuonCut(unsigned int muIdx) {
   if ((mus_iso03_emEt().at(muIdx)+mus_iso03_hadEt().at(muIdx)+mus_iso03_sumPt().at(muIdx)) < 0.10*mus_p4().at(muIdx).pt() && mus_p4().at(muIdx).pt() > 20.) return false;
   return true;
 
+}
+
+// check CMS3 version to see which c++ type is stored in the ntuples for mus_gfit_ndof
+int get_mus_gfit_ndof( unsigned int muIdx ) {
+  int gfit_ndof = 0;
+  TString version = evt_CMS3tag().at(0);
+  // convert last two digits of version number to int
+  int small_version = TString(version(version.Length()-2,version.Length())).Atoi();
+  if (version.Contains("V08-00") && small_version <= 12) gfit_ndof = mus_gfit_ndof_float().at(muIdx);
+  else gfit_ndof = mus_gfit_ndof().at(muIdx);
+  return gfit_ndof;
 }
