@@ -142,6 +142,16 @@ void CMS3::Init(TTree *tree) {
 		isotracks_p4_branch = tree->GetBranch(tree->GetAlias("isotracks_p4"));
 		if (isotracks_p4_branch) {isotracks_p4_branch->SetAddress(&isotracks_p4_);}
 	}
+	mus_bfit_p4_branch = 0;
+	if (tree->GetAlias("mus_bfit_p4") != 0) {
+		mus_bfit_p4_branch = tree->GetBranch(tree->GetAlias("mus_bfit_p4"));
+		if (mus_bfit_p4_branch) {mus_bfit_p4_branch->SetAddress(&mus_bfit_p4_);}
+	}
+	mus_bfit_vertex_p4_branch = 0;
+	if (tree->GetAlias("mus_bfit_vertex_p4") != 0) {
+		mus_bfit_vertex_p4_branch = tree->GetBranch(tree->GetAlias("mus_bfit_vertex_p4"));
+		if (mus_bfit_vertex_p4_branch) {mus_bfit_vertex_p4_branch->SetAddress(&mus_bfit_vertex_p4_);}
+	}
 	mus_gfit_p4_branch = 0;
 	if (tree->GetAlias("mus_gfit_p4") != 0) {
 		mus_gfit_p4_branch = tree->GetBranch(tree->GetAlias("mus_gfit_p4"));
@@ -1967,6 +1977,76 @@ void CMS3::Init(TTree *tree) {
 	if (tree->GetAlias("isotracks_relIso") != 0) {
 		isotracks_relIso_branch = tree->GetBranch(tree->GetAlias("isotracks_relIso"));
 		if (isotracks_relIso_branch) {isotracks_relIso_branch->SetAddress(&isotracks_relIso_);}
+	}
+	mus_bfit_chi2_branch = 0;
+	if (tree->GetAlias("mus_bfit_chi2") != 0) {
+		mus_bfit_chi2_branch = tree->GetBranch(tree->GetAlias("mus_bfit_chi2"));
+		if (mus_bfit_chi2_branch) {mus_bfit_chi2_branch->SetAddress(&mus_bfit_chi2_);}
+	}
+	mus_bfit_d0_branch = 0;
+	if (tree->GetAlias("mus_bfit_d0") != 0) {
+		mus_bfit_d0_branch = tree->GetBranch(tree->GetAlias("mus_bfit_d0"));
+		if (mus_bfit_d0_branch) {mus_bfit_d0_branch->SetAddress(&mus_bfit_d0_);}
+	}
+	mus_bfit_d0Err_branch = 0;
+	if (tree->GetAlias("mus_bfit_d0Err") != 0) {
+		mus_bfit_d0Err_branch = tree->GetBranch(tree->GetAlias("mus_bfit_d0Err"));
+		if (mus_bfit_d0Err_branch) {mus_bfit_d0Err_branch->SetAddress(&mus_bfit_d0Err_);}
+	}
+	mus_bfit_d0corr_branch = 0;
+	if (tree->GetAlias("mus_bfit_d0corr") != 0) {
+		mus_bfit_d0corr_branch = tree->GetBranch(tree->GetAlias("mus_bfit_d0corr"));
+		if (mus_bfit_d0corr_branch) {mus_bfit_d0corr_branch->SetAddress(&mus_bfit_d0corr_);}
+	}
+	mus_bfit_d0corrPhi_branch = 0;
+	if (tree->GetAlias("mus_bfit_d0corrPhi") != 0) {
+		mus_bfit_d0corrPhi_branch = tree->GetBranch(tree->GetAlias("mus_bfit_d0corrPhi"));
+		if (mus_bfit_d0corrPhi_branch) {mus_bfit_d0corrPhi_branch->SetAddress(&mus_bfit_d0corrPhi_);}
+	}
+	mus_bfit_d0phiCov_branch = 0;
+	if (tree->GetAlias("mus_bfit_d0phiCov") != 0) {
+		mus_bfit_d0phiCov_branch = tree->GetBranch(tree->GetAlias("mus_bfit_d0phiCov"));
+		if (mus_bfit_d0phiCov_branch) {mus_bfit_d0phiCov_branch->SetAddress(&mus_bfit_d0phiCov_);}
+	}
+	mus_bfit_etaErr_branch = 0;
+	if (tree->GetAlias("mus_bfit_etaErr") != 0) {
+		mus_bfit_etaErr_branch = tree->GetBranch(tree->GetAlias("mus_bfit_etaErr"));
+		if (mus_bfit_etaErr_branch) {mus_bfit_etaErr_branch->SetAddress(&mus_bfit_etaErr_);}
+	}
+	mus_bfit_phiErr_branch = 0;
+	if (tree->GetAlias("mus_bfit_phiErr") != 0) {
+		mus_bfit_phiErr_branch = tree->GetBranch(tree->GetAlias("mus_bfit_phiErr"));
+		if (mus_bfit_phiErr_branch) {mus_bfit_phiErr_branch->SetAddress(&mus_bfit_phiErr_);}
+	}
+	mus_bfit_ptErr_branch = 0;
+	if (tree->GetAlias("mus_bfit_ptErr") != 0) {
+		mus_bfit_ptErr_branch = tree->GetBranch(tree->GetAlias("mus_bfit_ptErr"));
+		if (mus_bfit_ptErr_branch) {mus_bfit_ptErr_branch->SetAddress(&mus_bfit_ptErr_);}
+	}
+	mus_bfit_qoverp_branch = 0;
+	if (tree->GetAlias("mus_bfit_qoverp") != 0) {
+		mus_bfit_qoverp_branch = tree->GetBranch(tree->GetAlias("mus_bfit_qoverp"));
+		if (mus_bfit_qoverp_branch) {mus_bfit_qoverp_branch->SetAddress(&mus_bfit_qoverp_);}
+	}
+	mus_bfit_qoverpError_branch = 0;
+	if (tree->GetAlias("mus_bfit_qoverpError") != 0) {
+		mus_bfit_qoverpError_branch = tree->GetBranch(tree->GetAlias("mus_bfit_qoverpError"));
+		if (mus_bfit_qoverpError_branch) {mus_bfit_qoverpError_branch->SetAddress(&mus_bfit_qoverpError_);}
+	}
+	mus_bfit_z0_branch = 0;
+	if (tree->GetAlias("mus_bfit_z0") != 0) {
+		mus_bfit_z0_branch = tree->GetBranch(tree->GetAlias("mus_bfit_z0"));
+		if (mus_bfit_z0_branch) {mus_bfit_z0_branch->SetAddress(&mus_bfit_z0_);}
+	}
+	mus_bfit_z0Err_branch = 0;
+	if (tree->GetAlias("mus_bfit_z0Err") != 0) {
+		mus_bfit_z0Err_branch = tree->GetBranch(tree->GetAlias("mus_bfit_z0Err"));
+		if (mus_bfit_z0Err_branch) {mus_bfit_z0Err_branch->SetAddress(&mus_bfit_z0Err_);}
+	}
+	mus_bfit_z0corr_branch = 0;
+	if (tree->GetAlias("mus_bfit_z0corr") != 0) {
+		mus_bfit_z0corr_branch = tree->GetBranch(tree->GetAlias("mus_bfit_z0corr"));
+		if (mus_bfit_z0corr_branch) {mus_bfit_z0corr_branch->SetAddress(&mus_bfit_z0corr_);}
 	}
 	mus_bs2d_branch = 0;
 	if (tree->GetAlias("mus_bs2d") != 0) {
@@ -4185,6 +4265,81 @@ void CMS3::Init(TTree *tree) {
 		mus_algoOrig_branch = tree->GetBranch(tree->GetAlias("mus_algoOrig"));
 		if (mus_algoOrig_branch) {mus_algoOrig_branch->SetAddress(&mus_algoOrig_);}
 	}
+	mus_bfit_algo_branch = 0;
+	if (tree->GetAlias("mus_bfit_algo") != 0) {
+		mus_bfit_algo_branch = tree->GetBranch(tree->GetAlias("mus_bfit_algo"));
+		if (mus_bfit_algo_branch) {mus_bfit_algo_branch->SetAddress(&mus_bfit_algo_);}
+	}
+	mus_bfit_exp_innerlayer_branch = 0;
+	if (tree->GetAlias("mus_bfit_exp_innerlayer") != 0) {
+		mus_bfit_exp_innerlayer_branch = tree->GetBranch(tree->GetAlias("mus_bfit_exp_innerlayer"));
+		if (mus_bfit_exp_innerlayer_branch) {mus_bfit_exp_innerlayer_branch->SetAddress(&mus_bfit_exp_innerlayer_);}
+	}
+	mus_bfit_exp_outerlayer_branch = 0;
+	if (tree->GetAlias("mus_bfit_exp_outerlayer") != 0) {
+		mus_bfit_exp_outerlayer_branch = tree->GetBranch(tree->GetAlias("mus_bfit_exp_outerlayer"));
+		if (mus_bfit_exp_outerlayer_branch) {mus_bfit_exp_outerlayer_branch->SetAddress(&mus_bfit_exp_outerlayer_);}
+	}
+	mus_bfit_lostHits_branch = 0;
+	if (tree->GetAlias("mus_bfit_lostHits") != 0) {
+		mus_bfit_lostHits_branch = tree->GetBranch(tree->GetAlias("mus_bfit_lostHits"));
+		if (mus_bfit_lostHits_branch) {mus_bfit_lostHits_branch->SetAddress(&mus_bfit_lostHits_);}
+	}
+	mus_bfit_lostPixelHits_branch = 0;
+	if (tree->GetAlias("mus_bfit_lostPixelHits") != 0) {
+		mus_bfit_lostPixelHits_branch = tree->GetBranch(tree->GetAlias("mus_bfit_lostPixelHits"));
+		if (mus_bfit_lostPixelHits_branch) {mus_bfit_lostPixelHits_branch->SetAddress(&mus_bfit_lostPixelHits_);}
+	}
+	mus_bfit_ndof_branch = 0;
+	if (tree->GetAlias("mus_bfit_ndof") != 0) {
+		mus_bfit_ndof_branch = tree->GetBranch(tree->GetAlias("mus_bfit_ndof"));
+		if (mus_bfit_ndof_branch) {mus_bfit_ndof_branch->SetAddress(&mus_bfit_ndof_);}
+	}
+	mus_bfit_nlayers_branch = 0;
+	if (tree->GetAlias("mus_bfit_nlayers") != 0) {
+		mus_bfit_nlayers_branch = tree->GetBranch(tree->GetAlias("mus_bfit_nlayers"));
+		if (mus_bfit_nlayers_branch) {mus_bfit_nlayers_branch->SetAddress(&mus_bfit_nlayers_);}
+	}
+	mus_bfit_nlayers3D_branch = 0;
+	if (tree->GetAlias("mus_bfit_nlayers3D") != 0) {
+		mus_bfit_nlayers3D_branch = tree->GetBranch(tree->GetAlias("mus_bfit_nlayers3D"));
+		if (mus_bfit_nlayers3D_branch) {mus_bfit_nlayers3D_branch->SetAddress(&mus_bfit_nlayers3D_);}
+	}
+	mus_bfit_nlayersLost_branch = 0;
+	if (tree->GetAlias("mus_bfit_nlayersLost") != 0) {
+		mus_bfit_nlayersLost_branch = tree->GetBranch(tree->GetAlias("mus_bfit_nlayersLost"));
+		if (mus_bfit_nlayersLost_branch) {mus_bfit_nlayersLost_branch->SetAddress(&mus_bfit_nlayersLost_);}
+	}
+	 mus_bfit_qualityMask_branch = 0;
+	if (tree->GetAlias(" mus_bfit_qualityMask") != 0) {
+		 mus_bfit_qualityMask_branch = tree->GetBranch(tree->GetAlias(" mus_bfit_qualityMask"));
+		if ( mus_bfit_qualityMask_branch) { mus_bfit_qualityMask_branch->SetAddress(& mus_bfit_qualityMask_);}
+	}
+	mus_bfit_trk_charge_branch = 0;
+	if (tree->GetAlias("mus_bfit_trk_charge") != 0) {
+		mus_bfit_trk_charge_branch = tree->GetBranch(tree->GetAlias("mus_bfit_trk_charge"));
+		if (mus_bfit_trk_charge_branch) {mus_bfit_trk_charge_branch->SetAddress(&mus_bfit_trk_charge_);}
+	}
+	mus_bfit_validHits_branch = 0;
+	if (tree->GetAlias("mus_bfit_validHits") != 0) {
+		mus_bfit_validHits_branch = tree->GetBranch(tree->GetAlias("mus_bfit_validHits"));
+		if (mus_bfit_validHits_branch) {mus_bfit_validHits_branch->SetAddress(&mus_bfit_validHits_);}
+	}
+	mus_bfit_validPixelHits_branch = 0;
+	if (tree->GetAlias("mus_bfit_validPixelHits") != 0) {
+		mus_bfit_validPixelHits_branch = tree->GetBranch(tree->GetAlias("mus_bfit_validPixelHits"));
+		if (mus_bfit_validPixelHits_branch) {mus_bfit_validPixelHits_branch->SetAddress(&mus_bfit_validPixelHits_);}
+	}
+	mus_bfit_validSTAHits_branch = 0;
+	if (tree->GetAlias("mus_bfit_validSTAHits") != 0) {
+		mus_bfit_validSTAHits_branch = tree->GetBranch(tree->GetAlias("mus_bfit_validSTAHits"));
+		if (mus_bfit_validSTAHits_branch) {mus_bfit_validSTAHits_branch->SetAddress(&mus_bfit_validSTAHits_);}
+	}
+	mus_bfit_validSiHits_branch = 0;
+	if (tree->GetAlias("mus_bfit_validSiHits") != 0) {
+		mus_bfit_validSiHits_branch = tree->GetBranch(tree->GetAlias("mus_bfit_validSiHits"));
+		if (mus_bfit_validSiHits_branch) {mus_bfit_validSiHits_branch->SetAddress(&mus_bfit_validSiHits_);}
+	}
 	mus_charge_branch = 0;
 	if (tree->GetAlias("mus_charge") != 0) {
 		mus_charge_branch = tree->GetBranch(tree->GetAlias("mus_charge"));
@@ -5755,6 +5910,8 @@ void CMS3::GetEntry(unsigned int idx)
 		hyp_lt_p4_isLoaded = false;
 		hyp_p4_isLoaded = false;
 		isotracks_p4_isLoaded = false;
+		mus_bfit_p4_isLoaded = false;
+		mus_bfit_vertex_p4_isLoaded = false;
 		mus_gfit_p4_isLoaded = false;
 		mus_gfit_vertex_p4_isLoaded = false;
 		mus_mc_patMatch_p4_isLoaded = false;
@@ -5949,6 +6106,20 @@ void CMS3::GetEntry(unsigned int idx)
 		isotracks_mass_isLoaded = false;
 		isotracks_puppiWeight_isLoaded = false;
 		isotracks_relIso_isLoaded = false;
+		mus_bfit_chi2_isLoaded = false;
+		mus_bfit_d0_isLoaded = false;
+		mus_bfit_d0Err_isLoaded = false;
+		mus_bfit_d0corr_isLoaded = false;
+		mus_bfit_d0corrPhi_isLoaded = false;
+		mus_bfit_d0phiCov_isLoaded = false;
+		mus_bfit_etaErr_isLoaded = false;
+		mus_bfit_phiErr_isLoaded = false;
+		mus_bfit_ptErr_isLoaded = false;
+		mus_bfit_qoverp_isLoaded = false;
+		mus_bfit_qoverpError_isLoaded = false;
+		mus_bfit_z0_isLoaded = false;
+		mus_bfit_z0Err_isLoaded = false;
+		mus_bfit_z0corr_isLoaded = false;
 		mus_bs2d_isLoaded = false;
 		mus_bs2derr_isLoaded = false;
 		mus_bs3d_isLoaded = false;
@@ -6392,6 +6563,21 @@ void CMS3::GetEntry(unsigned int idx)
 		isotracks_particleId_isLoaded = false;
 		mus_algo_isLoaded = false;
 		mus_algoOrig_isLoaded = false;
+		mus_bfit_algo_isLoaded = false;
+		mus_bfit_exp_innerlayer_isLoaded = false;
+		mus_bfit_exp_outerlayer_isLoaded = false;
+		mus_bfit_lostHits_isLoaded = false;
+		mus_bfit_lostPixelHits_isLoaded = false;
+		mus_bfit_ndof_isLoaded = false;
+		mus_bfit_nlayers_isLoaded = false;
+		mus_bfit_nlayers3D_isLoaded = false;
+		mus_bfit_nlayersLost_isLoaded = false;
+		mus_bfit_qualityMask_isLoaded = false;
+		mus_bfit_trk_charge_isLoaded = false;
+		mus_bfit_validHits_isLoaded = false;
+		mus_bfit_validPixelHits_isLoaded = false;
+		mus_bfit_validSTAHits_isLoaded = false;
+		mus_bfit_validSiHits_isLoaded = false;
 		mus_charge_isLoaded = false;
 		mus_ecal_rawId_isLoaded = false;
 		mus_exp_innerlayers_isLoaded = false;
@@ -6869,6 +7055,8 @@ void CMS3::LoadAllBranches()
 	if (hyp_lt_p4_branch != 0) hyp_lt_p4();
 	if (hyp_p4_branch != 0) hyp_p4();
 	if (isotracks_p4_branch != 0) isotracks_p4();
+	if (mus_bfit_p4_branch != 0) mus_bfit_p4();
+	if (mus_bfit_vertex_p4_branch != 0) mus_bfit_vertex_p4();
 	if (mus_gfit_p4_branch != 0) mus_gfit_p4();
 	if (mus_gfit_vertex_p4_branch != 0) mus_gfit_vertex_p4();
 	if (mus_mc_patMatch_p4_branch != 0) mus_mc_patMatch_p4();
@@ -7063,6 +7251,20 @@ void CMS3::LoadAllBranches()
 	if (isotracks_mass_branch != 0) isotracks_mass();
 	if (isotracks_puppiWeight_branch != 0) isotracks_puppiWeight();
 	if (isotracks_relIso_branch != 0) isotracks_relIso();
+	if (mus_bfit_chi2_branch != 0) mus_bfit_chi2();
+	if (mus_bfit_d0_branch != 0) mus_bfit_d0();
+	if (mus_bfit_d0Err_branch != 0) mus_bfit_d0Err();
+	if (mus_bfit_d0corr_branch != 0) mus_bfit_d0corr();
+	if (mus_bfit_d0corrPhi_branch != 0) mus_bfit_d0corrPhi();
+	if (mus_bfit_d0phiCov_branch != 0) mus_bfit_d0phiCov();
+	if (mus_bfit_etaErr_branch != 0) mus_bfit_etaErr();
+	if (mus_bfit_phiErr_branch != 0) mus_bfit_phiErr();
+	if (mus_bfit_ptErr_branch != 0) mus_bfit_ptErr();
+	if (mus_bfit_qoverp_branch != 0) mus_bfit_qoverp();
+	if (mus_bfit_qoverpError_branch != 0) mus_bfit_qoverpError();
+	if (mus_bfit_z0_branch != 0) mus_bfit_z0();
+	if (mus_bfit_z0Err_branch != 0) mus_bfit_z0Err();
+	if (mus_bfit_z0corr_branch != 0) mus_bfit_z0corr();
 	if (mus_bs2d_branch != 0) mus_bs2d();
 	if (mus_bs2derr_branch != 0) mus_bs2derr();
 	if (mus_bs3d_branch != 0) mus_bs3d();
@@ -7506,6 +7708,21 @@ void CMS3::LoadAllBranches()
 	if (isotracks_particleId_branch != 0) isotracks_particleId();
 	if (mus_algo_branch != 0) mus_algo();
 	if (mus_algoOrig_branch != 0) mus_algoOrig();
+	if (mus_bfit_algo_branch != 0) mus_bfit_algo();
+	if (mus_bfit_exp_innerlayer_branch != 0) mus_bfit_exp_innerlayer();
+	if (mus_bfit_exp_outerlayer_branch != 0) mus_bfit_exp_outerlayer();
+	if (mus_bfit_lostHits_branch != 0) mus_bfit_lostHits();
+	if (mus_bfit_lostPixelHits_branch != 0) mus_bfit_lostPixelHits();
+	if (mus_bfit_ndof_branch != 0) mus_bfit_ndof();
+	if (mus_bfit_nlayers_branch != 0) mus_bfit_nlayers();
+	if (mus_bfit_nlayers3D_branch != 0) mus_bfit_nlayers3D();
+	if (mus_bfit_nlayersLost_branch != 0) mus_bfit_nlayersLost();
+	if (mus_bfit_qualityMask_branch != 0) mus_bfit_qualityMask();
+	if (mus_bfit_trk_charge_branch != 0) mus_bfit_trk_charge();
+	if (mus_bfit_validHits_branch != 0) mus_bfit_validHits();
+	if (mus_bfit_validPixelHits_branch != 0) mus_bfit_validPixelHits();
+	if (mus_bfit_validSTAHits_branch != 0) mus_bfit_validSTAHits();
+	if (mus_bfit_validSiHits_branch != 0) mus_bfit_validSiHits();
 	if (mus_charge_branch != 0) mus_charge();
 	if (mus_ecal_rawId_branch != 0) mus_ecal_rawId();
 	if (mus_exp_innerlayers_branch != 0) mus_exp_innerlayers();
@@ -10368,6 +10585,30 @@ void CMS3::LoadAllBranches()
 		}
 		return isotracks_p4_;
 	}
+	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::mus_bfit_p4() {
+		if (not mus_bfit_p4_isLoaded) {
+			if (mus_bfit_p4_branch != 0) {
+				mus_bfit_p4_branch->GetEntry(index);
+			} else {
+				printf("branch mus_bfit_p4_branch does not exist!\n");
+				exit(1);
+			}
+			mus_bfit_p4_isLoaded = true;
+		}
+		return mus_bfit_p4_;
+	}
+const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::mus_bfit_vertex_p4() {
+  if (not mus_bfit_vertex_p4_isLoaded) {
+    if (mus_bfit_vertex_p4_branch != 0) {
+      mus_bfit_vertex_p4_branch->GetEntry(index);
+    } else {
+      printf("branch mus_bfit_vertex_p4_branch does not exist!\n");
+      exit(1);
+    }
+    mus_bfit_vertex_p4_isLoaded = true;
+  }
+  return mus_bfit_vertex_p4_;
+}
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::mus_gfit_p4()
 	{
 		if (not mus_gfit_p4_isLoaded) {
@@ -12890,6 +13131,189 @@ void CMS3::LoadAllBranches()
 		}
 		return isotracks_relIso_;
 	}
+
+const vector<float> &CMS3::mus_bfit_chi2() {
+  if (not mus_bfit_chi2_isLoaded) {
+    if (mus_bfit_chi2_branch != 0) {
+      mus_bfit_chi2_branch->GetEntry(index);
+    } else {
+      printf("branch mus_bfit_chi2_branch does not exist!\n");
+      exit(1);
+    }
+    mus_bfit_chi2_isLoaded = true;
+  }
+  return mus_bfit_chi2_;
+}
+
+const vector<float> &CMS3::mus_bfit_d0() {
+  if (not mus_bfit_d0_isLoaded) {
+    if (mus_bfit_d0_branch != 0) {
+      mus_bfit_d0_branch->GetEntry(index);
+    } else {
+      printf("branch mus_bfit_d0_branch does not exist!\n");
+      exit(1);
+    }
+    mus_bfit_d0_isLoaded = true;
+  }
+  return mus_bfit_d0_;
+}
+
+const vector<float> &CMS3::mus_bfit_d0Err() {
+  if (not mus_bfit_d0Err_isLoaded) {
+    if (mus_bfit_d0Err_branch != 0) {
+      mus_bfit_d0Err_branch->GetEntry(index);
+    } else {
+      printf("branch mus_bfit_d0Err_branch does not exist!\n");
+      exit(1);
+    }
+    mus_bfit_d0Err_isLoaded = true;
+  }
+  return mus_bfit_d0Err_;
+}
+
+const vector<float> &CMS3::mus_bfit_d0corr() {
+  if (not mus_bfit_d0corr_isLoaded) {
+    if (mus_bfit_d0corr_branch != 0) {
+      mus_bfit_d0corr_branch->GetEntry(index);
+    } else {
+      printf("branch mus_bfit_d0corr_branch does not exist!\n");
+      exit(1);
+    }
+    mus_bfit_d0corr_isLoaded = true;
+  }
+  return mus_bfit_d0corr_;
+}
+
+const vector<float> &CMS3::mus_bfit_d0corrPhi() {
+  if (not mus_bfit_d0corrPhi_isLoaded) {
+    if (mus_bfit_d0corrPhi_branch != 0) {
+      mus_bfit_d0corrPhi_branch->GetEntry(index);
+    } else {
+      printf("branch mus_bfit_d0corrPhi_branch does not exist!\n");
+      exit(1);
+    }
+    mus_bfit_d0corrPhi_isLoaded = true;
+  }
+  return mus_bfit_d0corrPhi_;
+}
+
+const vector<float> &CMS3::mus_bfit_d0phiCov() {
+  if (not mus_bfit_d0phiCov_isLoaded) {
+    if (mus_bfit_d0phiCov_branch != 0) {
+      mus_bfit_d0phiCov_branch->GetEntry(index);
+    } else {
+      printf("branch mus_bfit_d0phiCov_branch does not exist!\n");
+      exit(1);
+    }
+    mus_bfit_d0phiCov_isLoaded = true;
+  }
+  return mus_bfit_d0phiCov_;
+}
+
+const vector<float> &CMS3::mus_bfit_etaErr() {
+  if (not mus_bfit_etaErr_isLoaded) {
+    if (mus_bfit_etaErr_branch != 0) {
+      mus_bfit_etaErr_branch->GetEntry(index);
+    } else {
+      printf("branch mus_bfit_etaErr_branch does not exist!\n");
+      exit(1);
+    }
+    mus_bfit_etaErr_isLoaded = true;
+  }
+  return mus_bfit_etaErr_;
+}
+
+const vector<float> &CMS3::mus_bfit_phiErr() {
+  if (not mus_bfit_phiErr_isLoaded) {
+    if (mus_bfit_phiErr_branch != 0) {
+      mus_bfit_phiErr_branch->GetEntry(index);
+    } else {
+      printf("branch mus_bfit_phiErr_branch does not exist!\n");
+      exit(1);
+    }
+    mus_bfit_phiErr_isLoaded = true;
+  }
+  return mus_bfit_phiErr_;
+}
+
+const vector<float> &CMS3::mus_bfit_ptErr() {
+  if (not mus_bfit_ptErr_isLoaded) {
+    if (mus_bfit_ptErr_branch != 0) {
+      mus_bfit_ptErr_branch->GetEntry(index);
+    } else {
+      printf("branch mus_bfit_ptErr_branch does not exist!\n");
+      exit(1);
+    }
+    mus_bfit_ptErr_isLoaded = true;
+  }
+  return mus_bfit_ptErr_;
+}
+
+const vector<float> &CMS3::mus_bfit_qoverp() {
+  if (not mus_bfit_qoverp_isLoaded) {
+    if (mus_bfit_qoverp_branch != 0) {
+      mus_bfit_qoverp_branch->GetEntry(index);
+    } else {
+      printf("branch mus_bfit_qoverp_branch does not exist!\n");
+      exit(1);
+    }
+    mus_bfit_qoverp_isLoaded = true;
+  }
+  return mus_bfit_qoverp_;
+}
+
+const vector<float> &CMS3::mus_bfit_qoverpError() {
+  if (not mus_bfit_qoverpError_isLoaded) {
+    if (mus_bfit_qoverpError_branch != 0) {
+      mus_bfit_qoverpError_branch->GetEntry(index);
+    } else {
+      printf("branch mus_bfit_qoverpError_branch does not exist!\n");
+      exit(1);
+    }
+    mus_bfit_qoverpError_isLoaded = true;
+  }
+  return mus_bfit_qoverpError_;
+}
+
+const vector<float> &CMS3::mus_bfit_z0() {
+  if (not mus_bfit_z0_isLoaded) {
+    if (mus_bfit_z0_branch != 0) {
+      mus_bfit_z0_branch->GetEntry(index);
+    } else {
+      printf("branch mus_bfit_z0_branch does not exist!\n");
+      exit(1);
+    }
+    mus_bfit_z0_isLoaded = true;
+  }
+  return mus_bfit_z0_;
+}
+
+const vector<float> &CMS3::mus_bfit_z0Err() {
+  if (not mus_bfit_z0Err_isLoaded) {
+    if (mus_bfit_z0Err_branch != 0) {
+      mus_bfit_z0Err_branch->GetEntry(index);
+    } else {
+      printf("branch mus_bfit_z0Err_branch does not exist!\n");
+      exit(1);
+    }
+    mus_bfit_z0Err_isLoaded = true;
+  }
+  return mus_bfit_z0Err_;
+}
+
+const vector<float> &CMS3::mus_bfit_z0corr() {
+  if (not mus_bfit_z0corr_isLoaded) {
+    if (mus_bfit_z0corr_branch != 0) {
+      mus_bfit_z0corr_branch->GetEntry(index);
+    } else {
+      printf("branch mus_bfit_z0corr_branch does not exist!\n");
+      exit(1);
+    }
+    mus_bfit_z0corr_isLoaded = true;
+  }
+  return mus_bfit_z0corr_;
+}
+
 	const vector<float> &CMS3::mus_bs2d()
 	{
 		if (not mus_bs2d_isLoaded) {
@@ -18649,6 +19073,202 @@ void CMS3::LoadAllBranches()
 		}
 		return mus_algoOrig_;
 	}
+
+const vector<int> &CMS3::mus_bfit_algo() {
+  if (not mus_bfit_algo_isLoaded) {
+    if (mus_bfit_algo_branch != 0) {
+      mus_bfit_algo_branch->GetEntry(index);
+    } else {
+      printf("branch mus_bfit_algo_branch does not exist!\n");
+      exit(1);
+    }
+    mus_bfit_algo_isLoaded = true;
+  }
+  return mus_bfit_algo_;
+}
+
+const vector<int> &CMS3::mus_bfit_exp_innerlayer() {
+  if (not mus_bfit_exp_innerlayer_isLoaded) {
+    if (mus_bfit_exp_innerlayer_branch != 0) {
+      mus_bfit_exp_innerlayer_branch->GetEntry(index);
+    } else {
+      printf("branch mus_bfit_exp_innerlayer_branch does not exist!\n");
+      exit(1);
+    }
+    mus_bfit_exp_innerlayer_isLoaded = true;
+  }
+  return mus_bfit_exp_innerlayer_;
+}
+
+const vector<int> &CMS3::mus_bfit_exp_outerlayer() {
+  if (not mus_bfit_exp_outerlayer_isLoaded) {
+    if (mus_bfit_exp_outerlayer_branch != 0) {
+      mus_bfit_exp_outerlayer_branch->GetEntry(index);
+    } else {
+      printf("branch mus_bfit_exp_outerlayer_branch does not exist!\n");
+      exit(1);
+    }
+    mus_bfit_exp_outerlayer_isLoaded = true;
+  }
+  return mus_bfit_exp_outerlayer_;
+}
+
+const vector<int> &CMS3::mus_bfit_lostHits() {
+  if (not mus_bfit_lostHits_isLoaded) {
+    if (mus_bfit_lostHits_branch != 0) {
+      mus_bfit_lostHits_branch->GetEntry(index);
+    } else {
+      printf("branch mus_bfit_lostHits_branch does not exist!\n");
+      exit(1);
+    }
+    mus_bfit_lostHits_isLoaded = true;
+  }
+  return mus_bfit_lostHits_;
+}
+
+const vector<int> &CMS3::mus_bfit_lostPixelHits() {
+  if (not mus_bfit_lostPixelHits_isLoaded) {
+    if (mus_bfit_lostPixelHits_branch != 0) {
+      mus_bfit_lostPixelHits_branch->GetEntry(index);
+    } else {
+      printf("branch mus_bfit_lostPixelHits_branch does not exist!\n");
+      exit(1);
+    }
+    mus_bfit_lostPixelHits_isLoaded = true;
+  }
+  return mus_bfit_lostPixelHits_;
+}
+
+const vector<int> &CMS3::mus_bfit_ndof() {
+  if (not mus_bfit_ndof_isLoaded) {
+    if (mus_bfit_ndof_branch != 0) {
+      mus_bfit_ndof_branch->GetEntry(index);
+    } else {
+      printf("branch mus_bfit_ndof_branch does not exist!\n");
+      exit(1);
+    }
+    mus_bfit_ndof_isLoaded = true;
+  }
+  return mus_bfit_ndof_;
+}
+
+const vector<int> &CMS3::mus_bfit_nlayers() {
+  if (not mus_bfit_nlayers_isLoaded) {
+    if (mus_bfit_nlayers_branch != 0) {
+      mus_bfit_nlayers_branch->GetEntry(index);
+    } else {
+      printf("branch mus_bfit_nlayers_branch does not exist!\n");
+      exit(1);
+    }
+    mus_bfit_nlayers_isLoaded = true;
+  }
+  return mus_bfit_nlayers_;
+}
+
+const vector<int> &CMS3::mus_bfit_nlayers3D() {
+  if (not mus_bfit_nlayers3D_isLoaded) {
+    if (mus_bfit_nlayers3D_branch != 0) {
+      mus_bfit_nlayers3D_branch->GetEntry(index);
+    } else {
+      printf("branch mus_bfit_nlayers3D_branch does not exist!\n");
+      exit(1);
+    }
+    mus_bfit_nlayers3D_isLoaded = true;
+  }
+  return mus_bfit_nlayers3D_;
+}
+
+const vector<int> &CMS3::mus_bfit_nlayersLost() {
+  if (not mus_bfit_nlayersLost_isLoaded) {
+    if (mus_bfit_nlayersLost_branch != 0) {
+      mus_bfit_nlayersLost_branch->GetEntry(index);
+    } else {
+      printf("branch mus_bfit_nlayersLost_branch does not exist!\n");
+      exit(1);
+    }
+    mus_bfit_nlayersLost_isLoaded = true;
+  }
+  return mus_bfit_nlayersLost_;
+}
+
+const vector<int> &CMS3::mus_bfit_qualityMask() {
+  if (not mus_bfit_qualityMask_isLoaded) {
+    if (mus_bfit_qualityMask_branch != 0) {
+      mus_bfit_qualityMask_branch->GetEntry(index);
+    } else {
+      printf("branch mus_bfit_qualityMask_branch does not exist!\n");
+      exit(1);
+    }
+    mus_bfit_qualityMask_isLoaded = true;
+  }
+  return mus_bfit_qualityMask_;
+}
+
+const vector<int> &CMS3::mus_bfit_trk_charge() {
+  if (not mus_bfit_trk_charge_isLoaded) {
+    if (mus_bfit_trk_charge_branch != 0) {
+      mus_bfit_trk_charge_branch->GetEntry(index);
+    } else {
+      printf("branch mus_bfit_trk_charge_branch does not exist!\n");
+      exit(1);
+    }
+    mus_bfit_trk_charge_isLoaded = true;
+  }
+  return mus_bfit_trk_charge_;
+}
+
+const vector<int> &CMS3::mus_bfit_validHits() {
+  if (not mus_bfit_validHits_isLoaded) {
+    if (mus_bfit_validHits_branch != 0) {
+      mus_bfit_validHits_branch->GetEntry(index);
+    } else {
+      printf("branch mus_bfit_validHits_branch does not exist!\n");
+      exit(1);
+    }
+    mus_bfit_validHits_isLoaded = true;
+  }
+  return mus_bfit_validHits_;
+}
+
+const vector<int> &CMS3::mus_bfit_validPixelHits() {
+  if (not mus_bfit_validPixelHits_isLoaded) {
+    if (mus_bfit_validPixelHits_branch != 0) {
+      mus_bfit_validPixelHits_branch->GetEntry(index);
+    } else {
+      printf("branch mus_bfit_validPixelHits_branch does not exist!\n");
+      exit(1);
+    }
+    mus_bfit_validPixelHits_isLoaded = true;
+  }
+  return mus_bfit_validPixelHits_;
+}
+
+const vector<int> &CMS3::mus_bfit_validSTAHits() {
+  if (not mus_bfit_validSTAHits_isLoaded) {
+    if (mus_bfit_validSTAHits_branch != 0) {
+      mus_bfit_validSTAHits_branch->GetEntry(index);
+    } else {
+      printf("branch mus_bfit_validSTAHits_branch does not exist!\n");
+      exit(1);
+    }
+    mus_bfit_validSTAHits_isLoaded = true;
+  }
+  return mus_bfit_validSTAHits_;
+}
+
+const vector<int> &CMS3::mus_bfit_validSiHits() {
+  if (not mus_bfit_validSiHits_isLoaded) {
+    if (mus_bfit_validSiHits_branch != 0) {
+      mus_bfit_validSiHits_branch->GetEntry(index);
+    } else {
+      printf("branch mus_bfit_validSiHits_branch does not exist!\n");
+      exit(1);
+    }
+    mus_bfit_validSiHits_isLoaded = true;
+  }
+  return mus_bfit_validSiHits_;
+}
+
 	const vector<int> &CMS3::mus_charge()
 	{
 		if (not mus_charge_isLoaded) {
@@ -22473,6 +23093,8 @@ namespace tas {
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &hyp_lt_p4() { return cms3.hyp_lt_p4(); }
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &hyp_p4() { return cms3.hyp_p4(); }
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &isotracks_p4() { return cms3.isotracks_p4(); }
+	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &mus_bfit_p4() { return cms3.mus_bfit_p4(); }
+	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &mus_bfit_vertex_p4() { return cms3.mus_bfit_vertex_p4(); }
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &mus_gfit_p4() { return cms3.mus_gfit_p4(); }
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &mus_gfit_vertex_p4() { return cms3.mus_gfit_vertex_p4(); }
 	const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &mus_mc_patMatch_p4() { return cms3.mus_mc_patMatch_p4(); }
@@ -22667,6 +23289,20 @@ namespace tas {
 	const vector<float> &isotracks_mass() { return cms3.isotracks_mass(); }
 	const vector<float> &isotracks_puppiWeight() { return cms3.isotracks_puppiWeight(); }
 	const vector<float> &isotracks_relIso() { return cms3.isotracks_relIso(); }
+	const vector<float> &mus_bfit_chi2() { return cms3.mus_bfit_chi2(); }
+	const vector<float> &mus_bfit_d0() { return cms3.mus_bfit_d0(); }
+	const vector<float> &mus_bfit_d0Err() { return cms3.mus_bfit_d0Err(); }
+	const vector<float> &mus_bfit_d0corr() { return cms3.mus_bfit_d0corr(); }
+	const vector<float> &mus_bfit_d0corrPhi() { return cms3.mus_bfit_d0corrPhi(); }
+	const vector<float> &mus_bfit_d0phiCov() { return cms3.mus_bfit_d0phiCov(); }
+	const vector<float> &mus_bfit_etaErr() { return cms3.mus_bfit_etaErr(); }
+	const vector<float> &mus_bfit_phiErr() { return cms3.mus_bfit_phiErr(); }
+	const vector<float> &mus_bfit_ptErr() { return cms3.mus_bfit_ptErr(); }
+	const vector<float> &mus_bfit_qoverp() { return cms3.mus_bfit_qoverp(); }
+	const vector<float> &mus_bfit_qoverpError() { return cms3.mus_bfit_qoverpError(); }
+	const vector<float> &mus_bfit_z0() { return cms3.mus_bfit_z0(); }
+	const vector<float> &mus_bfit_z0Err() { return cms3.mus_bfit_z0Err(); }
+	const vector<float> &mus_bfit_z0corr() { return cms3.mus_bfit_z0corr(); }
 	const vector<float> &mus_bs2d() { return cms3.mus_bs2d(); }
 	const vector<float> &mus_bs2derr() { return cms3.mus_bs2derr(); }
 	const vector<float> &mus_bs3d() { return cms3.mus_bs3d(); }
@@ -23110,6 +23746,21 @@ namespace tas {
 	const vector<int> &isotracks_particleId() { return cms3.isotracks_particleId(); }
 	const vector<int> &mus_algo() { return cms3.mus_algo(); }
 	const vector<int> &mus_algoOrig() { return cms3.mus_algoOrig(); }
+	const vector<int> &mus_bfit_algo() { return cms3.mus_bfit_algo(); }
+	const vector<int> &mus_bfit_exp_innerlayer() { return cms3.mus_bfit_exp_innerlayer(); }
+	const vector<int> &mus_bfit_exp_outerlayer() { return cms3.mus_bfit_exp_outerlayer(); }
+	const vector<int> &mus_bfit_lostHits() { return cms3.mus_bfit_lostHits(); }
+	const vector<int> &mus_bfit_lostPixelHits() { return cms3.mus_bfit_lostPixelHits(); }
+	const vector<int> &mus_bfit_ndof() { return cms3.mus_bfit_ndof(); }
+	const vector<int> &mus_bfit_nlayers() { return cms3.mus_bfit_nlayers(); }
+	const vector<int> &mus_bfit_nlayers3D() { return cms3.mus_bfit_nlayers3D(); }
+	const vector<int> &mus_bfit_nlayersLost() { return cms3.mus_bfit_nlayersLost(); }
+	const vector<int> &mus_bfit_qualityMask() { return cms3.mus_bfit_qualityMask(); }
+	const vector<int> &mus_bfit_trk_charge() { return cms3.mus_bfit_trk_charge(); }
+	const vector<int> &mus_bfit_validHits() { return cms3.mus_bfit_validHits(); }
+	const vector<int> &mus_bfit_validPixelHits() { return cms3.mus_bfit_validPixelHits(); }
+	const vector<int> &mus_bfit_validSTAHits() { return cms3.mus_bfit_validSTAHits(); }
+	const vector<int> &mus_bfit_validSiHits() { return cms3.mus_bfit_validSiHits(); }
 	const vector<int> &mus_charge() { return cms3.mus_charge(); }
 	const vector<int> &mus_ecal_rawId() { return cms3.mus_ecal_rawId(); }
 	const vector<int> &mus_exp_innerlayers() { return cms3.mus_exp_innerlayers(); }
