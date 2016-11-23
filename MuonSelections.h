@@ -9,6 +9,7 @@ bool isMediumMuonPOG_forICHEP( unsigned int muIdx );
 bool isLooseMuonPOG(unsigned int muIdx);
 bool isMediumMuonPOG(unsigned int muIdx);
 bool isTightMuonPOG(unsigned int muIdx);
+bool isHighPtMuonPOG(unsigned int muIdx);
 
 //Main Muon ID function
 bool muonID(unsigned int muIdx, id_level_t id_level);

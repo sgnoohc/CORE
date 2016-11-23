@@ -60,6 +60,21 @@ bool isTightMuonPOG(unsigned int muIdx){
   return true;
 }
 
+bool isHighPtMuonPOG(unsigned int muIdx){
+  if (((mus_type()                 .at(muIdx))
+	   & (1<<1))                               == 0   ) return false;//global muon
+  if (mus_gfit_validSTAHits()      .at(muIdx)      == 0   ) return false; 
+  if (mus_numberOfMatchedStations().at(muIdx)      <  2   ) return false;
+  if (mus_bfit_ptErr()             .at(muIdx)
+           /mus_bfit_p4()          .at(muIdx).pt() > 0.3  ) return false;
+  if (mus_dxyPV()                  .at(muIdx)      > 0.2  ) return false; //should be using best fit tracks
+  if (mus_dzPV()                   .at(muIdx)      > 0.5  ) return false; //should be using best fit tracks
+  if (mus_validPixelHits()         .at(muIdx)      == 0   ) return false;
+  if (mus_nlayers()                .at(muIdx)      <  6   ) return false;
+
+  return true;
+}
+
 bool muonID(unsigned int muIdx, id_level_t id_level){
 
   analysis_t analysis = whichAnalysis(id_level);
