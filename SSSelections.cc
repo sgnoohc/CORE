@@ -576,6 +576,53 @@ int signalRegion2016(int njets, int nbtags, float met, float ht, float mt_min, i
   return -1;
 }
 
+std::vector<int> signalRegionAggOverlap(int njets, int nbtags, float met, float ht, float mt_min, int id1, int id2, float lep1pt, float lep2pt){
+
+  //Calculate lep_pt
+  anal_type_t lep_pt = analysisCategory(id1, id2, lep1pt, lep2pt); 
+
+  std::vector<int> srs;
+  srs.clear();
+
+  //Reject events out of kinematic acceptance
+  if (met < 50) return srs;
+  if (njets < 2) return srs;
+  if (lep_pt != LowLow && met > 500 && ht < 300) return srs;
+  if (lep_pt != LowLow && njets>=2 && met>300 && ht<300) return srs;
+
+  // based on http://www.t2.ucsd.edu/tastwiki/pub/CMS/20161116AgendaMinutesSnTSS/aggregate_regions_v1.pdf, slide 10
+
+  //High-high
+  if (lep_pt == HighHigh){
+      if (nbtags == 0 && ht > 1200) srs.push_back(1);
+      if (nbtags >= 2 && ht > 1100) srs.push_back(2);
+      if (nbtags == 0 && met > 450) srs.push_back(3);
+      if (nbtags >= 2 && met > 300) srs.push_back(4);
+      if (nbtags == 0 && mt_min > 120 && met > 250) srs.push_back(5);
+      if (nbtags >= 2 && mt_min > 120 && met > 150) srs.push_back(6);
+      if (nbtags == 0 && ht > 900 && met > 200) srs.push_back(7);
+      if (nbtags >= 2 && ht > 600 && met > 200) srs.push_back(8);
+      if (njets >= 7) srs.push_back(9);
+      if (njets >= 4 && mt_min > 120) srs.push_back(10);
+      if (nbtags >= 3) srs.push_back(11);
+  }
+  
+  //High-Low
+  if (lep_pt == HighLow){
+      // do nothing with HL
+  }
+
+  //Low-Low
+  if (lep_pt == LowLow){
+      if (ht > 700) srs.push_back(12);
+      if (met > 200) srs.push_back(13);
+      if (njets >= 5) srs.push_back(14);
+      if (nbtags >= 3) srs.push_back(15);
+  }
+
+  return srs;
+}
+
 int signalRegionChargeSplit(int njets, int nbtags, float met, float ht, float mt_min, int id1, int id2, float lep1pt, float lep2pt){
 
   //Calculate lep_pt

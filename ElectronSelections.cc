@@ -297,6 +297,8 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       break;
 
     case(SS_veto_noiso_noip_v5):
+      //trigger match cuts
+      if (!isTriggerSafenoIso_v1(elIdx)) return false;
       if (fabs(els_etaSC().at(elIdx)) > 2.5) return false;
       if (els_conv_vtx_flag().at(elIdx)) return false;
       if (els_exp_innerlayers().at(elIdx) > 1) return false;
@@ -1216,7 +1218,9 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       if (els_exp_innerlayers().at(elIdx) > 0) return false;
       if (threeChargeAgree(elIdx)==0) return false;
       if (fabs(els_dzPV().at(elIdx)) >= 0.1) return false;
-      if (!globalEleMVAreader->passesElectronMVAid(elIdx, id_level)) return false;
+      if( id_level != SS_medium_looseMVA_noip_v5) {
+          if (!globalEleMVAreader->passesElectronMVAid(elIdx, id_level)) return false;
+      }
       //return passMultiIso(11, elIdx, 0.40, 0.7, 7.0);
       return true;
       break;
