@@ -2523,6 +2523,13 @@ bool readMVA::passesElectronMVAid(unsigned int index, id_level_t id_level){
   float disc = use_miniaod_ ?  els_VIDNonTrigMvaValue().at(index) : MVA(index);
   // careful, the MVA(index) call sets value of scl_eta_, so we must directly use the branch here in case use_miniaod_ is true
   float aeta = fabs(tas::els_etaSC().at(index));
+  float pt = tas::els_p4().at(index).pt();
+
+  // for morioned MVA WPs: https://twiki.cern.ch/twiki/bin/viewauth/CMS/SUSLeptonSF#ID_IP_ISO_AN1
+  // returns A if pt<ptmin, B if pt>ptmax, and linear interpolation between
+  float ptmin = 15;
+  float ptmax = 25;
+  auto mvacut = [ptmin,ptmax](float A, float B, float pt_) {return std::min(A, std::max(B,A + (B-A)/(ptmax-ptmin)*(pt_-ptmin))); };
 
   switch (id_level){
   case(SS_veto_noiso_v2):
@@ -2566,10 +2573,13 @@ bool readMVA::passesElectronMVAid(unsigned int index, id_level_t id_level){
   case(SS_fo_looseMVA_noiso_v4):
   case (SS_fo_looseMVA_noiso_noip_v4):
   case(SS_fo_looseMVA_noiso_v5):
-  case (SS_fo_looseMVA_noiso_noip_v5):
-    if (aeta < 0.8) return disc > -0.70;
-    if ((aeta >= 0.8 && aeta <= 1.479)) return disc > -0.83;
-    if (aeta > 1.479) return disc > -0.92;
+  case (SS_fo_looseMVA_noiso_noip_v5): // VLooseFOIDEmu
+    // if (aeta < 0.8) return disc > -0.70;
+    // if ((aeta >= 0.8 && aeta <= 1.479)) return disc > -0.83;
+    // if (aeta > 1.479) return disc > -0.92;
+    if (aeta < 0.8) return disc > mvacut(-0.86,-0.96,pt);
+    if ((aeta >= 0.8 && aeta <= 1.479)) return disc > mvacut(-0.85,-0.96,pt);
+    if (aeta > 1.479) return disc > mvacut(-0.81,-0.95,pt);
     break;
 
 
@@ -2581,10 +2591,13 @@ bool readMVA::passesElectronMVAid(unsigned int index, id_level_t id_level){
   case (SS_fo_noiso_no3chg_v5):
   case (SS_fo_v5):
   case(SS_medium_noiso_v5):
-  case(SS_medium_noip_v5):
-    if (aeta < 0.8) return disc > 0.87;
-    if ((aeta >= 0.8 && aeta <= 1.479)) return disc > 0.60;
-    if (aeta > 1.479) return disc > 0.17;
+  case(SS_medium_noip_v5): // Tight
+    // if (aeta < 0.8) return disc > 0.87;
+    // if ((aeta >= 0.8 && aeta <= 1.479)) return disc > 0.60;
+    // if (aeta > 1.479) return disc > 0.17;
+    if (aeta < 0.8) return disc > mvacut(0.77,0.52,pt);
+    if ((aeta >= 0.8 && aeta <= 1.479)) return disc > mvacut(0.56,0.11,pt);
+    if (aeta > 1.479) return disc > mvacut(0.48,-0.01,pt);
     break;
 
   case (WW_veto_noiso_v1):
