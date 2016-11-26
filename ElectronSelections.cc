@@ -2463,7 +2463,8 @@ float readMVA::MVA(unsigned int index){
   ele_scletawidth_      = tas::els_etaSCwidth().at(index);
   ele_sclphiwidth_      = tas::els_phiSCwidth().at(index);
   ele_he_               = tas::els_hOverE().at(index);
-  ele_oldhe_            = tas::els_hOverE().at(index); // in principle should use full5x5_hcalOverEcal, but it is not in CMS3, so using the old variable for now
+  // this is hack to calculate full5x5_hcalOverEcal(), which we are missing in CMS3
+  ele_oldhe_            = tas::els_hOverE().at(index) * tas::els_ecalEnergy().at(index) / tas::els_eSC().at(index); 
   ele_psEoverEraw_      = tas::els_eSCPresh().at(index)/tas::els_eSCRaw().at(index);
   ele_kfchi2_           = tas::els_ckf_chi2().at(index)/tas::els_ckf_ndof().at(index);
   ele_chi2_hits_        = tas::els_chi2().at(index)/tas::els_ndof().at(index);
