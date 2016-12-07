@@ -262,7 +262,8 @@ float elEA03(unsigned int elIdx, int version) {
     else if (fabs(els_p4().at(elIdx).eta())<=2.000) ea = 0.0572;
     else if (fabs(els_p4().at(elIdx).eta())<=2.200) ea = 0.0842;
     else if (fabs(els_p4().at(elIdx).eta())<=2.500) ea = 0.1530;
-  } else {
+  } 
+  else if (version==1){
     //Spring15 version
     if      (fabs(els_etaSC().at(elIdx))<=1.000) ea = 0.1752;
     else if (fabs(els_etaSC().at(elIdx))<=1.479) ea = 0.1862;
@@ -271,6 +272,16 @@ float elEA03(unsigned int elIdx, int version) {
     else if (fabs(els_etaSC().at(elIdx))<=2.300) ea = 0.1903;
     else if (fabs(els_etaSC().at(elIdx))<=2.400) ea = 0.2243;
     else if (fabs(els_etaSC().at(elIdx))<=2.500) ea = 0.2687;
+  }
+  else if (version==2){
+    //Spring16 version
+    if      (fabs(els_etaSC().at(elIdx))<=1.000) ea = 0.1703;
+    else if (fabs(els_etaSC().at(elIdx))<=1.479) ea = 0.1715;
+    else if (fabs(els_etaSC().at(elIdx))<=2.000) ea = 0.1213;
+    else if (fabs(els_etaSC().at(elIdx))<=2.200) ea = 0.1230;
+    else if (fabs(els_etaSC().at(elIdx))<=2.300) ea = 0.1635;
+    else if (fabs(els_etaSC().at(elIdx))<=2.400) ea = 0.1937;
+    else if (fabs(els_etaSC().at(elIdx))<=2.500) ea = 0.2393;
   }
   return ea;
 }

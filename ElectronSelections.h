@@ -30,6 +30,12 @@ bool isVetoElectronPOGspring15_v1(unsigned int elIdx);
 bool isLooseElectronPOGspring15_v1(unsigned int elIdx);
 bool isMediumElectronPOGspring15_v1(unsigned int elIdx);
 bool isTightElectronPOGspring15_v1(unsigned int elIdx);
+//18Nov16 Updated Ids with no Iso requirement for 80X training
+bool isVetoElectronPOGspring16_v1(unsigned int elIdx);
+bool isLooseElectronPOGspring16_v1(unsigned int elIdx);
+bool isMediumElectronPOGspring16_v1(unsigned int elIdx);
+bool isTightElectronPOGspring16_v1(unsigned int elIdx);
+
 
 //POG IDs for phys14 with no Iso requirement
 bool isVetoElectronPOGphys14noIso(unsigned int elIdx);
@@ -46,6 +52,12 @@ bool isVetoElectronPOGspring15noIso_v1(unsigned int elIdx);
 bool isLooseElectronPOGspring15noIso_v1(unsigned int elIdx);
 bool isMediumElectronPOGspring15noIso_v1(unsigned int elIdx);
 bool isTightElectronPOGspring15noIso_v1(unsigned int elIdx);
+//18Nov16 Updated Ids with no Iso requirement for 80X training
+bool isVetoElectronPOGspring16noIso_v1(unsigned int elIdx);
+bool isLooseElectronPOGspring16noIso_v1(unsigned int elIdx);
+bool isMediumElectronPOGspring16noIso_v1(unsigned int elIdx);
+bool isTightElectronPOGspring16noIso_v1(unsigned int elIdx);
+
 //Oct 14 Added HEEP ID
 bool isHEEPV60(unsigned int elIdx);
 
@@ -66,7 +78,7 @@ int tightChargeEle(unsigned int elIdx);
 //Electron MVA ID
 class readMVA {
   public:
-    void InitMVA(string path, bool v25ns = false, bool use_miniaod = false);
+  void InitMVA(string path, bool v25ns = false, bool use_miniaod = false, int MVAversion = 74);
     float MVA(unsigned int index); 
     bool passesElectronMVAid(unsigned int index, id_level_t id_level);
     void DumpValues();
@@ -87,6 +99,7 @@ class readMVA {
     float ele_scletawidth_;    
     float ele_sclphiwidth_;    
     float ele_he_;             
+    float ele_oldhe_;             
     float ele_kfchi2_;         
     float ele_chi2_hits_;      
     float ele_fbrem_;          
@@ -109,10 +122,12 @@ class readMVA {
 
     bool v25ns_;
     bool use_miniaod_;
+    int MVAversion_;
 
 };
 
-void createAndInitMVA(std::string pathToCORE, bool v25ns = false, bool use_miniaod = false);
+void createAndInitMVA(std::string pathToCORE, bool v25ns = false, bool use_miniaod = false, int MVAversion = 74); 
+// version should be 74 or 80 (and 25ns should be true if version is 80)
 float getMVAoutput(unsigned int index = 0, bool use_miniaod = false);
 
 struct elIDcache {

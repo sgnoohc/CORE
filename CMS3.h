@@ -6186,5 +6186,8 @@ namespace tas {
   const vector<float> &svs_prob();
   const float &evt_puppi_calomet();
   const vector<vector<int> > &mus_nStationHits();
-  bool passHLTTrigger(TString trigName);	float passTauID(TString idName, unsigned int tauIndex);	float getbtagvalue(TString bDiscriminatorName, unsigned int jetIndex);}
+  bool passHLTTrigger(TString trigName);
+  float passTauID(TString idName, unsigned int tauIndex);
+  float getbtagvalue(TString bDiscriminatorName, unsigned int jetIndex);
+}
 #endif

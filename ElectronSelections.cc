@@ -297,6 +297,8 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       break;
 
     case(SS_veto_noiso_noip_v5):
+      //trigger match cuts
+      if (!isTriggerSafenoIso_v1(elIdx)) return false;
       if (fabs(els_etaSC().at(elIdx)) > 2.5) return false;
       if (els_conv_vtx_flag().at(elIdx)) return false;
       if (els_exp_innerlayers().at(elIdx) > 1) return false;
@@ -435,6 +437,27 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       if (elMiniRelIsoCMS3_EA(elIdx,1) > 0.1) return false; 
       return true;
       break;
+
+//   ////////////////////
+//   /// HAD veto v5 (80X cut-based ID: never actually adopted)////
+//   ////////////////////
+//      
+//      // use Spring15 POG veto ID
+//    case(HAD_veto_noiso_v5):
+//      if (!isVetoElectronPOGspring16noIso_v1(elIdx)) return false;
+//      if (fabs(els_dxyPV()            .at(elIdx))                       >= 0.2) return false;// abs(d0)       //LooseIP2D                          
+//      if (fabs(els_dzPV()             .at(elIdx))                       >= 0.5) return false;// abs(dz)  
+//      return true;
+//      break;
+//      
+//      // updated EA values
+//    case(HAD_veto_v5):
+//      if (electronID(elIdx, HAD_veto_noiso_v5)==0) return false;
+//      if (elMiniRelIsoCMS3_EA(elIdx,2) > 0.1) return false; 
+//      return true;
+//      break;
+
+
 
 
    /////////////////////
@@ -861,6 +884,25 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       return true;
       break;
 
+//   ////////////////////
+//   /// HAD loose v5 (80X cut-based ID: never actually adopted)////
+//   ////////////////////
+//      
+//      // use Spring15 POG loose ID
+//    case(HAD_loose_noiso_v5):
+//      if (!isLooseElectronPOGspring16noIso_v1(elIdx)) return false;
+//      if (fabs(els_dxyPV()            .at(elIdx))                       >= 0.05) return false;// abs(d0)       //TightIP2D                          
+//      if (fabs(els_dzPV()             .at(elIdx))                       >= 0.10) return false;// abs(dz)  
+//      return true;
+//      break;
+//      
+//      // updated EA values
+//    case(HAD_loose_v5):
+//      if (electronID(elIdx, HAD_loose_noiso_v5)==0) return false;
+//      if (elMiniRelIsoCMS3_EA(elIdx,2) > 0.1) return false; 
+//      return true;
+//      break;
+
 
    //////////////////////
    /// STOP sync      ///
@@ -962,6 +1004,25 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       return true;
       break;
 
+//   ////////////////////
+//   /// HAD medium v5 (80X cut-based ID: never actually adopted)////
+//   ////////////////////
+//      
+//      // use Spring15 POG medium ID
+//    case(HAD_medium_noiso_v5):
+//      if (!isMediumElectronPOGspring16noIso_v1(elIdx)) return false;
+//      if (fabs(els_dxyPV()            .at(elIdx))                       >= 0.05) return false;// abs(d0)       //TightIP2D                          
+//      if (fabs(els_dzPV()             .at(elIdx))                       >= 0.10) return false;// abs(dz)  
+//      if (fabs(els_ip3d().at(elIdx))/els_ip3derr().at(elIdx) >= 4) return false; // Tight IP3D
+//      return true;
+//      break;
+//      
+//      // updated EA values
+//    case(HAD_medium_v5):
+//      if (electronID(elIdx, HAD_medium_noiso_v5)==0) return false;
+//      if (elMiniRelIsoCMS3_EA(elIdx,2) > 0.1) return false; 
+//      return true;
+//      break;
 
    ////////////////////
    /// SS medium v1 ///
@@ -1157,7 +1218,9 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       if (els_exp_innerlayers().at(elIdx) > 0) return false;
       if (threeChargeAgree(elIdx)==0) return false;
       if (fabs(els_dzPV().at(elIdx)) >= 0.1) return false;
-      if (!globalEleMVAreader->passesElectronMVAid(elIdx, id_level)) return false;
+      if( id_level != SS_medium_looseMVA_noip_v5) {
+          if (!globalEleMVAreader->passesElectronMVAid(elIdx, id_level)) return false;
+      }
       //return passMultiIso(11, elIdx, 0.40, 0.7, 7.0);
       return true;
       break;
@@ -1323,6 +1386,25 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       return true;
       break;
 
+//   ////////////////////
+//   /// HAD tight v5 (80X cut-based ID: never actually adopted)////
+//   ////////////////////
+//      
+//      // use Spring15 POG tight ID
+//    case(HAD_tight_noiso_v5):
+//      if (!isTightElectronPOGspring16noIso_v1(elIdx)) return false;
+//      if (fabs(els_dxyPV()            .at(elIdx))                       >= 0.05) return false;// abs(d0)       //TightIP2D                          
+//      if (fabs(els_dzPV()             .at(elIdx))                       >= 0.10) return false;// abs(dz)  
+//      if (fabs(els_ip3d().at(elIdx))/els_ip3derr().at(elIdx) >= 4) return false; // Tight IP3D
+//      return true;
+//      break;
+//      
+//      // updated EA values
+//    case(HAD_tight_v5):
+//      if (electronID(elIdx, HAD_tight_noiso_v5)==0) return false;
+//      if (elMiniRelIsoCMS3_EA(elIdx,2) > 0.1) return false; 
+//      return true;
+//      break;
 
 	//////////////////////
 	/// ZMET MVA id v1 ///
@@ -1665,6 +1747,32 @@ bool isVetoElectronPOGspring15noIso_v1(unsigned int elIdx){
   return true;
 }
 
+// This is the 80X tuning. It comes with no IP cuts, which have to be included later. It also uses a different DEta
+bool isVetoElectronPOGspring16noIso_v1(unsigned int elIdx){ 
+  if (fabs(els_etaSC().at(elIdx)) <= 1.479){                                                    // Barrel 
+    if (els_sigmaIEtaIEta_full5x5()                      .at(elIdx)   >= 0.0115) return false;// full5x5_sigmaIetaIeta   
+    if (fabs(els_dEtaIn().at(elIdx) - els_etaSC().at(elIdx) + els_scSeedEta().at(elIdx) )  >= 0.00749) return false;// abs(dEtaIn)                     
+    if (fabs(els_dPhiIn()                                .at(elIdx))  >= 0.228) return false;// abs(dPhiIn)                     
+    if (els_hOverE()                                     .at(elIdx)   >= 0.356) return false;// hOverE                                       
+    if (fabs( (1.0/els_ecalEnergy()                      .at(elIdx)) -
+                          (els_eOverPIn().at(elIdx)/els_ecalEnergy() .at(elIdx))) >= 0.299) return false;// ooEmooP                             
+    if (els_exp_innerlayers()       .at(elIdx)                        > 2        ) return false;// expectedMissingInnerHits 
+    if (els_conv_vtx_flag()         .at(elIdx)                                   ) return false;// pass conversion veto   
+  }
+  else if ((fabs(els_etaSC().at(elIdx)) > 1.479) && (fabs(els_etaSC().at(elIdx)) < 2.5)){       // Endcap
+    if (els_sigmaIEtaIEta_full5x5()                      .at(elIdx)   >= 0.037) return false;// full5x5_sigmaIetaIeta   
+    if (fabs(els_dEtaIn().at(elIdx) - els_etaSC().at(elIdx) + els_scSeedEta().at(elIdx) )  >= 0.00895) return false;// abs(dEtaIn)                      
+    if (fabs(els_dPhiIn()                                .at(elIdx))  >= 0.213) return false;// abs(dPhiIn)                      
+    if (els_hOverE()                                     .at(elIdx)   >= 0.211) return false;// hOverE                                   
+    if (fabs( (1.0/els_ecalEnergy()                      .at(elIdx)) -
+	      (els_eOverPIn().at(elIdx)/els_ecalEnergy() .at(elIdx))) >= 0.15) return false;// ooEmooP                             
+    if (els_exp_innerlayers()       .at(elIdx)                        > 3        ) return false;// expectedMissingInnerHits
+    if (els_conv_vtx_flag()         .at(elIdx)                                   ) return false;// pass conversion veto    
+  }
+  else return false;
+  return true;
+}
+
 bool isLooseElectronPOGphys14noIso(unsigned int elIdx){
   if (fabs(els_etaSC().at(elIdx)) <= 1.479){                                                    // Barrel 
     if (els_sigmaIEtaIEta_full5x5()                      .at(elIdx)   >= 0.010557) return false;// full5x5_sigmaIetaIeta   
@@ -1747,6 +1855,32 @@ bool isLooseElectronPOGspring15noIso_v1(unsigned int elIdx){
     if (fabs(els_dzPV()             .at(elIdx))                       >= 0.822) return false;// abs(dz)                                  
         if (els_exp_innerlayers()       .at(elIdx)                        > 1        ) return false;// expectedMissingInnerHits
         if (els_conv_vtx_flag()         .at(elIdx)                                   ) return false;// pass conversion veto    
+  }
+  else return false;
+  return true;
+}
+
+// This is the 80X tuning. It comes with no IP cuts, which have to be included later. It also uses a different DEta
+bool isLooseElectronPOGspring16noIso_v1(unsigned int elIdx){ 
+  if (fabs(els_etaSC().at(elIdx)) <= 1.479){                                                    // Barrel 
+    if (els_sigmaIEtaIEta_full5x5()                      .at(elIdx)   >= 0.011) return false;// full5x5_sigmaIetaIeta   
+    if (fabs(els_dEtaIn().at(elIdx) - els_etaSC().at(elIdx) + els_scSeedEta().at(elIdx) )  >= 0.00477) return false;// abs(dEtaIn)                     
+    if (fabs(els_dPhiIn()                                .at(elIdx))  >= 0.222) return false;// abs(dPhiIn)                     
+    if (els_hOverE()                                     .at(elIdx)   >= 0.298) return false;// hOverE                                       
+    if (fabs( (1.0/els_ecalEnergy()                      .at(elIdx)) -
+	      (els_eOverPIn().at(elIdx)/els_ecalEnergy() .at(elIdx))) >= 0.241) return false;// ooEmooP                             
+    if (els_exp_innerlayers()       .at(elIdx)                        > 1        ) return false;// expectedMissingInnerHits 
+    if (els_conv_vtx_flag()         .at(elIdx)                                   ) return false;// pass conversion veto  
+  }
+  else if ((fabs(els_etaSC().at(elIdx)) > 1.479) && (fabs(els_etaSC().at(elIdx)) < 2.5)){       // Endcap
+    if (els_sigmaIEtaIEta_full5x5()                      .at(elIdx)   >= 0.0314) return false;// full5x5_sigmaIetaIeta   
+    if (fabs(els_dEtaIn().at(elIdx) - els_etaSC().at(elIdx) + els_scSeedEta().at(elIdx) )  >= 0.00868) return false;// abs(dEtaIn)                      
+    if (fabs(els_dPhiIn()                                .at(elIdx))  >= 0.213) return false;// abs(dPhiIn)                      
+    if (els_hOverE()                                     .at(elIdx)   >= 0.101) return false;// hOverE                                   
+    if (fabs( (1.0/els_ecalEnergy()                      .at(elIdx)) -
+	      (els_eOverPIn().at(elIdx)/els_ecalEnergy() .at(elIdx))) >= 0.14) return false;// ooEmooP                             
+    if (els_exp_innerlayers()       .at(elIdx)                        > 1        ) return false;// expectedMissingInnerHits
+    if (els_conv_vtx_flag()         .at(elIdx)                                   ) return false;// pass conversion veto    
   }
   else return false;
   return true;
@@ -1839,6 +1973,32 @@ bool isMediumElectronPOGspring15noIso_v1(unsigned int elIdx){
   return true;
 }
 
+// This is the 80X tuning. It comes with no IP cuts, which have to be included later. It also uses a different DEta
+bool isMediumElectronPOGspring16noIso_v1(unsigned int elIdx){ 
+  if (fabs(els_etaSC().at(elIdx)) <= 1.479){                                                    // Barrel 
+    if (els_sigmaIEtaIEta_full5x5()                      .at(elIdx)   >= 0.00998) return false;// full5x5_sigmaIetaIeta   
+    if (fabs(els_dEtaIn().at(elIdx) - els_etaSC().at(elIdx) + els_scSeedEta().at(elIdx) )  >= 0.00311) return false;// abs(dEtaIn)                     
+    if (fabs(els_dPhiIn()                                .at(elIdx))  >= 0.103) return false;// abs(dPhiIn)                     
+    if (els_hOverE()                                     .at(elIdx)   >= 0.253) return false;// hOverE                                       
+    if (fabs( (1.0/els_ecalEnergy()                      .at(elIdx)) -
+	      (els_eOverPIn().at(elIdx)/els_ecalEnergy() .at(elIdx))) >= 0.134) return false;// ooEmooP                             
+    if (els_exp_innerlayers()       .at(elIdx)                        > 1        ) return false;// expectedMissingInnerHits 
+    if (els_conv_vtx_flag()         .at(elIdx)                                   ) return false;// pass conversion veto   
+  }
+  else if ((fabs(els_etaSC().at(elIdx)) > 1.479) && (fabs(els_etaSC().at(elIdx)) < 2.5)){       // Endcap
+    if (els_sigmaIEtaIEta_full5x5()                      .at(elIdx)   >= 0.0298) return false;// full5x5_sigmaIetaIeta   
+    if (fabs(els_dEtaIn().at(elIdx) - els_etaSC().at(elIdx) + els_scSeedEta().at(elIdx) )  >= 0.00609) return false;// abs(dEtaIn)                      
+    if (fabs(els_dPhiIn()                                .at(elIdx))  >= 0.045) return false;// abs(dPhiIn)                      
+    if (els_hOverE()                                     .at(elIdx)   >= 0.0878) return false;// hOverE                                   
+    if (fabs( (1.0/els_ecalEnergy()                      .at(elIdx)) -
+	      (els_eOverPIn().at(elIdx)/els_ecalEnergy() .at(elIdx))) >= 0.13) return false;// ooEmooP                             
+    if (els_exp_innerlayers()       .at(elIdx)                        > 1        ) return false;// expectedMissingInnerHits
+    if (els_conv_vtx_flag()         .at(elIdx)                                   ) return false;// pass conversion veto 
+  }
+  else return false;
+  return true;
+}
+
 bool isTightElectronPOGphys14noIso(unsigned int elIdx){
   if (fabs(els_etaSC().at(elIdx)) <= 1.479){                                                    // Barrel 
     if (els_sigmaIEtaIEta_full5x5()                      .at(elIdx)   >= 0.010181) return false;// full5x5_sigmaIetaIeta   
@@ -1926,6 +2086,31 @@ bool isTightElectronPOGspring15noIso_v1(unsigned int elIdx){
   return true;
 }
 
+// This is the 80X tuning. It comes with no IP cuts, which have to be included later. It also uses a different DEta
+bool isTightElectronPOGspring16noIso_v1(unsigned int elIdx){ 
+  if (fabs(els_etaSC().at(elIdx)) <= 1.479){                                                    // Barrel 
+    if (els_sigmaIEtaIEta_full5x5()                      .at(elIdx)   >= 0.00998) return false;// full5x5_sigmaIetaIeta   
+    if (fabs(els_dEtaIn().at(elIdx) - els_etaSC().at(elIdx) + els_scSeedEta().at(elIdx) )  >= 0.00318) return false;// abs(dEtaIn)                     
+    if (fabs(els_dPhiIn()                                .at(elIdx))  >= 0.0816) return false;// abs(dPhiIn)                     
+    if (els_hOverE()                                     .at(elIdx)   >= 0.0414) return false;// hOverE                                       
+    if (fabs( (1.0/els_ecalEnergy()                      .at(elIdx)) -
+	      (els_eOverPIn().at(elIdx)/els_ecalEnergy() .at(elIdx))) >= 0.0129) return false;// ooEmooP                             
+    if (els_exp_innerlayers()       .at(elIdx)                        > 1        ) return false;// expectedMissingInnerHits 
+    if (els_conv_vtx_flag()         .at(elIdx)                                   ) return false;// pass conversion veto   
+  }
+  else if ((fabs(els_etaSC().at(elIdx)) > 1.479) && (fabs(els_etaSC().at(elIdx)) < 2.5)){       // Endcap
+    if (els_sigmaIEtaIEta_full5x5()                      .at(elIdx)   >= 0.0292) return false;// full5x5_sigmaIetaIeta   
+    if (fabs(els_dEtaIn().at(elIdx) - els_etaSC().at(elIdx) + els_scSeedEta().at(elIdx) )  >= 0.00605) return false;// abs(dEtaIn)                      
+    if (fabs(els_dPhiIn()                                .at(elIdx))  >= 0.0394) return false;// abs(dPhiIn)                      
+    if (els_hOverE()                                     .at(elIdx)   >= 0.0641) return false;// hOverE                                   
+    if (fabs( (1.0/els_ecalEnergy()                      .at(elIdx)) -
+	      (els_eOverPIn().at(elIdx)/els_ecalEnergy() .at(elIdx))) >= 0.0129) return false;// ooEmooP                             
+    if (els_exp_innerlayers()       .at(elIdx)                        > 1        ) return false;// expectedMissingInnerHits
+    if (els_conv_vtx_flag()         .at(elIdx)                                   ) return false;// pass conversion veto    
+  }
+  else return false;
+  return true;
+}
 
 // Implementation taken from:
 // cut values: https://github.com/ikrav/cmssw/blob/egm_id_7.4.12_v1/RecoEgamma/ElectronIdentification/python/Identification/heepElectronID_HEEPV60_cff.py
@@ -2062,10 +2247,11 @@ void readMVA::DumpValues(){
 
 }
 
-void readMVA::InitMVA(string path, bool v25ns, bool use_miniaod){
+void readMVA::InitMVA(string path, bool v25ns, bool use_miniaod, int MVAversion){
 
   v25ns_ = v25ns;
   use_miniaod_ = use_miniaod;
+  MVAversion_ = MVAversion;
 
   //Declare all variables
   ele_kfhits_           = 0;  
@@ -2115,54 +2301,111 @@ void readMVA::InitMVA(string path, bool v25ns, bool use_miniaod){
   //Find files
   TString version = "oldscenario2phys14";
   if (v25ns) version = "oldNonTrigSpring15_ConvVarCwoBoolean_TMVA412_FullStatLowPt_PairNegWeightsGlobal";
-  files.push_back(Form("%s/data/EIDmva_EE_10_%s_BDT.weights.xml" , path.c_str(), version.Data()));
-  files.push_back(Form("%s/data/EIDmva_EB1_10_%s_BDT.weights.xml", path.c_str(), version.Data()));
-  files.push_back(Form("%s/data/EIDmva_EB2_10_%s_BDT.weights.xml", path.c_str(), version.Data()));
-  files.push_back(Form("%s/data/EIDmva_EE_5_%s_BDT.weights.xml"  , path.c_str(), version.Data()));
-  files.push_back(Form("%s/data/EIDmva_EB1_5_%s_BDT.weights.xml" , path.c_str(), version.Data()));
-  files.push_back(Form("%s/data/EIDmva_EB2_5_%s_BDT.weights.xml" , path.c_str(), version.Data()));
+  if (MVAversion == 74) {
+    files.push_back(Form("%s/data/EIDmva_EE_10_%s_BDT.weights.xml" , path.c_str(), version.Data()));
+    files.push_back(Form("%s/data/EIDmva_EB1_10_%s_BDT.weights.xml", path.c_str(), version.Data()));
+    files.push_back(Form("%s/data/EIDmva_EB2_10_%s_BDT.weights.xml", path.c_str(), version.Data()));
+    files.push_back(Form("%s/data/EIDmva_EE_5_%s_BDT.weights.xml"  , path.c_str(), version.Data()));
+    files.push_back(Form("%s/data/EIDmva_EB1_5_%s_BDT.weights.xml" , path.c_str(), version.Data()));
+    files.push_back(Form("%s/data/EIDmva_EB2_5_%s_BDT.weights.xml" , path.c_str(), version.Data()));
+  }
+  else if (MVAversion == 80) {
+    files.push_back(Form("%s/data/electronID_mva_Spring16_GeneralPurpose_V1_EE_10.weights.xml" , path.c_str()));
+    files.push_back(Form("%s/data/electronID_mva_Spring16_GeneralPurpose_V1_EB1_10.weights.xml", path.c_str()));
+    files.push_back(Form("%s/data/electronID_mva_Spring16_GeneralPurpose_V1_EB2_10.weights.xml", path.c_str()));
+    files.push_back(Form("%s/data/electronID_mva_Spring16_HZZ_V1_EE_5.weights.xml"  , path.c_str())); // GP does not go below 10 GeV, so use HZZ
+    files.push_back(Form("%s/data/electronID_mva_Spring16_HZZ_V1_EB1_5.weights.xml" , path.c_str()));
+    files.push_back(Form("%s/data/electronID_mva_Spring16_HZZ_V1_EB2_5.weights.xml" , path.c_str()));
+  } 
 
   //Loop over Files
   for (unsigned int i = 0; i < 6; i++){
-
-    //order of variables matter
+    //order and spelling of variables matter
+    //Add all variables to reader
     if (v25ns_) {
-      //Add all variables to reader
-      readers[i]->AddVariable( "ele_oldsigmaietaieta" , &ele_oldsigmaietaieta_ );
-      readers[i]->AddVariable( "ele_oldsigmaiphiiphi" , &ele_oldsigmaiphiiphi_ );
-      readers[i]->AddVariable( "ele_oldcircularity"   , &ele_oldcircularity_   );
-      readers[i]->AddVariable( "ele_oldr9"            , &ele_oldr9_            );
-      readers[i]->AddVariable( "ele_scletawidth"      , &ele_scletawidth_      );
-      readers[i]->AddVariable( "ele_sclphiwidth"      , &ele_sclphiwidth_      );
-      readers[i]->AddVariable( "ele_he"               , &ele_he_               );
-      if (i == 0 || i == 3){
-	readers[i]->AddVariable( "ele_psEoverEraw"      , &ele_psEoverEraw_      );
+      if (MVAversion_ == 74) {
+	readers[i]->AddVariable( "ele_oldsigmaietaieta" , &ele_oldsigmaietaieta_ );
+	readers[i]->AddVariable( "ele_oldsigmaiphiiphi" , &ele_oldsigmaiphiiphi_ );
+	readers[i]->AddVariable( "ele_oldcircularity"   , &ele_oldcircularity_   );
+	readers[i]->AddVariable( "ele_oldr9"            , &ele_oldr9_            );
+	readers[i]->AddVariable( "ele_scletawidth"      , &ele_scletawidth_      );
+	readers[i]->AddVariable( "ele_sclphiwidth"      , &ele_sclphiwidth_      );
+	readers[i]->AddVariable( "ele_he"               , &ele_he_               );
+	if (i == 0 || i == 3){
+	  readers[i]->AddVariable( "ele_psEoverEraw"      , &ele_psEoverEraw_      );
+	}
+	readers[i]->AddVariable( "ele_kfhits"           , &ele_kfhits_           );
+	readers[i]->AddVariable( "ele_kfchi2"           , &ele_kfchi2_           );
+	readers[i]->AddVariable( "ele_gsfchi2"          , &ele_chi2_hits_        );
+	readers[i]->AddVariable( "ele_fbrem"            , &ele_fbrem_            );
+	readers[i]->AddVariable( "ele_gsfhits"                       ,  &ele_gsfhits_                  );
+	readers[i]->AddVariable( "ele_expected_inner_hits"           ,  &ele_expectedMissingInnerHits_ );
+	readers[i]->AddVariable( "ele_conversionVertexFitProbability",  &ele_convVtxFitProbability_    );
+	readers[i]->AddVariable( "ele_ep"               , &ele_ep_               );
+	readers[i]->AddVariable( "ele_eelepout"         , &ele_eelepout_         );
+	readers[i]->AddVariable( "ele_IoEmIop"          , &ele_IoEmIop_          );
+	readers[i]->AddVariable( "ele_deltaetain"       , &ele_deltaetain_       );
+	readers[i]->AddVariable( "ele_deltaphiin"       , &ele_deltaphiin_       );
+	readers[i]->AddVariable( "ele_deltaetaseed"     , &ele_deltaetaseed_     );
+	
+	readers[i]->AddSpectator("ele_pT"               , &ele_pT_               );
+	readers[i]->AddSpectator("ele_isbarrel"         , &ele_isbarrel_         );
+	readers[i]->AddSpectator("ele_isendcap"         , &ele_isendcap_         );
+	readers[i]->AddSpectator("scl_eta"              , &scl_eta_              );
+	readers[i]->AddSpectator("ele_eClass",                 &dummySpectator_);
+	readers[i]->AddSpectator("ele_pfRelIso",               &dummySpectator_);
+	readers[i]->AddSpectator("ele_expected_inner_hits",    &dummySpectator_);
+	readers[i]->AddSpectator("ele_vtxconv",                &dummySpectator_);
+	readers[i]->AddSpectator("mc_event_weight",            &dummySpectator_);
+	readers[i]->AddSpectator("mc_ele_CBmatching_category", &dummySpectator_);
       }
-      readers[i]->AddVariable( "ele_kfhits"           , &ele_kfhits_           );
-      readers[i]->AddVariable( "ele_kfchi2"           , &ele_kfchi2_           );
-      readers[i]->AddVariable( "ele_gsfchi2"          , &ele_chi2_hits_        );
-      readers[i]->AddVariable( "ele_fbrem"            , &ele_fbrem_            );
-      readers[i]->AddVariable( "ele_gsfhits"                       ,  &ele_gsfhits_                  );
-      readers[i]->AddVariable( "ele_expected_inner_hits"           ,  &ele_expectedMissingInnerHits_ );
-      readers[i]->AddVariable( "ele_conversionVertexFitProbability",  &ele_convVtxFitProbability_    );
-      readers[i]->AddVariable( "ele_ep"               , &ele_ep_               );
-      readers[i]->AddVariable( "ele_eelepout"         , &ele_eelepout_         );
-      readers[i]->AddVariable( "ele_IoEmIop"          , &ele_IoEmIop_          );
-      readers[i]->AddVariable( "ele_deltaetain"       , &ele_deltaetain_       );
-      readers[i]->AddVariable( "ele_deltaphiin"       , &ele_deltaphiin_       );
-      readers[i]->AddVariable( "ele_deltaetaseed"     , &ele_deltaetaseed_     );
+      else if (MVAversion_ == 80) {
+	readers[i]->AddVariable( "ele_oldsigmaietaieta" , &ele_oldsigmaietaieta_ );
+	readers[i]->AddVariable( "ele_oldsigmaiphiiphi" , &ele_oldsigmaiphiiphi_ );
+	readers[i]->AddVariable( "ele_oldcircularity"   , &ele_oldcircularity_   );
+	readers[i]->AddVariable( "ele_oldr9"            , &ele_oldr9_            );
+	readers[i]->AddVariable( "ele_scletawidth"      , &ele_scletawidth_      );
+	readers[i]->AddVariable( "ele_sclphiwidth"      , &ele_sclphiwidth_      );
+	readers[i]->AddVariable( "ele_oldhe"            , &ele_oldhe_            ); 
 
-      readers[i]->AddSpectator("ele_pT"               , &ele_pT_               );
-      readers[i]->AddSpectator("ele_isbarrel"         , &ele_isbarrel_         );
-      readers[i]->AddSpectator("ele_isendcap"         , &ele_isendcap_         );
-      readers[i]->AddSpectator("scl_eta"              , &scl_eta_              );
-      readers[i]->AddSpectator("ele_eClass",                 &dummySpectator_);
-      readers[i]->AddSpectator("ele_pfRelIso",               &dummySpectator_);
-      readers[i]->AddSpectator("ele_expected_inner_hits",    &dummySpectator_);
-      readers[i]->AddSpectator("ele_vtxconv",                &dummySpectator_);
-      readers[i]->AddSpectator("mc_event_weight",            &dummySpectator_);
-      readers[i]->AddSpectator("mc_ele_CBmatching_category", &dummySpectator_);
+	readers[i]->AddVariable( "ele_kfhits"           , &ele_kfhits_           );
+	readers[i]->AddVariable( "ele_kfchi2"           , &ele_kfchi2_           );
+	readers[i]->AddVariable( "ele_gsfchi2"          , &ele_chi2_hits_        );
+	readers[i]->AddVariable( "ele_fbrem"            , &ele_fbrem_            );
+	readers[i]->AddVariable( "ele_gsfhits"                       ,  &ele_gsfhits_                  );
+	readers[i]->AddVariable( "ele_expected_inner_hits"           ,  &ele_expectedMissingInnerHits_ );
+	readers[i]->AddVariable( "ele_conversionVertexFitProbability",  &ele_convVtxFitProbability_    );
+	readers[i]->AddVariable( "ele_ep"               , &ele_ep_               );
+	readers[i]->AddVariable( "ele_eelepout"         , &ele_eelepout_         );
+	readers[i]->AddVariable( "ele_IoEmIop"          , &ele_IoEmIop_          );
+	readers[i]->AddVariable( "ele_deltaetain"       , &ele_deltaetain_       );
+	readers[i]->AddVariable( "ele_deltaphiin"       , &ele_deltaphiin_       );
+	readers[i]->AddVariable( "ele_deltaetaseed"     , &ele_deltaetaseed_     );
+	if (i < 3) { // high pT GP MVA requires pt/eta
+	  readers[i]->AddVariable( "ele_pt"               , &ele_pT_               );
+	  readers[i]->AddVariable( "scl_eta"              , &scl_eta_              );
+	}
 
+	if (i == 0 || i == 3){
+	  readers[i]->AddVariable( "ele_psEoverEraw"      , &ele_psEoverEraw_      );
+	}
+	
+	if (i >= 3) { // low pT HZZ MVA requires spectator variables 
+	  readers[i]->AddSpectator("ele_pt"               , &ele_pT_               );
+	  readers[i]->AddSpectator("ele_isEE"             , &ele_isendcap_         );
+	  readers[i]->AddSpectator("ele_isEB"             , &ele_isbarrel_         );
+	  readers[i]->AddSpectator("ele_isEBEtaGap"       , &ele_isendcap_        );
+	  readers[i]->AddSpectator("ele_isEBPhiGap"       , &ele_isendcap_        );
+	  readers[i]->AddSpectator("ele_isEBEEGap"        , &ele_isendcap_        );
+	  readers[i]->AddSpectator("ele_isEERingGap"      , &ele_isendcap_        );
+	  readers[i]->AddSpectator("ele_isEEDeeGap"       , &ele_isendcap_        );
+	  readers[i]->AddSpectator("ele_isEE"             , &ele_isendcap_         );
+	  readers[i]->AddSpectator("scl_eta"              , &scl_eta_              );
+	  readers[i]->AddSpectator("ele_eClass"           , &dummySpectator_);
+	  readers[i]->AddSpectator("mc_ele_matchedFromCB" , &dummySpectator_);
+	}
+	
+      }
     } else {
       //Add all variables to reader
       readers[i]->AddVariable( "ele_kfhits"           , &ele_kfhits_           );
@@ -2190,6 +2433,16 @@ void readMVA::InitMVA(string path, bool v25ns, bool use_miniaod){
       readers[i]->AddSpectator("ele_isendcap"         , &ele_isendcap_         );
       readers[i]->AddSpectator("scl_eta"              , &scl_eta_              );
     }
+    
+
+    // Debugging
+    // std::cout<<"About to call it on file "<<files[i]<<endl;
+    // readers[i]->SetVerbose(true);
+    // vector<TString> varList = readers[i]->DataInfo().GetListOfVariables();
+    // for (int j=0;j<varList.size();j++)cout<<varList[j]<<endl;
+    // std::cout<<"N Spectators "<<readers[i]->DataInfo().GetNSpectators()<<std::endl;
+    // std::vector<TMVA::VariableInfo> specInfo = readers[i]->DataInfo().GetSpectatorInfos();
+    // for(int j=0;j<specInfo.size();j++) std::cout<< specInfo[j].GetExpression() <<std::endl;
 
     //Book MVA
     readers[i]->BookMVA("BDT", files[i]);
@@ -2210,6 +2463,8 @@ float readMVA::MVA(unsigned int index){
   ele_scletawidth_      = tas::els_etaSCwidth().at(index);
   ele_sclphiwidth_      = tas::els_phiSCwidth().at(index);
   ele_he_               = tas::els_hOverE().at(index);
+  // this is hack to calculate full5x5_hcalOverEcal(), which we are missing in CMS3
+  ele_oldhe_            = tas::els_hOverE().at(index) * tas::els_ecalEnergy().at(index) / tas::els_eSC().at(index); 
   ele_psEoverEraw_      = tas::els_eSCPresh().at(index)/tas::els_eSCRaw().at(index);
   ele_kfchi2_           = tas::els_ckf_chi2().at(index)/tas::els_ckf_ndof().at(index);
   ele_chi2_hits_        = tas::els_chi2().at(index)/tas::els_ndof().at(index);
@@ -2269,6 +2524,15 @@ bool readMVA::passesElectronMVAid(unsigned int index, id_level_t id_level){
   float disc = use_miniaod_ ?  els_VIDNonTrigMvaValue().at(index) : MVA(index);
   // careful, the MVA(index) call sets value of scl_eta_, so we must directly use the branch here in case use_miniaod_ is true
   float aeta = fabs(tas::els_etaSC().at(index));
+  float pt = tas::els_p4().at(index).pt();
+
+  // for morioned MVA WPs: https://twiki.cern.ch/twiki/bin/viewauth/CMS/SUSLeptonSF#ID_IP_ISO_AN1
+  // returns A if pt<ptmin, B if pt>ptmax, and linear interpolation between. if pt<10, use C
+  float ptmin = 15;
+  float ptmax = 25;
+  auto mvacut = [ptmin,ptmax](float A, float B, float C, float pt_) {
+      return pt_>10 ? std::min(A, std::max(B,A + (B-A)/(ptmax-ptmin)*(pt_-ptmin))) : C; 
+  };
 
   switch (id_level){
   case(SS_veto_noiso_v2):
@@ -2312,10 +2576,13 @@ bool readMVA::passesElectronMVAid(unsigned int index, id_level_t id_level){
   case(SS_fo_looseMVA_noiso_v4):
   case (SS_fo_looseMVA_noiso_noip_v4):
   case(SS_fo_looseMVA_noiso_v5):
-  case (SS_fo_looseMVA_noiso_noip_v5):
-    if (aeta < 0.8) return disc > -0.70;
-    if ((aeta >= 0.8 && aeta <= 1.479)) return disc > -0.83;
-    if (aeta > 1.479) return disc > -0.92;
+  case (SS_fo_looseMVA_noiso_noip_v5): // VLooseFOIDEmu
+    // if (aeta < 0.8) return disc > -0.70;
+    // if ((aeta >= 0.8 && aeta <= 1.479)) return disc > -0.83;
+    // if (aeta > 1.479) return disc > -0.92;
+    if (aeta < 0.8) return disc > mvacut(-0.86,-0.96,-0.3,pt);
+    if ((aeta >= 0.8 && aeta <= 1.479)) return disc > mvacut(-0.85,-0.96,-0.36,pt);
+    if (aeta > 1.479) return disc > mvacut(-0.81,-0.95,-0.63,pt);
     break;
 
 
@@ -2327,10 +2594,13 @@ bool readMVA::passesElectronMVAid(unsigned int index, id_level_t id_level){
   case (SS_fo_noiso_no3chg_v5):
   case (SS_fo_v5):
   case(SS_medium_noiso_v5):
-  case(SS_medium_noip_v5):
-    if (aeta < 0.8) return disc > 0.87;
-    if ((aeta >= 0.8 && aeta <= 1.479)) return disc > 0.60;
-    if (aeta > 1.479) return disc > 0.17;
+  case(SS_medium_noip_v5): // Tight
+    // if (aeta < 0.8) return disc > 0.87;
+    // if ((aeta >= 0.8 && aeta <= 1.479)) return disc > 0.60;
+    // if (aeta > 1.479) return disc > 0.17;
+    if (aeta < 0.8) return disc > mvacut(0.77,0.52,0.77,pt);
+    if ((aeta >= 0.8 && aeta <= 1.479)) return disc > mvacut(0.56,0.11,0.56,pt);
+    if (aeta > 1.479) return disc > mvacut(0.48,-0.01,0.48,pt);
     break;
 
   case (WW_veto_noiso_v1):
@@ -2359,9 +2629,13 @@ bool readMVA::passesElectronMVAid(unsigned int index, id_level_t id_level){
 
 }
 
-void createAndInitMVA(std::string pathToCORE, bool v25ns, bool use_miniaod){
+void createAndInitMVA(std::string pathToCORE, bool v25ns, bool use_miniaod, int MVAversion){
+  if (MVAversion!=74 && MVAversion !=80) {
+    cout<< "Illegal version number for MVA in ElectronSelection "<< MVAversion << endl;
+    return;
+  }
   globalEleMVAreader = new readMVA();
-  globalEleMVAreader->InitMVA(pathToCORE, v25ns, use_miniaod); 
+  globalEleMVAreader->InitMVA(pathToCORE, v25ns, use_miniaod, MVAversion); 
 }
 
 float getMVAoutput(unsigned int index, bool use_miniaod){

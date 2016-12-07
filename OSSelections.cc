@@ -151,7 +151,7 @@ bool passElectronSelection_ZMET_thirdlepton_v1(int index, bool vetoTransition, b
 //Muon selections//
 //~-~-~-~-~-~-~-~//
 bool passMuonSelection_ZMET(int index ){
-  return passMuonSelection_ZMET_v6( index, true, true );
+  return passMuonSelection_ZMET_v5( index, true, true );
 }
 
 bool passMuonSelection_ZMET_v6(int index, bool vetoTransition, bool eta24 ){

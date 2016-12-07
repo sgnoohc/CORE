@@ -9,6 +9,7 @@ bool isMediumMuonPOG_forICHEP( unsigned int muIdx );
 bool isLooseMuonPOG(unsigned int muIdx);
 bool isMediumMuonPOG(unsigned int muIdx);
 bool isTightMuonPOG(unsigned int muIdx);
+bool isHighPtMuonPOG(unsigned int muIdx);
 
 //Main Muon ID function
 bool muonID(unsigned int muIdx, id_level_t id_level);
@@ -43,5 +44,8 @@ namespace muID {
   void setCache(int idx, float miniiso, float ptratio, float ptrel);
   void unsetCache();
 }
+
+// check CMS3 version to see which c++ type is stored in the ntuples for mus_gfit_ndof
+int get_mus_gfit_ndof( unsigned int muIdx );
 
 #endif
