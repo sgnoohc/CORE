@@ -23427,7 +23427,7 @@ float CMS3::getbtagvalue(TString bDiscriminatorName, unsigned int jetIndex) {
     return 0;
   }
   if (jetIndex < pfjets_bDiscriminatorNames().size())
-    return taus_pf_IDs().at(jetIndex).at(bDiscriminatorIndex);
+    return pfjets_bDiscriminators().at(jetIndex).at(bDiscriminatorIndex);
   else {
     std::cout << "Cannot find jet # " << jetIndex << std::endl;
     return 0;
