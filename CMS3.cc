@@ -24682,4 +24682,7 @@ namespace tas {
   const vector<float> &svs_prob() { return cms3.svs_prob(); }
   const float &evt_puppi_calomet() { return cms3.evt_puppi_calomet(); }
   const vector<vector<int> > &mus_nStationHits() { return cms3.mus_nStationHits(); }
+  bool passHLTTrigger(TString trigName) { return cms3.passHLTTrigger(trigName); }
+  float passTauID(TString idName, unsigned int tauIndex) { return cms3.passTauID(idName, tauIndex); }
+  float getbtagvalue(TString bDiscriminatorName, unsigned int jetIndex) { return cms3.getbtagvalue(bDiscriminatorName, jetIndex); }
 }
