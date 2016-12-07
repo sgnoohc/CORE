@@ -424,12 +424,16 @@ anal_type_t analysisCategory(int id1, int id2, float lep1pt, float lep2pt){
   return Undefined;
 }
 
-int baselineRegion(int njets, int nbtags, float met, float ht, int id1, int id2, float lep1_pt, float lep2_pt){
+int baselineRegion(int njets, int nbtags, float met, float ht, int id1, int id2, float lep1_pt, float lep2_pt, bool useNewBaseline){
   //Kinematic cuts
   if (lep1_pt < ptCutLowAG(id1)) return -1;
   if (lep2_pt < ptCutLowAG(id2)) return -1;
   if (njets < 2) return -1;
-  if (met < 30 && ht < 500) return -1;
+  if (useNewBaseline) {
+      if (met < 50) return -1;
+  } else {
+      if (met < 30 && ht < 500) return -1;
+  }
  
   //Return baseline region
   if      (nbtags == 0) return 0;
