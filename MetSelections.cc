@@ -51,121 +51,207 @@ metStruct trackerMET(float deltaZCut, const std::vector<LorentzVector>* jets) {
 }
 
 bool hbheNoiseFilter(int minZeros) {
-    // http://cmslxr.fnal.gov/lxr/source/CommonTools/RecoAlgos/plugins/HBHENoiseFilterResultProducer.cc?v=CMSSW_7_4_1
-    // by default (false --> reject), maxZeros() cut will never cause a lost event
-    if(hcalnoise_maxHPDHits()>=17) return false;
-    if(hcalnoise_maxHPDNoOtherHits()>=10) return false;
-    if(hcalnoise_maxZeros()>=minZeros) return false;
-    if(hcalnoise_HasBadRBXTS4TS5()) return false;
-    return true;
+  // http://cmslxr.fnal.gov/lxr/source/CommonTools/RecoAlgos/plugins/HBHENoiseFilterResultProducer.cc?v=CMSSW_7_4_1
+  // by default (false --> reject), maxZeros() cut will never cause a lost event
+  if(hcalnoise_maxHPDHits()>=17) return false;
+  if(hcalnoise_maxHPDNoOtherHits()>=10) return false;
+  if(hcalnoise_maxZeros()>=minZeros) return false;
+  if(hcalnoise_HasBadRBXTS4TS5()) return false;
+  return true;
 }
 
 bool hbheNoiseFilter_25ns(int minZeros) {
-    // http://cmslxr.fnal.gov/lxr/source/CommonTools/RecoAlgos/plugins/HBHENoiseFilterResultProducer.cc?v=CMSSW_7_4_1
-    // by default (false --> reject), maxZeros() cut will never cause a lost event
-    if(hcalnoise_maxHPDHits()>=17) return false;
-    if(hcalnoise_maxHPDNoOtherHits()>=10) return false;
-    if(hcalnoise_maxZeros()>=minZeros) return false;
-    if(hcalnoise_HasBadRBXRechitR45Loose()) return false;
-    return true;
+  // http://cmslxr.fnal.gov/lxr/source/CommonTools/RecoAlgos/plugins/HBHENoiseFilterResultProducer.cc?v=CMSSW_7_4_1
+  // by default (false --> reject), maxZeros() cut will never cause a lost event
+  if(hcalnoise_maxHPDHits()>=17) return false;
+  if(hcalnoise_maxHPDNoOtherHits()>=10) return false;
+  if(hcalnoise_maxZeros()>=minZeros) return false;
+  if(hcalnoise_HasBadRBXRechitR45Loose()) return false;
+  return true;
 }
 
 bool hbheIsoNoiseFilter() {
-    // false = reject event
-    if(hcalnoise_numIsolatedNoiseChannels()>=10) return false;
-    if(hcalnoise_isolatedNoiseSumE()>=50.0) return false;
-    if(hcalnoise_isolatedNoiseSumEt()>=25.0) return false;
-    return true;
+  // false = reject event
+  if(hcalnoise_numIsolatedNoiseChannels()>=10) return false;
+  if(hcalnoise_isolatedNoiseSumE()>=50.0) return false;
+  if(hcalnoise_isolatedNoiseSumEt()>=25.0) return false;
+  return true;
 }
 
 bool badMuonFilter() {
-    // false = reject event
-    // based on https://twiki.cern.ch/twiki/bin/viewauth/CMS/MissingETOptionalFiltersRun2#snippet_on_how_to_flag_the_charg
+  // false = reject event
+  // based on https://twiki.cern.ch/twiki/bin/viewauth/CMS/MissingETOptionalFiltersRun2#snippet_on_how_to_flag_the_charg
 
-    float minMuonTrackRelErr = 0.5;
-    float minMuonPt = 100.0;
-    float maxDR = 0.001;
-    int suspiciousAlgo = 14;
-    bool flagged = false;
+  float minMuonTrackRelErr = 0.5;
+  float minMuonPt = 100.0;
+  float maxDR = 0.001;
+  int suspiciousAlgo = 14;
+  bool flagged = false;
 
-    for (unsigned int imu = 0; imu < cms3.mus_p4().size(); imu++) {
-        bool foundBadTrack = false;
+  for (unsigned int imu = 0; imu < cms3.mus_p4().size(); imu++) {
+    bool foundBadTrack = false;
 
-        if(cms3.mus_trk_p4().at(imu).pt() < minMuonPt) continue;
+    if(cms3.mus_trk_p4().at(imu).pt() < minMuonPt) continue;
 
-        LorentzVector trk_p4 = cms3.mus_trk_p4().at(imu);
-        float trk_pterr = cms3.mus_ptErr().at(imu);
+    LorentzVector trk_p4 = cms3.mus_trk_p4().at(imu);
+    float trk_pterr = cms3.mus_ptErr().at(imu);
 
-        // reco::TrackBase::highPurity is bit 2...skip muon if inner track is high purity
-        if( (cms3.mus_qualityMask().at(imu) & (1 << 2))>>2 ) continue;
+    // reco::TrackBase::highPurity is bit 2...skip muon if inner track is high purity
+    if( (cms3.mus_qualityMask().at(imu) & (1 << 2))>>2 ) continue;
         
-        // Consider only muons with large relative pt error
-        if(!(trk_pterr/trk_p4.pt() > minMuonTrackRelErr) ) continue;
+    // Consider only muons with large relative pt error
+    if(!(trk_pterr/trk_p4.pt() > minMuonTrackRelErr) ) continue;
 
-        if(cms3.mus_algo().at(imu) == suspiciousAlgo && cms3.mus_algoOrig().at(imu) == suspiciousAlgo) foundBadTrack = true;
+    if(cms3.mus_algo().at(imu) == suspiciousAlgo && cms3.mus_algoOrig().at(imu) == suspiciousAlgo) foundBadTrack = true;
 
-        if(foundBadTrack) {
-            for (unsigned int icand = 0; icand < pfcands_p4().size(); icand++){
+    if(foundBadTrack) {
+      for (unsigned int icand = 0; icand < pfcands_p4().size(); icand++){
 
-                int pdgId = pfcands_particleId().at(icand);
-                LorentzVector cand_p4 = pfcands_p4().at(icand);
+        int pdgId = pfcands_particleId().at(icand);
+        LorentzVector cand_p4 = pfcands_p4().at(icand);
 
-                if(cand_p4.pt() < minMuonPt) continue;
-                if(abs(pdgId) != 13) continue;
+        if(cand_p4.pt() < minMuonPt) continue;
+        if(abs(pdgId) != 13) continue;
 
-                if (ROOT::Math::VectorUtil::DeltaR(cms3.mus_p4().at(imu), cand_p4) < maxDR) {
-                    flagged = true;
-                    break;
-                }
-            } // loop over pfcands
-
+        if (ROOT::Math::VectorUtil::DeltaR(cms3.mus_p4().at(imu), cand_p4) < maxDR) {
+          flagged = true;
+          break;
         }
+      } // loop over pfcands
 
-        if(flagged) break;
+    }
 
-    } // loop over muons
+    if(flagged) break;
 
-    return !flagged;
+  } // loop over muons
 
+  return !flagged;
+
+}
+
+bool badMuonFilterV2() {
+  // false = reject event
+  // based on https://twiki.cern.ch/twiki/bin/viewauth/CMS/MissingETOptionalFiltersRun2#snippet_on_how_to_flag_the_charg
+  const float minMuonSegCompatibility = 0.3;
+  const float maxMuonBestTrackRelErr = 2.;
+  const float maxMuonInnerTrackRelErr = 1.;
+  const float minMuonPt = 100.0;
+  const float maxDR = 0.0001;
+  const int suspiciousAlgo = 14; // muonSeededStepOutIn
+
+  for (unsigned int imu = 0; imu < cms3.mus_p4().size(); imu++) {
+
+    if (cms3.mus_p4().at(imu).pt() <= minMuonPt) continue;
+    if (cms3.mus_trk_p4().at(imu).pt() <= minMuonPt) continue;    
+    if (cms3.mus_algo().at(imu) != suspiciousAlgo) continue;
+    if (cms3.mus_algoOrig().at(imu) != suspiciousAlgo) continue;    
+    if (((cms3.mus_type().at(imu)) & (1<<1)) == 0) continue; // require muon is global
+    
+    bool fails_seg_compatibility = (cms3.mus_segmCompatibility().at(imu) < minMuonSegCompatibility);
+    bool fails_best_track_ptrelerr =  (cms3.mus_bfit_ptErr().at(imu)/cms3.mus_bfit_p4().at(imu).pt() > maxMuonBestTrackRelErr);
+    bool fails_inner_track_ptrelerr = (cms3.mus_ptErr().at(imu)/cms3.mus_trk_p4().at(imu).pt() > maxMuonInnerTrackRelErr);
+
+    if (fails_seg_compatibility || fails_best_track_ptrelerr || fails_inner_track_ptrelerr) {
+      for (unsigned int icand = 0; icand < pfcands_p4().size(); icand++) {
+        
+        int pdgId = pfcands_particleId().at(icand);
+        LorentzVector cand_p4 = pfcands_p4().at(icand);
+
+        if (abs(pdgId) != 13) continue;
+        if (cand_p4.pt() <= minMuonPt) continue;
+
+        if ((ROOT::Math::VectorUtil::DeltaR(cms3.mus_p4().at(imu), cand_p4) >= maxDR)) continue;
+
+        return false;
+      } // loop over pfcands    
+    }
+  } // loop over reco muons
+
+  return true;
 }
 
 
 bool badChargedCandidateFilter() {
-    // false = reject event
-    // based on https://twiki.cern.ch/twiki/bin/viewauth/CMS/MissingETOptionalFiltersRun2#snippet_on_how_to_flag_the_charg
-    float minMuonTrackRelErr = 0.5;
-    float minMuonPt = 100.0;
-    float maxDR = 0.001;
-    float minPtDiffRel = -0.5;
-    for (unsigned int imu = 0; imu < cms3.mus_p4().size(); imu++)
-    {
-        if(cms3.mus_p4().at(imu).pt() < minMuonPt) continue;
+  // false = reject event
+  // based on https://twiki.cern.ch/twiki/bin/viewauth/CMS/MissingETOptionalFiltersRun2#snippet_on_how_to_flag_the_charg
+  float minMuonTrackRelErr = 0.5;
+  float minMuonPt = 100.0;
+  float maxDR = 0.001;
+  float minPtDiffRel = -0.5;
+  for (unsigned int imu = 0; imu < cms3.mus_p4().size(); imu++)
+  {
+    if(cms3.mus_p4().at(imu).pt() < minMuonPt) continue;
 
-        LorentzVector trk_p4 = cms3.mus_trk_p4().at(imu);
-        float trk_pterr = cms3.mus_ptErr().at(imu);
+    LorentzVector trk_p4 = cms3.mus_trk_p4().at(imu);
+    float trk_pterr = cms3.mus_ptErr().at(imu);
 
-        // reco::TrackBase::highPurity is bit 2...skip muon if inner track is high purity
-        if( (cms3.mus_qualityMask().at(imu) & (1 << 2))>>2 ) continue;
+    // reco::TrackBase::highPurity is bit 2...skip muon if inner track is high purity
+    if( (cms3.mus_qualityMask().at(imu) & (1 << 2))>>2 ) continue;
 
-       // Consider only muons with large relative pt error
-       if(!(trk_pterr/trk_p4.pt() > minMuonTrackRelErr) ) continue;
+    // Consider only muons with large relative pt error
+    if(!(trk_pterr/trk_p4.pt() > minMuonTrackRelErr) ) continue;
 
-       for (unsigned int icand = 0; icand < pfcands_p4().size(); icand++){
+    for (unsigned int icand = 0; icand < pfcands_p4().size(); icand++){
 
-           int pdgId = pfcands_particleId().at(icand);
-           LorentzVector cand_p4 = pfcands_p4().at(icand);
+      int pdgId = pfcands_particleId().at(icand);
+      LorentzVector cand_p4 = pfcands_p4().at(icand);
 
-           if(abs(pdgId) != 211) continue;
+      if(abs(pdgId) != 211) continue;
 
-           if ((ROOT::Math::VectorUtil::DeltaR(trk_p4, cand_p4) < maxDR) &&
-                   (cand_p4.pt()-trk_p4.pt())/(0.5*(cand_p4.pt()+trk_p4.pt())) > minPtDiffRel) {
-               return false;
-           }
+      if ((ROOT::Math::VectorUtil::DeltaR(trk_p4, cand_p4) < maxDR) &&
+          (cand_p4.pt()-trk_p4.pt())/(0.5*(cand_p4.pt()+trk_p4.pt())) > minPtDiffRel) {
+        return false;
+      }
 
-       }
     }
+  }
 
-    return true;
+  return true;
+}
+
+bool badChargedCandidateFilterV2() {
+  // false = reject event
+  // based on https://twiki.cern.ch/twiki/bin/viewauth/CMS/MissingETOptionalFiltersRun2#snippet_on_how_to_flag_the_charg
+  // based on https://github.com/cms-sw/cmssw/blob/bacc91ec51a32014b3b6bff66dbe92a51c7c266e/RecoMET/METFilters/plugins/BadChargedCandidateFilter.cc
+  const float minMuonSegCompatibility = 0.3;
+  const float maxMuonBestTrackRelErr = 2.;
+  const float maxMuonInnerTrackRelErr = 1.;
+  const float minMuonPt = 100.0;
+  const float maxDR = 0.00001;
+  const float maxPtDiffRel = 0.00001;
+    
+  for (unsigned int imu = 0; imu < cms3.mus_p4().size(); imu++) {
+    if (cms3.mus_p4().at(imu).pt() <= minMuonPt) continue;
+    if (cms3.mus_trk_p4().at(imu).pt() <= minMuonPt) continue;
+    if (((cms3.mus_type().at(imu)) & (1<<1)) == 0) continue; // require muon is global
+    
+    bool fails_seg_compatibility = (cms3.mus_segmCompatibility().at(imu) < minMuonSegCompatibility);
+    bool fails_best_track_ptrelerr =  (cms3.mus_bfit_ptErr().at(imu)/cms3.mus_bfit_p4().at(imu).pt() > maxMuonBestTrackRelErr);
+    bool fails_inner_track_ptrelerr = (cms3.mus_ptErr().at(imu)/cms3.mus_trk_p4().at(imu).pt() > maxMuonInnerTrackRelErr);
+
+    if (fails_seg_compatibility || fails_best_track_ptrelerr || fails_inner_track_ptrelerr) {
+      for (unsigned int icand = 0; icand < cms3.pfcands_p4().size(); icand++) {
+        
+        int pdgId = cms3.pfcands_particleId().at(icand);
+        LorentzVector cand_p4 = cms3.pfcands_p4().at(icand);
+        LorentzVector trk_p4 = cms3.mus_trk_p4().at(imu);
+        
+        if (abs(pdgId) != 211) continue;
+        if (not cms3.mus_pid_PFMuon().at(imu)) continue;
+        
+        if ((ROOT::Math::VectorUtil::DeltaR(trk_p4, cand_p4) >= maxDR)) continue;
+        
+        float diffPt = cand_p4.pt() - trk_p4.pt();
+        float avgPt = 0.5 * (cand_p4.pt() + trk_p4.pt());
+
+        if (diffPt/avgPt >= maxPtDiffRel) continue;
+
+        return false;
+      } // loop over pfcands    
+    } 
+  } // loop over reco muons
+
+  return true;
 }
 
 // takes in an already initialized FactorizedJetCorrector object
@@ -182,63 +268,63 @@ pair <float, float> getT1CHSMET( FactorizedJetCorrector * jet_corrector, JetCorr
   //Run over same jets that were produced with MET tools
   for(unsigned int iJet = 0; iJet < cms3.pfjets_METToolbox_p4().size(); iJet++){
 
-	// // get uncorrected jet p4 to use as input for corrections
-	LorentzVector jetp4_uncorr = cms3.pfjets_METToolbox_p4().at(iJet);		  
-	float emfrac = (cms3.pfjets_METToolbox_chargedEmE().at(iJet) + cms3.pfjets_METToolbox_neutralEmE().at(iJet)) / jetp4_uncorr.E();
+    // // get uncorrected jet p4 to use as input for corrections
+    LorentzVector jetp4_uncorr = cms3.pfjets_METToolbox_p4().at(iJet);		  
+    float emfrac = (cms3.pfjets_METToolbox_chargedEmE().at(iJet) + cms3.pfjets_METToolbox_neutralEmE().at(iJet)) / jetp4_uncorr.E();
 
-	if (emfrac > 0.9                  ) continue; // veto events with EM fraction > 0.9
-	if( abs(jetp4_uncorr.eta()) > 9.9 ) continue; // veto jets with eta > 9.9
+    if (emfrac > 0.9                  ) continue; // veto events with EM fraction > 0.9
+    if( abs(jetp4_uncorr.eta()) > 9.9 ) continue; // veto jets with eta > 9.9
 
-	// get L1FastL2L3 total correction
-	jet_corrector->setRho   ( cms3.evt_fixgridfastjetMETTools_all_rho()      );
-	jet_corrector->setJetA  ( cms3.pfjets_METToolbox_area().at(iJet) );
-	jet_corrector->setJetPt ( jetp4_uncorr.pt()                      );
-	jet_corrector->setJetEta( jetp4_uncorr.eta()                     );
+    // get L1FastL2L3 total correction
+    jet_corrector->setRho   ( cms3.evt_fixgridfastjetMETTools_all_rho()      );
+    jet_corrector->setJetA  ( cms3.pfjets_METToolbox_area().at(iJet) );
+    jet_corrector->setJetPt ( jetp4_uncorr.pt()                      );
+    jet_corrector->setJetEta( jetp4_uncorr.eta()                     );
 
-	//Note the subcorrections are stored with corr_vals(N) = corr(N)*corr(N-1)*...*corr(1)
-	vector<float> corr_vals = jet_corrector->getSubCorrections();
+    //Note the subcorrections are stored with corr_vals(N) = corr(N)*corr(N-1)*...*corr(1)
+    vector<float> corr_vals = jet_corrector->getSubCorrections();
 
-	double corr             = corr_vals.at(corr_vals.size()-1); // All corrections
-	double corr_l1          = corr_vals.at(0);                  // offset correction
+    double corr             = corr_vals.at(corr_vals.size()-1); // All corrections
+    double corr_l1          = corr_vals.at(0);                  // offset correction
 		  
-	if (jecUnc != 0 && fabs(jetp4_uncorr.eta()) < 5.4) {
-	  jecUnc->setJetEta(jetp4_uncorr.eta()); 
-	  jecUnc->setJetPt(jetp4_uncorr.pt()*corr); 
-	  double unc = jecUnc->getUncertainty(true);
-	  if (uncUp) corr=corr*(1+unc);
-	  else  corr=corr*(1-unc);
-	}
+    if (jecUnc != 0 && fabs(jetp4_uncorr.eta()) < 5.4) {
+      jecUnc->setJetEta(jetp4_uncorr.eta()); 
+      jecUnc->setJetPt(jetp4_uncorr.pt()*corr); 
+      double unc = jecUnc->getUncertainty(true);
+      if (uncUp) corr=corr*(1+unc);
+      else  corr=corr*(1-unc);
+    }
 	  
-	//	
-	// remove SA or global muons from jets before correcting
-	//
-	// for (unsigned int imu = 0; imu < cms3.mus_p4().size(); imu++)
-	//   {
-	// 	int index = cms3.mus_pfidx().at(imu);
-	// 	if (index < 0) continue;
-	// 	bool is_global     = !(((cms3.mus_type().at(imu)) & (1<<1)) == 0);
-	// 	bool is_standalone = !(((cms3.mus_type().at(imu)) & (1<<3)) == 0);
-	// 	if (!(is_global || is_standalone)) continue;            
-	// 	if (std::find(cms3.pfjets_METToolbox_pfcandIndicies().at(iJet).begin(),
-	// 				  cms3.pfjets_METToolbox_pfcandIndicies().at(iJet).end(), index) == cms3.pfjets_METToolbox_pfcandIndicies().at(iJet).end()) continue;
-	// 	jetp4_uncorr -= cms3.pfcands_p4()   .at(index);
-	//   }
+    //	
+    // remove SA or global muons from jets before correcting
+    //
+    // for (unsigned int imu = 0; imu < cms3.mus_p4().size(); imu++)
+    //   {
+    // 	int index = cms3.mus_pfidx().at(imu);
+    // 	if (index < 0) continue;
+    // 	bool is_global     = !(((cms3.mus_type().at(imu)) & (1<<1)) == 0);
+    // 	bool is_standalone = !(((cms3.mus_type().at(imu)) & (1<<3)) == 0);
+    // 	if (!(is_global || is_standalone)) continue;            
+    // 	if (std::find(cms3.pfjets_METToolbox_pfcandIndicies().at(iJet).begin(),
+    // 				  cms3.pfjets_METToolbox_pfcandIndicies().at(iJet).end(), index) == cms3.pfjets_METToolbox_pfcandIndicies().at(iJet).end()) continue;
+    // 	jetp4_uncorr -= cms3.pfcands_p4()   .at(index);
+    //   }
 
-	// Alternative way to do muon corrections, done by MET group
-	for (unsigned int pfcind = 0; pfcind < cms3.pfjets_METToolbox_pfcandIndicies().at(iJet).size(); pfcind++){
-	  int index = cms3.pfjets_METToolbox_pfcandIndicies().at(iJet).at(pfcind);
-	  if( cms3.pfcands_isGlobalMuon()    .at(index) ||
-		  cms3.pfcands_isStandAloneMuon().at(index)){
-		jetp4_uncorr -= cms3.pfcands_p4()   .at(index);
-	  }
-	}
+    // Alternative way to do muon corrections, done by MET group
+    for (unsigned int pfcind = 0; pfcind < cms3.pfjets_METToolbox_pfcandIndicies().at(iJet).size(); pfcind++){
+      int index = cms3.pfjets_METToolbox_pfcandIndicies().at(iJet).at(pfcind);
+      if( cms3.pfcands_isGlobalMuon()    .at(index) ||
+          cms3.pfcands_isStandAloneMuon().at(index)){
+        jetp4_uncorr -= cms3.pfcands_p4()   .at(index);
+      }
+    }
 			  
-	if (corr * jetp4_uncorr.pt() > 10.){		  
-	  T1_metx += jetp4_uncorr.px() * ( corr_l1 - corr );
-	  T1_mety += jetp4_uncorr.py() * ( corr_l1 - corr );
-	  unclustered_metx += jetp4_uncorr.px();
-	  unclustered_mety += jetp4_uncorr.py();
-	}
+    if (corr * jetp4_uncorr.pt() > 10.){		  
+      T1_metx += jetp4_uncorr.px() * ( corr_l1 - corr );
+      T1_mety += jetp4_uncorr.py() * ( corr_l1 - corr );
+      unclustered_metx += jetp4_uncorr.px();
+      unclustered_mety += jetp4_uncorr.py();
+    }
 
   }
 	  
@@ -262,14 +348,14 @@ pair <float, float> getT1CHSMET_fromMINIAOD( FactorizedJetCorrector * jet_correc
   float T1_mety   = T1_met * sin(T1_metPhi);
 
   if( recompute_raw_met ){
-	LorentzVector met_raw_OTF(0,0,0,0);
-	for( size_t pfind = 0; pfind < cms3.pfcands_p4().size(); pfind++ ){
-	  met_raw_OTF -= cms3.pfcands_p4().at(pfind);
-	}
-	T1_met    = met_raw_OTF.pt();
-	T1_metPhi = met_raw_OTF.phi();
-	T1_metx   = T1_met * cos(T1_metPhi);
-	T1_mety   = T1_met * sin(T1_metPhi);
+    LorentzVector met_raw_OTF(0,0,0,0);
+    for( size_t pfind = 0; pfind < cms3.pfcands_p4().size(); pfind++ ){
+      met_raw_OTF -= cms3.pfcands_p4().at(pfind);
+    }
+    T1_met    = met_raw_OTF.pt();
+    T1_metPhi = met_raw_OTF.phi();
+    T1_metx   = T1_met * cos(T1_metPhi);
+    T1_mety   = T1_met * sin(T1_metPhi);
   }
 
   LorentzVector jetp4_unshift_vsum(0,0,0,0);
@@ -277,77 +363,77 @@ pair <float, float> getT1CHSMET_fromMINIAOD( FactorizedJetCorrector * jet_correc
   
   for(unsigned int iJet = 0; iJet < cms3.pfjets_p4().size(); iJet++){
 
-	LorentzVector jetp4_uncorr = cms3.pfjets_p4().at(iJet)*cms3.pfjets_undoJEC().at(iJet);
+    LorentzVector jetp4_uncorr = cms3.pfjets_p4().at(iJet)*cms3.pfjets_undoJEC().at(iJet);
 
-	// get L1FastL2L3 total correction
-	jet_corrector->setRho   ( cms3.evt_fixgridfastjet_all_rho()      );
-	jet_corrector->setJetA  ( cms3.pfjets_area().at(iJet) );
-	jet_corrector->setJetPt ( jetp4_uncorr.pt()                      );
-	jet_corrector->setJetEta( jetp4_uncorr.eta()                     );
+    // get L1FastL2L3 total correction
+    jet_corrector->setRho   ( cms3.evt_fixgridfastjet_all_rho()      );
+    jet_corrector->setJetA  ( cms3.pfjets_area().at(iJet) );
+    jet_corrector->setJetPt ( jetp4_uncorr.pt()                      );
+    jet_corrector->setJetEta( jetp4_uncorr.eta()                     );
 
-	//Note the subcorrections are stored with corr_vals(N) = corr(N)*corr(N-1)*...*corr(1)
-	vector<float> corr_vals = jet_corrector->getSubCorrections();
+    //Note the subcorrections are stored with corr_vals(N) = corr(N)*corr(N-1)*...*corr(1)
+    vector<float> corr_vals = jet_corrector->getSubCorrections();
 
-	double corr             = corr_vals.at(corr_vals.size()-1); // All corrections
+    double corr             = corr_vals.at(corr_vals.size()-1); // All corrections
 
-	double shift = 0.0;
-	if (jecUnc != 0) {
-	  jecUnc->setJetEta(jetp4_uncorr.eta()); 
-	  jecUnc->setJetPt(jetp4_uncorr.pt()*corr); 
-	  double unc = jecUnc->getUncertainty(true);
-	  if( cms3.evt_isRealData() && corr_vals.size() == 4 ) shift = sqrt(unc*unc + pow((corr_vals.at(corr_vals.size()-1)/corr_vals.at(corr_vals.size()-2)-1.),2));	  
-	  else                                                 shift = unc;
-	}
+    double shift = 0.0;
+    if (jecUnc != 0) {
+      jecUnc->setJetEta(jetp4_uncorr.eta()); 
+      jecUnc->setJetPt(jetp4_uncorr.pt()*corr); 
+      double unc = jecUnc->getUncertainty(true);
+      if( cms3.evt_isRealData() && corr_vals.size() == 4 ) shift = sqrt(unc*unc + pow((corr_vals.at(corr_vals.size()-1)/corr_vals.at(corr_vals.size()-2)-1.),2));	  
+      else                                                 shift = unc;
+    }
 
-	double totalshift = 1.0;
-	if (jecUnc != 0) {
-	  if (uncUp) totalshift += shift;
-	  else  totalshift      -= shift;
-	}
+    double totalshift = 1.0;
+    if (jecUnc != 0) {
+      if (uncUp) totalshift += shift;
+      else  totalshift      -= shift;
+    }
 
-	if ( corr * jetp4_uncorr.pt() > 15. ){		  
-	  jetp4_unshift_vsum += jetp4_uncorr*corr;
-	  jetp4_shifted_vsum += jetp4_uncorr*corr*totalshift;
-	}				  
+    if ( corr * jetp4_uncorr.pt() > 15. ){		  
+      jetp4_unshift_vsum += jetp4_uncorr*corr;
+      jetp4_shifted_vsum += jetp4_uncorr*corr*totalshift;
+    }				  
 
   }
 
   for(unsigned int iJet = 0; iJet < cms3.pfjets_p4().size(); iJet++){
 
-	// // get uncorrected jet p4 to use as input for corrections
-	LorentzVector jetp4_uncorr = cms3.pfjets_p4().at(iJet)*cms3.pfjets_undoJEC().at(iJet);
-	float emfrac = (cms3.pfjets_chargedEmE().at(iJet) + cms3.pfjets_neutralEmE().at(iJet)) / jetp4_uncorr.E();
+    // // get uncorrected jet p4 to use as input for corrections
+    LorentzVector jetp4_uncorr = cms3.pfjets_p4().at(iJet)*cms3.pfjets_undoJEC().at(iJet);
+    float emfrac = (cms3.pfjets_chargedEmE().at(iJet) + cms3.pfjets_neutralEmE().at(iJet)) / jetp4_uncorr.E();
 
-	if (emfrac > 0.9                  ) continue; // veto events with EM fraction > 0.9
-	if( abs(jetp4_uncorr.eta()) > 9.9 ) continue; // veto jets with eta > 9.9
+    if (emfrac > 0.9                  ) continue; // veto events with EM fraction > 0.9
+    if( abs(jetp4_uncorr.eta()) > 9.9 ) continue; // veto jets with eta > 9.9
 
-	// get L1FastL2L3 total correction
-	jet_corrector->setRho   ( cms3.evt_fixgridfastjet_all_rho()      );
-	jet_corrector->setJetA  ( cms3.pfjets_area().at(iJet) );
-	jet_corrector->setJetPt ( jetp4_uncorr.pt()                      );
-	jet_corrector->setJetEta( jetp4_uncorr.eta()                     );
+    // get L1FastL2L3 total correction
+    jet_corrector->setRho   ( cms3.evt_fixgridfastjet_all_rho()      );
+    jet_corrector->setJetA  ( cms3.pfjets_area().at(iJet) );
+    jet_corrector->setJetPt ( jetp4_uncorr.pt()                      );
+    jet_corrector->setJetEta( jetp4_uncorr.eta()                     );
 
-	//Note the subcorrections are stored with corr_vals(N) = corr(N)*corr(N-1)*...*corr(1)
-	vector<float> corr_vals = jet_corrector->getSubCorrections();
+    //Note the subcorrections are stored with corr_vals(N) = corr(N)*corr(N-1)*...*corr(1)
+    vector<float> corr_vals = jet_corrector->getSubCorrections();
 
-	double corr             = corr_vals.at(corr_vals.size()-1); // All corrections
-	double corr_l1          = corr_vals.at(0);                  // offset correction
+    double corr             = corr_vals.at(corr_vals.size()-1); // All corrections
+    double corr_l1          = corr_vals.at(0);                  // offset correction
 
-	//	
-	// remove SA or global muons from jets before correcting
-	//
-	for (unsigned int pfcind = 0; pfcind < cms3.pfjets_pfcandIndicies().at(iJet).size(); pfcind++){
-	  int index = cms3.pfjets_pfcandIndicies().at(iJet).at(pfcind);
-	  if( cms3.pfcands_isGlobalMuon()    .at(index) ||
-		  cms3.pfcands_isStandAloneMuon().at(index)){
-		jetp4_uncorr -= cms3.pfcands_p4()   .at(index);
-	  }
-	}
+    //	
+    // remove SA or global muons from jets before correcting
+    //
+    for (unsigned int pfcind = 0; pfcind < cms3.pfjets_pfcandIndicies().at(iJet).size(); pfcind++){
+      int index = cms3.pfjets_pfcandIndicies().at(iJet).at(pfcind);
+      if( cms3.pfcands_isGlobalMuon()    .at(index) ||
+          cms3.pfcands_isStandAloneMuon().at(index)){
+        jetp4_uncorr -= cms3.pfcands_p4()   .at(index);
+      }
+    }
 
-	if ( corr * jetp4_uncorr.pt() > 15. ){		  
-	  T1_metx += jetp4_uncorr.px() * ( corr_l1 - corr );
-	  T1_mety += jetp4_uncorr.py() * ( corr_l1 - corr );
-	}
+    if ( corr * jetp4_uncorr.pt() > 15. ){		  
+      T1_metx += jetp4_uncorr.px() * ( corr_l1 - corr );
+      T1_mety += jetp4_uncorr.py() * ( corr_l1 - corr );
+    }
 
   }
 
@@ -371,40 +457,40 @@ pair <float, float> getT1PUPPIMET_fromMINIAOD( FactorizedJetCorrector * jet_corr
   //Run over same jets that were produced with MET tools
   for(unsigned int iJet = 0; iJet < cms3.pfjets_puppi_p4().size(); iJet++){
 
-	// // get uncorrected jet p4 to use as input for corrections
-	LorentzVector jetp4_uncorr = cms3.pfjets_puppi_p4().at(iJet)*cms3.pfjets_puppi_undoJEC().at(iJet);
-	float emfrac = (cms3.pfjets_puppi_chargedEmE().at(iJet) + cms3.pfjets_puppi_neutralEmE().at(iJet)) / jetp4_uncorr.E();
+    // // get uncorrected jet p4 to use as input for corrections
+    LorentzVector jetp4_uncorr = cms3.pfjets_puppi_p4().at(iJet)*cms3.pfjets_puppi_undoJEC().at(iJet);
+    float emfrac = (cms3.pfjets_puppi_chargedEmE().at(iJet) + cms3.pfjets_puppi_neutralEmE().at(iJet)) / jetp4_uncorr.E();
 
-	if (emfrac > 0.9                  ) continue; // veto events with EM fraction > 0.9
-	if( abs(jetp4_uncorr.eta()) > 9.9 ) continue; // veto jets with eta > 9.9
+    if (emfrac > 0.9                  ) continue; // veto events with EM fraction > 0.9
+    if( abs(jetp4_uncorr.eta()) > 9.9 ) continue; // veto jets with eta > 9.9
 
-	// get L1FastL2L3 total correction
-	jet_corrector->setRho   ( cms3.evt_fixgridfastjet_all_rho()      );
-	jet_corrector->setJetA  ( cms3.pfjets_area().at(iJet) );
-	jet_corrector->setJetPt ( jetp4_uncorr.pt()                      );
-	jet_corrector->setJetEta( jetp4_uncorr.eta()                     );
+    // get L1FastL2L3 total correction
+    jet_corrector->setRho   ( cms3.evt_fixgridfastjet_all_rho()      );
+    jet_corrector->setJetA  ( cms3.pfjets_area().at(iJet) );
+    jet_corrector->setJetPt ( jetp4_uncorr.pt()                      );
+    jet_corrector->setJetEta( jetp4_uncorr.eta()                     );
 
-	//Note the subcorrections are stored with corr_vals(N) = corr(N)*corr(N-1)*...*corr(1)
-	vector<float> corr_vals = jet_corrector->getSubCorrections();
+    //Note the subcorrections are stored with corr_vals(N) = corr(N)*corr(N-1)*...*corr(1)
+    vector<float> corr_vals = jet_corrector->getSubCorrections();
 
-	double corr             = corr_vals.at(corr_vals.size()-1); // All corrections
-	double corr_l1          = corr_vals.at(0);                  // offset correction
+    double corr             = corr_vals.at(corr_vals.size()-1); // All corrections
+    double corr_l1          = corr_vals.at(0);                  // offset correction
 		  
-	//	
-	// remove SA or global muons from jets before correcting
-	//
-	for (unsigned int pfcind = 0; pfcind < cms3.pfjets_puppi_pfcandIndicies().at(iJet).size(); pfcind++){
-	  int index = cms3.pfjets_puppi_pfcandIndicies().at(iJet).at(pfcind);
-	  if( cms3.pfcands_isGlobalMuon()    .at(index) ||
-		  cms3.pfcands_isStandAloneMuon().at(index)){
-		jetp4_uncorr -= cms3.pfcands_p4()   .at(index);
-	  }
-	}
+    //	
+    // remove SA or global muons from jets before correcting
+    //
+    for (unsigned int pfcind = 0; pfcind < cms3.pfjets_puppi_pfcandIndicies().at(iJet).size(); pfcind++){
+      int index = cms3.pfjets_puppi_pfcandIndicies().at(iJet).at(pfcind);
+      if( cms3.pfcands_isGlobalMuon()    .at(index) ||
+          cms3.pfcands_isStandAloneMuon().at(index)){
+        jetp4_uncorr -= cms3.pfcands_p4()   .at(index);
+      }
+    }
 			  
-	if (corr * jetp4_uncorr.pt() > 15.){		  
-	  T1_metx += jetp4_uncorr.px() * ( corr_l1 - corr );
-	  T1_mety += jetp4_uncorr.py() * ( corr_l1 - corr );
-	}
+    if (corr * jetp4_uncorr.pt() > 15.){		  
+      T1_metx += jetp4_uncorr.px() * ( corr_l1 - corr );
+      T1_mety += jetp4_uncorr.py() * ( corr_l1 - corr );
+    }
 
   }
 	  
@@ -423,9 +509,9 @@ pair<float,float> MET3p0() {
   
   for( size_t pfind = 0; pfind < cms3.pfcands_p4().size(); pfind++ ){
 	
-	if( abs( cms3.pfcands_p4().at(pfind).eta() ) < 3.0 ){ 
-	  pfcands3p0_p4 -= cms3.pfcands_p4().at(pfind);
-	}
+    if( abs( cms3.pfcands_p4().at(pfind).eta() ) < 3.0 ){ 
+      pfcands3p0_p4 -= cms3.pfcands_p4().at(pfind);
+    }
   }
   met_pt  = pfcands3p0_p4.pt();
   met_phi = pfcands3p0_p4.phi();
@@ -492,7 +578,7 @@ bool passesMETfilters2016(bool isData){
 
   // MC samples don't have algoOrig branch
   if(isData) {
-      if (!badMuonFilter()) return false;
+    if (!badMuonFilter()) return false;
   }
 
   //Otherwise good
@@ -512,40 +598,40 @@ pair <float, float> getT1CHSMET3p0(   FactorizedJetCorrector * jet_corrector ){
   //Run over same jets that were produced with MET tools
   for(unsigned int iJet = 0; iJet < cms3.pfjets_METToolbox_p4().size(); iJet++){
 
-	if( cms3.pfjets_METToolbox_p4().at(iJet).eta() > 3.0 ) continue;// only use jets with eta<3.0 to correct MET 3.0
+    if( cms3.pfjets_METToolbox_p4().at(iJet).eta() > 3.0 ) continue;// only use jets with eta<3.0 to correct MET 3.0
 	
-	// // get uncorrected jet p4 to use as input for corrections
-	LorentzVector jetp4_uncorr = cms3.pfjets_METToolbox_p4().at(iJet);		  
-	float emfrac = (cms3.pfjets_METToolbox_chargedEmE().at(iJet) + cms3.pfjets_METToolbox_neutralEmE().at(iJet)) / jetp4_uncorr.E();
+    // // get uncorrected jet p4 to use as input for corrections
+    LorentzVector jetp4_uncorr = cms3.pfjets_METToolbox_p4().at(iJet);		  
+    float emfrac = (cms3.pfjets_METToolbox_chargedEmE().at(iJet) + cms3.pfjets_METToolbox_neutralEmE().at(iJet)) / jetp4_uncorr.E();
 
-	if (emfrac > 0.9                  ) continue; // veto events with EM fraction > 0.9
-	if( abs(jetp4_uncorr.eta()) > 9.9 ) continue; // veto jets with eta > 9.9
+    if (emfrac > 0.9                  ) continue; // veto events with EM fraction > 0.9
+    if( abs(jetp4_uncorr.eta()) > 9.9 ) continue; // veto jets with eta > 9.9
 
-	// get L1FastL2L3 total correction
-	jet_corrector->setRho   ( cms3.evt_fixgridfastjet_all_rho()      );
-	jet_corrector->setJetA  ( cms3.pfjets_METToolbox_area().at(iJet) );
-	jet_corrector->setJetPt ( jetp4_uncorr.pt()                      );
-	jet_corrector->setJetEta( jetp4_uncorr.eta()                     );
+    // get L1FastL2L3 total correction
+    jet_corrector->setRho   ( cms3.evt_fixgridfastjet_all_rho()      );
+    jet_corrector->setJetA  ( cms3.pfjets_METToolbox_area().at(iJet) );
+    jet_corrector->setJetPt ( jetp4_uncorr.pt()                      );
+    jet_corrector->setJetEta( jetp4_uncorr.eta()                     );
 
-	//Note the subcorrections are stored with corr_vals(N) = corr(N)*corr(N-1)*...*corr(1)
-	vector<float> corr_vals = jet_corrector->getSubCorrections();
+    //Note the subcorrections are stored with corr_vals(N) = corr(N)*corr(N-1)*...*corr(1)
+    vector<float> corr_vals = jet_corrector->getSubCorrections();
 
-	double corr             = corr_vals.at(corr_vals.size()-1); // All corrections
-	double corr_l1          = corr_vals.at(0);                  // offset correction
+    double corr             = corr_vals.at(corr_vals.size()-1); // All corrections
+    double corr_l1          = corr_vals.at(0);                  // offset correction
 
-	// Alternative way to do muon corrections, done by MET group
-	for (unsigned int pfcind = 0; pfcind < cms3.pfjets_METToolbox_pfcandIndicies().at(iJet).size(); pfcind++){
-	  int index = cms3.pfjets_METToolbox_pfcandIndicies().at(iJet).at(pfcind);
-	  if( cms3.pfcands_isGlobalMuon()    .at(index) ||
-		  cms3.pfcands_isStandAloneMuon().at(index)){
-		jetp4_uncorr -= cms3.pfcands_p4()   .at(index);
-	  }
-	}
+    // Alternative way to do muon corrections, done by MET group
+    for (unsigned int pfcind = 0; pfcind < cms3.pfjets_METToolbox_pfcandIndicies().at(iJet).size(); pfcind++){
+      int index = cms3.pfjets_METToolbox_pfcandIndicies().at(iJet).at(pfcind);
+      if( cms3.pfcands_isGlobalMuon()    .at(index) ||
+          cms3.pfcands_isStandAloneMuon().at(index)){
+        jetp4_uncorr -= cms3.pfcands_p4()   .at(index);
+      }
+    }
 			  
-	if (corr * jetp4_uncorr.pt() > 10.){		  
-	  T1_metx += jetp4_uncorr.px() * ( corr_l1 - corr );
-	  T1_mety += jetp4_uncorr.py() * ( corr_l1 - corr );
-	}
+    if (corr * jetp4_uncorr.pt() > 10.){		  
+      T1_metx += jetp4_uncorr.px() * ( corr_l1 - corr );
+      T1_mety += jetp4_uncorr.py() * ( corr_l1 - corr );
+    }
 
   }
 	  
