@@ -53,7 +53,7 @@ protected:
   int hcalnoise_numIsolatedNoiseChannels_;
   TBranch *hcalnoise_numIsolatedNoiseChannels_branch;
   bool hcalnoise_numIsolatedNoiseChannels_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *mus_gfit_p4_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > mus_gfit_p4_;
   TBranch *mus_gfit_p4_branch;
   bool mus_gfit_p4_isLoaded;
   float hcalnoise_max25GeVHitTime_;
@@ -107,7 +107,7 @@ protected:
   vector<int> photons_N_PSClusters_;
   TBranch *photons_N_PSClusters_branch;
   bool photons_N_PSClusters_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *mus_sta_vertex_p4_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > mus_sta_vertex_p4_;
   TBranch *mus_sta_vertex_p4_branch;
   bool mus_sta_vertex_p4_isLoaded;
   float evt_filt_eff_;
@@ -155,10 +155,10 @@ protected:
   vector<float> photons_scSeedE3x3_;
   TBranch *photons_scSeedE3x3_branch;
   bool photons_scSeedE3x3_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *genjets_p4NoMuNoNu_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > genjets_p4NoMuNoNu_;
   TBranch *genjets_p4NoMuNoNu_branch;
   bool genjets_p4NoMuNoNu_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *els_p4_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > els_p4_;
   TBranch *els_p4_branch;
   bool els_p4_isLoaded;
   vector<float> photons_scPreshowerEnergyPlane1_;
@@ -233,13 +233,13 @@ protected:
   vector<float> els_etaSC_;
   TBranch *els_etaSC_branch;
   bool els_etaSC_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *taus_pf_p4_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > taus_pf_p4_;
   TBranch *taus_pf_p4_branch;
   bool taus_pf_p4_isLoaded;
   vector<unsigned int> mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_TrailingLeg_;
   TBranch *mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_TrailingLeg_branch;
   bool mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_TrailingLeg_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *taus_pf_lead_neutrcand_p4_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > taus_pf_lead_neutrcand_p4_;
   TBranch *taus_pf_lead_neutrcand_p4_branch;
   bool taus_pf_lead_neutrcand_p4_isLoaded;
   vector<float> els_e2x5Max_full5x5_;
@@ -281,7 +281,7 @@ protected:
   vector<unsigned int> els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_TrailingLeg_;
   TBranch *els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_TrailingLeg_branch;
   bool els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_TrailingLeg_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *mus_mc_motherp4_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > mus_mc_motherp4_;
   TBranch *mus_mc_motherp4_branch;
   bool mus_mc_motherp4_isLoaded;
   vector<int> mus_sta_phiErr_;
@@ -362,7 +362,7 @@ protected:
   vector<float> mus_isoMeanDRR03_pf_NeutralHadronEtHighThreshold_;
   TBranch *mus_isoMeanDRR03_pf_NeutralHadronEtHighThreshold_branch;
   bool mus_isoMeanDRR03_pf_NeutralHadronEtHighThreshold_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *hyp_lt_p4_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > hyp_lt_p4_;
   TBranch *hyp_lt_p4_branch;
   bool hyp_lt_p4_isLoaded;
   vector<float> pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag_;
@@ -458,7 +458,7 @@ protected:
   vector<float> pfjets_puppi_neutralEmE_;
   TBranch *pfjets_puppi_neutralEmE_branch;
   bool pfjets_puppi_neutralEmE_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *mus_mc_p4_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > mus_mc_p4_;
   TBranch *mus_mc_p4_branch;
   bool mus_mc_p4_isLoaded;
   vector<float> els_ptErrGsf_;
@@ -512,7 +512,7 @@ protected:
   vector<int> pfjets_muonMultiplicity_;
   TBranch *pfjets_muonMultiplicity_branch;
   bool pfjets_muonMultiplicity_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *pfjets_p4_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > pfjets_p4_;
   TBranch *pfjets_p4_branch;
   bool pfjets_p4_isLoaded;
   vector<unsigned int> els_HLT_Ele20_SC4_Mass50_TrailingLeg_;
@@ -602,7 +602,7 @@ protected:
   vector<float> pfcands_mass_;
   TBranch *pfcands_mass_branch;
   bool pfcands_mass_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *mus_bfit_p4_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > mus_bfit_p4_;
   TBranch *mus_bfit_p4_branch;
   bool mus_bfit_p4_isLoaded;
   vector<bool> pfcands_isStandAloneMuon_;
@@ -734,7 +734,7 @@ protected:
   vector<bool> pfcands_isGlobalMuon_;
   TBranch *pfcands_isGlobalMuon_branch;
   bool pfcands_isGlobalMuon_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *photons_mc_motherp4_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > photons_mc_motherp4_;
   TBranch *photons_mc_motherp4_branch;
   bool photons_mc_motherp4_isLoaded;
   vector<int> mus_gfit_validHits_;
@@ -761,7 +761,7 @@ protected:
   vector<bool> photons_passElectronVeto_;
   TBranch *photons_passElectronVeto_branch;
   bool photons_passElectronVeto_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *photons_mc_p4_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > photons_mc_p4_;
   TBranch *photons_mc_p4_branch;
   bool photons_mc_p4_isLoaded;
   vector<float> mus_isoSumDRR04_pf_ChargedHadronPt_;
@@ -776,7 +776,7 @@ protected:
   vector<float> photons_scSeedERight_;
   TBranch *photons_scSeedERight_branch;
   bool photons_scSeedERight_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *pfjets_mc_motherp4_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > pfjets_mc_motherp4_;
   TBranch *pfjets_mc_motherp4_branch;
   bool pfjets_mc_motherp4_isLoaded;
   float evt_puppi_pfmetPhi_;
@@ -803,7 +803,7 @@ protected:
   vector<float> els_e5x5_full5x5_;
   TBranch *els_e5x5_full5x5_branch;
   bool els_e5x5_full5x5_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *pfjets_puppi_p4_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > pfjets_puppi_p4_;
   TBranch *pfjets_puppi_p4_branch;
   bool pfjets_puppi_p4_isLoaded;
   vector<int> mus_trk_charge_;
@@ -935,7 +935,7 @@ protected:
   vector<float> mus_isoSumDRR03_pf_NeutralHadronEtHighThreshold_;
   TBranch *mus_isoSumDRR03_pf_NeutralHadronEtHighThreshold_branch;
   bool mus_isoSumDRR03_pf_NeutralHadronEtHighThreshold_isLoaded;
-  ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > *evt_bsp4_;
+  ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > evt_bsp4_;
   TBranch *evt_bsp4_branch;
   bool evt_bsp4_isLoaded;
   unsigned int els_HLT_Ele25WP60_SC4_Mass55_version_;
@@ -995,7 +995,7 @@ protected:
   vector<float> photons_full5x5_e1x5_;
   TBranch *photons_full5x5_e1x5_branch;
   bool photons_full5x5_e1x5_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *svs_p4_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > svs_p4_;
   TBranch *svs_p4_branch;
   bool svs_p4_isLoaded;
   vector<float> mus_sta_qoverpError_;
@@ -1046,7 +1046,7 @@ protected:
   vector<float> photonsscSeedCalibratedEnergy_;
   TBranch *photonsscSeedCalibratedEnergy_branch;
   bool photonsscSeedCalibratedEnergy_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *ak8jets_p4_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > ak8jets_p4_;
   TBranch *ak8jets_p4_branch;
   bool ak8jets_p4_isLoaded;
   vector<int> isotracks_charge_;
@@ -1154,7 +1154,7 @@ protected:
   float hcalnoise_eventTrackEnergy_;
   TBranch *hcalnoise_eventTrackEnergy_branch;
   bool hcalnoise_eventTrackEnergy_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *pfjets_METToolbox_p4_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > pfjets_METToolbox_p4_;
   TBranch *pfjets_METToolbox_p4_branch;
   bool pfjets_METToolbox_p4_isLoaded;
   vector<int> mus_gfit_exp_innerlayer_;
@@ -1262,7 +1262,7 @@ protected:
   vector<TString> hlt_trigNames_;
   TBranch *hlt_trigNames_branch;
   bool hlt_trigNames_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *mus_pfp4_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > mus_pfp4_;
   TBranch *mus_pfp4_branch;
   bool mus_pfp4_isLoaded;
   vector<unsigned int> mus_HLT_Mu17_Mu8_L1sL1DoubleMu10MuOpen_;
@@ -1295,13 +1295,13 @@ protected:
   vector<float> mus_isoMeanDRR03_pf_PhotonEt_;
   TBranch *mus_isoMeanDRR03_pf_PhotonEt_branch;
   bool mus_isoMeanDRR03_pf_PhotonEt_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *hyp_p4_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > hyp_p4_;
   TBranch *hyp_p4_branch;
   bool hyp_p4_isLoaded;
   vector<float> mus_gfit_chi2_;
   TBranch *mus_gfit_chi2_branch;
   bool mus_gfit_chi2_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *vtxs_position_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > vtxs_position_;
   TBranch *vtxs_position_branch;
   bool vtxs_position_isLoaded;
   vector<float> pfjets_METToolbox_neutralEmE_;
@@ -1328,13 +1328,13 @@ protected:
   vector<int> mus_sta_nlayersLost_;
   TBranch *mus_sta_nlayersLost_branch;
   bool mus_sta_nlayersLost_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *svs_position_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > svs_position_;
   TBranch *svs_position_branch;
   bool svs_position_isLoaded;
   unsigned int mus_HLT_Mu17_Mu8_TrailingLeg_version_;
   TBranch *mus_HLT_Mu17_Mu8_TrailingLeg_version_branch;
   bool mus_HLT_Mu17_Mu8_TrailingLeg_version_isLoaded;
-  vector<vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > > *hlt_trigObjs_p4_;
+  vector<vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > > hlt_trigObjs_p4_;
   TBranch *hlt_trigObjs_p4_branch;
   bool hlt_trigObjs_p4_isLoaded;
   vector<float> mus_bfit_z0_;
@@ -1373,7 +1373,7 @@ protected:
   vector<int> ak8jets_partonFlavour_;
   TBranch *ak8jets_partonFlavour_branch;
   bool ak8jets_partonFlavour_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *pfjets_mc_gp_p4_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > pfjets_mc_gp_p4_;
   TBranch *pfjets_mc_gp_p4_branch;
   bool pfjets_mc_gp_p4_isLoaded;
   vector<float> els_clusterMaxDR_;
@@ -1406,7 +1406,7 @@ protected:
   vector<int> pfjets_METToolbox_chargedMultiplicity_;
   TBranch *pfjets_METToolbox_chargedMultiplicity_branch;
   bool pfjets_METToolbox_chargedMultiplicity_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *els_mc_patMatch_p4_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > els_mc_patMatch_p4_;
   TBranch *els_mc_patMatch_p4_branch;
   bool els_mc_patMatch_p4_isLoaded;
   float hcalnoise_min25GeVHitTime_;
@@ -1541,7 +1541,7 @@ protected:
   vector<int> mus_mc3idx_;
   TBranch *mus_mc3idx_branch;
   bool mus_mc3idx_isLoaded;
-  vector<vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > > *taus_pf_isocands_p4_;
+  vector<vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > > taus_pf_isocands_p4_;
   TBranch *taus_pf_isocands_p4_branch;
   bool taus_pf_isocands_p4_isLoaded;
   vector<float> mus_globalDeltaEtaPhi_;
@@ -1673,7 +1673,7 @@ protected:
   vector<float> els_clustersMeanDPhiToSeed_;
   TBranch *els_clustersMeanDPhiToSeed_branch;
   bool els_clustersMeanDPhiToSeed_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *pfjets_mc_p4_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > pfjets_mc_p4_;
   TBranch *pfjets_mc_p4_branch;
   bool pfjets_mc_p4_isLoaded;
   vector<float> photons_scSeedE2x5Top_;
@@ -1751,7 +1751,7 @@ protected:
   float hcalnoise_NegativeNoiseSumEt_;
   TBranch *hcalnoise_NegativeNoiseSumEt_branch;
   bool hcalnoise_NegativeNoiseSumEt_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *ak8jets_softdropPuppiSubjet1_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > ak8jets_softdropPuppiSubjet1_;
   TBranch *ak8jets_softdropPuppiSubjet1_branch;
   bool ak8jets_softdropPuppiSubjet1_isLoaded;
   unsigned int mus_HLT_Mu17_TkMu8_version_;
@@ -1988,7 +1988,7 @@ protected:
   vector<float> els_bs3d_;
   TBranch *els_bs3d_branch;
   bool els_bs3d_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *ak8jets_mc_gp_p4_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > ak8jets_mc_gp_p4_;
   TBranch *ak8jets_mc_gp_p4_branch;
   bool ak8jets_mc_gp_p4_isLoaded;
   float evt_kfactor_;
@@ -2033,7 +2033,7 @@ protected:
   float evt_pfmetPhi_PhotonEnDown_;
   TBranch *evt_pfmetPhi_PhotonEnDown_branch;
   bool evt_pfmetPhi_PhotonEnDown_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *els_mc_p4_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > els_mc_p4_;
   TBranch *els_mc_p4_branch;
   bool els_mc_p4_isLoaded;
   vector<float> mus_bfit_d0corrPhi_;
@@ -2090,7 +2090,7 @@ protected:
   float hcalnoise_isolatedNoiseSumE_;
   TBranch *hcalnoise_isolatedNoiseSumE_branch;
   bool hcalnoise_isolatedNoiseSumE_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *els_trk_p4_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > els_trk_p4_;
   TBranch *els_trk_p4_branch;
   bool els_trk_p4_isLoaded;
   vector<float> mus_z0corr_;
@@ -2153,7 +2153,7 @@ protected:
   vector<float> photons_mc3dr_;
   TBranch *photons_mc3dr_branch;
   bool photons_mc3dr_isLoaded;
-  vector<vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > > *taus_pf_signalcands_p4_;
+  vector<vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > > taus_pf_signalcands_p4_;
   TBranch *taus_pf_signalcands_p4_branch;
   bool taus_pf_signalcands_p4_isLoaded;
   vector<float> els_eSeedOverPOut_;
@@ -2162,7 +2162,7 @@ protected:
   vector<unsigned int> els_HLT_Ele17_CaloIdM_TrackIdM_PFJet30_ElectronLeg_;
   TBranch *els_HLT_Ele17_CaloIdM_TrackIdM_PFJet30_ElectronLeg_branch;
   bool els_HLT_Ele17_CaloIdM_TrackIdM_PFJet30_ElectronLeg_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *mus_bfit_vertex_p4_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > mus_bfit_vertex_p4_;
   TBranch *mus_bfit_vertex_p4_branch;
   bool mus_bfit_vertex_p4_isLoaded;
   float evt_bs_dydzErr_;
@@ -2186,7 +2186,7 @@ protected:
   vector<int> pfjets_mc_id_;
   TBranch *pfjets_mc_id_branch;
   bool pfjets_mc_id_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *mus_mc_patMatch_p4_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > mus_mc_patMatch_p4_;
   TBranch *mus_mc_patMatch_p4_branch;
   bool mus_mc_patMatch_p4_isLoaded;
   vector<float> isotracks_puppiWeight_;
@@ -2327,7 +2327,7 @@ protected:
   float evt_bField_;
   TBranch *evt_bField_branch;
   bool evt_bField_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *genps_prod_vtx_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > genps_prod_vtx_;
   TBranch *genps_prod_vtx_branch;
   bool genps_prod_vtx_isLoaded;
   float sparm_filterEfficiency_;
@@ -2336,10 +2336,10 @@ protected:
   vector<float> mus_isoMeanDRR04_pf_ChargedHadronPt_;
   TBranch *mus_isoMeanDRR04_pf_ChargedHadronPt_branch;
   bool mus_isoMeanDRR04_pf_ChargedHadronPt_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *els_trk_vertex_p4_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > els_trk_vertex_p4_;
   TBranch *els_trk_vertex_p4_branch;
   bool els_trk_vertex_p4_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *genps_p4_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > genps_p4_;
   TBranch *genps_p4_branch;
   bool genps_p4_isLoaded;
   vector<float> els_eSC_;
@@ -2369,7 +2369,7 @@ protected:
   vector<unsigned int> els_HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_;
   TBranch *els_HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_branch;
   bool els_HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *els_mc_motherp4_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > els_mc_motherp4_;
   TBranch *els_mc_motherp4_branch;
   bool els_mc_motherp4_isLoaded;
   vector<float> pfjets_METToolbox_muonE_;
@@ -2387,7 +2387,7 @@ protected:
   vector<int> els_passVIDTrigMvaWP90Id_;
   TBranch *els_passVIDTrigMvaWP90Id_branch;
   bool els_passVIDTrigMvaWP90Id_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *mus_vertex_p4_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > mus_vertex_p4_;
   TBranch *mus_vertex_p4_branch;
   bool mus_vertex_p4_isLoaded;
   int hcalnoise_numFlatNoiseChannels_;
@@ -2681,7 +2681,7 @@ protected:
   vector<float> els_r9_;
   TBranch *els_r9_branch;
   bool els_r9_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *mus_p4_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > mus_p4_;
   TBranch *mus_p4_branch;
   bool mus_p4_isLoaded;
   vector<float> els_scSeedCryIy_;
@@ -2810,7 +2810,7 @@ protected:
   float sparm_weight_;
   TBranch *sparm_weight_branch;
   bool sparm_weight_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *mus_sta_p4_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > mus_sta_p4_;
   TBranch *mus_sta_p4_branch;
   bool mus_sta_p4_isLoaded;
   vector<float> ak8jets_nJettinessTau1_;
@@ -2831,7 +2831,7 @@ protected:
   vector<float> els_hcalIso_;
   TBranch *els_hcalIso_branch;
   bool els_hcalIso_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *ak8jets_mc_p4_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > ak8jets_mc_p4_;
   TBranch *ak8jets_mc_p4_branch;
   bool ak8jets_mc_p4_isLoaded;
   vector<vector<float> > els_clusterDPhiToCentroid_;
@@ -2903,7 +2903,7 @@ protected:
   vector<float> els_fbrem_;
   TBranch *els_fbrem_branch;
   bool els_fbrem_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *pfcands_p4_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > pfcands_p4_;
   TBranch *pfcands_p4_branch;
   bool pfcands_p4_isLoaded;
   vector<int> pfjets_mc_motherid_;
@@ -3029,7 +3029,7 @@ protected:
   vector<float> vtxs_chi2_;
   TBranch *vtxs_chi2_branch;
   bool vtxs_chi2_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *mus_gfit_vertex_p4_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > mus_gfit_vertex_p4_;
   TBranch *mus_gfit_vertex_p4_branch;
   bool mus_gfit_vertex_p4_isLoaded;
   vector<float> els_scSeedE2x5Bottom_;
@@ -3056,7 +3056,7 @@ protected:
   unsigned int evt_nels_;
   TBranch *evt_nels_branch;
   bool evt_nels_isLoaded;
-  vector<vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > > *genps_lepdaughter_p4_;
+  vector<vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > > genps_lepdaughter_p4_;
   TBranch *genps_lepdaughter_p4_branch;
   bool genps_lepdaughter_p4_isLoaded;
   vector<bool> genps_isPromptDecayed_;
@@ -3125,7 +3125,7 @@ protected:
   vector<float> mus_isoR03_pf_PhotonEt_;
   TBranch *mus_isoR03_pf_PhotonEt_branch;
   bool mus_isoR03_pf_PhotonEt_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *taus_pf_lead_chargecand_p4_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > taus_pf_lead_chargecand_p4_;
   TBranch *taus_pf_lead_chargecand_p4_branch;
   bool taus_pf_lead_chargecand_p4_isLoaded;
   vector<float> mus_sta_qoverp_;
@@ -3194,7 +3194,7 @@ protected:
   vector<float> svs_xError_;
   TBranch *svs_xError_branch;
   bool svs_xError_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *els_p4Out_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > els_p4Out_;
   TBranch *els_p4Out_branch;
   bool els_p4Out_isLoaded;
   float evt_fixgridfastjet_allcalo_rho_;
@@ -3227,7 +3227,7 @@ protected:
   vector<float> photons_scSeedCryX_;
   TBranch *photons_scSeedCryX_branch;
   bool photons_scSeedCryX_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *hyp_ll_p4_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > hyp_ll_p4_;
   TBranch *hyp_ll_p4_branch;
   bool hyp_ll_p4_isLoaded;
   vector<float> mus_isoMeanDRR04_pf_NeutralHadronEtHighThreshold_;
@@ -3236,7 +3236,7 @@ protected:
   vector<int> els_VIDNonTrigMvaCat_;
   TBranch *els_VIDNonTrigMvaCat_branch;
   bool els_VIDNonTrigMvaCat_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *ak8jets_softdropPuppiSubjet2_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > ak8jets_softdropPuppiSubjet2_;
   TBranch *ak8jets_softdropPuppiSubjet2_branch;
   bool ak8jets_softdropPuppiSubjet2_isLoaded;
   float evt_pfmetPhi_TauEnDown_;
@@ -3347,7 +3347,7 @@ protected:
   float evt_pfmet_PhotonEnUp_;
   TBranch *evt_pfmet_PhotonEnUp_branch;
   bool evt_pfmet_PhotonEnUp_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *photons_p4_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > photons_p4_;
   TBranch *photons_p4_branch;
   bool photons_p4_isLoaded;
   vector<unsigned int> els_HLT_Ele5_SC5_JPsi_Mass2to4p5_;
@@ -3446,7 +3446,7 @@ protected:
   unsigned int els_HLT_Ele27_WP80_L1sL1SingleEG20ORL1SingleEG22_version_;
   TBranch *els_HLT_Ele27_WP80_L1sL1SingleEG20ORL1SingleEG22_version_branch;
   bool els_HLT_Ele27_WP80_L1sL1SingleEG20ORL1SingleEG22_version_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *els_vertex_p4_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > els_vertex_p4_;
   TBranch *els_vertex_p4_branch;
   bool els_vertex_p4_isLoaded;
   vector<int> mus_timeNumStationsUsed_;
@@ -3515,7 +3515,7 @@ protected:
   vector<float> els_sigmaIPhiIPhi_full5x5_;
   TBranch *els_sigmaIPhiIPhi_full5x5_branch;
   bool els_sigmaIPhiIPhi_full5x5_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *isotracks_p4_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > isotracks_p4_;
   TBranch *isotracks_p4_branch;
   bool isotracks_p4_isLoaded;
   vector<float> genps_iso_;
@@ -3536,7 +3536,7 @@ protected:
   vector<int> els_mc3_id_;
   TBranch *els_mc3_id_branch;
   bool els_mc3_id_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *els_p4In_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > els_p4In_;
   TBranch *els_p4In_branch;
   bool els_p4In_isLoaded;
   vector<float> els_hcalPFClusterIso_;
@@ -3575,7 +3575,7 @@ protected:
   vector<float> pfjets_METToolbox_photonE_;
   TBranch *pfjets_METToolbox_photonE_branch;
   bool pfjets_METToolbox_photonE_isLoaded;
-  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *mus_trk_p4_;
+  vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > mus_trk_p4_;
   TBranch *mus_trk_p4_branch;
   bool mus_trk_p4_isLoaded;
   vector<unsigned int> els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV0p5PF_ElectronLeg_;

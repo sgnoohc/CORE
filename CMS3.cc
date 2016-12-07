@@ -8764,7 +8764,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::m
     }
     mus_gfit_p4_isLoaded = true;
   }
-  return *mus_gfit_p4_;
+  return mus_gfit_p4_;
 }
 const float &CMS3::hcalnoise_max25GeVHitTime() {
   if (not hcalnoise_max25GeVHitTime_isLoaded) {
@@ -8980,7 +8980,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::m
     }
     mus_sta_vertex_p4_isLoaded = true;
   }
-  return *mus_sta_vertex_p4_;
+  return mus_sta_vertex_p4_;
 }
 const float &CMS3::evt_filt_eff() {
   if (not evt_filt_eff_isLoaded) {
@@ -9172,7 +9172,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::g
     }
     genjets_p4NoMuNoNu_isLoaded = true;
   }
-  return *genjets_p4NoMuNoNu_;
+  return genjets_p4NoMuNoNu_;
 }
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::els_p4() {
   if (not els_p4_isLoaded) {
@@ -9184,7 +9184,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::e
     }
     els_p4_isLoaded = true;
   }
-  return *els_p4_;
+  return els_p4_;
 }
 const vector<float> &CMS3::photons_scPreshowerEnergyPlane1() {
   if (not photons_scPreshowerEnergyPlane1_isLoaded) {
@@ -9484,7 +9484,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::t
     }
     taus_pf_p4_isLoaded = true;
   }
-  return *taus_pf_p4_;
+  return taus_pf_p4_;
 }
 const vector<unsigned int> &CMS3::mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_TrailingLeg() {
   if (not mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_TrailingLeg_isLoaded) {
@@ -9508,7 +9508,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::t
     }
     taus_pf_lead_neutrcand_p4_isLoaded = true;
   }
-  return *taus_pf_lead_neutrcand_p4_;
+  return taus_pf_lead_neutrcand_p4_;
 }
 const vector<float> &CMS3::els_e2x5Max_full5x5() {
   if (not els_e2x5Max_full5x5_isLoaded) {
@@ -9676,7 +9676,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::m
     }
     mus_mc_motherp4_isLoaded = true;
   }
-  return *mus_mc_motherp4_;
+  return mus_mc_motherp4_;
 }
 const vector<int> &CMS3::mus_sta_phiErr() {
   if (not mus_sta_phiErr_isLoaded) {
@@ -10000,7 +10000,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::h
     }
     hyp_lt_p4_isLoaded = true;
   }
-  return *hyp_lt_p4_;
+  return hyp_lt_p4_;
 }
 const vector<float> &CMS3::pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag() {
   if (not pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag_isLoaded) {
@@ -10384,7 +10384,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::m
     }
     mus_mc_p4_isLoaded = true;
   }
-  return *mus_mc_p4_;
+  return mus_mc_p4_;
 }
 const vector<float> &CMS3::els_ptErrGsf() {
   if (not els_ptErrGsf_isLoaded) {
@@ -10600,7 +10600,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::p
     }
     pfjets_p4_isLoaded = true;
   }
-  return *pfjets_p4_;
+  return pfjets_p4_;
 }
 const vector<unsigned int> &CMS3::els_HLT_Ele20_SC4_Mass50_TrailingLeg() {
   if (not els_HLT_Ele20_SC4_Mass50_TrailingLeg_isLoaded) {
@@ -10960,7 +10960,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::m
     }
     mus_bfit_p4_isLoaded = true;
   }
-  return *mus_bfit_p4_;
+  return mus_bfit_p4_;
 }
 const vector<bool> &CMS3::pfcands_isStandAloneMuon() {
   if (not pfcands_isStandAloneMuon_isLoaded) {
@@ -11488,7 +11488,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::p
     }
     photons_mc_motherp4_isLoaded = true;
   }
-  return *photons_mc_motherp4_;
+  return photons_mc_motherp4_;
 }
 const vector<int> &CMS3::mus_gfit_validHits() {
   if (not mus_gfit_validHits_isLoaded) {
@@ -11596,7 +11596,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::p
     }
     photons_mc_p4_isLoaded = true;
   }
-  return *photons_mc_p4_;
+  return photons_mc_p4_;
 }
 const vector<float> &CMS3::mus_isoSumDRR04_pf_ChargedHadronPt() {
   if (not mus_isoSumDRR04_pf_ChargedHadronPt_isLoaded) {
@@ -11656,7 +11656,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::p
     }
     pfjets_mc_motherp4_isLoaded = true;
   }
-  return *pfjets_mc_motherp4_;
+  return pfjets_mc_motherp4_;
 }
 const float &CMS3::evt_puppi_pfmetPhi() {
   if (not evt_puppi_pfmetPhi_isLoaded) {
@@ -11764,7 +11764,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::p
     }
     pfjets_puppi_p4_isLoaded = true;
   }
-  return *pfjets_puppi_p4_;
+  return pfjets_puppi_p4_;
 }
 const vector<int> &CMS3::mus_trk_charge() {
   if (not mus_trk_charge_isLoaded) {
@@ -12292,7 +12292,7 @@ const ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > &CMS3::evt_bsp4()
     }
     evt_bsp4_isLoaded = true;
   }
-  return *evt_bsp4_;
+  return evt_bsp4_;
 }
 const unsigned int &CMS3::els_HLT_Ele25WP60_SC4_Mass55_version() {
   if (not els_HLT_Ele25WP60_SC4_Mass55_version_isLoaded) {
@@ -12532,7 +12532,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::s
     }
     svs_p4_isLoaded = true;
   }
-  return *svs_p4_;
+  return svs_p4_;
 }
 const vector<float> &CMS3::mus_sta_qoverpError() {
   if (not mus_sta_qoverpError_isLoaded) {
@@ -12736,7 +12736,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::a
     }
     ak8jets_p4_isLoaded = true;
   }
-  return *ak8jets_p4_;
+  return ak8jets_p4_;
 }
 const vector<int> &CMS3::isotracks_charge() {
   if (not isotracks_charge_isLoaded) {
@@ -13168,7 +13168,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::p
     }
     pfjets_METToolbox_p4_isLoaded = true;
   }
-  return *pfjets_METToolbox_p4_;
+  return pfjets_METToolbox_p4_;
 }
 const vector<int> &CMS3::mus_gfit_exp_innerlayer() {
   if (not mus_gfit_exp_innerlayer_isLoaded) {
@@ -13600,7 +13600,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::m
     }
     mus_pfp4_isLoaded = true;
   }
-  return *mus_pfp4_;
+  return mus_pfp4_;
 }
 const vector<unsigned int> &CMS3::mus_HLT_Mu17_Mu8_L1sL1DoubleMu10MuOpen() {
   if (not mus_HLT_Mu17_Mu8_L1sL1DoubleMu10MuOpen_isLoaded) {
@@ -13732,7 +13732,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::h
     }
     hyp_p4_isLoaded = true;
   }
-  return *hyp_p4_;
+  return hyp_p4_;
 }
 const vector<float> &CMS3::mus_gfit_chi2() {
   if (not mus_gfit_chi2_isLoaded) {
@@ -13756,7 +13756,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::v
     }
     vtxs_position_isLoaded = true;
   }
-  return *vtxs_position_;
+  return vtxs_position_;
 }
 const vector<float> &CMS3::pfjets_METToolbox_neutralEmE() {
   if (not pfjets_METToolbox_neutralEmE_isLoaded) {
@@ -13864,7 +13864,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::s
     }
     svs_position_isLoaded = true;
   }
-  return *svs_position_;
+  return svs_position_;
 }
 const unsigned int &CMS3::mus_HLT_Mu17_Mu8_TrailingLeg_version() {
   if (not mus_HLT_Mu17_Mu8_TrailingLeg_version_isLoaded) {
@@ -13888,7 +13888,7 @@ const vector<vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > >
     }
     hlt_trigObjs_p4_isLoaded = true;
   }
-  return *hlt_trigObjs_p4_;
+  return hlt_trigObjs_p4_;
 }
 const vector<float> &CMS3::mus_bfit_z0() {
   if (not mus_bfit_z0_isLoaded) {
@@ -14044,7 +14044,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::p
     }
     pfjets_mc_gp_p4_isLoaded = true;
   }
-  return *pfjets_mc_gp_p4_;
+  return pfjets_mc_gp_p4_;
 }
 const vector<float> &CMS3::els_clusterMaxDR() {
   if (not els_clusterMaxDR_isLoaded) {
@@ -14176,7 +14176,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::e
     }
     els_mc_patMatch_p4_isLoaded = true;
   }
-  return *els_mc_patMatch_p4_;
+  return els_mc_patMatch_p4_;
 }
 const float &CMS3::hcalnoise_min25GeVHitTime() {
   if (not hcalnoise_min25GeVHitTime_isLoaded) {
@@ -14716,7 +14716,7 @@ const vector<vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > >
     }
     taus_pf_isocands_p4_isLoaded = true;
   }
-  return *taus_pf_isocands_p4_;
+  return taus_pf_isocands_p4_;
 }
 const vector<float> &CMS3::mus_globalDeltaEtaPhi() {
   if (not mus_globalDeltaEtaPhi_isLoaded) {
@@ -15244,7 +15244,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::p
     }
     pfjets_mc_p4_isLoaded = true;
   }
-  return *pfjets_mc_p4_;
+  return pfjets_mc_p4_;
 }
 const vector<float> &CMS3::photons_scSeedE2x5Top() {
   if (not photons_scSeedE2x5Top_isLoaded) {
@@ -15556,7 +15556,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::a
     }
     ak8jets_softdropPuppiSubjet1_isLoaded = true;
   }
-  return *ak8jets_softdropPuppiSubjet1_;
+  return ak8jets_softdropPuppiSubjet1_;
 }
 const unsigned int &CMS3::mus_HLT_Mu17_TkMu8_version() {
   if (not mus_HLT_Mu17_TkMu8_version_isLoaded) {
@@ -16504,7 +16504,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::a
     }
     ak8jets_mc_gp_p4_isLoaded = true;
   }
-  return *ak8jets_mc_gp_p4_;
+  return ak8jets_mc_gp_p4_;
 }
 const float &CMS3::evt_kfactor() {
   if (not evt_kfactor_isLoaded) {
@@ -16684,7 +16684,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::e
     }
     els_mc_p4_isLoaded = true;
   }
-  return *els_mc_p4_;
+  return els_mc_p4_;
 }
 const vector<float> &CMS3::mus_bfit_d0corrPhi() {
   if (not mus_bfit_d0corrPhi_isLoaded) {
@@ -16912,7 +16912,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::e
     }
     els_trk_p4_isLoaded = true;
   }
-  return *els_trk_p4_;
+  return els_trk_p4_;
 }
 const vector<float> &CMS3::mus_z0corr() {
   if (not mus_z0corr_isLoaded) {
@@ -17164,7 +17164,7 @@ const vector<vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > >
     }
     taus_pf_signalcands_p4_isLoaded = true;
   }
-  return *taus_pf_signalcands_p4_;
+  return taus_pf_signalcands_p4_;
 }
 const vector<float> &CMS3::els_eSeedOverPOut() {
   if (not els_eSeedOverPOut_isLoaded) {
@@ -17200,7 +17200,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::m
     }
     mus_bfit_vertex_p4_isLoaded = true;
   }
-  return *mus_bfit_vertex_p4_;
+  return mus_bfit_vertex_p4_;
 }
 const float &CMS3::evt_bs_dydzErr() {
   if (not evt_bs_dydzErr_isLoaded) {
@@ -17296,7 +17296,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::m
     }
     mus_mc_patMatch_p4_isLoaded = true;
   }
-  return *mus_mc_patMatch_p4_;
+  return mus_mc_patMatch_p4_;
 }
 const vector<float> &CMS3::isotracks_puppiWeight() {
   if (not isotracks_puppiWeight_isLoaded) {
@@ -17860,7 +17860,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::g
     }
     genps_prod_vtx_isLoaded = true;
   }
-  return *genps_prod_vtx_;
+  return genps_prod_vtx_;
 }
 const float &CMS3::sparm_filterEfficiency() {
   if (not sparm_filterEfficiency_isLoaded) {
@@ -17896,7 +17896,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::e
     }
     els_trk_vertex_p4_isLoaded = true;
   }
-  return *els_trk_vertex_p4_;
+  return els_trk_vertex_p4_;
 }
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::genps_p4() {
   if (not genps_p4_isLoaded) {
@@ -17908,7 +17908,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::g
     }
     genps_p4_isLoaded = true;
   }
-  return *genps_p4_;
+  return genps_p4_;
 }
 const vector<float> &CMS3::els_eSC() {
   if (not els_eSC_isLoaded) {
@@ -18028,7 +18028,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::e
     }
     els_mc_motherp4_isLoaded = true;
   }
-  return *els_mc_motherp4_;
+  return els_mc_motherp4_;
 }
 const vector<float> &CMS3::pfjets_METToolbox_muonE() {
   if (not pfjets_METToolbox_muonE_isLoaded) {
@@ -18100,7 +18100,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::m
     }
     mus_vertex_p4_isLoaded = true;
   }
-  return *mus_vertex_p4_;
+  return mus_vertex_p4_;
 }
 const int &CMS3::hcalnoise_numFlatNoiseChannels() {
   if (not hcalnoise_numFlatNoiseChannels_isLoaded) {
@@ -19276,7 +19276,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::m
     }
     mus_p4_isLoaded = true;
   }
-  return *mus_p4_;
+  return mus_p4_;
 }
 const vector<float> &CMS3::els_scSeedCryIy() {
   if (not els_scSeedCryIy_isLoaded) {
@@ -19792,7 +19792,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::m
     }
     mus_sta_p4_isLoaded = true;
   }
-  return *mus_sta_p4_;
+  return mus_sta_p4_;
 }
 const vector<float> &CMS3::ak8jets_nJettinessTau1() {
   if (not ak8jets_nJettinessTau1_isLoaded) {
@@ -19876,7 +19876,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::a
     }
     ak8jets_mc_p4_isLoaded = true;
   }
-  return *ak8jets_mc_p4_;
+  return ak8jets_mc_p4_;
 }
 const vector<vector<float> > &CMS3::els_clusterDPhiToCentroid() {
   if (not els_clusterDPhiToCentroid_isLoaded) {
@@ -20164,7 +20164,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::p
     }
     pfcands_p4_isLoaded = true;
   }
-  return *pfcands_p4_;
+  return pfcands_p4_;
 }
 const vector<int> &CMS3::pfjets_mc_motherid() {
   if (not pfjets_mc_motherid_isLoaded) {
@@ -20668,7 +20668,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::m
     }
     mus_gfit_vertex_p4_isLoaded = true;
   }
-  return *mus_gfit_vertex_p4_;
+  return mus_gfit_vertex_p4_;
 }
 const vector<float> &CMS3::els_scSeedE2x5Bottom() {
   if (not els_scSeedE2x5Bottom_isLoaded) {
@@ -20776,7 +20776,7 @@ const vector<vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > >
     }
     genps_lepdaughter_p4_isLoaded = true;
   }
-  return *genps_lepdaughter_p4_;
+  return genps_lepdaughter_p4_;
 }
 const vector<bool> &CMS3::genps_isPromptDecayed() {
   if (not genps_isPromptDecayed_isLoaded) {
@@ -21052,7 +21052,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::t
     }
     taus_pf_lead_chargecand_p4_isLoaded = true;
   }
-  return *taus_pf_lead_chargecand_p4_;
+  return taus_pf_lead_chargecand_p4_;
 }
 const vector<float> &CMS3::mus_sta_qoverp() {
   if (not mus_sta_qoverp_isLoaded) {
@@ -21328,7 +21328,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::e
     }
     els_p4Out_isLoaded = true;
   }
-  return *els_p4Out_;
+  return els_p4Out_;
 }
 const float &CMS3::evt_fixgridfastjet_allcalo_rho() {
   if (not evt_fixgridfastjet_allcalo_rho_isLoaded) {
@@ -21460,7 +21460,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::h
     }
     hyp_ll_p4_isLoaded = true;
   }
-  return *hyp_ll_p4_;
+  return hyp_ll_p4_;
 }
 const vector<float> &CMS3::mus_isoMeanDRR04_pf_NeutralHadronEtHighThreshold() {
   if (not mus_isoMeanDRR04_pf_NeutralHadronEtHighThreshold_isLoaded) {
@@ -21496,7 +21496,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::a
     }
     ak8jets_softdropPuppiSubjet2_isLoaded = true;
   }
-  return *ak8jets_softdropPuppiSubjet2_;
+  return ak8jets_softdropPuppiSubjet2_;
 }
 const float &CMS3::evt_pfmetPhi_TauEnDown() {
   if (not evt_pfmetPhi_TauEnDown_isLoaded) {
@@ -21942,7 +21942,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::p
     }
     photons_p4_isLoaded = true;
   }
-  return *photons_p4_;
+  return photons_p4_;
 }
 const vector<unsigned int> &CMS3::els_HLT_Ele5_SC5_JPsi_Mass2to4p5() {
   if (not els_HLT_Ele5_SC5_JPsi_Mass2to4p5_isLoaded) {
@@ -22338,7 +22338,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::e
     }
     els_vertex_p4_isLoaded = true;
   }
-  return *els_vertex_p4_;
+  return els_vertex_p4_;
 }
 const vector<int> &CMS3::mus_timeNumStationsUsed() {
   if (not mus_timeNumStationsUsed_isLoaded) {
@@ -22614,7 +22614,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::i
     }
     isotracks_p4_isLoaded = true;
   }
-  return *isotracks_p4_;
+  return isotracks_p4_;
 }
 const vector<float> &CMS3::genps_iso() {
   if (not genps_iso_isLoaded) {
@@ -22698,7 +22698,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::e
     }
     els_p4In_isLoaded = true;
   }
-  return *els_p4In_;
+  return els_p4In_;
 }
 const vector<float> &CMS3::els_hcalPFClusterIso() {
   if (not els_hcalPFClusterIso_isLoaded) {
@@ -22854,7 +22854,7 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::m
     }
     mus_trk_p4_isLoaded = true;
   }
-  return *mus_trk_p4_;
+  return mus_trk_p4_;
 }
 const vector<unsigned int> &CMS3::els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV0p5PF_ElectronLeg() {
   if (not els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV0p5PF_ElectronLeg_isLoaded) {
