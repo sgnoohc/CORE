@@ -261,6 +261,7 @@ bool passMuonSelection_ZMET_v1(int index, bool vetoTransition, bool eta24 ){
   return true;
 }
 
+//278820 start or 2016G
 bool passMuonSelection_ZMET_veto_v3(int index, bool vetoTransition, bool eta24 ){
   if( cms3.evt_isRealData() ){
 	if( cms3.evt_run() >= 278820 ) return passMuonSelection_ZMET_veto_v1( index, false, true );
@@ -374,7 +375,7 @@ float mbb_highest_csv(vector <LorentzVector> jets_p4, vector<float> jets_csv){
 
 	vector <pair<LorentzVector, float>> jet_csv_pairs;
 	for( size_t jetind = 0; jetind < jets_p4.size(); jetind++ ){
-	  if( jets_csv.at(jetind) > 0.800){
+	  if( jets_csv.at(jetind) > 0.8484){
 		jet_csv_pairs.push_back(make_pair(jets_p4.at(jetind),jets_csv.at(jetind)));
 	  }
 	}
