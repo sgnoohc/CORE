@@ -151,7 +151,20 @@ bool passElectronSelection_ZMET_thirdlepton_v1(int index, bool vetoTransition, b
 //Muon selections//
 //~-~-~-~-~-~-~-~//
 bool passMuonSelection_ZMET(int index ){
-  return passMuonSelection_ZMET_v5( index, true, true );
+  return passMuonSelection_ZMET_v7( index, true, true );
+}
+
+//278820 start or 2016G
+bool passMuonSelection_ZMET_v7(int index, bool vetoTransition, bool eta24 ){
+  if( cms3.evt_isRealData() ){
+	if( cms3.evt_run() >= 278820 ) return passMuonSelection_ZMET_v5( index, true, true );
+	if( cms3.evt_run() <  278820 ) return passMuonSelection_ZMET_v6( index, true, true );
+  }
+  else{
+	return passMuonSelection_ZMET_v5( index, true, true );
+  }
+  cout<<"Warning! Muon ID selection should not get here. Please check the selection."<<endl;
+  return false;
 }
 
 bool passMuonSelection_ZMET_v6(int index, bool vetoTransition, bool eta24 ){
@@ -248,7 +261,19 @@ bool passMuonSelection_ZMET_v1(int index, bool vetoTransition, bool eta24 ){
   return true;
 }
 
-// veto selection to be used on 3rd lepton to compare with edge/multilepton group
+bool passMuonSelection_ZMET_veto_v3(int index, bool vetoTransition, bool eta24 ){
+  if( cms3.evt_isRealData() ){
+	if( cms3.evt_run() >= 278820 ) return passMuonSelection_ZMET_veto_v1( index, false, true );
+	if( cms3.evt_run() <  278820 ) return passMuonSelection_ZMET_veto_v2( index, false, true );
+  }
+  else{
+	return passMuonSelection_ZMET_veto_v1( index, false, true );
+  }
+  cout<<"Warning! Muon ID selection should not get here. Please check the selection."<<endl;
+  return false;
+}
+
+  // veto selection to be used on 3rd lepton to compare with edge/multilepton group
 bool passMuonSelection_ZMET_veto_v2(int index, bool vetoTransition, bool eta24 ){
   if( fabs(cms3.mus_p4().at(index).pt()) < 10.0       ) return false; // pT > 10 GeV - Minimum pT cut
   if( vetoTransition
