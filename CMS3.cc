@@ -117,11 +117,6 @@ void CMS3::Init(TTree *tree) {
     svs_position_branch = tree->GetBranch(tree->GetAlias("svs_position"));
     if (svs_position_branch) { svs_position_branch->SetAddress(&svs_position_); }
   }
-  hlt_trigObjs_p4_branch = 0;
-  if (tree->GetAlias("hlt_trigObjs_p4") != 0) {
-    hlt_trigObjs_p4_branch = tree->GetBranch(tree->GetAlias("hlt_trigObjs_p4"));
-    if (hlt_trigObjs_p4_branch) { hlt_trigObjs_p4_branch->SetAddress(&hlt_trigObjs_p4_); }
-  }
   pfjets_mc_gp_p4_branch = 0;
   if (tree->GetAlias("pfjets_mc_gp_p4") != 0) {
     pfjets_mc_gp_p4_branch = tree->GetBranch(tree->GetAlias("pfjets_mc_gp_p4"));
@@ -131,11 +126,6 @@ void CMS3::Init(TTree *tree) {
   if (tree->GetAlias("els_mc_patMatch_p4") != 0) {
     els_mc_patMatch_p4_branch = tree->GetBranch(tree->GetAlias("els_mc_patMatch_p4"));
     if (els_mc_patMatch_p4_branch) { els_mc_patMatch_p4_branch->SetAddress(&els_mc_patMatch_p4_); }
-  }
-  taus_pf_isocands_p4_branch = 0;
-  if (tree->GetAlias("taus_pf_isocands_p4") != 0) {
-    taus_pf_isocands_p4_branch = tree->GetBranch(tree->GetAlias("taus_pf_isocands_p4"));
-    if (taus_pf_isocands_p4_branch) { taus_pf_isocands_p4_branch->SetAddress(&taus_pf_isocands_p4_); }
   }
   pfjets_mc_p4_branch = 0;
   if (tree->GetAlias("pfjets_mc_p4") != 0) {
@@ -161,11 +151,6 @@ void CMS3::Init(TTree *tree) {
   if (tree->GetAlias("els_trk_p4") != 0) {
     els_trk_p4_branch = tree->GetBranch(tree->GetAlias("els_trk_p4"));
     if (els_trk_p4_branch) { els_trk_p4_branch->SetAddress(&els_trk_p4_); }
-  }
-  taus_pf_signalcands_p4_branch = 0;
-  if (tree->GetAlias("taus_pf_signalcands_p4") != 0) {
-    taus_pf_signalcands_p4_branch = tree->GetBranch(tree->GetAlias("taus_pf_signalcands_p4"));
-    if (taus_pf_signalcands_p4_branch) { taus_pf_signalcands_p4_branch->SetAddress(&taus_pf_signalcands_p4_); }
   }
   mus_bfit_vertex_p4_branch = 0;
   if (tree->GetAlias("mus_bfit_vertex_p4") != 0) {
@@ -226,11 +211,6 @@ void CMS3::Init(TTree *tree) {
   if (tree->GetAlias("mus_gfit_vertex_p4") != 0) {
     mus_gfit_vertex_p4_branch = tree->GetBranch(tree->GetAlias("mus_gfit_vertex_p4"));
     if (mus_gfit_vertex_p4_branch) { mus_gfit_vertex_p4_branch->SetAddress(&mus_gfit_vertex_p4_); }
-  }
-  genps_lepdaughter_p4_branch = 0;
-  if (tree->GetAlias("genps_lepdaughter_p4") != 0) {
-    genps_lepdaughter_p4_branch = tree->GetBranch(tree->GetAlias("genps_lepdaughter_p4"));
-    if (genps_lepdaughter_p4_branch) { genps_lepdaughter_p4_branch->SetAddress(&genps_lepdaughter_p4_); }
   }
   taus_pf_lead_chargecand_p4_branch = 0;
   if (tree->GetAlias("taus_pf_lead_chargecand_p4") != 0) {
@@ -2358,6 +2338,11 @@ void CMS3::Init(TTree *tree) {
     mus_HLT_Mu17_Mu8_TrailingLeg_version_branch = tree->GetBranch(tree->GetAlias("mus_HLT_Mu17_Mu8_TrailingLeg_version"));
     if (mus_HLT_Mu17_Mu8_TrailingLeg_version_branch) { mus_HLT_Mu17_Mu8_TrailingLeg_version_branch->SetAddress(&mus_HLT_Mu17_Mu8_TrailingLeg_version_); }
   }
+  hlt_trigObjs_p4_branch = 0;
+  if (tree->GetAlias("hlt_trigObjs_p4") != 0) {
+    hlt_trigObjs_p4_branch = tree->GetBranch(tree->GetAlias("hlt_trigObjs_p4"));
+    if (hlt_trigObjs_p4_branch) { hlt_trigObjs_p4_branch->SetAddress(&hlt_trigObjs_p4_); }
+  }
   mus_bfit_z0_branch = 0;
   if (tree->GetAlias("mus_bfit_z0") != 0) {
     mus_bfit_z0_branch = tree->GetBranch(tree->GetAlias("mus_bfit_z0"));
@@ -2687,6 +2672,11 @@ void CMS3::Init(TTree *tree) {
   if (tree->GetAlias("mus_mc3idx") != 0) {
     mus_mc3idx_branch = tree->GetBranch(tree->GetAlias("mus_mc3idx"));
     if (mus_mc3idx_branch) { mus_mc3idx_branch->SetAddress(&mus_mc3idx_); }
+  }
+  taus_pf_isocands_p4_branch = 0;
+  if (tree->GetAlias("taus_pf_isocands_p4") != 0) {
+    taus_pf_isocands_p4_branch = tree->GetBranch(tree->GetAlias("taus_pf_isocands_p4"));
+    if (taus_pf_isocands_p4_branch) { taus_pf_isocands_p4_branch->SetAddress(&taus_pf_isocands_p4_); }
   }
   mus_globalDeltaEtaPhi_branch = 0;
   if (tree->GetAlias("mus_globalDeltaEtaPhi") != 0) {
@@ -3677,6 +3667,11 @@ void CMS3::Init(TTree *tree) {
   if (tree->GetAlias("photons_mc3dr") != 0) {
     photons_mc3dr_branch = tree->GetBranch(tree->GetAlias("photons_mc3dr"));
     if (photons_mc3dr_branch) { photons_mc3dr_branch->SetAddress(&photons_mc3dr_); }
+  }
+  taus_pf_signalcands_p4_branch = 0;
+  if (tree->GetAlias("taus_pf_signalcands_p4") != 0) {
+    taus_pf_signalcands_p4_branch = tree->GetBranch(tree->GetAlias("taus_pf_signalcands_p4"));
+    if (taus_pf_signalcands_p4_branch) { taus_pf_signalcands_p4_branch->SetAddress(&taus_pf_signalcands_p4_); }
   }
   els_eSeedOverPOut_branch = 0;
   if (tree->GetAlias("els_eSeedOverPOut") != 0) {
@@ -5117,6 +5112,11 @@ void CMS3::Init(TTree *tree) {
   if (tree->GetAlias("evt_nels") != 0) {
     evt_nels_branch = tree->GetBranch(tree->GetAlias("evt_nels"));
     if (evt_nels_branch) { evt_nels_branch->SetAddress(&evt_nels_); }
+  }
+  genps_lepdaughter_p4_branch = 0;
+  if (tree->GetAlias("genps_lepdaughter_p4") != 0) {
+    genps_lepdaughter_p4_branch = tree->GetBranch(tree->GetAlias("genps_lepdaughter_p4"));
+    if (genps_lepdaughter_p4_branch) { genps_lepdaughter_p4_branch->SetAddress(&genps_lepdaughter_p4_); }
   }
   genps_isPromptDecayed_branch = 0;
   if (tree->GetAlias("genps_isPromptDecayed") != 0) {
