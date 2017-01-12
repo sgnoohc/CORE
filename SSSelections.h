@@ -16,7 +16,7 @@
 const static float ptCutHigh = 25.;
 const static int   ssWhichCorr = 2;
 const static int   ssEAversion = 1;
-const static float btagCut = 0.800; // CSVv2M https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation76X
+const static float btagCut = 0.8484; // CSVv2M https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation80XReReco
 
 float ptCutLowAG(int id);
 
