@@ -111,7 +111,7 @@ double MT2J(
   const ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > p4_lepton_1,
   const ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > p4_lepton_2,
   const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > vect_p4_jets,
-  float,
+  float invisible_particle_mass,
   enum enum_mt2_method method_mt2,
   bool
 ){
@@ -125,7 +125,7 @@ double MT2J(
     if(j1==j2) continue;
     double mt2_j1_j2;
     if( method_mt2 == BISECT){
-      mt2_j1_j2 = MT2( met, metPhi, p4_lepton_1 + vect_p4_jets.at(j1), p4_lepton_2 + vect_p4_jets.at(j2) );
+      mt2_j1_j2 = MT2( met, metPhi, p4_lepton_1 + vect_p4_jets.at(j1), p4_lepton_2 + vect_p4_jets.at(j2), invisible_particle_mass );
     } else {
       cout << "ERROR: Undefined calculation method... returning -1" << endl;
       return -1.0;
