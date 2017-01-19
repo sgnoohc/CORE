@@ -19614,7 +19614,7 @@ const bool &CMS3::hcalnoise_HasBadRBXRechitR45Loose() {
   }
   return hcalnoise_HasBadRBXRechitR45Loose_;
 }
-const vector<int> &CMS3::mus_bfit_ptErr() {
+const vector<float> &CMS3::mus_bfit_ptErr() {
   if (not mus_bfit_ptErr_isLoaded) {
     if (mus_bfit_ptErr_branch != 0) {
       mus_bfit_ptErr_branch->GetEntry(index);
@@ -24368,7 +24368,7 @@ namespace tas {
   const vector<float> &els_clustersMeanRawEnergy() { return cms3.els_clustersMeanRawEnergy(); }
   const vector<float> &els_scSeedETop() { return cms3.els_scSeedETop(); }
   const bool &hcalnoise_HasBadRBXRechitR45Loose() { return cms3.hcalnoise_HasBadRBXRechitR45Loose(); }
-  const vector<int> &mus_bfit_ptErr() { return cms3.mus_bfit_ptErr(); }
+  const vector<float> &mus_bfit_ptErr() { return cms3.mus_bfit_ptErr(); }
   const vector<bool> &genps_fromHardProcessDecayed() { return cms3.genps_fromHardProcessDecayed(); }
   const int &hcalnoise_passLooseNoiseFilter() { return cms3.hcalnoise_passLooseNoiseFilter(); }
   const float &evt_puppi_pfmetPhi_MuonEnDown() { return cms3.evt_puppi_pfmetPhi_MuonEnDown(); }

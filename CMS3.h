@@ -2768,7 +2768,7 @@ protected:
   bool hcalnoise_HasBadRBXRechitR45Loose_;
   TBranch *hcalnoise_HasBadRBXRechitR45Loose_branch;
   bool hcalnoise_HasBadRBXRechitR45Loose_isLoaded;
-  vector<int> mus_bfit_ptErr_;
+  vector<float> mus_bfit_ptErr_;
   TBranch *mus_bfit_ptErr_branch;
   bool mus_bfit_ptErr_isLoaded;
   vector<bool> genps_fromHardProcessDecayed_;
@@ -4630,7 +4630,7 @@ public:
   const vector<float> &els_clustersMeanRawEnergy();
   const vector<float> &els_scSeedETop();
   const bool &hcalnoise_HasBadRBXRechitR45Loose();
-  const vector<int> &mus_bfit_ptErr();
+  const vector<float> &mus_bfit_ptErr();
   const vector<bool> &genps_fromHardProcessDecayed();
   const int &hcalnoise_passLooseNoiseFilter();
   const float &evt_puppi_pfmetPhi_MuonEnDown();
@@ -5872,7 +5872,7 @@ namespace tas {
   const vector<float> &els_clustersMeanRawEnergy();
   const vector<float> &els_scSeedETop();
   const bool &hcalnoise_HasBadRBXRechitR45Loose();
-  const vector<int> &mus_bfit_ptErr();
+  const vector<float> &mus_bfit_ptErr();
   const vector<bool> &genps_fromHardProcessDecayed();
   const int &hcalnoise_passLooseNoiseFilter();
   const float &evt_puppi_pfmetPhi_MuonEnDown();
