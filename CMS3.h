@@ -41,7 +41,7 @@ protected:
   vector<float> els_tkIso_;
   TBranch *els_tkIso_branch;
   bool els_tkIso_isLoaded;
-  vector<int> mus_sta_ptErr_;
+  vector<float> mus_sta_ptErr_;
   TBranch *mus_sta_ptErr_branch;
   bool mus_sta_ptErr_isLoaded;
   vector<float> pfjets_mc_gpdr_;
@@ -284,7 +284,7 @@ protected:
   vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > mus_mc_motherp4_;
   TBranch *mus_mc_motherp4_branch;
   bool mus_mc_motherp4_isLoaded;
-  vector<int> mus_sta_phiErr_;
+  vector<float> mus_sta_phiErr_;
   TBranch *mus_sta_phiErr_branch;
   bool mus_sta_phiErr_isLoaded;
   vector<float> photons_full5x5_sigmaEtaEta_;
@@ -881,7 +881,7 @@ protected:
   vector<int> mus_bfit_lostPixelHits_;
   TBranch *mus_bfit_lostPixelHits_branch;
   bool mus_bfit_lostPixelHits_isLoaded;
-  vector<int> mus_gfit_phiErr_;
+  vector<float> mus_gfit_phiErr_;
   TBranch *mus_gfit_phiErr_branch;
   bool mus_gfit_phiErr_isLoaded;
   vector<float> els_sigmaIPhiIPhi_;
@@ -1094,7 +1094,7 @@ protected:
   vector<unsigned int> els_HLT_Ele8_CaloIdM_TrackIdM_PFJet30_ElectronLeg_;
   TBranch *els_HLT_Ele8_CaloIdM_TrackIdM_PFJet30_ElectronLeg_branch;
   bool els_HLT_Ele8_CaloIdM_TrackIdM_PFJet30_ElectronLeg_isLoaded;
-  vector<int> mus_gfit_etaErr_;
+  vector<float> mus_gfit_etaErr_;
   TBranch *mus_gfit_etaErr_branch;
   bool mus_gfit_etaErr_isLoaded;
   bool evt_cscTightHaloId_;
@@ -1397,7 +1397,7 @@ protected:
   vector<float> pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_;
   TBranch *pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch;
   bool pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_isLoaded;
-  vector<int> mus_sta_etaErr_;
+  vector<float> mus_sta_etaErr_;
   TBranch *mus_sta_etaErr_branch;
   bool mus_sta_etaErr_isLoaded;
   float evt_pfmetPhi_;
@@ -1727,7 +1727,7 @@ protected:
   vector<float> mus_dxyPV_;
   TBranch *mus_dxyPV_branch;
   bool mus_dxyPV_isLoaded;
-  vector<int> mus_bfit_etaErr_;
+  vector<float> mus_bfit_etaErr_;
   TBranch *mus_bfit_etaErr_branch;
   bool mus_bfit_etaErr_isLoaded;
   vector<unsigned int> mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_TrailingLeg_;
@@ -2279,7 +2279,7 @@ protected:
   unsigned int els_HLT_Ele18_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version_;
   TBranch *els_HLT_Ele18_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version_branch;
   bool els_HLT_Ele18_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version_isLoaded;
-  vector<float> mus_sta_ndof_;
+  vector<int> mus_sta_ndof_;
   TBranch *mus_sta_ndof_branch;
   bool mus_sta_ndof_isLoaded;
   vector<float> photons_hcalIso04_;
@@ -2549,7 +2549,7 @@ protected:
   float evt_puppi_pfmetPhi_UnclusteredEnDown_;
   TBranch *evt_puppi_pfmetPhi_UnclusteredEnDown_branch;
   bool evt_puppi_pfmetPhi_UnclusteredEnDown_isLoaded;
-  vector<int> mus_bfit_phiErr_;
+  vector<float> mus_bfit_phiErr_;
   TBranch *mus_bfit_phiErr_branch;
   bool mus_bfit_phiErr_isLoaded;
   vector<float> pfcands_puppiWeight_;
@@ -2753,7 +2753,7 @@ protected:
   unsigned int mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_version_;
   TBranch *mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_version_branch;
   bool mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_version_isLoaded;
-  vector<int> mus_gfit_ptErr_;
+  vector<float> mus_gfit_ptErr_;
   TBranch *mus_gfit_ptErr_branch;
   bool mus_gfit_ptErr_isLoaded;
   vector<unsigned int> mus_HLT_Mu17_Ele8_LeadingLeg_;
@@ -3005,7 +3005,7 @@ protected:
   vector<float> mus_timeAtIpOutIn_;
   TBranch *mus_timeAtIpOutIn_branch;
   bool mus_timeAtIpOutIn_isLoaded;
-  vector<float> mus_bfit_ndof_;
+  vector<int> mus_bfit_ndof_;
   TBranch *mus_bfit_ndof_branch;
   bool mus_bfit_ndof_isLoaded;
   vector<int> els_charge_;
@@ -3721,7 +3721,7 @@ public:
   const vector<float> &photons_hcalDepth2TowerSumEtBcConeDR04();
   const vector<float> &mus_bfit_qoverp();
   const vector<float> &els_tkIso();
-  const vector<int> &mus_sta_ptErr();
+  const vector<float> &mus_sta_ptErr();
   const vector<float> &pfjets_mc_gpdr();
   const vector<vector<float> > &els_clusterDPhiToSeed();
   const int &hcalnoise_numIsolatedNoiseChannels();
@@ -3802,7 +3802,7 @@ public:
   const vector<bool> &genps_isPromptFinalState();
   const vector<unsigned int> &els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_TrailingLeg();
   const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &mus_mc_motherp4();
-  const vector<int> &mus_sta_phiErr();
+  const vector<float> &mus_sta_phiErr();
   const vector<float> &photons_full5x5_sigmaEtaEta();
   const vector<float> &els_scSeedE2x5Right();
   const vector<vector<float> > &els_clusterPhi();
@@ -4001,7 +4001,7 @@ public:
   const vector<unsigned int> &els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_LeadingLeg();
   const vector<unsigned int> &els_HLT_Mu17_Ele8();
   const vector<int> &mus_bfit_lostPixelHits();
-  const vector<int> &mus_gfit_phiErr();
+  const vector<float> &mus_gfit_phiErr();
   const vector<float> &els_sigmaIPhiIPhi();
   const vector<float> &pfjets_puppi_hfEmE();
   const vector<float> &els_scSeedEmax();
@@ -4072,7 +4072,7 @@ public:
   const vector<float> &els_sigmaIphiIphi();
   const vector<int> &pfcands_charge();
   const vector<unsigned int> &els_HLT_Ele8_CaloIdM_TrackIdM_PFJet30_ElectronLeg();
-  const vector<int> &mus_gfit_etaErr();
+  const vector<float> &mus_gfit_etaErr();
   const bool &evt_cscTightHaloId();
   const unsigned int &els_HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_version();
   const unsigned int &els_HLT_Ele5_SC5_JPsi_Mass2to4p5_version();
@@ -4173,7 +4173,7 @@ public:
   const vector<unsigned int> &els_HLT_Ele17_Ele8_LeadingLeg();
   const float &evt_bs_XwidthErr();
   const vector<float> &pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag();
-  const vector<int> &mus_sta_etaErr();
+  const vector<float> &mus_sta_etaErr();
   const float &evt_pfmetPhi();
   const vector<int> &pfjets_METToolbox_chargedMultiplicity();
   const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &els_mc_patMatch_p4();
@@ -4283,7 +4283,7 @@ public:
   const vector<int> &genps_idx_mother();
   const vector<vector<int> > &pfjets_METToolbox_pfcandIndicies();
   const vector<float> &mus_dxyPV();
-  const vector<int> &mus_bfit_etaErr();
+  const vector<float> &mus_bfit_etaErr();
   const vector<unsigned int> &mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_TrailingLeg();
   const float &hcalnoise_eventChargeFraction();
   const vector<float> &svs_dist3Dval();
@@ -4467,7 +4467,7 @@ public:
   const vector<int> &mus_pid_TMLastStationTight();
   const vector<float> &els_dEtaIn();
   const unsigned int &els_HLT_Ele18_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version();
-  const vector<float> &mus_sta_ndof();
+  const vector<int> &mus_sta_ndof();
   const vector<float> &photons_hcalIso04();
   const vector<int> &els_passHEEPId();
   const vector<float> &pfjets_METToolbox_neutralHadronE();
@@ -4557,7 +4557,7 @@ public:
   const vector<float> &els_ptErr();
   const vector<float> &mus_trkRelChi2();
   const float &evt_puppi_pfmetPhi_UnclusteredEnDown();
-  const vector<int> &mus_bfit_phiErr();
+  const vector<float> &mus_bfit_phiErr();
   const vector<float> &pfcands_puppiWeight();
   const vector<float> &pfjets_mc_hadEnergy();
   const vector<int> &convs_isConverted();
@@ -4625,7 +4625,7 @@ public:
   const vector<float> &els_trkdr();
   const vector<int> &hyp_ll_id();
   const unsigned int &mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_version();
-  const vector<int> &mus_gfit_ptErr();
+  const vector<float> &mus_gfit_ptErr();
   const vector<unsigned int> &mus_HLT_Mu17_Ele8_LeadingLeg();
   const vector<float> &els_clustersMeanRawEnergy();
   const vector<float> &els_scSeedETop();
@@ -4709,7 +4709,7 @@ public:
   const vector<float> &mus_e_hoS9();
   const vector<int> &mus_nlayersLost();
   const vector<float> &mus_timeAtIpOutIn();
-  const vector<float> &mus_bfit_ndof();
+  const vector<int> &mus_bfit_ndof();
   const vector<int> &els_charge();
   const int &hcalnoise_noiseType();
   const vector<float> &svs_anglePV();
@@ -4963,7 +4963,7 @@ namespace tas {
   const vector<float> &photons_hcalDepth2TowerSumEtBcConeDR04();
   const vector<float> &mus_bfit_qoverp();
   const vector<float> &els_tkIso();
-  const vector<int> &mus_sta_ptErr();
+  const vector<float> &mus_sta_ptErr();
   const vector<float> &pfjets_mc_gpdr();
   const vector<vector<float> > &els_clusterDPhiToSeed();
   const int &hcalnoise_numIsolatedNoiseChannels();
@@ -5044,7 +5044,7 @@ namespace tas {
   const vector<bool> &genps_isPromptFinalState();
   const vector<unsigned int> &els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_TrailingLeg();
   const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &mus_mc_motherp4();
-  const vector<int> &mus_sta_phiErr();
+  const vector<float> &mus_sta_phiErr();
   const vector<float> &photons_full5x5_sigmaEtaEta();
   const vector<float> &els_scSeedE2x5Right();
   const vector<vector<float> > &els_clusterPhi();
@@ -5243,7 +5243,7 @@ namespace tas {
   const vector<unsigned int> &els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_LeadingLeg();
   const vector<unsigned int> &els_HLT_Mu17_Ele8();
   const vector<int> &mus_bfit_lostPixelHits();
-  const vector<int> &mus_gfit_phiErr();
+  const vector<float> &mus_gfit_phiErr();
   const vector<float> &els_sigmaIPhiIPhi();
   const vector<float> &pfjets_puppi_hfEmE();
   const vector<float> &els_scSeedEmax();
@@ -5314,7 +5314,7 @@ namespace tas {
   const vector<float> &els_sigmaIphiIphi();
   const vector<int> &pfcands_charge();
   const vector<unsigned int> &els_HLT_Ele8_CaloIdM_TrackIdM_PFJet30_ElectronLeg();
-  const vector<int> &mus_gfit_etaErr();
+  const vector<float> &mus_gfit_etaErr();
   const bool &evt_cscTightHaloId();
   const unsigned int &els_HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_version();
   const unsigned int &els_HLT_Ele5_SC5_JPsi_Mass2to4p5_version();
@@ -5415,7 +5415,7 @@ namespace tas {
   const vector<unsigned int> &els_HLT_Ele17_Ele8_LeadingLeg();
   const float &evt_bs_XwidthErr();
   const vector<float> &pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag();
-  const vector<int> &mus_sta_etaErr();
+  const vector<float> &mus_sta_etaErr();
   const float &evt_pfmetPhi();
   const vector<int> &pfjets_METToolbox_chargedMultiplicity();
   const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &els_mc_patMatch_p4();
@@ -5525,7 +5525,7 @@ namespace tas {
   const vector<int> &genps_idx_mother();
   const vector<vector<int> > &pfjets_METToolbox_pfcandIndicies();
   const vector<float> &mus_dxyPV();
-  const vector<int> &mus_bfit_etaErr();
+  const vector<float> &mus_bfit_etaErr();
   const vector<unsigned int> &mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_TrailingLeg();
   const float &hcalnoise_eventChargeFraction();
   const vector<float> &svs_dist3Dval();
@@ -5709,7 +5709,7 @@ namespace tas {
   const vector<int> &mus_pid_TMLastStationTight();
   const vector<float> &els_dEtaIn();
   const unsigned int &els_HLT_Ele18_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version();
-  const vector<float> &mus_sta_ndof();
+  const vector<int> &mus_sta_ndof();
   const vector<float> &photons_hcalIso04();
   const vector<int> &els_passHEEPId();
   const vector<float> &pfjets_METToolbox_neutralHadronE();
@@ -5799,7 +5799,7 @@ namespace tas {
   const vector<float> &els_ptErr();
   const vector<float> &mus_trkRelChi2();
   const float &evt_puppi_pfmetPhi_UnclusteredEnDown();
-  const vector<int> &mus_bfit_phiErr();
+  const vector<float> &mus_bfit_phiErr();
   const vector<float> &pfcands_puppiWeight();
   const vector<float> &pfjets_mc_hadEnergy();
   const vector<int> &convs_isConverted();
@@ -5867,7 +5867,7 @@ namespace tas {
   const vector<float> &els_trkdr();
   const vector<int> &hyp_ll_id();
   const unsigned int &mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_version();
-  const vector<int> &mus_gfit_ptErr();
+  const vector<float> &mus_gfit_ptErr();
   const vector<unsigned int> &mus_HLT_Mu17_Ele8_LeadingLeg();
   const vector<float> &els_clustersMeanRawEnergy();
   const vector<float> &els_scSeedETop();
@@ -5951,7 +5951,7 @@ namespace tas {
   const vector<float> &mus_e_hoS9();
   const vector<int> &mus_nlayersLost();
   const vector<float> &mus_timeAtIpOutIn();
-  const vector<float> &mus_bfit_ndof();
+  const vector<int> &mus_bfit_ndof();
   const vector<int> &els_charge();
   const int &hcalnoise_noiseType();
   const vector<float> &svs_anglePV();
