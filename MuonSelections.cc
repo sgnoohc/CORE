@@ -75,6 +75,33 @@ bool isHighPtMuonPOG(unsigned int muIdx){
   return true;
 }
 
+// from https://github.com/gpetruc/cmssw/blob/badMuonFilters_80X/RecoMET/METFilters/plugins/BadGlobalMuonTagger.cc
+//   with selectClones_ = false
+bool isBadGlobalMuon(unsigned int muIdx, bool selectClones){
+  if (!mus_pid_PFMuon().at(muIdx)) return false;//discard if not PF muon
+  if (mus_algo().at(muIdx) < 0) return false; // only negative if there is no inner track
+  bool isGlobalMuon = bool(((mus_type().at(muIdx)) & (1<<1)) > 0);
+  // HACK: should be checking algoMask size and entry when available
+  bool outInOnly = bool(mus_algo().at(muIdx) == 14 && mus_algoOrig().at(muIdx) == 14);
+  bool preselection = bool(isGlobalMuon && (!selectClones || outInOnly));
+  if (!preselection) return false;
+  // HACK: should replace numberOfMatchedStations with muonStationsWithValidHits when available
+  bool tightGlobal = bool(mus_numberOfMatchedStations().at(muIdx) >= 3 && mus_gfit_chi2().at(muIdx)/get_mus_gfit_ndof(muIdx) <= 20.);
+  // HACK: should replace validPixelHits with pixelLayersWithMeasurement when available
+  bool ipLoose = bool((mus_dxyPV().at(muIdx) < 0.5 && mus_dzPV().at(muIdx) < 2.0) || (mus_validPixelHits().at(muIdx) >= 2));
+  bool ipTight = bool(mus_dxyPV().at(muIdx) < 0.2 && mus_dzPV().at(muIdx) < 0.5);
+  bool tighterId = bool(isMediumMuonPOG(muIdx) && mus_numberOfMatchedStations().at(muIdx) >= 2);
+  bool safeId = bool((mus_bfit_ptErr().at(muIdx) < 0.2 * mus_bfit_p4().at(muIdx).pt()) && ((mus_numberOfMatchedStations().at(muIdx) >= 1) || tightGlobal));
+  if (tighterId) {
+    return (!(ipLoose || (!selectClones && tightGlobal))); // muon is OK if it passes either selection
+  }
+  else if (safeId) {
+    return !ipTight; // muon is OK if it passes ipTight
+  }
+  // PF and global muon but doesn't pass any of the other selections: flag as bad
+  return true;
+}    
+
 bool muonID(unsigned int muIdx, id_level_t id_level){
 
   analysis_t analysis = whichAnalysis(id_level);

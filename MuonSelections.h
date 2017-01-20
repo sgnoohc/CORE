@@ -10,6 +10,7 @@ bool isLooseMuonPOG(unsigned int muIdx);
 bool isMediumMuonPOG(unsigned int muIdx);
 bool isTightMuonPOG(unsigned int muIdx);
 bool isHighPtMuonPOG(unsigned int muIdx);
+bool isBadGlobalMuon(unsigned int muIdx, bool selectClones = false);
 
 //Main Muon ID function
 bool muonID(unsigned int muIdx, id_level_t id_level);
