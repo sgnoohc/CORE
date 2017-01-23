@@ -136,13 +136,12 @@ bool badMuonFilterV2() {
   const float maxMuonBestTrackRelErr = 2.;
   const float maxMuonInnerTrackRelErr = 1.;
   const float minMuonPt = 100.0;
-  const float maxDR = 0.0001;
+  const float maxDR = 0.001;
   const int suspiciousAlgo = 14; // muonSeededStepOutIn
 
   for (unsigned int imu = 0; imu < cms3.mus_p4().size(); imu++) {
 
-    if (cms3.mus_p4().at(imu).pt() <= minMuonPt) continue;
-    if (cms3.mus_trk_p4().at(imu).pt() <= minMuonPt) continue;    
+    if ((cms3.mus_p4().at(imu).pt() <= minMuonPt) && (cms3.mus_trk_p4().at(imu).pt() <= minMuonPt)) continue;
     if (cms3.mus_algo().at(imu) != suspiciousAlgo) continue;
     if (cms3.mus_algoOrig().at(imu) != suspiciousAlgo) continue;    
     if (((cms3.mus_type().at(imu)) & (1<<1)) == 0) continue; // require muon is global
@@ -221,9 +220,9 @@ bool badChargedCandidateFilterV2() {
   const float maxPtDiffRel = 0.00001;
     
   for (unsigned int imu = 0; imu < cms3.mus_p4().size(); imu++) {
-    if (cms3.mus_p4().at(imu).pt() <= minMuonPt) continue;
-    if (cms3.mus_trk_p4().at(imu).pt() <= minMuonPt) continue;
+    if ((cms3.mus_p4().at(imu).pt() <= minMuonPt) && (cms3.mus_trk_p4().at(imu).pt() <= minMuonPt)) continue;
     if (((cms3.mus_type().at(imu)) & (1<<1)) == 0) continue; // require muon is global
+    if (cms3.mus_pid_PFMuon().at(imu)) continue; // muon must fail PF
     
     bool fails_seg_compatibility = (cms3.mus_segmCompatibility().at(imu) < minMuonSegCompatibility);
     bool fails_best_track_ptrelerr =  (cms3.mus_bfit_ptErr().at(imu)/cms3.mus_bfit_p4().at(imu).pt() > maxMuonBestTrackRelErr);
@@ -237,14 +236,13 @@ bool badChargedCandidateFilterV2() {
         LorentzVector trk_p4 = cms3.mus_trk_p4().at(imu);
         
         if (abs(pdgId) != 211) continue;
-        if (not cms3.mus_pid_PFMuon().at(imu)) continue;
         
         if ((ROOT::Math::VectorUtil::DeltaR(trk_p4, cand_p4) >= maxDR)) continue;
         
         float diffPt = cand_p4.pt() - trk_p4.pt();
         float avgPt = 0.5 * (cand_p4.pt() + trk_p4.pt());
 
-        if (diffPt/avgPt >= maxPtDiffRel) continue;
+        if (fabs(diffPt)/avgPt >= maxPtDiffRel) continue;
 
         return false;
       } // loop over pfcands    
