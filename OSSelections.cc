@@ -35,7 +35,23 @@ bool overlapElectron_ZMET_v1( int index , float ptcut ){
 //Electron selections//
 //~-~-~-~-~-~-~-~-~-~//
 bool passElectronSelection_ZMET(int index ){
-  return passElectronSelection_ZMET_v5( index, true, true );
+  return passElectronSelection_ZMET_v6( index, true, true );
+}
+
+bool passElectronSelection_ZMET_v6(int index, bool vetoTransition, bool eta24 ){
+  if( fabs(cms3.els_p4().at(index).pt()) < 10.0    ) return false; // pT > 10 GeV - Minimum pT cut
+  if( vetoTransition
+	  && fabs(cms3.els_p4().at(index).eta()) > 1.4
+	  && fabs(cms3.els_p4().at(index).eta()) < 1.6  ) return false; // veto x-ition region
+  if( eta24
+	  && fabs(cms3.els_p4()[index].eta()) > 2.4    ) return false; // eta < 2.4
+  if( !electronID( index, ZMET_tightMVA_v2 )       ) return false; // Electron ID  
+
+  //IP & trigger cuts to be compatible with multilepton baseline cuts
+  if (abs(els_dzPV()  .at(index)) >= 0.1                       ) return false;// dZ < 0.1
+  if (abs(els_dxyPV() .at(index)) >= 0.05                      ) return false;// dR < 0.05
+  if (abs(els_ip3d()  .at(index))/els_ip3derr().at(index) >= 8 ) return false;// SIP3D < 8
+  return true;
 }
 
 bool passElectronSelection_ZMET_v5(int index, bool vetoTransition, bool eta24 ){
