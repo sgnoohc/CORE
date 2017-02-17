@@ -27,7 +27,7 @@ bool badChargedCandidateFilter();
 bool badMuonFilterV2();
 bool badChargedCandidateFilterV2();
 pair <float, float> getT1CHSMET( FactorizedJetCorrector * jet_corrector, JetCorrectionUncertainty* jecUnc = 0, bool uncUp = true, int doUnclusteredUnc = 0 );
-pair <float, float> getT1CHSMET_fromMINIAOD( FactorizedJetCorrector * jet_corrector, JetCorrectionUncertainty* jecUnc = NULL, bool uncUp = 0, bool recompute_raw_met = false );
+pair <float, float> getT1CHSMET_fromMINIAOD( FactorizedJetCorrector * jet_corrector, JetCorrectionUncertainty* jecUnc = NULL, bool uncUp = 0, bool recompute_raw_met = false , int use_cleaned_met = 0 );
 pair<float,float> MET3p0(); // tracker style MET with no particles with eta > 3.0
 pair <float, float> getT1PUPPIMET_fromMINIAOD( FactorizedJetCorrector * jet_corrector );
 bool passesMETfilter(bool is25 = 1);

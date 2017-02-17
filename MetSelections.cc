@@ -338,13 +338,19 @@ pair <float, float> getT1CHSMET( FactorizedJetCorrector * jet_corrector, JetCorr
 }
 // takes in an already initialized FactorizedJetCorrector object
 // and returns T1 Corrected MET using the CHS jet collection from miniAOD
-pair <float, float> getT1CHSMET_fromMINIAOD( FactorizedJetCorrector * jet_corrector, JetCorrectionUncertainty* jecUnc, bool uncUp, bool recompute_raw_met ){
+pair <float, float> getT1CHSMET_fromMINIAOD( FactorizedJetCorrector * jet_corrector, JetCorrectionUncertainty* jecUnc, bool uncUp, bool recompute_raw_met , int use_cleaned_met ){
 
   float T1_met    = cms3.evt_pfmet_raw();
   float T1_metPhi = cms3.evt_pfmetPhi_raw();
+  //use option use_cleaned_met to select alternate met collections
+  if (use_cleaned_met == 1) {
+    //MuonEG cleaned MET
+    T1_met    = cms3.evt_muegclean_pfmet_raw();
+    T1_metPhi = cms3.evt_muegclean_pfmetPhi_raw();
+  }
   float T1_metx   = T1_met * cos(T1_metPhi);
   float T1_mety   = T1_met * sin(T1_metPhi);
-
+  
   if( recompute_raw_met ){
     LorentzVector met_raw_OTF(0,0,0,0);
     for( size_t pfind = 0; pfind < cms3.pfcands_p4().size(); pfind++ ){
