@@ -17,6 +17,7 @@ bool passElectronSelection_ZMET_NoIso_v2(      int index, bool vetoTransition, b
 bool passElectronSelection_ZMET_v1(            int index, bool vetoTransition, bool eta24 );
 bool passElectronSelection_ZMET_v1_NoIso(      int index, bool vetoTransition, bool eta24 );
 bool passElectronSelection_ZMET_thirdlepton_v1(int index, bool vetoTransition, bool eta24 );
+bool passElectronSelection_ZMET_thirdlepton_v2(int index, bool vetoTransition, bool eta24 );
 
 bool passMuonSelection_ZMET(int index );
 bool passMuonSelection_ZMET_v7(       int index, bool vetoTransition, bool eta24 );

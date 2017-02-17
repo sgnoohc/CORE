@@ -162,6 +162,23 @@ bool passElectronSelection_ZMET_thirdlepton_v1(int index, bool vetoTransition, b
   return true;
 }
 
+//This is the 3rd lepton veto ID to be in sync with the edge/multilepton group, trigger emulation removed
+bool passElectronSelection_ZMET_thirdlepton_v2(int index, bool vetoTransition, bool eta24 ){
+  if( fabs(cms3.els_p4().at(index).pt()) < 10.0    ) return false; // pT > 10 GeV - Minimum pT cut
+  if( vetoTransition
+	  && fabs(cms3.els_p4().at(index).eta()) > 1.4
+	  && fabs(cms3.els_p4().at(index).eta()) < 1.6  ) return false; // veto x-ition region
+  if( eta24
+	  && fabs(cms3.els_p4()[index].eta()) > 2.5    ) return false; // eta < 2.5
+  if( !electronID( index, ZMET_looseMVA_v1 )       ) return false; // Electron ID  
+
+  //IP & trigger cuts to be compatible with multilepton baseline cuts
+  if (abs(els_dzPV()  .at(index)) >= 0.1                       ) return false;// dZ < 0.1
+  if (abs(els_dxyPV() .at(index)) >= 0.05                      ) return false;// dR < 0.05
+  if (abs(els_ip3d()  .at(index))/els_ip3derr().at(index) >= 8 ) return false;// SIP3D < 8
+  return true;
+}
+
 
 //~-~-~-~-~-~-~-~//
 //Muon selections//
