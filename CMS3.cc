@@ -1358,6 +1358,21 @@ void CMS3::Init(TTree *tree) {
     filt_metfilter_branch = tree->GetBranch(tree->GetAlias("filt_metfilter"));
     if (filt_metfilter_branch) { filt_metfilter_branch->SetAddress(&filt_metfilter_); }
   }
+  filt_badMuons_branch = 0;
+  if (tree->GetAlias("filt_badMuons") != 0) {
+    filt_badMuons_branch = tree->GetBranch(tree->GetAlias("filt_badMuons"));
+    if (filt_badMuons_branch) { filt_badMuons_branch->SetAddress(&filt_badMuons_); }
+  }
+  filt_duplicateMuons_branch = 0;
+  if (tree->GetAlias("filt_duplicateMuons") != 0) {
+    filt_duplicateMuons_branch = tree->GetBranch(tree->GetAlias("filt_duplicateMuons"));
+    if (filt_duplicateMuons_branch) { filt_duplicateMuons_branch->SetAddress(&filt_duplicateMuons_); }
+  }
+  filt_noBadMuons_branch = 0;
+  if (tree->GetAlias("filt_noBadMuons") != 0) {
+    filt_noBadMuons_branch = tree->GetBranch(tree->GetAlias("filt_noBadMuons"));
+    if (filt_noBadMuons_branch) { filt_noBadMuons_branch->SetAddress(&filt_noBadMuons_); }
+  }
   photonsscPhiWidth_branch = 0;
   if (tree->GetAlias("photonsscPhiWidth") != 0) {
     photonsscPhiWidth_branch = tree->GetBranch(tree->GetAlias("photonsscPhiWidth"));
@@ -6399,6 +6414,9 @@ void CMS3::GetEntry(unsigned int idx) {
   evt_pfmetPhi_UnclusteredEnUp_isLoaded = false;
   photonsscSeedSigmaIphiIphi_isLoaded = false;
   filt_metfilter_isLoaded = false;
+  filt_badMuons_isLoaded = false;
+  filt_duplicateMuons_isLoaded = false;
+  filt_noBadMuons_isLoaded = false;
   photonsscPhiWidth_isLoaded = false;
   hcalnoise_TS4TS5NoiseSumEt_isLoaded = false;
   evt_puppi_pfmetPhi_ElectronEnDown_isLoaded = false;
@@ -7633,6 +7651,9 @@ void CMS3::LoadAllBranches() {
   if (evt_pfmetPhi_UnclusteredEnUp_branch != 0) evt_pfmetPhi_UnclusteredEnUp();
   if (photonsscSeedSigmaIphiIphi_branch != 0) photonsscSeedSigmaIphiIphi();
   if (filt_metfilter_branch != 0) filt_metfilter();
+  if (filt_badMuons_branch != 0) filt_badMuons();
+  if (filt_duplicateMuons_branch != 0) filt_duplicateMuons();
+  if (filt_noBadMuons_branch != 0) filt_noBadMuons();
   if (photonsscPhiWidth_branch != 0) photonsscPhiWidth();
   if (hcalnoise_TS4TS5NoiseSumEt_branch != 0) hcalnoise_TS4TS5NoiseSumEt();
   if (evt_puppi_pfmetPhi_ElectronEnDown_branch != 0) evt_puppi_pfmetPhi_ElectronEnDown();
@@ -11395,6 +11416,42 @@ const bool &CMS3::filt_metfilter() {
     filt_metfilter_isLoaded = true;
   }
   return filt_metfilter_;
+}
+const bool &CMS3::filt_badMuons() {
+  if (not filt_badMuons_isLoaded) {
+    if (filt_badMuons_branch != 0) {
+      filt_badMuons_branch->GetEntry(index);
+    } else {
+      printf("branch filt_badMuons_branch does not exist!\n");
+      exit(1);
+    }
+    filt_badMuons_isLoaded = true;
+  }
+  return filt_badMuons_;
+}
+const bool &CMS3::filt_duplicateMuons() {
+  if (not filt_duplicateMuons_isLoaded) {
+    if (filt_duplicateMuons_branch != 0) {
+      filt_duplicateMuons_branch->GetEntry(index);
+    } else {
+      printf("branch filt_duplicateMuons_branch does not exist!\n");
+      exit(1);
+    }
+    filt_duplicateMuons_isLoaded = true;
+  }
+  return filt_duplicateMuons_;
+}
+const bool &CMS3::filt_noBadMuons() {
+  if (not filt_noBadMuons_isLoaded) {
+    if (filt_noBadMuons_branch != 0) {
+      filt_noBadMuons_branch->GetEntry(index);
+    } else {
+      printf("branch filt_noBadMuons_branch does not exist!\n");
+      exit(1);
+    }
+    filt_noBadMuons_isLoaded = true;
+  }
+  return filt_noBadMuons_;
 }
 const vector<float> &CMS3::photonsscPhiWidth() {
   if (not photonsscPhiWidth_isLoaded) {
@@ -23720,6 +23777,9 @@ namespace tas {
   const float &evt_pfmetPhi_UnclusteredEnUp() { return cms3.evt_pfmetPhi_UnclusteredEnUp(); }
   const vector<float> &photonsscSeedSigmaIphiIphi() { return cms3.photonsscSeedSigmaIphiIphi(); }
   const bool &filt_metfilter() { return cms3.filt_metfilter(); }
+  const bool &filt_badMuons() { return cms3.filt_badMuons(); }
+  const bool &filt_duplicateMuons() { return cms3.filt_duplicateMuons(); }
+  const bool &filt_noBadMuons() { return cms3.filt_noBadMuons(); }
   const vector<float> &photonsscPhiWidth() { return cms3.photonsscPhiWidth(); }
   const float &hcalnoise_TS4TS5NoiseSumEt() { return cms3.hcalnoise_TS4TS5NoiseSumEt(); }
   const float &evt_puppi_pfmetPhi_ElectronEnDown() { return cms3.evt_puppi_pfmetPhi_ElectronEnDown(); }

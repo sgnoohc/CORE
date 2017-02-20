@@ -710,6 +710,15 @@ protected:
   bool filt_metfilter_;
   TBranch *filt_metfilter_branch;
   bool filt_metfilter_isLoaded;
+  bool filt_badMuons_;
+  TBranch *filt_badMuons_branch;
+  bool filt_badMuons_isLoaded;
+  bool filt_duplicateMuons_;
+  TBranch *filt_duplicateMuons_branch;
+  bool filt_duplicateMuons_isLoaded;
+  bool filt_noBadMuons_;
+  TBranch *filt_noBadMuons_branch;
+  bool filt_noBadMuons_isLoaded;
   vector<float> photonsscPhiWidth_;
   TBranch *photonsscPhiWidth_branch;
   bool photonsscPhiWidth_isLoaded;
@@ -3950,6 +3959,9 @@ public:
   const float &evt_pfmetPhi_UnclusteredEnUp();
   const vector<float> &photonsscSeedSigmaIphiIphi();
   const bool &filt_metfilter();
+  const bool &filt_badMuons();
+  const bool &filt_duplicateMuons();
+  const bool &filt_noBadMuons();
   const vector<float> &photonsscPhiWidth();
   const float &hcalnoise_TS4TS5NoiseSumEt();
   const float &evt_puppi_pfmetPhi_ElectronEnDown();
@@ -5194,6 +5206,9 @@ namespace tas {
   const float &evt_pfmetPhi_UnclusteredEnUp();
   const vector<float> &photonsscSeedSigmaIphiIphi();
   const bool &filt_metfilter();
+  const bool &filt_badMuons();
+  const bool &filt_duplicateMuons();
+  const bool &filt_noBadMuons();
   const vector<float> &photonsscPhiWidth();
   const float &hcalnoise_TS4TS5NoiseSumEt();
   const float &evt_puppi_pfmetPhi_ElectronEnDown();
