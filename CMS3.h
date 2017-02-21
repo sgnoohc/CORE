@@ -2114,6 +2114,9 @@ protected:
   float evt_muegclean_pfmetPhi_raw_;
   TBranch *evt_muegclean_pfmetPhi_raw_branch;
   bool evt_muegclean_pfmetPhi_raw_isLoaded;
+  float evt_muegclean_pfmetPhi_;
+  TBranch *evt_muegclean_pfmetPhi_branch;
+  bool evt_muegclean_pfmetPhi_isLoaded;
   vector<float> els_d0corrPhi_;
   TBranch *els_d0corrPhi_branch;
   bool els_d0corrPhi_isLoaded;
@@ -3479,6 +3482,9 @@ protected:
   float evt_muegclean_pfmet_raw_;
   TBranch *evt_muegclean_pfmet_raw_branch;
   bool evt_muegclean_pfmet_raw_isLoaded;
+  float evt_muegclean_pfmet_;
+  TBranch *evt_muegclean_pfmet_branch;
+  bool evt_muegclean_pfmet_isLoaded;
   unsigned int evt_nphotons_;
   TBranch *evt_nphotons_branch;
   bool evt_nphotons_isLoaded;
@@ -4427,6 +4433,7 @@ public:
   const vector<float> &els_e2x5Max();
   const float &evt_pfmetPhi_raw();
   const float &evt_muegclean_pfmetPhi_raw();
+  const float &evt_muegclean_pfmetPhi();
   const vector<float> &els_d0corrPhi();
   const unsigned int &els_HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg_version();
   const bool &filt_chargedHadronTrackResolution();
@@ -4882,6 +4889,7 @@ public:
   const float &evt_pfmet_ElectronEnUp();
   const float &evt_pfmet_raw();
   const float &evt_muegclean_pfmet_raw();
+  const float &evt_muegclean_pfmet();
   const unsigned int &evt_nphotons();
   const float &hcalnoise_TS4TS5NoiseSumE();
   const float &evt_METToolbox_pfmetPhi_raw();
@@ -5674,6 +5682,7 @@ namespace tas {
   const vector<float> &els_e2x5Max();
   const float &evt_pfmetPhi_raw();
   const float &evt_muegclean_pfmetPhi_raw();
+  const float &evt_muegclean_pfmetPhi();
   const vector<float> &els_d0corrPhi();
   const unsigned int &els_HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg_version();
   const bool &filt_chargedHadronTrackResolution();
@@ -6129,6 +6138,7 @@ namespace tas {
   const float &evt_pfmet_ElectronEnUp();
   const float &evt_pfmet_raw();
   const float &evt_muegclean_pfmet_raw();
+  const float &evt_muegclean_pfmet();
   const unsigned int &evt_nphotons();
   const float &hcalnoise_TS4TS5NoiseSumE();
   const float &evt_METToolbox_pfmetPhi_raw();
