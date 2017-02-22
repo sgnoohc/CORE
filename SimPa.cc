@@ -4,7 +4,11 @@
 
 #include "SimPa.h"
 
-std::pair<LorentzVector, LorentzVector> returnDecayProducts( LorentzVector &motherParticle_p4 ){
+SimPa::SimPa(unsigned int seed) {
+  ran.SetSeed(seed);
+}
+
+std::pair<LorentzVector, LorentzVector> SimPa::returnDecayProducts( LorentzVector &motherParticle_p4 ){
   //In this implementation, A test Z boson with mass 91.2GeV, and width 2 GeV is decayed
   //using the kinematics of the mother particle provided
 
@@ -19,8 +23,7 @@ std::pair<LorentzVector, LorentzVector> returnDecayProducts( LorentzVector &moth
   // This is the particle that will decay
   Particle iphoton( motherParticle_p4.pt(), motherParticle_p4.eta(), motherParticle_p4.phi(), 91, 2);  
 
-  TRandom3 ran(0);
-  ProduceDecay(ran, &iphoton, &lepton1, &lepton2, 0.001, 0.001); 
+  ProduceDecay(&iphoton, &lepton1, &lepton2, 0.001, 0.001); 
 
   // These are the final particles in SnT-compatible LorentzVectors
   lep1_p4.SetPx( lepton1.p.X()); lep1_p4.SetPy( lepton1.p.Y()); lep1_p4.SetPz( lepton1.p.Z()); lep1_p4.SetE ( lepton1.p.E());
@@ -37,19 +40,19 @@ Particle::Particle(Float_t pt, Float_t eta, Float_t phi, Float_t mass, Float_t w
 
 Particle::~Particle(){}
 
-Float_t fix(Float_t a) {
+Float_t SimPa::fix(Float_t a) {
   if(a < 0) return a + 2.0*TMath::Pi();
   return a;
 }
 
-Float_t thetaToEta(Float_t theta) {
+Float_t SimPa::thetaToEta(Float_t theta) {
   TLorentzVector a(1, 0, 0, 1);
   a.SetTheta(theta);
   return a.Eta();
 }
 
 //////////////////////Function body////////////////////////////////
-void ProduceDecay(TRandom ran, Particle *mom, Particle *d1, Particle *d2, Float_t mass1, Float_t mass2) {
+void SimPa::ProduceDecay(Particle *mom, Particle *d1, Particle *d2, Float_t mass1, Float_t mass2) {
 
   Float_t m_mass = ran.BreitWigner(mom->p.M(), mom->width);
 
@@ -87,4 +90,15 @@ void ProduceDecay(TRandom ran, Particle *mom, Particle *d1, Particle *d2, Float_
   d1->p.SetPtEtaPhiM(son1_Mother.Pt(), thetaToEta(fix(son1_Mother.Theta())), fix(son1_Mother.Phi()), mass1);
   d2->p.SetPtEtaPhiM(son2_Mother.Pt(), thetaToEta(fix(son2_Mother.Theta())), fix(son2_Mother.Phi()), mass2);
 
+}
+
+// dummy function to generate same number of randoms as ProduceDecay..
+void SimPa::GenerateRandoms() {
+  ran.BreitWigner(91., 2.);
+  ran.Uniform(0, 2.0*TMath::Pi());
+  Float_t theta1 = 0.0, u1 = 100;
+  while(u1 > (2.0/(3.0*TMath::Pi())) * (1 + TMath::Cos(theta1)*TMath::Cos(theta1))) {
+	u1     = ran.Uniform(0, 4.0/(3.0*TMath::Pi()));
+	theta1 = ran.Uniform(0, TMath::Pi());
+  }
 }

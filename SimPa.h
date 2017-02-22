@@ -5,8 +5,6 @@
 #include "TLorentzVector.h"
 #include "CMS3.h"
 
-std::pair<LorentzVector, LorentzVector> returnDecayProducts( LorentzVector &motherParticle_p4 );
-
   ////////////Small wrapper for Particle//////////////////
 class Particle {
 
@@ -21,8 +19,20 @@ public:
 };
 
 ////////////Functions doing the decay//////////////////
-Float_t fix(Float_t a);
-Float_t thetaToEta(Float_t);
-void ProduceDecay(TRandom , Particle *, Particle *, Particle *, Float_t, Float_t);
+// made SimPa a class so it can own a TRandom3 object
+class SimPa {
 
+public:
+  SimPa(unsigned int seed = 0);
+  std::pair<LorentzVector, LorentzVector> returnDecayProducts( LorentzVector &motherParticle_p4 );
+  Float_t fix(Float_t a);
+  Float_t thetaToEta(Float_t);
+  void ProduceDecay(Particle *, Particle *, Particle *, Float_t, Float_t);
+  void GenerateRandoms();
+
+  TRandom3 ran;
+
+  inline void SetSeed(unsigned int seed) {ran.SetSeed(seed);};
+};
+  
 #endif
