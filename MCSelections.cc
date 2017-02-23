@@ -467,3 +467,23 @@ float get_isrUnc( int nisrMatch ) {
   std::cout << "ERROR: get_isrUnc: bad input for nisrMatch: " << nisrMatch << std::endl;
   return 0.;
 }
+
+//________________________________________________________________
+// returns 2017 Moriond ISR weight based on ISR pt, for ewkino models
+// s6 of https://www.dropbox.com/s/rv79odbk1plltm1/17-02-22_ana_isr_ewk.pdf?dl=1 (link to be updated once in a more permanent place)
+float get_isrWeight_ewk( float isr_pt ) {
+
+  if      (isr_pt < 50. ) return 1.000;
+  else if (isr_pt < 100.) return 1.052;
+  else if (isr_pt < 150.) return 1.179;
+  else if (isr_pt < 200.) return 1.150;
+  else if (isr_pt < 300.) return 1.057;
+  else if (isr_pt < 400.) return 1.000;
+  else if (isr_pt < 600.) return 0.912;
+  else                    return 0.783;
+
+  // shouldn't get here
+  std::cout << "ERROR: get_isrWeight_ewk: bad input for isr_pt: " << isr_pt << std::endl;
+  return 1.;
+}
+
