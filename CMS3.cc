@@ -3965,6 +3965,21 @@ void CMS3::Init(TTree *tree) {
     evt_muegclean_pfmetPhi_branch = tree->GetBranch(tree->GetAlias("evt_muegclean_pfmetPhi"));
     if (evt_muegclean_pfmetPhi_branch) { evt_muegclean_pfmetPhi_branch->SetAddress(&evt_muegclean_pfmetPhi_); }
   }
+  evt_muegcleanfix_pfmetPhi_branch = 0;
+  if (tree->GetAlias("evt_muegcleanfix_pfmetPhi") != 0) {
+    evt_muegcleanfix_pfmetPhi_branch = tree->GetBranch(tree->GetAlias("evt_muegcleanfix_pfmetPhi"));
+    if (evt_muegcleanfix_pfmetPhi_branch) { evt_muegcleanfix_pfmetPhi_branch->SetAddress(&evt_muegcleanfix_pfmetPhi_); }
+  }
+  evt_egclean_pfmetPhi_branch = 0;
+  if (tree->GetAlias("evt_egclean_pfmetPhi") != 0) {
+    evt_egclean_pfmetPhi_branch = tree->GetBranch(tree->GetAlias("evt_egclean_pfmetPhi"));
+    if (evt_egclean_pfmetPhi_branch) { evt_egclean_pfmetPhi_branch->SetAddress(&evt_egclean_pfmetPhi_); }
+  }
+    evt_uncorr_pfmetPhi_branch = 0;
+  if (tree->GetAlias("evt_uncorr_pfmetPhi") != 0) {
+    evt_uncorr_pfmetPhi_branch = tree->GetBranch(tree->GetAlias("evt_uncorr_pfmetPhi"));
+    if (evt_uncorr_pfmetPhi_branch) { evt_uncorr_pfmetPhi_branch->SetAddress(&evt_uncorr_pfmetPhi_); }
+  }
   mus_HLT_Mu17_version_branch = 0;
   if (tree->GetAlias("mus_HLT_Mu17_version") != 0) {
     mus_HLT_Mu17_version_branch = tree->GetBranch(tree->GetAlias("mus_HLT_Mu17_version"));
@@ -6295,6 +6310,21 @@ void CMS3::Init(TTree *tree) {
     evt_muegclean_pfmet_branch = tree->GetBranch(tree->GetAlias("evt_muegclean_pfmet"));
     if (evt_muegclean_pfmet_branch) { evt_muegclean_pfmet_branch->SetAddress(&evt_muegclean_pfmet_); }
   }
+  evt_muegcleanfix_pfmet_branch = 0;
+  if (tree->GetAlias("evt_muegcleanfix_pfmet") != 0) {
+    evt_muegcleanfix_pfmet_branch = tree->GetBranch(tree->GetAlias("evt_muegcleanfix_pfmet"));
+    if (evt_muegcleanfix_pfmet_branch) { evt_muegcleanfix_pfmet_branch->SetAddress(&evt_muegcleanfix_pfmet_); }
+  }
+  evt_egclean_pfmet_branch = 0;
+  if (tree->GetAlias("evt_egclean_pfmet") != 0) {
+    evt_egclean_pfmet_branch = tree->GetBranch(tree->GetAlias("evt_egclean_pfmet"));
+    if (evt_egclean_pfmet_branch) { evt_egclean_pfmet_branch->SetAddress(&evt_egclean_pfmet_); }
+  }
+  evt_uncorr_pfmet_branch = 0;
+  if (tree->GetAlias("evt_uncorr_pfmet") != 0) {
+    evt_uncorr_pfmet_branch = tree->GetBranch(tree->GetAlias("evt_uncorr_pfmet"));
+    if (evt_uncorr_pfmet_branch) { evt_uncorr_pfmet_branch->SetAddress(&evt_uncorr_pfmet_); }
+  }
   pfjets_neutralHadronMultiplicity_branch = 0;
   if (tree->GetAlias("pfjets_neutralHadronMultiplicity") != 0) {
     pfjets_neutralHadronMultiplicity_branch = tree->GetBranch(tree->GetAlias("pfjets_neutralHadronMultiplicity"));
@@ -7501,6 +7531,9 @@ void CMS3::GetEntry(unsigned int idx) {
   evt_pfmetPhi_raw_isLoaded = false;
   evt_muegclean_pfmetPhi_raw_isLoaded = false;
   evt_muegclean_pfmetPhi_isLoaded = false;
+  evt_muegcleanfix_pfmetPhi_isLoaded = false;
+  evt_egclean_pfmetPhi_isLoaded = false;
+  evt_uncorr_pfmetPhi_isLoaded = false;
   els_HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg_version_isLoaded = false;
   mus_HLT_Mu17_version_isLoaded = false;
   evt_puppi_pfmetSignificance_isLoaded = false;
@@ -7985,6 +8018,9 @@ void CMS3::GetEntry(unsigned int idx) {
   evt_pfmet_raw_isLoaded = false;
   evt_muegclean_pfmet_raw_isLoaded = false;
   evt_muegclean_pfmet_isLoaded = false;
+  evt_muegcleanfix_pfmet_isLoaded = false;
+  evt_egclean_pfmet_isLoaded = false;
+  evt_uncorr_pfmet_isLoaded = false;
   pfjets_neutralHadronMultiplicity_isLoaded = false;
   hcalnoise_TS4TS5NoiseSumE_isLoaded = false;
   mus_overlap1_isLoaded = false;
@@ -8847,6 +8883,9 @@ void CMS3::LoadAllBranches() {
   if (evt_pfmetPhi_raw_branch != 0) evt_pfmetPhi_raw();
   if (evt_muegclean_pfmetPhi_raw_branch != 0) evt_muegclean_pfmetPhi_raw();
   if (evt_muegclean_pfmetPhi_branch != 0) evt_muegclean_pfmetPhi();
+  if (evt_muegcleanfix_pfmetPhi_branch != 0) evt_muegcleanfix_pfmetPhi();
+  if (evt_egclean_pfmetPhi_branch != 0) evt_egclean_pfmetPhi();
+  if (evt_uncorr_pfmetPhi_branch != 0) evt_uncorr_pfmetPhi();
   if (mus_HLT_Mu17_version_branch != 0) mus_HLT_Mu17_version();
   if (evt_puppi_pfmetSignificance_branch != 0) evt_puppi_pfmetSignificance();
   if (photons_scSeedE2nd_branch != 0) photons_scSeedE2nd();
@@ -9331,6 +9370,9 @@ void CMS3::LoadAllBranches() {
   if (evt_pfmet_raw_branch != 0) evt_pfmet_raw();
   if (evt_muegclean_pfmet_raw_branch != 0) evt_muegclean_pfmet_raw();
   if (evt_muegclean_pfmet_branch != 0) evt_muegclean_pfmet();
+  if (evt_muegcleanfix_pfmet_branch != 0) evt_muegcleanfix_pfmet();
+  if (evt_egclean_pfmet_branch != 0) evt_egclean_pfmet();
+  if (evt_uncorr_pfmet_branch != 0) evt_uncorr_pfmet();
   if (pfjets_neutralHadronMultiplicity_branch != 0) pfjets_neutralHadronMultiplicity();
   if (hcalnoise_TS4TS5NoiseSumE_branch != 0) hcalnoise_TS4TS5NoiseSumE();
   if (mus_overlap1_branch != 0) mus_overlap1();
@@ -18685,6 +18727,42 @@ const float &CMS3::evt_muegclean_pfmetPhi() {
   }
   return evt_muegclean_pfmetPhi_;
 }
+const float &CMS3::evt_muegcleanfix_pfmetPhi() {
+  if (not evt_muegcleanfix_pfmetPhi_isLoaded) {
+    if (evt_muegcleanfix_pfmetPhi_branch != 0) {
+      evt_muegcleanfix_pfmetPhi_branch->GetEntry(index);
+    } else {
+      printf("branch evt_muegcleanfix_pfmetPhi_branch does not exist!\n");
+      exit(1);
+    }
+    evt_muegcleanfix_pfmetPhi_isLoaded = true;
+  }
+  return evt_muegcleanfix_pfmetPhi_;
+}
+const float &CMS3::evt_egclean_pfmetPhi() {
+  if (not evt_egclean_pfmetPhi_isLoaded) {
+    if (evt_egclean_pfmetPhi_branch != 0) {
+      evt_egclean_pfmetPhi_branch->GetEntry(index);
+    } else {
+      printf("branch evt_egclean_pfmetPhi_branch does not exist!\n");
+      exit(1);
+    }
+    evt_egclean_pfmetPhi_isLoaded = true;
+  }
+  return evt_egclean_pfmetPhi_;
+}
+const float &CMS3::evt_uncorr_pfmetPhi() {
+  if (not evt_uncorr_pfmetPhi_isLoaded) {
+    if (evt_uncorr_pfmetPhi_branch != 0) {
+      evt_uncorr_pfmetPhi_branch->GetEntry(index);
+    } else {
+      printf("branch evt_uncorr_pfmetPhi_branch does not exist!\n");
+      exit(1);
+    }
+    evt_uncorr_pfmetPhi_isLoaded = true;
+  }
+  return evt_uncorr_pfmetPhi_;
+}
 const unsigned int &CMS3::mus_HLT_Mu17_version() {
   if (not mus_HLT_Mu17_version_isLoaded) {
     if (mus_HLT_Mu17_version_branch != 0) {
@@ -24493,6 +24571,42 @@ const float &CMS3::evt_muegclean_pfmet() {
   }
   return evt_muegclean_pfmet_;
 }
+const float &CMS3::evt_muegcleanfix_pfmet() {
+  if (not evt_muegcleanfix_pfmet_isLoaded) {
+    if (evt_muegcleanfix_pfmet_branch != 0) {
+      evt_muegcleanfix_pfmet_branch->GetEntry(index);
+    } else {
+      printf("branch evt_muegcleanfix_pfmet_branch does not exist!\n");
+      exit(1);
+    }
+    evt_muegcleanfix_pfmet_isLoaded = true;
+  }
+  return evt_muegcleanfix_pfmet_;
+}
+const float &CMS3::evt_egclean_pfmet() {
+  if (not evt_egclean_pfmet_isLoaded) {
+    if (evt_egclean_pfmet_branch != 0) {
+      evt_egclean_pfmet_branch->GetEntry(index);
+    } else {
+      printf("branch evt_egclean_pfmet_branch does not exist!\n");
+      exit(1);
+    }
+    evt_egclean_pfmet_isLoaded = true;
+  }
+  return evt_egclean_pfmet_;
+}
+const float &CMS3::evt_uncorr_pfmet() {
+  if (not evt_uncorr_pfmet_isLoaded) {
+    if (evt_uncorr_pfmet_branch != 0) {
+      evt_uncorr_pfmet_branch->GetEntry(index);
+    } else {
+      printf("branch evt_uncorr_pfmet_branch does not exist!\n");
+      exit(1);
+    }
+    evt_uncorr_pfmet_isLoaded = true;
+  }
+  return evt_uncorr_pfmet_;
+}
 const vector<int> &CMS3::pfjets_neutralHadronMultiplicity() {
   if (not pfjets_neutralHadronMultiplicity_isLoaded) {
     if (pfjets_neutralHadronMultiplicity_branch != 0) {
@@ -26389,6 +26503,9 @@ namespace tas {
   const float &evt_pfmetPhi_raw() { return cms3.evt_pfmetPhi_raw(); }
   const float &evt_muegclean_pfmetPhi_raw() { return cms3.evt_muegclean_pfmetPhi_raw(); }
   const float &evt_muegclean_pfmetPhi() { return cms3.evt_muegclean_pfmetPhi(); }
+  const float &evt_muegcleanfix_pfmetPhi() { return cms3.evt_muegcleanfix_pfmetPhi(); }
+  const float &evt_egclean_pfmetPhi() { return cms3.evt_egclean_pfmetPhi(); }
+  const float &evt_uncorr_pfmetPhi() { return cms3.evt_uncorr_pfmetPhi(); }
   const unsigned int &mus_HLT_Mu17_version() { return cms3.mus_HLT_Mu17_version(); }
   const float &evt_puppi_pfmetSignificance() { return cms3.evt_puppi_pfmetSignificance(); }
   const vector<float> &photons_scSeedE2nd() { return cms3.photons_scSeedE2nd(); }
@@ -26873,6 +26990,9 @@ namespace tas {
   const float &evt_pfmet_raw() { return cms3.evt_pfmet_raw(); }
   const float &evt_muegclean_pfmet_raw() { return cms3.evt_muegclean_pfmet_raw(); }
   const float &evt_muegclean_pfmet() { return cms3.evt_muegclean_pfmet(); }
+  const float &evt_muegcleanfix_pfmet() { return cms3.evt_muegcleanfix_pfmet(); }
+  const float &evt_egclean_pfmet() { return cms3.evt_egclean_pfmet(); }
+  const float &evt_uncorr_pfmet() { return cms3.evt_uncorr_pfmet(); }
   const vector<int> &pfjets_neutralHadronMultiplicity() { return cms3.pfjets_neutralHadronMultiplicity(); }
   const float &hcalnoise_TS4TS5NoiseSumE() { return cms3.hcalnoise_TS4TS5NoiseSumE(); }
   const vector<int> &mus_overlap1() { return cms3.mus_overlap1(); }
