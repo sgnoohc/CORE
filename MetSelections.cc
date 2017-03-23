@@ -426,13 +426,18 @@ pair <float, float> getT1CHSMET_fromMINIAOD( FactorizedJetCorrector * jet_correc
     //	
     // remove SA or global muons from jets before correcting
     //
-    for (unsigned int pfcind = 0; pfcind < cms3.pfjets_pfcandIndicies().at(iJet).size(); pfcind++){
-      int index = cms3.pfjets_pfcandIndicies().at(iJet).at(pfcind);
-      if( cms3.pfcands_isGlobalMuon()    .at(index) ||
-          cms3.pfcands_isStandAloneMuon().at(index)){
-        jetp4_uncorr -= cms3.pfcands_p4()   .at(index);
-      }
+
+    for (unsigned int pfcind = 0; pfcind < cms3.pfjets_pfcandmup4().at(iJet).size(); pfcind++){
+      jetp4_uncorr -= cms3.pfjets_pfcandmup4().at(iJet).at(pfcind);
     }
+
+    // for (unsigned int pfcind = 0; pfcind < cms3.pfjets_pfcandIndicies().at(iJet).size(); pfcind++){
+    //   int index = cms3.pfjets_pfcandIndicies().at(iJet).at(pfcind);
+    //   if( cms3.pfcands_isGlobalMuon()    .at(index) ||
+    //       cms3.pfcands_isStandAloneMuon().at(index)){
+    //     jetp4_uncorr -= cms3.pfcands_p4()   .at(index);
+    //   }
+    // }
 
     if ( corr * jetp4_uncorr.pt() > 15. ){		  
       T1_metx += jetp4_uncorr.px() * ( corr_l1 - corr );

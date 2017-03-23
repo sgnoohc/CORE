@@ -3233,6 +3233,9 @@ protected:
   vector<int> pfjets_mc_motherid_;
   TBranch *pfjets_mc_motherid_branch;
   bool pfjets_mc_motherid_isLoaded;
+  vector<vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > > pfjets_pfcandmup4_;
+  TBranch *pfjets_pfcandmup4_branch;
+  bool pfjets_pfcandmup4_isLoaded;
   vector<vector<int> > pfjets_pfcandIndicies_;
   TBranch *pfjets_pfcandIndicies_branch;
   bool pfjets_pfcandIndicies_isLoaded;
@@ -5145,6 +5148,7 @@ public:
   const vector<float> &els_fbrem();
   const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &pfcands_p4();
   const vector<int> &pfjets_mc_motherid();
+  const vector<vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > > &pfjets_pfcandmup4();
   const vector<vector<int> > &pfjets_pfcandIndicies();
   const vector<vector<float> > &photons_clusterPhi();
   const vector<float> &mus_bfit_d0corrPhi();
@@ -6507,6 +6511,7 @@ namespace tas {
   const vector<float> &els_fbrem();
   const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &pfcands_p4();
   const vector<int> &pfjets_mc_motherid();
+  const vector<vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > > &pfjets_pfcandmup4();
   const vector<vector<int> > &pfjets_pfcandIndicies();
   const vector<vector<float> > &photons_clusterPhi();
   const vector<float> &mus_bfit_d0corrPhi();

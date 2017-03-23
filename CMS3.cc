@@ -5410,6 +5410,11 @@ void CMS3::Init(TTree *tree) {
     pfjets_mc_motherid_branch = tree->GetBranch(tree->GetAlias("pfjets_mc_motherid"));
     if (pfjets_mc_motherid_branch) { pfjets_mc_motherid_branch->SetAddress(&pfjets_mc_motherid_); }
   }
+  pfjets_pfcandmup4_branch = 0;
+  if (tree->GetAlias("pfjets_pfcandmup4") != 0) {
+    pfjets_pfcandmup4_branch = tree->GetBranch(tree->GetAlias("pfjets_pfcandmup4"));
+    if (pfjets_pfcandmup4_branch) { pfjets_pfcandmup4_branch->SetAddress(&pfjets_pfcandmup4_); }
+  }
   pfjets_pfcandIndicies_branch = 0;
   if (tree->GetAlias("pfjets_pfcandIndicies") != 0) {
     pfjets_pfcandIndicies_branch = tree->GetBranch(tree->GetAlias("pfjets_pfcandIndicies"));
@@ -7830,6 +7835,7 @@ void CMS3::GetEntry(unsigned int idx) {
   els_fbrem_isLoaded = false;
   pfcands_p4_isLoaded = false;
   pfjets_mc_motherid_isLoaded = false;
+  pfjets_pfcandmup4_isLoaded = false;
   pfjets_pfcandIndicies_isLoaded = false;
   photons_clusterPhi_isLoaded = false;
   mus_bfit_d0corrPhi_isLoaded = false;
@@ -9182,6 +9188,7 @@ void CMS3::LoadAllBranches() {
   if (els_fbrem_branch != 0) els_fbrem();
   if (pfcands_p4_branch != 0) pfcands_p4();
   if (pfjets_mc_motherid_branch != 0) pfjets_mc_motherid();
+  if (pfjets_pfcandmup4_branch != 0) pfjets_pfcandmup4();
   if (pfjets_pfcandIndicies_branch != 0) pfjets_pfcandIndicies();
   if (photons_clusterPhi_branch != 0) photons_clusterPhi();
   if (mus_bfit_d0corrPhi_branch != 0) mus_bfit_d0corrPhi();
@@ -22315,6 +22322,18 @@ const vector<int> &CMS3::pfjets_mc_motherid() {
   }
   return pfjets_mc_motherid_;
 }
+const vector<vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > >> &CMS3::pfjets_pfcandmup4() {
+  if (not pfjets_pfcandmup4_isLoaded) {
+    if (pfjets_pfcandmup4_branch != 0) {
+      pfjets_pfcandmup4_branch->GetEntry(index);
+    } else {
+      printf("branch pfjets_pfcandmup4_branch does not exist!\n");
+      exit(1);
+    }
+    pfjets_pfcandmup4_isLoaded = true;
+  }
+  return pfjets_pfcandmup4_;
+}
 const vector<vector<int> > &CMS3::pfjets_pfcandIndicies() {
   if (not pfjets_pfcandIndicies_isLoaded) {
     if (pfjets_pfcandIndicies_branch != 0) {
@@ -26802,6 +26821,7 @@ namespace tas {
   const vector<float> &els_fbrem() { return cms3.els_fbrem(); }
   const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &pfcands_p4() { return cms3.pfcands_p4(); }
   const vector<int> &pfjets_mc_motherid() { return cms3.pfjets_mc_motherid(); }
+  const vector<vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > > &pfjets_pfcandmup4() { return cms3.pfjets_pfcandmup4(); }
   const vector<vector<int> > &pfjets_pfcandIndicies() { return cms3.pfjets_pfcandIndicies(); }
   const vector<vector<float> > &photons_clusterPhi() { return cms3.photons_clusterPhi(); }
   const vector<float> &mus_bfit_d0corrPhi() { return cms3.mus_bfit_d0corrPhi(); }
