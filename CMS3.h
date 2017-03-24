@@ -29,6 +29,9 @@ protected:
   vector<int> mus_sta_ndof_;
   TBranch *mus_sta_ndof_branch;
   bool mus_sta_ndof_isLoaded;
+  vector<int> pfjets_npfcands_;
+  TBranch *pfjets_npfcands_branch;
+  bool pfjets_npfcands_isLoaded;
   vector<float> ak8jets_minMass_;
   TBranch *ak8jets_minMass_branch;
   bool ak8jets_minMass_isLoaded;
@@ -4080,6 +4083,7 @@ public:
   const float &hcalnoise_isolatedNoiseSumEt();
   const vector<float> &photons_hcalTowerSumEtBcConeDR04();
   const vector<int> &mus_sta_ndof();
+  const vector<int> &pfjets_npfcands();
   const vector<float> &ak8jets_minMass();
   const vector<float> &photons_hcalDepth2TowerSumEtBcConeDR04();
   const vector<float> &mus_bfit_qoverp();
@@ -5443,6 +5447,7 @@ namespace tas {
   const float &hcalnoise_isolatedNoiseSumEt();
   const vector<float> &photons_hcalTowerSumEtBcConeDR04();
   const vector<int> &mus_sta_ndof();
+  const vector<int> &pfjets_npfcands();
   const vector<float> &ak8jets_minMass();
   const vector<float> &photons_hcalDepth2TowerSumEtBcConeDR04();
   const vector<float> &mus_bfit_qoverp();

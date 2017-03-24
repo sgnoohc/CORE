@@ -278,6 +278,11 @@ void CMS3::Init(TTree *tree) {
     mus_sta_ndof_branch = tree->GetBranch(tree->GetAlias("mus_sta_ndof"));
     if (mus_sta_ndof_branch) { mus_sta_ndof_branch->SetAddress(&mus_sta_ndof_); }
   }
+  pfjets_npfcands_branch = 0;
+  if (tree->GetAlias("pfjets_npfcands") != 0) {
+    pfjets_npfcands_branch = tree->GetBranch(tree->GetAlias("pfjets_npfcands"));
+    if (pfjets_npfcands_branch) { pfjets_npfcands_branch->SetAddress(&pfjets_npfcands_); }
+  }
   ak8jets_minMass_branch = 0;
   if (tree->GetAlias("ak8jets_minMass") != 0) {
     ak8jets_minMass_branch = tree->GetBranch(tree->GetAlias("ak8jets_minMass"));
@@ -6767,6 +6772,7 @@ void CMS3::GetEntry(unsigned int idx) {
   hcalnoise_isolatedNoiseSumEt_isLoaded = false;
   photons_hcalTowerSumEtBcConeDR04_isLoaded = false;
   mus_sta_ndof_isLoaded = false;
+  pfjets_npfcands_isLoaded = false;
   ak8jets_minMass_isLoaded = false;
   photons_hcalDepth2TowerSumEtBcConeDR04_isLoaded = false;
   mus_bfit_qoverp_isLoaded = false;
@@ -8120,6 +8126,7 @@ void CMS3::LoadAllBranches() {
   if (hcalnoise_isolatedNoiseSumEt_branch != 0) hcalnoise_isolatedNoiseSumEt();
   if (photons_hcalTowerSumEtBcConeDR04_branch != 0) photons_hcalTowerSumEtBcConeDR04();
   if (mus_sta_ndof_branch != 0) mus_sta_ndof();
+  if (pfjets_npfcands_branch != 0) pfjets_npfcands();
   if (ak8jets_minMass_branch != 0) ak8jets_minMass();
   if (photons_hcalDepth2TowerSumEtBcConeDR04_branch != 0) photons_hcalDepth2TowerSumEtBcConeDR04();
   if (mus_bfit_qoverp_branch != 0) mus_bfit_qoverp();
@@ -9504,6 +9511,18 @@ const vector<int> &CMS3::mus_sta_ndof() {
     mus_sta_ndof_isLoaded = true;
   }
   return mus_sta_ndof_;
+}
+const vector<int> &CMS3::pfjets_npfcands() {
+  if (not pfjets_npfcands_isLoaded) {
+    if (pfjets_npfcands_branch != 0) {
+      pfjets_npfcands_branch->GetEntry(index);
+    } else {
+      printf("branch pfjets_npfcands_branch does not exist!\n");
+      exit(1);
+    }
+    pfjets_npfcands_isLoaded = true;
+  }
+  return pfjets_npfcands_;
 }
 const vector<float> &CMS3::ak8jets_minMass() {
   if (not ak8jets_minMass_isLoaded) {
@@ -25753,6 +25772,7 @@ namespace tas {
   const float &hcalnoise_isolatedNoiseSumEt() { return cms3.hcalnoise_isolatedNoiseSumEt(); }
   const vector<float> &photons_hcalTowerSumEtBcConeDR04() { return cms3.photons_hcalTowerSumEtBcConeDR04(); }
   const vector<int> &mus_sta_ndof() { return cms3.mus_sta_ndof(); }
+  const vector<int> &pfjets_npfcands() { return cms3.pfjets_npfcands(); }
   const vector<float> &ak8jets_minMass() { return cms3.ak8jets_minMass(); }
   const vector<float> &photons_hcalDepth2TowerSumEtBcConeDR04() { return cms3.photons_hcalDepth2TowerSumEtBcConeDR04(); }
   const vector<float> &mus_bfit_qoverp() { return cms3.mus_bfit_qoverp(); }
