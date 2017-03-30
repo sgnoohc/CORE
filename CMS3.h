@@ -1457,6 +1457,12 @@ protected:
   vector<float> pfcands_mass_;
   TBranch *pfcands_mass_branch;
   bool pfcands_mass_isLoaded;
+  vector<float> pfcands_trackIso_;
+  TBranch *pfcands_trackIso_branch;
+  bool pfcands_trackIso_isLoaded;
+  vector<float> pfcands_miniTrackIso_;
+  TBranch *pfcands_miniTrackIso_branch;
+  bool pfcands_miniTrackIso_isLoaded;
   vector<float> isotracks_dz_;
   TBranch *isotracks_dz_branch;
   bool isotracks_dz_isLoaded;
@@ -4559,6 +4565,8 @@ public:
   const vector<float> &mus_gfit_chi2();
   const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &vtxs_position();
   const vector<float> &pfcands_mass();
+  const vector<float> &pfcands_trackIso();
+  const vector<float> &pfcands_miniTrackIso();
   const vector<float> &isotracks_dz();
   const vector<float> &photons_phiSC();
   const vector<float> &svs_zError();
@@ -5923,6 +5931,8 @@ namespace tas {
   const vector<float> &mus_gfit_chi2();
   const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &vtxs_position();
   const vector<float> &pfcands_mass();
+  const vector<float> &pfcands_trackIso();
+  const vector<float> &pfcands_miniTrackIso();
   const vector<float> &isotracks_dz();
   const vector<float> &photons_phiSC();
   const vector<float> &svs_zError();

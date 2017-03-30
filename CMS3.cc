@@ -2535,6 +2535,16 @@ void CMS3::Init(TTree *tree) {
     pfcands_mass_branch = tree->GetBranch(tree->GetAlias("pfcands_mass"));
     if (pfcands_mass_branch) { pfcands_mass_branch->SetAddress(&pfcands_mass_); }
   }
+  pfcands_trackIso_branch = 0;
+  if (tree->GetAlias("pfcands_trackIso") != 0) {
+    pfcands_trackIso_branch = tree->GetBranch(tree->GetAlias("pfcands_trackIso"));
+    if (pfcands_trackIso_branch) { pfcands_trackIso_branch->SetAddress(&pfcands_trackIso_); }
+  }
+  pfcands_miniTrackIso_branch = 0;
+  if (tree->GetAlias("pfcands_miniTrackIso") != 0) {
+    pfcands_miniTrackIso_branch = tree->GetBranch(tree->GetAlias("pfcands_miniTrackIso"));
+    if (pfcands_miniTrackIso_branch) { pfcands_miniTrackIso_branch->SetAddress(&pfcands_miniTrackIso_); }
+  }
   isotracks_dz_branch = 0;
   if (tree->GetAlias("isotracks_dz") != 0) {
     isotracks_dz_branch = tree->GetBranch(tree->GetAlias("isotracks_dz"));
@@ -7248,6 +7258,8 @@ void CMS3::GetEntry(unsigned int idx) {
   mus_gfit_chi2_isLoaded = false;
   vtxs_position_isLoaded = false;
   pfcands_mass_isLoaded = false;
+  pfcands_trackIso_isLoaded = false;
+  pfcands_miniTrackIso_isLoaded = false;
   isotracks_dz_isLoaded = false;
   photons_phiSC_isLoaded = false;
   svs_zError_isLoaded = false;
@@ -8602,6 +8614,8 @@ void CMS3::LoadAllBranches() {
   if (mus_gfit_chi2_branch != 0) mus_gfit_chi2();
   if (vtxs_position_branch != 0) vtxs_position();
   if (pfcands_mass_branch != 0) pfcands_mass();
+  if (pfcands_trackIso_branch != 0) pfcands_trackIso();
+  if (pfcands_miniTrackIso_branch != 0) pfcands_miniTrackIso();
   if (isotracks_dz_branch != 0) isotracks_dz();
   if (photons_phiSC_branch != 0) photons_phiSC();
   if (svs_zError_branch != 0) svs_zError();
@@ -15224,6 +15238,30 @@ const vector<float> &CMS3::pfcands_mass() {
     pfcands_mass_isLoaded = true;
   }
   return pfcands_mass_;
+}
+const vector<float> &CMS3::pfcands_trackIso() {
+  if (not pfcands_trackIso_isLoaded) {
+    if (pfcands_trackIso_branch != 0) {
+      pfcands_trackIso_branch->GetEntry(index);
+    } else {
+      printf("branch pfcands_trackIso_branch does not exist!\n");
+      exit(1);
+    }
+    pfcands_trackIso_isLoaded = true;
+  }
+  return pfcands_trackIso_;
+}
+const vector<float> &CMS3::pfcands_miniTrackIso() {
+  if (not pfcands_miniTrackIso_isLoaded) {
+    if (pfcands_miniTrackIso_branch != 0) {
+      pfcands_miniTrackIso_branch->GetEntry(index);
+    } else {
+      printf("branch pfcands_miniTrackIso_branch does not exist!\n");
+      exit(1);
+    }
+    pfcands_miniTrackIso_isLoaded = true;
+  }
+  return pfcands_miniTrackIso_;
 }
 const vector<float> &CMS3::isotracks_dz() {
   if (not isotracks_dz_isLoaded) {
@@ -26248,6 +26286,8 @@ namespace tas {
   const vector<float> &mus_gfit_chi2() { return cms3.mus_gfit_chi2(); }
   const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &vtxs_position() { return cms3.vtxs_position(); }
   const vector<float> &pfcands_mass() { return cms3.pfcands_mass(); }
+  const vector<float> &pfcands_trackIso() { return cms3.pfcands_trackIso(); }
+  const vector<float> &pfcands_miniTrackIso() { return cms3.pfcands_miniTrackIso(); }
   const vector<float> &isotracks_dz() { return cms3.isotracks_dz(); }
   const vector<float> &photons_phiSC() { return cms3.photons_phiSC(); }
   const vector<float> &svs_zError() { return cms3.svs_zError(); }
