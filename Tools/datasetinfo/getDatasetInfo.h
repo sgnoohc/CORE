@@ -9,8 +9,8 @@ using namentag = std::pair<string,string>;
 
 class DatasetInfoFromFile {
  public:
-  DatasetInfoFromFile();
-  DatasetInfoFromFile(const string filename) { loadFromFile(filename); };
+  DatasetInfoFromFile() {}
+  DatasetInfoFromFile(const string filename) { loadFromFile(filename); }
   void loadFromFile(const string filename);
   void checkEntryExist(const string datasetname, const string cmstag);
   float getScale1fbFromFile(const string datasetname, const string cmstag);
