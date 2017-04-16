@@ -11,6 +11,9 @@
 #include "TBits.h"
 #include <vector>
 #include <unistd.h>
+#include <chrono>
+#include <ctime>
+#include <numeric>
 typedef ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > LorentzVector;
 
 // Generated with file: V08-00-16-MoriondMC.root
@@ -5443,7 +5446,7 @@ public:
   bool passHLTTrigger(TString trigName);
   float passTauID(TString idName, unsigned int tauIndex);
   float getbtagvalue(TString bDiscriminatorName, unsigned int jetIndex);
-  static void progress( int nEventsTotal, int nEventsChain );
+  static void progress( int curr, int tot, int period=1000, unsigned int smoothing=30 );
 };
 
 #ifndef __CINT__

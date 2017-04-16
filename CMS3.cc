@@ -25788,24 +25788,30 @@ float CMS3::getbtagvalue(TString bDiscriminatorName, unsigned int jetIndex) {
     return 0;
   }
 }
-void CMS3::progress( int nEventsTotal, int nEventsChain ){
-  int period = 1000;
-  if(nEventsTotal%1000 == 0) {
-    if (isatty(1)) {
-      if( ( nEventsChain - nEventsTotal ) > period ){
-        float frac = (float)nEventsTotal/(nEventsChain*0.01);
-        printf("\015\033[32m ---> \033[1m\033[31m%4.1f%%"
-               "\033[0m\033[32m <---\033[0m\015", frac);
-        fflush(stdout);
-      }
-      else {
-        printf("\015\033[32m ---> \033[1m\033[31m%4.1f%%"
-               "\033[0m\033[32m <---\033[0m\015", 100.);
-        cout << endl;
-      }
+
+std::chrono::time_point<std::chrono::system_clock> t_old = std::chrono::system_clock::now();
+std::vector<double> deq;
+void CMS3::progress( int curr, int tot, int period, unsigned int smoothing) {
+    if(curr%period == 0) {
+        auto now = std::chrono::system_clock::now();
+        double dt = ((std::chrono::duration<double>)(now - t_old)).count();
+        t_old = now;
+        // if (deq.size() >= smoothing) deq.pop_front();
+        if (deq.size() >= smoothing) deq.erase(deq.begin());
+        deq.push_back(dt);
+        double avgdt = std::accumulate(deq.begin(),deq.end(),0.)/deq.size();
+        float prate = (float)period/avgdt;
+        float peta = (tot-curr)/prate;
+        if (isatty(1)) {
+            float pct = (float)curr/(tot*0.01);
+            if( ( tot - curr ) <= period ) pct = 100.0;
+            printf("\015\033[32m ---> \033[1m\033[31m%4.1f%% \033[34m [%.3f kHz, ETA: %.0f s] \033[0m\033[32m  <---\033[0m\015 ", pct, prate/1000.0, peta);
+            if( ( tot - curr ) > period ) fflush(stdout);
+            else cout << endl;
+        }
     }
-  }
 }
+
 namespace tas {
   const float &hcalnoise_isolatedNoiseSumEt() { return cms3.hcalnoise_isolatedNoiseSumEt(); }
   const vector<float> &photons_hcalTowerSumEtBcConeDR04() { return cms3.photons_hcalTowerSumEtBcConeDR04(); }
