@@ -7,7 +7,7 @@ using namespace std;
 
 void DatasetInfoFromFile::loadFromFile(const string filename) {
   ifstream ifile(filename);
-  if (!ifile) throw std::invalid_argument("Dataset info file" + filename + "does not exist!");
+  if (!ifile) throw std::invalid_argument("Dataset info file " + filename + " does not exist!");
   string dsname, cmstag;
   datasetInfo dsinfo;
   string line;
