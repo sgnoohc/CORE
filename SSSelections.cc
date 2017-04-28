@@ -249,11 +249,11 @@ std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector*
     //Require loose jet ID
     if (!isFastsim && !isLoosePFJet_50nsV1(i)) continue;
     
-    // //Get discriminator
-    // float disc = tas::getbtagvalue("pfCombinedInclusiveSecondaryVertexV2BJetTags", i);
+    //Get discriminator
+    float disc = tas::getbtagvalue("pfCombinedInclusiveSecondaryVertexV2BJetTags", i);
 
-    // DeepCSV requires sum of b+bb: https://twiki.cern.ch/twiki/bin/view/CMS/DeepFlavour
-    float disc = tas::getbtagvalue("deepFlavourJetTags:probb",i)+tas::getbtagvalue("deepFlavourJetTags:probbb",i); // FIXME
+    // // DeepCSV requires sum of b+bb: https://twiki.cern.ch/twiki/bin/view/CMS/DeepFlavour
+    // float disc = tas::getbtagvalue("deepFlavourJetTags:probb",i)+tas::getbtagvalue("deepFlavourJetTags:probbb",i); // FIXME
 
     result_jets.push_back(Jet(i, JEC));
     result_disc.push_back(disc);
