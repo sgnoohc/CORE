@@ -1,7 +1,7 @@
 #ifndef BASE_H
 #define BASE_H
 
-enum analysis_t { POG, SS, HAD, STOP, ZMET, WW };
+enum analysis_t { POG, SS, HAD, STOP, ZMET, WW, VVV };
 enum id_level_t { 
   //SS
   //v1
@@ -176,7 +176,10 @@ enum id_level_t {
   WW_fo_noiso_v3, 
   WW_fo_v3, 
   WW_medium_noiso_v3, 
-  WW_medium_v3
+  WW_medium_v3,
+
+  //VVV
+  VVV_baseline
 
 };
 

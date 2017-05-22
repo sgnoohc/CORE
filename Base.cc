@@ -174,6 +174,10 @@ analysis_t whichAnalysis(id_level_t id_level){
     case (WW_medium_v3):
       return WW;
       break;
+    case (VVV_baseline):
+      return VVV;
+      break;
+
     default:
       std::cout << "Warning! Not sure which analysis you're doing!" << std::endl;
       std::cout << "Update \"whichAnalysis\" in base.cc with this id_level: " << id_level << std::endl;

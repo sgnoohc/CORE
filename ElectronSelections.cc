@@ -1503,6 +1503,23 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
 	else return true;
 	break;
 
+  /////////////////////
+  /// VVV Selection ///
+  /////////////////////
+  case(VVV_baseline):
+    if (globalEleMVAreader==0) {
+      cout << "readMVA=0, please create and init it (e.g with createAndInitMVA function)" << endl;
+      return false;
+    }
+    if (fabs(els_etaSC().at(elIdx)) > 2.5) return false;
+    if (els_conv_vtx_flag().at(elIdx)) return false;
+    if (els_exp_innerlayers().at(elIdx) > 0) return false;
+    if (fabs(els_dxyPV().at(elIdx)) >= 0.05) return false;
+    if (!isTriggerSafenoIso_v1(elIdx)) return false;
+    if (fabs(els_dzPV().at(elIdx)) >= 0.1) return false;
+    if (fabs(els_ip3d().at(elIdx))/els_ip3derr().at(elIdx) >= 4) return false;
+    return globalEleMVAreader->passesElectronMVAid(elIdx, id_level);
+
    ///////////////
    /// Default ///
    ///////////////
@@ -2203,6 +2220,9 @@ int eleTightID(unsigned int elIdx, analysis_t analysis, int version){
       break;
     case (ZMET):
       if (electronID(elIdx, ZMET_loose_v1)) return 0;
+      break;
+    case (VVV):
+      if (electronID(elIdx, VVV_baseline)) return 0;
   }
   return -1;
 }
@@ -2619,6 +2639,13 @@ bool readMVA::passesElectronMVAid(unsigned int index, id_level_t id_level){
     if (aeta < 0.8) return disc > 0.73;
     if ((aeta >= 0.8 && aeta <= 1.479)) return disc > 0.57;
     if (aeta > 1.479) return disc > 0.05;
+    break;
+
+  case(VVV_baseline):
+    /* Same as SS_medium_noip_v5 as of May 2017 */
+    if (aeta < 0.8) return disc > mvacut(0.77,0.52,0.77,pt);
+    if ((aeta >= 0.8 && aeta <= 1.479)) return disc > mvacut(0.56,0.11,0.56,pt);
+    if (aeta > 1.479) return disc > mvacut(0.48,-0.01,0.48,pt);
     break;
 
   default:
