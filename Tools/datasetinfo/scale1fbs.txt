@@ -1,5 +1,6 @@
 # file created on 2017-04-27 09:22:06.007556
 # dataset                                                                                                                                                    tag                nevts_tot  nevts_eff  xsec      scale1fb  
+undefined         V02-00-05      100   100     100     1.0
 /DYJetsToLL_M-10to50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM         CMS4_V00-00-01      31441852   31441852     20657     0.65699
 /DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v2/MINIAODSIM        CMS4_V00-00-01      42846386   42846386    6020.9     0.14052
 /GluGluHToZZTo4L_M125_13TeV_powheg2_JHUgenV6_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM                CMS4_V00-00-01        999800     999800  0.011814  1.1817e-05
