@@ -10,13 +10,22 @@
 using namespace std;
 
 JetResolution::JetResolution() {
-  rndm = new TRandom3(0);
+  // seed 42 for reproducibility
+  rndm = new TRandom3(42);
 }
 
 JetResolution::~JetResolution() { 
   if (sigma_formula) delete sigma_formula; 
   if (rndm) delete rndm;
 }
+
+void JetResolution::resetSeed() {
+    // If making multiple loops over jets,
+    // want smearing to be the same for the same jet,
+    // so reset the TRandom seed before each jet loop
+  rndm->SetSeed(42);
+}
+
 
 void JetResolution::loadResolutionFile(TString file) {
 
@@ -184,17 +193,18 @@ vector<Double_t> JetResolution::smear(const LorentzVector& jet, const vector<Lor
     Bool_t isMatched = false;
     Double_t matched_par = 0.;
     for (size_t ijet = 0; ijet < genjets.size(); ijet++) {
-      if (ROOT::Math::VectorUtil::DeltaR(jet, genjets.at(ijet)) < Rcone/2 && fabs(gen_parameters.at(ijet) - par) < 3*res*gen_parameters.at(ijet)) {
+      if (fabs(gen_parameters.at(ijet) - par) > 3*res*gen_parameters.at(ijet)) continue;
+      if (ROOT::Math::VectorUtil::DeltaR(jet, genjets.at(ijet)) > Rcone/2) continue;
 	isMatched = true;
 	matched_par = gen_parameters.at(ijet);
-      }
     }
     sigma_isMatched[ipar] = isMatched;
     
     if (isMatched) {
       retval.push_back(max(0.,matched_par+sf*(par-matched_par)));
     } else {
-      retval.push_back(par*rndm->Gaus(1., sqrt(sf*sf-1.)*res));
+        // https://twiki.cern.ch/twiki/bin/viewauth/CMS/JetResolution
+      retval.push_back(par*(1.+rndm->Gaus(0.,res)*sqrt(max(sf*sf-1.,0.))));
     }
   }
   
