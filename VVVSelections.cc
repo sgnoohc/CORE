@@ -40,7 +40,7 @@ bool passElectronSelection_VVV_v1(int index, id_level_t id_string, bool vetoTran
 //Muon selections//
 //~-~-~-~-~-~-~-~//
 bool passMuonSelection_VVV(int index, id_level_t id_string){
-  return passMuonSelection_VVV_v1( index, id_string, true, true );
+  return passMuonSelection_VVV_v1( index, id_string, false, true );
 }
 
 bool passMuonSelection_VVV_v1(int index, id_level_t id_string, bool vetoTransition, bool eta24){
