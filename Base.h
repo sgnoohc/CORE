@@ -179,6 +179,15 @@ enum id_level_t {
   WW_medium_v3,
 
   //VVV
+  VVV_cutbased_veto,
+  VVV_cutbased_veto_noiso,
+  VVV_cutbased_veto_noiso_noip,
+  VVV_cutbased_fo,
+  VVV_cutbased_fo_noiso,
+  VVV_cutbased_tight_noiso,
+  VVV_cutbased_tight,
+  VVV_MVAbased_tight_noiso,
+  VVV_MVAbased_tight,
   VVV_baseline
 
 };

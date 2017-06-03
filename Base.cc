@@ -174,6 +174,15 @@ analysis_t whichAnalysis(id_level_t id_level){
     case (WW_medium_v3):
       return WW;
       break;
+    case (VVV_cutbased_veto):
+    case (VVV_cutbased_veto_noiso):
+    case (VVV_cutbased_veto_noiso_noip):
+    case (VVV_cutbased_fo):
+    case (VVV_cutbased_fo_noiso):
+    case (VVV_cutbased_tight_noiso):
+    case (VVV_cutbased_tight):
+    case (VVV_MVAbased_tight_noiso):    //electrons only
+    case (VVV_MVAbased_tight):          //electrons only
     case (VVV_baseline):
       return VVV;
       break;

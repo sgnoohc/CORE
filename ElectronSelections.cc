@@ -1506,7 +1506,86 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
   /////////////////////
   /// VVV Selection ///
   /////////////////////
-  case(VVV_baseline):
+
+  //-------------
+  // Veto Leptons
+
+  case(VVV_cutbased_veto):
+    if (electronID(elIdx, VVV_cutbased_veto_noiso)==0) return false; 
+    // using Spring 16 with Veto working point
+    // https://indico.cern.ch/event/482677/contributions/2259342/attachments/1316731/1972911/talk_electron_ID_spring16_update.pdf
+    // https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedElectronIdentificationRun2#Offline_selection_criteria
+    if (fabs(els_etaSC().at(elIdx)) <= 1.479) { 
+      if (eleRelIso03EA(elIdx,2) >= 0.175) return false; 
+    }
+    else {
+      if (eleRelIso03EA(elIdx,2) >= 0.159) return false; 
+    }
+    return true;
+    break;
+
+  case(VVV_cutbased_veto_noiso):
+    // using Spring 16 with Veto working point
+    if (electronID(elIdx, VVV_cutbased_veto_noiso_noip)==0) return false; 
+    if (fabs(els_dxyPV().at(elIdx)) >= 0.05) return false;
+    if (fabs(els_dzPV().at(elIdx)) >= 0.1) return false; 
+    return true;
+    break;
+
+  case(VVV_cutbased_veto_noiso_noip):
+    // using Spring 16 with Veto working point
+    //trigger match cuts
+    if (!isTriggerSafenoIso_v1(elIdx)) return false;
+    if (fabs(els_etaSC().at(elIdx)) > 2.5) return false;
+    return isVetoElectronPOGspring16noIso_v1(elIdx);
+    break;
+
+  //---------------
+  //Fakable Objects
+
+  case(VVV_cutbased_fo):
+    if (electronID(elIdx, VVV_cutbased_fo_noiso)==0) return false; 
+    // using Spring 16 with Loose working point
+    // https://indico.cern.ch/event/482677/contributions/2259342/attachments/1316731/1972911/talk_electron_ID_spring16_update.pdf
+    // https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedElectronIdentificationRun2#Offline_selection_criteria
+    if (fabs(els_etaSC().at(elIdx)) <= 1.479) { 
+      if (eleRelIso03EA(elIdx,2) >=  0.0994) return false; 
+    }
+    else {
+      if (eleRelIso03EA(elIdx,2) >= 0.107) return false; 
+    }
+    return true;
+    break;
+
+  case(VVV_cutbased_fo_noiso):
+    // using Spring 16 with Loose working point
+    if (fabs(els_dxyPV().at(elIdx)) >= 0.05) return false;
+    if (fabs(els_ip3d().at(elIdx))/els_ip3derr().at(elIdx) >= 4) return false;
+    if (fabs(els_dzPV().at(elIdx)) >= 0.1) return false;
+    return (isLooseElectronPOGspring16noIso_v1(elIdx));
+    break;
+
+  //---------------
+  //Tight Selection
+
+  case(VVV_baseline): //only one with IP for now, same as MVAbased_tight (with Iso) but with IP cut
+    if (electronID(elIdx, VVV_MVAbased_tight)==0) return false;
+    if (fabs(els_ip3d().at(elIdx)) > 0.015) return false;
+    return true;
+    break;
+
+  case(VVV_MVAbased_tight):
+    if (electronID(elIdx, VVV_MVAbased_tight_noiso)==0) return false; 
+    if (fabs(els_etaSC().at(elIdx)) <= 1.479) { 
+      if (eleRelIso03EA(elIdx,2) >= 0.0588) return false; 
+    }
+    else {
+      if (eleRelIso03EA(elIdx,2) >= 0.0571) return false; 
+    }
+    return true;
+    break;
+
+  case(VVV_MVAbased_tight_noiso):
     if (globalEleMVAreader==0) {
       cout << "readMVA=0, please create and init it (e.g with createAndInitMVA function)" << endl;
       return false;
@@ -1519,6 +1598,29 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
     if (fabs(els_dzPV().at(elIdx)) >= 0.1) return false;
     if (fabs(els_ip3d().at(elIdx))/els_ip3derr().at(elIdx) >= 4) return false;
     return globalEleMVAreader->passesElectronMVAid(elIdx, id_level);
+    break;
+
+  case(VVV_cutbased_tight):
+    if (electronID(elIdx, VVV_cutbased_tight_noiso)==0) return false; 
+    if (fabs(els_etaSC().at(elIdx)) <= 1.479) { 
+      if (eleRelIso03EA(elIdx,2) >= 0.0588) return false; 
+    }
+    else {
+      if (eleRelIso03EA(elIdx,2) >= 0.0571) return false; 
+    }
+    return true;
+    break;
+
+  case(VVV_cutbased_tight_noiso):
+    if (fabs(els_etaSC().at(elIdx)) > 2.5) return false;
+    if (els_conv_vtx_flag().at(elIdx)) return false;
+    if (els_exp_innerlayers().at(elIdx) > 0) return false;
+    if (fabs(els_dxyPV().at(elIdx)) >= 0.05) return false;
+    if (!isTriggerSafenoIso_v1(elIdx)) return false;
+    if (fabs(els_dzPV().at(elIdx)) >= 0.1) return false;
+    if (fabs(els_ip3d().at(elIdx))/els_ip3derr().at(elIdx) >= 4) return false;
+    return isTightElectronPOGspring16_v1(elIdx);
+    break;
 
    ///////////////
    /// Default ///
@@ -1532,6 +1634,10 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
   }//switch
   return true;
 }
+
+//========================
+// POG IDs
+//========================
 
 bool isVetoElectronPOGphys14(unsigned int elIdx){
   if (!isVetoElectronPOGphys14noIso(elIdx)) return false;
@@ -1564,6 +1670,18 @@ bool isVetoElectronPOGspring15_v1(unsigned int elIdx){
   }
   else if ((fabs(els_etaSC().at(elIdx)) > 1.479) && (fabs(els_etaSC().at(elIdx)) < 2.5)){       // Endcap
     if (eleRelIso03_90ContEA(elIdx)                                          >= 0.144) return false;// PF isolation w/dBeta PU correction / pT (cone dR=0.3) 
+  }
+  else return false;
+  return true;
+}
+
+bool isVetoElectronPOGspring16_v1(unsigned int elIdx){
+  if (!isVetoElectronPOGspring16noIso_v1(elIdx)) return false;
+  if (fabs(els_etaSC().at(elIdx)) <= 1.479){                                                    // Barrel 
+    if (eleRelIso03EA(elIdx, 2) >= 0.175) return false;// PF isolation w/EA PU correction / pT (cone dR=0.3) 
+  }
+  else if ((fabs(els_etaSC().at(elIdx)) > 1.479) && (fabs(els_etaSC().at(elIdx)) < 2.5)){       // Endcap
+    if (eleRelIso03EA(elIdx, 2) >= 0.159) return false;// PF isolation w/EA PU correction / pT (cone dR=0.3) 
   }
   else return false;
   return true;
@@ -1605,6 +1723,18 @@ bool isLooseElectronPOGspring15_v1(unsigned int elIdx){
   return true;
 }
 
+bool isLooseElectronPOGspring16_v1(unsigned int elIdx){
+  if (!isLooseElectronPOGspring16noIso_v1(elIdx)) return false;
+  if (fabs(els_etaSC().at(elIdx)) <= 1.479){                                                    // Barrel 
+    if (eleRelIso03EA(elIdx, 2) >= 0.0994) return false;// PF isolation w/EA PU correction / pT (cone dR=0.3) 
+  }
+  else if ((fabs(els_etaSC().at(elIdx)) > 1.479) && (fabs(els_etaSC().at(elIdx)) < 2.5)){       // Endcap
+    if (eleRelIso03EA(elIdx, 2) >= 0.107) return false;// PF isolation w/EA PU correction / pT (cone dR=0.3) 
+  }
+  else return false;
+  return true;
+}
+
 bool isMediumElectronPOGphys14(unsigned int elIdx){
   if (!isMediumElectronPOGphys14noIso(elIdx)) return false;
   if (fabs(els_etaSC().at(elIdx)) <= 1.479){                                                    // Barrel 
@@ -1636,6 +1766,18 @@ bool isMediumElectronPOGspring15_v1(unsigned int elIdx){
   }
   else if ((fabs(els_etaSC().at(elIdx)) > 1.479) && (fabs(els_etaSC().at(elIdx)) < 2.5)){       // Endcap
     if (eleRelIso03_90ContEA(elIdx)                                          >= 0.0678) return false;// PF isolation w/EA PU correction / pT (cone dR=0.3) 
+  }
+  else return false;
+  return true;
+}
+
+bool isMediumElectronPOGspring16_v1(unsigned int elIdx){
+  if (!isMediumElectronPOGspring16noIso_v1(elIdx)) return false;
+  if (fabs(els_etaSC().at(elIdx)) <= 1.479){                                                    // Barrel 
+    if (eleRelIso03EA(elIdx, 2) >= 0.0695) return false;// PF isolation w/EA PU correction / pT (cone dR=0.3) 
+  }
+  else if ((fabs(els_etaSC().at(elIdx)) > 1.479) && (fabs(els_etaSC().at(elIdx)) < 2.5)){       // Endcap
+    if (eleRelIso03EA(elIdx, 2) >= 0.0821) return false;// PF isolation w/EA PU correction / pT (cone dR=0.3) 
   }
   else return false;
   return true;
@@ -1676,6 +1818,22 @@ bool isTightElectronPOGspring15_v1(unsigned int elIdx){
   else return false;
   return true;
 }
+
+bool isTightElectronPOGspring16_v1(unsigned int elIdx){
+  if (!isTightElectronPOGspring16noIso_v1(elIdx)) return false;
+  if (fabs(els_etaSC().at(elIdx)) <= 1.479){                                                    // Barrel 
+    if (eleRelIso03EA(elIdx, 2) >= 0.0588) return false;// PF isolation w/EA PU correction / pT (cone dR=0.3) 
+  }
+  else if ((fabs(els_etaSC().at(elIdx)) > 1.479) && (fabs(els_etaSC().at(elIdx)) < 2.5)){       // Endcap
+    if (eleRelIso03EA(elIdx, 2) >= 0.0571) return false;// PF isolation w/EA PU correction / pT (cone dR=0.3) 
+  }
+  else return false;
+  return true;
+}
+
+//========================
+// POG IDs No Isolation
+//========================
 
 bool isVetoElectronPOGphys14noIso(unsigned int elIdx){
   if (fabs(els_etaSC().at(elIdx)) <= 1.479){                                                    // Barrel 
