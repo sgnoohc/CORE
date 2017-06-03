@@ -2799,6 +2799,8 @@ bool readMVA::passesElectronMVAid(unsigned int index, id_level_t id_level){
     if (aeta > 1.479) return disc > 0.05;
     break;
 
+  case(VVV_MVAbased_tight_noiso):
+  case(VVV_MVAbased_tight):
   case(VVV_baseline):
     /* Same as SS_medium_noip_v5 as of May 2017 */
     if (aeta < 0.8) return disc > mvacut(0.77,0.52,0.77,pt);
