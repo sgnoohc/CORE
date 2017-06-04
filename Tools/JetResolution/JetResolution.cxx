@@ -19,11 +19,11 @@ JetResolution::~JetResolution() {
   if (rndm) delete rndm;
 }
 
-void JetResolution::resetSeed() {
+void JetResolution::resetSeed(unsigned long long seed) {
     // If making multiple loops over jets,
     // want smearing to be the same for the same jet,
     // so reset the TRandom seed before each jet loop
-  rndm->SetSeed(42);
+  rndm->SetSeed(seed);
 }
 
 

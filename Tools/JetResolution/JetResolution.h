@@ -49,7 +49,7 @@ class JetResolution {
   JetResolution();
   ~JetResolution();
 
-  void resetSeed();
+  void resetSeed(unsigned long long seed);
   void loadResolutionFile(TString file);
   void loadScaleFactorFile(TString file);
   void loadVariable(TString name, Double_t val);
