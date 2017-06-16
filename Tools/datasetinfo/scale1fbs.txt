@@ -1,4 +1,4 @@
-# file created on 2017-06-04 16:11:53.729691
+# file created on 2017-06-16 11:06:06.376319
 # dataset                                                                                                                                                    tag                nevts_tot  nevts_eff  xsec      scale1fb  
 undefined         V02-00-05      100   100     100     1.0
 /DYJetsToLL_M-10to50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM         CMS4_V00-00-01      31441852   31441852     20657     0.65699
@@ -10,15 +10,25 @@ undefined         V02-00-05      100   100     100     1.0
 /TGJets_TuneCUETP8M1_13TeV_amcatnlo_madspin_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM                 CMS4_V00-00-01        292508      58120     2.967     0.05105
 /TGJets_TuneCUETP8M1_13TeV_amcatnlo_madspin_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM            CMS4_V00-00-01       1556996     310442     2.967   0.0095573
 /TTGJets_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM            CMS4_V00-00-01       4260439    1379497     3.697     0.00268
+/TTGJets_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM       CMS4_V00-00-02       9388207    3038871     3.697   0.0012166
+/TTGamma_Dilept_TuneCUETP8M2T4_13TeV-amcatnlo-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM               CMS4_V00-00-02       4158208    4158208     0.632  0.00015199
+/TTGamma_SingleLeptFromT_TuneCUETP8M2T4_13TeV-amcatnlo-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM      CMS4_V00-00-02       4542371    4542371      0.77  0.00016951
+/TTGamma_SingleLeptFromTbar_TuneCUETP8M2T4_13TeV-amcatnlo-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM   CMS4_V00-00-02       4586664    4586664     0.769  0.00016766
+/TTTJ_TuneCUETP8M2T4_13TeV-madgraph-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM                         CMS4_V00-00-02         96048      96048  0.000474   4.935e-06
 /TTTT_TuneCUETP8M1_13TeV-amcatnlo-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM                           CMS4_V00-00-01        250000     104640  0.009103  8.6994e-05
 /TTTT_TuneCUETP8M2T4_13TeV-amcatnlo-fsrdown-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM                 CMS4_V00-00-02       1428846     596630    0.0092   1.542e-05
 /TTTT_TuneCUETP8M2T4_13TeV-amcatnlo-fsrup-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM                   CMS4_V00-00-02       1469376     612980    0.0092  1.5009e-05
 /TTTT_TuneCUETP8M2T4_13TeV-amcatnlo-isrdown-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM                 CMS4_V00-00-02       1398329     584473    0.0092  1.5741e-05
 /TTTT_TuneCUETP8M2T4_13TeV-amcatnlo-isrup-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM                   CMS4_V00-00-02       1443020     604708    0.0092  1.5214e-05
 /TTTT_TuneCUETP8M2T4_13TeV-amcatnlo-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM                         CMS4_V00-00-02       2175120     906240    0.0092  1.0152e-05
+/TTTW_TuneCUETP8M2T4_13TeV-madgraph-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM                         CMS4_V00-00-02         84084      84084  0.007882   9.374e-05
+/TTWH_TuneCUETP8M2T4_13TeV-madgraph-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM                         CMS4_V00-00-02         90021      90021  0.001582  1.7574e-05
 /TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v3/MINIAODSIM  CMS4_V00-00-01       2160168    1112722    0.2043   0.0001836
+/TTWW_TuneCUETP8M2T4_13TeV-madgraph-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM                         CMS4_V00-00-02         74276      74276    0.0115  0.00015483
+/TTWZ_TuneCUETP8M2T4_13TeV-madgraph-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM                         CMS4_V00-00-02         99142      99142  0.003884  3.9176e-05
 /TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM          CMS4_V00-00-01       1992438     927976    0.2529  0.00027253
 /TTZToLL_M-1to10_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM                         CMS4_V00-00-01        246792     246792    0.0493  0.00019976
+/TT_MSDecays_dileptonic_TuneCUETP8M2T4_13TeV-madgraph-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM       CMS4_V00-00-02        466400     466400    169.68     0.36381
 /TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM                             CMS4_V00-00-01      67199219   67199219    831.76    0.012378
 /VHToNonbb_M125_13TeV_amcatnloFXFX_madspin_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM                  CMS4_V00-00-01       1007898     461452   0.95611    0.002072
 /WGToLNuG_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext3-v1/MINIAODSIM              CMS4_V00-00-01      10659025    6833491    405.27    0.059307
@@ -35,6 +45,9 @@ undefined         V02-00-05      100   100     100     1.0
 /ZGTo2LG_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM               CMS4_V00-00-01      12952955    8859897     123.9    0.013984
 /ZZTo4L_13TeV_powheg_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM                                        CMS4_V00-00-01       6001484    6001484     1.256  0.00020928
 /ZZZ_TuneCUETP8M1_13TeV-amcatnlo-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM                            CMS4_V00-00-01        249237     213197   0.01398  6.5573e-05
+/tHW_HToTT_0J_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUSummer16Fast_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM             CMS4_V00-00-02       1093799    1093799         1  0.00091424
+/tHq_HToTT_0J_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUSummer16Fast_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM             CMS4_V00-00-02       1092268    1092268         1  0.00091553
 /tZq_ll_4f_13TeV-amcatnlo-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM                              CMS4_V00-00-01      13022692    3451652    0.0758   2.196e-05
 /ttHToNonbb_M125_TuneCUETP8M2_ttHtranche3_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM      CMS4_V00-00-01       3566286    3498394     0.215  6.1457e-05
 /ttHTobb_M125_13TeV_powheg_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM                                  CMS4_V00-00-01       3685824    3685824     0.293  7.9494e-05
+/ttH_HToTT_1J_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUSummer16Fast_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM             CMS4_V00-00-02       1772186    1772186         1  0.00056427
