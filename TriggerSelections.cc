@@ -39,7 +39,7 @@ bool passesTriggerVeryLowPt(int hyp_type){
   return false;
 }
 
-bool passUnprescaledHLTTrigger(const char* arg){
+bool passUnprescaledHLTTrigger(const char* arg, bool includeL1){
 
   //Put the trigger name into a string
   TString HLTTrigger( arg );
@@ -68,7 +68,8 @@ bool passUnprescaledHLTTrigger(const char* arg){
     exit(0);
   }
 
-  if( hlt_prescales().at(trigIndx) == 1 && hlt_l1prescales().at(trigIndx) == 1) return true;
+  if( hlt_prescales().at(trigIndx) == 1 && (!includeL1 || hlt_l1prescales().at(trigIndx) == 1) )
+          return true;
 
   return false;
 
@@ -108,7 +109,7 @@ TString triggerName(TString triggerPattern){
 }
 
 //this function returns the total (L1*HLT) pre-scale for a given trigger name
-int HLT_prescale( const char* arg ){
+int HLT_prescale( const char* arg, bool includeL1 ){
 
  // put the trigger name into a string
   TString HLTTrigger( arg );
@@ -140,8 +141,12 @@ int HLT_prescale( const char* arg ){
   }
 
   //return prescale
-  return hlt_prescales().at(trigIndx)*hlt_l1prescales().at(trigIndx);
+  if(includeL1)
+      return hlt_prescales().at(trigIndx)*hlt_l1prescales().at(trigIndx);
+  else
+      return hlt_prescales().at(trigIndx);
 }
+
 
 //---------------------------------------------
 // Check if trigger passes
@@ -269,7 +274,7 @@ bool matchToHLTFilter(const char* arg, const char* filt, const LorentzVector &ob
 // Check if trigger is unprescaled and passes
 // for a specific object, specified by a p4
 //---------------------------------------------
-bool passUnprescaledHLTTrigger(const char* arg, const LorentzVector &obj){
+bool passUnprescaledHLTTrigger(const char* arg, const LorentzVector &obj, bool includeL1){
 
   // put the trigger name into a string
   TString HLTTrigger( arg );
@@ -284,7 +289,7 @@ bool passUnprescaledHLTTrigger(const char* arg, const LorentzVector &obj){
 
   //return false if pre-scale != 1
   if( hlt_prescales().at(trigIdx)   != 1 ) return false;
-  if( hlt_l1prescales().at(trigIdx) != 1 ) return false;
+  if( includeL1 && hlt_l1prescales().at(trigIdx) != 1 ) return false;
 
   return passHLTTrigger(arg, obj);
 
