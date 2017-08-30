@@ -117,7 +117,7 @@ struct Lep {
   float eta() {return abs(pdgid_)==11 ? cms3.els_p4().at(idx_).eta() : cms3.mus_p4().at(idx_).eta();}
   LorentzVector p4() {return abs(pdgid_)==11 ? cms3.els_p4().at(idx_) : cms3.mus_p4().at(idx_);}
   float relIso03() { return abs(pdgid_)==11 ? eleRelIso03(idx_, SS) : muRelIso03(idx_, SS);}
-  float miniRelIso() { return abs(pdgid_)==11 ? elMiniRelIso(idx_, false, 0.0, false, true) : muMiniRelIso(idx_, false, 0.5, false, true);}
+  // float miniRelIso() { return abs(pdgid_)==11 ? elMiniRelIso(idx_, false, 0.0, false, true) : muMiniRelIso(idx_, false, 0.5, false, true);}
   float dxyPV() { return abs(pdgid_)==11 ? cms3.els_dxyPV().at(idx_) : cms3.mus_dxyPV().at(idx_);}
   float dzPV() { return abs(pdgid_)==11 ? cms3.els_dzPV().at(idx_) : cms3.mus_dzPV().at(idx_);}
   float d0Err() { return abs(pdgid_)==11 ? cms3.els_d0Err().at(idx_) : cms3.mus_d0Err().at(idx_);}

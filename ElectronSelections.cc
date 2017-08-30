@@ -402,12 +402,12 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       return true;
       break;
 
-    // now using mini iso
-    case(HAD_veto_v2):
-      if (electronID(elIdx, HAD_veto_noiso_v2)==0) return false;
-      if (elMiniRelIso(elIdx) > 0.1) return false; 
-      return true;
-      break;
+    // // now using mini iso
+    // case(HAD_veto_v2):
+    //   if (electronID(elIdx, HAD_veto_noiso_v2)==0) return false;
+    //   if (elMiniRelIso(elIdx) > 0.1) return false; 
+    //   return true;
+    //   break;
 
    ////////////////////
    /// HAD veto v3 ////
@@ -850,11 +850,11 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       return true;
       break;
 
-    case(HAD_loose_v2):
-      if (electronID(elIdx, HAD_loose_noiso_v2)==0) return false;
-      if (elMiniRelIso(elIdx) > 0.1) return false; 
-      return true;
-      break;
+    // case(HAD_loose_v2):
+    //   if (electronID(elIdx, HAD_loose_noiso_v2)==0) return false;
+    //   if (elMiniRelIso(elIdx) > 0.1) return false; 
+    //   return true;
+    //   break;
 
    /////////////////////
    /// HAD loose v3 ////
@@ -970,11 +970,11 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       return true;
       break;
 
-    case(HAD_medium_v2):
-      if (electronID(elIdx, HAD_medium_noiso_v2)==0) return false;
-      if (elMiniRelIso(elIdx) > 0.1) return false; 
-      return true;
-      break;
+    // case(HAD_medium_v2):
+    //   if (electronID(elIdx, HAD_medium_noiso_v2)==0) return false;
+    //   if (elMiniRelIso(elIdx) > 0.1) return false; 
+    //   return true;
+    //   break;
 
    //////////////////////
    /// HAD medium v3 ////
@@ -1352,11 +1352,11 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       return true;
       break;
 
-    case(HAD_tight_v2):
-      if (electronID(elIdx, HAD_tight_noiso_v2)==0) return false;
-      if (elMiniRelIso(elIdx) > 0.1) return false; 
-      return true;
-      break;
+    // case(HAD_tight_v2):
+    //   if (electronID(elIdx, HAD_tight_noiso_v2)==0) return false;
+    //   if (elMiniRelIso(elIdx) > 0.1) return false; 
+    //   return true;
+    //   break;
 
    /////////////////////
    /// HAD tight v3 ////
@@ -1481,11 +1481,11 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
 	/// ZMET loose v1 ///
 	/////////////////////
 
-  case(ZMET_loose_v2):
-	if( !isLooseElectronPOGphys14noIso(elIdx)               ) return false;
-	if( elMiniRelIso( elIdx, true, 0.0, false, true ) > 0.1 ) return false;
-	else return true;
-	break;
+  // case(ZMET_loose_v2):
+  //       if( !isLooseElectronPOGphys14noIso(elIdx)               ) return false;
+  //       if( elMiniRelIso( elIdx, true, 0.0, false, true ) > 0.1 ) return false;
+  //       else return true;
+  //       break;
 
   case(ZMET_loose_noiso_v2):
 	if( !isLooseElectronPOGphys14noIso(elIdx)               ) return false;

@@ -263,12 +263,12 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
    /// HAD loose v2 ///
    ////////////////////
   
-    // now using mini iso
-    case(HAD_loose_v2):
-      if (muonID(muIdx, HAD_loose_noiso_v2)==0) return false;
-      if (muMiniRelIso(muIdx) > 0.2) return false;
-      return true;
-      break;
+    // // now using mini iso
+    // case(HAD_loose_v2):
+    //   if (muonID(muIdx, HAD_loose_noiso_v2)==0) return false;
+    //   if (muMiniRelIso(muIdx) > 0.2) return false;
+    //   return true;
+    //   break;
 
    ////////////////////
    /// HAD loose v3 ///
@@ -713,12 +713,12 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
    /// HAD tight v2 ///
    ////////////////////
   
-    // now using mini iso
-    case(HAD_tight_v2):
-      if (muonID(muIdx, HAD_tight_noiso_v2)==0) return false;
-      if (muMiniRelIso(muIdx) > 0.2) return false;
-      return true;
-      break;
+    // // now using mini iso
+    // case(HAD_tight_v2):
+    //   if (muonID(muIdx, HAD_tight_noiso_v2)==0) return false;
+    //   if (muMiniRelIso(muIdx) > 0.2) return false;
+    //   return true;
+    //   break;
 
    ////////////////////
    /// HAD tight v3 ///
@@ -794,13 +794,13 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
 	  else return true;
       break;
   
-    case(ZMET_mediumMu_v1):
-      if (!isMediumMuonPOG(muIdx)                             ) return false;
-	  if (fabs(mus_dxyPV()             .at(muIdx)) >  0.05    ) return false;
-	  if (fabs(mus_dzPV()              .at(muIdx)) >  0.1     ) return false;
-	  if( muMiniRelIso( muIdx, true, 0.5, false, true ) > 0.1 ) return false;
-	  else return true;
-      break;
+    // case(ZMET_mediumMu_v1):
+    //   if (!isMediumMuonPOG(muIdx)                             ) return false;
+    //       if (fabs(mus_dxyPV()             .at(muIdx)) >  0.05    ) return false;
+    //       if (fabs(mus_dzPV()              .at(muIdx)) >  0.1     ) return false;
+    //       if( muMiniRelIso( muIdx, true, 0.5, false, true ) > 0.1 ) return false;
+    //       else return true;
+    //   break;
 
     case(ZMET_mediumMu_noiso_v1):
       if (!isMediumMuonPOG(muIdx)                             ) return false;
@@ -813,11 +813,11 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
    /// ZMET tight v1 ///
    /////////////////////
   
-    case(ZMET_tight_v2):
-      if (!isTightMuonPOG(muIdx)                              ) return false;
-	  if( muMiniRelIso( muIdx, true, 0.5, false, true ) > 0.1 ) return false;
-	  return true;
-      break;
+    // case(ZMET_tight_v2):
+    //   if (!isTightMuonPOG(muIdx)                              ) return false;
+    //       if( muMiniRelIso( muIdx, true, 0.5, false, true ) > 0.1 ) return false;
+    //       return true;
+    //   break;
 
     case(ZMET_tight_noiso_v2):
       if (!isTightMuonPOG(muIdx)                              ) return false;
