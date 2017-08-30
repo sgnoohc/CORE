@@ -183,6 +183,8 @@ float muRelIso03_noCorr(unsigned int muIdx){
 }
 
 float muRelIsoCustomCone(unsigned int muIdx, float dr, bool useVetoCones, float ptthresh, bool useDBcor, bool useEAcor, float mindr, int eaversion){
+  cout << "WARNING: shouldn't use muRelIsoCustomCone in CMS4! It depends on entire set of PFCands." << endl;
+
   float chiso     = 0.;
   float nhiso     = 0.;
   float emiso     = 0.;
@@ -211,6 +213,7 @@ float muRelIsoCustomCone(unsigned int muIdx, float dr, bool useVetoCones, float 
   return absiso/(mus_p4().at(muIdx).pt());
 }
 
+[[deprecated("This function may not be correct in cms4 (needs all PFCands)")]]
 float muMiniRelIso(unsigned int idx, bool useVetoCones, float ptthresh, bool useDBcor, bool useEAcor){
   float pt = mus_p4().at(idx).pt();
   float dr = getMiniDR(pt);
@@ -233,6 +236,7 @@ float muMiniRelIsoCMS3_EA(unsigned int idx, int eaversion) {
   return absiso/(mus_p4().at(idx).pt());
 }
 
+[[deprecated("This function may not be correct in cms4 (needs all PFCands)")]]
 float muRelIsoAn04(unsigned int idx, bool useDBcor) {
   float pt = mus_p4().at(idx).pt();
   float dr = getMiniDR(pt);
@@ -330,6 +334,8 @@ float eleRelIso03_noCorr(unsigned int elIdx){
 }
 
 float elRelIsoCustomCone(unsigned int elIdx, float dr, bool useVetoCones, float ptthresh, bool useDBcor, bool useEAcor, float mindr, int eaversion){
+  cout << "WARNING: shouldn't use muRelIsoCustomCone in CMS4! It depends on entire set of PFCands." << endl;
+
   float chiso     = 0.;
   float nhiso     = 0.;
   float emiso     = 0.;
@@ -360,6 +366,8 @@ float elRelIsoCustomCone(unsigned int elIdx, float dr, bool useVetoCones, float 
   float absiso = chiso + std::max(float(0.0), nhiso + emiso - correction);
   return absiso/(els_p4().at(elIdx).pt());
 }
+
+[[deprecated("This function may not be correct in cms4 (needs all PFCands)")]]
 float elMiniRelIso(unsigned int idx, bool useVetoCones, float ptthresh, bool useDBcor, bool useEAcor){
 
   float pt = els_p4().at(idx).pt();
@@ -383,6 +391,7 @@ float elMiniRelIsoCMS3_EA(unsigned int idx, int eaversion) {
   return absiso/(els_p4().at(idx).pt());
 }
 
+[[deprecated("This function may not be correct in cms4 (needs all PFCands)")]]
 float elRelIsoAn04(unsigned int idx, bool useDBcor) {
   float pt = els_p4().at(idx).pt();
   float dr = getMiniDR(pt);
