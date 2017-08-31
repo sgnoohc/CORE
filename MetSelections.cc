@@ -16,6 +16,7 @@
 
 using namespace tas;
 
+[[deprecated("This function may not be correct in cms4 (needs all PFCands)!")]]
 metStruct trackerMET(float deltaZCut, const std::vector<LorentzVector>* jets) {
 
   if ( vtxs_isFake().empty() ) return metStruct();
@@ -352,6 +353,9 @@ pair <float, float> getT1CHSMET_fromMINIAOD( FactorizedJetCorrector * jet_correc
   float T1_mety   = T1_met * sin(T1_metPhi);
   
   if( recompute_raw_met ){
+    cerr << "Cannot recompute raw met in cms4! (Need all PFCands!)" << endl;
+    assert(!recompute_raw_met);
+
     LorentzVector met_raw_OTF(0,0,0,0);
     for( size_t pfind = 0; pfind < cms3.pfcands_p4().size(); pfind++ ){
       met_raw_OTF -= cms3.pfcands_p4().at(pfind);
@@ -509,6 +513,7 @@ pair <float, float> getT1PUPPIMET_fromMINIAOD( FactorizedJetCorrector * jet_corr
   return make_pair(T1_met, T1_metPhi);
 }
 
+[[deprecated("This function may not be correct in cms4 (needs all PFCands)")]]
 pair<float,float> MET3p0() { 
 
   float met_pt  = 0.0;
@@ -676,6 +681,7 @@ pair <float, float> getT1CHSMET3p0(   FactorizedJetCorrector * jet_corrector ){
   return make_pair(T1_met, T1_metPhi);
 }
 
+[[deprecated("This function may not be correct in cms4 (needs all PFCands)!")]]
 metStruct METpuppi() {
 
   double pX(0), pY(0), set(0);
@@ -696,6 +702,7 @@ metStruct METpuppi() {
   return met;
 }
 
+[[deprecated("This function may not be correct in cms4 (needs all PFCands)!")]]
 metStruct trackerMETpuppi(float deltaZCut, const std::vector<LorentzVector>* jets) {
 
   if ( vtxs_isFake().empty() ) return metStruct();

@@ -16,8 +16,11 @@ struct metStruct{
 class FactorizedJetCorrector;
 class JetCorrectionUncertainty;
 
+[[deprecated("This function may not be correct in cms4 (needs all PFCands)!")]]
 metStruct trackerMET(float deltaZCut = 0.2, const std::vector<LorentzVector>* jets = 0);
+[[deprecated("This function may not be correct in cms4 (needs all PFCands)!")]]
 metStruct trackerMETpuppi(float deltaZCut = 0.2, const std::vector<LorentzVector>* jets = 0);
+[[deprecated("This function may not be correct in cms4 (needs all PFCands)!")]]
 metStruct METpuppi();
 bool hbheNoiseFilter(int minZeros = 999);
 bool hbheNoiseFilter_25ns(int minZeros = 999);
@@ -36,6 +39,7 @@ bool passesMETfilters2016(bool isData);
 bool passesMETfiltersMoriond17(bool isData);
 pair <float, float> getT1CHSMET3p0( FactorizedJetCorrector * jet_corrector );
 
+[[deprecated("This function may not be correct in cms4 (needs all PFCands)!")]]
 std::pair<float,float> MET3p0();
 
 #endif
