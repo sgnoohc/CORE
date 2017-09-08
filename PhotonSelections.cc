@@ -123,6 +123,19 @@ bool photonID(unsigned int phIdx, id_level_t id_level){
 	///////////////////
 	// MET Templates //
 	///////////////////
+
+  case(ZMET_photon_v4):
+
+	if( !isTemplatePhoton( phIdx ) ) return false;
+	if( !isLoosePhoton_Spring15_25ns( phIdx ) ) return false;
+        // add trigger emulation cuts here, compared to v3
+	if( !passTriggerEmu( phIdx ) ) return false;
+	// Following cuts done in analysis code.
+	// match to pfjet w/ neutral EM fraction > 70%
+	// reject photons within electron with pT > 10 within cone of dR < 0.2
+	// Reject photons aligned to MET within 0.14 radians in phi
+	else return true;
+	break;
   
   case(ZMET_photon_v3):
 
@@ -400,5 +413,32 @@ bool isTightPhoton_Spring15_25ns( int photonIdx )
 	if( emiso  > 0.16 + 0.0034 * pt                      ) return false;
   }
   
+  return true;
+}
+
+// cuts to emulate trigger cuts from paths: HLT_Photon50_R9Id90_HE10_IsoM etc
+bool passTriggerEmu(int photonIdx) {
+  
+  float eta = -999;  
+  try{
+	eta = cms3.photons_p4().at(photonIdx).eta();
+  }
+  catch( exception &e ){
+	std::cout<<"Error! no photon with photonIdx: "<<photonIdx<<std::endl;
+	return false;
+  }
+  float pt     = cms3.photons_p4()                   .at(photonIdx).pt();
+
+  if( cms3.photons_full5x5_r9().at(photonIdx) < 0.92     ) return false;
+  if( cms3.photons_full5x5_hOverE().at(photonIdx) > 0.12 ) return false;
+  if( cms3.photons_tkIsoHollow03().at(photonIdx) > 5     ) return false;
+  if( abs(eta) < 1.479 ){
+    if( photonEcalpfClusterIso03EA(photonIdx) > 4 + pt * 0.0053  ) return false;
+    if( photonHcalpfClusterIso03EA(photonIdx) > 8 + pt * 0.014   ) return false;
+  }else if( abs(eta) > 1.479 ){
+    if( photonEcalpfClusterIso03EA(photonIdx) > 4 + pt * 0.0034  ) return false;
+    if( photonHcalpfClusterIso03EA(photonIdx) > 8 + pt * 0.0139  ) return false;
+  }
+
   return true;
 }
