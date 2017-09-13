@@ -1510,6 +1510,36 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
   //-------------
   // Veto Leptons
 
+  case(VVV_cutbased_veto_bak1):
+    if (electronID(elIdx, VVV_cutbased_veto_noiso)==0) return false; 
+    // using Spring 16 with Veto working point
+    // https://indico.cern.ch/event/482677/contributions/2259342/attachments/1316731/1972911/talk_electron_ID_spring16_update.pdf
+    // https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedElectronIdentificationRun2#Offline_selection_criteria
+    if (fabs(els_etaSC().at(elIdx)) <= 1.479) { 
+      if (eleRelIso03EA(elIdx,2) >= 0.175) return false; 
+    }
+    else {
+      if (eleRelIso03EA(elIdx,2) >= 0.159) return false; 
+    }
+    return true;
+    break;
+
+  case(VVV_cutbased_veto_noiso_bak1):
+    // using Spring 16 with Veto working point
+    if (electronID(elIdx, VVV_cutbased_veto_noiso_noip)==0) return false; 
+    if (fabs(els_dxyPV().at(elIdx)) >= 0.05) return false;
+    if (fabs(els_dzPV().at(elIdx)) >= 0.1) return false; 
+    return true;
+    break;
+
+  case(VVV_cutbased_veto_noiso_noip_bak1):
+    // using Spring 16 with Veto working point
+    //trigger match cuts
+    if (!isTriggerSafenoIso_v1(elIdx)) return false;
+    if (fabs(els_etaSC().at(elIdx)) > 2.5) return false;
+    return isVetoElectronPOGspring16noIso_v1(elIdx);
+    break;
+
   case(VVV_cutbased_veto):
     if (electronID(elIdx, VVV_cutbased_veto_noiso)==0) return false; 
     // using Spring 16 with Veto working point
@@ -1535,10 +1565,10 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
   case(VVV_cutbased_veto_noiso_noip):
     // using Spring 16 with Veto working point
     //trigger match cuts
-    if (!isTriggerSafenoIso_v1(elIdx)) return false;
     if (fabs(els_etaSC().at(elIdx)) > 2.5) return false;
     return isVetoElectronPOGspring16noIso_v1(elIdx);
     break;
+
 
   //---------------
   //Fakable Objects
@@ -1548,12 +1578,13 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
     // using Spring 16 with Loose working point
     // https://indico.cern.ch/event/482677/contributions/2259342/attachments/1316731/1972911/talk_electron_ID_spring16_update.pdf
     // https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedElectronIdentificationRun2#Offline_selection_criteria
-    if (fabs(els_etaSC().at(elIdx)) <= 1.479) { 
+    /*if (fabs(els_etaSC().at(elIdx)) <= 1.479) { 
       if (eleRelIso03EA(elIdx,2) >=  0.0994) return false; 
     }
     else {
       if (eleRelIso03EA(elIdx,2) >= 0.107) return false; 
-    }
+    }*/
+    if (eleRelIso03EA(elIdx,2) >= 0.2) return false; //No longer using Loose Working Point Recommendation.
     return true;
     break;
 
@@ -1616,8 +1647,8 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
     if (els_conv_vtx_flag().at(elIdx)) return false;
     if (els_exp_innerlayers().at(elIdx) > 0) return false;
     if (fabs(els_dxyPV().at(elIdx)) >= 0.05) return false;
-    if (!isTriggerSafenoIso_v1(elIdx)) return false;
     if (fabs(els_dzPV().at(elIdx)) >= 0.1) return false;
+    if (fabs(els_ip3d().at(elIdx)) > 0.015) return false;
     if (fabs(els_ip3d().at(elIdx))/els_ip3derr().at(elIdx) >= 4) return false;
     return isTightElectronPOGspring16_v1(elIdx);
     break;

@@ -12,12 +12,15 @@ using namespace tas;
 VVV_cutbased_veto
 VVV_cutbased_veto_noiso
 VVV_cutbased_veto_noiso_noip
+VVV_cutbased_veto_bak1             //electrons only
+VVV_cutbased_veto_noiso_bak1       //electrons only
+VVV_cutbased_veto_noiso_noip_bak1  //electrons only
 VVV_cutbased_fo
 VVV_cutbased_fo_noiso
 VVV_cutbased_tight_noiso
 VVV_cutbased_tight
-VVV_MVAbased_tight_noiso      //electrons only
-VVV_MVAbased_tight            //electrons only
+VVV_MVAbased_tight_noiso           //electrons only
+VVV_MVAbased_tight                 //electrons only
 VVV_baseline
 */
 
