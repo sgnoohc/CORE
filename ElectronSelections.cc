@@ -1545,12 +1545,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
     // using Spring 16 with Veto working point
     // https://indico.cern.ch/event/482677/contributions/2259342/attachments/1316731/1972911/talk_electron_ID_spring16_update.pdf
     // https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedElectronIdentificationRun2#Offline_selection_criteria
-    if (fabs(els_etaSC().at(elIdx)) <= 1.479) { 
-      if (eleRelIso03EA(elIdx,2) >= 0.175) return false; 
-    }
-    else {
-      if (eleRelIso03EA(elIdx,2) >= 0.159) return false; 
-    }
+    if (eleRelIso03EA(elIdx,2) >= 0.4) return false; 
     return true;
     break;
 
