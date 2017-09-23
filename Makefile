@@ -3,7 +3,7 @@ include Makefile.arch
 #
 # stuff to make
 #
-SOURCES=$(wildcard *.cc) $(wildcard Tools/*.cc) $(wildcard Tools/MT2/*.cc) $(wildcard Tools/btagsf/*.cc)
+SOURCES=$(wildcard *.cc) $(wildcard Tools/*.cc) $(wildcard Tools/MT2/*.cc) $(wildcard Tools/btagsf/*.cc) $(wildcard Tools/dorky/*.cc)
 OBJECTS=$(SOURCES:.cc=.o)
 LIB=CMS3_CORE.so
 
