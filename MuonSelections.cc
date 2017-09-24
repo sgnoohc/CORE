@@ -835,6 +835,69 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
       // if (muRelIso03(muIdx, analysis) >= 0.15) return false; 
 	  return true;
       break;
+   
+  /////////////////////
+  /// VVV Selection ///
+  /////////////////////
+    
+  //-------------
+  // Veto Leptons
+
+  case(VVV_cutbased_veto):
+    if (muonID(muIdx, VVV_cutbased_veto_noiso)==0) return false;
+    if (muRelIso03EA(muIdx,1) > 0.40) return false;
+    return true;
+    break;
+
+
+  case(VVV_cutbased_veto_noiso):
+    if (muonID(muIdx, VVV_cutbased_veto_noiso_noip)==0) return false;
+    if (fabs(mus_dxyPV().at(muIdx)) > 0.05) return false;
+    if (fabs(mus_dzPV().at(muIdx)) > 0.1) return false;
+    return true;
+    break;
+
+  case(VVV_cutbased_veto_noiso_noip):
+    if (fabs(mus_p4().at(muIdx).eta()) > 2.4) return false;
+    return isLooseMuonPOG(muIdx);
+    break;
+
+
+  //---------------
+  //Fakable Objects
+
+  case(VVV_cutbased_fo):
+    if (!muonID(muIdx, VVV_cutbased_fo_noiso)) return false;
+    if (muRelIso03EA(muIdx,1) > 0.40) return false;
+    return true;
+    break;
+
+  case(VVV_cutbased_fo_noiso):
+    if (!muonID(muIdx, VVV_cutbased_veto_noiso)) return false;
+    if (fabs(mus_ip3d().at(muIdx))/mus_ip3derr().at(muIdx) >= 4) return false;
+    if (mus_ptErr().at(muIdx)/mus_trk_p4().at(muIdx).pt() >= 0.2) return false;
+    return isMediumMuonPOG(muIdx);
+    break;
+
+  //---------------
+  //Tight Selection
+
+  case(VVV_baseline): //Should stay updated to currently used selection
+    return muonID(muIdx, VVV_cutbased_tight);
+    break;
+
+  case(VVV_cutbased_tight):
+    if (!muonID(muIdx, VVV_cutbased_tight_noiso)) return false;
+    if (muRelIso03EA(muIdx,1) > 0.06) return false;
+    return true;
+    break;
+
+  case(VVV_cutbased_tight_noiso):
+    if (!muonID(muIdx, VVV_cutbased_fo_noiso)) return false;
+    if (fabs(mus_ip3d().at(muIdx)) >= 0.015) return false;
+    return true;
+    break;
+
 
    ///////////////
    /// Default ///
@@ -892,6 +955,9 @@ int muTightID(unsigned int muIdx, analysis_t analysis, int version){
     case (ZMET):
       if (muonID(muIdx, ZMET_tight_v1)) return 1;
       if (muonID(muIdx, ZMET_loose_v1)) return 0;
+      break;
+    case (VVV):
+      if (muonID(muIdx, VVV_baseline)) return 1;
   }
   return -1;
 }
