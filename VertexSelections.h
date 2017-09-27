@@ -7,4 +7,6 @@
 bool isGoodVertex(size_t ivtx);
 int firstGoodVertex();
 
+bool isSoftBtag_noDR( size_t sv_idx );
+
 #endif
