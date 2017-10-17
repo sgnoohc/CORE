@@ -2,8 +2,11 @@
 #include <fstream>
 #include <sstream>
 #include "getDatasetInfo.h"
+#include "defaultList.icc"
 
 using namespace std;
+
+DatasetInfoFromFile::DatasetInfoFromFile() : dslist_(default_dslist) {}
 
 void DatasetInfoFromFile::loadFromFile(const string filename) {
   ifstream ifile(filename);
