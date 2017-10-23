@@ -563,6 +563,21 @@ void CMS3::Init(TTree *tree) {
     evt_detectorStatus_branch = tree->GetBranch(tree->GetAlias("evt_detectorStatus"));
     if (evt_detectorStatus_branch) { evt_detectorStatus_branch->SetAddress(&evt_detectorStatus_); }
   }
+  pfjets_totalMultiplicity_branch = 0;
+  if (tree->GetAlias("pfjets_totalMultiplicity") != 0) {
+    pfjets_totalMultiplicity_branch = tree->GetBranch(tree->GetAlias("pfjets_totalMultiplicity"));
+    if (pfjets_totalMultiplicity_branch) { pfjets_totalMultiplicity_branch->SetAddress(&pfjets_totalMultiplicity_); }
+  }
+  pfjets_ptDistribution_branch = 0;
+  if (tree->GetAlias("pfjets_ptDistribution") != 0) {
+    pfjets_ptDistribution_branch = tree->GetBranch(tree->GetAlias("pfjets_ptDistribution"));
+    if (pfjets_ptDistribution_branch) { pfjets_ptDistribution_branch->SetAddress(&pfjets_ptDistribution_); }
+  }
+  pfjets_axis1_branch = 0;
+  if (tree->GetAlias("pfjets_axis1") != 0) {
+    pfjets_axis1_branch = tree->GetBranch(tree->GetAlias("pfjets_axis1"));
+    if (pfjets_axis1_branch) { pfjets_axis1_branch->SetAddress(&pfjets_axis1_); }
+  }
   pfjets_undoJEC_branch = 0;
   if (tree->GetAlias("pfjets_undoJEC") != 0) {
     pfjets_undoJEC_branch = tree->GetBranch(tree->GetAlias("pfjets_undoJEC"));
@@ -1034,6 +1049,26 @@ void CMS3::Init(TTree *tree) {
   if (tree->GetAlias("pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag") != 0) {
     pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch = tree->GetBranch(tree->GetAlias("pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag"));
     if (pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch) { pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch->SetAddress(&pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag_); }
+  }
+  pfjets_puppi_pfDeepCSVJetTagsprobbPlusprobbb_branch = 0;
+  if (tree->GetAlias("pfjets_puppi_pfDeepCSVJetTagsprobbPlusprobbb") != 0) {
+    pfjets_puppi_pfDeepCSVJetTagsprobbPlusprobbb_branch = tree->GetBranch(tree->GetAlias("pfjets_puppi_pfDeepCSVJetTagsprobbPlusprobbb"));
+    if (pfjets_puppi_pfDeepCSVJetTagsprobbPlusprobbb_branch) { pfjets_puppi_pfDeepCSVJetTagsprobbPlusprobbb_branch->SetAddress(&pfjets_puppi_pfDeepCSVJetTagsprobbPlusprobbb_); }
+  }
+  pfjets_puppi_totalMultiplicity_branch = 0;
+  if (tree->GetAlias("pfjets_puppi_totalMultiplicity") != 0) {
+    pfjets_puppi_totalMultiplicity_branch = tree->GetBranch(tree->GetAlias("pfjets_puppi_totalMultiplicity"));
+    if (pfjets_puppi_totalMultiplicity_branch) { pfjets_puppi_totalMultiplicity_branch->SetAddress(&pfjets_puppi_totalMultiplicity_); }
+  }
+  pfjets_puppi_ptDistribution_branch = 0;
+  if (tree->GetAlias("pfjets_puppi_ptDistribution") != 0) {
+    pfjets_puppi_ptDistribution_branch = tree->GetBranch(tree->GetAlias("pfjets_puppi_ptDistribution"));
+    if (pfjets_puppi_ptDistribution_branch) { pfjets_puppi_ptDistribution_branch->SetAddress(&pfjets_puppi_ptDistribution_); }
+  }
+  pfjets_puppi_axis1_branch = 0;
+  if (tree->GetAlias("pfjets_puppi_axis1") != 0) {
+    pfjets_puppi_axis1_branch = tree->GetBranch(tree->GetAlias("pfjets_puppi_axis1"));
+    if (pfjets_puppi_axis1_branch) { pfjets_puppi_axis1_branch->SetAddress(&pfjets_puppi_axis1_); }
   }
   mus_isoSumDRR04_pf_PhotonEt_branch = 0;
   if (tree->GetAlias("mus_isoSumDRR04_pf_PhotonEt") != 0) {
@@ -2854,6 +2889,11 @@ void CMS3::Init(TTree *tree) {
   if (tree->GetAlias("pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag") != 0) {
     pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch = tree->GetBranch(tree->GetAlias("pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag"));
     if (pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch) { pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch->SetAddress(&pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_); }
+  }
+  pfjets_pfDeepCSVJetTagsprobbPlusprobbb_branch = 0;
+  if (tree->GetAlias("pfjets_pfDeepCSVJetTagsprobbPlusprobbb") != 0) {
+    pfjets_pfDeepCSVJetTagsprobbPlusprobbb_branch = tree->GetBranch(tree->GetAlias("pfjets_pfDeepCSVJetTagsprobbPlusprobbb"));
+    if (pfjets_pfDeepCSVJetTagsprobbPlusprobbb_branch) { pfjets_pfDeepCSVJetTagsprobbPlusprobbb_branch->SetAddress(&pfjets_pfDeepCSVJetTagsprobbPlusprobbb_); }
   }
   evt_pfmetPhi_branch = 0;
   if (tree->GetAlias("evt_pfmetPhi") != 0) {
@@ -7020,6 +7060,10 @@ void CMS3::GetEntry(unsigned int idx) {
   mus_isoMeanDRR03_pf_NeutralHadronEtHighThreshold_isLoaded = false;
   hyp_lt_p4_isLoaded = false;
   pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag_isLoaded = false;
+  pfjets_puppi_pfDeepCSVJetTagsprobbPlusprobbb_isLoaded = false;
+  pfjets_puppi_ptDistribution_isLoaded = false;
+  pfjets_puppi_axis1_isLoaded = false;
+  pfjets_puppi_totalMultiplicity_isLoaded = false;
   mus_isoSumDRR04_pf_PhotonEt_isLoaded = false;
   els_sigmaIphiIphi_isLoaded = false;
   pfjets_puppi_chargedEmE_isLoaded = false;
@@ -7402,6 +7446,10 @@ void CMS3::GetEntry(unsigned int idx) {
   pfjets_METToolbox_mass_isLoaded = false;
   evt_bs_XwidthErr_isLoaded = false;
   pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_isLoaded = false;
+  pfjets_pfDeepCSVJetTagsprobbPlusprobbb_isLoaded = false;
+  pfjets_ptDistribution_isLoaded = false;
+  pfjets_axis1_isLoaded = false;
+  pfjets_totalMultiplicity_isLoaded = false;
   evt_pfmetPhi_isLoaded = false;
   pfjets_METToolbox_chargedMultiplicity_isLoaded = false;
   els_mc_patMatch_p4_isLoaded = false;
@@ -8398,6 +8446,10 @@ void CMS3::LoadAllBranches() {
   if (mus_isoMeanDRR03_pf_NeutralHadronEtHighThreshold_branch != 0) mus_isoMeanDRR03_pf_NeutralHadronEtHighThreshold();
   if (hyp_lt_p4_branch != 0) hyp_lt_p4();
   if (pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch != 0) pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag();
+  if (pfjets_puppi_pfDeepCSVJetTagsprobbPlusprobbb_branch != 0) pfjets_puppi_pfDeepCSVJetTagsprobbPlusprobbb();
+  if (pfjets_puppi_ptDistribution_branch != 0) pfjets_puppi_ptDistribution();
+  if (pfjets_puppi_axis1_branch != 0) pfjets_puppi_axis1();
+  if (pfjets_puppi_totalMultiplicity_branch != 0) pfjets_puppi_totalMultiplicity();
   if (mus_isoSumDRR04_pf_PhotonEt_branch != 0) mus_isoSumDRR04_pf_PhotonEt();
   if (els_sigmaIphiIphi_branch != 0) els_sigmaIphiIphi();
   if (pfjets_puppi_chargedEmE_branch != 0) pfjets_puppi_chargedEmE();
@@ -8780,6 +8832,10 @@ void CMS3::LoadAllBranches() {
   if (pfjets_METToolbox_mass_branch != 0) pfjets_METToolbox_mass();
   if (evt_bs_XwidthErr_branch != 0) evt_bs_XwidthErr();
   if (pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch != 0) pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag();
+  if (pfjets_pfDeepCSVJetTagsprobbPlusprobbb_branch != 0) pfjets_pfDeepCSVJetTagsprobbPlusprobbb();
+  if (pfjets_ptDistribution_branch != 0) pfjets_ptDistribution();
+  if (pfjets_axis1_branch != 0) pfjets_axis1();
+  if (pfjets_totalMultiplicity_branch != 0) pfjets_totalMultiplicity();
   if (evt_pfmetPhi_branch != 0) evt_pfmetPhi();
   if (pfjets_METToolbox_chargedMultiplicity_branch != 0) pfjets_METToolbox_chargedMultiplicity();
   if (els_mc_patMatch_p4_branch != 0) els_mc_patMatch_p4();
@@ -11627,6 +11683,54 @@ const vector<float> &CMS3::pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJet
     pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag_isLoaded = true;
   }
   return pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag_;
+}
+const vector<float> &CMS3::pfjets_puppi_pfDeepCSVJetTagsprobbPlusprobbb() {
+  if (not pfjets_puppi_pfDeepCSVJetTagsprobbPlusprobbb_isLoaded) {
+    if (pfjets_puppi_pfDeepCSVJetTagsprobbPlusprobbb_branch != 0) {
+      pfjets_puppi_pfDeepCSVJetTagsprobbPlusprobbb_branch->GetEntry(index);
+    } else {
+      printf("branch pfjets_puppi_pfDeepCSVJetTagsprobbPlusprobbb_branch does not exist!\n");
+      exit(1);
+    }
+    pfjets_puppi_pfDeepCSVJetTagsprobbPlusprobbb_isLoaded = true;
+  }
+  return pfjets_puppi_pfDeepCSVJetTagsprobbPlusprobbb_;
+}
+const vector<float> &CMS3::pfjets_puppi_ptDistribution() {
+  if (not pfjets_puppi_ptDistribution_isLoaded) {
+    if (pfjets_puppi_ptDistribution_branch != 0) {
+      pfjets_puppi_ptDistribution_branch->GetEntry(index);
+    } else {
+      printf("branch pfjets_puppi_ptDistribution_branch does not exist!\n");
+      exit(1);
+    }
+    pfjets_puppi_ptDistribution_isLoaded = true;
+  }
+  return pfjets_puppi_ptDistribution_;
+}
+const vector<float> &CMS3::pfjets_puppi_axis1() {
+  if (not pfjets_puppi_axis1_isLoaded) {
+    if (pfjets_puppi_axis1_branch != 0) {
+      pfjets_puppi_axis1_branch->GetEntry(index);
+    } else {
+      printf("branch pfjets_puppi_axis1_branch does not exist!\n");
+      exit(1);
+    }
+    pfjets_puppi_axis1_isLoaded = true;
+  }
+  return pfjets_puppi_axis1_;
+}
+const vector<int> &CMS3::pfjets_puppi_totalMultiplicity() {
+  if (not pfjets_puppi_totalMultiplicity_isLoaded) {
+    if (pfjets_puppi_totalMultiplicity_branch != 0) {
+      pfjets_puppi_totalMultiplicity_branch->GetEntry(index);
+    } else {
+      printf("branch pfjets_puppi_totalMultiplicity_branch does not exist!\n");
+      exit(1);
+    }
+    pfjets_puppi_totalMultiplicity_isLoaded = true;
+  }
+  return pfjets_puppi_totalMultiplicity_;
 }
 const vector<float> &CMS3::mus_isoSumDRR04_pf_PhotonEt() {
   if (not mus_isoSumDRR04_pf_PhotonEt_isLoaded) {
@@ -16211,6 +16315,54 @@ const vector<float> &CMS3::pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag() 
     pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_isLoaded = true;
   }
   return pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_;
+}
+const vector<float> &CMS3::pfjets_pfDeepCSVJetTagsprobbPlusprobbb() {
+  if (not pfjets_pfDeepCSVJetTagsprobbPlusprobbb_isLoaded) {
+    if (pfjets_pfDeepCSVJetTagsprobbPlusprobbb_branch != 0) {
+      pfjets_pfDeepCSVJetTagsprobbPlusprobbb_branch->GetEntry(index);
+    } else {
+      printf("branch pfjets_pfDeepCSVJetTagsprobbPlusprobbb_branch does not exist!\n");
+      exit(1);
+    }
+    pfjets_pfDeepCSVJetTagsprobbPlusprobbb_isLoaded = true;
+  }
+  return pfjets_pfDeepCSVJetTagsprobbPlusprobbb_;
+}
+const vector<float> &CMS3::pfjets_ptDistribution() {
+  if (not pfjets_ptDistribution_isLoaded) {
+    if (pfjets_ptDistribution_branch != 0) {
+      pfjets_ptDistribution_branch->GetEntry(index);
+    } else {
+      printf("branch pfjets_ptDistribution_branch does not exist!\n");
+      exit(1);
+    }
+    pfjets_ptDistribution_isLoaded = true;
+  }
+  return pfjets_ptDistribution_;
+}
+const vector<float> &CMS3::pfjets_axis1() {
+  if (not pfjets_axis1_isLoaded) {
+    if (pfjets_axis1_branch != 0) {
+      pfjets_axis1_branch->GetEntry(index);
+    } else {
+      printf("branch pfjets_axis1_branch does not exist!\n");
+      exit(1);
+    }
+    pfjets_axis1_isLoaded = true;
+  }
+  return pfjets_axis1_;
+}
+const vector<int> &CMS3::pfjets_totalMultiplicity() {
+  if (not pfjets_totalMultiplicity_isLoaded) {
+    if (pfjets_totalMultiplicity_branch != 0) {
+      pfjets_totalMultiplicity_branch->GetEntry(index);
+    } else {
+      printf("branch pfjets_totalMultiplicity_branch does not exist!\n");
+      exit(1);
+    }
+    pfjets_totalMultiplicity_isLoaded = true;
+  }
+  return pfjets_totalMultiplicity_;
 }
 const float &CMS3::evt_pfmetPhi() {
   if (not evt_pfmetPhi_isLoaded) {
@@ -26420,6 +26572,10 @@ namespace tas {
   const vector<float> &mus_isoMeanDRR03_pf_NeutralHadronEtHighThreshold() { return cms3.mus_isoMeanDRR03_pf_NeutralHadronEtHighThreshold(); }
   const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &hyp_lt_p4() { return cms3.hyp_lt_p4(); }
   const vector<float> &pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag() { return cms3.pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag(); }
+  const vector<float> &pfjets_puppi_pfDeepCSVJetTagsprobbPlusprobbb() { return cms3.pfjets_puppi_pfDeepCSVJetTagsprobbPlusprobbb(); }
+  const vector<float> &pfjets_puppi_ptDistribution() { return cms3.pfjets_puppi_ptDistribution(); }
+  const vector<float> &pfjets_puppi_axis1() { return cms3.pfjets_puppi_axis1(); }
+  const vector<int> &pfjets_puppi_totalMultiplicity() { return cms3.pfjets_puppi_totalMultiplicity(); }
   const vector<float> &mus_isoSumDRR04_pf_PhotonEt() { return cms3.mus_isoSumDRR04_pf_PhotonEt(); }
   const vector<float> &els_sigmaIphiIphi() { return cms3.els_sigmaIphiIphi(); }
   const vector<float> &pfjets_puppi_chargedEmE() { return cms3.pfjets_puppi_chargedEmE(); }
@@ -26802,6 +26958,10 @@ namespace tas {
   const vector<float> &pfjets_METToolbox_mass() { return cms3.pfjets_METToolbox_mass(); }
   const float &evt_bs_XwidthErr() { return cms3.evt_bs_XwidthErr(); }
   const vector<float> &pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag() { return cms3.pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag(); }
+  const vector<float> &pfjets_pfDeepCSVJetTagsprobbPlusprobbb() { return cms3.pfjets_pfDeepCSVJetTagsprobbPlusprobbb(); }
+  const vector<float> &pfjets_ptDistribution() { return cms3.pfjets_ptDistribution(); }
+  const vector<float> &pfjets_axis1() { return cms3.pfjets_axis1(); }
+  const vector<int> &pfjets_totalMultiplicity() { return cms3.pfjets_totalMultiplicity(); }
   const float &evt_pfmetPhi() { return cms3.evt_pfmetPhi(); }
   const vector<int> &pfjets_METToolbox_chargedMultiplicity() { return cms3.pfjets_METToolbox_chargedMultiplicity(); }
   const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &els_mc_patMatch_p4() { return cms3.els_mc_patMatch_p4(); }

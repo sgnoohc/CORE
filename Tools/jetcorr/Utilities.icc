@@ -14,6 +14,9 @@
 // #include "FWCore/Utilities/interface/Exception.h"
 // #endif
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-function"
+
 namespace 
 {
   void handleError(const std::string& fClass, const std::string& fMessage);
@@ -117,4 +120,6 @@ namespace
     return r;
   }
 }
+
+#pragma GCC diagnostic pop
 #endif
