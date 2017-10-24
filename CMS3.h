@@ -6127,6 +6127,7 @@ namespace tas {
   const vector<float> &pfjets_pfDeepCSVJetTagsprobbPlusprobbb();
   const vector<float> &pfjets_ptDistribution();
   const vector<float> &pfjets_axis1();
+  const vector<int> &pfjets_totalMultiplicity();
   const float &evt_pfmetPhi();
   const vector<int> &pfjets_METToolbox_chargedMultiplicity();
   const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &els_mc_patMatch_p4();
