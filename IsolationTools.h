@@ -3,6 +3,58 @@
 
 #include "CMS3.h"
 #include "Base.h"
+#include "TMVA/Reader.h"
+
+class ReaderMuIsoVar11
+{
+  public:
+    ReaderMuIsoVar11() { reader = 0; }
+    TMVA::Reader* reader;
+    float lepton_eta;
+    float lepton_phi;
+    float lepton_pt;
+    float lepton_relIso03EA;
+    float lepton_chiso;
+    float lepton_nhiso;
+    float lepton_emiso;
+    float lepton_ncorriso;
+    float lepton_dxy;
+    float lepton_dz;
+    float lepton_ip3d;
+    float evaluate(int muIdx);
+};
+extern ReaderMuIsoVar11 reader_muiso_var11;
+
+class ReaderMuIsoVar8
+{
+  public:
+    ReaderMuIsoVar8() { reader = 0; }
+    TMVA::Reader* reader;
+    float lepton_relIso03EA;
+    float lepton_chiso;
+    float lepton_nhiso;
+    float lepton_emiso;
+    float lepton_ncorriso;
+    float lepton_dxy;
+    float lepton_dz;
+    float lepton_ip3d;
+    float evaluate(int muIdx);
+};
+extern ReaderMuIsoVar8 reader_muiso_var8;
+
+class ReaderMuIsoVar5
+{
+  public:
+    ReaderMuIsoVar5() { reader = 0; }
+    TMVA::Reader* reader;
+    float lepton_relIso03EA;
+    float lepton_chiso;
+    float lepton_nhiso;
+    float lepton_emiso;
+    float lepton_ncorriso;
+    float evaluate(int muIdx);
+};
+extern ReaderMuIsoVar5 reader_muiso_var5;
 
 bool passPtRel(int id, int idx, float cut, bool subtractLep, int whichCorr);
 bool passMultiIsoCuts(float cutMiniIso, float cutPtRatio, float cutPtRel, float miniIsoValue, float ptRatioValue, float ptRelValue);
