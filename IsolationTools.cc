@@ -8,6 +8,88 @@ using namespace tas;
 FactorizedJetCorrector *jetCorrAG3 = 0;
 FactorizedJetCorrector *jetCorrAG2 = 0;
 
+ReaderMuIsoVar11 reader_muiso_var11;
+ReaderMuIsoVar8 reader_muiso_var8;
+ReaderMuIsoVar5 reader_muiso_var5;
+
+float ReaderMuIsoVar11::evaluate(int idx)
+{
+    if (!reader)
+    {
+        reader = new TMVA::Reader("!Color:!Silent");
+        reader->AddVariable("lepton_eta", &lepton_eta);
+        reader->AddVariable("lepton_phi", &lepton_phi);
+        reader->AddVariable("lepton_pt", &lepton_pt);
+        reader->AddVariable("lepton_relIso03EA", &lepton_relIso03EA);
+        reader->AddVariable("lepton_chiso", &lepton_chiso);
+        reader->AddVariable("lepton_nhiso", &lepton_nhiso);
+        reader->AddVariable("lepton_emiso", &lepton_emiso);
+        reader->AddVariable("lepton_ncorriso", &lepton_ncorriso);
+        reader->AddVariable("lepton_dxy", &lepton_dxy);
+        reader->AddVariable("lepton_dz", &lepton_dz);
+        reader->AddVariable("lepton_ip3d", &lepton_ip3d);
+        reader->BookMVA("BDT", "/hadoop/cms/store/user/phchang/mlp/weights_BDTbaseline_v0.0.2__preliminary_11lepvec_1Msig_100Kbkg_events/TMVA_BDT.weights.xml");
+    }
+    lepton_eta = mus_p4()[idx].eta();
+    lepton_phi = mus_p4()[idx].phi();
+    lepton_pt = mus_p4()[idx].pt();
+    lepton_relIso03EA = muRelIso03EA(idx, 2);
+    lepton_chiso = mus_isoR03_pf_ChargedHadronPt()[idx];
+    lepton_nhiso = mus_isoR03_pf_NeutralHadronEt()[idx];
+    lepton_emiso = mus_isoR03_pf_PhotonEt()[idx];
+    lepton_ncorriso = lepton_nhiso + lepton_emiso - evt_fixgridfastjet_all_rho() * muEA03(idx, 2);
+    lepton_dxy = mus_dxyPV()[idx];
+    lepton_dz = mus_dzPV()[idx];
+    lepton_ip3d = mus_ip3d()[idx];
+    return reader->EvaluateMVA("BDT");
+}
+
+float ReaderMuIsoVar8::evaluate(int idx)
+{
+    if (!reader)
+    {
+        reader = new TMVA::Reader("!Color:!Silent");
+        reader->AddVariable("lepton_relIso03EA", &lepton_relIso03EA);
+        reader->AddVariable("lepton_chiso", &lepton_chiso);
+        reader->AddVariable("lepton_nhiso", &lepton_nhiso);
+        reader->AddVariable("lepton_emiso", &lepton_emiso);
+        reader->AddVariable("lepton_ncorriso", &lepton_ncorriso);
+        reader->AddVariable("lepton_dxy", &lepton_dxy);
+        reader->AddVariable("lepton_dz", &lepton_dz);
+        reader->AddVariable("lepton_ip3d", &lepton_ip3d);
+        reader->BookMVA("BDT", "/hadoop/cms/store/user/phchang/mlp/weights_BDTbaseline_v0.0.4__nolepp4/TMVA_BDT.weights.xml");
+    }
+    lepton_relIso03EA = muRelIso03EA(idx, 2);
+    lepton_chiso = mus_isoR03_pf_ChargedHadronPt()[idx];
+    lepton_nhiso = mus_isoR03_pf_NeutralHadronEt()[idx];
+    lepton_emiso = mus_isoR03_pf_PhotonEt()[idx];
+    lepton_ncorriso = lepton_nhiso + lepton_emiso - evt_fixgridfastjet_all_rho() * muEA03(idx, 2);
+    lepton_dxy = mus_dxyPV()[idx];
+    lepton_dz = mus_dzPV()[idx];
+    lepton_ip3d = mus_ip3d()[idx];
+    return reader->EvaluateMVA("BDT");
+}
+
+float ReaderMuIsoVar5::evaluate(int idx)
+{
+    if (!reader)
+    {
+        reader = new TMVA::Reader("!Color:!Silent");
+        reader->AddVariable("lepton_relIso03EA", &lepton_relIso03EA);
+        reader->AddVariable("lepton_chiso", &lepton_chiso);
+        reader->AddVariable("lepton_nhiso", &lepton_nhiso);
+        reader->AddVariable("lepton_emiso", &lepton_emiso);
+        reader->AddVariable("lepton_ncorriso", &lepton_ncorriso);
+        reader->BookMVA("BDT", "/hadoop/cms/store/user/phchang/mlp/weights_BDTbaseline_v0.0.5__nop4noip/TMVA_BDT.weights.xml");
+    }
+    lepton_relIso03EA = muRelIso03EA(idx, 2);
+    lepton_chiso = mus_isoR03_pf_ChargedHadronPt()[idx];
+    lepton_nhiso = mus_isoR03_pf_NeutralHadronEt()[idx];
+    lepton_emiso = mus_isoR03_pf_PhotonEt()[idx];
+    lepton_ncorriso = lepton_nhiso + lepton_emiso - evt_fixgridfastjet_all_rho() * muEA03(idx, 2);
+    return reader->EvaluateMVA("BDT");
+}
+
 bool passMultiIsoCuts(float cutMiniIso, float cutPtRatio, float cutPtRel, float miniIsoValue, float ptRatioValue, float ptRelValue){
   return (miniIsoValue < cutMiniIso && (ptRatioValue>cutPtRatio || ptRelValue > cutPtRel));
 }
