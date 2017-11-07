@@ -16,7 +16,7 @@ float ReaderMuIsoVar11::evaluate(int idx)
 {
     if (!reader)
     {
-        reader = new TMVA::Reader("!Color:!Silent");
+        reader = new TMVA::Reader("!Color:Silent");
         reader->AddVariable("lepton_eta", &lepton_eta);
         reader->AddVariable("lepton_phi", &lepton_phi);
         reader->AddVariable("lepton_pt", &lepton_pt);
@@ -48,7 +48,7 @@ float ReaderMuIsoVar8::evaluate(int idx)
 {
     if (!reader)
     {
-        reader = new TMVA::Reader("!Color:!Silent");
+        reader = new TMVA::Reader("!Color:Silent");
         reader->AddVariable("lepton_relIso03EA", &lepton_relIso03EA);
         reader->AddVariable("lepton_chiso", &lepton_chiso);
         reader->AddVariable("lepton_nhiso", &lepton_nhiso);
@@ -74,7 +74,7 @@ float ReaderMuIsoVar5::evaluate(int idx)
 {
     if (!reader)
     {
-        reader = new TMVA::Reader("!Color:!Silent");
+        reader = new TMVA::Reader("!Color:Silent");
         reader->AddVariable("lepton_relIso03EA", &lepton_relIso03EA);
         reader->AddVariable("lepton_chiso", &lepton_chiso);
         reader->AddVariable("lepton_nhiso", &lepton_nhiso);
