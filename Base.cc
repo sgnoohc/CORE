@@ -182,6 +182,7 @@ analysis_t whichAnalysis(id_level_t id_level){
     case (VVV_cutbased_veto_noiso_noip):
     case (VVV_cutbased_fo):
     case (VVV_cutbased_fo_noiso):
+    case (VVV_cutbased_fo_noiso_noip):
     case (VVV_cutbased_tight_noiso):
     case (VVV_cutbased_tight):
     case (VVV_MVAbased_tight_noiso):            //electrons only
