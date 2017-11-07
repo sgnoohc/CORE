@@ -873,8 +873,13 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
     break;
 
   case(VVV_cutbased_fo_noiso):
-    if (!muonID(muIdx, VVV_cutbased_veto_noiso)) return false;
+    if (!muonID(muIdx, VVV_cutbased_fo_noiso_noip)) return false;
     if (fabs(mus_ip3d().at(muIdx))/mus_ip3derr().at(muIdx) >= 4) return false;
+    return isMediumMuonPOG(muIdx);
+    break;
+
+  case(VVV_cutbased_fo_noiso_noip):
+    if (!muonID(muIdx, VVV_cutbased_veto_noiso)) return false;
     if (mus_ptErr().at(muIdx)/mus_trk_p4().at(muIdx).pt() >= 0.2) return false;
     return isMediumMuonPOG(muIdx);
     break;
