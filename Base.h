@@ -188,6 +188,7 @@ enum id_level_t {
   VVV_cutbased_veto_noiso_noip,
   VVV_cutbased_fo,
   VVV_cutbased_fo_noiso,
+  VVV_cutbased_fo_noiso_noip,
   VVV_cutbased_tight_noiso,
   VVV_cutbased_tight,
   VVV_MVAbased_tight_noiso,
