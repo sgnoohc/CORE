@@ -1591,6 +1591,11 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
     return (isLooseElectronPOGspring16noIso_v1(elIdx));
     break;
 
+  case(VVV_cutbased_fo_noiso_noip):
+    // using Spring 16 with Loose working point
+    return (isLooseElectronPOGspring16noIso_v1(elIdx));
+    break;
+
   //---------------
   //Tight Selection
 
