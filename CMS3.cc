@@ -2080,6 +2080,78 @@ void CMS3::Init(TTree *tree) {
     els_HLT_Ele20_SC4_Mass50_TrailingLeg_branch = tree->GetBranch(tree->GetAlias("els_HLT_Ele20_SC4_Mass50_TrailingLeg"));
     if (els_HLT_Ele20_SC4_Mass50_TrailingLeg_branch) { els_HLT_Ele20_SC4_Mass50_TrailingLeg_branch->SetAddress(&els_HLT_Ele20_SC4_Mass50_TrailingLeg_); }
   }
+
+  mus_miniRelIso_chg_branch = 0;
+  if (tree->GetAlias("mus_miniRelIso_chg") != 0) {
+    mus_miniRelIso_chg_branch = tree->GetBranch(tree->GetAlias("mus_miniRelIso_chg"));
+    if (mus_miniRelIso_chg_branch) { mus_miniRelIso_chg_branch->SetAddress(&mus_miniRelIso_chg_); }
+  }
+
+  mus_miniRelIso_all_branch = 0;
+  if (tree->GetAlias("mus_miniRelIso_all") != 0) {
+    mus_miniRelIso_all_branch = tree->GetBranch(tree->GetAlias("mus_miniRelIso_all"));
+    if (mus_miniRelIso_all_branch) { mus_miniRelIso_all_branch->SetAddress(&mus_miniRelIso_all_); }
+  }
+
+  els_miniRelIso_chg_branch = 0;
+  if (tree->GetAlias("els_miniRelIso_chg") != 0) {
+    els_miniRelIso_chg_branch = tree->GetBranch(tree->GetAlias("els_miniRelIso_chg"));
+    if (els_miniRelIso_chg_branch) { els_miniRelIso_chg_branch->SetAddress(&els_miniRelIso_chg_); }
+  }
+
+  els_miniRelIso_all_branch = 0;
+  if (tree->GetAlias("els_miniRelIso_all") != 0) {
+    els_miniRelIso_all_branch = tree->GetBranch(tree->GetAlias("els_miniRelIso_all"));
+    if (els_miniRelIso_all_branch) { els_miniRelIso_all_branch->SetAddress(&els_miniRelIso_all_); }
+  }
+
+  els_ptRatio_branch = 0;
+  if (tree->GetAlias("els_ptRatio") != 0) {
+    els_ptRatio_branch = tree->GetBranch(tree->GetAlias("els_ptRatio"));
+    if (els_ptRatio_branch) { els_ptRatio_branch->SetAddress(&els_ptRatio_); }
+  }
+
+  els_ptRel_branch = 0;
+  if (tree->GetAlias("els_ptRel") != 0) {
+    els_ptRel_branch = tree->GetBranch(tree->GetAlias("els_ptRel"));
+    if (els_ptRel_branch) { els_ptRel_branch->SetAddress(&els_ptRel_); }
+  }
+
+  els_jetBTagCSV_branch = 0;
+  if (tree->GetAlias("els_jetBTagCSV") != 0) {
+    els_jetBTagCSV_branch = tree->GetBranch(tree->GetAlias("els_jetBTagCSV"));
+    if (els_jetBTagCSV_branch) { els_jetBTagCSV_branch->SetAddress(&els_jetBTagCSV_); }
+  }
+
+  mus_ptRatio_branch = 0;
+  if (tree->GetAlias("mus_ptRatio") != 0) {
+    mus_ptRatio_branch = tree->GetBranch(tree->GetAlias("mus_ptRatio"));
+    if (mus_ptRatio_branch) { mus_ptRatio_branch->SetAddress(&mus_ptRatio_); }
+  }
+
+  mus_ptRel_branch = 0;
+  if (tree->GetAlias("mus_ptRel") != 0) {
+    mus_ptRel_branch = tree->GetBranch(tree->GetAlias("mus_ptRel"));
+    if (mus_ptRel_branch) { mus_ptRel_branch->SetAddress(&mus_ptRel_); }
+  }
+
+  mus_jetBTagCSV_branch = 0;
+  if (tree->GetAlias("mus_jetBTagCSV") != 0) {
+    mus_jetBTagCSV_branch = tree->GetBranch(tree->GetAlias("mus_jetBTagCSV"));
+    if (mus_jetBTagCSV_branch) { mus_jetBTagCSV_branch->SetAddress(&mus_jetBTagCSV_); }
+  }
+
+  els_jetNDauChargedMVASel_branch = 0;
+  if (tree->GetAlias("els_jetNDauChargedMVASel") != 0) {
+    els_jetNDauChargedMVASel_branch = tree->GetBranch(tree->GetAlias("els_jetNDauChargedMVASel"));
+    if (els_jetNDauChargedMVASel_branch) { els_jetNDauChargedMVASel_branch->SetAddress(&els_jetNDauChargedMVASel_); }
+  }
+
+  mus_jetNDauChargedMVASel_branch = 0;
+  if (tree->GetAlias("mus_jetNDauChargedMVASel") != 0) {
+    mus_jetNDauChargedMVASel_branch = tree->GetBranch(tree->GetAlias("mus_jetNDauChargedMVASel"));
+    if (mus_jetNDauChargedMVASel_branch) { mus_jetNDauChargedMVASel_branch->SetAddress(&mus_jetNDauChargedMVASel_); }
+  }
   els_miniIso_uncor_branch = 0;
   if (tree->GetAlias("els_miniIso_uncor") != 0) {
     els_miniIso_uncor_branch = tree->GetBranch(tree->GetAlias("els_miniIso_uncor"));
@@ -7277,6 +7349,18 @@ void CMS3::GetEntry(unsigned int idx) {
   els_scSeedE3x3_isLoaded = false;
   els_HLT_Ele20_SC4_Mass50_TrailingLeg_isLoaded = false;
   els_miniIso_uncor_isLoaded = false;
+  mus_miniRelIso_chg_isLoaded = false;
+  mus_miniRelIso_all_isLoaded = false;
+  els_miniRelIso_chg_isLoaded = false;
+  els_miniRelIso_all_isLoaded = false;
+  els_ptRatio_isLoaded = false;
+  els_ptRel_isLoaded = false;
+  els_jetBTagCSV_isLoaded = false;
+  mus_ptRatio_isLoaded = false;
+  mus_ptRel_isLoaded = false;
+  mus_jetBTagCSV_isLoaded = false;
+  els_jetNDauChargedMVASel_isLoaded = false;
+  mus_jetNDauChargedMVASel_isLoaded = false;
   mus_gfit_qoverpError_isLoaded = false;
   genps_fromHardProcessBeforeFSR_isLoaded = false;
   photons_mass_isLoaded = false;
@@ -8663,6 +8747,18 @@ void CMS3::LoadAllBranches() {
   if (els_scSeedE3x3_branch != 0) els_scSeedE3x3();
   if (els_HLT_Ele20_SC4_Mass50_TrailingLeg_branch != 0) els_HLT_Ele20_SC4_Mass50_TrailingLeg();
   if (els_miniIso_uncor_branch != 0) els_miniIso_uncor();
+  if (mus_miniRelIso_chg_branch != 0) mus_miniRelIso_chg();
+  if (mus_miniRelIso_all_branch != 0) mus_miniRelIso_all();
+  if (els_miniRelIso_chg_branch != 0) els_miniRelIso_chg();
+  if (els_miniRelIso_all_branch != 0) els_miniRelIso_all();
+  if (els_ptRatio_branch != 0) els_ptRatio();
+  if (els_ptRel_branch != 0) els_ptRel();
+  if (els_jetBTagCSV_branch != 0) els_jetBTagCSV();
+  if (mus_ptRatio_branch != 0) mus_ptRatio();
+  if (mus_ptRel_branch != 0) mus_ptRel();
+  if (mus_jetBTagCSV_branch != 0) mus_jetBTagCSV();
+  if (els_jetNDauChargedMVASel_branch != 0) els_jetNDauChargedMVASel();
+  if (mus_jetNDauChargedMVASel_branch != 0) mus_jetNDauChargedMVASel();
   if (mus_gfit_qoverpError_branch != 0) mus_gfit_qoverpError();
   if (genps_fromHardProcessBeforeFSR_branch != 0) genps_fromHardProcessBeforeFSR();
   if (photons_mass_branch != 0) photons_mass();
@@ -14275,6 +14371,162 @@ const vector<unsigned int> &CMS3::els_HLT_Ele20_SC4_Mass50_TrailingLeg() {
     els_HLT_Ele20_SC4_Mass50_TrailingLeg_isLoaded = true;
   }
   return els_HLT_Ele20_SC4_Mass50_TrailingLeg_;
+}
+
+const vector<float> &CMS3::mus_miniRelIso_chg() {
+  if (not mus_miniRelIso_chg_isLoaded) {
+    if (mus_miniRelIso_chg_branch != 0) {
+      mus_miniRelIso_chg_branch->GetEntry(index);
+    } else {
+      printf("branch mus_miniRelIso_chg_branch does not exist!\n");
+      exit(1);
+    }
+    mus_miniRelIso_chg_isLoaded = true;
+  }
+  return mus_miniRelIso_chg_;
+}
+
+const vector<float> &CMS3::mus_miniRelIso_all() {
+  if (not mus_miniRelIso_all_isLoaded) {
+    if (mus_miniRelIso_all_branch != 0) {
+      mus_miniRelIso_all_branch->GetEntry(index);
+    } else {
+      printf("branch mus_miniRelIso_all_branch does not exist!\n");
+      exit(1);
+    }
+    mus_miniRelIso_all_isLoaded = true;
+  }
+  return mus_miniRelIso_all_;
+}
+
+const vector<float> &CMS3::els_miniRelIso_chg() {
+  if (not els_miniRelIso_chg_isLoaded) {
+    if (els_miniRelIso_chg_branch != 0) {
+      els_miniRelIso_chg_branch->GetEntry(index);
+    } else {
+      printf("branch els_miniRelIso_chg_branch does not exist!\n");
+      exit(1);
+    }
+    els_miniRelIso_chg_isLoaded = true;
+  }
+  return els_miniRelIso_chg_;
+}
+
+const vector<float> &CMS3::els_miniRelIso_all() {
+  if (not els_miniRelIso_all_isLoaded) {
+    if (els_miniRelIso_all_branch != 0) {
+      els_miniRelIso_all_branch->GetEntry(index);
+    } else {
+      printf("branch els_miniRelIso_all_branch does not exist!\n");
+      exit(1);
+    }
+    els_miniRelIso_all_isLoaded = true;
+  }
+  return els_miniRelIso_all_;
+}
+
+const vector<float> &CMS3::els_ptRatio() {
+  if (not els_ptRatio_isLoaded) {
+    if (els_ptRatio_branch != 0) {
+      els_ptRatio_branch->GetEntry(index);
+    } else {
+      printf("branch els_ptRatio_branch does not exist!\n");
+      exit(1);
+    }
+    els_ptRatio_isLoaded = true;
+  }
+  return els_ptRatio_;
+}
+
+const vector<float> &CMS3::els_ptRel() {
+  if (not els_ptRel_isLoaded) {
+    if (els_ptRel_branch != 0) {
+      els_ptRel_branch->GetEntry(index);
+    } else {
+      printf("branch els_ptRel_branch does not exist!\n");
+      exit(1);
+    }
+    els_ptRel_isLoaded = true;
+  }
+  return els_ptRel_;
+}
+
+const vector<float> &CMS3::els_jetBTagCSV() {
+  if (not els_jetBTagCSV_isLoaded) {
+    if (els_jetBTagCSV_branch != 0) {
+      els_jetBTagCSV_branch->GetEntry(index);
+    } else {
+      printf("branch els_jetBTagCSV_branch does not exist!\n");
+      exit(1);
+    }
+    els_jetBTagCSV_isLoaded = true;
+  }
+  return els_jetBTagCSV_;
+}
+
+const vector<float> &CMS3::mus_ptRatio() {
+  if (not mus_ptRatio_isLoaded) {
+    if (mus_ptRatio_branch != 0) {
+      mus_ptRatio_branch->GetEntry(index);
+    } else {
+      printf("branch mus_ptRatio_branch does not exist!\n");
+      exit(1);
+    }
+    mus_ptRatio_isLoaded = true;
+  }
+  return mus_ptRatio_;
+}
+
+const vector<float> &CMS3::mus_ptRel() {
+  if (not mus_ptRel_isLoaded) {
+    if (mus_ptRel_branch != 0) {
+      mus_ptRel_branch->GetEntry(index);
+    } else {
+      printf("branch mus_ptRel_branch does not exist!\n");
+      exit(1);
+    }
+    mus_ptRel_isLoaded = true;
+  }
+  return mus_ptRel_;
+}
+
+const vector<float> &CMS3::mus_jetBTagCSV() {
+  if (not mus_jetBTagCSV_isLoaded) {
+    if (mus_jetBTagCSV_branch != 0) {
+      mus_jetBTagCSV_branch->GetEntry(index);
+    } else {
+      printf("branch mus_jetBTagCSV_branch does not exist!\n");
+      exit(1);
+    }
+    mus_jetBTagCSV_isLoaded = true;
+  }
+  return mus_jetBTagCSV_;
+}
+
+const vector<int> &CMS3::els_jetNDauChargedMVASel() {
+  if (not els_jetNDauChargedMVASel_isLoaded) {
+    if (els_jetNDauChargedMVASel_branch != 0) {
+      els_jetNDauChargedMVASel_branch->GetEntry(index);
+    } else {
+      printf("branch els_jetNDauChargedMVASel_branch does not exist!\n");
+      exit(1);
+    }
+    els_jetNDauChargedMVASel_isLoaded = true;
+  }
+  return els_jetNDauChargedMVASel_;
+}
+
+const vector<int> &CMS3::mus_jetNDauChargedMVASel() {
+  if (not mus_jetNDauChargedMVASel_isLoaded) {
+    if (mus_jetNDauChargedMVASel_branch != 0) {
+      mus_jetNDauChargedMVASel_branch->GetEntry(index);
+    } else {
+      printf("branch mus_jetNDauChargedMVASel_branch does not exist!\n");
+      exit(1);
+    }
+    mus_jetNDauChargedMVASel_isLoaded = true;
+  }
+  return mus_jetNDauChargedMVASel_;
 }
 const vector<float> &CMS3::els_miniIso_uncor() {
   if (not els_miniIso_uncor_isLoaded) {
@@ -26789,6 +27041,18 @@ namespace tas {
   const vector<float> &els_scSeedE3x3() { return cms3.els_scSeedE3x3(); }
   const vector<unsigned int> &els_HLT_Ele20_SC4_Mass50_TrailingLeg() { return cms3.els_HLT_Ele20_SC4_Mass50_TrailingLeg(); }
   const vector<float> &els_miniIso_uncor() { return cms3.els_miniIso_uncor(); }
+  const vector<float> &mus_miniRelIso_chg() { return cms3.mus_miniRelIso_chg(); }
+  const vector<float> &mus_miniRelIso_all() { return cms3.mus_miniRelIso_all(); }
+  const vector<float> &els_miniRelIso_chg() { return cms3.els_miniRelIso_chg(); }
+  const vector<float> &els_miniRelIso_all() { return cms3.els_miniRelIso_all(); }
+  const vector<float> &els_ptRatio() { return cms3.els_ptRatio(); }
+  const vector<float> &els_ptRel() { return cms3.els_ptRel(); }
+  const vector<float> &els_jetBTagCSV() { return cms3.els_jetBTagCSV(); }
+  const vector<float> &mus_ptRatio() { return cms3.mus_ptRatio(); }
+  const vector<float> &mus_ptRel() { return cms3.mus_ptRel(); }
+  const vector<float> &mus_jetBTagCSV() { return cms3.mus_jetBTagCSV(); }
+  const vector<int> &els_jetNDauChargedMVASel() { return cms3.els_jetNDauChargedMVASel(); }
+  const vector<int> &mus_jetNDauChargedMVASel() { return cms3.mus_jetNDauChargedMVASel(); }
   const vector<float> &mus_gfit_qoverpError() { return cms3.mus_gfit_qoverpError(); }
   const vector<bool> &genps_fromHardProcessBeforeFSR() { return cms3.genps_fromHardProcessBeforeFSR(); }
   const vector<float> &photons_mass() { return cms3.photons_mass(); }
