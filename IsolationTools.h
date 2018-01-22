@@ -43,6 +43,7 @@ float elRelIsoCustomCone(unsigned int idx, float dr, bool useVetoCones=true, flo
 [[deprecated("This function may not be correct in cms4 (needs all PFCands)")]]
 float elMiniRelIso(unsigned int idx, bool useVetoCones=true, float ptthresh = 0.0, bool useDBcor=false, bool useEAcor=false);
 float elMiniRelIsoCMS3_EA(unsigned int idx, int eaversion = 0);
+float elMiniRelIsoCMS3_charged(unsigned int idx);
 float elMiniRelIsoCMS3_DB(unsigned int idx);
 float eleRelIso03_noCorr(unsigned int elIdx);
 [[deprecated("This function may not be correct in cms4 (needs all PFCands)")]]

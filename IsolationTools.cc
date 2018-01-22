@@ -391,6 +391,11 @@ float elMiniRelIsoCMS3_EA(unsigned int idx, int eaversion) {
   return absiso/(els_p4().at(idx).pt());
 }
 
+float elMiniRelIsoCMS3_charged(unsigned int idx) {
+  float absiso = els_miniIso_ch().at(idx);
+  return absiso/(els_p4().at(idx).pt());
+}
+
 [[deprecated("This function may not be correct in cms4 (needs all PFCands)")]]
 float elRelIsoAn04(unsigned int idx, bool useDBcor) {
   float pt = els_p4().at(idx).pt();
