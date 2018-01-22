@@ -22,6 +22,11 @@ bool passMultiIso(int id, int idx, float cutMiniIso, float cutPtRatio, float cut
   return passMultiIsoCuts(cutMiniIso, cutPtRatio, cutPtRel, miniIso, ptratio, ptrel);
 }
 
+float muMiniRelIsoCMS3_charged(unsigned int idx) {
+  float absiso = mus_miniIso_ch().at(idx);
+  return absiso/(mus_p4().at(idx).pt());
+}
+
 bool passPtRel(int id, int idx, float cut, bool subtractLep, int whichCorr) {
   return getPtRel(id, idx, subtractLep, whichCorr) > cut;
 }
