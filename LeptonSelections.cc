@@ -2,6 +2,29 @@
 #include "Math/LorentzVector.h"
 #include "Math/VectorUtil.h"
 
+/*
+ * NOTE:
+ *   - works in CMS4_00-00-08 and later only (made with CMSSW 94X+)
+ *
+ * USAGE:
+ *
+ * // include
+ * #include "CORE/LeptonSelections.cc"
+ *
+ * // initialize once with TMVA XMLs
+ * createAndInitLeptonMVA(
+ *            "CORE/data/el_BDTG.weights.xml",
+ *            "CORE/data/mu_BDTG.weights.xml"
+ *            );
+ *
+ * // predict for each muon (imu is mus_* index)
+ * float leptonMVA = globalLeptonMVAreader->MVA(13, imu);
+ *
+ * // predict for each electron (iel is mus_* index)
+ * float leptonMVA = globalLeptonMVAreader->MVA(11, iel);
+ *
+ */
+
 readLeptonMVA* globalLeptonMVAreader = 0;
 
 bool lepIDCacheSet = false;
