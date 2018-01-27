@@ -940,6 +940,84 @@ void CMS3::Init(TTree *tree) {
     els_HLT_Ele17_Ele8_LeadingLeg_version_branch = tree->GetBranch(tree->GetAlias("els_HLT_Ele17_Ele8_LeadingLeg_version"));
     if (els_HLT_Ele17_Ele8_LeadingLeg_version_branch) { els_HLT_Ele17_Ele8_LeadingLeg_version_branch->SetAddress(&els_HLT_Ele17_Ele8_LeadingLeg_version_); }
   }
+
+  ak8jets_deep_bindisc_top_branch = 0;
+  if (tree->GetAlias("ak8jets_deep_bindisc_top") != 0) {
+    ak8jets_deep_bindisc_top_branch = tree->GetBranch(tree->GetAlias("ak8jets_deep_bindisc_top"));
+    if (ak8jets_deep_bindisc_top_branch) { ak8jets_deep_bindisc_top_branch->SetAddress(&ak8jets_deep_bindisc_top_); }
+  }
+
+  ak8jets_deep_bindisc_w_branch = 0;
+  if (tree->GetAlias("ak8jets_deep_bindisc_w") != 0) {
+    ak8jets_deep_bindisc_w_branch = tree->GetBranch(tree->GetAlias("ak8jets_deep_bindisc_w"));
+    if (ak8jets_deep_bindisc_w_branch) { ak8jets_deep_bindisc_w_branch->SetAddress(&ak8jets_deep_bindisc_w_); }
+  }
+
+  ak8jets_deep_bindisc_z_branch = 0;
+  if (tree->GetAlias("ak8jets_deep_bindisc_z") != 0) {
+    ak8jets_deep_bindisc_z_branch = tree->GetBranch(tree->GetAlias("ak8jets_deep_bindisc_z"));
+    if (ak8jets_deep_bindisc_z_branch) { ak8jets_deep_bindisc_z_branch->SetAddress(&ak8jets_deep_bindisc_z_); }
+  }
+
+  ak8jets_deep_bindisc_zbb_branch = 0;
+  if (tree->GetAlias("ak8jets_deep_bindisc_zbb") != 0) {
+    ak8jets_deep_bindisc_zbb_branch = tree->GetBranch(tree->GetAlias("ak8jets_deep_bindisc_zbb"));
+    if (ak8jets_deep_bindisc_zbb_branch) { ak8jets_deep_bindisc_zbb_branch->SetAddress(&ak8jets_deep_bindisc_zbb_); }
+  }
+
+  ak8jets_deep_bindisc_hbb_branch = 0;
+  if (tree->GetAlias("ak8jets_deep_bindisc_hbb") != 0) {
+    ak8jets_deep_bindisc_hbb_branch = tree->GetBranch(tree->GetAlias("ak8jets_deep_bindisc_hbb"));
+    if (ak8jets_deep_bindisc_hbb_branch) { ak8jets_deep_bindisc_hbb_branch->SetAddress(&ak8jets_deep_bindisc_hbb_); }
+  }
+
+  ak8jets_deep_bindisc_h4q_branch = 0;
+  if (tree->GetAlias("ak8jets_deep_bindisc_h4q") != 0) {
+    ak8jets_deep_bindisc_h4q_branch = tree->GetBranch(tree->GetAlias("ak8jets_deep_bindisc_h4q"));
+    if (ak8jets_deep_bindisc_h4q_branch) { ak8jets_deep_bindisc_h4q_branch->SetAddress(&ak8jets_deep_bindisc_h4q_); }
+  }
+
+  ak8jets_deep_rawdisc_qcd_branch = 0;
+  if (tree->GetAlias("ak8jets_deep_rawdisc_qcd") != 0) {
+    ak8jets_deep_rawdisc_qcd_branch = tree->GetBranch(tree->GetAlias("ak8jets_deep_rawdisc_qcd"));
+    if (ak8jets_deep_rawdisc_qcd_branch) { ak8jets_deep_rawdisc_qcd_branch->SetAddress(&ak8jets_deep_rawdisc_qcd_); }
+  }
+
+  ak8jets_deep_rawdisc_top_branch = 0;
+  if (tree->GetAlias("ak8jets_deep_rawdisc_top") != 0) {
+    ak8jets_deep_rawdisc_top_branch = tree->GetBranch(tree->GetAlias("ak8jets_deep_rawdisc_top"));
+    if (ak8jets_deep_rawdisc_top_branch) { ak8jets_deep_rawdisc_top_branch->SetAddress(&ak8jets_deep_rawdisc_top_); }
+  }
+
+  ak8jets_deep_rawdisc_w_branch = 0;
+  if (tree->GetAlias("ak8jets_deep_rawdisc_w") != 0) {
+    ak8jets_deep_rawdisc_w_branch = tree->GetBranch(tree->GetAlias("ak8jets_deep_rawdisc_w"));
+    if (ak8jets_deep_rawdisc_w_branch) { ak8jets_deep_rawdisc_w_branch->SetAddress(&ak8jets_deep_rawdisc_w_); }
+  }
+
+  ak8jets_deep_rawdisc_z_branch = 0;
+  if (tree->GetAlias("ak8jets_deep_rawdisc_z") != 0) {
+    ak8jets_deep_rawdisc_z_branch = tree->GetBranch(tree->GetAlias("ak8jets_deep_rawdisc_z"));
+    if (ak8jets_deep_rawdisc_z_branch) { ak8jets_deep_rawdisc_z_branch->SetAddress(&ak8jets_deep_rawdisc_z_); }
+  }
+
+  ak8jets_deep_rawdisc_zbb_branch = 0;
+  if (tree->GetAlias("ak8jets_deep_rawdisc_zbb") != 0) {
+    ak8jets_deep_rawdisc_zbb_branch = tree->GetBranch(tree->GetAlias("ak8jets_deep_rawdisc_zbb"));
+    if (ak8jets_deep_rawdisc_zbb_branch) { ak8jets_deep_rawdisc_zbb_branch->SetAddress(&ak8jets_deep_rawdisc_zbb_); }
+  }
+
+  ak8jets_deep_rawdisc_hbb_branch = 0;
+  if (tree->GetAlias("ak8jets_deep_rawdisc_hbb") != 0) {
+    ak8jets_deep_rawdisc_hbb_branch = tree->GetBranch(tree->GetAlias("ak8jets_deep_rawdisc_hbb"));
+    if (ak8jets_deep_rawdisc_hbb_branch) { ak8jets_deep_rawdisc_hbb_branch->SetAddress(&ak8jets_deep_rawdisc_hbb_); }
+  }
+
+  ak8jets_deep_rawdisc_h4q_branch = 0;
+  if (tree->GetAlias("ak8jets_deep_rawdisc_h4q") != 0) {
+    ak8jets_deep_rawdisc_h4q_branch = tree->GetBranch(tree->GetAlias("ak8jets_deep_rawdisc_h4q"));
+    if (ak8jets_deep_rawdisc_h4q_branch) { ak8jets_deep_rawdisc_h4q_branch->SetAddress(&ak8jets_deep_rawdisc_h4q_); }
+  }
   ak8jets_area_branch = 0;
   if (tree->GetAlias("ak8jets_area") != 0) {
     ak8jets_area_branch = tree->GetBranch(tree->GetAlias("ak8jets_area"));
@@ -7109,6 +7187,19 @@ void CMS3::GetEntry(unsigned int idx) {
   filt_hcalLaser_isLoaded = false;
   els_HLT_Ele17_Ele8_LeadingLeg_version_isLoaded = false;
   ak8jets_area_isLoaded = false;
+  ak8jets_deep_bindisc_top_isLoaded = false;
+  ak8jets_deep_bindisc_w_isLoaded = false;
+  ak8jets_deep_bindisc_z_isLoaded = false;
+  ak8jets_deep_bindisc_zbb_isLoaded = false;
+  ak8jets_deep_bindisc_hbb_isLoaded = false;
+  ak8jets_deep_bindisc_h4q_isLoaded = false;
+  ak8jets_deep_rawdisc_qcd_isLoaded = false;
+  ak8jets_deep_rawdisc_top_isLoaded = false;
+  ak8jets_deep_rawdisc_w_isLoaded = false;
+  ak8jets_deep_rawdisc_z_isLoaded = false;
+  ak8jets_deep_rawdisc_zbb_isLoaded = false;
+  ak8jets_deep_rawdisc_hbb_isLoaded = false;
+  ak8jets_deep_rawdisc_h4q_isLoaded = false;
   evt_METToolbox_pfmet_isLoaded = false;
   evt_puppi_pfmet_TauEnDown_isLoaded = false;
   els_HLT_Ele25WP60_Ele8_Mass55_isLoaded = false;
@@ -8507,6 +8598,19 @@ void CMS3::LoadAllBranches() {
   if (filt_hcalLaser_branch != 0) filt_hcalLaser();
   if (els_HLT_Ele17_Ele8_LeadingLeg_version_branch != 0) els_HLT_Ele17_Ele8_LeadingLeg_version();
   if (ak8jets_area_branch != 0) ak8jets_area();
+  if (ak8jets_deep_bindisc_top_branch != 0) ak8jets_deep_bindisc_top();
+  if (ak8jets_deep_bindisc_w_branch != 0) ak8jets_deep_bindisc_w();
+  if (ak8jets_deep_bindisc_z_branch != 0) ak8jets_deep_bindisc_z();
+  if (ak8jets_deep_bindisc_zbb_branch != 0) ak8jets_deep_bindisc_zbb();
+  if (ak8jets_deep_bindisc_hbb_branch != 0) ak8jets_deep_bindisc_hbb();
+  if (ak8jets_deep_bindisc_h4q_branch != 0) ak8jets_deep_bindisc_h4q();
+  if (ak8jets_deep_rawdisc_qcd_branch != 0) ak8jets_deep_rawdisc_qcd();
+  if (ak8jets_deep_rawdisc_top_branch != 0) ak8jets_deep_rawdisc_top();
+  if (ak8jets_deep_rawdisc_w_branch != 0) ak8jets_deep_rawdisc_w();
+  if (ak8jets_deep_rawdisc_z_branch != 0) ak8jets_deep_rawdisc_z();
+  if (ak8jets_deep_rawdisc_zbb_branch != 0) ak8jets_deep_rawdisc_zbb();
+  if (ak8jets_deep_rawdisc_hbb_branch != 0) ak8jets_deep_rawdisc_hbb();
+  if (ak8jets_deep_rawdisc_h4q_branch != 0) ak8jets_deep_rawdisc_h4q();
   if (evt_METToolbox_pfmet_branch != 0) evt_METToolbox_pfmet();
   if (evt_puppi_pfmet_TauEnDown_branch != 0) evt_puppi_pfmet_TauEnDown();
   if (els_HLT_Ele25WP60_Ele8_Mass55_branch != 0) els_HLT_Ele25WP60_Ele8_Mass55();
@@ -11491,6 +11595,175 @@ const unsigned int &CMS3::els_HLT_Ele17_Ele8_LeadingLeg_version() {
     els_HLT_Ele17_Ele8_LeadingLeg_version_isLoaded = true;
   }
   return els_HLT_Ele17_Ele8_LeadingLeg_version_;
+}
+
+const vector<float> &CMS3::ak8jets_deep_bindisc_top() {
+  if (not ak8jets_deep_bindisc_top_isLoaded) {
+    if (ak8jets_deep_bindisc_top_branch != 0) {
+      ak8jets_deep_bindisc_top_branch->GetEntry(index);
+    } else {
+      printf("branch ak8jets_deep_bindisc_top_branch does not exist!\n");
+      exit(1);
+    }
+    ak8jets_deep_bindisc_top_isLoaded = true;
+  }
+  return ak8jets_deep_bindisc_top_;
+}
+
+const vector<float> &CMS3::ak8jets_deep_bindisc_w() {
+  if (not ak8jets_deep_bindisc_w_isLoaded) {
+    if (ak8jets_deep_bindisc_w_branch != 0) {
+      ak8jets_deep_bindisc_w_branch->GetEntry(index);
+    } else {
+      printf("branch ak8jets_deep_bindisc_w_branch does not exist!\n");
+      exit(1);
+    }
+    ak8jets_deep_bindisc_w_isLoaded = true;
+  }
+  return ak8jets_deep_bindisc_w_;
+}
+
+const vector<float> &CMS3::ak8jets_deep_bindisc_z() {
+  if (not ak8jets_deep_bindisc_z_isLoaded) {
+    if (ak8jets_deep_bindisc_z_branch != 0) {
+      ak8jets_deep_bindisc_z_branch->GetEntry(index);
+    } else {
+      printf("branch ak8jets_deep_bindisc_z_branch does not exist!\n");
+      exit(1);
+    }
+    ak8jets_deep_bindisc_z_isLoaded = true;
+  }
+  return ak8jets_deep_bindisc_z_;
+}
+
+const vector<float> &CMS3::ak8jets_deep_bindisc_zbb() {
+  if (not ak8jets_deep_bindisc_zbb_isLoaded) {
+    if (ak8jets_deep_bindisc_zbb_branch != 0) {
+      ak8jets_deep_bindisc_zbb_branch->GetEntry(index);
+    } else {
+      printf("branch ak8jets_deep_bindisc_zbb_branch does not exist!\n");
+      exit(1);
+    }
+    ak8jets_deep_bindisc_zbb_isLoaded = true;
+  }
+  return ak8jets_deep_bindisc_zbb_;
+}
+
+const vector<float> &CMS3::ak8jets_deep_bindisc_hbb() {
+  if (not ak8jets_deep_bindisc_hbb_isLoaded) {
+    if (ak8jets_deep_bindisc_hbb_branch != 0) {
+      ak8jets_deep_bindisc_hbb_branch->GetEntry(index);
+    } else {
+      printf("branch ak8jets_deep_bindisc_hbb_branch does not exist!\n");
+      exit(1);
+    }
+    ak8jets_deep_bindisc_hbb_isLoaded = true;
+  }
+  return ak8jets_deep_bindisc_hbb_;
+}
+
+const vector<float> &CMS3::ak8jets_deep_bindisc_h4q() {
+  if (not ak8jets_deep_bindisc_h4q_isLoaded) {
+    if (ak8jets_deep_bindisc_h4q_branch != 0) {
+      ak8jets_deep_bindisc_h4q_branch->GetEntry(index);
+    } else {
+      printf("branch ak8jets_deep_bindisc_h4q_branch does not exist!\n");
+      exit(1);
+    }
+    ak8jets_deep_bindisc_h4q_isLoaded = true;
+  }
+  return ak8jets_deep_bindisc_h4q_;
+}
+
+const vector<float> &CMS3::ak8jets_deep_rawdisc_qcd() {
+  if (not ak8jets_deep_rawdisc_qcd_isLoaded) {
+    if (ak8jets_deep_rawdisc_qcd_branch != 0) {
+      ak8jets_deep_rawdisc_qcd_branch->GetEntry(index);
+    } else {
+      printf("branch ak8jets_deep_rawdisc_qcd_branch does not exist!\n");
+      exit(1);
+    }
+    ak8jets_deep_rawdisc_qcd_isLoaded = true;
+  }
+  return ak8jets_deep_rawdisc_qcd_;
+}
+
+const vector<float> &CMS3::ak8jets_deep_rawdisc_top() {
+  if (not ak8jets_deep_rawdisc_top_isLoaded) {
+    if (ak8jets_deep_rawdisc_top_branch != 0) {
+      ak8jets_deep_rawdisc_top_branch->GetEntry(index);
+    } else {
+      printf("branch ak8jets_deep_rawdisc_top_branch does not exist!\n");
+      exit(1);
+    }
+    ak8jets_deep_rawdisc_top_isLoaded = true;
+  }
+  return ak8jets_deep_rawdisc_top_;
+}
+
+const vector<float> &CMS3::ak8jets_deep_rawdisc_w() {
+  if (not ak8jets_deep_rawdisc_w_isLoaded) {
+    if (ak8jets_deep_rawdisc_w_branch != 0) {
+      ak8jets_deep_rawdisc_w_branch->GetEntry(index);
+    } else {
+      printf("branch ak8jets_deep_rawdisc_w_branch does not exist!\n");
+      exit(1);
+    }
+    ak8jets_deep_rawdisc_w_isLoaded = true;
+  }
+  return ak8jets_deep_rawdisc_w_;
+}
+
+const vector<float> &CMS3::ak8jets_deep_rawdisc_z() {
+  if (not ak8jets_deep_rawdisc_z_isLoaded) {
+    if (ak8jets_deep_rawdisc_z_branch != 0) {
+      ak8jets_deep_rawdisc_z_branch->GetEntry(index);
+    } else {
+      printf("branch ak8jets_deep_rawdisc_z_branch does not exist!\n");
+      exit(1);
+    }
+    ak8jets_deep_rawdisc_z_isLoaded = true;
+  }
+  return ak8jets_deep_rawdisc_z_;
+}
+
+const vector<float> &CMS3::ak8jets_deep_rawdisc_zbb() {
+  if (not ak8jets_deep_rawdisc_zbb_isLoaded) {
+    if (ak8jets_deep_rawdisc_zbb_branch != 0) {
+      ak8jets_deep_rawdisc_zbb_branch->GetEntry(index);
+    } else {
+      printf("branch ak8jets_deep_rawdisc_zbb_branch does not exist!\n");
+      exit(1);
+    }
+    ak8jets_deep_rawdisc_zbb_isLoaded = true;
+  }
+  return ak8jets_deep_rawdisc_zbb_;
+}
+
+const vector<float> &CMS3::ak8jets_deep_rawdisc_hbb() {
+  if (not ak8jets_deep_rawdisc_hbb_isLoaded) {
+    if (ak8jets_deep_rawdisc_hbb_branch != 0) {
+      ak8jets_deep_rawdisc_hbb_branch->GetEntry(index);
+    } else {
+      printf("branch ak8jets_deep_rawdisc_hbb_branch does not exist!\n");
+      exit(1);
+    }
+    ak8jets_deep_rawdisc_hbb_isLoaded = true;
+  }
+  return ak8jets_deep_rawdisc_hbb_;
+}
+
+const vector<float> &CMS3::ak8jets_deep_rawdisc_h4q() {
+  if (not ak8jets_deep_rawdisc_h4q_isLoaded) {
+    if (ak8jets_deep_rawdisc_h4q_branch != 0) {
+      ak8jets_deep_rawdisc_h4q_branch->GetEntry(index);
+    } else {
+      printf("branch ak8jets_deep_rawdisc_h4q_branch does not exist!\n");
+      exit(1);
+    }
+    ak8jets_deep_rawdisc_h4q_isLoaded = true;
+  }
+  return ak8jets_deep_rawdisc_h4q_;
 }
 const vector<float> &CMS3::ak8jets_area() {
   if (not ak8jets_area_isLoaded) {
@@ -26801,6 +27074,19 @@ namespace tas {
   const bool &filt_hcalLaser() { return cms3.filt_hcalLaser(); }
   const unsigned int &els_HLT_Ele17_Ele8_LeadingLeg_version() { return cms3.els_HLT_Ele17_Ele8_LeadingLeg_version(); }
   const vector<float> &ak8jets_area() { return cms3.ak8jets_area(); }
+  const vector<float> &ak8jets_deep_bindisc_top() { return cms3.ak8jets_deep_bindisc_top(); }
+  const vector<float> &ak8jets_deep_bindisc_w() { return cms3.ak8jets_deep_bindisc_w(); }
+  const vector<float> &ak8jets_deep_bindisc_z() { return cms3.ak8jets_deep_bindisc_z(); }
+  const vector<float> &ak8jets_deep_bindisc_zbb() { return cms3.ak8jets_deep_bindisc_zbb(); }
+  const vector<float> &ak8jets_deep_bindisc_hbb() { return cms3.ak8jets_deep_bindisc_hbb(); }
+  const vector<float> &ak8jets_deep_bindisc_h4q() { return cms3.ak8jets_deep_bindisc_h4q(); }
+  const vector<float> &ak8jets_deep_rawdisc_qcd() { return cms3.ak8jets_deep_rawdisc_qcd(); }
+  const vector<float> &ak8jets_deep_rawdisc_top() { return cms3.ak8jets_deep_rawdisc_top(); }
+  const vector<float> &ak8jets_deep_rawdisc_w() { return cms3.ak8jets_deep_rawdisc_w(); }
+  const vector<float> &ak8jets_deep_rawdisc_z() { return cms3.ak8jets_deep_rawdisc_z(); }
+  const vector<float> &ak8jets_deep_rawdisc_zbb() { return cms3.ak8jets_deep_rawdisc_zbb(); }
+  const vector<float> &ak8jets_deep_rawdisc_hbb() { return cms3.ak8jets_deep_rawdisc_hbb(); }
+  const vector<float> &ak8jets_deep_rawdisc_h4q() { return cms3.ak8jets_deep_rawdisc_h4q(); }
   const float &evt_METToolbox_pfmet() { return cms3.evt_METToolbox_pfmet(); }
   const float &evt_puppi_pfmet_TauEnDown() { return cms3.evt_puppi_pfmet_TauEnDown(); }
   const vector<unsigned int> &els_HLT_Ele25WP60_Ele8_Mass55() { return cms3.els_HLT_Ele25WP60_Ele8_Mass55(); }
