@@ -19,7 +19,7 @@ branches_to_add = [
         ("mus_jetNDauChargedMVASel", "vector<int>"),
         ]
 
-with open("out_{}.h".format(cf_basename), "w") as fhout:
+with open("{}_new.h".format(cf_basename), "w") as fhout:
     with open("{}.h".format(cf_basename), "r") as fhin:
         for line in fhin:
             if "bool {}_isLoaded;".format(branch_to_copy) in line:
@@ -36,7 +36,7 @@ with open("out_{}.h".format(cf_basename), "w") as fhout:
                 fhout.write(line)
 
 
-with open("out_{}.cc".format(cf_basename), "w") as fhout:
+with open("{}_new.cc".format(cf_basename), "w") as fhout:
     with open("{}.cc".format(cf_basename), "r") as fhin:
         for line in fhin:
             if "{}_branch = 0;".format(branch_to_copy) == line.strip():
