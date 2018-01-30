@@ -6,6 +6,7 @@
 #include "TMVA/Reader.h"
 #include "TMVA/Config.h"
 
+
 class readLeptonMVA {
     public:
         void InitMVA(string path_el, string path_mu);
@@ -35,6 +36,8 @@ class readLeptonMVA {
 };
 
 void createAndInitLeptonMVA(std::string path_el, std::string path_mu); 
+
+float getLeptonMVA(int id, unsigned int index);
 
 struct lepIDcache {
     public:

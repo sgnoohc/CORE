@@ -18,10 +18,10 @@
  *            );
  *
  * // predict for each muon (imu is mus_* index)
- * float leptonMVA = globalLeptonMVAreader->MVA(13, imu);
+ * float leptonMVA = getLeptonMVA(13, imu);
  *
  * // predict for each electron (iel is mus_* index)
- * float leptonMVA = globalLeptonMVAreader->MVA(11, iel);
+ * float leptonMVA = getLeptonMVA(11, iel);
  *
  */
 
@@ -115,6 +115,7 @@ void readLeptonMVA::InitMVA(string path_el, string path_mu) {
 
 }
 
+
 float readLeptonMVA::MVA(int id, unsigned int index) {
 
     if (lepIDCacheSet) return lepID_cache.getMVA(id,index);
@@ -164,4 +165,8 @@ float readLeptonMVA::MVA(int id, unsigned int index) {
 void createAndInitLeptonMVA(std::string path_el, std::string path_mu) {
     globalLeptonMVAreader = new readLeptonMVA();
     globalLeptonMVAreader->InitMVA(path_el, path_mu); 
+}
+
+float getLeptonMVA(int id, unsigned int index) {
+    return globalLeptonMVAreader->MVA(id, index);
 }
