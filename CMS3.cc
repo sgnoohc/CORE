@@ -940,6 +940,84 @@ void CMS3::Init(TTree *tree) {
     els_HLT_Ele17_Ele8_LeadingLeg_version_branch = tree->GetBranch(tree->GetAlias("els_HLT_Ele17_Ele8_LeadingLeg_version"));
     if (els_HLT_Ele17_Ele8_LeadingLeg_version_branch) { els_HLT_Ele17_Ele8_LeadingLeg_version_branch->SetAddress(&els_HLT_Ele17_Ele8_LeadingLeg_version_); }
   }
+
+  ak8jets_deep_bindisc_top_branch = 0;
+  if (tree->GetAlias("ak8jets_deep_bindisc_top") != 0) {
+    ak8jets_deep_bindisc_top_branch = tree->GetBranch(tree->GetAlias("ak8jets_deep_bindisc_top"));
+    if (ak8jets_deep_bindisc_top_branch) { ak8jets_deep_bindisc_top_branch->SetAddress(&ak8jets_deep_bindisc_top_); }
+  }
+
+  ak8jets_deep_bindisc_w_branch = 0;
+  if (tree->GetAlias("ak8jets_deep_bindisc_w") != 0) {
+    ak8jets_deep_bindisc_w_branch = tree->GetBranch(tree->GetAlias("ak8jets_deep_bindisc_w"));
+    if (ak8jets_deep_bindisc_w_branch) { ak8jets_deep_bindisc_w_branch->SetAddress(&ak8jets_deep_bindisc_w_); }
+  }
+
+  ak8jets_deep_bindisc_z_branch = 0;
+  if (tree->GetAlias("ak8jets_deep_bindisc_z") != 0) {
+    ak8jets_deep_bindisc_z_branch = tree->GetBranch(tree->GetAlias("ak8jets_deep_bindisc_z"));
+    if (ak8jets_deep_bindisc_z_branch) { ak8jets_deep_bindisc_z_branch->SetAddress(&ak8jets_deep_bindisc_z_); }
+  }
+
+  ak8jets_deep_bindisc_zbb_branch = 0;
+  if (tree->GetAlias("ak8jets_deep_bindisc_zbb") != 0) {
+    ak8jets_deep_bindisc_zbb_branch = tree->GetBranch(tree->GetAlias("ak8jets_deep_bindisc_zbb"));
+    if (ak8jets_deep_bindisc_zbb_branch) { ak8jets_deep_bindisc_zbb_branch->SetAddress(&ak8jets_deep_bindisc_zbb_); }
+  }
+
+  ak8jets_deep_bindisc_hbb_branch = 0;
+  if (tree->GetAlias("ak8jets_deep_bindisc_hbb") != 0) {
+    ak8jets_deep_bindisc_hbb_branch = tree->GetBranch(tree->GetAlias("ak8jets_deep_bindisc_hbb"));
+    if (ak8jets_deep_bindisc_hbb_branch) { ak8jets_deep_bindisc_hbb_branch->SetAddress(&ak8jets_deep_bindisc_hbb_); }
+  }
+
+  ak8jets_deep_bindisc_h4q_branch = 0;
+  if (tree->GetAlias("ak8jets_deep_bindisc_h4q") != 0) {
+    ak8jets_deep_bindisc_h4q_branch = tree->GetBranch(tree->GetAlias("ak8jets_deep_bindisc_h4q"));
+    if (ak8jets_deep_bindisc_h4q_branch) { ak8jets_deep_bindisc_h4q_branch->SetAddress(&ak8jets_deep_bindisc_h4q_); }
+  }
+
+  ak8jets_deep_rawdisc_qcd_branch = 0;
+  if (tree->GetAlias("ak8jets_deep_rawdisc_qcd") != 0) {
+    ak8jets_deep_rawdisc_qcd_branch = tree->GetBranch(tree->GetAlias("ak8jets_deep_rawdisc_qcd"));
+    if (ak8jets_deep_rawdisc_qcd_branch) { ak8jets_deep_rawdisc_qcd_branch->SetAddress(&ak8jets_deep_rawdisc_qcd_); }
+  }
+
+  ak8jets_deep_rawdisc_top_branch = 0;
+  if (tree->GetAlias("ak8jets_deep_rawdisc_top") != 0) {
+    ak8jets_deep_rawdisc_top_branch = tree->GetBranch(tree->GetAlias("ak8jets_deep_rawdisc_top"));
+    if (ak8jets_deep_rawdisc_top_branch) { ak8jets_deep_rawdisc_top_branch->SetAddress(&ak8jets_deep_rawdisc_top_); }
+  }
+
+  ak8jets_deep_rawdisc_w_branch = 0;
+  if (tree->GetAlias("ak8jets_deep_rawdisc_w") != 0) {
+    ak8jets_deep_rawdisc_w_branch = tree->GetBranch(tree->GetAlias("ak8jets_deep_rawdisc_w"));
+    if (ak8jets_deep_rawdisc_w_branch) { ak8jets_deep_rawdisc_w_branch->SetAddress(&ak8jets_deep_rawdisc_w_); }
+  }
+
+  ak8jets_deep_rawdisc_z_branch = 0;
+  if (tree->GetAlias("ak8jets_deep_rawdisc_z") != 0) {
+    ak8jets_deep_rawdisc_z_branch = tree->GetBranch(tree->GetAlias("ak8jets_deep_rawdisc_z"));
+    if (ak8jets_deep_rawdisc_z_branch) { ak8jets_deep_rawdisc_z_branch->SetAddress(&ak8jets_deep_rawdisc_z_); }
+  }
+
+  ak8jets_deep_rawdisc_zbb_branch = 0;
+  if (tree->GetAlias("ak8jets_deep_rawdisc_zbb") != 0) {
+    ak8jets_deep_rawdisc_zbb_branch = tree->GetBranch(tree->GetAlias("ak8jets_deep_rawdisc_zbb"));
+    if (ak8jets_deep_rawdisc_zbb_branch) { ak8jets_deep_rawdisc_zbb_branch->SetAddress(&ak8jets_deep_rawdisc_zbb_); }
+  }
+
+  ak8jets_deep_rawdisc_hbb_branch = 0;
+  if (tree->GetAlias("ak8jets_deep_rawdisc_hbb") != 0) {
+    ak8jets_deep_rawdisc_hbb_branch = tree->GetBranch(tree->GetAlias("ak8jets_deep_rawdisc_hbb"));
+    if (ak8jets_deep_rawdisc_hbb_branch) { ak8jets_deep_rawdisc_hbb_branch->SetAddress(&ak8jets_deep_rawdisc_hbb_); }
+  }
+
+  ak8jets_deep_rawdisc_h4q_branch = 0;
+  if (tree->GetAlias("ak8jets_deep_rawdisc_h4q") != 0) {
+    ak8jets_deep_rawdisc_h4q_branch = tree->GetBranch(tree->GetAlias("ak8jets_deep_rawdisc_h4q"));
+    if (ak8jets_deep_rawdisc_h4q_branch) { ak8jets_deep_rawdisc_h4q_branch->SetAddress(&ak8jets_deep_rawdisc_h4q_); }
+  }
   ak8jets_area_branch = 0;
   if (tree->GetAlias("ak8jets_area") != 0) {
     ak8jets_area_branch = tree->GetBranch(tree->GetAlias("ak8jets_area"));
@@ -2079,6 +2157,78 @@ void CMS3::Init(TTree *tree) {
   if (tree->GetAlias("els_HLT_Ele20_SC4_Mass50_TrailingLeg") != 0) {
     els_HLT_Ele20_SC4_Mass50_TrailingLeg_branch = tree->GetBranch(tree->GetAlias("els_HLT_Ele20_SC4_Mass50_TrailingLeg"));
     if (els_HLT_Ele20_SC4_Mass50_TrailingLeg_branch) { els_HLT_Ele20_SC4_Mass50_TrailingLeg_branch->SetAddress(&els_HLT_Ele20_SC4_Mass50_TrailingLeg_); }
+  }
+
+  mus_miniRelIso_chg_branch = 0;
+  if (tree->GetAlias("mus_miniRelIso_chg") != 0) {
+    mus_miniRelIso_chg_branch = tree->GetBranch(tree->GetAlias("mus_miniRelIso_chg"));
+    if (mus_miniRelIso_chg_branch) { mus_miniRelIso_chg_branch->SetAddress(&mus_miniRelIso_chg_); }
+  }
+
+  mus_miniRelIso_all_branch = 0;
+  if (tree->GetAlias("mus_miniRelIso_all") != 0) {
+    mus_miniRelIso_all_branch = tree->GetBranch(tree->GetAlias("mus_miniRelIso_all"));
+    if (mus_miniRelIso_all_branch) { mus_miniRelIso_all_branch->SetAddress(&mus_miniRelIso_all_); }
+  }
+
+  els_miniRelIso_chg_branch = 0;
+  if (tree->GetAlias("els_miniRelIso_chg") != 0) {
+    els_miniRelIso_chg_branch = tree->GetBranch(tree->GetAlias("els_miniRelIso_chg"));
+    if (els_miniRelIso_chg_branch) { els_miniRelIso_chg_branch->SetAddress(&els_miniRelIso_chg_); }
+  }
+
+  els_miniRelIso_all_branch = 0;
+  if (tree->GetAlias("els_miniRelIso_all") != 0) {
+    els_miniRelIso_all_branch = tree->GetBranch(tree->GetAlias("els_miniRelIso_all"));
+    if (els_miniRelIso_all_branch) { els_miniRelIso_all_branch->SetAddress(&els_miniRelIso_all_); }
+  }
+
+  els_ptRatio_branch = 0;
+  if (tree->GetAlias("els_ptRatio") != 0) {
+    els_ptRatio_branch = tree->GetBranch(tree->GetAlias("els_ptRatio"));
+    if (els_ptRatio_branch) { els_ptRatio_branch->SetAddress(&els_ptRatio_); }
+  }
+
+  els_ptRel_branch = 0;
+  if (tree->GetAlias("els_ptRel") != 0) {
+    els_ptRel_branch = tree->GetBranch(tree->GetAlias("els_ptRel"));
+    if (els_ptRel_branch) { els_ptRel_branch->SetAddress(&els_ptRel_); }
+  }
+
+  els_jetBTagCSV_branch = 0;
+  if (tree->GetAlias("els_jetBTagCSV") != 0) {
+    els_jetBTagCSV_branch = tree->GetBranch(tree->GetAlias("els_jetBTagCSV"));
+    if (els_jetBTagCSV_branch) { els_jetBTagCSV_branch->SetAddress(&els_jetBTagCSV_); }
+  }
+
+  mus_ptRatio_branch = 0;
+  if (tree->GetAlias("mus_ptRatio") != 0) {
+    mus_ptRatio_branch = tree->GetBranch(tree->GetAlias("mus_ptRatio"));
+    if (mus_ptRatio_branch) { mus_ptRatio_branch->SetAddress(&mus_ptRatio_); }
+  }
+
+  mus_ptRel_branch = 0;
+  if (tree->GetAlias("mus_ptRel") != 0) {
+    mus_ptRel_branch = tree->GetBranch(tree->GetAlias("mus_ptRel"));
+    if (mus_ptRel_branch) { mus_ptRel_branch->SetAddress(&mus_ptRel_); }
+  }
+
+  mus_jetBTagCSV_branch = 0;
+  if (tree->GetAlias("mus_jetBTagCSV") != 0) {
+    mus_jetBTagCSV_branch = tree->GetBranch(tree->GetAlias("mus_jetBTagCSV"));
+    if (mus_jetBTagCSV_branch) { mus_jetBTagCSV_branch->SetAddress(&mus_jetBTagCSV_); }
+  }
+
+  els_jetNDauChargedMVASel_branch = 0;
+  if (tree->GetAlias("els_jetNDauChargedMVASel") != 0) {
+    els_jetNDauChargedMVASel_branch = tree->GetBranch(tree->GetAlias("els_jetNDauChargedMVASel"));
+    if (els_jetNDauChargedMVASel_branch) { els_jetNDauChargedMVASel_branch->SetAddress(&els_jetNDauChargedMVASel_); }
+  }
+
+  mus_jetNDauChargedMVASel_branch = 0;
+  if (tree->GetAlias("mus_jetNDauChargedMVASel") != 0) {
+    mus_jetNDauChargedMVASel_branch = tree->GetBranch(tree->GetAlias("mus_jetNDauChargedMVASel"));
+    if (mus_jetNDauChargedMVASel_branch) { mus_jetNDauChargedMVASel_branch->SetAddress(&mus_jetNDauChargedMVASel_); }
   }
   els_miniIso_uncor_branch = 0;
   if (tree->GetAlias("els_miniIso_uncor") != 0) {
@@ -7037,6 +7187,19 @@ void CMS3::GetEntry(unsigned int idx) {
   filt_hcalLaser_isLoaded = false;
   els_HLT_Ele17_Ele8_LeadingLeg_version_isLoaded = false;
   ak8jets_area_isLoaded = false;
+  ak8jets_deep_bindisc_top_isLoaded = false;
+  ak8jets_deep_bindisc_w_isLoaded = false;
+  ak8jets_deep_bindisc_z_isLoaded = false;
+  ak8jets_deep_bindisc_zbb_isLoaded = false;
+  ak8jets_deep_bindisc_hbb_isLoaded = false;
+  ak8jets_deep_bindisc_h4q_isLoaded = false;
+  ak8jets_deep_rawdisc_qcd_isLoaded = false;
+  ak8jets_deep_rawdisc_top_isLoaded = false;
+  ak8jets_deep_rawdisc_w_isLoaded = false;
+  ak8jets_deep_rawdisc_z_isLoaded = false;
+  ak8jets_deep_rawdisc_zbb_isLoaded = false;
+  ak8jets_deep_rawdisc_hbb_isLoaded = false;
+  ak8jets_deep_rawdisc_h4q_isLoaded = false;
   evt_METToolbox_pfmet_isLoaded = false;
   evt_puppi_pfmet_TauEnDown_isLoaded = false;
   els_HLT_Ele25WP60_Ele8_Mass55_isLoaded = false;
@@ -7277,6 +7440,18 @@ void CMS3::GetEntry(unsigned int idx) {
   els_scSeedE3x3_isLoaded = false;
   els_HLT_Ele20_SC4_Mass50_TrailingLeg_isLoaded = false;
   els_miniIso_uncor_isLoaded = false;
+  mus_miniRelIso_chg_isLoaded = false;
+  mus_miniRelIso_all_isLoaded = false;
+  els_miniRelIso_chg_isLoaded = false;
+  els_miniRelIso_all_isLoaded = false;
+  els_ptRatio_isLoaded = false;
+  els_ptRel_isLoaded = false;
+  els_jetBTagCSV_isLoaded = false;
+  mus_ptRatio_isLoaded = false;
+  mus_ptRel_isLoaded = false;
+  mus_jetBTagCSV_isLoaded = false;
+  els_jetNDauChargedMVASel_isLoaded = false;
+  mus_jetNDauChargedMVASel_isLoaded = false;
   mus_gfit_qoverpError_isLoaded = false;
   genps_fromHardProcessBeforeFSR_isLoaded = false;
   photons_mass_isLoaded = false;
@@ -8423,6 +8598,19 @@ void CMS3::LoadAllBranches() {
   if (filt_hcalLaser_branch != 0) filt_hcalLaser();
   if (els_HLT_Ele17_Ele8_LeadingLeg_version_branch != 0) els_HLT_Ele17_Ele8_LeadingLeg_version();
   if (ak8jets_area_branch != 0) ak8jets_area();
+  if (ak8jets_deep_bindisc_top_branch != 0) ak8jets_deep_bindisc_top();
+  if (ak8jets_deep_bindisc_w_branch != 0) ak8jets_deep_bindisc_w();
+  if (ak8jets_deep_bindisc_z_branch != 0) ak8jets_deep_bindisc_z();
+  if (ak8jets_deep_bindisc_zbb_branch != 0) ak8jets_deep_bindisc_zbb();
+  if (ak8jets_deep_bindisc_hbb_branch != 0) ak8jets_deep_bindisc_hbb();
+  if (ak8jets_deep_bindisc_h4q_branch != 0) ak8jets_deep_bindisc_h4q();
+  if (ak8jets_deep_rawdisc_qcd_branch != 0) ak8jets_deep_rawdisc_qcd();
+  if (ak8jets_deep_rawdisc_top_branch != 0) ak8jets_deep_rawdisc_top();
+  if (ak8jets_deep_rawdisc_w_branch != 0) ak8jets_deep_rawdisc_w();
+  if (ak8jets_deep_rawdisc_z_branch != 0) ak8jets_deep_rawdisc_z();
+  if (ak8jets_deep_rawdisc_zbb_branch != 0) ak8jets_deep_rawdisc_zbb();
+  if (ak8jets_deep_rawdisc_hbb_branch != 0) ak8jets_deep_rawdisc_hbb();
+  if (ak8jets_deep_rawdisc_h4q_branch != 0) ak8jets_deep_rawdisc_h4q();
   if (evt_METToolbox_pfmet_branch != 0) evt_METToolbox_pfmet();
   if (evt_puppi_pfmet_TauEnDown_branch != 0) evt_puppi_pfmet_TauEnDown();
   if (els_HLT_Ele25WP60_Ele8_Mass55_branch != 0) els_HLT_Ele25WP60_Ele8_Mass55();
@@ -8663,6 +8851,18 @@ void CMS3::LoadAllBranches() {
   if (els_scSeedE3x3_branch != 0) els_scSeedE3x3();
   if (els_HLT_Ele20_SC4_Mass50_TrailingLeg_branch != 0) els_HLT_Ele20_SC4_Mass50_TrailingLeg();
   if (els_miniIso_uncor_branch != 0) els_miniIso_uncor();
+  if (mus_miniRelIso_chg_branch != 0) mus_miniRelIso_chg();
+  if (mus_miniRelIso_all_branch != 0) mus_miniRelIso_all();
+  if (els_miniRelIso_chg_branch != 0) els_miniRelIso_chg();
+  if (els_miniRelIso_all_branch != 0) els_miniRelIso_all();
+  if (els_ptRatio_branch != 0) els_ptRatio();
+  if (els_ptRel_branch != 0) els_ptRel();
+  if (els_jetBTagCSV_branch != 0) els_jetBTagCSV();
+  if (mus_ptRatio_branch != 0) mus_ptRatio();
+  if (mus_ptRel_branch != 0) mus_ptRel();
+  if (mus_jetBTagCSV_branch != 0) mus_jetBTagCSV();
+  if (els_jetNDauChargedMVASel_branch != 0) els_jetNDauChargedMVASel();
+  if (mus_jetNDauChargedMVASel_branch != 0) mus_jetNDauChargedMVASel();
   if (mus_gfit_qoverpError_branch != 0) mus_gfit_qoverpError();
   if (genps_fromHardProcessBeforeFSR_branch != 0) genps_fromHardProcessBeforeFSR();
   if (photons_mass_branch != 0) photons_mass();
@@ -11534,6 +11734,175 @@ const unsigned int &CMS3::els_HLT_Ele17_Ele8_LeadingLeg_version() {
     els_HLT_Ele17_Ele8_LeadingLeg_version_isLoaded = true;
   }
   return els_HLT_Ele17_Ele8_LeadingLeg_version_;
+}
+
+const vector<float> &CMS3::ak8jets_deep_bindisc_top() {
+  if (not ak8jets_deep_bindisc_top_isLoaded) {
+    if (ak8jets_deep_bindisc_top_branch != 0) {
+      ak8jets_deep_bindisc_top_branch->GetEntry(index);
+    } else {
+      printf("branch ak8jets_deep_bindisc_top_branch does not exist!\n");
+      exit(1);
+    }
+    ak8jets_deep_bindisc_top_isLoaded = true;
+  }
+  return ak8jets_deep_bindisc_top_;
+}
+
+const vector<float> &CMS3::ak8jets_deep_bindisc_w() {
+  if (not ak8jets_deep_bindisc_w_isLoaded) {
+    if (ak8jets_deep_bindisc_w_branch != 0) {
+      ak8jets_deep_bindisc_w_branch->GetEntry(index);
+    } else {
+      printf("branch ak8jets_deep_bindisc_w_branch does not exist!\n");
+      exit(1);
+    }
+    ak8jets_deep_bindisc_w_isLoaded = true;
+  }
+  return ak8jets_deep_bindisc_w_;
+}
+
+const vector<float> &CMS3::ak8jets_deep_bindisc_z() {
+  if (not ak8jets_deep_bindisc_z_isLoaded) {
+    if (ak8jets_deep_bindisc_z_branch != 0) {
+      ak8jets_deep_bindisc_z_branch->GetEntry(index);
+    } else {
+      printf("branch ak8jets_deep_bindisc_z_branch does not exist!\n");
+      exit(1);
+    }
+    ak8jets_deep_bindisc_z_isLoaded = true;
+  }
+  return ak8jets_deep_bindisc_z_;
+}
+
+const vector<float> &CMS3::ak8jets_deep_bindisc_zbb() {
+  if (not ak8jets_deep_bindisc_zbb_isLoaded) {
+    if (ak8jets_deep_bindisc_zbb_branch != 0) {
+      ak8jets_deep_bindisc_zbb_branch->GetEntry(index);
+    } else {
+      printf("branch ak8jets_deep_bindisc_zbb_branch does not exist!\n");
+      exit(1);
+    }
+    ak8jets_deep_bindisc_zbb_isLoaded = true;
+  }
+  return ak8jets_deep_bindisc_zbb_;
+}
+
+const vector<float> &CMS3::ak8jets_deep_bindisc_hbb() {
+  if (not ak8jets_deep_bindisc_hbb_isLoaded) {
+    if (ak8jets_deep_bindisc_hbb_branch != 0) {
+      ak8jets_deep_bindisc_hbb_branch->GetEntry(index);
+    } else {
+      printf("branch ak8jets_deep_bindisc_hbb_branch does not exist!\n");
+      exit(1);
+    }
+    ak8jets_deep_bindisc_hbb_isLoaded = true;
+  }
+  return ak8jets_deep_bindisc_hbb_;
+}
+
+const vector<float> &CMS3::ak8jets_deep_bindisc_h4q() {
+  if (not ak8jets_deep_bindisc_h4q_isLoaded) {
+    if (ak8jets_deep_bindisc_h4q_branch != 0) {
+      ak8jets_deep_bindisc_h4q_branch->GetEntry(index);
+    } else {
+      printf("branch ak8jets_deep_bindisc_h4q_branch does not exist!\n");
+      exit(1);
+    }
+    ak8jets_deep_bindisc_h4q_isLoaded = true;
+  }
+  return ak8jets_deep_bindisc_h4q_;
+}
+
+const vector<float> &CMS3::ak8jets_deep_rawdisc_qcd() {
+  if (not ak8jets_deep_rawdisc_qcd_isLoaded) {
+    if (ak8jets_deep_rawdisc_qcd_branch != 0) {
+      ak8jets_deep_rawdisc_qcd_branch->GetEntry(index);
+    } else {
+      printf("branch ak8jets_deep_rawdisc_qcd_branch does not exist!\n");
+      exit(1);
+    }
+    ak8jets_deep_rawdisc_qcd_isLoaded = true;
+  }
+  return ak8jets_deep_rawdisc_qcd_;
+}
+
+const vector<float> &CMS3::ak8jets_deep_rawdisc_top() {
+  if (not ak8jets_deep_rawdisc_top_isLoaded) {
+    if (ak8jets_deep_rawdisc_top_branch != 0) {
+      ak8jets_deep_rawdisc_top_branch->GetEntry(index);
+    } else {
+      printf("branch ak8jets_deep_rawdisc_top_branch does not exist!\n");
+      exit(1);
+    }
+    ak8jets_deep_rawdisc_top_isLoaded = true;
+  }
+  return ak8jets_deep_rawdisc_top_;
+}
+
+const vector<float> &CMS3::ak8jets_deep_rawdisc_w() {
+  if (not ak8jets_deep_rawdisc_w_isLoaded) {
+    if (ak8jets_deep_rawdisc_w_branch != 0) {
+      ak8jets_deep_rawdisc_w_branch->GetEntry(index);
+    } else {
+      printf("branch ak8jets_deep_rawdisc_w_branch does not exist!\n");
+      exit(1);
+    }
+    ak8jets_deep_rawdisc_w_isLoaded = true;
+  }
+  return ak8jets_deep_rawdisc_w_;
+}
+
+const vector<float> &CMS3::ak8jets_deep_rawdisc_z() {
+  if (not ak8jets_deep_rawdisc_z_isLoaded) {
+    if (ak8jets_deep_rawdisc_z_branch != 0) {
+      ak8jets_deep_rawdisc_z_branch->GetEntry(index);
+    } else {
+      printf("branch ak8jets_deep_rawdisc_z_branch does not exist!\n");
+      exit(1);
+    }
+    ak8jets_deep_rawdisc_z_isLoaded = true;
+  }
+  return ak8jets_deep_rawdisc_z_;
+}
+
+const vector<float> &CMS3::ak8jets_deep_rawdisc_zbb() {
+  if (not ak8jets_deep_rawdisc_zbb_isLoaded) {
+    if (ak8jets_deep_rawdisc_zbb_branch != 0) {
+      ak8jets_deep_rawdisc_zbb_branch->GetEntry(index);
+    } else {
+      printf("branch ak8jets_deep_rawdisc_zbb_branch does not exist!\n");
+      exit(1);
+    }
+    ak8jets_deep_rawdisc_zbb_isLoaded = true;
+  }
+  return ak8jets_deep_rawdisc_zbb_;
+}
+
+const vector<float> &CMS3::ak8jets_deep_rawdisc_hbb() {
+  if (not ak8jets_deep_rawdisc_hbb_isLoaded) {
+    if (ak8jets_deep_rawdisc_hbb_branch != 0) {
+      ak8jets_deep_rawdisc_hbb_branch->GetEntry(index);
+    } else {
+      printf("branch ak8jets_deep_rawdisc_hbb_branch does not exist!\n");
+      exit(1);
+    }
+    ak8jets_deep_rawdisc_hbb_isLoaded = true;
+  }
+  return ak8jets_deep_rawdisc_hbb_;
+}
+
+const vector<float> &CMS3::ak8jets_deep_rawdisc_h4q() {
+  if (not ak8jets_deep_rawdisc_h4q_isLoaded) {
+    if (ak8jets_deep_rawdisc_h4q_branch != 0) {
+      ak8jets_deep_rawdisc_h4q_branch->GetEntry(index);
+    } else {
+      printf("branch ak8jets_deep_rawdisc_h4q_branch does not exist!\n");
+      exit(1);
+    }
+    ak8jets_deep_rawdisc_h4q_isLoaded = true;
+  }
+  return ak8jets_deep_rawdisc_h4q_;
 }
 const vector<float> &CMS3::ak8jets_area() {
   if (not ak8jets_area_isLoaded) {
@@ -14654,6 +15023,162 @@ const vector<unsigned int> &CMS3::els_HLT_Ele20_SC4_Mass50_TrailingLeg() {
     els_HLT_Ele20_SC4_Mass50_TrailingLeg_isLoaded = true;
   }
   return els_HLT_Ele20_SC4_Mass50_TrailingLeg_;
+}
+
+const vector<float> &CMS3::mus_miniRelIso_chg() {
+  if (not mus_miniRelIso_chg_isLoaded) {
+    if (mus_miniRelIso_chg_branch != 0) {
+      mus_miniRelIso_chg_branch->GetEntry(index);
+    } else {
+      printf("branch mus_miniRelIso_chg_branch does not exist!\n");
+      exit(1);
+    }
+    mus_miniRelIso_chg_isLoaded = true;
+  }
+  return mus_miniRelIso_chg_;
+}
+
+const vector<float> &CMS3::mus_miniRelIso_all() {
+  if (not mus_miniRelIso_all_isLoaded) {
+    if (mus_miniRelIso_all_branch != 0) {
+      mus_miniRelIso_all_branch->GetEntry(index);
+    } else {
+      printf("branch mus_miniRelIso_all_branch does not exist!\n");
+      exit(1);
+    }
+    mus_miniRelIso_all_isLoaded = true;
+  }
+  return mus_miniRelIso_all_;
+}
+
+const vector<float> &CMS3::els_miniRelIso_chg() {
+  if (not els_miniRelIso_chg_isLoaded) {
+    if (els_miniRelIso_chg_branch != 0) {
+      els_miniRelIso_chg_branch->GetEntry(index);
+    } else {
+      printf("branch els_miniRelIso_chg_branch does not exist!\n");
+      exit(1);
+    }
+    els_miniRelIso_chg_isLoaded = true;
+  }
+  return els_miniRelIso_chg_;
+}
+
+const vector<float> &CMS3::els_miniRelIso_all() {
+  if (not els_miniRelIso_all_isLoaded) {
+    if (els_miniRelIso_all_branch != 0) {
+      els_miniRelIso_all_branch->GetEntry(index);
+    } else {
+      printf("branch els_miniRelIso_all_branch does not exist!\n");
+      exit(1);
+    }
+    els_miniRelIso_all_isLoaded = true;
+  }
+  return els_miniRelIso_all_;
+}
+
+const vector<float> &CMS3::els_ptRatio() {
+  if (not els_ptRatio_isLoaded) {
+    if (els_ptRatio_branch != 0) {
+      els_ptRatio_branch->GetEntry(index);
+    } else {
+      printf("branch els_ptRatio_branch does not exist!\n");
+      exit(1);
+    }
+    els_ptRatio_isLoaded = true;
+  }
+  return els_ptRatio_;
+}
+
+const vector<float> &CMS3::els_ptRel() {
+  if (not els_ptRel_isLoaded) {
+    if (els_ptRel_branch != 0) {
+      els_ptRel_branch->GetEntry(index);
+    } else {
+      printf("branch els_ptRel_branch does not exist!\n");
+      exit(1);
+    }
+    els_ptRel_isLoaded = true;
+  }
+  return els_ptRel_;
+}
+
+const vector<float> &CMS3::els_jetBTagCSV() {
+  if (not els_jetBTagCSV_isLoaded) {
+    if (els_jetBTagCSV_branch != 0) {
+      els_jetBTagCSV_branch->GetEntry(index);
+    } else {
+      printf("branch els_jetBTagCSV_branch does not exist!\n");
+      exit(1);
+    }
+    els_jetBTagCSV_isLoaded = true;
+  }
+  return els_jetBTagCSV_;
+}
+
+const vector<float> &CMS3::mus_ptRatio() {
+  if (not mus_ptRatio_isLoaded) {
+    if (mus_ptRatio_branch != 0) {
+      mus_ptRatio_branch->GetEntry(index);
+    } else {
+      printf("branch mus_ptRatio_branch does not exist!\n");
+      exit(1);
+    }
+    mus_ptRatio_isLoaded = true;
+  }
+  return mus_ptRatio_;
+}
+
+const vector<float> &CMS3::mus_ptRel() {
+  if (not mus_ptRel_isLoaded) {
+    if (mus_ptRel_branch != 0) {
+      mus_ptRel_branch->GetEntry(index);
+    } else {
+      printf("branch mus_ptRel_branch does not exist!\n");
+      exit(1);
+    }
+    mus_ptRel_isLoaded = true;
+  }
+  return mus_ptRel_;
+}
+
+const vector<float> &CMS3::mus_jetBTagCSV() {
+  if (not mus_jetBTagCSV_isLoaded) {
+    if (mus_jetBTagCSV_branch != 0) {
+      mus_jetBTagCSV_branch->GetEntry(index);
+    } else {
+      printf("branch mus_jetBTagCSV_branch does not exist!\n");
+      exit(1);
+    }
+    mus_jetBTagCSV_isLoaded = true;
+  }
+  return mus_jetBTagCSV_;
+}
+
+const vector<int> &CMS3::els_jetNDauChargedMVASel() {
+  if (not els_jetNDauChargedMVASel_isLoaded) {
+    if (els_jetNDauChargedMVASel_branch != 0) {
+      els_jetNDauChargedMVASel_branch->GetEntry(index);
+    } else {
+      printf("branch els_jetNDauChargedMVASel_branch does not exist!\n");
+      exit(1);
+    }
+    els_jetNDauChargedMVASel_isLoaded = true;
+  }
+  return els_jetNDauChargedMVASel_;
+}
+
+const vector<int> &CMS3::mus_jetNDauChargedMVASel() {
+  if (not mus_jetNDauChargedMVASel_isLoaded) {
+    if (mus_jetNDauChargedMVASel_branch != 0) {
+      mus_jetNDauChargedMVASel_branch->GetEntry(index);
+    } else {
+      printf("branch mus_jetNDauChargedMVASel_branch does not exist!\n");
+      exit(1);
+    }
+    mus_jetNDauChargedMVASel_isLoaded = true;
+  }
+  return mus_jetNDauChargedMVASel_;
 }
 const vector<float> &CMS3::els_miniIso_uncor() {
   if (not els_miniIso_uncor_isLoaded) {
@@ -27933,6 +28458,19 @@ namespace tas {
   const bool &filt_hcalLaser() { return cms3.filt_hcalLaser(); }
   const unsigned int &els_HLT_Ele17_Ele8_LeadingLeg_version() { return cms3.els_HLT_Ele17_Ele8_LeadingLeg_version(); }
   const vector<float> &ak8jets_area() { return cms3.ak8jets_area(); }
+  const vector<float> &ak8jets_deep_bindisc_top() { return cms3.ak8jets_deep_bindisc_top(); }
+  const vector<float> &ak8jets_deep_bindisc_w() { return cms3.ak8jets_deep_bindisc_w(); }
+  const vector<float> &ak8jets_deep_bindisc_z() { return cms3.ak8jets_deep_bindisc_z(); }
+  const vector<float> &ak8jets_deep_bindisc_zbb() { return cms3.ak8jets_deep_bindisc_zbb(); }
+  const vector<float> &ak8jets_deep_bindisc_hbb() { return cms3.ak8jets_deep_bindisc_hbb(); }
+  const vector<float> &ak8jets_deep_bindisc_h4q() { return cms3.ak8jets_deep_bindisc_h4q(); }
+  const vector<float> &ak8jets_deep_rawdisc_qcd() { return cms3.ak8jets_deep_rawdisc_qcd(); }
+  const vector<float> &ak8jets_deep_rawdisc_top() { return cms3.ak8jets_deep_rawdisc_top(); }
+  const vector<float> &ak8jets_deep_rawdisc_w() { return cms3.ak8jets_deep_rawdisc_w(); }
+  const vector<float> &ak8jets_deep_rawdisc_z() { return cms3.ak8jets_deep_rawdisc_z(); }
+  const vector<float> &ak8jets_deep_rawdisc_zbb() { return cms3.ak8jets_deep_rawdisc_zbb(); }
+  const vector<float> &ak8jets_deep_rawdisc_hbb() { return cms3.ak8jets_deep_rawdisc_hbb(); }
+  const vector<float> &ak8jets_deep_rawdisc_h4q() { return cms3.ak8jets_deep_rawdisc_h4q(); }
   const float &evt_METToolbox_pfmet() { return cms3.evt_METToolbox_pfmet(); }
   const float &evt_puppi_pfmet_TauEnDown() { return cms3.evt_puppi_pfmet_TauEnDown(); }
   const vector<unsigned int> &els_HLT_Ele25WP60_Ele8_Mass55() { return cms3.els_HLT_Ele25WP60_Ele8_Mass55(); }
@@ -28173,6 +28711,18 @@ namespace tas {
   const vector<float> &els_scSeedE3x3() { return cms3.els_scSeedE3x3(); }
   const vector<unsigned int> &els_HLT_Ele20_SC4_Mass50_TrailingLeg() { return cms3.els_HLT_Ele20_SC4_Mass50_TrailingLeg(); }
   const vector<float> &els_miniIso_uncor() { return cms3.els_miniIso_uncor(); }
+  const vector<float> &mus_miniRelIso_chg() { return cms3.mus_miniRelIso_chg(); }
+  const vector<float> &mus_miniRelIso_all() { return cms3.mus_miniRelIso_all(); }
+  const vector<float> &els_miniRelIso_chg() { return cms3.els_miniRelIso_chg(); }
+  const vector<float> &els_miniRelIso_all() { return cms3.els_miniRelIso_all(); }
+  const vector<float> &els_ptRatio() { return cms3.els_ptRatio(); }
+  const vector<float> &els_ptRel() { return cms3.els_ptRel(); }
+  const vector<float> &els_jetBTagCSV() { return cms3.els_jetBTagCSV(); }
+  const vector<float> &mus_ptRatio() { return cms3.mus_ptRatio(); }
+  const vector<float> &mus_ptRel() { return cms3.mus_ptRel(); }
+  const vector<float> &mus_jetBTagCSV() { return cms3.mus_jetBTagCSV(); }
+  const vector<int> &els_jetNDauChargedMVASel() { return cms3.els_jetNDauChargedMVASel(); }
+  const vector<int> &mus_jetNDauChargedMVASel() { return cms3.mus_jetNDauChargedMVASel(); }
   const vector<float> &mus_gfit_qoverpError() { return cms3.mus_gfit_qoverpError(); }
   const vector<bool> &genps_fromHardProcessBeforeFSR() { return cms3.genps_fromHardProcessBeforeFSR(); }
   const vector<float> &photons_mass() { return cms3.photons_mass(); }

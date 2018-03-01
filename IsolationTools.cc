@@ -22,6 +22,11 @@ bool passMultiIso(int id, int idx, float cutMiniIso, float cutPtRatio, float cut
   return passMultiIsoCuts(cutMiniIso, cutPtRatio, cutPtRel, miniIso, ptratio, ptrel);
 }
 
+float muMiniRelIsoCMS3_charged(unsigned int idx) {
+  float absiso = mus_miniIso_ch().at(idx);
+  return absiso/(mus_p4().at(idx).pt());
+}
+
 bool passPtRel(int id, int idx, float cut, bool subtractLep, int whichCorr) {
   return getPtRel(id, idx, subtractLep, whichCorr) > cut;
 }
@@ -396,6 +401,11 @@ float elMiniRelIsoCMS3_EA(unsigned int idx, int eaversion) {
   if (eaversion!=0) rho = evt_fixgridfastjet_centralneutral_rho();
   float correction = rho * elEA03(idx, eaversion) * (dr/0.3) * (dr/0.3);
   float absiso = els_miniIso_ch().at(idx) + std::max(float(0.0), els_miniIso_nh().at(idx) + els_miniIso_em().at(idx) - correction);
+  return absiso/(els_p4().at(idx).pt());
+}
+
+float elMiniRelIsoCMS3_charged(unsigned int idx) {
+  float absiso = els_miniIso_ch().at(idx);
   return absiso/(els_p4().at(idx).pt());
 }
 
