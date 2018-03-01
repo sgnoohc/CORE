@@ -30,6 +30,7 @@ float muMiniRelIsoCMS3_DB(unsigned int idx);
 float muRelIso03_noCorr(unsigned int muIdx);
 [[deprecated("This function may not be correct in cms4 (needs all PFCands)")]]
 float muRelIsoAn04(unsigned int idx, bool useDBcor= true);
+float muPtRatio(unsigned int idx);
 
 
 //Electron
@@ -47,6 +48,7 @@ float elMiniRelIsoCMS3_DB(unsigned int idx);
 float eleRelIso03_noCorr(unsigned int elIdx);
 [[deprecated("This function may not be correct in cms4 (needs all PFCands)")]]
 float elRelIsoAn04(unsigned int idx, bool useDBcor= true);
+float elPtRatio(unsigned int idx);
 
 //Photon
 float photon_CHEA03(   int photonIdx );
