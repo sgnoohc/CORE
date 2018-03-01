@@ -1687,12 +1687,14 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
     {
         if (!( getMVAoutput(elIdx)               > 0.925 )) return false;
     }
+    if (!( isTriggerSafenoIso_v1(elIdx)                  )) return false;
     if (!( electronID(elIdx, VVV_cutbased_veto_noiso_v2) )) return false;
     return true;
     break;
 
   case(VVV_cutbased_fo_v2):
     if (!( elPtRatio(elIdx) > 0.65                     )) return false;
+    if (!( isTriggerSafe_v1(elIdx)                     )) return false;
     if (!( electronID(elIdx, VVV_cutbased_fo_noiso_v2) )) return false;
     return true;
     break;
@@ -1707,6 +1709,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
 
   case(VVV_cutbased_tight_v2):
     if (!( elPtRatio(elIdx) > 0.9                         )) return false;
+    if (!( isTriggerSafe_v1(elIdx)                     )) return false;
     if (!( electronID(elIdx, VVV_cutbased_tight_noiso_v2) )) return false;
     return true;
     break;
@@ -1724,12 +1727,14 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
     {
         if (!( getMVAoutput(elIdx)               > 0.88  )) return false;
     }
+    if (!( isTriggerSafenoIso_v1(elIdx)                  )) return false;
     if (!( electronID(elIdx, VVV_cutbased_veto_noiso_v2) )) return false;
     return true;
     break;
 
   case(VVV_cutbased_3l_fo_v2):
     if (!( elPtRatio(elIdx) > 0.65                        )) return false;
+    if (!( isTriggerSafe_v1(elIdx)                     )) return false;
     if (!( electronID(elIdx, VVV_cutbased_3l_fo_noiso_v2) )) return false;
     return true;
     break;
@@ -1744,6 +1749,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
 
   case(VVV_cutbased_3l_tight_v2):
     if (!( elPtRatio(elIdx) > 0.84                           )) return false;
+    if (!( isTriggerSafe_v1(elIdx)                     )) return false;
     if (!( electronID(elIdx, VVV_cutbased_3l_tight_noiso_v2) )) return false;
     return true;
     break;
