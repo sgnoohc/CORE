@@ -1655,13 +1655,19 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
     if (!( fabs(cms3.els_etaSC().at(elIdx))     <  2.5   )) return false;
     if (!( fabs(cms3.els_dxyPV().at(elIdx))     <  0.05  )) return false;
     if (!( fabs(cms3.els_dzPV().at(elIdx))      <  0.1   )) return false;
-    if (!( isTriggerSafenoIso_v1(elIdx)                  )) return false;
+    if (fabs(cms3.els_etaSC()[elIdx]) <= 1.479)
+    {
+        if (!( getMVAoutput(elIdx)               > 0.6   )) return false;
+    }
+    else
+    {
+        if (!( getMVAoutput(elIdx)               > 0.    )) return false;
+    }
     return true;
     break;
 
   case(VVV_cutbased_veto_v2):
     if (!( elPtRatio(elIdx) > 0.58                       )) return false;
-    if (!( isTriggerSafe_v1(elIdx)                       )) return false;
     if (!( electronID(elIdx, VVV_cutbased_veto_noiso_v2) )) return false;
     return true;
     break;
