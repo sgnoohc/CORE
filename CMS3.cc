@@ -11739,7 +11739,8 @@ const unsigned int &CMS3::els_HLT_Ele17_Ele8_LeadingLeg_version() {
 const vector<float> &CMS3::ak8jets_deep_bindisc_top() {
   if (not ak8jets_deep_bindisc_top_isLoaded) {
     if (ak8jets_deep_bindisc_top_branch != 0) {
-      ak8jets_deep_bindisc_top_branch->GetEntry(index);
+      if (ak8jets_deep_bindisc_top_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_deep_bindisc_top_branch does not exist!\n");
       exit(1);
@@ -11752,7 +11753,8 @@ const vector<float> &CMS3::ak8jets_deep_bindisc_top() {
 const vector<float> &CMS3::ak8jets_deep_bindisc_w() {
   if (not ak8jets_deep_bindisc_w_isLoaded) {
     if (ak8jets_deep_bindisc_w_branch != 0) {
-      ak8jets_deep_bindisc_w_branch->GetEntry(index);
+      if (ak8jets_deep_bindisc_w_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_deep_bindisc_w_branch does not exist!\n");
       exit(1);
@@ -11765,7 +11767,8 @@ const vector<float> &CMS3::ak8jets_deep_bindisc_w() {
 const vector<float> &CMS3::ak8jets_deep_bindisc_z() {
   if (not ak8jets_deep_bindisc_z_isLoaded) {
     if (ak8jets_deep_bindisc_z_branch != 0) {
-      ak8jets_deep_bindisc_z_branch->GetEntry(index);
+      if (ak8jets_deep_bindisc_z_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_deep_bindisc_z_branch does not exist!\n");
       exit(1);
@@ -11778,7 +11781,8 @@ const vector<float> &CMS3::ak8jets_deep_bindisc_z() {
 const vector<float> &CMS3::ak8jets_deep_bindisc_zbb() {
   if (not ak8jets_deep_bindisc_zbb_isLoaded) {
     if (ak8jets_deep_bindisc_zbb_branch != 0) {
-      ak8jets_deep_bindisc_zbb_branch->GetEntry(index);
+      if (ak8jets_deep_bindisc_zbb_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_deep_bindisc_zbb_branch does not exist!\n");
       exit(1);
@@ -11791,7 +11795,8 @@ const vector<float> &CMS3::ak8jets_deep_bindisc_zbb() {
 const vector<float> &CMS3::ak8jets_deep_bindisc_hbb() {
   if (not ak8jets_deep_bindisc_hbb_isLoaded) {
     if (ak8jets_deep_bindisc_hbb_branch != 0) {
-      ak8jets_deep_bindisc_hbb_branch->GetEntry(index);
+      if (ak8jets_deep_bindisc_hbb_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_deep_bindisc_hbb_branch does not exist!\n");
       exit(1);
@@ -11804,7 +11809,8 @@ const vector<float> &CMS3::ak8jets_deep_bindisc_hbb() {
 const vector<float> &CMS3::ak8jets_deep_bindisc_h4q() {
   if (not ak8jets_deep_bindisc_h4q_isLoaded) {
     if (ak8jets_deep_bindisc_h4q_branch != 0) {
-      ak8jets_deep_bindisc_h4q_branch->GetEntry(index);
+      if (ak8jets_deep_bindisc_h4q_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_deep_bindisc_h4q_branch does not exist!\n");
       exit(1);
@@ -11817,7 +11823,8 @@ const vector<float> &CMS3::ak8jets_deep_bindisc_h4q() {
 const vector<float> &CMS3::ak8jets_deep_rawdisc_qcd() {
   if (not ak8jets_deep_rawdisc_qcd_isLoaded) {
     if (ak8jets_deep_rawdisc_qcd_branch != 0) {
-      ak8jets_deep_rawdisc_qcd_branch->GetEntry(index);
+      if (ak8jets_deep_rawdisc_qcd_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_deep_rawdisc_qcd_branch does not exist!\n");
       exit(1);
@@ -11830,7 +11837,8 @@ const vector<float> &CMS3::ak8jets_deep_rawdisc_qcd() {
 const vector<float> &CMS3::ak8jets_deep_rawdisc_top() {
   if (not ak8jets_deep_rawdisc_top_isLoaded) {
     if (ak8jets_deep_rawdisc_top_branch != 0) {
-      ak8jets_deep_rawdisc_top_branch->GetEntry(index);
+      if (ak8jets_deep_rawdisc_top_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_deep_rawdisc_top_branch does not exist!\n");
       exit(1);
@@ -11843,7 +11851,8 @@ const vector<float> &CMS3::ak8jets_deep_rawdisc_top() {
 const vector<float> &CMS3::ak8jets_deep_rawdisc_w() {
   if (not ak8jets_deep_rawdisc_w_isLoaded) {
     if (ak8jets_deep_rawdisc_w_branch != 0) {
-      ak8jets_deep_rawdisc_w_branch->GetEntry(index);
+      if (ak8jets_deep_rawdisc_w_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_deep_rawdisc_w_branch does not exist!\n");
       exit(1);
@@ -11856,7 +11865,8 @@ const vector<float> &CMS3::ak8jets_deep_rawdisc_w() {
 const vector<float> &CMS3::ak8jets_deep_rawdisc_z() {
   if (not ak8jets_deep_rawdisc_z_isLoaded) {
     if (ak8jets_deep_rawdisc_z_branch != 0) {
-      ak8jets_deep_rawdisc_z_branch->GetEntry(index);
+      if (ak8jets_deep_rawdisc_z_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_deep_rawdisc_z_branch does not exist!\n");
       exit(1);
@@ -11869,7 +11879,8 @@ const vector<float> &CMS3::ak8jets_deep_rawdisc_z() {
 const vector<float> &CMS3::ak8jets_deep_rawdisc_zbb() {
   if (not ak8jets_deep_rawdisc_zbb_isLoaded) {
     if (ak8jets_deep_rawdisc_zbb_branch != 0) {
-      ak8jets_deep_rawdisc_zbb_branch->GetEntry(index);
+      if (ak8jets_deep_rawdisc_zbb_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_deep_rawdisc_zbb_branch does not exist!\n");
       exit(1);
@@ -11882,7 +11893,8 @@ const vector<float> &CMS3::ak8jets_deep_rawdisc_zbb() {
 const vector<float> &CMS3::ak8jets_deep_rawdisc_hbb() {
   if (not ak8jets_deep_rawdisc_hbb_isLoaded) {
     if (ak8jets_deep_rawdisc_hbb_branch != 0) {
-      ak8jets_deep_rawdisc_hbb_branch->GetEntry(index);
+      if (ak8jets_deep_rawdisc_hbb_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_deep_rawdisc_hbb_branch does not exist!\n");
       exit(1);
@@ -11895,7 +11907,8 @@ const vector<float> &CMS3::ak8jets_deep_rawdisc_hbb() {
 const vector<float> &CMS3::ak8jets_deep_rawdisc_h4q() {
   if (not ak8jets_deep_rawdisc_h4q_isLoaded) {
     if (ak8jets_deep_rawdisc_h4q_branch != 0) {
-      ak8jets_deep_rawdisc_h4q_branch->GetEntry(index);
+      if (ak8jets_deep_rawdisc_h4q_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_deep_rawdisc_h4q_branch does not exist!\n");
       exit(1);
