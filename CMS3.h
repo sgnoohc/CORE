@@ -354,6 +354,24 @@ protected:
   vector<float> ak8jets_area_;
   TBranch *ak8jets_area_branch;
   bool ak8jets_area_isLoaded;
+  vector<float> ak8jets_chs_pt_;
+  TBranch *ak8jets_chs_pt_branch;
+  bool ak8jets_chs_pt_isLoaded;
+  vector<float> ak8jets_chs_eta_;
+  TBranch *ak8jets_chs_eta_branch;
+  bool ak8jets_chs_eta_isLoaded;
+  vector<float> ak8jets_chs_phi_;
+  TBranch *ak8jets_chs_phi_branch;
+  bool ak8jets_chs_phi_isLoaded;
+  vector<float> ak8jets_chs_mass_;
+  TBranch *ak8jets_chs_mass_branch;
+  bool ak8jets_chs_mass_isLoaded;
+  vector<TString> ak8jets_bDiscriminatorNames_;
+  TBranch *ak8jets_bDiscriminatorNames_branch;
+  bool ak8jets_bDiscriminatorNames_isLoaded;
+  vector<vector<float>> ak8jets_bDiscriminators_;
+  TBranch *ak8jets_bDiscriminators_branch;
+  bool ak8jets_bDiscriminators_isLoaded;
   vector<float> ak8jets_deep_bindisc_top_;
   TBranch *ak8jets_deep_bindisc_top_branch;
   bool ak8jets_deep_bindisc_top_isLoaded;
@@ -4395,6 +4413,12 @@ public:
   const bool &filt_hcalLaser();
   const unsigned int &els_HLT_Ele17_Ele8_LeadingLeg_version();
   const vector<float> &ak8jets_area();
+  const vector<float> &ak8jets_chs_pt();
+  const vector<float> &ak8jets_chs_eta();
+  const vector<float> &ak8jets_chs_phi();
+  const vector<float> &ak8jets_chs_mass();
+  const vector<TString> &ak8jets_bDiscriminatorNames();
+  const vector<vector<float>> &ak8jets_bDiscriminators();
   const vector<float> &ak8jets_deep_bindisc_top();
   const vector<float> &ak8jets_deep_bindisc_w();
   const vector<float> &ak8jets_deep_bindisc_z();
@@ -5667,6 +5691,7 @@ public:
   bool passHLTTrigger(TString trigName);
   float passTauID(TString idName, unsigned int tauIndex);
   float getbtagvalue(TString bDiscriminatorName, unsigned int jetIndex);
+  float getbtagvalueAK8(TString bDiscriminatorName, unsigned int jetIndex);
   static void progress( int curr, int tot, int period=1000, unsigned int smoothing=30 );
 };
 
@@ -5816,6 +5841,12 @@ namespace tas {
   const bool &filt_hcalLaser();
   const unsigned int &els_HLT_Ele17_Ele8_LeadingLeg_version();
   const vector<float> &ak8jets_area();
+  const vector<float> &ak8jets_chs_pt();
+  const vector<float> &ak8jets_chs_eta();
+  const vector<float> &ak8jets_chs_phi();
+  const vector<float> &ak8jets_chs_mass();
+  const vector<TString> &ak8jets_bDiscriminatorNames();
+  const vector<vector<float>> &ak8jets_bDiscriminators();
   const vector<float> &ak8jets_deep_bindisc_top();
   const vector<float> &ak8jets_deep_bindisc_w();
   const vector<float> &ak8jets_deep_bindisc_z();
@@ -7088,5 +7119,6 @@ namespace tas {
   bool passHLTTrigger(TString trigName);
   float passTauID(TString idName, unsigned int tauIndex);
   float getbtagvalue(TString bDiscriminatorName, unsigned int jetIndex);
+  float getbtagvalueAK8(TString bDiscriminatorName, unsigned int jetIndex);
 }
 #endif

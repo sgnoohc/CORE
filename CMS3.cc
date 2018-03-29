@@ -1018,6 +1018,42 @@ void CMS3::Init(TTree *tree) {
     ak8jets_deep_rawdisc_h4q_branch = tree->GetBranch(tree->GetAlias("ak8jets_deep_rawdisc_h4q"));
     if (ak8jets_deep_rawdisc_h4q_branch) { ak8jets_deep_rawdisc_h4q_branch->SetAddress(&ak8jets_deep_rawdisc_h4q_); }
   }
+
+  ak8jets_chs_pt_branch = 0;
+  if (tree->GetAlias("ak8jets_chs_pt") != 0) {
+    ak8jets_chs_pt_branch = tree->GetBranch(tree->GetAlias("ak8jets_chs_pt"));
+    if (ak8jets_chs_pt_branch) { ak8jets_chs_pt_branch->SetAddress(&ak8jets_chs_pt_); }
+  }
+
+  ak8jets_chs_eta_branch = 0;
+  if (tree->GetAlias("ak8jets_chs_eta") != 0) {
+    ak8jets_chs_eta_branch = tree->GetBranch(tree->GetAlias("ak8jets_chs_eta"));
+    if (ak8jets_chs_eta_branch) { ak8jets_chs_eta_branch->SetAddress(&ak8jets_chs_eta_); }
+  }
+
+  ak8jets_chs_phi_branch = 0;
+  if (tree->GetAlias("ak8jets_chs_phi") != 0) {
+    ak8jets_chs_phi_branch = tree->GetBranch(tree->GetAlias("ak8jets_chs_phi"));
+    if (ak8jets_chs_phi_branch) { ak8jets_chs_phi_branch->SetAddress(&ak8jets_chs_phi_); }
+  }
+
+  ak8jets_chs_mass_branch = 0;
+  if (tree->GetAlias("ak8jets_chs_mass") != 0) {
+    ak8jets_chs_mass_branch = tree->GetBranch(tree->GetAlias("ak8jets_chs_mass"));
+    if (ak8jets_chs_mass_branch) { ak8jets_chs_mass_branch->SetAddress(&ak8jets_chs_mass_); }
+  }
+
+  ak8jets_bDiscriminatorNames_branch = 0;
+  if (tree->GetAlias("ak8jets_bDiscriminatorNames") != 0) {
+    ak8jets_bDiscriminatorNames_branch = tree->GetBranch(tree->GetAlias("ak8jets_bDiscriminatorNames"));
+    if (ak8jets_bDiscriminatorNames_branch) { ak8jets_bDiscriminatorNames_branch->SetAddress(&ak8jets_bDiscriminatorNames_); }
+  }
+
+  ak8jets_bDiscriminators_branch = 0;
+  if (tree->GetAlias("ak8jets_bDiscriminators") != 0) {
+    ak8jets_bDiscriminators_branch = tree->GetBranch(tree->GetAlias("ak8jets_bDiscriminators"));
+    if (ak8jets_bDiscriminators_branch) { ak8jets_bDiscriminators_branch->SetAddress(&ak8jets_bDiscriminators_); }
+  }
   ak8jets_area_branch = 0;
   if (tree->GetAlias("ak8jets_area") != 0) {
     ak8jets_area_branch = tree->GetBranch(tree->GetAlias("ak8jets_area"));
@@ -7187,6 +7223,12 @@ void CMS3::GetEntry(unsigned int idx) {
   filt_hcalLaser_isLoaded = false;
   els_HLT_Ele17_Ele8_LeadingLeg_version_isLoaded = false;
   ak8jets_area_isLoaded = false;
+  ak8jets_chs_pt_isLoaded = false;
+  ak8jets_chs_eta_isLoaded = false;
+  ak8jets_chs_phi_isLoaded = false;
+  ak8jets_chs_mass_isLoaded = false;
+  ak8jets_bDiscriminatorNames_isLoaded = false;
+  ak8jets_bDiscriminators_isLoaded = false;
   ak8jets_deep_bindisc_top_isLoaded = false;
   ak8jets_deep_bindisc_w_isLoaded = false;
   ak8jets_deep_bindisc_z_isLoaded = false;
@@ -8598,6 +8640,12 @@ void CMS3::LoadAllBranches() {
   if (filt_hcalLaser_branch != 0) filt_hcalLaser();
   if (els_HLT_Ele17_Ele8_LeadingLeg_version_branch != 0) els_HLT_Ele17_Ele8_LeadingLeg_version();
   if (ak8jets_area_branch != 0) ak8jets_area();
+  if (ak8jets_chs_pt_branch != 0) ak8jets_chs_pt();
+  if (ak8jets_chs_eta_branch != 0) ak8jets_chs_eta();
+  if (ak8jets_chs_phi_branch != 0) ak8jets_chs_phi();
+  if (ak8jets_chs_mass_branch != 0) ak8jets_chs_mass();
+  if (ak8jets_bDiscriminatorNames_branch != 0) ak8jets_bDiscriminatorNames();
+  if (ak8jets_bDiscriminators_branch != 0) ak8jets_bDiscriminators();
   if (ak8jets_deep_bindisc_top_branch != 0) ak8jets_deep_bindisc_top();
   if (ak8jets_deep_bindisc_w_branch != 0) ak8jets_deep_bindisc_w();
   if (ak8jets_deep_bindisc_z_branch != 0) ak8jets_deep_bindisc_z();
@@ -11916,6 +11964,84 @@ const vector<float> &CMS3::ak8jets_deep_rawdisc_h4q() {
     ak8jets_deep_rawdisc_h4q_isLoaded = true;
   }
   return ak8jets_deep_rawdisc_h4q_;
+}
+
+const vector<float> &CMS3::ak8jets_chs_pt() {
+  if (not ak8jets_chs_pt_isLoaded) {
+    if (ak8jets_chs_pt_branch != 0) {
+      ak8jets_chs_pt_branch->GetEntry(index);
+    } else {
+      printf("branch ak8jets_chs_pt_branch does not exist!\n");
+      exit(1);
+    }
+    ak8jets_chs_pt_isLoaded = true;
+  }
+  return ak8jets_chs_pt_;
+}
+
+const vector<float> &CMS3::ak8jets_chs_eta() {
+  if (not ak8jets_chs_eta_isLoaded) {
+    if (ak8jets_chs_eta_branch != 0) {
+      ak8jets_chs_eta_branch->GetEntry(index);
+    } else {
+      printf("branch ak8jets_chs_eta_branch does not exist!\n");
+      exit(1);
+    }
+    ak8jets_chs_eta_isLoaded = true;
+  }
+  return ak8jets_chs_eta_;
+}
+
+const vector<float> &CMS3::ak8jets_chs_phi() {
+  if (not ak8jets_chs_phi_isLoaded) {
+    if (ak8jets_chs_phi_branch != 0) {
+      ak8jets_chs_phi_branch->GetEntry(index);
+    } else {
+      printf("branch ak8jets_chs_phi_branch does not exist!\n");
+      exit(1);
+    }
+    ak8jets_chs_phi_isLoaded = true;
+  }
+  return ak8jets_chs_phi_;
+}
+
+const vector<float> &CMS3::ak8jets_chs_mass() {
+  if (not ak8jets_chs_mass_isLoaded) {
+    if (ak8jets_chs_mass_branch != 0) {
+      ak8jets_chs_mass_branch->GetEntry(index);
+    } else {
+      printf("branch ak8jets_chs_mass_branch does not exist!\n");
+      exit(1);
+    }
+    ak8jets_chs_mass_isLoaded = true;
+  }
+  return ak8jets_chs_mass_;
+}
+
+const vector<TString> &CMS3::ak8jets_bDiscriminatorNames() {
+  if (not ak8jets_bDiscriminatorNames_isLoaded) {
+    if (ak8jets_bDiscriminatorNames_branch != 0) {
+      ak8jets_bDiscriminatorNames_branch->GetEntry(index);
+    } else {
+      printf("branch ak8jets_bDiscriminatorNames_branch does not exist!\n");
+      exit(1);
+    }
+    ak8jets_bDiscriminatorNames_isLoaded = true;
+  }
+  return ak8jets_bDiscriminatorNames_;
+}
+
+const vector<vector<float>> &CMS3::ak8jets_bDiscriminators() {
+  if (not ak8jets_bDiscriminators_isLoaded) {
+    if (ak8jets_bDiscriminators_branch != 0) {
+      ak8jets_bDiscriminators_branch->GetEntry(index);
+    } else {
+      printf("branch ak8jets_bDiscriminators_branch does not exist!\n");
+      exit(1);
+    }
+    ak8jets_bDiscriminators_isLoaded = true;
+  }
+  return ak8jets_bDiscriminators_;
 }
 const vector<float> &CMS3::ak8jets_area() {
   if (not ak8jets_area_isLoaded) {
@@ -28308,6 +28434,25 @@ float CMS3::getbtagvalue(TString bDiscriminatorName, unsigned int jetIndex) {
   }
 }
 
+float CMS3::getbtagvalueAK8(TString bDiscriminatorName, unsigned int jetIndex) {
+  size_t bDiscriminatorIndex;
+  std::vector<TString>::const_iterator begin_it = ak8jets_bDiscriminatorNames().begin();
+  std::vector<TString>::const_iterator end_it = ak8jets_bDiscriminatorNames().end();
+  std::vector<TString>::const_iterator found_it = std::find(begin_it, end_it, bDiscriminatorName);
+  if (found_it != end_it)
+    bDiscriminatorIndex = found_it - begin_it;
+  else {
+    std::cout << "Cannot find b-discriminator " << bDiscriminatorName << std::endl;
+    return 0;
+  }
+  if (jetIndex < ak8jets_bDiscriminators().size())
+    return ak8jets_bDiscriminators().at(jetIndex).at(bDiscriminatorIndex);
+  else {
+    std::cout << "Cannot find jet # " << jetIndex << std::endl;
+    return 0;
+  }
+}
+
 std::chrono::time_point<std::chrono::system_clock> t_old = std::chrono::system_clock::now();
 std::vector<double> deq;
 void CMS3::progress( int curr, int tot, int period, unsigned int smoothing) {
@@ -28471,6 +28616,12 @@ namespace tas {
   const bool &filt_hcalLaser() { return cms3.filt_hcalLaser(); }
   const unsigned int &els_HLT_Ele17_Ele8_LeadingLeg_version() { return cms3.els_HLT_Ele17_Ele8_LeadingLeg_version(); }
   const vector<float> &ak8jets_area() { return cms3.ak8jets_area(); }
+  const vector<float> &ak8jets_chs_pt() { return cms3.ak8jets_chs_pt(); }
+  const vector<float> &ak8jets_chs_eta() { return cms3.ak8jets_chs_eta(); }
+  const vector<float> &ak8jets_chs_phi() { return cms3.ak8jets_chs_phi(); }
+  const vector<float> &ak8jets_chs_mass() { return cms3.ak8jets_chs_mass(); }
+  const vector<TString> &ak8jets_bDiscriminatorNames() { return cms3.ak8jets_bDiscriminatorNames(); }
+  const vector<vector<float>> &ak8jets_bDiscriminators() { return cms3.ak8jets_bDiscriminators(); }
   const vector<float> &ak8jets_deep_bindisc_top() { return cms3.ak8jets_deep_bindisc_top(); }
   const vector<float> &ak8jets_deep_bindisc_w() { return cms3.ak8jets_deep_bindisc_w(); }
   const vector<float> &ak8jets_deep_bindisc_z() { return cms3.ak8jets_deep_bindisc_z(); }
@@ -29743,4 +29894,5 @@ namespace tas {
   bool passHLTTrigger(TString trigName) { return cms3.passHLTTrigger(trigName); }
   float passTauID(TString idName, unsigned int tauIndex) { return cms3.passTauID(idName, tauIndex); }
   float getbtagvalue(TString bDiscriminatorName, unsigned int jetIndex) { return cms3.getbtagvalue(bDiscriminatorName, jetIndex); }
+  float getbtagvalueAK8(TString bDiscriminatorName, unsigned int jetIndex) { return cms3.getbtagvalueAK8(bDiscriminatorName, jetIndex); }
 }
