@@ -197,6 +197,16 @@ analysis_t whichAnalysis(id_level_t id_level){
     case (VVV_cutbased_3l_fo_noiso_v2):
     case (VVV_cutbased_3l_tight_v2):
     case (VVV_cutbased_3l_tight_noiso_v2):
+    case (VVV_cutbased_veto_v3):
+    case (VVV_cutbased_veto_noiso_v3):
+    case (VVV_cutbased_fo_v3):
+    case (VVV_cutbased_fo_noiso_v3):
+    case (VVV_cutbased_tight_v3):
+    case (VVV_cutbased_tight_noiso_v3):
+    case (VVV_cutbased_3l_fo_v3):
+    case (VVV_cutbased_3l_fo_noiso_v3):
+    case (VVV_cutbased_3l_tight_v3):
+    case (VVV_cutbased_3l_tight_noiso_v3):
       return VVV;
       break;
 
