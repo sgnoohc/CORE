@@ -257,6 +257,14 @@ float muRelIsoAn04(unsigned int idx, bool useDBcor) {
   return muRelIsoCustomCone(idx, 0.4, false, 0.0, useDBcor, false, dr);
 }
 
+float muPtRatio(unsigned int idx)
+{
+  const LorentzVector& temp_jet_p4 = closestJet(cms3.mus_p4()[idx], 0.4, 3.0, 2);
+  float closeJetPt = temp_jet_p4.pt();
+  float ptratio = (closeJetPt > 0. ? cms3.mus_p4()[idx].pt() / closeJetPt : 1.);
+  return ptratio;
+}
+
 float eleRelIso03(unsigned int elIdx, analysis_t analysis){
   if (analysis == HAD ) return eleRelIso03DB(elIdx);
   if (analysis == STOP) return eleRelIso03DB(elIdx);
@@ -417,6 +425,14 @@ float elRelIsoAn04(unsigned int idx, bool useDBcor) {
   return elRelIsoCustomCone(idx, 0.4, false, 0.0, useDBcor, false, dr);
 }
 
+float elPtRatio(unsigned int idx)
+{
+  const LorentzVector& temp_jet_p4 = closestJet(cms3.els_p4()[idx], 0.4, 3.0, 2);
+  float closeJetPt = temp_jet_p4.pt();
+  float ptratio = (closeJetPt > 0. ? cms3.els_p4()[idx].pt() / closeJetPt : 1.);
+  return ptratio;
+}
+
 //////////////////////
 // Photon Isolation //
 //////////////////////
@@ -512,3 +528,4 @@ float photonHcalpfClusterIso03EA( int photonIdx )
   float HCIso = std::max(float(0.0), hciso - evt_fixgridfastjet_all_rho() * ea);
   return HCIso;
 }
+

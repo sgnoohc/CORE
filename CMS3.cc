@@ -1018,6 +1018,42 @@ void CMS3::Init(TTree *tree) {
     ak8jets_deep_rawdisc_h4q_branch = tree->GetBranch(tree->GetAlias("ak8jets_deep_rawdisc_h4q"));
     if (ak8jets_deep_rawdisc_h4q_branch) { ak8jets_deep_rawdisc_h4q_branch->SetAddress(&ak8jets_deep_rawdisc_h4q_); }
   }
+
+  ak8jets_chs_pt_branch = 0;
+  if (tree->GetAlias("ak8jets_chs_pt") != 0) {
+    ak8jets_chs_pt_branch = tree->GetBranch(tree->GetAlias("ak8jets_chs_pt"));
+    if (ak8jets_chs_pt_branch) { ak8jets_chs_pt_branch->SetAddress(&ak8jets_chs_pt_); }
+  }
+
+  ak8jets_chs_eta_branch = 0;
+  if (tree->GetAlias("ak8jets_chs_eta") != 0) {
+    ak8jets_chs_eta_branch = tree->GetBranch(tree->GetAlias("ak8jets_chs_eta"));
+    if (ak8jets_chs_eta_branch) { ak8jets_chs_eta_branch->SetAddress(&ak8jets_chs_eta_); }
+  }
+
+  ak8jets_chs_phi_branch = 0;
+  if (tree->GetAlias("ak8jets_chs_phi") != 0) {
+    ak8jets_chs_phi_branch = tree->GetBranch(tree->GetAlias("ak8jets_chs_phi"));
+    if (ak8jets_chs_phi_branch) { ak8jets_chs_phi_branch->SetAddress(&ak8jets_chs_phi_); }
+  }
+
+  ak8jets_chs_mass_branch = 0;
+  if (tree->GetAlias("ak8jets_chs_mass") != 0) {
+    ak8jets_chs_mass_branch = tree->GetBranch(tree->GetAlias("ak8jets_chs_mass"));
+    if (ak8jets_chs_mass_branch) { ak8jets_chs_mass_branch->SetAddress(&ak8jets_chs_mass_); }
+  }
+
+  ak8jets_bDiscriminatorNames_branch = 0;
+  if (tree->GetAlias("ak8jets_bDiscriminatorNames") != 0) {
+    ak8jets_bDiscriminatorNames_branch = tree->GetBranch(tree->GetAlias("ak8jets_bDiscriminatorNames"));
+    if (ak8jets_bDiscriminatorNames_branch) { ak8jets_bDiscriminatorNames_branch->SetAddress(&ak8jets_bDiscriminatorNames_); }
+  }
+
+  ak8jets_bDiscriminators_branch = 0;
+  if (tree->GetAlias("ak8jets_bDiscriminators") != 0) {
+    ak8jets_bDiscriminators_branch = tree->GetBranch(tree->GetAlias("ak8jets_bDiscriminators"));
+    if (ak8jets_bDiscriminators_branch) { ak8jets_bDiscriminators_branch->SetAddress(&ak8jets_bDiscriminators_); }
+  }
   ak8jets_area_branch = 0;
   if (tree->GetAlias("ak8jets_area") != 0) {
     ak8jets_area_branch = tree->GetBranch(tree->GetAlias("ak8jets_area"));
@@ -7187,6 +7223,12 @@ void CMS3::GetEntry(unsigned int idx) {
   filt_hcalLaser_isLoaded = false;
   els_HLT_Ele17_Ele8_LeadingLeg_version_isLoaded = false;
   ak8jets_area_isLoaded = false;
+  ak8jets_chs_pt_isLoaded = false;
+  ak8jets_chs_eta_isLoaded = false;
+  ak8jets_chs_phi_isLoaded = false;
+  ak8jets_chs_mass_isLoaded = false;
+  ak8jets_bDiscriminatorNames_isLoaded = false;
+  ak8jets_bDiscriminators_isLoaded = false;
   ak8jets_deep_bindisc_top_isLoaded = false;
   ak8jets_deep_bindisc_w_isLoaded = false;
   ak8jets_deep_bindisc_z_isLoaded = false;
@@ -8598,6 +8640,12 @@ void CMS3::LoadAllBranches() {
   if (filt_hcalLaser_branch != 0) filt_hcalLaser();
   if (els_HLT_Ele17_Ele8_LeadingLeg_version_branch != 0) els_HLT_Ele17_Ele8_LeadingLeg_version();
   if (ak8jets_area_branch != 0) ak8jets_area();
+  if (ak8jets_chs_pt_branch != 0) ak8jets_chs_pt();
+  if (ak8jets_chs_eta_branch != 0) ak8jets_chs_eta();
+  if (ak8jets_chs_phi_branch != 0) ak8jets_chs_phi();
+  if (ak8jets_chs_mass_branch != 0) ak8jets_chs_mass();
+  if (ak8jets_bDiscriminatorNames_branch != 0) ak8jets_bDiscriminatorNames();
+  if (ak8jets_bDiscriminators_branch != 0) ak8jets_bDiscriminators();
   if (ak8jets_deep_bindisc_top_branch != 0) ak8jets_deep_bindisc_top();
   if (ak8jets_deep_bindisc_w_branch != 0) ak8jets_deep_bindisc_w();
   if (ak8jets_deep_bindisc_z_branch != 0) ak8jets_deep_bindisc_z();
@@ -9904,7 +9952,8 @@ void CMS3::LoadAllBranches() {
 const float &CMS3::hcalnoise_isolatedNoiseSumEt() {
   if (not hcalnoise_isolatedNoiseSumEt_isLoaded) {
     if (hcalnoise_isolatedNoiseSumEt_branch != 0) {
-      hcalnoise_isolatedNoiseSumEt_branch->GetEntry(index);
+      if (hcalnoise_isolatedNoiseSumEt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure("I/O failure reading hcalnoise_isolatedNoiseSumEt_branch");
     } else {
       printf("branch hcalnoise_isolatedNoiseSumEt_branch does not exist!\n");
       exit(1);
@@ -9916,7 +9965,8 @@ const float &CMS3::hcalnoise_isolatedNoiseSumEt() {
 const vector<float> &CMS3::photons_hcalTowerSumEtBcConeDR04() {
   if (not photons_hcalTowerSumEtBcConeDR04_isLoaded) {
     if (photons_hcalTowerSumEtBcConeDR04_branch != 0) {
-      photons_hcalTowerSumEtBcConeDR04_branch->GetEntry(index);
+      if (photons_hcalTowerSumEtBcConeDR04_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure("photons_hcalTowerSumEtBcConeDR04");
     } else {
       printf("branch photons_hcalTowerSumEtBcConeDR04_branch does not exist!\n");
       exit(1);
@@ -9928,7 +9978,8 @@ const vector<float> &CMS3::photons_hcalTowerSumEtBcConeDR04() {
 const vector<int> &CMS3::mus_sta_ndof() {
   if (not mus_sta_ndof_isLoaded) {
     if (mus_sta_ndof_branch != 0) {
-      mus_sta_ndof_branch->GetEntry(index);
+      if (mus_sta_ndof_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure("I/O failure reading mus_sta_ndo branch");
     } else {
       printf("branch mus_sta_ndof_branch does not exist!\n");
       exit(1);
@@ -9940,7 +9991,8 @@ const vector<int> &CMS3::mus_sta_ndof() {
 const vector<int> &CMS3::pfjets_npfcands() {
   if (not pfjets_npfcands_isLoaded) {
     if (pfjets_npfcands_branch != 0) {
-      pfjets_npfcands_branch->GetEntry(index);
+      if (pfjets_npfcands_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure("I/O failure reading pfjets_npfcands branch");
     } else {
       printf("branch pfjets_npfcands_branch does not exist!\n");
       exit(1);
@@ -9952,7 +10004,8 @@ const vector<int> &CMS3::pfjets_npfcands() {
 const vector<float> &CMS3::ak8jets_minMass() {
   if (not ak8jets_minMass_isLoaded) {
     if (ak8jets_minMass_branch != 0) {
-      ak8jets_minMass_branch->GetEntry(index);
+      if (ak8jets_minMass_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_minMass_branch does not exist!\n");
       exit(1);
@@ -9964,7 +10017,8 @@ const vector<float> &CMS3::ak8jets_minMass() {
 const vector<float> &CMS3::photons_hcalDepth2TowerSumEtBcConeDR04() {
   if (not photons_hcalDepth2TowerSumEtBcConeDR04_isLoaded) {
     if (photons_hcalDepth2TowerSumEtBcConeDR04_branch != 0) {
-      photons_hcalDepth2TowerSumEtBcConeDR04_branch->GetEntry(index);
+      if (photons_hcalDepth2TowerSumEtBcConeDR04_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_hcalDepth2TowerSumEtBcConeDR04_branch does not exist!\n");
       exit(1);
@@ -9976,7 +10030,8 @@ const vector<float> &CMS3::photons_hcalDepth2TowerSumEtBcConeDR04() {
 const vector<float> &CMS3::mus_bfit_qoverp() {
   if (not mus_bfit_qoverp_isLoaded) {
     if (mus_bfit_qoverp_branch != 0) {
-      mus_bfit_qoverp_branch->GetEntry(index);
+      if (mus_bfit_qoverp_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_bfit_qoverp_branch does not exist!\n");
       exit(1);
@@ -9988,7 +10043,8 @@ const vector<float> &CMS3::mus_bfit_qoverp() {
 const vector<float> &CMS3::els_tkIso() {
   if (not els_tkIso_isLoaded) {
     if (els_tkIso_branch != 0) {
-      els_tkIso_branch->GetEntry(index);
+      if (els_tkIso_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_tkIso_branch does not exist!\n");
       exit(1);
@@ -10000,7 +10056,8 @@ const vector<float> &CMS3::els_tkIso() {
 const vector<int> &CMS3::mus_sta_qualityMask() {
   if (not mus_sta_qualityMask_isLoaded) {
     if (mus_sta_qualityMask_branch != 0) {
-      mus_sta_qualityMask_branch->GetEntry(index);
+      if (mus_sta_qualityMask_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_sta_qualityMask_branch does not exist!\n");
       exit(1);
@@ -10012,7 +10069,8 @@ const vector<int> &CMS3::mus_sta_qualityMask() {
 const vector<float> &CMS3::pfjets_mc_gpdr() {
   if (not pfjets_mc_gpdr_isLoaded) {
     if (pfjets_mc_gpdr_branch != 0) {
-      pfjets_mc_gpdr_branch->GetEntry(index);
+      if (pfjets_mc_gpdr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_mc_gpdr_branch does not exist!\n");
       exit(1);
@@ -10024,7 +10082,8 @@ const vector<float> &CMS3::pfjets_mc_gpdr() {
 const vector<vector<float> > &CMS3::els_clusterDPhiToSeed() {
   if (not els_clusterDPhiToSeed_isLoaded) {
     if (els_clusterDPhiToSeed_branch != 0) {
-      els_clusterDPhiToSeed_branch->GetEntry(index);
+      if (els_clusterDPhiToSeed_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_clusterDPhiToSeed_branch does not exist!\n");
       exit(1);
@@ -10036,7 +10095,8 @@ const vector<vector<float> > &CMS3::els_clusterDPhiToSeed() {
 const float &CMS3::evt_puppi_pfmet_JetEnDown() {
   if (not evt_puppi_pfmet_JetEnDown_isLoaded) {
     if (evt_puppi_pfmet_JetEnDown_branch != 0) {
-      evt_puppi_pfmet_JetEnDown_branch->GetEntry(index);
+      if (evt_puppi_pfmet_JetEnDown_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_puppi_pfmet_JetEnDown_branch does not exist!\n");
       exit(1);
@@ -10048,7 +10108,8 @@ const float &CMS3::evt_puppi_pfmet_JetEnDown() {
 const vector<float> &CMS3::mus_sta_etaErr() {
   if (not mus_sta_etaErr_isLoaded) {
     if (mus_sta_etaErr_branch != 0) {
-      mus_sta_etaErr_branch->GetEntry(index);
+      if (mus_sta_etaErr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_sta_etaErr_branch does not exist!\n");
       exit(1);
@@ -10060,7 +10121,8 @@ const vector<float> &CMS3::mus_sta_etaErr() {
 const float &CMS3::evt_fixgridfastjetMETTools_all_rho() {
   if (not evt_fixgridfastjetMETTools_all_rho_isLoaded) {
     if (evt_fixgridfastjetMETTools_all_rho_branch != 0) {
-      evt_fixgridfastjetMETTools_all_rho_branch->GetEntry(index);
+      if (evt_fixgridfastjetMETTools_all_rho_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_fixgridfastjetMETTools_all_rho_branch does not exist!\n");
       exit(1);
@@ -10072,7 +10134,8 @@ const float &CMS3::evt_fixgridfastjetMETTools_all_rho() {
 const unsigned int &CMS3::mus_HLT_Mu10_CentralPFJet30_BTagCSV0p54PF_MuonLeg_version() {
   if (not mus_HLT_Mu10_CentralPFJet30_BTagCSV0p54PF_MuonLeg_version_isLoaded) {
     if (mus_HLT_Mu10_CentralPFJet30_BTagCSV0p54PF_MuonLeg_version_branch != 0) {
-      mus_HLT_Mu10_CentralPFJet30_BTagCSV0p54PF_MuonLeg_version_branch->GetEntry(index);
+      if (mus_HLT_Mu10_CentralPFJet30_BTagCSV0p54PF_MuonLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu10_CentralPFJet30_BTagCSV0p54PF_MuonLeg_version_branch does not exist!\n");
       exit(1);
@@ -10084,7 +10147,8 @@ const unsigned int &CMS3::mus_HLT_Mu10_CentralPFJet30_BTagCSV0p54PF_MuonLeg_vers
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::mus_gfit_p4() {
   if (not mus_gfit_p4_isLoaded) {
     if (mus_gfit_p4_branch != 0) {
-      mus_gfit_p4_branch->GetEntry(index);
+      if (mus_gfit_p4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_gfit_p4_branch does not exist!\n");
       exit(1);
@@ -10096,7 +10160,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::m
 const float &CMS3::hcalnoise_max25GeVHitTime() {
   if (not hcalnoise_max25GeVHitTime_isLoaded) {
     if (hcalnoise_max25GeVHitTime_branch != 0) {
-      hcalnoise_max25GeVHitTime_branch->GetEntry(index);
+      if (hcalnoise_max25GeVHitTime_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_max25GeVHitTime_branch does not exist!\n");
       exit(1);
@@ -10108,7 +10173,8 @@ const float &CMS3::hcalnoise_max25GeVHitTime() {
 const vector<float> &CMS3::ak8jets_mass() {
   if (not ak8jets_mass_isLoaded) {
     if (ak8jets_mass_branch != 0) {
-      ak8jets_mass_branch->GetEntry(index);
+      if (ak8jets_mass_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_mass_branch does not exist!\n");
       exit(1);
@@ -10120,7 +10186,8 @@ const vector<float> &CMS3::ak8jets_mass() {
 const unsigned int &CMS3::mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_TrailingLeg_version() {
   if (not mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_TrailingLeg_version_isLoaded) {
     if (mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_TrailingLeg_version_branch != 0) {
-      mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_TrailingLeg_version_branch->GetEntry(index);
+      if (mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_TrailingLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_TrailingLeg_version_branch does not exist!\n");
       exit(1);
@@ -10132,7 +10199,8 @@ const unsigned int &CMS3::mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_TrailingLeg_
 const vector<int> &CMS3::pfjets_puppi_neutralMultiplicity() {
   if (not pfjets_puppi_neutralMultiplicity_isLoaded) {
     if (pfjets_puppi_neutralMultiplicity_branch != 0) {
-      pfjets_puppi_neutralMultiplicity_branch->GetEntry(index);
+      if (pfjets_puppi_neutralMultiplicity_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_puppi_neutralMultiplicity_branch does not exist!\n");
       exit(1);
@@ -10144,7 +10212,8 @@ const vector<int> &CMS3::pfjets_puppi_neutralMultiplicity() {
 const vector<unsigned int> &CMS3::mus_HLT_Mu17_Mu8_LeadingLeg() {
   if (not mus_HLT_Mu17_Mu8_LeadingLeg_isLoaded) {
     if (mus_HLT_Mu17_Mu8_LeadingLeg_branch != 0) {
-      mus_HLT_Mu17_Mu8_LeadingLeg_branch->GetEntry(index);
+      if (mus_HLT_Mu17_Mu8_LeadingLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_Mu8_LeadingLeg_branch does not exist!\n");
       exit(1);
@@ -10156,7 +10225,8 @@ const vector<unsigned int> &CMS3::mus_HLT_Mu17_Mu8_LeadingLeg() {
 const vector<vector<float> > &CMS3::photons_clusterDEtaToCentroid() {
   if (not photons_clusterDEtaToCentroid_isLoaded) {
     if (photons_clusterDEtaToCentroid_branch != 0) {
-      photons_clusterDEtaToCentroid_branch->GetEntry(index);
+      if (photons_clusterDEtaToCentroid_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_clusterDEtaToCentroid_branch does not exist!\n");
       exit(1);
@@ -10168,7 +10238,8 @@ const vector<vector<float> > &CMS3::photons_clusterDEtaToCentroid() {
 const vector<unsigned int> &CMS3::mus_HLT_Mu10_CentralPFJet30_BTagCSV0p54PF_MuonLeg() {
   if (not mus_HLT_Mu10_CentralPFJet30_BTagCSV0p54PF_MuonLeg_isLoaded) {
     if (mus_HLT_Mu10_CentralPFJet30_BTagCSV0p54PF_MuonLeg_branch != 0) {
-      mus_HLT_Mu10_CentralPFJet30_BTagCSV0p54PF_MuonLeg_branch->GetEntry(index);
+      if (mus_HLT_Mu10_CentralPFJet30_BTagCSV0p54PF_MuonLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu10_CentralPFJet30_BTagCSV0p54PF_MuonLeg_branch does not exist!\n");
       exit(1);
@@ -10180,7 +10251,8 @@ const vector<unsigned int> &CMS3::mus_HLT_Mu10_CentralPFJet30_BTagCSV0p54PF_Muon
 const vector<float> &CMS3::els_pfChargedHadronIso() {
   if (not els_pfChargedHadronIso_isLoaded) {
     if (els_pfChargedHadronIso_branch != 0) {
-      els_pfChargedHadronIso_branch->GetEntry(index);
+      if (els_pfChargedHadronIso_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_pfChargedHadronIso_branch does not exist!\n");
       exit(1);
@@ -10192,7 +10264,8 @@ const vector<float> &CMS3::els_pfChargedHadronIso() {
 const unsigned int &CMS3::mus_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_MuonLeg_version() {
   if (not mus_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_MuonLeg_version_isLoaded) {
     if (mus_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_MuonLeg_version_branch != 0) {
-      mus_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_MuonLeg_version_branch->GetEntry(index);
+      if (mus_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_MuonLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_MuonLeg_version_branch does not exist!\n");
       exit(1);
@@ -10204,7 +10277,8 @@ const unsigned int &CMS3::mus_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_Mu
 const vector<int> &CMS3::vtxs_isValid() {
   if (not vtxs_isValid_isLoaded) {
     if (vtxs_isValid_branch != 0) {
-      vtxs_isValid_branch->GetEntry(index);
+      if (vtxs_isValid_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch vtxs_isValid_branch does not exist!\n");
       exit(1);
@@ -10216,7 +10290,8 @@ const vector<int> &CMS3::vtxs_isValid() {
 const vector<int> &CMS3::mus_bfit_exp_innerlayer() {
   if (not mus_bfit_exp_innerlayer_isLoaded) {
     if (mus_bfit_exp_innerlayer_branch != 0) {
-      mus_bfit_exp_innerlayer_branch->GetEntry(index);
+      if (mus_bfit_exp_innerlayer_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_bfit_exp_innerlayer_branch does not exist!\n");
       exit(1);
@@ -10228,7 +10303,8 @@ const vector<int> &CMS3::mus_bfit_exp_innerlayer() {
 const vector<float> &CMS3::els_d0phiCov() {
   if (not els_d0phiCov_isLoaded) {
     if (els_d0phiCov_branch != 0) {
-      els_d0phiCov_branch->GetEntry(index);
+      if (els_d0phiCov_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_d0phiCov_branch does not exist!\n");
       exit(1);
@@ -10240,7 +10316,8 @@ const vector<float> &CMS3::els_d0phiCov() {
 const unsigned int &CMS3::evt_detectorStatus() {
   if (not evt_detectorStatus_isLoaded) {
     if (evt_detectorStatus_branch != 0) {
-      evt_detectorStatus_branch->GetEntry(index);
+      if (evt_detectorStatus_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_detectorStatus_branch does not exist!\n");
       exit(1);
@@ -10252,7 +10329,8 @@ const unsigned int &CMS3::evt_detectorStatus() {
 const vector<float> &CMS3::pfjets_undoJEC() {
   if (not pfjets_undoJEC_isLoaded) {
     if (pfjets_undoJEC_branch != 0) {
-      pfjets_undoJEC_branch->GetEntry(index);
+      if (pfjets_undoJEC_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_undoJEC_branch does not exist!\n");
       exit(1);
@@ -10264,7 +10342,8 @@ const vector<float> &CMS3::pfjets_undoJEC() {
 const float &CMS3::evt_METToolboxNoHF_pfmet_raw() {
   if (not evt_METToolboxNoHF_pfmet_raw_isLoaded) {
     if (evt_METToolboxNoHF_pfmet_raw_branch != 0) {
-      evt_METToolboxNoHF_pfmet_raw_branch->GetEntry(index);
+      if (evt_METToolboxNoHF_pfmet_raw_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_METToolboxNoHF_pfmet_raw_branch does not exist!\n");
       exit(1);
@@ -10276,7 +10355,8 @@ const float &CMS3::evt_METToolboxNoHF_pfmet_raw() {
 const float &CMS3::hcalnoise_triangleNoiseSumE() {
   if (not hcalnoise_triangleNoiseSumE_isLoaded) {
     if (hcalnoise_triangleNoiseSumE_branch != 0) {
-      hcalnoise_triangleNoiseSumE_branch->GetEntry(index);
+      if (hcalnoise_triangleNoiseSumE_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_triangleNoiseSumE_branch does not exist!\n");
       exit(1);
@@ -10288,7 +10368,8 @@ const float &CMS3::hcalnoise_triangleNoiseSumE() {
 const unsigned int &CMS3::els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_L1OR_version() {
   if (not els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_L1OR_version_isLoaded) {
     if (els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_L1OR_version_branch != 0) {
-      els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_L1OR_version_branch->GetEntry(index);
+      if (els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_L1OR_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_L1OR_version_branch does not exist!\n");
       exit(1);
@@ -10301,7 +10382,8 @@ const vector<float> &CMS3::mus_gfit_ndof_float()
 {
   if (not mus_gfit_ndof_float_isLoaded) {
     if (mus_gfit_ndof_float_branch != 0) {
-      mus_gfit_ndof_float_branch->GetEntry(index);
+      if (mus_gfit_ndof_float_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
       } else { 
       printf("branch mus_gfit_ndof_float_branch does not exist!\n");
       exit(1);
@@ -10313,7 +10395,8 @@ const vector<float> &CMS3::mus_gfit_ndof_float()
 const vector<int> &CMS3::mus_gfit_ndof() {
   if (not mus_gfit_ndof_isLoaded) {
     if (mus_gfit_ndof_branch != 0) {
-      mus_gfit_ndof_branch->GetEntry(index);
+      if (mus_gfit_ndof_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_gfit_ndof_branch does not exist!\n");
       exit(1);
@@ -10325,7 +10408,8 @@ const vector<int> &CMS3::mus_gfit_ndof() {
 const vector<int> &CMS3::photons_N_PSClusters() {
   if (not photons_N_PSClusters_isLoaded) {
     if (photons_N_PSClusters_branch != 0) {
-      photons_N_PSClusters_branch->GetEntry(index);
+      if (photons_N_PSClusters_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_N_PSClusters_branch does not exist!\n");
       exit(1);
@@ -10337,7 +10421,8 @@ const vector<int> &CMS3::photons_N_PSClusters() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::mus_sta_vertex_p4() {
   if (not mus_sta_vertex_p4_isLoaded) {
     if (mus_sta_vertex_p4_branch != 0) {
-      mus_sta_vertex_p4_branch->GetEntry(index);
+      if (mus_sta_vertex_p4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_sta_vertex_p4_branch does not exist!\n");
       exit(1);
@@ -10349,7 +10434,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::m
 const unsigned int &CMS3::els_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_version() {
   if (not els_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_version_isLoaded) {
     if (els_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_version_branch != 0) {
-      els_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_version_branch->GetEntry(index);
+      if (els_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_version_branch does not exist!\n");
       exit(1);
@@ -10361,7 +10447,8 @@ const unsigned int &CMS3::els_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_
 const vector<float> &CMS3::mus_isoSumDRR04_pf_PUPt() {
   if (not mus_isoSumDRR04_pf_PUPt_isLoaded) {
     if (mus_isoSumDRR04_pf_PUPt_branch != 0) {
-      mus_isoSumDRR04_pf_PUPt_branch->GetEntry(index);
+      if (mus_isoSumDRR04_pf_PUPt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isoSumDRR04_pf_PUPt_branch does not exist!\n");
       exit(1);
@@ -10373,7 +10460,8 @@ const vector<float> &CMS3::mus_isoSumDRR04_pf_PUPt() {
 const vector<float> &CMS3::els_bs2derr() {
   if (not els_bs2derr_isLoaded) {
     if (els_bs2derr_branch != 0) {
-      els_bs2derr_branch->GetEntry(index);
+      if (els_bs2derr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_bs2derr_branch does not exist!\n");
       exit(1);
@@ -10385,7 +10473,8 @@ const vector<float> &CMS3::els_bs2derr() {
 const vector<int> &CMS3::photons_mc3_motheridx() {
   if (not photons_mc3_motheridx_isLoaded) {
     if (photons_mc3_motheridx_branch != 0) {
-      photons_mc3_motheridx_branch->GetEntry(index);
+      if (photons_mc3_motheridx_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_mc3_motheridx_branch does not exist!\n");
       exit(1);
@@ -10397,7 +10486,8 @@ const vector<int> &CMS3::photons_mc3_motheridx() {
 const unsigned int &CMS3::mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_LeadingLeg_version() {
   if (not mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_LeadingLeg_version_isLoaded) {
     if (mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_LeadingLeg_version_branch != 0) {
-      mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_LeadingLeg_version_branch->GetEntry(index);
+      if (mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_LeadingLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_LeadingLeg_version_branch does not exist!\n");
       exit(1);
@@ -10409,7 +10499,8 @@ const unsigned int &CMS3::mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_LeadingLeg_versio
 const vector<vector<int> > &CMS3::genps_lepdaughter_idx() {
   if (not genps_lepdaughter_idx_isLoaded) {
     if (genps_lepdaughter_idx_branch != 0) {
-      genps_lepdaughter_idx_branch->GetEntry(index);
+      if (genps_lepdaughter_idx_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch genps_lepdaughter_idx_branch does not exist!\n");
       exit(1);
@@ -10421,7 +10512,8 @@ const vector<vector<int> > &CMS3::genps_lepdaughter_idx() {
 const vector<float> &CMS3::photons_ecalIso04() {
   if (not photons_ecalIso04_isLoaded) {
     if (photons_ecalIso04_branch != 0) {
-      photons_ecalIso04_branch->GetEntry(index);
+      if (photons_ecalIso04_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_ecalIso04_branch does not exist!\n");
       exit(1);
@@ -10433,7 +10525,8 @@ const vector<float> &CMS3::photons_ecalIso04() {
 const vector<float> &CMS3::mus_bfit_z0() {
   if (not mus_bfit_z0_isLoaded) {
     if (mus_bfit_z0_branch != 0) {
-      mus_bfit_z0_branch->GetEntry(index);
+      if (mus_bfit_z0_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_bfit_z0_branch does not exist!\n");
       exit(1);
@@ -10445,7 +10538,8 @@ const vector<float> &CMS3::mus_bfit_z0() {
 const vector<float> &CMS3::pfjets_chargedEmE() {
   if (not pfjets_chargedEmE_isLoaded) {
     if (pfjets_chargedEmE_branch != 0) {
-      pfjets_chargedEmE_branch->GetEntry(index);
+      if (pfjets_chargedEmE_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_chargedEmE_branch does not exist!\n");
       exit(1);
@@ -10457,7 +10551,8 @@ const vector<float> &CMS3::pfjets_chargedEmE() {
 const vector<float> &CMS3::els_z0Err() {
   if (not els_z0Err_isLoaded) {
     if (els_z0Err_branch != 0) {
-      els_z0Err_branch->GetEntry(index);
+      if (els_z0Err_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_z0Err_branch does not exist!\n");
       exit(1);
@@ -10469,7 +10564,8 @@ const vector<float> &CMS3::els_z0Err() {
 const vector<int> &CMS3::mus_gfit_algo() {
   if (not mus_gfit_algo_isLoaded) {
     if (mus_gfit_algo_branch != 0) {
-      mus_gfit_algo_branch->GetEntry(index);
+      if (mus_gfit_algo_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_gfit_algo_branch does not exist!\n");
       exit(1);
@@ -10481,7 +10577,8 @@ const vector<int> &CMS3::mus_gfit_algo() {
 const vector<int> &CMS3::els_passVIDNonTrigMvaWP90Id() {
   if (not els_passVIDNonTrigMvaWP90Id_isLoaded) {
     if (els_passVIDNonTrigMvaWP90Id_branch != 0) {
-      els_passVIDNonTrigMvaWP90Id_branch->GetEntry(index);
+      if (els_passVIDNonTrigMvaWP90Id_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_passVIDNonTrigMvaWP90Id_branch does not exist!\n");
       exit(1);
@@ -10493,7 +10590,8 @@ const vector<int> &CMS3::els_passVIDNonTrigMvaWP90Id() {
 const vector<float> &CMS3::photons_scIsEB() {
   if (not photons_scIsEB_isLoaded) {
     if (photons_scIsEB_branch != 0) {
-      photons_scIsEB_branch->GetEntry(index);
+      if (photons_scIsEB_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_scIsEB_branch does not exist!\n");
       exit(1);
@@ -10505,7 +10603,8 @@ const vector<float> &CMS3::photons_scIsEB() {
 const vector<float> &CMS3::pfjets_puppi_hfHadronE() {
   if (not pfjets_puppi_hfHadronE_isLoaded) {
     if (pfjets_puppi_hfHadronE_branch != 0) {
-      pfjets_puppi_hfHadronE_branch->GetEntry(index);
+      if (pfjets_puppi_hfHadronE_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_puppi_hfHadronE_branch does not exist!\n");
       exit(1);
@@ -10517,7 +10616,8 @@ const vector<float> &CMS3::pfjets_puppi_hfHadronE() {
 const vector<float> &CMS3::photons_scSeedE3x3() {
   if (not photons_scSeedE3x3_isLoaded) {
     if (photons_scSeedE3x3_branch != 0) {
-      photons_scSeedE3x3_branch->GetEntry(index);
+      if (photons_scSeedE3x3_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_scSeedE3x3_branch does not exist!\n");
       exit(1);
@@ -10529,7 +10629,8 @@ const vector<float> &CMS3::photons_scSeedE3x3() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::genjets_p4NoMuNoNu() {
   if (not genjets_p4NoMuNoNu_isLoaded) {
     if (genjets_p4NoMuNoNu_branch != 0) {
-      genjets_p4NoMuNoNu_branch->GetEntry(index);
+      if (genjets_p4NoMuNoNu_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch genjets_p4NoMuNoNu_branch does not exist!\n");
       exit(1);
@@ -10541,7 +10642,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::g
 const unsigned int &CMS3::els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_version() {
   if (not els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_version_isLoaded) {
     if (els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_version_branch != 0) {
-      els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_version_branch->GetEntry(index);
+      if (els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_version_branch does not exist!\n");
       exit(1);
@@ -10553,7 +10655,8 @@ const unsigned int &CMS3::els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_version() {
 const vector<unsigned int> &CMS3::els_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg() {
   if (not els_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg_isLoaded) {
     if (els_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg_branch != 0) {
-      els_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg_branch->GetEntry(index);
+      if (els_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg_branch does not exist!\n");
       exit(1);
@@ -10565,7 +10668,8 @@ const vector<unsigned int> &CMS3::els_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT30
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::els_p4() {
   if (not els_p4_isLoaded) {
     if (els_p4_branch != 0) {
-      els_p4_branch->GetEntry(index);
+      if (els_p4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_p4_branch does not exist!\n");
       exit(1);
@@ -10577,7 +10681,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::e
 const vector<float> &CMS3::photons_scPreshowerEnergyPlane1() {
   if (not photons_scPreshowerEnergyPlane1_isLoaded) {
     if (photons_scPreshowerEnergyPlane1_branch != 0) {
-      photons_scPreshowerEnergyPlane1_branch->GetEntry(index);
+      if (photons_scPreshowerEnergyPlane1_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_scPreshowerEnergyPlane1_branch does not exist!\n");
       exit(1);
@@ -10589,7 +10694,8 @@ const vector<float> &CMS3::photons_scPreshowerEnergyPlane1() {
 const vector<float> &CMS3::pfjets_METToolbox_chargedEmE() {
   if (not pfjets_METToolbox_chargedEmE_isLoaded) {
     if (pfjets_METToolbox_chargedEmE_branch != 0) {
-      pfjets_METToolbox_chargedEmE_branch->GetEntry(index);
+      if (pfjets_METToolbox_chargedEmE_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_METToolbox_chargedEmE_branch does not exist!\n");
       exit(1);
@@ -10601,7 +10707,8 @@ const vector<float> &CMS3::pfjets_METToolbox_chargedEmE() {
 const vector<float> &CMS3::mus_iso_hcalvetoDep() {
   if (not mus_iso_hcalvetoDep_isLoaded) {
     if (mus_iso_hcalvetoDep_branch != 0) {
-      mus_iso_hcalvetoDep_branch->GetEntry(index);
+      if (mus_iso_hcalvetoDep_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_iso_hcalvetoDep_branch does not exist!\n");
       exit(1);
@@ -10613,7 +10720,8 @@ const vector<float> &CMS3::mus_iso_hcalvetoDep() {
 const vector<float> &CMS3::els_mass() {
   if (not els_mass_isLoaded) {
     if (els_mass_branch != 0) {
-      els_mass_branch->GetEntry(index);
+      if (els_mass_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_mass_branch does not exist!\n");
       exit(1);
@@ -10625,7 +10733,8 @@ const vector<float> &CMS3::els_mass() {
 const unsigned int &CMS3::mus_HLT_Mu17_TkMu8_LeadingLeg_version() {
   if (not mus_HLT_Mu17_TkMu8_LeadingLeg_version_isLoaded) {
     if (mus_HLT_Mu17_TkMu8_LeadingLeg_version_branch != 0) {
-      mus_HLT_Mu17_TkMu8_LeadingLeg_version_branch->GetEntry(index);
+      if (mus_HLT_Mu17_TkMu8_LeadingLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_TkMu8_LeadingLeg_version_branch does not exist!\n");
       exit(1);
@@ -10637,7 +10746,8 @@ const unsigned int &CMS3::mus_HLT_Mu17_TkMu8_LeadingLeg_version() {
 const vector<int> &CMS3::mus_lostPixelHits() {
   if (not mus_lostPixelHits_isLoaded) {
     if (mus_lostPixelHits_branch != 0) {
-      mus_lostPixelHits_branch->GetEntry(index);
+      if (mus_lostPixelHits_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_lostPixelHits_branch does not exist!\n");
       exit(1);
@@ -10649,7 +10759,8 @@ const vector<int> &CMS3::mus_lostPixelHits() {
 const vector<float> &CMS3::mus_isoMeanDRR04_pf_PhotonEtHighThreshold() {
   if (not mus_isoMeanDRR04_pf_PhotonEtHighThreshold_isLoaded) {
     if (mus_isoMeanDRR04_pf_PhotonEtHighThreshold_branch != 0) {
-      mus_isoMeanDRR04_pf_PhotonEtHighThreshold_branch->GetEntry(index);
+      if (mus_isoMeanDRR04_pf_PhotonEtHighThreshold_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isoMeanDRR04_pf_PhotonEtHighThreshold_branch does not exist!\n");
       exit(1);
@@ -10661,7 +10772,8 @@ const vector<float> &CMS3::mus_isoMeanDRR04_pf_PhotonEtHighThreshold() {
 const vector<int> &CMS3::puInfo_bunchCrossing() {
   if (not puInfo_bunchCrossing_isLoaded) {
     if (puInfo_bunchCrossing_branch != 0) {
-      puInfo_bunchCrossing_branch->GetEntry(index);
+      if (puInfo_bunchCrossing_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch puInfo_bunchCrossing_branch does not exist!\n");
       exit(1);
@@ -10673,7 +10785,8 @@ const vector<int> &CMS3::puInfo_bunchCrossing() {
 const vector<vector<float> > &CMS3::photons_psClusterPhi() {
   if (not photons_psClusterPhi_isLoaded) {
     if (photons_psClusterPhi_branch != 0) {
-      photons_psClusterPhi_branch->GetEntry(index);
+      if (photons_psClusterPhi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_psClusterPhi_branch does not exist!\n");
       exit(1);
@@ -10685,7 +10798,8 @@ const vector<vector<float> > &CMS3::photons_psClusterPhi() {
 const vector<int> &CMS3::mus_gfit_lostHits() {
   if (not mus_gfit_lostHits_isLoaded) {
     if (mus_gfit_lostHits_branch != 0) {
-      mus_gfit_lostHits_branch->GetEntry(index);
+      if (mus_gfit_lostHits_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_gfit_lostHits_branch does not exist!\n");
       exit(1);
@@ -10697,7 +10811,8 @@ const vector<int> &CMS3::mus_gfit_lostHits() {
 const vector<float> &CMS3::photons_clustersRMSRawEnergy() {
   if (not photons_clustersRMSRawEnergy_isLoaded) {
     if (photons_clustersRMSRawEnergy_branch != 0) {
-      photons_clustersRMSRawEnergy_branch->GetEntry(index);
+      if (photons_clustersRMSRawEnergy_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_clustersRMSRawEnergy_branch does not exist!\n");
       exit(1);
@@ -10709,7 +10824,8 @@ const vector<float> &CMS3::photons_clustersRMSRawEnergy() {
 const vector<bool> &CMS3::genps_isDirectHardProcessTauDecayProductFinalState() {
   if (not genps_isDirectHardProcessTauDecayProductFinalState_isLoaded) {
     if (genps_isDirectHardProcessTauDecayProductFinalState_branch != 0) {
-      genps_isDirectHardProcessTauDecayProductFinalState_branch->GetEntry(index);
+      if (genps_isDirectHardProcessTauDecayProductFinalState_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch genps_isDirectHardProcessTauDecayProductFinalState_branch does not exist!\n");
       exit(1);
@@ -10721,7 +10837,8 @@ const vector<bool> &CMS3::genps_isDirectHardProcessTauDecayProductFinalState() {
 const vector<vector<float> > &CMS3::els_psClusterRawEnergy() {
   if (not els_psClusterRawEnergy_isLoaded) {
     if (els_psClusterRawEnergy_branch != 0) {
-      els_psClusterRawEnergy_branch->GetEntry(index);
+      if (els_psClusterRawEnergy_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_psClusterRawEnergy_branch does not exist!\n");
       exit(1);
@@ -10733,7 +10850,8 @@ const vector<vector<float> > &CMS3::els_psClusterRawEnergy() {
 const float &CMS3::evt_pfmet_JetEnDown() {
   if (not evt_pfmet_JetEnDown_isLoaded) {
     if (evt_pfmet_JetEnDown_branch != 0) {
-      evt_pfmet_JetEnDown_branch->GetEntry(index);
+      if (evt_pfmet_JetEnDown_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_pfmet_JetEnDown_branch does not exist!\n");
       exit(1);
@@ -10745,7 +10863,8 @@ const float &CMS3::evt_pfmet_JetEnDown() {
 const vector<bool> &CMS3::isotracks_isHighPurityTrack() {
   if (not isotracks_isHighPurityTrack_isLoaded) {
     if (isotracks_isHighPurityTrack_branch != 0) {
-      isotracks_isHighPurityTrack_branch->GetEntry(index);
+      if (isotracks_isHighPurityTrack_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch isotracks_isHighPurityTrack_branch does not exist!\n");
       exit(1);
@@ -10757,7 +10876,8 @@ const vector<bool> &CMS3::isotracks_isHighPurityTrack() {
 const vector<bool> &CMS3::isotracks_isPFCand() {
   if (not isotracks_isPFCand_isLoaded) {
     if (isotracks_isPFCand_branch != 0) {
-      isotracks_isPFCand_branch->GetEntry(index);
+      if (isotracks_isPFCand_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch isotracks_isPFCand_branch does not exist!\n");
       exit(1);
@@ -10770,7 +10890,8 @@ const vector<bool> &CMS3::isotracks_isPFCand() {
 const vector<bool> &CMS3::isotracks_isTightTrack() {
   if (not isotracks_isTightTrack_isLoaded) {
     if (isotracks_isTightTrack_branch != 0) {
-      isotracks_isTightTrack_branch->GetEntry(index);
+      if (isotracks_isTightTrack_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch isotracks_isTightTrack_branch does not exist!\n");
       exit(1);
@@ -10782,7 +10903,8 @@ const vector<bool> &CMS3::isotracks_isTightTrack() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::isotracks_p4() {
   if (not isotracks_p4_isLoaded) {
     if (isotracks_p4_branch != 0) {
-      isotracks_p4_branch->GetEntry(index);
+      if (isotracks_p4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch isotracks_p4_branch does not exist!\n");
       exit(1);
@@ -10794,7 +10916,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::i
 const vector<float> &CMS3::isotracks_dEdxPixel() {
   if (not isotracks_dEdxPixel_isLoaded) {
     if (isotracks_dEdxPixel_branch != 0) {
-      isotracks_dEdxPixel_branch->GetEntry(index);
+      if (isotracks_dEdxPixel_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch isotracks_dEdxPixel_branch does not exist!\n");
       exit(1);
@@ -10807,7 +10930,8 @@ const vector<float> &CMS3::isotracks_dEdxPixel() {
 const vector<float> &CMS3::isotracks_dEdxStrip() {
   if (not isotracks_dEdxStrip_isLoaded) {
     if (isotracks_dEdxStrip_branch != 0) {
-      isotracks_dEdxStrip_branch->GetEntry(index);
+      if (isotracks_dEdxStrip_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch isotracks_dEdxStrip_branch does not exist!\n");
       exit(1);
@@ -10820,7 +10944,8 @@ const vector<float> &CMS3::isotracks_dEdxStrip() {
 const vector<float> &CMS3::isotracks_deltaEta() {
   if (not isotracks_deltaEta_isLoaded) {
     if (isotracks_deltaEta_branch != 0) {
-      isotracks_deltaEta_branch->GetEntry(index);
+      if (isotracks_deltaEta_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch isotracks_deltaEta_branch does not exist!\n");
       exit(1);
@@ -10833,7 +10958,8 @@ const vector<float> &CMS3::isotracks_deltaEta() {
 const vector<float> &CMS3::isotracks_deltaPhi() {
   if (not isotracks_deltaPhi_isLoaded) {
     if (isotracks_deltaPhi_branch != 0) {
-      isotracks_deltaPhi_branch->GetEntry(index);
+      if (isotracks_deltaPhi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch isotracks_deltaPhi_branch does not exist!\n");
       exit(1);
@@ -10846,7 +10972,8 @@ const vector<float> &CMS3::isotracks_deltaPhi() {
 const vector<float> &CMS3::isotracks_dxy() {
   if (not isotracks_dxy_isLoaded) {
     if (isotracks_dxy_branch != 0) {
-      isotracks_dxy_branch->GetEntry(index);
+      if (isotracks_dxy_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch isotracks_dxy_branch does not exist!\n");
       exit(1);
@@ -10859,7 +10986,8 @@ const vector<float> &CMS3::isotracks_dxy() {
 const vector<float> &CMS3::isotracks_dxyError() {
   if (not isotracks_dxyError_isLoaded) {
     if (isotracks_dxyError_branch != 0) {
-      isotracks_dxyError_branch->GetEntry(index);
+      if (isotracks_dxyError_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch isotracks_dxyError_branch does not exist!\n");
       exit(1);
@@ -10872,7 +11000,8 @@ const vector<float> &CMS3::isotracks_dxyError() {
 const vector<float> &CMS3::isotracks_dz() {
   if (not isotracks_dz_isLoaded) {
     if (isotracks_dz_branch != 0) {
-      isotracks_dz_branch->GetEntry(index);
+      if (isotracks_dz_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch isotracks_dz_branch does not exist!\n");
       exit(1);
@@ -10885,7 +11014,8 @@ const vector<float> &CMS3::isotracks_dz() {
 const vector<float> &CMS3::isotracks_dzError() {
   if (not isotracks_dzError_isLoaded) {
     if (isotracks_dzError_branch != 0) {
-      isotracks_dzError_branch->GetEntry(index);
+      if (isotracks_dzError_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch isotracks_dzError_branch does not exist!\n");
       exit(1);
@@ -10898,7 +11028,8 @@ const vector<float> &CMS3::isotracks_dzError() {
 const vector<float> &CMS3::isotracks_matchedCaloJetEmEnergy() {
   if (not isotracks_matchedCaloJetEmEnergy_isLoaded) {
     if (isotracks_matchedCaloJetEmEnergy_branch != 0) {
-      isotracks_matchedCaloJetEmEnergy_branch->GetEntry(index);
+      if (isotracks_matchedCaloJetEmEnergy_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch isotracks_matchedCaloJetEmEnergy_branch does not exist!\n");
       exit(1);
@@ -10911,7 +11042,8 @@ const vector<float> &CMS3::isotracks_matchedCaloJetEmEnergy() {
 const vector<float> &CMS3::isotracks_matchedCaloJetHadEnergy() {
   if (not isotracks_matchedCaloJetHadEnergy_isLoaded) {
     if (isotracks_matchedCaloJetHadEnergy_branch != 0) {
-      isotracks_matchedCaloJetHadEnergy_branch->GetEntry(index);
+      if (isotracks_matchedCaloJetHadEnergy_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch isotracks_matchedCaloJetHadEnergy_branch does not exist!\n");
       exit(1);
@@ -10924,7 +11056,8 @@ const vector<float> &CMS3::isotracks_matchedCaloJetHadEnergy() {
 const vector<float> &CMS3::isotracks_miniIso_ch() {
   if (not isotracks_miniIso_ch_isLoaded) {
     if (isotracks_miniIso_ch_branch != 0) {
-      isotracks_miniIso_ch_branch->GetEntry(index);
+      if (isotracks_miniIso_ch_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch isotracks_miniIso_ch_branch does not exist!\n");
       exit(1);
@@ -10937,7 +11070,8 @@ const vector<float> &CMS3::isotracks_miniIso_ch() {
 const vector<float> &CMS3::isotracks_miniIso_db() {
   if (not isotracks_miniIso_db_isLoaded) {
     if (isotracks_miniIso_db_branch != 0) {
-      isotracks_miniIso_db_branch->GetEntry(index);
+      if (isotracks_miniIso_db_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch isotracks_miniIso_db_branch does not exist!\n");
       exit(1);
@@ -10950,7 +11084,8 @@ const vector<float> &CMS3::isotracks_miniIso_db() {
 const vector<float> &CMS3::isotracks_miniIso_em() {
   if (not isotracks_miniIso_em_isLoaded) {
     if (isotracks_miniIso_em_branch != 0) {
-      isotracks_miniIso_em_branch->GetEntry(index);
+      if (isotracks_miniIso_em_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch isotracks_miniIso_em_branch does not exist!\n");
       exit(1);
@@ -10963,7 +11098,8 @@ const vector<float> &CMS3::isotracks_miniIso_em() {
 const vector<float> &CMS3::isotracks_miniIso_nh() {
   if (not isotracks_miniIso_nh_isLoaded) {
     if (isotracks_miniIso_nh_branch != 0) {
-      isotracks_miniIso_nh_branch->GetEntry(index);
+      if (isotracks_miniIso_nh_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch isotracks_miniIso_nh_branch does not exist!\n");
       exit(1);
@@ -10976,7 +11112,8 @@ const vector<float> &CMS3::isotracks_miniIso_nh() {
 const vector<float> &CMS3::isotracks_pfIso_ch() {
   if (not isotracks_pfIso_ch_isLoaded) {
     if (isotracks_pfIso_ch_branch != 0) {
-      isotracks_pfIso_ch_branch->GetEntry(index);
+      if (isotracks_pfIso_ch_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch isotracks_pfIso_ch_branch does not exist!\n");
       exit(1);
@@ -10989,7 +11126,8 @@ const vector<float> &CMS3::isotracks_pfIso_ch() {
 const vector<float> &CMS3::isotracks_pfIso_db() {
   if (not isotracks_pfIso_db_isLoaded) {
     if (isotracks_pfIso_db_branch != 0) {
-      isotracks_pfIso_db_branch->GetEntry(index);
+      if (isotracks_pfIso_db_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch isotracks_pfIso_db_branch does not exist!\n");
       exit(1);
@@ -11002,7 +11140,8 @@ const vector<float> &CMS3::isotracks_pfIso_db() {
 const vector<float> &CMS3::isotracks_pfIso_em() {
   if (not isotracks_pfIso_em_isLoaded) {
     if (isotracks_pfIso_em_branch != 0) {
-      isotracks_pfIso_em_branch->GetEntry(index);
+      if (isotracks_pfIso_em_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch isotracks_pfIso_em_branch does not exist!\n");
       exit(1);
@@ -11015,7 +11154,8 @@ const vector<float> &CMS3::isotracks_pfIso_em() {
 const vector<float> &CMS3::isotracks_pfIso_nh() {
   if (not isotracks_pfIso_nh_isLoaded) {
     if (isotracks_pfIso_nh_branch != 0) {
-      isotracks_pfIso_nh_branch->GetEntry(index);
+      if (isotracks_pfIso_nh_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch isotracks_pfIso_nh_branch does not exist!\n");
       exit(1);
@@ -11027,7 +11167,8 @@ const vector<float> &CMS3::isotracks_pfIso_nh() {
 const vector<int> &CMS3::isotracks_charge() {
   if (not isotracks_charge_isLoaded) {
     if (isotracks_charge_branch != 0) {
-      isotracks_charge_branch->GetEntry(index);
+      if (isotracks_charge_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch isotracks_charge_branch does not exist!\n");
       exit(1);
@@ -11040,7 +11181,8 @@ const vector<int> &CMS3::isotracks_charge() {
 const vector<int> &CMS3::isotracks_fromPV() {
   if (not isotracks_fromPV_isLoaded) {
     if (isotracks_fromPV_branch != 0) {
-      isotracks_fromPV_branch->GetEntry(index);
+      if (isotracks_fromPV_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch isotracks_fromPV_branch does not exist!\n");
       exit(1);
@@ -11053,7 +11195,8 @@ const vector<int> &CMS3::isotracks_fromPV() {
 const vector<int> &CMS3::isotracks_numberOfLostHitsInner() {
   if (not isotracks_numberOfLostHitsInner_isLoaded) {
     if (isotracks_numberOfLostHitsInner_branch != 0) {
-      isotracks_numberOfLostHitsInner_branch->GetEntry(index);
+      if (isotracks_numberOfLostHitsInner_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch isotracks_numberOfLostHitsInner_branch does not exist!\n");
       exit(1);
@@ -11066,7 +11209,8 @@ const vector<int> &CMS3::isotracks_numberOfLostHitsInner() {
 const vector<int> &CMS3::isotracks_numberOfLostHitsOuter() {
   if (not isotracks_numberOfLostHitsOuter_isLoaded) {
     if (isotracks_numberOfLostHitsOuter_branch != 0) {
-      isotracks_numberOfLostHitsOuter_branch->GetEntry(index);
+      if (isotracks_numberOfLostHitsOuter_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch isotracks_numberOfLostHitsOuter_branch does not exist!\n");
       exit(1);
@@ -11079,7 +11223,8 @@ const vector<int> &CMS3::isotracks_numberOfLostHitsOuter() {
 const vector<int> &CMS3::isotracks_numberOfLostPixelHitsInner() {
   if (not isotracks_numberOfLostPixelHitsInner_isLoaded) {
     if (isotracks_numberOfLostPixelHitsInner_branch != 0) {
-      isotracks_numberOfLostPixelHitsInner_branch->GetEntry(index);
+      if (isotracks_numberOfLostPixelHitsInner_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch isotracks_numberOfLostPixelHitsInner_branch does not exist!\n");
       exit(1);
@@ -11092,7 +11237,8 @@ const vector<int> &CMS3::isotracks_numberOfLostPixelHitsInner() {
 const vector<int> &CMS3::isotracks_numberOfValidPixelHits() {
   if (not isotracks_numberOfValidPixelHits_isLoaded) {
     if (isotracks_numberOfValidPixelHits_branch != 0) {
-      isotracks_numberOfValidPixelHits_branch->GetEntry(index);
+      if (isotracks_numberOfValidPixelHits_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch isotracks_numberOfValidPixelHits_branch does not exist!\n");
       exit(1);
@@ -11105,7 +11251,8 @@ const vector<int> &CMS3::isotracks_numberOfValidPixelHits() {
 const vector<int> &CMS3::isotracks_particleId() {
   if (not isotracks_particleId_isLoaded) {
     if (isotracks_particleId_branch != 0) {
-      isotracks_particleId_branch->GetEntry(index);
+      if (isotracks_particleId_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch isotracks_particleId_branch does not exist!\n");
       exit(1);
@@ -11118,7 +11265,8 @@ const vector<int> &CMS3::isotracks_particleId() {
 const vector<int> &CMS3::isotracks_pixelLayersWithMeasurement() {
   if (not isotracks_pixelLayersWithMeasurement_isLoaded) {
     if (isotracks_pixelLayersWithMeasurement_branch != 0) {
-      isotracks_pixelLayersWithMeasurement_branch->GetEntry(index);
+      if (isotracks_pixelLayersWithMeasurement_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch isotracks_pixelLayersWithMeasurement_branch does not exist!\n");
       exit(1);
@@ -11131,7 +11279,8 @@ const vector<int> &CMS3::isotracks_pixelLayersWithMeasurement() {
 const vector<int> &CMS3::isotracks_trackerLayersWithMeasurement() {
   if (not isotracks_trackerLayersWithMeasurement_isLoaded) {
     if (isotracks_trackerLayersWithMeasurement_branch != 0) {
-      isotracks_trackerLayersWithMeasurement_branch->GetEntry(index);
+      if (isotracks_trackerLayersWithMeasurement_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch isotracks_trackerLayersWithMeasurement_branch does not exist!\n");
       exit(1);
@@ -11143,7 +11292,8 @@ const vector<int> &CMS3::isotracks_trackerLayersWithMeasurement() {
 const vector<vector<unsigned int> > &CMS3::isotracks_crossedHcalStatus() {
   if (not isotracks_crossedHcalStatus_isLoaded) {
     if (isotracks_crossedHcalStatus_branch != 0) {
-      isotracks_crossedHcalStatus_branch->GetEntry(index);
+      if (isotracks_crossedHcalStatus_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch isotracks_crossedHcalStatus_branch does not exist!\n");
       exit(1);
@@ -11155,7 +11305,8 @@ const vector<vector<unsigned int> > &CMS3::isotracks_crossedHcalStatus() {
 const vector<vector<unsigned int> > &CMS3::isotracks_crossedEcalStatus() {
   if (not isotracks_crossedEcalStatus_isLoaded) {
     if (isotracks_crossedEcalStatus_branch != 0) {
-      isotracks_crossedEcalStatus_branch->GetEntry(index);
+      if (isotracks_crossedEcalStatus_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch isotracks_crossedEcalStatus_branch does not exist!\n");
       exit(1);
@@ -11167,7 +11318,8 @@ const vector<vector<unsigned int> > &CMS3::isotracks_crossedEcalStatus() {
 const vector<float> &CMS3::ak8jets_puppi_eta() {
   if (not ak8jets_puppi_eta_isLoaded) {
     if (ak8jets_puppi_eta_branch != 0) {
-      ak8jets_puppi_eta_branch->GetEntry(index);
+      if (ak8jets_puppi_eta_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_puppi_eta_branch does not exist!\n");
       exit(1);
@@ -11179,7 +11331,8 @@ const vector<float> &CMS3::ak8jets_puppi_eta() {
 const vector<bool> &CMS3::mus_isRPCMuon() {
   if (not mus_isRPCMuon_isLoaded) {
     if (mus_isRPCMuon_branch != 0) {
-      mus_isRPCMuon_branch->GetEntry(index);
+      if (mus_isRPCMuon_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isRPCMuon_branch does not exist!\n");
       exit(1);
@@ -11191,7 +11344,8 @@ const vector<bool> &CMS3::mus_isRPCMuon() {
 const float &CMS3::evt_METToolbox_pfmetPhi_raw() {
   if (not evt_METToolbox_pfmetPhi_raw_isLoaded) {
     if (evt_METToolbox_pfmetPhi_raw_branch != 0) {
-      evt_METToolbox_pfmetPhi_raw_branch->GetEntry(index);
+      if (evt_METToolbox_pfmetPhi_raw_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_METToolbox_pfmetPhi_raw_branch does not exist!\n");
       exit(1);
@@ -11203,7 +11357,8 @@ const float &CMS3::evt_METToolbox_pfmetPhi_raw() {
 const vector<int> &CMS3::mus_nlayers3D() {
   if (not mus_nlayers3D_isLoaded) {
     if (mus_nlayers3D_branch != 0) {
-      mus_nlayers3D_branch->GetEntry(index);
+      if (mus_nlayers3D_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_nlayers3D_branch does not exist!\n");
       exit(1);
@@ -11215,7 +11370,8 @@ const vector<int> &CMS3::mus_nlayers3D() {
 const float &CMS3::hcalnoise_NegativeNoiseSumE() {
   if (not hcalnoise_NegativeNoiseSumE_isLoaded) {
     if (hcalnoise_NegativeNoiseSumE_branch != 0) {
-      hcalnoise_NegativeNoiseSumE_branch->GetEntry(index);
+      if (hcalnoise_NegativeNoiseSumE_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_NegativeNoiseSumE_branch does not exist!\n");
       exit(1);
@@ -11227,7 +11383,8 @@ const float &CMS3::hcalnoise_NegativeNoiseSumE() {
 const vector<unsigned int> &CMS3::mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_LeadingLeg() {
   if (not mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_LeadingLeg_isLoaded) {
     if (mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_LeadingLeg_branch != 0) {
-      mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_LeadingLeg_branch->GetEntry(index);
+      if (mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_LeadingLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_LeadingLeg_branch does not exist!\n");
       exit(1);
@@ -11239,7 +11396,8 @@ const vector<unsigned int> &CMS3::mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_Leading
 const vector<float> &CMS3::mus_mc3dr() {
   if (not mus_mc3dr_isLoaded) {
     if (mus_mc3dr_branch != 0) {
-      mus_mc3dr_branch->GetEntry(index);
+      if (mus_mc3dr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_mc3dr_branch does not exist!\n");
       exit(1);
@@ -11251,7 +11409,8 @@ const vector<float> &CMS3::mus_mc3dr() {
 const vector<float> &CMS3::photons_ntkIsoSolid03() {
   if (not photons_ntkIsoSolid03_isLoaded) {
     if (photons_ntkIsoSolid03_branch != 0) {
-      photons_ntkIsoSolid03_branch->GetEntry(index);
+      if (photons_ntkIsoSolid03_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_ntkIsoSolid03_branch does not exist!\n");
       exit(1);
@@ -11263,7 +11422,8 @@ const vector<float> &CMS3::photons_ntkIsoSolid03() {
 const vector<float> &CMS3::mus_isoR03_pf_PhotonEtHighThreshold() {
   if (not mus_isoR03_pf_PhotonEtHighThreshold_isLoaded) {
     if (mus_isoR03_pf_PhotonEtHighThreshold_branch != 0) {
-      mus_isoR03_pf_PhotonEtHighThreshold_branch->GetEntry(index);
+      if (mus_isoR03_pf_PhotonEtHighThreshold_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isoR03_pf_PhotonEtHighThreshold_branch does not exist!\n");
       exit(1);
@@ -11275,7 +11435,8 @@ const vector<float> &CMS3::mus_isoR03_pf_PhotonEtHighThreshold() {
 const vector<float> &CMS3::els_etaSC() {
   if (not els_etaSC_isLoaded) {
     if (els_etaSC_branch != 0) {
-      els_etaSC_branch->GetEntry(index);
+      if (els_etaSC_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_etaSC_branch does not exist!\n");
       exit(1);
@@ -11287,7 +11448,8 @@ const vector<float> &CMS3::els_etaSC() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::taus_pf_p4() {
   if (not taus_pf_p4_isLoaded) {
     if (taus_pf_p4_branch != 0) {
-      taus_pf_p4_branch->GetEntry(index);
+      if (taus_pf_p4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch taus_pf_p4_branch does not exist!\n");
       exit(1);
@@ -11299,7 +11461,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::t
 const vector<unsigned int> &CMS3::mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_TrailingLeg() {
   if (not mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_TrailingLeg_isLoaded) {
     if (mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_TrailingLeg_branch != 0) {
-      mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_TrailingLeg_branch->GetEntry(index);
+      if (mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_TrailingLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_TrailingLeg_branch does not exist!\n");
       exit(1);
@@ -11311,7 +11474,8 @@ const vector<unsigned int> &CMS3::mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Traili
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::taus_pf_lead_neutrcand_p4() {
   if (not taus_pf_lead_neutrcand_p4_isLoaded) {
     if (taus_pf_lead_neutrcand_p4_branch != 0) {
-      taus_pf_lead_neutrcand_p4_branch->GetEntry(index);
+      if (taus_pf_lead_neutrcand_p4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch taus_pf_lead_neutrcand_p4_branch does not exist!\n");
       exit(1);
@@ -11323,7 +11487,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::t
 const vector<float> &CMS3::els_e2x5Max_full5x5() {
   if (not els_e2x5Max_full5x5_isLoaded) {
     if (els_e2x5Max_full5x5_branch != 0) {
-      els_e2x5Max_full5x5_branch->GetEntry(index);
+      if (els_e2x5Max_full5x5_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_e2x5Max_full5x5_branch does not exist!\n");
       exit(1);
@@ -11335,7 +11500,8 @@ const vector<float> &CMS3::els_e2x5Max_full5x5() {
 const vector<int> &CMS3::mus_sta_lostPixelHits() {
   if (not mus_sta_lostPixelHits_isLoaded) {
     if (mus_sta_lostPixelHits_branch != 0) {
-      mus_sta_lostPixelHits_branch->GetEntry(index);
+      if (mus_sta_lostPixelHits_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_sta_lostPixelHits_branch does not exist!\n");
       exit(1);
@@ -11347,7 +11513,8 @@ const vector<int> &CMS3::mus_sta_lostPixelHits() {
 const float &CMS3::evt_fixgridfastjet_all_rho() {
   if (not evt_fixgridfastjet_all_rho_isLoaded) {
     if (evt_fixgridfastjet_all_rho_branch != 0) {
-      evt_fixgridfastjet_all_rho_branch->GetEntry(index);
+      if (evt_fixgridfastjet_all_rho_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_fixgridfastjet_all_rho_branch does not exist!\n");
       exit(1);
@@ -11359,7 +11526,8 @@ const float &CMS3::evt_fixgridfastjet_all_rho() {
 const vector<float> &CMS3::pfjets_METToolbox_electronE() {
   if (not pfjets_METToolbox_electronE_isLoaded) {
     if (pfjets_METToolbox_electronE_branch != 0) {
-      pfjets_METToolbox_electronE_branch->GetEntry(index);
+      if (pfjets_METToolbox_electronE_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_METToolbox_electronE_branch does not exist!\n");
       exit(1);
@@ -11371,7 +11539,8 @@ const vector<float> &CMS3::pfjets_METToolbox_electronE() {
 const vector<vector<int> > &CMS3::els_PFCand_idx() {
   if (not els_PFCand_idx_isLoaded) {
     if (els_PFCand_idx_branch != 0) {
-      els_PFCand_idx_branch->GetEntry(index);
+      if (els_PFCand_idx_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_PFCand_idx_branch does not exist!\n");
       exit(1);
@@ -11383,7 +11552,8 @@ const vector<vector<int> > &CMS3::els_PFCand_idx() {
 const vector<float> &CMS3::mus_bfit_etaErr() {
   if (not mus_bfit_etaErr_isLoaded) {
     if (mus_bfit_etaErr_branch != 0) {
-      mus_bfit_etaErr_branch->GetEntry(index);
+      if (mus_bfit_etaErr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_bfit_etaErr_branch does not exist!\n");
       exit(1);
@@ -11395,7 +11565,8 @@ const vector<float> &CMS3::mus_bfit_etaErr() {
 const vector<float> &CMS3::mus_isoSumDRR03_pf_PUPt() {
   if (not mus_isoSumDRR03_pf_PUPt_isLoaded) {
     if (mus_isoSumDRR03_pf_PUPt_branch != 0) {
-      mus_isoSumDRR03_pf_PUPt_branch->GetEntry(index);
+      if (mus_isoSumDRR03_pf_PUPt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isoSumDRR03_pf_PUPt_branch does not exist!\n");
       exit(1);
@@ -11407,7 +11578,8 @@ const vector<float> &CMS3::mus_isoSumDRR03_pf_PUPt() {
 const vector<unsigned int> &CMS3::els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL() {
   if (not els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_isLoaded) {
     if (els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_branch != 0) {
-      els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_branch->GetEntry(index);
+      if (els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_branch does not exist!\n");
       exit(1);
@@ -11419,7 +11591,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL() {
 const vector<unsigned int> &CMS3::mus_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_TrailingLeg() {
   if (not mus_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_TrailingLeg_isLoaded) {
     if (mus_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_TrailingLeg_branch != 0) {
-      mus_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_TrailingLeg_branch->GetEntry(index);
+      if (mus_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_TrailingLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_TrailingLeg_branch does not exist!\n");
       exit(1);
@@ -11431,7 +11604,8 @@ const vector<unsigned int> &CMS3::mus_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_Tr
 const vector<float> &CMS3::els_scSeedEBottom() {
   if (not els_scSeedEBottom_isLoaded) {
     if (els_scSeedEBottom_branch != 0) {
-      els_scSeedEBottom_branch->GetEntry(index);
+      if (els_scSeedEBottom_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_scSeedEBottom_branch does not exist!\n");
       exit(1);
@@ -11443,7 +11617,8 @@ const vector<float> &CMS3::els_scSeedEBottom() {
 const float &CMS3::pdfinfo_pdf2() {
   if (not pdfinfo_pdf2_isLoaded) {
     if (pdfinfo_pdf2_branch != 0) {
-      pdfinfo_pdf2_branch->GetEntry(index);
+      if (pdfinfo_pdf2_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pdfinfo_pdf2_branch does not exist!\n");
       exit(1);
@@ -11455,7 +11630,8 @@ const float &CMS3::pdfinfo_pdf2() {
 const vector<float> &CMS3::mus_iso05_hadEt() {
   if (not mus_iso05_hadEt_isLoaded) {
     if (mus_iso05_hadEt_branch != 0) {
-      mus_iso05_hadEt_branch->GetEntry(index);
+      if (mus_iso05_hadEt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_iso05_hadEt_branch does not exist!\n");
       exit(1);
@@ -11467,7 +11643,8 @@ const vector<float> &CMS3::mus_iso05_hadEt() {
 const vector<float> &CMS3::mus_bfit_d0() {
   if (not mus_bfit_d0_isLoaded) {
     if (mus_bfit_d0_branch != 0) {
-      mus_bfit_d0_branch->GetEntry(index);
+      if (mus_bfit_d0_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_bfit_d0_branch does not exist!\n");
       exit(1);
@@ -11479,7 +11656,8 @@ const vector<float> &CMS3::mus_bfit_d0() {
 const float &CMS3::evt_calomet() {
   if (not evt_calomet_isLoaded) {
     if (evt_calomet_branch != 0) {
-      evt_calomet_branch->GetEntry(index);
+      if (evt_calomet_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_calomet_branch does not exist!\n");
       exit(1);
@@ -11491,7 +11669,8 @@ const float &CMS3::evt_calomet() {
 const vector<float> &CMS3::mus_bs2derr() {
   if (not mus_bs2derr_isLoaded) {
     if (mus_bs2derr_branch != 0) {
-      mus_bs2derr_branch->GetEntry(index);
+      if (mus_bs2derr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_bs2derr_branch does not exist!\n");
       exit(1);
@@ -11503,7 +11682,8 @@ const vector<float> &CMS3::mus_bs2derr() {
 const vector<bool> &CMS3::genps_isPromptFinalState() {
   if (not genps_isPromptFinalState_isLoaded) {
     if (genps_isPromptFinalState_branch != 0) {
-      genps_isPromptFinalState_branch->GetEntry(index);
+      if (genps_isPromptFinalState_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch genps_isPromptFinalState_branch does not exist!\n");
       exit(1);
@@ -11515,7 +11695,8 @@ const vector<bool> &CMS3::genps_isPromptFinalState() {
 const vector<unsigned int> &CMS3::els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_TrailingLeg() {
   if (not els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_TrailingLeg_isLoaded) {
     if (els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_TrailingLeg_branch != 0) {
-      els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_TrailingLeg_branch->GetEntry(index);
+      if (els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_TrailingLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_TrailingLeg_branch does not exist!\n");
       exit(1);
@@ -11527,7 +11708,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_Tra
 const vector<float> &CMS3::photons_full5x5_sigmaEtaEta() {
   if (not photons_full5x5_sigmaEtaEta_isLoaded) {
     if (photons_full5x5_sigmaEtaEta_branch != 0) {
-      photons_full5x5_sigmaEtaEta_branch->GetEntry(index);
+      if (photons_full5x5_sigmaEtaEta_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_full5x5_sigmaEtaEta_branch does not exist!\n");
       exit(1);
@@ -11539,7 +11721,8 @@ const vector<float> &CMS3::photons_full5x5_sigmaEtaEta() {
 const vector<float> &CMS3::els_scSeedE2x5Right() {
   if (not els_scSeedE2x5Right_isLoaded) {
     if (els_scSeedE2x5Right_branch != 0) {
-      els_scSeedE2x5Right_branch->GetEntry(index);
+      if (els_scSeedE2x5Right_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_scSeedE2x5Right_branch does not exist!\n");
       exit(1);
@@ -11551,7 +11734,8 @@ const vector<float> &CMS3::els_scSeedE2x5Right() {
 const vector<unsigned int> &CMS3::photons_HLT_Photon22_R9Id90_HE10_IsoM() {
   if (not photons_HLT_Photon22_R9Id90_HE10_IsoM_isLoaded) {
     if (photons_HLT_Photon22_R9Id90_HE10_IsoM_branch != 0) {
-      photons_HLT_Photon22_R9Id90_HE10_IsoM_branch->GetEntry(index);
+      if (photons_HLT_Photon22_R9Id90_HE10_IsoM_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_HLT_Photon22_R9Id90_HE10_IsoM_branch does not exist!\n");
       exit(1);
@@ -11563,7 +11747,8 @@ const vector<unsigned int> &CMS3::photons_HLT_Photon22_R9Id90_HE10_IsoM() {
 const vector<vector<float> > &CMS3::els_clusterPhi() {
   if (not els_clusterPhi_isLoaded) {
     if (els_clusterPhi_branch != 0) {
-      els_clusterPhi_branch->GetEntry(index);
+      if (els_clusterPhi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_clusterPhi_branch does not exist!\n");
       exit(1);
@@ -11575,7 +11760,8 @@ const vector<vector<float> > &CMS3::els_clusterPhi() {
 const bool &CMS3::filt_hcalLaser() {
   if (not filt_hcalLaser_isLoaded) {
     if (filt_hcalLaser_branch != 0) {
-      filt_hcalLaser_branch->GetEntry(index);
+      if (filt_hcalLaser_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch filt_hcalLaser_branch does not exist!\n");
       exit(1);
@@ -11587,7 +11773,8 @@ const bool &CMS3::filt_hcalLaser() {
 const unsigned int &CMS3::els_HLT_Ele17_Ele8_LeadingLeg_version() {
   if (not els_HLT_Ele17_Ele8_LeadingLeg_version_isLoaded) {
     if (els_HLT_Ele17_Ele8_LeadingLeg_version_branch != 0) {
-      els_HLT_Ele17_Ele8_LeadingLeg_version_branch->GetEntry(index);
+      if (els_HLT_Ele17_Ele8_LeadingLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele17_Ele8_LeadingLeg_version_branch does not exist!\n");
       exit(1);
@@ -11600,7 +11787,8 @@ const unsigned int &CMS3::els_HLT_Ele17_Ele8_LeadingLeg_version() {
 const vector<float> &CMS3::ak8jets_deep_bindisc_top() {
   if (not ak8jets_deep_bindisc_top_isLoaded) {
     if (ak8jets_deep_bindisc_top_branch != 0) {
-      ak8jets_deep_bindisc_top_branch->GetEntry(index);
+      if (ak8jets_deep_bindisc_top_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_deep_bindisc_top_branch does not exist!\n");
       exit(1);
@@ -11613,7 +11801,8 @@ const vector<float> &CMS3::ak8jets_deep_bindisc_top() {
 const vector<float> &CMS3::ak8jets_deep_bindisc_w() {
   if (not ak8jets_deep_bindisc_w_isLoaded) {
     if (ak8jets_deep_bindisc_w_branch != 0) {
-      ak8jets_deep_bindisc_w_branch->GetEntry(index);
+      if (ak8jets_deep_bindisc_w_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_deep_bindisc_w_branch does not exist!\n");
       exit(1);
@@ -11626,7 +11815,8 @@ const vector<float> &CMS3::ak8jets_deep_bindisc_w() {
 const vector<float> &CMS3::ak8jets_deep_bindisc_z() {
   if (not ak8jets_deep_bindisc_z_isLoaded) {
     if (ak8jets_deep_bindisc_z_branch != 0) {
-      ak8jets_deep_bindisc_z_branch->GetEntry(index);
+      if (ak8jets_deep_bindisc_z_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_deep_bindisc_z_branch does not exist!\n");
       exit(1);
@@ -11639,7 +11829,8 @@ const vector<float> &CMS3::ak8jets_deep_bindisc_z() {
 const vector<float> &CMS3::ak8jets_deep_bindisc_zbb() {
   if (not ak8jets_deep_bindisc_zbb_isLoaded) {
     if (ak8jets_deep_bindisc_zbb_branch != 0) {
-      ak8jets_deep_bindisc_zbb_branch->GetEntry(index);
+      if (ak8jets_deep_bindisc_zbb_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_deep_bindisc_zbb_branch does not exist!\n");
       exit(1);
@@ -11652,7 +11843,8 @@ const vector<float> &CMS3::ak8jets_deep_bindisc_zbb() {
 const vector<float> &CMS3::ak8jets_deep_bindisc_hbb() {
   if (not ak8jets_deep_bindisc_hbb_isLoaded) {
     if (ak8jets_deep_bindisc_hbb_branch != 0) {
-      ak8jets_deep_bindisc_hbb_branch->GetEntry(index);
+      if (ak8jets_deep_bindisc_hbb_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_deep_bindisc_hbb_branch does not exist!\n");
       exit(1);
@@ -11665,7 +11857,8 @@ const vector<float> &CMS3::ak8jets_deep_bindisc_hbb() {
 const vector<float> &CMS3::ak8jets_deep_bindisc_h4q() {
   if (not ak8jets_deep_bindisc_h4q_isLoaded) {
     if (ak8jets_deep_bindisc_h4q_branch != 0) {
-      ak8jets_deep_bindisc_h4q_branch->GetEntry(index);
+      if (ak8jets_deep_bindisc_h4q_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_deep_bindisc_h4q_branch does not exist!\n");
       exit(1);
@@ -11678,7 +11871,8 @@ const vector<float> &CMS3::ak8jets_deep_bindisc_h4q() {
 const vector<float> &CMS3::ak8jets_deep_rawdisc_qcd() {
   if (not ak8jets_deep_rawdisc_qcd_isLoaded) {
     if (ak8jets_deep_rawdisc_qcd_branch != 0) {
-      ak8jets_deep_rawdisc_qcd_branch->GetEntry(index);
+      if (ak8jets_deep_rawdisc_qcd_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_deep_rawdisc_qcd_branch does not exist!\n");
       exit(1);
@@ -11691,7 +11885,8 @@ const vector<float> &CMS3::ak8jets_deep_rawdisc_qcd() {
 const vector<float> &CMS3::ak8jets_deep_rawdisc_top() {
   if (not ak8jets_deep_rawdisc_top_isLoaded) {
     if (ak8jets_deep_rawdisc_top_branch != 0) {
-      ak8jets_deep_rawdisc_top_branch->GetEntry(index);
+      if (ak8jets_deep_rawdisc_top_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_deep_rawdisc_top_branch does not exist!\n");
       exit(1);
@@ -11704,7 +11899,8 @@ const vector<float> &CMS3::ak8jets_deep_rawdisc_top() {
 const vector<float> &CMS3::ak8jets_deep_rawdisc_w() {
   if (not ak8jets_deep_rawdisc_w_isLoaded) {
     if (ak8jets_deep_rawdisc_w_branch != 0) {
-      ak8jets_deep_rawdisc_w_branch->GetEntry(index);
+      if (ak8jets_deep_rawdisc_w_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_deep_rawdisc_w_branch does not exist!\n");
       exit(1);
@@ -11717,7 +11913,8 @@ const vector<float> &CMS3::ak8jets_deep_rawdisc_w() {
 const vector<float> &CMS3::ak8jets_deep_rawdisc_z() {
   if (not ak8jets_deep_rawdisc_z_isLoaded) {
     if (ak8jets_deep_rawdisc_z_branch != 0) {
-      ak8jets_deep_rawdisc_z_branch->GetEntry(index);
+      if (ak8jets_deep_rawdisc_z_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_deep_rawdisc_z_branch does not exist!\n");
       exit(1);
@@ -11730,7 +11927,8 @@ const vector<float> &CMS3::ak8jets_deep_rawdisc_z() {
 const vector<float> &CMS3::ak8jets_deep_rawdisc_zbb() {
   if (not ak8jets_deep_rawdisc_zbb_isLoaded) {
     if (ak8jets_deep_rawdisc_zbb_branch != 0) {
-      ak8jets_deep_rawdisc_zbb_branch->GetEntry(index);
+      if (ak8jets_deep_rawdisc_zbb_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_deep_rawdisc_zbb_branch does not exist!\n");
       exit(1);
@@ -11743,7 +11941,8 @@ const vector<float> &CMS3::ak8jets_deep_rawdisc_zbb() {
 const vector<float> &CMS3::ak8jets_deep_rawdisc_hbb() {
   if (not ak8jets_deep_rawdisc_hbb_isLoaded) {
     if (ak8jets_deep_rawdisc_hbb_branch != 0) {
-      ak8jets_deep_rawdisc_hbb_branch->GetEntry(index);
+      if (ak8jets_deep_rawdisc_hbb_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_deep_rawdisc_hbb_branch does not exist!\n");
       exit(1);
@@ -11756,7 +11955,8 @@ const vector<float> &CMS3::ak8jets_deep_rawdisc_hbb() {
 const vector<float> &CMS3::ak8jets_deep_rawdisc_h4q() {
   if (not ak8jets_deep_rawdisc_h4q_isLoaded) {
     if (ak8jets_deep_rawdisc_h4q_branch != 0) {
-      ak8jets_deep_rawdisc_h4q_branch->GetEntry(index);
+      if (ak8jets_deep_rawdisc_h4q_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_deep_rawdisc_h4q_branch does not exist!\n");
       exit(1);
@@ -11765,10 +11965,89 @@ const vector<float> &CMS3::ak8jets_deep_rawdisc_h4q() {
   }
   return ak8jets_deep_rawdisc_h4q_;
 }
+
+const vector<float> &CMS3::ak8jets_chs_pt() {
+  if (not ak8jets_chs_pt_isLoaded) {
+    if (ak8jets_chs_pt_branch != 0) {
+      ak8jets_chs_pt_branch->GetEntry(index);
+    } else {
+      printf("branch ak8jets_chs_pt_branch does not exist!\n");
+      exit(1);
+    }
+    ak8jets_chs_pt_isLoaded = true;
+  }
+  return ak8jets_chs_pt_;
+}
+
+const vector<float> &CMS3::ak8jets_chs_eta() {
+  if (not ak8jets_chs_eta_isLoaded) {
+    if (ak8jets_chs_eta_branch != 0) {
+      ak8jets_chs_eta_branch->GetEntry(index);
+    } else {
+      printf("branch ak8jets_chs_eta_branch does not exist!\n");
+      exit(1);
+    }
+    ak8jets_chs_eta_isLoaded = true;
+  }
+  return ak8jets_chs_eta_;
+}
+
+const vector<float> &CMS3::ak8jets_chs_phi() {
+  if (not ak8jets_chs_phi_isLoaded) {
+    if (ak8jets_chs_phi_branch != 0) {
+      ak8jets_chs_phi_branch->GetEntry(index);
+    } else {
+      printf("branch ak8jets_chs_phi_branch does not exist!\n");
+      exit(1);
+    }
+    ak8jets_chs_phi_isLoaded = true;
+  }
+  return ak8jets_chs_phi_;
+}
+
+const vector<float> &CMS3::ak8jets_chs_mass() {
+  if (not ak8jets_chs_mass_isLoaded) {
+    if (ak8jets_chs_mass_branch != 0) {
+      ak8jets_chs_mass_branch->GetEntry(index);
+    } else {
+      printf("branch ak8jets_chs_mass_branch does not exist!\n");
+      exit(1);
+    }
+    ak8jets_chs_mass_isLoaded = true;
+  }
+  return ak8jets_chs_mass_;
+}
+
+const vector<TString> &CMS3::ak8jets_bDiscriminatorNames() {
+  if (not ak8jets_bDiscriminatorNames_isLoaded) {
+    if (ak8jets_bDiscriminatorNames_branch != 0) {
+      ak8jets_bDiscriminatorNames_branch->GetEntry(index);
+    } else {
+      printf("branch ak8jets_bDiscriminatorNames_branch does not exist!\n");
+      exit(1);
+    }
+    ak8jets_bDiscriminatorNames_isLoaded = true;
+  }
+  return ak8jets_bDiscriminatorNames_;
+}
+
+const vector<vector<float>> &CMS3::ak8jets_bDiscriminators() {
+  if (not ak8jets_bDiscriminators_isLoaded) {
+    if (ak8jets_bDiscriminators_branch != 0) {
+      ak8jets_bDiscriminators_branch->GetEntry(index);
+    } else {
+      printf("branch ak8jets_bDiscriminators_branch does not exist!\n");
+      exit(1);
+    }
+    ak8jets_bDiscriminators_isLoaded = true;
+  }
+  return ak8jets_bDiscriminators_;
+}
 const vector<float> &CMS3::ak8jets_area() {
   if (not ak8jets_area_isLoaded) {
     if (ak8jets_area_branch != 0) {
-      ak8jets_area_branch->GetEntry(index);
+      if (ak8jets_area_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_area_branch does not exist!\n");
       exit(1);
@@ -11780,7 +12059,8 @@ const vector<float> &CMS3::ak8jets_area() {
 const float &CMS3::evt_METToolbox_pfmet() {
   if (not evt_METToolbox_pfmet_isLoaded) {
     if (evt_METToolbox_pfmet_branch != 0) {
-      evt_METToolbox_pfmet_branch->GetEntry(index);
+      if (evt_METToolbox_pfmet_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_METToolbox_pfmet_branch does not exist!\n");
       exit(1);
@@ -11792,7 +12072,8 @@ const float &CMS3::evt_METToolbox_pfmet() {
 const float &CMS3::evt_puppi_pfmet_TauEnDown() {
   if (not evt_puppi_pfmet_TauEnDown_isLoaded) {
     if (evt_puppi_pfmet_TauEnDown_branch != 0) {
-      evt_puppi_pfmet_TauEnDown_branch->GetEntry(index);
+      if (evt_puppi_pfmet_TauEnDown_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_puppi_pfmet_TauEnDown_branch does not exist!\n");
       exit(1);
@@ -11804,7 +12085,8 @@ const float &CMS3::evt_puppi_pfmet_TauEnDown() {
 const vector<unsigned int> &CMS3::els_HLT_Ele25WP60_Ele8_Mass55() {
   if (not els_HLT_Ele25WP60_Ele8_Mass55_isLoaded) {
     if (els_HLT_Ele25WP60_Ele8_Mass55_branch != 0) {
-      els_HLT_Ele25WP60_Ele8_Mass55_branch->GetEntry(index);
+      if (els_HLT_Ele25WP60_Ele8_Mass55_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele25WP60_Ele8_Mass55_branch does not exist!\n");
       exit(1);
@@ -11816,7 +12098,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele25WP60_Ele8_Mass55() {
 const unsigned int &CMS3::els_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_version() {
   if (not els_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_version_isLoaded) {
     if (els_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_version_branch != 0) {
-      els_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_version_branch->GetEntry(index);
+      if (els_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_version_branch does not exist!\n");
       exit(1);
@@ -11828,7 +12111,8 @@ const unsigned int &CMS3::els_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ
 const vector<float> &CMS3::els_scSeedCryY() {
   if (not els_scSeedCryY_isLoaded) {
     if (els_scSeedCryY_branch != 0) {
-      els_scSeedCryY_branch->GetEntry(index);
+      if (els_scSeedCryY_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_scSeedCryY_branch does not exist!\n");
       exit(1);
@@ -11840,7 +12124,8 @@ const vector<float> &CMS3::els_scSeedCryY() {
 const vector<int> &CMS3::els_passVetoId() {
   if (not els_passVetoId_isLoaded) {
     if (els_passVetoId_branch != 0) {
-      els_passVetoId_branch->GetEntry(index);
+      if (els_passVetoId_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_passVetoId_branch does not exist!\n");
       exit(1);
@@ -11852,7 +12137,8 @@ const vector<int> &CMS3::els_passVetoId() {
 const vector<float> &CMS3::svs_ndof() {
   if (not svs_ndof_isLoaded) {
     if (svs_ndof_branch != 0) {
-      svs_ndof_branch->GetEntry(index);
+      if (svs_ndof_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch svs_ndof_branch does not exist!\n");
       exit(1);
@@ -11864,7 +12150,8 @@ const vector<float> &CMS3::svs_ndof() {
 const unsigned int &CMS3::els_HLT_Ele32_SC17_Mass50_TrailingLeg_version() {
   if (not els_HLT_Ele32_SC17_Mass50_TrailingLeg_version_isLoaded) {
     if (els_HLT_Ele32_SC17_Mass50_TrailingLeg_version_branch != 0) {
-      els_HLT_Ele32_SC17_Mass50_TrailingLeg_version_branch->GetEntry(index);
+      if (els_HLT_Ele32_SC17_Mass50_TrailingLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele32_SC17_Mass50_TrailingLeg_version_branch does not exist!\n");
       exit(1);
@@ -11876,7 +12163,8 @@ const unsigned int &CMS3::els_HLT_Ele32_SC17_Mass50_TrailingLeg_version() {
 const vector<float> &CMS3::mus_ip2d() {
   if (not mus_ip2d_isLoaded) {
     if (mus_ip2d_branch != 0) {
-      mus_ip2d_branch->GetEntry(index);
+      if (mus_ip2d_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_ip2d_branch does not exist!\n");
       exit(1);
@@ -11888,7 +12176,8 @@ const vector<float> &CMS3::mus_ip2d() {
 const unsigned int &CMS3::els_HLT_Ele20_SC4_Mass50_TrailingLeg_version() {
   if (not els_HLT_Ele20_SC4_Mass50_TrailingLeg_version_isLoaded) {
     if (els_HLT_Ele20_SC4_Mass50_TrailingLeg_version_branch != 0) {
-      els_HLT_Ele20_SC4_Mass50_TrailingLeg_version_branch->GetEntry(index);
+      if (els_HLT_Ele20_SC4_Mass50_TrailingLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele20_SC4_Mass50_TrailingLeg_version_branch does not exist!\n");
       exit(1);
@@ -11900,7 +12189,8 @@ const unsigned int &CMS3::els_HLT_Ele20_SC4_Mass50_TrailingLeg_version() {
 const unsigned int &CMS3::els_HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_version() {
   if (not els_HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_version_isLoaded) {
     if (els_HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_version_branch != 0) {
-      els_HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_version_branch->GetEntry(index);
+      if (els_HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_version_branch does not exist!\n");
       exit(1);
@@ -11912,7 +12202,8 @@ const unsigned int &CMS3::els_HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronL
 const vector<unsigned int> &CMS3::els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg() {
   if (not els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_isLoaded) {
     if (els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_branch != 0) {
-      els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_branch->GetEntry(index);
+      if (els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_branch does not exist!\n");
       exit(1);
@@ -11924,7 +12215,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg() 
 const float &CMS3::pdfinfo_scale() {
   if (not pdfinfo_scale_isLoaded) {
     if (pdfinfo_scale_branch != 0) {
-      pdfinfo_scale_branch->GetEntry(index);
+      if (pdfinfo_scale_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pdfinfo_scale_branch does not exist!\n");
       exit(1);
@@ -11936,7 +12228,8 @@ const float &CMS3::pdfinfo_scale() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::ak8jets_mc_gp_p4() {
   if (not ak8jets_mc_gp_p4_isLoaded) {
     if (ak8jets_mc_gp_p4_branch != 0) {
-      ak8jets_mc_gp_p4_branch->GetEntry(index);
+      if (ak8jets_mc_gp_p4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_mc_gp_p4_branch does not exist!\n");
       exit(1);
@@ -11948,7 +12241,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::a
 const vector<unsigned int> &CMS3::els_HLT_Mu17_Ele8() {
   if (not els_HLT_Mu17_Ele8_isLoaded) {
     if (els_HLT_Mu17_Ele8_branch != 0) {
-      els_HLT_Mu17_Ele8_branch->GetEntry(index);
+      if (els_HLT_Mu17_Ele8_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Mu17_Ele8_branch does not exist!\n");
       exit(1);
@@ -11960,7 +12254,8 @@ const vector<unsigned int> &CMS3::els_HLT_Mu17_Ele8() {
 const vector<float> &CMS3::photons_scSeedCryIphi() {
   if (not photons_scSeedCryIphi_isLoaded) {
     if (photons_scSeedCryIphi_branch != 0) {
-      photons_scSeedCryIphi_branch->GetEntry(index);
+      if (photons_scSeedCryIphi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_scSeedCryIphi_branch does not exist!\n");
       exit(1);
@@ -11972,7 +12267,8 @@ const vector<float> &CMS3::photons_scSeedCryIphi() {
 const vector<int> &CMS3::mus_exp_outerlayers() {
   if (not mus_exp_outerlayers_isLoaded) {
     if (mus_exp_outerlayers_branch != 0) {
-      mus_exp_outerlayers_branch->GetEntry(index);
+      if (mus_exp_outerlayers_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_exp_outerlayers_branch does not exist!\n");
       exit(1);
@@ -11984,7 +12280,8 @@ const vector<int> &CMS3::mus_exp_outerlayers() {
 const vector<float> &CMS3::mus_qoverp() {
   if (not mus_qoverp_isLoaded) {
     if (mus_qoverp_branch != 0) {
-      mus_qoverp_branch->GetEntry(index);
+      if (mus_qoverp_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_qoverp_branch does not exist!\n");
       exit(1);
@@ -11996,7 +12293,8 @@ const vector<float> &CMS3::mus_qoverp() {
 const float &CMS3::evt_puppi_pfmet_UnclusteredEnUp() {
   if (not evt_puppi_pfmet_UnclusteredEnUp_isLoaded) {
     if (evt_puppi_pfmet_UnclusteredEnUp_branch != 0) {
-      evt_puppi_pfmet_UnclusteredEnUp_branch->GetEntry(index);
+      if (evt_puppi_pfmet_UnclusteredEnUp_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_puppi_pfmet_UnclusteredEnUp_branch does not exist!\n");
       exit(1);
@@ -12008,7 +12306,8 @@ const float &CMS3::evt_puppi_pfmet_UnclusteredEnUp() {
 const vector<float> &CMS3::mus_glbKink() {
   if (not mus_glbKink_isLoaded) {
     if (mus_glbKink_branch != 0) {
-      mus_glbKink_branch->GetEntry(index);
+      if (mus_glbKink_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_glbKink_branch does not exist!\n");
       exit(1);
@@ -12020,7 +12319,8 @@ const vector<float> &CMS3::mus_glbKink() {
 const vector<float> &CMS3::mus_isoMeanDRR03_pf_NeutralHadronEtHighThreshold() {
   if (not mus_isoMeanDRR03_pf_NeutralHadronEtHighThreshold_isLoaded) {
     if (mus_isoMeanDRR03_pf_NeutralHadronEtHighThreshold_branch != 0) {
-      mus_isoMeanDRR03_pf_NeutralHadronEtHighThreshold_branch->GetEntry(index);
+      if (mus_isoMeanDRR03_pf_NeutralHadronEtHighThreshold_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isoMeanDRR03_pf_NeutralHadronEtHighThreshold_branch does not exist!\n");
       exit(1);
@@ -12032,7 +12332,8 @@ const vector<float> &CMS3::mus_isoMeanDRR03_pf_NeutralHadronEtHighThreshold() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::hyp_lt_p4() {
   if (not hyp_lt_p4_isLoaded) {
     if (hyp_lt_p4_branch != 0) {
-      hyp_lt_p4_branch->GetEntry(index);
+      if (hyp_lt_p4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hyp_lt_p4_branch does not exist!\n");
       exit(1);
@@ -12044,7 +12345,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::h
 const vector<float> &CMS3::pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag() {
   if (not pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag_isLoaded) {
     if (pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch != 0) {
-      pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch->GetEntry(index);
+      if (pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch does not exist!\n");
       exit(1);
@@ -12056,7 +12358,8 @@ const vector<float> &CMS3::pfjets_puppi_pfCombinedInclusiveSecondaryVertexV2BJet
 const vector<float> &CMS3::pfjets_puppi_pfDeepCSVJetTagsprobbPlusprobbb() {
   if (not pfjets_puppi_pfDeepCSVJetTagsprobbPlusprobbb_isLoaded) {
     if (pfjets_puppi_pfDeepCSVJetTagsprobbPlusprobbb_branch != 0) {
-      pfjets_puppi_pfDeepCSVJetTagsprobbPlusprobbb_branch->GetEntry(index);
+      if (pfjets_puppi_pfDeepCSVJetTagsprobbPlusprobbb_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_puppi_pfDeepCSVJetTagsprobbPlusprobbb_branch does not exist!\n");
       exit(1);
@@ -12068,7 +12371,8 @@ const vector<float> &CMS3::pfjets_puppi_pfDeepCSVJetTagsprobbPlusprobbb() {
 const vector<float> &CMS3::pfjets_puppi_ptDistribution() {
   if (not pfjets_puppi_ptDistribution_isLoaded) {
     if (pfjets_puppi_ptDistribution_branch != 0) {
-      pfjets_puppi_ptDistribution_branch->GetEntry(index);
+      if (pfjets_puppi_ptDistribution_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_puppi_ptDistribution_branch does not exist!\n");
       exit(1);
@@ -12080,7 +12384,8 @@ const vector<float> &CMS3::pfjets_puppi_ptDistribution() {
 const vector<float> &CMS3::pfjets_puppi_axis1() {
   if (not pfjets_puppi_axis1_isLoaded) {
     if (pfjets_puppi_axis1_branch != 0) {
-      pfjets_puppi_axis1_branch->GetEntry(index);
+      if (pfjets_puppi_axis1_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_puppi_axis1_branch does not exist!\n");
       exit(1);
@@ -12092,7 +12397,8 @@ const vector<float> &CMS3::pfjets_puppi_axis1() {
 const vector<int> &CMS3::pfjets_puppi_totalMultiplicity() {
   if (not pfjets_puppi_totalMultiplicity_isLoaded) {
     if (pfjets_puppi_totalMultiplicity_branch != 0) {
-      pfjets_puppi_totalMultiplicity_branch->GetEntry(index);
+      if (pfjets_puppi_totalMultiplicity_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_puppi_totalMultiplicity_branch does not exist!\n");
       exit(1);
@@ -12104,7 +12410,8 @@ const vector<int> &CMS3::pfjets_puppi_totalMultiplicity() {
 const vector<float> &CMS3::mus_isoSumDRR04_pf_PhotonEt() {
   if (not mus_isoSumDRR04_pf_PhotonEt_isLoaded) {
     if (mus_isoSumDRR04_pf_PhotonEt_branch != 0) {
-      mus_isoSumDRR04_pf_PhotonEt_branch->GetEntry(index);
+      if (mus_isoSumDRR04_pf_PhotonEt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isoSumDRR04_pf_PhotonEt_branch does not exist!\n");
       exit(1);
@@ -12116,7 +12423,8 @@ const vector<float> &CMS3::mus_isoSumDRR04_pf_PhotonEt() {
 const vector<float> &CMS3::els_sigmaIphiIphi() {
   if (not els_sigmaIphiIphi_isLoaded) {
     if (els_sigmaIphiIphi_branch != 0) {
-      els_sigmaIphiIphi_branch->GetEntry(index);
+      if (els_sigmaIphiIphi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_sigmaIphiIphi_branch does not exist!\n");
       exit(1);
@@ -12128,7 +12436,8 @@ const vector<float> &CMS3::els_sigmaIphiIphi() {
 const vector<float> &CMS3::pfjets_puppi_chargedEmE() {
   if (not pfjets_puppi_chargedEmE_isLoaded) {
     if (pfjets_puppi_chargedEmE_branch != 0) {
-      pfjets_puppi_chargedEmE_branch->GetEntry(index);
+      if (pfjets_puppi_chargedEmE_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_puppi_chargedEmE_branch does not exist!\n");
       exit(1);
@@ -12140,7 +12449,8 @@ const vector<float> &CMS3::pfjets_puppi_chargedEmE() {
 const float &CMS3::evt_puppi_pfmetPhi_JetEnUp() {
   if (not evt_puppi_pfmetPhi_JetEnUp_isLoaded) {
     if (evt_puppi_pfmetPhi_JetEnUp_branch != 0) {
-      evt_puppi_pfmetPhi_JetEnUp_branch->GetEntry(index);
+      if (evt_puppi_pfmetPhi_JetEnUp_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_puppi_pfmetPhi_JetEnUp_branch does not exist!\n");
       exit(1);
@@ -12152,7 +12462,8 @@ const float &CMS3::evt_puppi_pfmetPhi_JetEnUp() {
 const vector<int> &CMS3::pfjets_puppi_partonFlavour() {
   if (not pfjets_puppi_partonFlavour_isLoaded) {
     if (pfjets_puppi_partonFlavour_branch != 0) {
-      pfjets_puppi_partonFlavour_branch->GetEntry(index);
+      if (pfjets_puppi_partonFlavour_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_puppi_partonFlavour_branch does not exist!\n");
       exit(1);
@@ -12164,7 +12475,8 @@ const vector<int> &CMS3::pfjets_puppi_partonFlavour() {
 const float &CMS3::evt_puppi_pfmet_raw() {
   if (not evt_puppi_pfmet_raw_isLoaded) {
     if (evt_puppi_pfmet_raw_branch != 0) {
-      evt_puppi_pfmet_raw_branch->GetEntry(index);
+      if (evt_puppi_pfmet_raw_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_puppi_pfmet_raw_branch does not exist!\n");
       exit(1);
@@ -12176,7 +12488,8 @@ const float &CMS3::evt_puppi_pfmet_raw() {
 const vector<float> &CMS3::els_mc3dr() {
   if (not els_mc3dr_isLoaded) {
     if (els_mc3dr_branch != 0) {
-      els_mc3dr_branch->GetEntry(index);
+      if (els_mc3dr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_mc3dr_branch does not exist!\n");
       exit(1);
@@ -12188,7 +12501,8 @@ const vector<float> &CMS3::els_mc3dr() {
 const vector<unsigned int> &CMS3::els_HLT_Ele18_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg() {
   if (not els_HLT_Ele18_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_isLoaded) {
     if (els_HLT_Ele18_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_branch != 0) {
-      els_HLT_Ele18_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_branch->GetEntry(index);
+      if (els_HLT_Ele18_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele18_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_branch does not exist!\n");
       exit(1);
@@ -12200,7 +12514,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele18_CaloIdL_TrackIdL_IsoVL_PFJet30_E
 const vector<float> &CMS3::photons_hcalDepth2TowerSumEtBcConeDR03() {
   if (not photons_hcalDepth2TowerSumEtBcConeDR03_isLoaded) {
     if (photons_hcalDepth2TowerSumEtBcConeDR03_branch != 0) {
-      photons_hcalDepth2TowerSumEtBcConeDR03_branch->GetEntry(index);
+      if (photons_hcalDepth2TowerSumEtBcConeDR03_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_hcalDepth2TowerSumEtBcConeDR03_branch does not exist!\n");
       exit(1);
@@ -12212,7 +12527,8 @@ const vector<float> &CMS3::photons_hcalDepth2TowerSumEtBcConeDR03() {
 const float &CMS3::evt_puppi_pfmetPhi_ElectronEnUp() {
   if (not evt_puppi_pfmetPhi_ElectronEnUp_isLoaded) {
     if (evt_puppi_pfmetPhi_ElectronEnUp_branch != 0) {
-      evt_puppi_pfmetPhi_ElectronEnUp_branch->GetEntry(index);
+      if (evt_puppi_pfmetPhi_ElectronEnUp_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_puppi_pfmetPhi_ElectronEnUp_branch does not exist!\n");
       exit(1);
@@ -12224,7 +12540,8 @@ const float &CMS3::evt_puppi_pfmetPhi_ElectronEnUp() {
 const vector<float> &CMS3::pfjets_puppi_muonE() {
   if (not pfjets_puppi_muonE_isLoaded) {
     if (pfjets_puppi_muonE_branch != 0) {
-      pfjets_puppi_muonE_branch->GetEntry(index);
+      if (pfjets_puppi_muonE_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_puppi_muonE_branch does not exist!\n");
       exit(1);
@@ -12236,7 +12553,8 @@ const vector<float> &CMS3::pfjets_puppi_muonE() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::ak8jets_softdropPuppiSubjet1() {
   if (not ak8jets_softdropPuppiSubjet1_isLoaded) {
     if (ak8jets_softdropPuppiSubjet1_branch != 0) {
-      ak8jets_softdropPuppiSubjet1_branch->GetEntry(index);
+      if (ak8jets_softdropPuppiSubjet1_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_softdropPuppiSubjet1_branch does not exist!\n");
       exit(1);
@@ -12248,7 +12566,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::a
 const vector<float> &CMS3::els_scSeedPhi() {
   if (not els_scSeedPhi_isLoaded) {
     if (els_scSeedPhi_branch != 0) {
-      els_scSeedPhi_branch->GetEntry(index);
+      if (els_scSeedPhi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_scSeedPhi_branch does not exist!\n");
       exit(1);
@@ -12260,7 +12579,8 @@ const vector<float> &CMS3::els_scSeedPhi() {
 const vector<unsigned int> &CMS3::mus_HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_MuonLeg() {
   if (not mus_HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_MuonLeg_isLoaded) {
     if (mus_HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_MuonLeg_branch != 0) {
-      mus_HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_MuonLeg_branch->GetEntry(index);
+      if (mus_HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_MuonLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_MuonLeg_branch does not exist!\n");
       exit(1);
@@ -12272,7 +12592,8 @@ const vector<unsigned int> &CMS3::mus_HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_I
 const vector<float> &CMS3::mus_iso_ecalvetoDep() {
   if (not mus_iso_ecalvetoDep_isLoaded) {
     if (mus_iso_ecalvetoDep_branch != 0) {
-      mus_iso_ecalvetoDep_branch->GetEntry(index);
+      if (mus_iso_ecalvetoDep_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_iso_ecalvetoDep_branch does not exist!\n");
       exit(1);
@@ -12284,7 +12605,8 @@ const vector<float> &CMS3::mus_iso_ecalvetoDep() {
 const vector<float> &CMS3::els_scPreshowerEnergyPlane2() {
   if (not els_scPreshowerEnergyPlane2_isLoaded) {
     if (els_scPreshowerEnergyPlane2_branch != 0) {
-      els_scPreshowerEnergyPlane2_branch->GetEntry(index);
+      if (els_scPreshowerEnergyPlane2_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_scPreshowerEnergyPlane2_branch does not exist!\n");
       exit(1);
@@ -12296,7 +12618,8 @@ const vector<float> &CMS3::els_scPreshowerEnergyPlane2() {
 const int &CMS3::pdfinfo_id2() {
   if (not pdfinfo_id2_isLoaded) {
     if (pdfinfo_id2_branch != 0) {
-      pdfinfo_id2_branch->GetEntry(index);
+      if (pdfinfo_id2_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pdfinfo_id2_branch does not exist!\n");
       exit(1);
@@ -12308,7 +12631,8 @@ const int &CMS3::pdfinfo_id2() {
 const vector<float> &CMS3::vtxs_score() {
   if (not vtxs_score_isLoaded) {
     if (vtxs_score_branch != 0) {
-      vtxs_score_branch->GetEntry(index);
+      if (vtxs_score_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch vtxs_score_branch does not exist!\n");
       exit(1);
@@ -12320,7 +12644,8 @@ const vector<float> &CMS3::vtxs_score() {
 const vector<unsigned char> &CMS3::pfcands_pvAssociationQuality() {
   if (not pfcands_pvAssociationQuality_isLoaded) {
     if (pfcands_pvAssociationQuality_branch != 0) {
-      pfcands_pvAssociationQuality_branch->GetEntry(index);
+      if (pfcands_pvAssociationQuality_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfcands_pvAssociationQuality_branch does not exist!\n");
       exit(1);
@@ -12332,7 +12657,8 @@ const vector<unsigned char> &CMS3::pfcands_pvAssociationQuality() {
 const vector<int> &CMS3::els_lost_pixelhits() {
   if (not els_lost_pixelhits_isLoaded) {
     if (els_lost_pixelhits_branch != 0) {
-      els_lost_pixelhits_branch->GetEntry(index);
+      if (els_lost_pixelhits_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_lost_pixelhits_branch does not exist!\n");
       exit(1);
@@ -12344,7 +12670,8 @@ const vector<int> &CMS3::els_lost_pixelhits() {
 const vector<float> &CMS3::mus_isoR04_pf_ChargedParticlePt() {
   if (not mus_isoR04_pf_ChargedParticlePt_isLoaded) {
     if (mus_isoR04_pf_ChargedParticlePt_branch != 0) {
-      mus_isoR04_pf_ChargedParticlePt_branch->GetEntry(index);
+      if (mus_isoR04_pf_ChargedParticlePt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isoR04_pf_ChargedParticlePt_branch does not exist!\n");
       exit(1);
@@ -12356,7 +12683,8 @@ const vector<float> &CMS3::mus_isoR04_pf_ChargedParticlePt() {
 const vector<unsigned int> &CMS3::photons_HLT_Photon165_HE10() {
   if (not photons_HLT_Photon165_HE10_isLoaded) {
     if (photons_HLT_Photon165_HE10_branch != 0) {
-      photons_HLT_Photon165_HE10_branch->GetEntry(index);
+      if (photons_HLT_Photon165_HE10_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_HLT_Photon165_HE10_branch does not exist!\n");
       exit(1);
@@ -12368,7 +12696,8 @@ const vector<unsigned int> &CMS3::photons_HLT_Photon165_HE10() {
 const vector<int> &CMS3::els_nSeed() {
   if (not els_nSeed_isLoaded) {
     if (els_nSeed_branch != 0) {
-      els_nSeed_branch->GetEntry(index);
+      if (els_nSeed_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_nSeed_branch does not exist!\n");
       exit(1);
@@ -12380,7 +12709,8 @@ const vector<int> &CMS3::els_nSeed() {
 const vector<float> &CMS3::convs_dl() {
   if (not convs_dl_isLoaded) {
     if (convs_dl_branch != 0) {
-      convs_dl_branch->GetEntry(index);
+      if (convs_dl_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch convs_dl_branch does not exist!\n");
       exit(1);
@@ -12392,7 +12722,8 @@ const vector<float> &CMS3::convs_dl() {
 const bool &CMS3::filt_ecalBoundaryEnergy() {
   if (not filt_ecalBoundaryEnergy_isLoaded) {
     if (filt_ecalBoundaryEnergy_branch != 0) {
-      filt_ecalBoundaryEnergy_branch->GetEntry(index);
+      if (filt_ecalBoundaryEnergy_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch filt_ecalBoundaryEnergy_branch does not exist!\n");
       exit(1);
@@ -12404,7 +12735,8 @@ const bool &CMS3::filt_ecalBoundaryEnergy() {
 const vector<float> &CMS3::pfjets_hfHadronE() {
   if (not pfjets_hfHadronE_isLoaded) {
     if (pfjets_hfHadronE_branch != 0) {
-      pfjets_hfHadronE_branch->GetEntry(index);
+      if (pfjets_hfHadronE_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_hfHadronE_branch does not exist!\n");
       exit(1);
@@ -12416,7 +12748,8 @@ const vector<float> &CMS3::pfjets_hfHadronE() {
 const vector<float> &CMS3::els_hcalDepth1TowerSumEt() {
   if (not els_hcalDepth1TowerSumEt_isLoaded) {
     if (els_hcalDepth1TowerSumEt_branch != 0) {
-      els_hcalDepth1TowerSumEt_branch->GetEntry(index);
+      if (els_hcalDepth1TowerSumEt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_hcalDepth1TowerSumEt_branch does not exist!\n");
       exit(1);
@@ -12428,7 +12761,8 @@ const vector<float> &CMS3::els_hcalDepth1TowerSumEt() {
 const vector<float> &CMS3::mus_emMax() {
   if (not mus_emMax_isLoaded) {
     if (mus_emMax_branch != 0) {
-      mus_emMax_branch->GetEntry(index);
+      if (mus_emMax_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_emMax_branch does not exist!\n");
       exit(1);
@@ -12440,7 +12774,8 @@ const vector<float> &CMS3::mus_emMax() {
 const unsigned int &CMS3::mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_version() {
   if (not mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_version_isLoaded) {
     if (mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_version_branch != 0) {
-      mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_version_branch->GetEntry(index);
+      if (mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_version_branch does not exist!\n");
       exit(1);
@@ -12452,7 +12787,8 @@ const unsigned int &CMS3::mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_version() {
 const vector<float> &CMS3::pfjets_puppi_neutralEmE() {
   if (not pfjets_puppi_neutralEmE_isLoaded) {
     if (pfjets_puppi_neutralEmE_branch != 0) {
-      pfjets_puppi_neutralEmE_branch->GetEntry(index);
+      if (pfjets_puppi_neutralEmE_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_puppi_neutralEmE_branch does not exist!\n");
       exit(1);
@@ -12464,7 +12800,8 @@ const vector<float> &CMS3::pfjets_puppi_neutralEmE() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::mus_mc_p4() {
   if (not mus_mc_p4_isLoaded) {
     if (mus_mc_p4_branch != 0) {
-      mus_mc_p4_branch->GetEntry(index);
+      if (mus_mc_p4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_mc_p4_branch does not exist!\n");
       exit(1);
@@ -12476,7 +12813,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::m
 const vector<float> &CMS3::els_ptErrGsf() {
   if (not els_ptErrGsf_isLoaded) {
     if (els_ptErrGsf_branch != 0) {
-      els_ptErrGsf_branch->GetEntry(index);
+      if (els_ptErrGsf_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_ptErrGsf_branch does not exist!\n");
       exit(1);
@@ -12488,7 +12826,8 @@ const vector<float> &CMS3::els_ptErrGsf() {
 const vector<float> &CMS3::els_hcalDepth2OverEcal() {
   if (not els_hcalDepth2OverEcal_isLoaded) {
     if (els_hcalDepth2OverEcal_branch != 0) {
-      els_hcalDepth2OverEcal_branch->GetEntry(index);
+      if (els_hcalDepth2OverEcal_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_hcalDepth2OverEcal_branch does not exist!\n");
       exit(1);
@@ -12500,7 +12839,8 @@ const vector<float> &CMS3::els_hcalDepth2OverEcal() {
 const vector<int> &CMS3::mus_pfparticleId() {
   if (not mus_pfparticleId_isLoaded) {
     if (mus_pfparticleId_branch != 0) {
-      mus_pfparticleId_branch->GetEntry(index);
+      if (mus_pfparticleId_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_pfparticleId_branch does not exist!\n");
       exit(1);
@@ -12512,7 +12852,8 @@ const vector<int> &CMS3::mus_pfparticleId() {
 const unsigned int &CMS3::mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_LeadingLeg_version() {
   if (not mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_LeadingLeg_version_isLoaded) {
     if (mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_LeadingLeg_version_branch != 0) {
-      mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_LeadingLeg_version_branch->GetEntry(index);
+      if (mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_LeadingLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_LeadingLeg_version_branch does not exist!\n");
       exit(1);
@@ -12524,7 +12865,8 @@ const unsigned int &CMS3::mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_LeadingLeg_v
 const vector<int> &CMS3::mus_gfit_lostPixelHits() {
   if (not mus_gfit_lostPixelHits_isLoaded) {
     if (mus_gfit_lostPixelHits_branch != 0) {
-      mus_gfit_lostPixelHits_branch->GetEntry(index);
+      if (mus_gfit_lostPixelHits_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_gfit_lostPixelHits_branch does not exist!\n");
       exit(1);
@@ -12536,7 +12878,8 @@ const vector<int> &CMS3::mus_gfit_lostPixelHits() {
 const unsigned int &CMS3::mus_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_version() {
   if (not mus_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_version_isLoaded) {
     if (mus_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_version_branch != 0) {
-      mus_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_version_branch->GetEntry(index);
+      if (mus_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_version_branch does not exist!\n");
       exit(1);
@@ -12548,7 +12891,8 @@ const unsigned int &CMS3::mus_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_
 const vector<int> &CMS3::els_validHits() {
   if (not els_validHits_isLoaded) {
     if (els_validHits_branch != 0) {
-      els_validHits_branch->GetEntry(index);
+      if (els_validHits_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_validHits_branch does not exist!\n");
       exit(1);
@@ -12560,7 +12904,8 @@ const vector<int> &CMS3::els_validHits() {
 const vector<float> &CMS3::pfcands_dzAssociatedPV() {
   if (not pfcands_dzAssociatedPV_isLoaded) {
     if (pfcands_dzAssociatedPV_branch != 0) {
-      pfcands_dzAssociatedPV_branch->GetEntry(index);
+      if (pfcands_dzAssociatedPV_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfcands_dzAssociatedPV_branch does not exist!\n");
       exit(1);
@@ -12572,7 +12917,8 @@ const vector<float> &CMS3::pfcands_dzAssociatedPV() {
 const vector<vector<float> > &CMS3::photons_clusterDPhiToCentroid() {
   if (not photons_clusterDPhiToCentroid_isLoaded) {
     if (photons_clusterDPhiToCentroid_branch != 0) {
-      photons_clusterDPhiToCentroid_branch->GetEntry(index);
+      if (photons_clusterDPhiToCentroid_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_clusterDPhiToCentroid_branch does not exist!\n");
       exit(1);
@@ -12584,7 +12930,8 @@ const vector<vector<float> > &CMS3::photons_clusterDPhiToCentroid() {
 const vector<int> &CMS3::pfjets_partonFlavour() {
   if (not pfjets_partonFlavour_isLoaded) {
     if (pfjets_partonFlavour_branch != 0) {
-      pfjets_partonFlavour_branch->GetEntry(index);
+      if (pfjets_partonFlavour_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_partonFlavour_branch does not exist!\n");
       exit(1);
@@ -12596,7 +12943,8 @@ const vector<int> &CMS3::pfjets_partonFlavour() {
 const vector<float> &CMS3::photons_ntkIsoSolid04() {
   if (not photons_ntkIsoSolid04_isLoaded) {
     if (photons_ntkIsoSolid04_branch != 0) {
-      photons_ntkIsoSolid04_branch->GetEntry(index);
+      if (photons_ntkIsoSolid04_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_ntkIsoSolid04_branch does not exist!\n");
       exit(1);
@@ -12608,7 +12956,8 @@ const vector<float> &CMS3::photons_ntkIsoSolid04() {
 const vector<vector<int> > &CMS3::genps_lepdaughter_id() {
   if (not genps_lepdaughter_id_isLoaded) {
     if (genps_lepdaughter_id_branch != 0) {
-      genps_lepdaughter_id_branch->GetEntry(index);
+      if (genps_lepdaughter_id_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch genps_lepdaughter_id_branch does not exist!\n");
       exit(1);
@@ -12620,7 +12969,8 @@ const vector<vector<int> > &CMS3::genps_lepdaughter_id() {
 const bool &CMS3::hcalnoise_HasBadRBXRechitR45Tight() {
   if (not hcalnoise_HasBadRBXRechitR45Tight_isLoaded) {
     if (hcalnoise_HasBadRBXRechitR45Tight_branch != 0) {
-      hcalnoise_HasBadRBXRechitR45Tight_branch->GetEntry(index);
+      if (hcalnoise_HasBadRBXRechitR45Tight_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_HasBadRBXRechitR45Tight_branch does not exist!\n");
       exit(1);
@@ -12632,7 +12982,8 @@ const bool &CMS3::hcalnoise_HasBadRBXRechitR45Tight() {
 const vector<float> &CMS3::mus_ip3derr() {
   if (not mus_ip3derr_isLoaded) {
     if (mus_ip3derr_branch != 0) {
-      mus_ip3derr_branch->GetEntry(index);
+      if (mus_ip3derr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_ip3derr_branch does not exist!\n");
       exit(1);
@@ -12644,7 +12995,8 @@ const vector<float> &CMS3::mus_ip3derr() {
 const vector<float> &CMS3::els_etaErr() {
   if (not els_etaErr_isLoaded) {
     if (els_etaErr_branch != 0) {
-      els_etaErr_branch->GetEntry(index);
+      if (els_etaErr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_etaErr_branch does not exist!\n");
       exit(1);
@@ -12656,7 +13008,8 @@ const vector<float> &CMS3::els_etaErr() {
 const vector<vector<int> > &CMS3::pfjets_puppi_pfcandIndicies() {
   if (not pfjets_puppi_pfcandIndicies_isLoaded) {
     if (pfjets_puppi_pfcandIndicies_branch != 0) {
-      pfjets_puppi_pfcandIndicies_branch->GetEntry(index);
+      if (pfjets_puppi_pfcandIndicies_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_puppi_pfcandIndicies_branch does not exist!\n");
       exit(1);
@@ -12668,7 +13021,8 @@ const vector<vector<int> > &CMS3::pfjets_puppi_pfcandIndicies() {
 const vector<int> &CMS3::pfjets_puppi_neutralHadronMultiplicity() {
   if (not pfjets_puppi_neutralHadronMultiplicity_isLoaded) {
     if (pfjets_puppi_neutralHadronMultiplicity_branch != 0) {
-      pfjets_puppi_neutralHadronMultiplicity_branch->GetEntry(index);
+      if (pfjets_puppi_neutralHadronMultiplicity_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_puppi_neutralHadronMultiplicity_branch does not exist!\n");
       exit(1);
@@ -12680,7 +13034,8 @@ const vector<int> &CMS3::pfjets_puppi_neutralHadronMultiplicity() {
 const float &CMS3::evt_calometPhi() {
   if (not evt_calometPhi_isLoaded) {
     if (evt_calometPhi_branch != 0) {
-      evt_calometPhi_branch->GetEntry(index);
+      if (evt_calometPhi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_calometPhi_branch does not exist!\n");
       exit(1);
@@ -12692,7 +13047,8 @@ const float &CMS3::evt_calometPhi() {
 const vector<int> &CMS3::pfjets_muonMultiplicity() {
   if (not pfjets_muonMultiplicity_isLoaded) {
     if (pfjets_muonMultiplicity_branch != 0) {
-      pfjets_muonMultiplicity_branch->GetEntry(index);
+      if (pfjets_muonMultiplicity_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_muonMultiplicity_branch does not exist!\n");
       exit(1);
@@ -12704,7 +13060,8 @@ const vector<int> &CMS3::pfjets_muonMultiplicity() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::pfjets_p4() {
   if (not pfjets_p4_isLoaded) {
     if (pfjets_p4_branch != 0) {
-      pfjets_p4_branch->GetEntry(index);
+      if (pfjets_p4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_p4_branch does not exist!\n");
       exit(1);
@@ -12716,7 +13073,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::p
 const vector<unsigned int> &CMS3::mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_LeadingLeg() {
   if (not mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_LeadingLeg_isLoaded) {
     if (mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_LeadingLeg_branch != 0) {
-      mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_LeadingLeg_branch->GetEntry(index);
+      if (mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_LeadingLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_LeadingLeg_branch does not exist!\n");
       exit(1);
@@ -12728,7 +13086,8 @@ const vector<unsigned int> &CMS3::mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Leadin
 const vector<vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > > &CMS3::hlt_trigObjs_p4() {
   if (not hlt_trigObjs_p4_isLoaded) {
     if (hlt_trigObjs_p4_branch != 0) {
-      hlt_trigObjs_p4_branch->GetEntry(index);
+      if (hlt_trigObjs_p4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hlt_trigObjs_p4_branch does not exist!\n");
       exit(1);
@@ -12740,7 +13099,8 @@ const vector<vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > >
 const unsigned int &CMS3::els_HLT_Ele27_WP80_version() {
   if (not els_HLT_Ele27_WP80_version_isLoaded) {
     if (els_HLT_Ele27_WP80_version_branch != 0) {
-      els_HLT_Ele27_WP80_version_branch->GetEntry(index);
+      if (els_HLT_Ele27_WP80_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele27_WP80_version_branch does not exist!\n");
       exit(1);
@@ -12752,7 +13112,8 @@ const unsigned int &CMS3::els_HLT_Ele27_WP80_version() {
 const float &CMS3::evt_METToolbox_pfmetPhi() {
   if (not evt_METToolbox_pfmetPhi_isLoaded) {
     if (evt_METToolbox_pfmetPhi_branch != 0) {
-      evt_METToolbox_pfmetPhi_branch->GetEntry(index);
+      if (evt_METToolbox_pfmetPhi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_METToolbox_pfmetPhi_branch does not exist!\n");
       exit(1);
@@ -12764,7 +13125,8 @@ const float &CMS3::evt_METToolbox_pfmetPhi() {
 const vector<unsigned int> &CMS3::mus_HLT_Mu8_TrkIsoVVL() {
   if (not mus_HLT_Mu8_TrkIsoVVL_isLoaded) {
     if (mus_HLT_Mu8_TrkIsoVVL_branch != 0) {
-      mus_HLT_Mu8_TrkIsoVVL_branch->GetEntry(index);
+      if (mus_HLT_Mu8_TrkIsoVVL_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu8_TrkIsoVVL_branch does not exist!\n");
       exit(1);
@@ -12776,7 +13138,8 @@ const vector<unsigned int> &CMS3::mus_HLT_Mu8_TrkIsoVVL() {
 const vector<int> &CMS3::mus_bfit_nlayers3D() {
   if (not mus_bfit_nlayers3D_isLoaded) {
     if (mus_bfit_nlayers3D_branch != 0) {
-      mus_bfit_nlayers3D_branch->GetEntry(index);
+      if (mus_bfit_nlayers3D_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_bfit_nlayers3D_branch does not exist!\n");
       exit(1);
@@ -12788,7 +13151,8 @@ const vector<int> &CMS3::mus_bfit_nlayers3D() {
 const vector<unsigned int> &CMS3::els_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg() {
   if (not els_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg_isLoaded) {
     if (els_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg_branch != 0) {
-      els_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg_branch->GetEntry(index);
+      if (els_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg_branch does not exist!\n");
       exit(1);
@@ -12800,7 +13164,8 @@ const vector<unsigned int> &CMS3::els_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_
 const vector<float> &CMS3::els_e5x5() {
   if (not els_e5x5_isLoaded) {
     if (els_e5x5_branch != 0) {
-      els_e5x5_branch->GetEntry(index);
+      if (els_e5x5_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_e5x5_branch does not exist!\n");
       exit(1);
@@ -12812,7 +13177,8 @@ const vector<float> &CMS3::els_e5x5() {
 const int &CMS3::hcalnoise_numProblematicRBXs() {
   if (not hcalnoise_numProblematicRBXs_isLoaded) {
     if (hcalnoise_numProblematicRBXs_branch != 0) {
-      hcalnoise_numProblematicRBXs_branch->GetEntry(index);
+      if (hcalnoise_numProblematicRBXs_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_numProblematicRBXs_branch does not exist!\n");
       exit(1);
@@ -12824,7 +13190,8 @@ const int &CMS3::hcalnoise_numProblematicRBXs() {
 const float &CMS3::evt_bs_dxdz() {
   if (not evt_bs_dxdz_isLoaded) {
     if (evt_bs_dxdz_branch != 0) {
-      evt_bs_dxdz_branch->GetEntry(index);
+      if (evt_bs_dxdz_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_bs_dxdz_branch does not exist!\n");
       exit(1);
@@ -12836,7 +13203,8 @@ const float &CMS3::evt_bs_dxdz() {
 const vector<float> &CMS3::pfjets_mc3dr() {
   if (not pfjets_mc3dr_isLoaded) {
     if (pfjets_mc3dr_branch != 0) {
-      pfjets_mc3dr_branch->GetEntry(index);
+      if (pfjets_mc3dr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_mc3dr_branch does not exist!\n");
       exit(1);
@@ -12848,7 +13216,8 @@ const vector<float> &CMS3::pfjets_mc3dr() {
 const float &CMS3::hcalnoise_triangleNoiseSumEt() {
   if (not hcalnoise_triangleNoiseSumEt_isLoaded) {
     if (hcalnoise_triangleNoiseSumEt_branch != 0) {
-      hcalnoise_triangleNoiseSumEt_branch->GetEntry(index);
+      if (hcalnoise_triangleNoiseSumEt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_triangleNoiseSumEt_branch does not exist!\n");
       exit(1);
@@ -12860,7 +13229,8 @@ const float &CMS3::hcalnoise_triangleNoiseSumEt() {
 const vector<vector<float> > &CMS3::photons_clusterDEtaToSeed() {
   if (not photons_clusterDEtaToSeed_isLoaded) {
     if (photons_clusterDEtaToSeed_branch != 0) {
-      photons_clusterDEtaToSeed_branch->GetEntry(index);
+      if (photons_clusterDEtaToSeed_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_clusterDEtaToSeed_branch does not exist!\n");
       exit(1);
@@ -12872,7 +13242,8 @@ const vector<vector<float> > &CMS3::photons_clusterDEtaToSeed() {
 const vector<float> &CMS3::mus_etaErr() {
   if (not mus_etaErr_isLoaded) {
     if (mus_etaErr_branch != 0) {
-      mus_etaErr_branch->GetEntry(index);
+      if (mus_etaErr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_etaErr_branch does not exist!\n");
       exit(1);
@@ -12884,7 +13255,8 @@ const vector<float> &CMS3::mus_etaErr() {
 const ULong64_t &CMS3::evt_event() {
   if (not evt_event_isLoaded) {
     if (evt_event_branch != 0) {
-      evt_event_branch->GetEntry(index);
+      if (evt_event_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_event_branch does not exist!\n");
       exit(1);
@@ -12896,7 +13268,8 @@ const ULong64_t &CMS3::evt_event() {
 const vector<unsigned int> &CMS3::mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_TrailingLeg() {
   if (not mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_TrailingLeg_isLoaded) {
     if (mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_TrailingLeg_branch != 0) {
-      mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_TrailingLeg_branch->GetEntry(index);
+      if (mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_TrailingLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_TrailingLeg_branch does not exist!\n");
       exit(1);
@@ -12908,7 +13281,8 @@ const vector<unsigned int> &CMS3::mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_Trailin
 const vector<float> &CMS3::mus_gfit_qoverp() {
   if (not mus_gfit_qoverp_isLoaded) {
     if (mus_gfit_qoverp_branch != 0) {
-      mus_gfit_qoverp_branch->GetEntry(index);
+      if (mus_gfit_qoverp_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_gfit_qoverp_branch does not exist!\n");
       exit(1);
@@ -12920,7 +13294,8 @@ const vector<float> &CMS3::mus_gfit_qoverp() {
 const vector<TString> &CMS3::sparm_names() {
   if (not sparm_names_isLoaded) {
     if (sparm_names_branch != 0) {
-      sparm_names_branch->GetEntry(index);
+      if (sparm_names_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch sparm_names_branch does not exist!\n");
       exit(1);
@@ -12932,7 +13307,8 @@ const vector<TString> &CMS3::sparm_names() {
 const float &CMS3::evt_bs_Ywidth() {
   if (not evt_bs_Ywidth_isLoaded) {
     if (evt_bs_Ywidth_branch != 0) {
-      evt_bs_Ywidth_branch->GetEntry(index);
+      if (evt_bs_Ywidth_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_bs_Ywidth_branch does not exist!\n");
       exit(1);
@@ -12944,7 +13320,8 @@ const float &CMS3::evt_bs_Ywidth() {
 const vector<float> &CMS3::mus_dzPV() {
   if (not mus_dzPV_isLoaded) {
     if (mus_dzPV_branch != 0) {
-      mus_dzPV_branch->GetEntry(index);
+      if (mus_dzPV_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_dzPV_branch does not exist!\n");
       exit(1);
@@ -12956,7 +13333,8 @@ const vector<float> &CMS3::mus_dzPV() {
 const unsigned int &CMS3::els_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_version() {
   if (not els_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_version_isLoaded) {
     if (els_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_version_branch != 0) {
-      els_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_version_branch->GetEntry(index);
+      if (els_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_version_branch does not exist!\n");
       exit(1);
@@ -12968,7 +13346,8 @@ const unsigned int &CMS3::els_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronL
 const vector<float> &CMS3::mus_timeAtIpInOut() {
   if (not mus_timeAtIpInOut_isLoaded) {
     if (mus_timeAtIpInOut_branch != 0) {
-      mus_timeAtIpInOut_branch->GetEntry(index);
+      if (mus_timeAtIpInOut_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_timeAtIpInOut_branch does not exist!\n");
       exit(1);
@@ -12980,7 +13359,8 @@ const vector<float> &CMS3::mus_timeAtIpInOut() {
 const unsigned int &CMS3::photons_HLT_Photon30_R9Id90_HE10_IsoM_version() {
   if (not photons_HLT_Photon30_R9Id90_HE10_IsoM_version_isLoaded) {
     if (photons_HLT_Photon30_R9Id90_HE10_IsoM_version_branch != 0) {
-      photons_HLT_Photon30_R9Id90_HE10_IsoM_version_branch->GetEntry(index);
+      if (photons_HLT_Photon30_R9Id90_HE10_IsoM_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_HLT_Photon30_R9Id90_HE10_IsoM_version_branch does not exist!\n");
       exit(1);
@@ -12992,7 +13372,8 @@ const unsigned int &CMS3::photons_HLT_Photon30_R9Id90_HE10_IsoM_version() {
 const vector<unsigned int> &CMS3::mus_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg() {
   if (not mus_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_isLoaded) {
     if (mus_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_branch != 0) {
-      mus_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_branch->GetEntry(index);
+      if (mus_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_branch does not exist!\n");
       exit(1);
@@ -13004,7 +13385,8 @@ const vector<unsigned int> &CMS3::mus_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_I
 const unsigned int &CMS3::els_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_version() {
   if (not els_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_version_isLoaded) {
     if (els_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_version_branch != 0) {
-      els_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_version_branch->GetEntry(index);
+      if (els_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_version_branch does not exist!\n");
       exit(1);
@@ -13016,7 +13398,8 @@ const unsigned int &CMS3::els_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLe
 const bool &CMS3::filt_hcalStrip() {
   if (not filt_hcalStrip_isLoaded) {
     if (filt_hcalStrip_branch != 0) {
-      filt_hcalStrip_branch->GetEntry(index);
+      if (filt_hcalStrip_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch filt_hcalStrip_branch does not exist!\n");
       exit(1);
@@ -13028,7 +13411,8 @@ const bool &CMS3::filt_hcalStrip() {
 const vector<float> &CMS3::els_scSeedCryPhi() {
   if (not els_scSeedCryPhi_isLoaded) {
     if (els_scSeedCryPhi_branch != 0) {
-      els_scSeedCryPhi_branch->GetEntry(index);
+      if (els_scSeedCryPhi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_scSeedCryPhi_branch does not exist!\n");
       exit(1);
@@ -13040,7 +13424,8 @@ const vector<float> &CMS3::els_scSeedCryPhi() {
 const vector<float> &CMS3::photons_hcalIso03() {
   if (not photons_hcalIso03_isLoaded) {
     if (photons_hcalIso03_branch != 0) {
-      photons_hcalIso03_branch->GetEntry(index);
+      if (photons_hcalIso03_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_hcalIso03_branch does not exist!\n");
       exit(1);
@@ -13052,7 +13437,8 @@ const vector<float> &CMS3::photons_hcalIso03() {
 const vector<float> &CMS3::els_scSeedEta() {
   if (not els_scSeedEta_isLoaded) {
     if (els_scSeedEta_branch != 0) {
-      els_scSeedEta_branch->GetEntry(index);
+      if (els_scSeedEta_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_scSeedEta_branch does not exist!\n");
       exit(1);
@@ -13064,7 +13450,8 @@ const vector<float> &CMS3::els_scSeedEta() {
 const vector<float> &CMS3::pfjets_mass() {
   if (not pfjets_mass_isLoaded) {
     if (pfjets_mass_branch != 0) {
-      pfjets_mass_branch->GetEntry(index);
+      if (pfjets_mass_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_mass_branch does not exist!\n");
       exit(1);
@@ -13076,7 +13463,8 @@ const vector<float> &CMS3::pfjets_mass() {
 const vector<unsigned int> &CMS3::mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL() {
   if (not mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_isLoaded) {
     if (mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_branch != 0) {
-      mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_branch->GetEntry(index);
+      if (mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_branch does not exist!\n");
       exit(1);
@@ -13088,7 +13476,8 @@ const vector<unsigned int> &CMS3::mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL() {
 const vector<int> &CMS3::mus_qualityMask() {
   if (not mus_qualityMask_isLoaded) {
     if (mus_qualityMask_branch != 0) {
-      mus_qualityMask_branch->GetEntry(index);
+      if (mus_qualityMask_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_qualityMask_branch does not exist!\n");
       exit(1);
@@ -13100,7 +13489,8 @@ const vector<int> &CMS3::mus_qualityMask() {
 const vector<float> &CMS3::vtxs_xError() {
   if (not vtxs_xError_isLoaded) {
     if (vtxs_xError_branch != 0) {
-      vtxs_xError_branch->GetEntry(index);
+      if (vtxs_xError_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch vtxs_xError_branch does not exist!\n");
       exit(1);
@@ -13112,7 +13502,8 @@ const vector<float> &CMS3::vtxs_xError() {
 const unsigned int &CMS3::els_HLT_Ele17_Ele8_TrailingLeg_version() {
   if (not els_HLT_Ele17_Ele8_TrailingLeg_version_isLoaded) {
     if (els_HLT_Ele17_Ele8_TrailingLeg_version_branch != 0) {
-      els_HLT_Ele17_Ele8_TrailingLeg_version_branch->GetEntry(index);
+      if (els_HLT_Ele17_Ele8_TrailingLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele17_Ele8_TrailingLeg_version_branch does not exist!\n");
       exit(1);
@@ -13124,7 +13515,8 @@ const unsigned int &CMS3::els_HLT_Ele17_Ele8_TrailingLeg_version() {
 const unsigned int &CMS3::els_HLT_Ele23_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version() {
   if (not els_HLT_Ele23_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version_isLoaded) {
     if (els_HLT_Ele23_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version_branch != 0) {
-      els_HLT_Ele23_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version_branch->GetEntry(index);
+      if (els_HLT_Ele23_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele23_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version_branch does not exist!\n");
       exit(1);
@@ -13136,7 +13528,8 @@ const unsigned int &CMS3::els_HLT_Ele23_CaloIdM_TrackIdM_PFJet30_ElectronLeg_ver
 const vector<float> &CMS3::pfjets_mc_otherEnergy() {
   if (not pfjets_mc_otherEnergy_isLoaded) {
     if (pfjets_mc_otherEnergy_branch != 0) {
-      pfjets_mc_otherEnergy_branch->GetEntry(index);
+      if (pfjets_mc_otherEnergy_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_mc_otherEnergy_branch does not exist!\n");
       exit(1);
@@ -13148,7 +13541,8 @@ const vector<float> &CMS3::pfjets_mc_otherEnergy() {
 const unsigned int &CMS3::photons_HLT_Photon165_R9Id90_HE10_IsoM_version() {
   if (not photons_HLT_Photon165_R9Id90_HE10_IsoM_version_isLoaded) {
     if (photons_HLT_Photon165_R9Id90_HE10_IsoM_version_branch != 0) {
-      photons_HLT_Photon165_R9Id90_HE10_IsoM_version_branch->GetEntry(index);
+      if (photons_HLT_Photon165_R9Id90_HE10_IsoM_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_HLT_Photon165_R9Id90_HE10_IsoM_version_branch does not exist!\n");
       exit(1);
@@ -13160,7 +13554,8 @@ const unsigned int &CMS3::photons_HLT_Photon165_R9Id90_HE10_IsoM_version() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::mus_bfit_p4() {
   if (not mus_bfit_p4_isLoaded) {
     if (mus_bfit_p4_branch != 0) {
-      mus_bfit_p4_branch->GetEntry(index);
+      if (mus_bfit_p4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_bfit_p4_branch does not exist!\n");
       exit(1);
@@ -13172,7 +13567,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::m
 const vector<bool> &CMS3::pfcands_isStandAloneMuon() {
   if (not pfcands_isStandAloneMuon_isLoaded) {
     if (pfcands_isStandAloneMuon_branch != 0) {
-      pfcands_isStandAloneMuon_branch->GetEntry(index);
+      if (pfcands_isStandAloneMuon_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfcands_isStandAloneMuon_branch does not exist!\n");
       exit(1);
@@ -13184,7 +13580,8 @@ const vector<bool> &CMS3::pfcands_isStandAloneMuon() {
 const vector<int> &CMS3::ak8jets_nSubJets() {
   if (not ak8jets_nSubJets_isLoaded) {
     if (ak8jets_nSubJets_branch != 0) {
-      ak8jets_nSubJets_branch->GetEntry(index);
+      if (ak8jets_nSubJets_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_nSubJets_branch does not exist!\n");
       exit(1);
@@ -13196,7 +13593,8 @@ const vector<int> &CMS3::ak8jets_nSubJets() {
 const vector<float> &CMS3::pfjets_puppi_undoJEC() {
   if (not pfjets_puppi_undoJEC_isLoaded) {
     if (pfjets_puppi_undoJEC_branch != 0) {
-      pfjets_puppi_undoJEC_branch->GetEntry(index);
+      if (pfjets_puppi_undoJEC_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_puppi_undoJEC_branch does not exist!\n");
       exit(1);
@@ -13208,7 +13606,8 @@ const vector<float> &CMS3::pfjets_puppi_undoJEC() {
 const float &CMS3::hcalnoise_eventEMFraction() {
   if (not hcalnoise_eventEMFraction_isLoaded) {
     if (hcalnoise_eventEMFraction_branch != 0) {
-      hcalnoise_eventEMFraction_branch->GetEntry(index);
+      if (hcalnoise_eventEMFraction_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_eventEMFraction_branch does not exist!\n");
       exit(1);
@@ -13220,7 +13619,8 @@ const float &CMS3::hcalnoise_eventEMFraction() {
 const unsigned int &CMS3::els_HLT_Ele17_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version() {
   if (not els_HLT_Ele17_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version_isLoaded) {
     if (els_HLT_Ele17_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version_branch != 0) {
-      els_HLT_Ele17_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version_branch->GetEntry(index);
+      if (els_HLT_Ele17_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele17_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version_branch does not exist!\n");
       exit(1);
@@ -13232,7 +13632,8 @@ const unsigned int &CMS3::els_HLT_Ele17_CaloIdM_TrackIdM_PFJet30_ElectronLeg_ver
 const vector<int> &CMS3::photons_photonID_loose() {
   if (not photons_photonID_loose_isLoaded) {
     if (photons_photonID_loose_branch != 0) {
-      photons_photonID_loose_branch->GetEntry(index);
+      if (photons_photonID_loose_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_photonID_loose_branch does not exist!\n");
       exit(1);
@@ -13244,7 +13645,8 @@ const vector<int> &CMS3::photons_photonID_loose() {
 const vector<float> &CMS3::vtxs_ndof() {
   if (not vtxs_ndof_isLoaded) {
     if (vtxs_ndof_branch != 0) {
-      vtxs_ndof_branch->GetEntry(index);
+      if (vtxs_ndof_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch vtxs_ndof_branch does not exist!\n");
       exit(1);
@@ -13256,7 +13658,8 @@ const vector<float> &CMS3::vtxs_ndof() {
 const vector<float> &CMS3::mus_mass() {
   if (not mus_mass_isLoaded) {
     if (mus_mass_branch != 0) {
-      mus_mass_branch->GetEntry(index);
+      if (mus_mass_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_mass_branch does not exist!\n");
       exit(1);
@@ -13268,7 +13671,8 @@ const vector<float> &CMS3::mus_mass() {
 const vector<float> &CMS3::mus_miniIso_ch() {
   if (not mus_miniIso_ch_isLoaded) {
     if (mus_miniIso_ch_branch != 0) {
-      mus_miniIso_ch_branch->GetEntry(index);
+      if (mus_miniIso_ch_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_miniIso_ch_branch does not exist!\n");
       exit(1);
@@ -13280,7 +13684,8 @@ const vector<float> &CMS3::mus_miniIso_ch() {
 const vector<int> &CMS3::mus_iso05_ntrk() {
   if (not mus_iso05_ntrk_isLoaded) {
     if (mus_iso05_ntrk_branch != 0) {
-      mus_iso05_ntrk_branch->GetEntry(index);
+      if (mus_iso05_ntrk_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_iso05_ntrk_branch does not exist!\n");
       exit(1);
@@ -13292,7 +13697,8 @@ const vector<int> &CMS3::mus_iso05_ntrk() {
 const vector<int> &CMS3::mus_gfit_nlayersLost() {
   if (not mus_gfit_nlayersLost_isLoaded) {
     if (mus_gfit_nlayersLost_branch != 0) {
-      mus_gfit_nlayersLost_branch->GetEntry(index);
+      if (mus_gfit_nlayersLost_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_gfit_nlayersLost_branch does not exist!\n");
       exit(1);
@@ -13304,7 +13710,8 @@ const vector<int> &CMS3::mus_gfit_nlayersLost() {
 const float &CMS3::sparm_pdfWeight1() {
   if (not sparm_pdfWeight1_isLoaded) {
     if (sparm_pdfWeight1_branch != 0) {
-      sparm_pdfWeight1_branch->GetEntry(index);
+      if (sparm_pdfWeight1_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch sparm_pdfWeight1_branch does not exist!\n");
       exit(1);
@@ -13316,7 +13723,8 @@ const float &CMS3::sparm_pdfWeight1() {
 const unsigned int &CMS3::els_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_version() {
   if (not els_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_version_isLoaded) {
     if (els_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_version_branch != 0) {
-      els_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_version_branch->GetEntry(index);
+      if (els_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_version_branch does not exist!\n");
       exit(1);
@@ -13328,7 +13736,8 @@ const unsigned int &CMS3::els_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ
 const vector<float> &CMS3::photons_clusterMaxDRDPhi() {
   if (not photons_clusterMaxDRDPhi_isLoaded) {
     if (photons_clusterMaxDRDPhi_branch != 0) {
-      photons_clusterMaxDRDPhi_branch->GetEntry(index);
+      if (photons_clusterMaxDRDPhi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_clusterMaxDRDPhi_branch does not exist!\n");
       exit(1);
@@ -13340,7 +13749,8 @@ const vector<float> &CMS3::photons_clusterMaxDRDPhi() {
 const unsigned int &CMS3::mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg_version() {
   if (not mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg_version_isLoaded) {
     if (mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg_version_branch != 0) {
-      mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg_version_branch->GetEntry(index);
+      if (mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg_version_branch does not exist!\n");
       exit(1);
@@ -13352,7 +13762,8 @@ const unsigned int &CMS3::mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg_version() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::mus_mc_motherp4() {
   if (not mus_mc_motherp4_isLoaded) {
     if (mus_mc_motherp4_branch != 0) {
-      mus_mc_motherp4_branch->GetEntry(index);
+      if (mus_mc_motherp4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_mc_motherp4_branch does not exist!\n");
       exit(1);
@@ -13364,7 +13775,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::m
 const unsigned int &CMS3::mus_HLT_Mu50_version() {
   if (not mus_HLT_Mu50_version_isLoaded) {
     if (mus_HLT_Mu50_version_branch != 0) {
-      mus_HLT_Mu50_version_branch->GetEntry(index);
+      if (mus_HLT_Mu50_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu50_version_branch does not exist!\n");
       exit(1);
@@ -13376,7 +13788,8 @@ const unsigned int &CMS3::mus_HLT_Mu50_version() {
 const unsigned int &CMS3::mus_HLT_IsoMu24_version() {
   if (not mus_HLT_IsoMu24_version_isLoaded) {
     if (mus_HLT_IsoMu24_version_branch != 0) {
-      mus_HLT_IsoMu24_version_branch->GetEntry(index);
+      if (mus_HLT_IsoMu24_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_IsoMu24_version_branch does not exist!\n");
       exit(1);
@@ -13388,7 +13801,8 @@ const unsigned int &CMS3::mus_HLT_IsoMu24_version() {
 const vector<float> &CMS3::els_mcdr() {
   if (not els_mcdr_isLoaded) {
     if (els_mcdr_branch != 0) {
-      els_mcdr_branch->GetEntry(index);
+      if (els_mcdr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_mcdr_branch does not exist!\n");
       exit(1);
@@ -13400,7 +13814,8 @@ const vector<float> &CMS3::els_mcdr() {
 const vector<int> &CMS3::hyp_lt_index() {
   if (not hyp_lt_index_isLoaded) {
     if (hyp_lt_index_branch != 0) {
-      hyp_lt_index_branch->GetEntry(index);
+      if (hyp_lt_index_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hyp_lt_index_branch does not exist!\n");
       exit(1);
@@ -13412,7 +13827,8 @@ const vector<int> &CMS3::hyp_lt_index() {
 const float &CMS3::evt_pfmetPhi_PhotonEnUp() {
   if (not evt_pfmetPhi_PhotonEnUp_isLoaded) {
     if (evt_pfmetPhi_PhotonEnUp_branch != 0) {
-      evt_pfmetPhi_PhotonEnUp_branch->GetEntry(index);
+      if (evt_pfmetPhi_PhotonEnUp_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_pfmetPhi_PhotonEnUp_branch does not exist!\n");
       exit(1);
@@ -13424,7 +13840,8 @@ const float &CMS3::evt_pfmetPhi_PhotonEnUp() {
 const vector<int> &CMS3::photons_fiduciality() {
   if (not photons_fiduciality_isLoaded) {
     if (photons_fiduciality_branch != 0) {
-      photons_fiduciality_branch->GetEntry(index);
+      if (photons_fiduciality_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_fiduciality_branch does not exist!\n");
       exit(1);
@@ -13436,7 +13853,8 @@ const vector<int> &CMS3::photons_fiduciality() {
 const vector<int> &CMS3::mus_mcidx() {
   if (not mus_mcidx_isLoaded) {
     if (mus_mcidx_branch != 0) {
-      mus_mcidx_branch->GetEntry(index);
+      if (mus_mcidx_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_mcidx_branch does not exist!\n");
       exit(1);
@@ -13448,7 +13866,8 @@ const vector<int> &CMS3::mus_mcidx() {
 const vector<unsigned int> &CMS3::mus_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_LeadingLeg() {
   if (not mus_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_LeadingLeg_isLoaded) {
     if (mus_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_LeadingLeg_branch != 0) {
-      mus_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_LeadingLeg_branch->GetEntry(index);
+      if (mus_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_LeadingLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_LeadingLeg_branch does not exist!\n");
       exit(1);
@@ -13460,7 +13879,8 @@ const vector<unsigned int> &CMS3::mus_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_Le
 const vector<float> &CMS3::vtxs_zError() {
   if (not vtxs_zError_isLoaded) {
     if (vtxs_zError_branch != 0) {
-      vtxs_zError_branch->GetEntry(index);
+      if (vtxs_zError_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch vtxs_zError_branch does not exist!\n");
       exit(1);
@@ -13472,7 +13892,8 @@ const vector<float> &CMS3::vtxs_zError() {
 const vector<float> &CMS3::photonsscSeedRawEnergy() {
   if (not photonsscSeedRawEnergy_isLoaded) {
     if (photonsscSeedRawEnergy_branch != 0) {
-      photonsscSeedRawEnergy_branch->GetEntry(index);
+      if (photonsscSeedRawEnergy_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photonsscSeedRawEnergy_branch does not exist!\n");
       exit(1);
@@ -13484,7 +13905,8 @@ const vector<float> &CMS3::photonsscSeedRawEnergy() {
 const unsigned int &CMS3::mus_HLT_Mu8_version() {
   if (not mus_HLT_Mu8_version_isLoaded) {
     if (mus_HLT_Mu8_version_branch != 0) {
-      mus_HLT_Mu8_version_branch->GetEntry(index);
+      if (mus_HLT_Mu8_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu8_version_branch does not exist!\n");
       exit(1);
@@ -13496,7 +13918,8 @@ const unsigned int &CMS3::mus_HLT_Mu8_version() {
 const vector<int> &CMS3::els_category() {
   if (not els_category_isLoaded) {
     if (els_category_branch != 0) {
-      els_category_branch->GetEntry(index);
+      if (els_category_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_category_branch does not exist!\n");
       exit(1);
@@ -13508,7 +13931,8 @@ const vector<int> &CMS3::els_category() {
 const vector<float> &CMS3::photons_scSeedLeftRightAsym() {
   if (not photons_scSeedLeftRightAsym_isLoaded) {
     if (photons_scSeedLeftRightAsym_branch != 0) {
-      photons_scSeedLeftRightAsym_branch->GetEntry(index);
+      if (photons_scSeedLeftRightAsym_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_scSeedLeftRightAsym_branch does not exist!\n");
       exit(1);
@@ -13520,7 +13944,8 @@ const vector<float> &CMS3::photons_scSeedLeftRightAsym() {
 const float &CMS3::evt_pfmetPhi_ElectronEnUp() {
   if (not evt_pfmetPhi_ElectronEnUp_isLoaded) {
     if (evt_pfmetPhi_ElectronEnUp_branch != 0) {
-      evt_pfmetPhi_ElectronEnUp_branch->GetEntry(index);
+      if (evt_pfmetPhi_ElectronEnUp_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_pfmetPhi_ElectronEnUp_branch does not exist!\n");
       exit(1);
@@ -13532,7 +13957,8 @@ const float &CMS3::evt_pfmetPhi_ElectronEnUp() {
 const vector<float> &CMS3::mus_isoSumDRR04_pf_NeutralHadronEtHighThreshold() {
   if (not mus_isoSumDRR04_pf_NeutralHadronEtHighThreshold_isLoaded) {
     if (mus_isoSumDRR04_pf_NeutralHadronEtHighThreshold_branch != 0) {
-      mus_isoSumDRR04_pf_NeutralHadronEtHighThreshold_branch->GetEntry(index);
+      if (mus_isoSumDRR04_pf_NeutralHadronEtHighThreshold_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isoSumDRR04_pf_NeutralHadronEtHighThreshold_branch does not exist!\n");
       exit(1);
@@ -13544,7 +13970,8 @@ const vector<float> &CMS3::mus_isoSumDRR04_pf_NeutralHadronEtHighThreshold() {
 const vector<unsigned int> &CMS3::mus_HLT_IsoMu24_eta2p1() {
   if (not mus_HLT_IsoMu24_eta2p1_isLoaded) {
     if (mus_HLT_IsoMu24_eta2p1_branch != 0) {
-      mus_HLT_IsoMu24_eta2p1_branch->GetEntry(index);
+      if (mus_HLT_IsoMu24_eta2p1_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_IsoMu24_eta2p1_branch does not exist!\n");
       exit(1);
@@ -13556,7 +13983,8 @@ const vector<unsigned int> &CMS3::mus_HLT_IsoMu24_eta2p1() {
 const bool &CMS3::filt_cscBeamHaloTrkMuUnveto() {
   if (not filt_cscBeamHaloTrkMuUnveto_isLoaded) {
     if (filt_cscBeamHaloTrkMuUnveto_branch != 0) {
-      filt_cscBeamHaloTrkMuUnveto_branch->GetEntry(index);
+      if (filt_cscBeamHaloTrkMuUnveto_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch filt_cscBeamHaloTrkMuUnveto_branch does not exist!\n");
       exit(1);
@@ -13568,7 +13996,8 @@ const bool &CMS3::filt_cscBeamHaloTrkMuUnveto() {
 const vector<float> &CMS3::els_clustersRMSRawEnergy() {
   if (not els_clustersRMSRawEnergy_isLoaded) {
     if (els_clustersRMSRawEnergy_branch != 0) {
-      els_clustersRMSRawEnergy_branch->GetEntry(index);
+      if (els_clustersRMSRawEnergy_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_clustersRMSRawEnergy_branch does not exist!\n");
       exit(1);
@@ -13580,7 +14009,8 @@ const vector<float> &CMS3::els_clustersRMSRawEnergy() {
 const vector<int> &CMS3::mus_bfit_trk_charge() {
   if (not mus_bfit_trk_charge_isLoaded) {
     if (mus_bfit_trk_charge_branch != 0) {
-      mus_bfit_trk_charge_branch->GetEntry(index);
+      if (mus_bfit_trk_charge_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_bfit_trk_charge_branch does not exist!\n");
       exit(1);
@@ -13592,7 +14022,8 @@ const vector<int> &CMS3::mus_bfit_trk_charge() {
 const vector<int> &CMS3::mus_ecal_rawId() {
   if (not mus_ecal_rawId_isLoaded) {
     if (mus_ecal_rawId_branch != 0) {
-      mus_ecal_rawId_branch->GetEntry(index);
+      if (mus_ecal_rawId_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_ecal_rawId_branch does not exist!\n");
       exit(1);
@@ -13604,7 +14035,8 @@ const vector<int> &CMS3::mus_ecal_rawId() {
 const vector<float> &CMS3::photons_full5x5_sigmaIEtaIEta() {
   if (not photons_full5x5_sigmaIEtaIEta_isLoaded) {
     if (photons_full5x5_sigmaIEtaIEta_branch != 0) {
-      photons_full5x5_sigmaIEtaIEta_branch->GetEntry(index);
+      if (photons_full5x5_sigmaIEtaIEta_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_full5x5_sigmaIEtaIEta_branch does not exist!\n");
       exit(1);
@@ -13616,7 +14048,8 @@ const vector<float> &CMS3::photons_full5x5_sigmaIEtaIEta() {
 const float &CMS3::evt_pfmetPhi_UnclusteredEnUp() {
   if (not evt_pfmetPhi_UnclusteredEnUp_isLoaded) {
     if (evt_pfmetPhi_UnclusteredEnUp_branch != 0) {
-      evt_pfmetPhi_UnclusteredEnUp_branch->GetEntry(index);
+      if (evt_pfmetPhi_UnclusteredEnUp_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_pfmetPhi_UnclusteredEnUp_branch does not exist!\n");
       exit(1);
@@ -13628,7 +14061,8 @@ const float &CMS3::evt_pfmetPhi_UnclusteredEnUp() {
 const vector<float> &CMS3::photonsscSeedSigmaIphiIphi() {
   if (not photonsscSeedSigmaIphiIphi_isLoaded) {
     if (photonsscSeedSigmaIphiIphi_branch != 0) {
-      photonsscSeedSigmaIphiIphi_branch->GetEntry(index);
+      if (photonsscSeedSigmaIphiIphi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photonsscSeedSigmaIphiIphi_branch does not exist!\n");
       exit(1);
@@ -13640,7 +14074,8 @@ const vector<float> &CMS3::photonsscSeedSigmaIphiIphi() {
 const bool &CMS3::filt_metfilter() {
   if (not filt_metfilter_isLoaded) {
     if (filt_metfilter_branch != 0) {
-      filt_metfilter_branch->GetEntry(index);
+      if (filt_metfilter_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch filt_metfilter_branch does not exist!\n");
       exit(1);
@@ -13652,7 +14087,8 @@ const bool &CMS3::filt_metfilter() {
 const bool &CMS3::filt_badMuons() {
   if (not filt_badMuons_isLoaded) {
     if (filt_badMuons_branch != 0) {
-      filt_badMuons_branch->GetEntry(index);
+      if (filt_badMuons_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch filt_badMuons_branch does not exist!\n");
       exit(1);
@@ -13664,7 +14100,8 @@ const bool &CMS3::filt_badMuons() {
 const bool &CMS3::filt_duplicateMuons() {
   if (not filt_duplicateMuons_isLoaded) {
     if (filt_duplicateMuons_branch != 0) {
-      filt_duplicateMuons_branch->GetEntry(index);
+      if (filt_duplicateMuons_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch filt_duplicateMuons_branch does not exist!\n");
       exit(1);
@@ -13676,7 +14113,8 @@ const bool &CMS3::filt_duplicateMuons() {
 const bool &CMS3::filt_noBadMuons() {
   if (not filt_noBadMuons_isLoaded) {
     if (filt_noBadMuons_branch != 0) {
-      filt_noBadMuons_branch->GetEntry(index);
+      if (filt_noBadMuons_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch filt_noBadMuons_branch does not exist!\n");
       exit(1);
@@ -13688,7 +14126,8 @@ const bool &CMS3::filt_noBadMuons() {
 const vector<float> &CMS3::photonsscPhiWidth() {
   if (not photonsscPhiWidth_isLoaded) {
     if (photonsscPhiWidth_branch != 0) {
-      photonsscPhiWidth_branch->GetEntry(index);
+      if (photonsscPhiWidth_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photonsscPhiWidth_branch does not exist!\n");
       exit(1);
@@ -13700,7 +14139,8 @@ const vector<float> &CMS3::photonsscPhiWidth() {
 const float &CMS3::hcalnoise_TS4TS5NoiseSumEt() {
   if (not hcalnoise_TS4TS5NoiseSumEt_isLoaded) {
     if (hcalnoise_TS4TS5NoiseSumEt_branch != 0) {
-      hcalnoise_TS4TS5NoiseSumEt_branch->GetEntry(index);
+      if (hcalnoise_TS4TS5NoiseSumEt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_TS4TS5NoiseSumEt_branch does not exist!\n");
       exit(1);
@@ -13712,7 +14152,8 @@ const float &CMS3::hcalnoise_TS4TS5NoiseSumEt() {
 const float &CMS3::evt_puppi_pfmetPhi_ElectronEnDown() {
   if (not evt_puppi_pfmetPhi_ElectronEnDown_isLoaded) {
     if (evt_puppi_pfmetPhi_ElectronEnDown_branch != 0) {
-      evt_puppi_pfmetPhi_ElectronEnDown_branch->GetEntry(index);
+      if (evt_puppi_pfmetPhi_ElectronEnDown_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_puppi_pfmetPhi_ElectronEnDown_branch does not exist!\n");
       exit(1);
@@ -13724,7 +14165,8 @@ const float &CMS3::evt_puppi_pfmetPhi_ElectronEnDown() {
 const vector<vector<int> > &CMS3::ak8jets_pfcandIndicies() {
   if (not ak8jets_pfcandIndicies_isLoaded) {
     if (ak8jets_pfcandIndicies_branch != 0) {
-      ak8jets_pfcandIndicies_branch->GetEntry(index);
+      if (ak8jets_pfcandIndicies_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_pfcandIndicies_branch does not exist!\n");
       exit(1);
@@ -13736,7 +14178,8 @@ const vector<vector<int> > &CMS3::ak8jets_pfcandIndicies() {
 const vector<bool> &CMS3::els_conv_vtx_flag() {
   if (not els_conv_vtx_flag_isLoaded) {
     if (els_conv_vtx_flag_branch != 0) {
-      els_conv_vtx_flag_branch->GetEntry(index);
+      if (els_conv_vtx_flag_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_conv_vtx_flag_branch does not exist!\n");
       exit(1);
@@ -13748,7 +14191,8 @@ const vector<bool> &CMS3::els_conv_vtx_flag() {
 const vector<int> &CMS3::els_passLooseId() {
   if (not els_passLooseId_isLoaded) {
     if (els_passLooseId_branch != 0) {
-      els_passLooseId_branch->GetEntry(index);
+      if (els_passLooseId_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_passLooseId_branch does not exist!\n");
       exit(1);
@@ -13760,7 +14204,8 @@ const vector<int> &CMS3::els_passLooseId() {
 const vector<int> &CMS3::pfjets_METToolbox_photonMultiplicity() {
   if (not pfjets_METToolbox_photonMultiplicity_isLoaded) {
     if (pfjets_METToolbox_photonMultiplicity_branch != 0) {
-      pfjets_METToolbox_photonMultiplicity_branch->GetEntry(index);
+      if (pfjets_METToolbox_photonMultiplicity_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_METToolbox_photonMultiplicity_branch does not exist!\n");
       exit(1);
@@ -13772,7 +14217,8 @@ const vector<int> &CMS3::pfjets_METToolbox_photonMultiplicity() {
 const bool &CMS3::filt_trkPOGFilters() {
   if (not filt_trkPOGFilters_isLoaded) {
     if (filt_trkPOGFilters_branch != 0) {
-      filt_trkPOGFilters_branch->GetEntry(index);
+      if (filt_trkPOGFilters_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch filt_trkPOGFilters_branch does not exist!\n");
       exit(1);
@@ -13784,7 +14230,8 @@ const bool &CMS3::filt_trkPOGFilters() {
 const vector<bool> &CMS3::pfcands_isGlobalMuon() {
   if (not pfcands_isGlobalMuon_isLoaded) {
     if (pfcands_isGlobalMuon_branch != 0) {
-      pfcands_isGlobalMuon_branch->GetEntry(index);
+      if (pfcands_isGlobalMuon_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfcands_isGlobalMuon_branch does not exist!\n");
       exit(1);
@@ -13796,7 +14243,8 @@ const vector<bool> &CMS3::pfcands_isGlobalMuon() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::photons_mc_motherp4() {
   if (not photons_mc_motherp4_isLoaded) {
     if (photons_mc_motherp4_branch != 0) {
-      photons_mc_motherp4_branch->GetEntry(index);
+      if (photons_mc_motherp4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_mc_motherp4_branch does not exist!\n");
       exit(1);
@@ -13808,7 +14256,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::p
 const vector<int> &CMS3::mus_gfit_validHits() {
   if (not mus_gfit_validHits_isLoaded) {
     if (mus_gfit_validHits_branch != 0) {
-      mus_gfit_validHits_branch->GetEntry(index);
+      if (mus_gfit_validHits_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_gfit_validHits_branch does not exist!\n");
       exit(1);
@@ -13820,7 +14269,8 @@ const vector<int> &CMS3::mus_gfit_validHits() {
 const vector<int> &CMS3::mus_charge() {
   if (not mus_charge_isLoaded) {
     if (mus_charge_branch != 0) {
-      mus_charge_branch->GetEntry(index);
+      if (mus_charge_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_charge_branch does not exist!\n");
       exit(1);
@@ -13832,7 +14282,8 @@ const vector<int> &CMS3::mus_charge() {
 const bool &CMS3::filt_chargedHadronTrackResolution() {
   if (not filt_chargedHadronTrackResolution_isLoaded) {
     if (filt_chargedHadronTrackResolution_branch != 0) {
-      filt_chargedHadronTrackResolution_branch->GetEntry(index);
+      if (filt_chargedHadronTrackResolution_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch filt_chargedHadronTrackResolution_branch does not exist!\n");
       exit(1);
@@ -13844,7 +14295,8 @@ const bool &CMS3::filt_chargedHadronTrackResolution() {
 const vector<float> &CMS3::photons_scSeedCryIy() {
   if (not photons_scSeedCryIy_isLoaded) {
     if (photons_scSeedCryIy_branch != 0) {
-      photons_scSeedCryIy_branch->GetEntry(index);
+      if (photons_scSeedCryIy_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_scSeedCryIy_branch does not exist!\n");
       exit(1);
@@ -13856,7 +14308,8 @@ const vector<float> &CMS3::photons_scSeedCryIy() {
 const vector<float> &CMS3::ak8jets_trimmedMass() {
   if (not ak8jets_trimmedMass_isLoaded) {
     if (ak8jets_trimmedMass_branch != 0) {
-      ak8jets_trimmedMass_branch->GetEntry(index);
+      if (ak8jets_trimmedMass_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_trimmedMass_branch does not exist!\n");
       exit(1);
@@ -13868,7 +14321,8 @@ const vector<float> &CMS3::ak8jets_trimmedMass() {
 const vector<int> &CMS3::els_isTrackerDriven() {
   if (not els_isTrackerDriven_isLoaded) {
     if (els_isTrackerDriven_branch != 0) {
-      els_isTrackerDriven_branch->GetEntry(index);
+      if (els_isTrackerDriven_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_isTrackerDriven_branch does not exist!\n");
       exit(1);
@@ -13880,7 +14334,8 @@ const vector<int> &CMS3::els_isTrackerDriven() {
 const float &CMS3::evt_pfmet_UnclusteredEnUp() {
   if (not evt_pfmet_UnclusteredEnUp_isLoaded) {
     if (evt_pfmet_UnclusteredEnUp_branch != 0) {
-      evt_pfmet_UnclusteredEnUp_branch->GetEntry(index);
+      if (evt_pfmet_UnclusteredEnUp_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_pfmet_UnclusteredEnUp_branch does not exist!\n");
       exit(1);
@@ -13892,7 +14347,8 @@ const float &CMS3::evt_pfmet_UnclusteredEnUp() {
 const vector<bool> &CMS3::photons_passElectronVeto() {
   if (not photons_passElectronVeto_isLoaded) {
     if (photons_passElectronVeto_branch != 0) {
-      photons_passElectronVeto_branch->GetEntry(index);
+      if (photons_passElectronVeto_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_passElectronVeto_branch does not exist!\n");
       exit(1);
@@ -13904,7 +14360,8 @@ const vector<bool> &CMS3::photons_passElectronVeto() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::photons_mc_p4() {
   if (not photons_mc_p4_isLoaded) {
     if (photons_mc_p4_branch != 0) {
-      photons_mc_p4_branch->GetEntry(index);
+      if (photons_mc_p4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_mc_p4_branch does not exist!\n");
       exit(1);
@@ -13916,7 +14373,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::p
 const vector<float> &CMS3::mus_bfit_chi2() {
   if (not mus_bfit_chi2_isLoaded) {
     if (mus_bfit_chi2_branch != 0) {
-      mus_bfit_chi2_branch->GetEntry(index);
+      if (mus_bfit_chi2_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_bfit_chi2_branch does not exist!\n");
       exit(1);
@@ -13928,7 +14386,8 @@ const vector<float> &CMS3::mus_bfit_chi2() {
 const vector<int> &CMS3::mus_gfit_validPixelHits() {
   if (not mus_gfit_validPixelHits_isLoaded) {
     if (mus_gfit_validPixelHits_branch != 0) {
-      mus_gfit_validPixelHits_branch->GetEntry(index);
+      if (mus_gfit_validPixelHits_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_gfit_validPixelHits_branch does not exist!\n");
       exit(1);
@@ -13940,7 +14399,8 @@ const vector<int> &CMS3::mus_gfit_validPixelHits() {
 const vector<unsigned int> &CMS3::photons_HLT_Photon50_R9Id90_HE10_IsoM() {
   if (not photons_HLT_Photon50_R9Id90_HE10_IsoM_isLoaded) {
     if (photons_HLT_Photon50_R9Id90_HE10_IsoM_branch != 0) {
-      photons_HLT_Photon50_R9Id90_HE10_IsoM_branch->GetEntry(index);
+      if (photons_HLT_Photon50_R9Id90_HE10_IsoM_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_HLT_Photon50_R9Id90_HE10_IsoM_branch does not exist!\n");
       exit(1);
@@ -13952,7 +14412,8 @@ const vector<unsigned int> &CMS3::photons_HLT_Photon50_R9Id90_HE10_IsoM() {
 const vector<float> &CMS3::mus_isoMeanDRR03_pf_PhotonEtHighThreshold() {
   if (not mus_isoMeanDRR03_pf_PhotonEtHighThreshold_isLoaded) {
     if (mus_isoMeanDRR03_pf_PhotonEtHighThreshold_branch != 0) {
-      mus_isoMeanDRR03_pf_PhotonEtHighThreshold_branch->GetEntry(index);
+      if (mus_isoMeanDRR03_pf_PhotonEtHighThreshold_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isoMeanDRR03_pf_PhotonEtHighThreshold_branch does not exist!\n");
       exit(1);
@@ -13964,7 +14425,8 @@ const vector<float> &CMS3::mus_isoMeanDRR03_pf_PhotonEtHighThreshold() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::pfjets_mc_motherp4() {
   if (not pfjets_mc_motherp4_isLoaded) {
     if (pfjets_mc_motherp4_branch != 0) {
-      pfjets_mc_motherp4_branch->GetEntry(index);
+      if (pfjets_mc_motherp4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_mc_motherp4_branch does not exist!\n");
       exit(1);
@@ -13976,7 +14438,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::p
 const unsigned int &CMS3::mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_TrailingLeg_version() {
   if (not mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_TrailingLeg_version_isLoaded) {
     if (mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_TrailingLeg_version_branch != 0) {
-      mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_TrailingLeg_version_branch->GetEntry(index);
+      if (mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_TrailingLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_TrailingLeg_version_branch does not exist!\n");
       exit(1);
@@ -13988,7 +14451,8 @@ const unsigned int &CMS3::mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_TrailingLeg_ver
 const float &CMS3::evt_puppi_pfmetPhi() {
   if (not evt_puppi_pfmetPhi_isLoaded) {
     if (evt_puppi_pfmetPhi_branch != 0) {
-      evt_puppi_pfmetPhi_branch->GetEntry(index);
+      if (evt_puppi_pfmetPhi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_puppi_pfmetPhi_branch does not exist!\n");
       exit(1);
@@ -14000,7 +14464,8 @@ const float &CMS3::evt_puppi_pfmetPhi() {
 const float &CMS3::hcalnoise_GetTotalCalibCharge() {
   if (not hcalnoise_GetTotalCalibCharge_isLoaded) {
     if (hcalnoise_GetTotalCalibCharge_branch != 0) {
-      hcalnoise_GetTotalCalibCharge_branch->GetEntry(index);
+      if (hcalnoise_GetTotalCalibCharge_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_GetTotalCalibCharge_branch does not exist!\n");
       exit(1);
@@ -14012,7 +14477,8 @@ const float &CMS3::hcalnoise_GetTotalCalibCharge() {
 const vector<int> &CMS3::mus_bfit_qualityMask() {
   if (not mus_bfit_qualityMask_isLoaded) {
     if (mus_bfit_qualityMask_branch != 0) {
-      mus_bfit_qualityMask_branch->GetEntry(index);
+      if (mus_bfit_qualityMask_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_bfit_qualityMask_branch does not exist!\n");
       exit(1);
@@ -14024,7 +14490,8 @@ const vector<int> &CMS3::mus_bfit_qualityMask() {
 const vector<float> &CMS3::photons_sigmaIEtaIEta() {
   if (not photons_sigmaIEtaIEta_isLoaded) {
     if (photons_sigmaIEtaIEta_branch != 0) {
-      photons_sigmaIEtaIEta_branch->GetEntry(index);
+      if (photons_sigmaIEtaIEta_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_sigmaIEtaIEta_branch does not exist!\n");
       exit(1);
@@ -14036,7 +14503,8 @@ const vector<float> &CMS3::photons_sigmaIEtaIEta() {
 const vector<float> &CMS3::els_d0corr() {
   if (not els_d0corr_isLoaded) {
     if (els_d0corr_branch != 0) {
-      els_d0corr_branch->GetEntry(index);
+      if (els_d0corr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_d0corr_branch does not exist!\n");
       exit(1);
@@ -14048,7 +14516,8 @@ const vector<float> &CMS3::els_d0corr() {
 const vector<float> &CMS3::mus_bfit_z0Err() {
   if (not mus_bfit_z0Err_isLoaded) {
     if (mus_bfit_z0Err_branch != 0) {
-      mus_bfit_z0Err_branch->GetEntry(index);
+      if (mus_bfit_z0Err_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_bfit_z0Err_branch does not exist!\n");
       exit(1);
@@ -14060,7 +14529,8 @@ const vector<float> &CMS3::mus_bfit_z0Err() {
 const vector<unsigned int> &CMS3::els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_LeadingLeg() {
   if (not els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_LeadingLeg_isLoaded) {
     if (els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_LeadingLeg_branch != 0) {
-      els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_LeadingLeg_branch->GetEntry(index);
+      if (els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_LeadingLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_LeadingLeg_branch does not exist!\n");
       exit(1);
@@ -14072,7 +14542,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_Lea
 const vector<float> &CMS3::els_e5x5_full5x5() {
   if (not els_e5x5_full5x5_isLoaded) {
     if (els_e5x5_full5x5_branch != 0) {
-      els_e5x5_full5x5_branch->GetEntry(index);
+      if (els_e5x5_full5x5_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_e5x5_full5x5_branch does not exist!\n");
       exit(1);
@@ -14084,7 +14555,8 @@ const vector<float> &CMS3::els_e5x5_full5x5() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::pfjets_puppi_p4() {
   if (not pfjets_puppi_p4_isLoaded) {
     if (pfjets_puppi_p4_branch != 0) {
-      pfjets_puppi_p4_branch->GetEntry(index);
+      if (pfjets_puppi_p4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_puppi_p4_branch does not exist!\n");
       exit(1);
@@ -14096,7 +14568,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::p
 const vector<float> &CMS3::photons_hcalDepth1TowerSumEtBcConeDR03() {
   if (not photons_hcalDepth1TowerSumEtBcConeDR03_isLoaded) {
     if (photons_hcalDepth1TowerSumEtBcConeDR03_branch != 0) {
-      photons_hcalDepth1TowerSumEtBcConeDR03_branch->GetEntry(index);
+      if (photons_hcalDepth1TowerSumEtBcConeDR03_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_hcalDepth1TowerSumEtBcConeDR03_branch does not exist!\n");
       exit(1);
@@ -14108,7 +14581,8 @@ const vector<float> &CMS3::photons_hcalDepth1TowerSumEtBcConeDR03() {
 const vector<vector<float> > &CMS3::photons_clusterCalibEnergy() {
   if (not photons_clusterCalibEnergy_isLoaded) {
     if (photons_clusterCalibEnergy_branch != 0) {
-      photons_clusterCalibEnergy_branch->GetEntry(index);
+      if (photons_clusterCalibEnergy_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_clusterCalibEnergy_branch does not exist!\n");
       exit(1);
@@ -14120,7 +14594,8 @@ const vector<vector<float> > &CMS3::photons_clusterCalibEnergy() {
 const vector<int> &CMS3::pfjets_mc_gpidx() {
   if (not pfjets_mc_gpidx_isLoaded) {
     if (pfjets_mc_gpidx_branch != 0) {
-      pfjets_mc_gpidx_branch->GetEntry(index);
+      if (pfjets_mc_gpidx_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_mc_gpidx_branch does not exist!\n");
       exit(1);
@@ -14132,7 +14607,8 @@ const vector<int> &CMS3::pfjets_mc_gpidx() {
 const unsigned int &CMS3::els_HLT_Ele12_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version() {
   if (not els_HLT_Ele12_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version_isLoaded) {
     if (els_HLT_Ele12_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version_branch != 0) {
-      els_HLT_Ele12_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version_branch->GetEntry(index);
+      if (els_HLT_Ele12_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele12_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version_branch does not exist!\n");
       exit(1);
@@ -14144,7 +14620,8 @@ const unsigned int &CMS3::els_HLT_Ele12_CaloIdM_TrackIdM_PFJet30_ElectronLeg_ver
 const vector<int> &CMS3::svs_nTrks() {
   if (not svs_nTrks_isLoaded) {
     if (svs_nTrks_branch != 0) {
-      svs_nTrks_branch->GetEntry(index);
+      if (svs_nTrks_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch svs_nTrks_branch does not exist!\n");
       exit(1);
@@ -14156,7 +14633,8 @@ const vector<int> &CMS3::svs_nTrks() {
 const vector<bool> &CMS3::els_passingMvaPreselection() {
   if (not els_passingMvaPreselection_isLoaded) {
     if (els_passingMvaPreselection_branch != 0) {
-      els_passingMvaPreselection_branch->GetEntry(index);
+      if (els_passingMvaPreselection_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_passingMvaPreselection_branch does not exist!\n");
       exit(1);
@@ -14168,7 +14646,8 @@ const vector<bool> &CMS3::els_passingMvaPreselection() {
 const vector<float> &CMS3::mus_isoMeanDRR04_pf_PUPt() {
   if (not mus_isoMeanDRR04_pf_PUPt_isLoaded) {
     if (mus_isoMeanDRR04_pf_PUPt_branch != 0) {
-      mus_isoMeanDRR04_pf_PUPt_branch->GetEntry(index);
+      if (mus_isoMeanDRR04_pf_PUPt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isoMeanDRR04_pf_PUPt_branch does not exist!\n");
       exit(1);
@@ -14180,7 +14659,8 @@ const vector<float> &CMS3::mus_isoMeanDRR04_pf_PUPt() {
 const vector<float> &CMS3::mus_gfit_z0Err() {
   if (not mus_gfit_z0Err_isLoaded) {
     if (mus_gfit_z0Err_branch != 0) {
-      mus_gfit_z0Err_branch->GetEntry(index);
+      if (mus_gfit_z0Err_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_gfit_z0Err_branch does not exist!\n");
       exit(1);
@@ -14192,7 +14672,8 @@ const vector<float> &CMS3::mus_gfit_z0Err() {
 const vector<vector<int> > &CMS3::convs_tkalgo() {
   if (not convs_tkalgo_isLoaded) {
     if (convs_tkalgo_branch != 0) {
-      convs_tkalgo_branch->GetEntry(index);
+      if (convs_tkalgo_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch convs_tkalgo_branch does not exist!\n");
       exit(1);
@@ -14204,7 +14685,8 @@ const vector<vector<int> > &CMS3::convs_tkalgo() {
 const vector<int> &CMS3::photons_isEB() {
   if (not photons_isEB_isLoaded) {
     if (photons_isEB_branch != 0) {
-      photons_isEB_branch->GetEntry(index);
+      if (photons_isEB_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_isEB_branch does not exist!\n");
       exit(1);
@@ -14216,7 +14698,8 @@ const vector<int> &CMS3::photons_isEB() {
 const vector<TString> &CMS3::evt_dataset() {
   if (not evt_dataset_isLoaded) {
     if (evt_dataset_branch != 0) {
-      evt_dataset_branch->GetEntry(index);
+      if (evt_dataset_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_dataset_branch does not exist!\n");
       exit(1);
@@ -14228,7 +14711,8 @@ const vector<TString> &CMS3::evt_dataset() {
 const float &CMS3::evt_pfmet_UnclusteredEnDown() {
   if (not evt_pfmet_UnclusteredEnDown_isLoaded) {
     if (evt_pfmet_UnclusteredEnDown_branch != 0) {
-      evt_pfmet_UnclusteredEnDown_branch->GetEntry(index);
+      if (evt_pfmet_UnclusteredEnDown_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_pfmet_UnclusteredEnDown_branch does not exist!\n");
       exit(1);
@@ -14240,7 +14724,8 @@ const float &CMS3::evt_pfmet_UnclusteredEnDown() {
 const vector<float> &CMS3::els_ecalEnergyError() {
   if (not els_ecalEnergyError_isLoaded) {
     if (els_ecalEnergyError_branch != 0) {
-      els_ecalEnergyError_branch->GetEntry(index);
+      if (els_ecalEnergyError_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_ecalEnergyError_branch does not exist!\n");
       exit(1);
@@ -14252,7 +14737,8 @@ const vector<float> &CMS3::els_ecalEnergyError() {
 const float &CMS3::hcalnoise_max10GeVHitTime() {
   if (not hcalnoise_max10GeVHitTime_isLoaded) {
     if (hcalnoise_max10GeVHitTime_branch != 0) {
-      hcalnoise_max10GeVHitTime_branch->GetEntry(index);
+      if (hcalnoise_max10GeVHitTime_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_max10GeVHitTime_branch does not exist!\n");
       exit(1);
@@ -14264,7 +14750,8 @@ const float &CMS3::hcalnoise_max10GeVHitTime() {
 const vector<int> &CMS3::els_passMediumId() {
   if (not els_passMediumId_isLoaded) {
     if (els_passMediumId_branch != 0) {
-      els_passMediumId_branch->GetEntry(index);
+      if (els_passMediumId_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_passMediumId_branch does not exist!\n");
       exit(1);
@@ -14276,7 +14763,8 @@ const vector<int> &CMS3::els_passMediumId() {
 const vector<float> &CMS3::mus_gfit_d0corr() {
   if (not mus_gfit_d0corr_isLoaded) {
     if (mus_gfit_d0corr_branch != 0) {
-      mus_gfit_d0corr_branch->GetEntry(index);
+      if (mus_gfit_d0corr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_gfit_d0corr_branch does not exist!\n");
       exit(1);
@@ -14288,7 +14776,8 @@ const vector<float> &CMS3::mus_gfit_d0corr() {
 const vector<float> &CMS3::mus_miniIso_db() {
   if (not mus_miniIso_db_isLoaded) {
     if (mus_miniIso_db_branch != 0) {
-      mus_miniIso_db_branch->GetEntry(index);
+      if (mus_miniIso_db_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_miniIso_db_branch does not exist!\n");
       exit(1);
@@ -14300,7 +14789,8 @@ const vector<float> &CMS3::mus_miniIso_db() {
 const vector<int> &CMS3::mus_sta_nlayers3D() {
   if (not mus_sta_nlayers3D_isLoaded) {
     if (mus_sta_nlayers3D_branch != 0) {
-      mus_sta_nlayers3D_branch->GetEntry(index);
+      if (mus_sta_nlayers3D_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_sta_nlayers3D_branch does not exist!\n");
       exit(1);
@@ -14312,7 +14802,8 @@ const vector<int> &CMS3::mus_sta_nlayers3D() {
 const int &CMS3::hcalnoise_maxRBXHits() {
   if (not hcalnoise_maxRBXHits_isLoaded) {
     if (hcalnoise_maxRBXHits_branch != 0) {
-      hcalnoise_maxRBXHits_branch->GetEntry(index);
+      if (hcalnoise_maxRBXHits_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_maxRBXHits_branch does not exist!\n");
       exit(1);
@@ -14324,7 +14815,8 @@ const int &CMS3::hcalnoise_maxRBXHits() {
 const vector<int> &CMS3::pfjets_puppi_hadronFlavour() {
   if (not pfjets_puppi_hadronFlavour_isLoaded) {
     if (pfjets_puppi_hadronFlavour_branch != 0) {
-      pfjets_puppi_hadronFlavour_branch->GetEntry(index);
+      if (pfjets_puppi_hadronFlavour_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_puppi_hadronFlavour_branch does not exist!\n");
       exit(1);
@@ -14336,7 +14828,8 @@ const vector<int> &CMS3::pfjets_puppi_hadronFlavour() {
 const vector<int> &CMS3::mus_bfit_lostPixelHits() {
   if (not mus_bfit_lostPixelHits_isLoaded) {
     if (mus_bfit_lostPixelHits_branch != 0) {
-      mus_bfit_lostPixelHits_branch->GetEntry(index);
+      if (mus_bfit_lostPixelHits_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_bfit_lostPixelHits_branch does not exist!\n");
       exit(1);
@@ -14348,7 +14841,8 @@ const vector<int> &CMS3::mus_bfit_lostPixelHits() {
 const vector<float> &CMS3::els_sigmaIPhiIPhi() {
   if (not els_sigmaIPhiIPhi_isLoaded) {
     if (els_sigmaIPhiIPhi_branch != 0) {
-      els_sigmaIPhiIPhi_branch->GetEntry(index);
+      if (els_sigmaIPhiIPhi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_sigmaIPhiIPhi_branch does not exist!\n");
       exit(1);
@@ -14360,7 +14854,8 @@ const vector<float> &CMS3::els_sigmaIPhiIPhi() {
 const unsigned int &CMS3::mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_TrailingLeg_version() {
   if (not mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_TrailingLeg_version_isLoaded) {
     if (mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_TrailingLeg_version_branch != 0) {
-      mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_TrailingLeg_version_branch->GetEntry(index);
+      if (mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_TrailingLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_TrailingLeg_version_branch does not exist!\n");
       exit(1);
@@ -14372,7 +14867,8 @@ const unsigned int &CMS3::mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_TrailingLeg_versi
 const vector<float> &CMS3::els_VIDSpring16HZZMvaValue() {
   if (not els_VIDSpring16HZZMvaValue_isLoaded) {
     if (els_VIDSpring16HZZMvaValue_branch != 0) {
-      els_VIDSpring16HZZMvaValue_branch->GetEntry(index);
+      if (els_VIDSpring16HZZMvaValue_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_VIDSpring16HZZMvaValue_branch does not exist!\n");
       exit(1);
@@ -14384,7 +14880,8 @@ const vector<float> &CMS3::els_VIDSpring16HZZMvaValue() {
 const vector<float> &CMS3::els_scSeedEmax() {
   if (not els_scSeedEmax_isLoaded) {
     if (els_scSeedEmax_branch != 0) {
-      els_scSeedEmax_branch->GetEntry(index);
+      if (els_scSeedEmax_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_scSeedEmax_branch does not exist!\n");
       exit(1);
@@ -14396,7 +14893,8 @@ const vector<float> &CMS3::els_scSeedEmax() {
 const vector<float> &CMS3::pfjets_neutralHadronE() {
   if (not pfjets_neutralHadronE_isLoaded) {
     if (pfjets_neutralHadronE_branch != 0) {
-      pfjets_neutralHadronE_branch->GetEntry(index);
+      if (pfjets_neutralHadronE_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_neutralHadronE_branch does not exist!\n");
       exit(1);
@@ -14408,7 +14906,8 @@ const vector<float> &CMS3::pfjets_neutralHadronE() {
 const vector<float> &CMS3::photons_clustersMeanRawEnergy() {
   if (not photons_clustersMeanRawEnergy_isLoaded) {
     if (photons_clustersMeanRawEnergy_branch != 0) {
-      photons_clustersMeanRawEnergy_branch->GetEntry(index);
+      if (photons_clustersMeanRawEnergy_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_clustersMeanRawEnergy_branch does not exist!\n");
       exit(1);
@@ -14420,7 +14919,8 @@ const vector<float> &CMS3::photons_clustersMeanRawEnergy() {
 const vector<float> &CMS3::photons_scSeedCryIeta() {
   if (not photons_scSeedCryIeta_isLoaded) {
     if (photons_scSeedCryIeta_branch != 0) {
-      photons_scSeedCryIeta_branch->GetEntry(index);
+      if (photons_scSeedCryIeta_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_scSeedCryIeta_branch does not exist!\n");
       exit(1);
@@ -14432,7 +14932,8 @@ const vector<float> &CMS3::photons_scSeedCryIeta() {
 const vector<float> &CMS3::els_hOverE() {
   if (not els_hOverE_isLoaded) {
     if (els_hOverE_branch != 0) {
-      els_hOverE_branch->GetEntry(index);
+      if (els_hOverE_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_hOverE_branch does not exist!\n");
       exit(1);
@@ -14444,7 +14945,8 @@ const vector<float> &CMS3::els_hOverE() {
 const vector<int> &CMS3::photons_mc_motherid() {
   if (not photons_mc_motherid_isLoaded) {
     if (photons_mc_motherid_branch != 0) {
-      photons_mc_motherid_branch->GetEntry(index);
+      if (photons_mc_motherid_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_mc_motherid_branch does not exist!\n");
       exit(1);
@@ -14456,7 +14958,8 @@ const vector<int> &CMS3::photons_mc_motherid() {
 const vector<float> &CMS3::els_trkdr() {
   if (not els_trkdr_isLoaded) {
     if (els_trkdr_branch != 0) {
-      els_trkdr_branch->GetEntry(index);
+      if (els_trkdr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_trkdr_branch does not exist!\n");
       exit(1);
@@ -14468,7 +14971,8 @@ const vector<float> &CMS3::els_trkdr() {
 const vector<unsigned int> &CMS3::els_HLT_Ele33_CaloIdM_TrackIdM_PFJet30_ElectronLeg() {
   if (not els_HLT_Ele33_CaloIdM_TrackIdM_PFJet30_ElectronLeg_isLoaded) {
     if (els_HLT_Ele33_CaloIdM_TrackIdM_PFJet30_ElectronLeg_branch != 0) {
-      els_HLT_Ele33_CaloIdM_TrackIdM_PFJet30_ElectronLeg_branch->GetEntry(index);
+      if (els_HLT_Ele33_CaloIdM_TrackIdM_PFJet30_ElectronLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele33_CaloIdM_TrackIdM_PFJet30_ElectronLeg_branch does not exist!\n");
       exit(1);
@@ -14480,7 +14984,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele33_CaloIdM_TrackIdM_PFJet30_Electro
 const vector<unsigned int> &CMS3::mus_HLT_Mu10_CentralPFJet30_BTagCSV0p5PF_MuonLeg() {
   if (not mus_HLT_Mu10_CentralPFJet30_BTagCSV0p5PF_MuonLeg_isLoaded) {
     if (mus_HLT_Mu10_CentralPFJet30_BTagCSV0p5PF_MuonLeg_branch != 0) {
-      mus_HLT_Mu10_CentralPFJet30_BTagCSV0p5PF_MuonLeg_branch->GetEntry(index);
+      if (mus_HLT_Mu10_CentralPFJet30_BTagCSV0p5PF_MuonLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu10_CentralPFJet30_BTagCSV0p5PF_MuonLeg_branch does not exist!\n");
       exit(1);
@@ -14492,7 +14997,8 @@ const vector<unsigned int> &CMS3::mus_HLT_Mu10_CentralPFJet30_BTagCSV0p5PF_MuonL
 const vector<unsigned int> &CMS3::els_HLT_Mu17_Ele8_TrailingLeg() {
   if (not els_HLT_Mu17_Ele8_TrailingLeg_isLoaded) {
     if (els_HLT_Mu17_Ele8_TrailingLeg_branch != 0) {
-      els_HLT_Mu17_Ele8_TrailingLeg_branch->GetEntry(index);
+      if (els_HLT_Mu17_Ele8_TrailingLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Mu17_Ele8_TrailingLeg_branch does not exist!\n");
       exit(1);
@@ -14504,7 +15010,8 @@ const vector<unsigned int> &CMS3::els_HLT_Mu17_Ele8_TrailingLeg() {
 const unsigned int &CMS3::mus_HLT_Mu17_Mu8_version() {
   if (not mus_HLT_Mu17_Mu8_version_isLoaded) {
     if (mus_HLT_Mu17_Mu8_version_branch != 0) {
-      mus_HLT_Mu17_Mu8_version_branch->GetEntry(index);
+      if (mus_HLT_Mu17_Mu8_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_Mu8_version_branch does not exist!\n");
       exit(1);
@@ -14516,7 +15023,8 @@ const unsigned int &CMS3::mus_HLT_Mu17_Mu8_version() {
 const float &CMS3::evt_xsec_incl() {
   if (not evt_xsec_incl_isLoaded) {
     if (evt_xsec_incl_branch != 0) {
-      evt_xsec_incl_branch->GetEntry(index);
+      if (evt_xsec_incl_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_xsec_incl_branch does not exist!\n");
       exit(1);
@@ -14528,7 +15036,8 @@ const float &CMS3::evt_xsec_incl() {
 const vector<bool> &CMS3::mus_tightMatch() {
   if (not mus_tightMatch_isLoaded) {
     if (mus_tightMatch_branch != 0) {
-      mus_tightMatch_branch->GetEntry(index);
+      if (mus_tightMatch_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_tightMatch_branch does not exist!\n");
       exit(1);
@@ -14540,7 +15049,8 @@ const vector<bool> &CMS3::mus_tightMatch() {
 const vector<int> &CMS3::photons_mc3_motherid() {
   if (not photons_mc3_motherid_isLoaded) {
     if (photons_mc3_motherid_branch != 0) {
-      photons_mc3_motherid_branch->GetEntry(index);
+      if (photons_mc3_motherid_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_mc3_motherid_branch does not exist!\n");
       exit(1);
@@ -14552,7 +15062,8 @@ const vector<int> &CMS3::photons_mc3_motherid() {
 const vector<float> &CMS3::mus_isoSumDRR03_pf_NeutralHadronEtHighThreshold() {
   if (not mus_isoSumDRR03_pf_NeutralHadronEtHighThreshold_isLoaded) {
     if (mus_isoSumDRR03_pf_NeutralHadronEtHighThreshold_branch != 0) {
-      mus_isoSumDRR03_pf_NeutralHadronEtHighThreshold_branch->GetEntry(index);
+      if (mus_isoSumDRR03_pf_NeutralHadronEtHighThreshold_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isoSumDRR03_pf_NeutralHadronEtHighThreshold_branch does not exist!\n");
       exit(1);
@@ -14564,7 +15075,8 @@ const vector<float> &CMS3::mus_isoSumDRR03_pf_NeutralHadronEtHighThreshold() {
 const ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > &CMS3::evt_bsp4() {
   if (not evt_bsp4_isLoaded) {
     if (evt_bsp4_branch != 0) {
-      evt_bsp4_branch->GetEntry(index);
+      if (evt_bsp4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_bsp4_branch does not exist!\n");
       exit(1);
@@ -14576,7 +15088,8 @@ const ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > &CMS3::evt_bsp4()
 const unsigned int &CMS3::els_HLT_Ele25WP60_SC4_Mass55_version() {
   if (not els_HLT_Ele25WP60_SC4_Mass55_version_isLoaded) {
     if (els_HLT_Ele25WP60_SC4_Mass55_version_branch != 0) {
-      els_HLT_Ele25WP60_SC4_Mass55_version_branch->GetEntry(index);
+      if (els_HLT_Ele25WP60_SC4_Mass55_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele25WP60_SC4_Mass55_version_branch does not exist!\n");
       exit(1);
@@ -14588,7 +15101,8 @@ const unsigned int &CMS3::els_HLT_Ele25WP60_SC4_Mass55_version() {
 const vector<float> &CMS3::mus_glbTrackProbability() {
   if (not mus_glbTrackProbability_isLoaded) {
     if (mus_glbTrackProbability_branch != 0) {
-      mus_glbTrackProbability_branch->GetEntry(index);
+      if (mus_glbTrackProbability_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_glbTrackProbability_branch does not exist!\n");
       exit(1);
@@ -14600,7 +15114,8 @@ const vector<float> &CMS3::mus_glbTrackProbability() {
 const unsigned int &CMS3::mus_HLT_Mu8_Ele17_version() {
   if (not mus_HLT_Mu8_Ele17_version_isLoaded) {
     if (mus_HLT_Mu8_Ele17_version_branch != 0) {
-      mus_HLT_Mu8_Ele17_version_branch->GetEntry(index);
+      if (mus_HLT_Mu8_Ele17_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu8_Ele17_version_branch does not exist!\n");
       exit(1);
@@ -14612,7 +15127,8 @@ const unsigned int &CMS3::mus_HLT_Mu8_Ele17_version() {
 const vector<float> &CMS3::mus_isoSumDRR04_pf_NeutralHadronEt() {
   if (not mus_isoSumDRR04_pf_NeutralHadronEt_isLoaded) {
     if (mus_isoSumDRR04_pf_NeutralHadronEt_branch != 0) {
-      mus_isoSumDRR04_pf_NeutralHadronEt_branch->GetEntry(index);
+      if (mus_isoSumDRR04_pf_NeutralHadronEt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isoSumDRR04_pf_NeutralHadronEt_branch does not exist!\n");
       exit(1);
@@ -14624,7 +15140,8 @@ const vector<float> &CMS3::mus_isoSumDRR04_pf_NeutralHadronEt() {
 const vector<float> &CMS3::els_scSeedE3x3() {
   if (not els_scSeedE3x3_isLoaded) {
     if (els_scSeedE3x3_branch != 0) {
-      els_scSeedE3x3_branch->GetEntry(index);
+      if (els_scSeedE3x3_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_scSeedE3x3_branch does not exist!\n");
       exit(1);
@@ -14636,7 +15153,8 @@ const vector<float> &CMS3::els_scSeedE3x3() {
 const vector<unsigned int> &CMS3::els_HLT_Ele20_SC4_Mass50_TrailingLeg() {
   if (not els_HLT_Ele20_SC4_Mass50_TrailingLeg_isLoaded) {
     if (els_HLT_Ele20_SC4_Mass50_TrailingLeg_branch != 0) {
-      els_HLT_Ele20_SC4_Mass50_TrailingLeg_branch->GetEntry(index);
+      if (els_HLT_Ele20_SC4_Mass50_TrailingLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele20_SC4_Mass50_TrailingLeg_branch does not exist!\n");
       exit(1);
@@ -14804,7 +15322,8 @@ const vector<int> &CMS3::mus_jetNDauChargedMVASel() {
 const vector<float> &CMS3::els_miniIso_uncor() {
   if (not els_miniIso_uncor_isLoaded) {
     if (els_miniIso_uncor_branch != 0) {
-      els_miniIso_uncor_branch->GetEntry(index);
+      if (els_miniIso_uncor_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_miniIso_uncor_branch does not exist!\n");
       exit(1);
@@ -14816,7 +15335,8 @@ const vector<float> &CMS3::els_miniIso_uncor() {
 const vector<float> &CMS3::mus_gfit_qoverpError() {
   if (not mus_gfit_qoverpError_isLoaded) {
     if (mus_gfit_qoverpError_branch != 0) {
-      mus_gfit_qoverpError_branch->GetEntry(index);
+      if (mus_gfit_qoverpError_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_gfit_qoverpError_branch does not exist!\n");
       exit(1);
@@ -14828,7 +15348,8 @@ const vector<float> &CMS3::mus_gfit_qoverpError() {
 const vector<bool> &CMS3::genps_fromHardProcessBeforeFSR() {
   if (not genps_fromHardProcessBeforeFSR_isLoaded) {
     if (genps_fromHardProcessBeforeFSR_branch != 0) {
-      genps_fromHardProcessBeforeFSR_branch->GetEntry(index);
+      if (genps_fromHardProcessBeforeFSR_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch genps_fromHardProcessBeforeFSR_branch does not exist!\n");
       exit(1);
@@ -14840,7 +15361,8 @@ const vector<bool> &CMS3::genps_fromHardProcessBeforeFSR() {
 const vector<float> &CMS3::photons_mass() {
   if (not photons_mass_isLoaded) {
     if (photons_mass_branch != 0) {
-      photons_mass_branch->GetEntry(index);
+      if (photons_mass_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_mass_branch does not exist!\n");
       exit(1);
@@ -14852,7 +15374,8 @@ const vector<float> &CMS3::photons_mass() {
 const vector<float> &CMS3::mus_isoMeanDRR04_pf_PhotonEt() {
   if (not mus_isoMeanDRR04_pf_PhotonEt_isLoaded) {
     if (mus_isoMeanDRR04_pf_PhotonEt_branch != 0) {
-      mus_isoMeanDRR04_pf_PhotonEt_branch->GetEntry(index);
+      if (mus_isoMeanDRR04_pf_PhotonEt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isoMeanDRR04_pf_PhotonEt_branch does not exist!\n");
       exit(1);
@@ -14864,7 +15387,8 @@ const vector<float> &CMS3::mus_isoMeanDRR04_pf_PhotonEt() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::mus_bfit_vertex_p4() {
   if (not mus_bfit_vertex_p4_isLoaded) {
     if (mus_bfit_vertex_p4_branch != 0) {
-      mus_bfit_vertex_p4_branch->GetEntry(index);
+      if (mus_bfit_vertex_p4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_bfit_vertex_p4_branch does not exist!\n");
       exit(1);
@@ -14876,7 +15400,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::m
 const vector<unsigned int> &CMS3::mus_HLT_Mu50() {
   if (not mus_HLT_Mu50_isLoaded) {
     if (mus_HLT_Mu50_branch != 0) {
-      mus_HLT_Mu50_branch->GetEntry(index);
+      if (mus_HLT_Mu50_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu50_branch does not exist!\n");
       exit(1);
@@ -14888,7 +15413,8 @@ const vector<unsigned int> &CMS3::mus_HLT_Mu50() {
 const vector<float> &CMS3::els_scSeed2x5TopBottomAsym() {
   if (not els_scSeed2x5TopBottomAsym_isLoaded) {
     if (els_scSeed2x5TopBottomAsym_branch != 0) {
-      els_scSeed2x5TopBottomAsym_branch->GetEntry(index);
+      if (els_scSeed2x5TopBottomAsym_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_scSeed2x5TopBottomAsym_branch does not exist!\n");
       exit(1);
@@ -14900,7 +15426,8 @@ const vector<float> &CMS3::els_scSeed2x5TopBottomAsym() {
 const vector<float> &CMS3::els_r9_full5x5() {
   if (not els_r9_full5x5_isLoaded) {
     if (els_r9_full5x5_branch != 0) {
-      els_r9_full5x5_branch->GetEntry(index);
+      if (els_r9_full5x5_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_r9_full5x5_branch does not exist!\n");
       exit(1);
@@ -14912,7 +15439,8 @@ const vector<float> &CMS3::els_r9_full5x5() {
 const vector<int> &CMS3::els_mc3idx() {
   if (not els_mc3idx_isLoaded) {
     if (els_mc3idx_branch != 0) {
-      els_mc3idx_branch->GetEntry(index);
+      if (els_mc3idx_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_mc3idx_branch does not exist!\n");
       exit(1);
@@ -14924,7 +15452,8 @@ const vector<int> &CMS3::els_mc3idx() {
 const vector<float> &CMS3::pfjets_puppi_mass() {
   if (not pfjets_puppi_mass_isLoaded) {
     if (pfjets_puppi_mass_branch != 0) {
-      pfjets_puppi_mass_branch->GetEntry(index);
+      if (pfjets_puppi_mass_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_puppi_mass_branch does not exist!\n");
       exit(1);
@@ -14936,7 +15465,8 @@ const vector<float> &CMS3::pfjets_puppi_mass() {
 const vector<int> &CMS3::ak8jets_mc_id() {
   if (not ak8jets_mc_id_isLoaded) {
     if (ak8jets_mc_id_branch != 0) {
-      ak8jets_mc_id_branch->GetEntry(index);
+      if (ak8jets_mc_id_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_mc_id_branch does not exist!\n");
       exit(1);
@@ -14948,7 +15478,8 @@ const vector<int> &CMS3::ak8jets_mc_id() {
 const vector<float> &CMS3::els_clustersMeanDEtaToSeed() {
   if (not els_clustersMeanDEtaToSeed_isLoaded) {
     if (els_clustersMeanDEtaToSeed_branch != 0) {
-      els_clustersMeanDEtaToSeed_branch->GetEntry(index);
+      if (els_clustersMeanDEtaToSeed_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_clustersMeanDEtaToSeed_branch does not exist!\n");
       exit(1);
@@ -14960,7 +15491,8 @@ const vector<float> &CMS3::els_clustersMeanDEtaToSeed() {
 const vector<float> &CMS3::photons_full5x5_e1x5() {
   if (not photons_full5x5_e1x5_isLoaded) {
     if (photons_full5x5_e1x5_branch != 0) {
-      photons_full5x5_e1x5_branch->GetEntry(index);
+      if (photons_full5x5_e1x5_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_full5x5_e1x5_branch does not exist!\n");
       exit(1);
@@ -14972,7 +15504,8 @@ const vector<float> &CMS3::photons_full5x5_e1x5() {
 const vector<unsigned int> &CMS3::mus_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg() {
   if (not mus_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_isLoaded) {
     if (mus_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_branch != 0) {
-      mus_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_branch->GetEntry(index);
+      if (mus_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_branch does not exist!\n");
       exit(1);
@@ -14984,7 +15517,8 @@ const vector<unsigned int> &CMS3::mus_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_I
 const float &CMS3::evt_NoHF_pfmet_raw() {
   if (not evt_NoHF_pfmet_raw_isLoaded) {
     if (evt_NoHF_pfmet_raw_branch != 0) {
-      evt_NoHF_pfmet_raw_branch->GetEntry(index);
+      if (evt_NoHF_pfmet_raw_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_NoHF_pfmet_raw_branch does not exist!\n");
       exit(1);
@@ -14996,7 +15530,8 @@ const float &CMS3::evt_NoHF_pfmet_raw() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::svs_p4() {
   if (not svs_p4_isLoaded) {
     if (svs_p4_branch != 0) {
-      svs_p4_branch->GetEntry(index);
+      if (svs_p4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch svs_p4_branch does not exist!\n");
       exit(1);
@@ -15008,7 +15543,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::s
 const vector<float> &CMS3::mus_sta_qoverpError() {
   if (not mus_sta_qoverpError_isLoaded) {
     if (mus_sta_qoverpError_branch != 0) {
-      mus_sta_qoverpError_branch->GetEntry(index);
+      if (mus_sta_qoverpError_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_sta_qoverpError_branch does not exist!\n");
       exit(1);
@@ -15020,7 +15556,8 @@ const vector<float> &CMS3::mus_sta_qoverpError() {
 const vector<int> &CMS3::mus_pid_TM2DCompatibilityTight() {
   if (not mus_pid_TM2DCompatibilityTight_isLoaded) {
     if (mus_pid_TM2DCompatibilityTight_branch != 0) {
-      mus_pid_TM2DCompatibilityTight_branch->GetEntry(index);
+      if (mus_pid_TM2DCompatibilityTight_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_pid_TM2DCompatibilityTight_branch does not exist!\n");
       exit(1);
@@ -15032,7 +15569,8 @@ const vector<int> &CMS3::mus_pid_TM2DCompatibilityTight() {
 const vector<vector<float> > &CMS3::pfjets_bDiscriminators() {
   if (not pfjets_bDiscriminators_isLoaded) {
     if (pfjets_bDiscriminators_branch != 0) {
-      pfjets_bDiscriminators_branch->GetEntry(index);
+      if (pfjets_bDiscriminators_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_bDiscriminators_branch does not exist!\n");
       exit(1);
@@ -15044,7 +15582,8 @@ const vector<vector<float> > &CMS3::pfjets_bDiscriminators() {
 const vector<float> &CMS3::mus_isoMeanDRR03_pf_PUPt() {
   if (not mus_isoMeanDRR03_pf_PUPt_isLoaded) {
     if (mus_isoMeanDRR03_pf_PUPt_branch != 0) {
-      mus_isoMeanDRR03_pf_PUPt_branch->GetEntry(index);
+      if (mus_isoMeanDRR03_pf_PUPt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isoMeanDRR03_pf_PUPt_branch does not exist!\n");
       exit(1);
@@ -15056,7 +15595,8 @@ const vector<float> &CMS3::mus_isoMeanDRR03_pf_PUPt() {
 const vector<int> &CMS3::pfjets_METToolbox_neutralHadronMultiplicity() {
   if (not pfjets_METToolbox_neutralHadronMultiplicity_isLoaded) {
     if (pfjets_METToolbox_neutralHadronMultiplicity_branch != 0) {
-      pfjets_METToolbox_neutralHadronMultiplicity_branch->GetEntry(index);
+      if (pfjets_METToolbox_neutralHadronMultiplicity_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_METToolbox_neutralHadronMultiplicity_branch does not exist!\n");
       exit(1);
@@ -15068,7 +15608,8 @@ const vector<int> &CMS3::pfjets_METToolbox_neutralHadronMultiplicity() {
 const float &CMS3::evt_puppi_pfmet_JetResDown() {
   if (not evt_puppi_pfmet_JetResDown_isLoaded) {
     if (evt_puppi_pfmet_JetResDown_branch != 0) {
-      evt_puppi_pfmet_JetResDown_branch->GetEntry(index);
+      if (evt_puppi_pfmet_JetResDown_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_puppi_pfmet_JetResDown_branch does not exist!\n");
       exit(1);
@@ -15080,7 +15621,8 @@ const float &CMS3::evt_puppi_pfmet_JetResDown() {
 const vector<int> &CMS3::pfjets_METToolbox_muonMultiplicity() {
   if (not pfjets_METToolbox_muonMultiplicity_isLoaded) {
     if (pfjets_METToolbox_muonMultiplicity_branch != 0) {
-      pfjets_METToolbox_muonMultiplicity_branch->GetEntry(index);
+      if (pfjets_METToolbox_muonMultiplicity_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_METToolbox_muonMultiplicity_branch does not exist!\n");
       exit(1);
@@ -15092,7 +15634,8 @@ const vector<int> &CMS3::pfjets_METToolbox_muonMultiplicity() {
 const float &CMS3::evt_puppi_pfmetPhi_MuonEnUp() {
   if (not evt_puppi_pfmetPhi_MuonEnUp_isLoaded) {
     if (evt_puppi_pfmetPhi_MuonEnUp_branch != 0) {
-      evt_puppi_pfmetPhi_MuonEnUp_branch->GetEntry(index);
+      if (evt_puppi_pfmetPhi_MuonEnUp_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_puppi_pfmetPhi_MuonEnUp_branch does not exist!\n");
       exit(1);
@@ -15104,7 +15647,8 @@ const float &CMS3::evt_puppi_pfmetPhi_MuonEnUp() {
 const vector<float> &CMS3::pfjets_puppi_electronE() {
   if (not pfjets_puppi_electronE_isLoaded) {
     if (pfjets_puppi_electronE_branch != 0) {
-      pfjets_puppi_electronE_branch->GetEntry(index);
+      if (pfjets_puppi_electronE_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_puppi_electronE_branch does not exist!\n");
       exit(1);
@@ -15116,7 +15660,8 @@ const vector<float> &CMS3::pfjets_puppi_electronE() {
 const vector<int> &CMS3::mus_gfit_exp_outerlayer() {
   if (not mus_gfit_exp_outerlayer_isLoaded) {
     if (mus_gfit_exp_outerlayer_branch != 0) {
-      mus_gfit_exp_outerlayer_branch->GetEntry(index);
+      if (mus_gfit_exp_outerlayer_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_gfit_exp_outerlayer_branch does not exist!\n");
       exit(1);
@@ -15128,7 +15673,8 @@ const vector<int> &CMS3::mus_gfit_exp_outerlayer() {
 const vector<unsigned int> &CMS3::els_HLT_Ele8_CaloIdM_TrackIdM_PFJet30_ElectronLeg() {
   if (not els_HLT_Ele8_CaloIdM_TrackIdM_PFJet30_ElectronLeg_isLoaded) {
     if (els_HLT_Ele8_CaloIdM_TrackIdM_PFJet30_ElectronLeg_branch != 0) {
-      els_HLT_Ele8_CaloIdM_TrackIdM_PFJet30_ElectronLeg_branch->GetEntry(index);
+      if (els_HLT_Ele8_CaloIdM_TrackIdM_PFJet30_ElectronLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele8_CaloIdM_TrackIdM_PFJet30_ElectronLeg_branch does not exist!\n");
       exit(1);
@@ -15140,7 +15686,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele8_CaloIdM_TrackIdM_PFJet30_Electron
 const vector<unsigned int> &CMS3::mus_HLT_Mu17_TrkIsoVVL() {
   if (not mus_HLT_Mu17_TrkIsoVVL_isLoaded) {
     if (mus_HLT_Mu17_TrkIsoVVL_branch != 0) {
-      mus_HLT_Mu17_TrkIsoVVL_branch->GetEntry(index);
+      if (mus_HLT_Mu17_TrkIsoVVL_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_TrkIsoVVL_branch does not exist!\n");
       exit(1);
@@ -15152,7 +15699,8 @@ const vector<unsigned int> &CMS3::mus_HLT_Mu17_TrkIsoVVL() {
 const vector<TString> &CMS3::taus_pf_IDnames() {
   if (not taus_pf_IDnames_isLoaded) {
     if (taus_pf_IDnames_branch != 0) {
-      taus_pf_IDnames_branch->GetEntry(index);
+      if (taus_pf_IDnames_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch taus_pf_IDnames_branch does not exist!\n");
       exit(1);
@@ -15164,7 +15712,8 @@ const vector<TString> &CMS3::taus_pf_IDnames() {
 const vector<vector<float> > &CMS3::photons_clusterDPhiToSeed() {
   if (not photons_clusterDPhiToSeed_isLoaded) {
     if (photons_clusterDPhiToSeed_branch != 0) {
-      photons_clusterDPhiToSeed_branch->GetEntry(index);
+      if (photons_clusterDPhiToSeed_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_clusterDPhiToSeed_branch does not exist!\n");
       exit(1);
@@ -15176,7 +15725,8 @@ const vector<vector<float> > &CMS3::photons_clusterDPhiToSeed() {
 const unsigned int &CMS3::mus_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_version() {
   if (not mus_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_version_isLoaded) {
     if (mus_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_version_branch != 0) {
-      mus_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_version_branch->GetEntry(index);
+      if (mus_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_version_branch does not exist!\n");
       exit(1);
@@ -15188,7 +15738,8 @@ const unsigned int &CMS3::mus_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_
 const vector<float> &CMS3::els_eSCPresh() {
   if (not els_eSCPresh_isLoaded) {
     if (els_eSCPresh_branch != 0) {
-      els_eSCPresh_branch->GetEntry(index);
+      if (els_eSCPresh_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_eSCPresh_branch does not exist!\n");
       exit(1);
@@ -15200,7 +15751,8 @@ const vector<float> &CMS3::els_eSCPresh() {
 const vector<int> &CMS3::els_exp_innerlayers() {
   if (not els_exp_innerlayers_isLoaded) {
     if (els_exp_innerlayers_branch != 0) {
-      els_exp_innerlayers_branch->GetEntry(index);
+      if (els_exp_innerlayers_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_exp_innerlayers_branch does not exist!\n");
       exit(1);
@@ -15212,7 +15764,8 @@ const vector<int> &CMS3::els_exp_innerlayers() {
 const vector<float> &CMS3::photons_scSeedCryX() {
   if (not photons_scSeedCryX_isLoaded) {
     if (photons_scSeedCryX_branch != 0) {
-      photons_scSeedCryX_branch->GetEntry(index);
+      if (photons_scSeedCryX_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_scSeedCryX_branch does not exist!\n");
       exit(1);
@@ -15224,7 +15777,8 @@ const vector<float> &CMS3::photons_scSeedCryX() {
 const vector<float> &CMS3::photonsscSeedCalibratedEnergy() {
   if (not photonsscSeedCalibratedEnergy_isLoaded) {
     if (photonsscSeedCalibratedEnergy_branch != 0) {
-      photonsscSeedCalibratedEnergy_branch->GetEntry(index);
+      if (photonsscSeedCalibratedEnergy_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photonsscSeedCalibratedEnergy_branch does not exist!\n");
       exit(1);
@@ -15236,7 +15790,8 @@ const vector<float> &CMS3::photonsscSeedCalibratedEnergy() {
 const vector<unsigned int> &CMS3::mus_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ() {
   if (not mus_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_isLoaded) {
     if (mus_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_branch != 0) {
-      mus_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_branch->GetEntry(index);
+      if (mus_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_branch does not exist!\n");
       exit(1);
@@ -15248,7 +15803,8 @@ const vector<unsigned int> &CMS3::mus_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ() 
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::ak8jets_p4() {
   if (not ak8jets_p4_isLoaded) {
     if (ak8jets_p4_branch != 0) {
-      ak8jets_p4_branch->GetEntry(index);
+      if (ak8jets_p4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_p4_branch does not exist!\n");
       exit(1);
@@ -15260,7 +15816,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::a
 const vector<unsigned int> &CMS3::els_HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_ElectronLeg() {
   if (not els_HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_ElectronLeg_isLoaded) {
     if (els_HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_ElectronLeg_branch != 0) {
-      els_HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_ElectronLeg_branch->GetEntry(index);
+      if (els_HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_ElectronLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_ElectronLeg_branch does not exist!\n");
       exit(1);
@@ -15272,7 +15829,8 @@ const vector<unsigned int> &CMS3::els_HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_I
 const vector<float> &CMS3::pfjets_METToolbox_area() {
   if (not pfjets_METToolbox_area_isLoaded) {
     if (pfjets_METToolbox_area_branch != 0) {
-      pfjets_METToolbox_area_branch->GetEntry(index);
+      if (pfjets_METToolbox_area_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_METToolbox_area_branch does not exist!\n");
       exit(1);
@@ -15284,7 +15842,8 @@ const vector<float> &CMS3::pfjets_METToolbox_area() {
 const float &CMS3::evt_puppi_pfmet() {
   if (not evt_puppi_pfmet_isLoaded) {
     if (evt_puppi_pfmet_branch != 0) {
-      evt_puppi_pfmet_branch->GetEntry(index);
+      if (evt_puppi_pfmet_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_puppi_pfmet_branch does not exist!\n");
       exit(1);
@@ -15296,7 +15855,8 @@ const float &CMS3::evt_puppi_pfmet() {
 const float &CMS3::hcalnoise_GetRecHitEnergy15() {
   if (not hcalnoise_GetRecHitEnergy15_isLoaded) {
     if (hcalnoise_GetRecHitEnergy15_branch != 0) {
-      hcalnoise_GetRecHitEnergy15_branch->GetEntry(index);
+      if (hcalnoise_GetRecHitEnergy15_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_GetRecHitEnergy15_branch does not exist!\n");
       exit(1);
@@ -15308,7 +15868,8 @@ const float &CMS3::hcalnoise_GetRecHitEnergy15() {
 const unsigned int &CMS3::genps_signalProcessID() {
   if (not genps_signalProcessID_isLoaded) {
     if (genps_signalProcessID_branch != 0) {
-      genps_signalProcessID_branch->GetEntry(index);
+      if (genps_signalProcessID_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch genps_signalProcessID_branch does not exist!\n");
       exit(1);
@@ -15320,7 +15881,8 @@ const unsigned int &CMS3::genps_signalProcessID() {
 const vector<float> &CMS3::photons_ntkIsoHollow03() {
   if (not photons_ntkIsoHollow03_isLoaded) {
     if (photons_ntkIsoHollow03_branch != 0) {
-      photons_ntkIsoHollow03_branch->GetEntry(index);
+      if (photons_ntkIsoHollow03_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_ntkIsoHollow03_branch does not exist!\n");
       exit(1);
@@ -15332,7 +15894,8 @@ const vector<float> &CMS3::photons_ntkIsoHollow03() {
 const vector<unsigned int> &CMS3::photons_HLT_Photon75_R9Id90_HE10_IsoM() {
   if (not photons_HLT_Photon75_R9Id90_HE10_IsoM_isLoaded) {
     if (photons_HLT_Photon75_R9Id90_HE10_IsoM_branch != 0) {
-      photons_HLT_Photon75_R9Id90_HE10_IsoM_branch->GetEntry(index);
+      if (photons_HLT_Photon75_R9Id90_HE10_IsoM_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_HLT_Photon75_R9Id90_HE10_IsoM_branch does not exist!\n");
       exit(1);
@@ -15344,7 +15907,8 @@ const vector<unsigned int> &CMS3::photons_HLT_Photon75_R9Id90_HE10_IsoM() {
 const vector<bool> &CMS3::genps_isLastCopy() {
   if (not genps_isLastCopy_isLoaded) {
     if (genps_isLastCopy_branch != 0) {
-      genps_isLastCopy_branch->GetEntry(index);
+      if (genps_isLastCopy_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch genps_isLastCopy_branch does not exist!\n");
       exit(1);
@@ -15356,7 +15920,8 @@ const vector<bool> &CMS3::genps_isLastCopy() {
 const vector<int> &CMS3::mus_trk_charge() {
   if (not mus_trk_charge_isLoaded) {
     if (mus_trk_charge_branch != 0) {
-      mus_trk_charge_branch->GetEntry(index);
+      if (mus_trk_charge_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_trk_charge_branch does not exist!\n");
       exit(1);
@@ -15368,7 +15933,8 @@ const vector<int> &CMS3::mus_trk_charge() {
 const vector<float> &CMS3::mus_gfit_d0corrPhi() {
   if (not mus_gfit_d0corrPhi_isLoaded) {
     if (mus_gfit_d0corrPhi_branch != 0) {
-      mus_gfit_d0corrPhi_branch->GetEntry(index);
+      if (mus_gfit_d0corrPhi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_gfit_d0corrPhi_branch does not exist!\n");
       exit(1);
@@ -15380,7 +15946,8 @@ const vector<float> &CMS3::mus_gfit_d0corrPhi() {
 const vector<int> &CMS3::mus_overlap0() {
   if (not mus_overlap0_isLoaded) {
     if (mus_overlap0_branch != 0) {
-      mus_overlap0_branch->GetEntry(index);
+      if (mus_overlap0_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_overlap0_branch does not exist!\n");
       exit(1);
@@ -15392,7 +15959,8 @@ const vector<int> &CMS3::mus_overlap0() {
 const vector<float> &CMS3::mus_chi2LocalPosition() {
   if (not mus_chi2LocalPosition_isLoaded) {
     if (mus_chi2LocalPosition_branch != 0) {
-      mus_chi2LocalPosition_branch->GetEntry(index);
+      if (mus_chi2LocalPosition_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_chi2LocalPosition_branch does not exist!\n");
       exit(1);
@@ -15404,7 +15972,8 @@ const vector<float> &CMS3::mus_chi2LocalPosition() {
 const float &CMS3::sparm_filterEfficiency() {
   if (not sparm_filterEfficiency_isLoaded) {
     if (sparm_filterEfficiency_branch != 0) {
-      sparm_filterEfficiency_branch->GetEntry(index);
+      if (sparm_filterEfficiency_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch sparm_filterEfficiency_branch does not exist!\n");
       exit(1);
@@ -15416,7 +15985,8 @@ const float &CMS3::sparm_filterEfficiency() {
 const vector<int> &CMS3::genps_id_mother() {
   if (not genps_id_mother_isLoaded) {
     if (genps_id_mother_branch != 0) {
-      genps_id_mother_branch->GetEntry(index);
+      if (genps_id_mother_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch genps_id_mother_branch does not exist!\n");
       exit(1);
@@ -15428,7 +15998,8 @@ const vector<int> &CMS3::genps_id_mother() {
 const unsigned int &CMS3::photons_HLT_Photon165_HE10_version() {
   if (not photons_HLT_Photon165_HE10_version_isLoaded) {
     if (photons_HLT_Photon165_HE10_version_branch != 0) {
-      photons_HLT_Photon165_HE10_version_branch->GetEntry(index);
+      if (photons_HLT_Photon165_HE10_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_HLT_Photon165_HE10_version_branch does not exist!\n");
       exit(1);
@@ -15440,7 +16011,8 @@ const unsigned int &CMS3::photons_HLT_Photon165_HE10_version() {
 const vector<float> &CMS3::els_ecalIso04() {
   if (not els_ecalIso04_isLoaded) {
     if (els_ecalIso04_branch != 0) {
-      els_ecalIso04_branch->GetEntry(index);
+      if (els_ecalIso04_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_ecalIso04_branch does not exist!\n");
       exit(1);
@@ -15452,7 +16024,8 @@ const vector<float> &CMS3::els_ecalIso04() {
 const vector<float> &CMS3::els_sigmaEtaEta() {
   if (not els_sigmaEtaEta_isLoaded) {
     if (els_sigmaEtaEta_branch != 0) {
-      els_sigmaEtaEta_branch->GetEntry(index);
+      if (els_sigmaEtaEta_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_sigmaEtaEta_branch does not exist!\n");
       exit(1);
@@ -15464,7 +16037,8 @@ const vector<float> &CMS3::els_sigmaEtaEta() {
 const vector<float> &CMS3::mus_mcdr() {
   if (not mus_mcdr_isLoaded) {
     if (mus_mcdr_branch != 0) {
-      mus_mcdr_branch->GetEntry(index);
+      if (mus_mcdr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_mcdr_branch does not exist!\n");
       exit(1);
@@ -15476,7 +16050,8 @@ const vector<float> &CMS3::mus_mcdr() {
 const float &CMS3::evt_puppi_pfmetPhi_PhotonEnDown() {
   if (not evt_puppi_pfmetPhi_PhotonEnDown_isLoaded) {
     if (evt_puppi_pfmetPhi_PhotonEnDown_branch != 0) {
-      evt_puppi_pfmetPhi_PhotonEnDown_branch->GetEntry(index);
+      if (evt_puppi_pfmetPhi_PhotonEnDown_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_puppi_pfmetPhi_PhotonEnDown_branch does not exist!\n");
       exit(1);
@@ -15488,7 +16063,8 @@ const float &CMS3::evt_puppi_pfmetPhi_PhotonEnDown() {
 const vector<unsigned int> &CMS3::mus_HLT_Mu17_TkMu8_LeadingLeg() {
   if (not mus_HLT_Mu17_TkMu8_LeadingLeg_isLoaded) {
     if (mus_HLT_Mu17_TkMu8_LeadingLeg_branch != 0) {
-      mus_HLT_Mu17_TkMu8_LeadingLeg_branch->GetEntry(index);
+      if (mus_HLT_Mu17_TkMu8_LeadingLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_TkMu8_LeadingLeg_branch does not exist!\n");
       exit(1);
@@ -15500,7 +16076,8 @@ const vector<unsigned int> &CMS3::mus_HLT_Mu17_TkMu8_LeadingLeg() {
 const vector<int> &CMS3::pfcands_charge() {
   if (not pfcands_charge_isLoaded) {
     if (pfcands_charge_branch != 0) {
-      pfcands_charge_branch->GetEntry(index);
+      if (pfcands_charge_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfcands_charge_branch does not exist!\n");
       exit(1);
@@ -15512,7 +16089,8 @@ const vector<int> &CMS3::pfcands_charge() {
 const unsigned int &CMS3::photons_HLT_Photon36_R9Id90_HE10_IsoM_version() {
   if (not photons_HLT_Photon36_R9Id90_HE10_IsoM_version_isLoaded) {
     if (photons_HLT_Photon36_R9Id90_HE10_IsoM_version_branch != 0) {
-      photons_HLT_Photon36_R9Id90_HE10_IsoM_version_branch->GetEntry(index);
+      if (photons_HLT_Photon36_R9Id90_HE10_IsoM_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_HLT_Photon36_R9Id90_HE10_IsoM_version_branch does not exist!\n");
       exit(1);
@@ -15524,7 +16102,8 @@ const unsigned int &CMS3::photons_HLT_Photon36_R9Id90_HE10_IsoM_version() {
 const bool &CMS3::evt_cscTightHaloId() {
   if (not evt_cscTightHaloId_isLoaded) {
     if (evt_cscTightHaloId_branch != 0) {
-      evt_cscTightHaloId_branch->GetEntry(index);
+      if (evt_cscTightHaloId_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_cscTightHaloId_branch does not exist!\n");
       exit(1);
@@ -15536,7 +16115,8 @@ const bool &CMS3::evt_cscTightHaloId() {
 const vector<float> &CMS3::mus_iso05_sumPt() {
   if (not mus_iso05_sumPt_isLoaded) {
     if (mus_iso05_sumPt_branch != 0) {
-      mus_iso05_sumPt_branch->GetEntry(index);
+      if (mus_iso05_sumPt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_iso05_sumPt_branch does not exist!\n");
       exit(1);
@@ -15548,7 +16128,8 @@ const vector<float> &CMS3::mus_iso05_sumPt() {
 const unsigned int &CMS3::els_HLT_Ele5_SC5_JPsi_Mass2to4p5_version() {
   if (not els_HLT_Ele5_SC5_JPsi_Mass2to4p5_version_isLoaded) {
     if (els_HLT_Ele5_SC5_JPsi_Mass2to4p5_version_branch != 0) {
-      els_HLT_Ele5_SC5_JPsi_Mass2to4p5_version_branch->GetEntry(index);
+      if (els_HLT_Ele5_SC5_JPsi_Mass2to4p5_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele5_SC5_JPsi_Mass2to4p5_version_branch does not exist!\n");
       exit(1);
@@ -15560,7 +16141,8 @@ const unsigned int &CMS3::els_HLT_Ele5_SC5_JPsi_Mass2to4p5_version() {
 const float &CMS3::evt_puppi_pfmetSig() {
   if (not evt_puppi_pfmetSig_isLoaded) {
     if (evt_puppi_pfmetSig_branch != 0) {
-      evt_puppi_pfmetSig_branch->GetEntry(index);
+      if (evt_puppi_pfmetSig_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_puppi_pfmetSig_branch does not exist!\n");
       exit(1);
@@ -15572,7 +16154,8 @@ const float &CMS3::evt_puppi_pfmetSig() {
 const vector<float> &CMS3::mus_z0Err() {
   if (not mus_z0Err_isLoaded) {
     if (mus_z0Err_branch != 0) {
-      mus_z0Err_branch->GetEntry(index);
+      if (mus_z0Err_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_z0Err_branch does not exist!\n");
       exit(1);
@@ -15584,7 +16167,8 @@ const vector<float> &CMS3::mus_z0Err() {
 const vector<int> &CMS3::photons_mc3idx() {
   if (not photons_mc3idx_isLoaded) {
     if (photons_mc3idx_branch != 0) {
-      photons_mc3idx_branch->GetEntry(index);
+      if (photons_mc3idx_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_mc3idx_branch does not exist!\n");
       exit(1);
@@ -15596,7 +16180,8 @@ const vector<int> &CMS3::photons_mc3idx() {
 const vector<float> &CMS3::mus_bfit_z0corr() {
   if (not mus_bfit_z0corr_isLoaded) {
     if (mus_bfit_z0corr_branch != 0) {
-      mus_bfit_z0corr_branch->GetEntry(index);
+      if (mus_bfit_z0corr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_bfit_z0corr_branch does not exist!\n");
       exit(1);
@@ -15608,7 +16193,8 @@ const vector<float> &CMS3::mus_bfit_z0corr() {
 const float &CMS3::genps_pthat() {
   if (not genps_pthat_isLoaded) {
     if (genps_pthat_branch != 0) {
-      genps_pthat_branch->GetEntry(index);
+      if (genps_pthat_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch genps_pthat_branch does not exist!\n");
       exit(1);
@@ -15620,7 +16206,8 @@ const float &CMS3::genps_pthat() {
 const float &CMS3::evt_puppi_pfmet_UnclusteredEnDown() {
   if (not evt_puppi_pfmet_UnclusteredEnDown_isLoaded) {
     if (evt_puppi_pfmet_UnclusteredEnDown_branch != 0) {
-      evt_puppi_pfmet_UnclusteredEnDown_branch->GetEntry(index);
+      if (evt_puppi_pfmet_UnclusteredEnDown_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_puppi_pfmet_UnclusteredEnDown_branch does not exist!\n");
       exit(1);
@@ -15632,7 +16219,8 @@ const float &CMS3::evt_puppi_pfmet_UnclusteredEnDown() {
 const float &CMS3::gen_sumEt() {
   if (not gen_sumEt_isLoaded) {
     if (gen_sumEt_branch != 0) {
-      gen_sumEt_branch->GetEntry(index);
+      if (gen_sumEt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch gen_sumEt_branch does not exist!\n");
       exit(1);
@@ -15644,7 +16232,8 @@ const float &CMS3::gen_sumEt() {
 const vector<float> &CMS3::photons_scSeedE2x5Right() {
   if (not photons_scSeedE2x5Right_isLoaded) {
     if (photons_scSeedE2x5Right_branch != 0) {
-      photons_scSeedE2x5Right_branch->GetEntry(index);
+      if (photons_scSeedE2x5Right_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_scSeedE2x5Right_branch does not exist!\n");
       exit(1);
@@ -15656,7 +16245,8 @@ const vector<float> &CMS3::photons_scSeedE2x5Right() {
 const vector<int> &CMS3::pfjets_METToolbox_chargedHadronMultiplicity() {
   if (not pfjets_METToolbox_chargedHadronMultiplicity_isLoaded) {
     if (pfjets_METToolbox_chargedHadronMultiplicity_branch != 0) {
-      pfjets_METToolbox_chargedHadronMultiplicity_branch->GetEntry(index);
+      if (pfjets_METToolbox_chargedHadronMultiplicity_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_METToolbox_chargedHadronMultiplicity_branch does not exist!\n");
       exit(1);
@@ -15668,7 +16258,8 @@ const vector<int> &CMS3::pfjets_METToolbox_chargedHadronMultiplicity() {
 const vector<float> &CMS3::photons_scSeedCryPhi() {
   if (not photons_scSeedCryPhi_isLoaded) {
     if (photons_scSeedCryPhi_branch != 0) {
-      photons_scSeedCryPhi_branch->GetEntry(index);
+      if (photons_scSeedCryPhi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_scSeedCryPhi_branch does not exist!\n");
       exit(1);
@@ -15680,7 +16271,8 @@ const vector<float> &CMS3::photons_scSeedCryPhi() {
 const float &CMS3::evt_bs_xErr() {
   if (not evt_bs_xErr_isLoaded) {
     if (evt_bs_xErr_branch != 0) {
-      evt_bs_xErr_branch->GetEntry(index);
+      if (evt_bs_xErr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_bs_xErr_branch does not exist!\n");
       exit(1);
@@ -15692,7 +16284,8 @@ const float &CMS3::evt_bs_xErr() {
 const vector<int> &CMS3::pfjets_neutralMultiplicity() {
   if (not pfjets_neutralMultiplicity_isLoaded) {
     if (pfjets_neutralMultiplicity_branch != 0) {
-      pfjets_neutralMultiplicity_branch->GetEntry(index);
+      if (pfjets_neutralMultiplicity_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_neutralMultiplicity_branch does not exist!\n");
       exit(1);
@@ -15704,7 +16297,8 @@ const vector<int> &CMS3::pfjets_neutralMultiplicity() {
 const vector<vector<float> > &CMS3::vtxs_covMatrix() {
   if (not vtxs_covMatrix_isLoaded) {
     if (vtxs_covMatrix_branch != 0) {
-      vtxs_covMatrix_branch->GetEntry(index);
+      if (vtxs_covMatrix_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch vtxs_covMatrix_branch does not exist!\n");
       exit(1);
@@ -15716,7 +16310,8 @@ const vector<vector<float> > &CMS3::vtxs_covMatrix() {
 const vector<unsigned int> &CMS3::mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ() {
   if (not mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_isLoaded) {
     if (mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_branch != 0) {
-      mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_branch->GetEntry(index);
+      if (mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_branch does not exist!\n");
       exit(1);
@@ -15728,7 +16323,8 @@ const vector<unsigned int> &CMS3::mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ() {
 const float &CMS3::evt_puppi_pfsumet_raw() {
   if (not evt_puppi_pfsumet_raw_isLoaded) {
     if (evt_puppi_pfsumet_raw_branch != 0) {
-      evt_puppi_pfsumet_raw_branch->GetEntry(index);
+      if (evt_puppi_pfsumet_raw_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_puppi_pfsumet_raw_branch does not exist!\n");
       exit(1);
@@ -15740,7 +16336,8 @@ const float &CMS3::evt_puppi_pfsumet_raw() {
 const float &CMS3::hcalnoise_eventTrackEnergy() {
   if (not hcalnoise_eventTrackEnergy_isLoaded) {
     if (hcalnoise_eventTrackEnergy_branch != 0) {
-      hcalnoise_eventTrackEnergy_branch->GetEntry(index);
+      if (hcalnoise_eventTrackEnergy_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_eventTrackEnergy_branch does not exist!\n");
       exit(1);
@@ -15752,7 +16349,8 @@ const float &CMS3::hcalnoise_eventTrackEnergy() {
 const vector<float> &CMS3::ak8jets_puppi_pt() {
   if (not ak8jets_puppi_pt_isLoaded) {
     if (ak8jets_puppi_pt_branch != 0) {
-      ak8jets_puppi_pt_branch->GetEntry(index);
+      if (ak8jets_puppi_pt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_puppi_pt_branch does not exist!\n");
       exit(1);
@@ -15764,7 +16362,8 @@ const vector<float> &CMS3::ak8jets_puppi_pt() {
 const vector<float> &CMS3::ak8jets_puppi_phi() {
   if (not ak8jets_puppi_phi_isLoaded) {
     if (ak8jets_puppi_phi_branch != 0) {
-      ak8jets_puppi_phi_branch->GetEntry(index);
+      if (ak8jets_puppi_phi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_puppi_phi_branch does not exist!\n");
       exit(1);
@@ -15776,7 +16375,8 @@ const vector<float> &CMS3::ak8jets_puppi_phi() {
 const float &CMS3::evt_puppi_pfmet_TauEnUp() {
   if (not evt_puppi_pfmet_TauEnUp_isLoaded) {
     if (evt_puppi_pfmet_TauEnUp_branch != 0) {
-      evt_puppi_pfmet_TauEnUp_branch->GetEntry(index);
+      if (evt_puppi_pfmet_TauEnUp_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_puppi_pfmet_TauEnUp_branch does not exist!\n");
       exit(1);
@@ -15788,7 +16388,8 @@ const float &CMS3::evt_puppi_pfmet_TauEnUp() {
 const vector<float> &CMS3::mus_sta_d0corr() {
   if (not mus_sta_d0corr_isLoaded) {
     if (mus_sta_d0corr_branch != 0) {
-      mus_sta_d0corr_branch->GetEntry(index);
+      if (mus_sta_d0corr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_sta_d0corr_branch does not exist!\n");
       exit(1);
@@ -15800,7 +16401,8 @@ const vector<float> &CMS3::mus_sta_d0corr() {
 const vector<int> &CMS3::mus_mc_motherid() {
   if (not mus_mc_motherid_isLoaded) {
     if (mus_mc_motherid_branch != 0) {
-      mus_mc_motherid_branch->GetEntry(index);
+      if (mus_mc_motherid_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_mc_motherid_branch does not exist!\n");
       exit(1);
@@ -15812,7 +16414,8 @@ const vector<int> &CMS3::mus_mc_motherid() {
 const vector<unsigned int> &CMS3::els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg() {
   if (not els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_isLoaded) {
     if (els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_branch != 0) {
-      els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_branch->GetEntry(index);
+      if (els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_branch does not exist!\n");
       exit(1);
@@ -15824,7 +16427,8 @@ const vector<unsigned int> &CMS3::els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_I
 const int &CMS3::hcalnoise_numTS4TS5NoiseChannels() {
   if (not hcalnoise_numTS4TS5NoiseChannels_isLoaded) {
     if (hcalnoise_numTS4TS5NoiseChannels_branch != 0) {
-      hcalnoise_numTS4TS5NoiseChannels_branch->GetEntry(index);
+      if (hcalnoise_numTS4TS5NoiseChannels_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_numTS4TS5NoiseChannels_branch does not exist!\n");
       exit(1);
@@ -15836,7 +16440,8 @@ const int &CMS3::hcalnoise_numTS4TS5NoiseChannels() {
 const float &CMS3::evt_instantLumi() {
   if (not evt_instantLumi_isLoaded) {
     if (evt_instantLumi_branch != 0) {
-      evt_instantLumi_branch->GetEntry(index);
+      if (evt_instantLumi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_instantLumi_branch does not exist!\n");
       exit(1);
@@ -15848,7 +16453,8 @@ const float &CMS3::evt_instantLumi() {
 const vector<float> &CMS3::els_full5x5_hOverE() {
   if (not els_full5x5_hOverE_isLoaded) {
     if (els_full5x5_hOverE_branch != 0) {
-      els_full5x5_hOverE_branch->GetEntry(index);
+      if (els_full5x5_hOverE_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_full5x5_hOverE_branch does not exist!\n");
       exit(1);
@@ -15860,7 +16466,8 @@ const vector<float> &CMS3::els_full5x5_hOverE() {
 const vector<int> &CMS3::els_mcidx() {
   if (not els_mcidx_isLoaded) {
     if (els_mcidx_branch != 0) {
-      els_mcidx_branch->GetEntry(index);
+      if (els_mcidx_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_mcidx_branch does not exist!\n");
       exit(1);
@@ -15872,7 +16479,8 @@ const vector<int> &CMS3::els_mcidx() {
 const vector<float> &CMS3::mus_sta_chi2() {
   if (not mus_sta_chi2_isLoaded) {
     if (mus_sta_chi2_branch != 0) {
-      mus_sta_chi2_branch->GetEntry(index);
+      if (mus_sta_chi2_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_sta_chi2_branch does not exist!\n");
       exit(1);
@@ -15884,7 +16492,8 @@ const vector<float> &CMS3::mus_sta_chi2() {
 const vector<float> &CMS3::photons_hOverEtowBC() {
   if (not photons_hOverEtowBC_isLoaded) {
     if (photons_hOverEtowBC_branch != 0) {
-      photons_hOverEtowBC_branch->GetEntry(index);
+      if (photons_hOverEtowBC_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_hOverEtowBC_branch does not exist!\n");
       exit(1);
@@ -15896,7 +16505,8 @@ const vector<float> &CMS3::photons_hOverEtowBC() {
 const float &CMS3::sparm_pdfScale() {
   if (not sparm_pdfScale_isLoaded) {
     if (sparm_pdfScale_branch != 0) {
-      sparm_pdfScale_branch->GetEntry(index);
+      if (sparm_pdfScale_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch sparm_pdfScale_branch does not exist!\n");
       exit(1);
@@ -15908,7 +16518,8 @@ const float &CMS3::sparm_pdfScale() {
 const vector<int> &CMS3::taus_pf_charge() {
   if (not taus_pf_charge_isLoaded) {
     if (taus_pf_charge_branch != 0) {
-      taus_pf_charge_branch->GetEntry(index);
+      if (taus_pf_charge_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch taus_pf_charge_branch does not exist!\n");
       exit(1);
@@ -15920,7 +16531,8 @@ const vector<int> &CMS3::taus_pf_charge() {
 const vector<float> &CMS3::pfjets_METToolbox_hfEmE() {
   if (not pfjets_METToolbox_hfEmE_isLoaded) {
     if (pfjets_METToolbox_hfEmE_branch != 0) {
-      pfjets_METToolbox_hfEmE_branch->GetEntry(index);
+      if (pfjets_METToolbox_hfEmE_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_METToolbox_hfEmE_branch does not exist!\n");
       exit(1);
@@ -15932,7 +16544,8 @@ const vector<float> &CMS3::pfjets_METToolbox_hfEmE() {
 const vector<float> &CMS3::photons_scSeedCryY() {
   if (not photons_scSeedCryY_isLoaded) {
     if (photons_scSeedCryY_branch != 0) {
-      photons_scSeedCryY_branch->GetEntry(index);
+      if (photons_scSeedCryY_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_scSeedCryY_branch does not exist!\n");
       exit(1);
@@ -15944,7 +16557,8 @@ const vector<float> &CMS3::photons_scSeedCryY() {
 const bool &CMS3::filt_ecalLaser() {
   if (not filt_ecalLaser_isLoaded) {
     if (filt_ecalLaser_branch != 0) {
-      filt_ecalLaser_branch->GetEntry(index);
+      if (filt_ecalLaser_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch filt_ecalLaser_branch does not exist!\n");
       exit(1);
@@ -15956,7 +16570,8 @@ const bool &CMS3::filt_ecalLaser() {
 const vector<int> &CMS3::hyp_lt_charge() {
   if (not hyp_lt_charge_isLoaded) {
     if (hyp_lt_charge_branch != 0) {
-      hyp_lt_charge_branch->GetEntry(index);
+      if (hyp_lt_charge_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hyp_lt_charge_branch does not exist!\n");
       exit(1);
@@ -15968,7 +16583,8 @@ const vector<int> &CMS3::hyp_lt_charge() {
 const vector<int> &CMS3::els_mc3_motheridx() {
   if (not els_mc3_motheridx_isLoaded) {
     if (els_mc3_motheridx_branch != 0) {
-      els_mc3_motheridx_branch->GetEntry(index);
+      if (els_mc3_motheridx_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_mc3_motheridx_branch does not exist!\n");
       exit(1);
@@ -15980,7 +16596,8 @@ const vector<int> &CMS3::els_mc3_motheridx() {
 const vector<int> &CMS3::mus_iso03_njets() {
   if (not mus_iso03_njets_isLoaded) {
     if (mus_iso03_njets_branch != 0) {
-      mus_iso03_njets_branch->GetEntry(index);
+      if (mus_iso03_njets_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_iso03_njets_branch does not exist!\n");
       exit(1);
@@ -15992,7 +16609,8 @@ const vector<int> &CMS3::mus_iso03_njets() {
 const float &CMS3::evt_puppi_pfmetPhi_TauEnUp() {
   if (not evt_puppi_pfmetPhi_TauEnUp_isLoaded) {
     if (evt_puppi_pfmetPhi_TauEnUp_branch != 0) {
-      evt_puppi_pfmetPhi_TauEnUp_branch->GetEntry(index);
+      if (evt_puppi_pfmetPhi_TauEnUp_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_puppi_pfmetPhi_TauEnUp_branch does not exist!\n");
       exit(1);
@@ -16004,7 +16622,8 @@ const float &CMS3::evt_puppi_pfmetPhi_TauEnUp() {
 const float &CMS3::evt_METToolboxNoHF_pfmetPhi() {
   if (not evt_METToolboxNoHF_pfmetPhi_isLoaded) {
     if (evt_METToolboxNoHF_pfmetPhi_branch != 0) {
-      evt_METToolboxNoHF_pfmetPhi_branch->GetEntry(index);
+      if (evt_METToolboxNoHF_pfmetPhi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_METToolboxNoHF_pfmetPhi_branch does not exist!\n");
       exit(1);
@@ -16016,7 +16635,8 @@ const float &CMS3::evt_METToolboxNoHF_pfmetPhi() {
 const vector<float> &CMS3::mus_isoSumDRR03_pf_PhotonEtHighThreshold() {
   if (not mus_isoSumDRR03_pf_PhotonEtHighThreshold_isLoaded) {
     if (mus_isoSumDRR03_pf_PhotonEtHighThreshold_branch != 0) {
-      mus_isoSumDRR03_pf_PhotonEtHighThreshold_branch->GetEntry(index);
+      if (mus_isoSumDRR03_pf_PhotonEtHighThreshold_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isoSumDRR03_pf_PhotonEtHighThreshold_branch does not exist!\n");
       exit(1);
@@ -16028,7 +16648,8 @@ const vector<float> &CMS3::mus_isoSumDRR03_pf_PhotonEtHighThreshold() {
 const vector<float> &CMS3::ak8jets_puppi_softdropMass() {
   if (not ak8jets_puppi_softdropMass_isLoaded) {
     if (ak8jets_puppi_softdropMass_branch != 0) {
-      ak8jets_puppi_softdropMass_branch->GetEntry(index);
+      if (ak8jets_puppi_softdropMass_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_puppi_softdropMass_branch does not exist!\n");
       exit(1);
@@ -16040,7 +16661,8 @@ const vector<float> &CMS3::ak8jets_puppi_softdropMass() {
 const vector<float> &CMS3::pfjets_neutralEmE() {
   if (not pfjets_neutralEmE_isLoaded) {
     if (pfjets_neutralEmE_branch != 0) {
-      pfjets_neutralEmE_branch->GetEntry(index);
+      if (pfjets_neutralEmE_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_neutralEmE_branch does not exist!\n");
       exit(1);
@@ -16052,7 +16674,8 @@ const vector<float> &CMS3::pfjets_neutralEmE() {
 const vector<unsigned int> &CMS3::els_HLT_Ele32_SC17_Mass50_LeadingLeg() {
   if (not els_HLT_Ele32_SC17_Mass50_LeadingLeg_isLoaded) {
     if (els_HLT_Ele32_SC17_Mass50_LeadingLeg_branch != 0) {
-      els_HLT_Ele32_SC17_Mass50_LeadingLeg_branch->GetEntry(index);
+      if (els_HLT_Ele32_SC17_Mass50_LeadingLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele32_SC17_Mass50_LeadingLeg_branch does not exist!\n");
       exit(1);
@@ -16064,7 +16687,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele32_SC17_Mass50_LeadingLeg() {
 const vector<vector<float> > &CMS3::pfjets_puppi_bDiscriminators() {
   if (not pfjets_puppi_bDiscriminators_isLoaded) {
     if (pfjets_puppi_bDiscriminators_branch != 0) {
-      pfjets_puppi_bDiscriminators_branch->GetEntry(index);
+      if (pfjets_puppi_bDiscriminators_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_puppi_bDiscriminators_branch does not exist!\n");
       exit(1);
@@ -16076,7 +16700,8 @@ const vector<vector<float> > &CMS3::pfjets_puppi_bDiscriminators() {
 const vector<float> &CMS3::els_trkshFrac() {
   if (not els_trkshFrac_isLoaded) {
     if (els_trkshFrac_branch != 0) {
-      els_trkshFrac_branch->GetEntry(index);
+      if (els_trkshFrac_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_trkshFrac_branch does not exist!\n");
       exit(1);
@@ -16088,7 +16713,8 @@ const vector<float> &CMS3::els_trkshFrac() {
 const float &CMS3::evt_pfsumet_raw() {
   if (not evt_pfsumet_raw_isLoaded) {
     if (evt_pfsumet_raw_branch != 0) {
-      evt_pfsumet_raw_branch->GetEntry(index);
+      if (evt_pfsumet_raw_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_pfsumet_raw_branch does not exist!\n");
       exit(1);
@@ -16100,7 +16726,8 @@ const float &CMS3::evt_pfsumet_raw() {
 const vector<float> &CMS3::pfjets_mcdr() {
   if (not pfjets_mcdr_isLoaded) {
     if (pfjets_mcdr_branch != 0) {
-      pfjets_mcdr_branch->GetEntry(index);
+      if (pfjets_mcdr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_mcdr_branch does not exist!\n");
       exit(1);
@@ -16112,7 +16739,8 @@ const vector<float> &CMS3::pfjets_mcdr() {
 const vector<unsigned int> &CMS3::els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV_p13_ElectronLeg() {
   if (not els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV_p13_ElectronLeg_isLoaded) {
     if (els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV_p13_ElectronLeg_branch != 0) {
-      els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV_p13_ElectronLeg_branch->GetEntry(index);
+      if (els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV_p13_ElectronLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV_p13_ElectronLeg_branch does not exist!\n");
       exit(1);
@@ -16124,7 +16752,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_
 const vector<float> &CMS3::els_ip3derr() {
   if (not els_ip3derr_isLoaded) {
     if (els_ip3derr_branch != 0) {
-      els_ip3derr_branch->GetEntry(index);
+      if (els_ip3derr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_ip3derr_branch does not exist!\n");
       exit(1);
@@ -16136,7 +16765,8 @@ const vector<float> &CMS3::els_ip3derr() {
 const vector<float> &CMS3::mus_isoMeanDRR04_pf_NeutralHadronEt() {
   if (not mus_isoMeanDRR04_pf_NeutralHadronEt_isLoaded) {
     if (mus_isoMeanDRR04_pf_NeutralHadronEt_branch != 0) {
-      mus_isoMeanDRR04_pf_NeutralHadronEt_branch->GetEntry(index);
+      if (mus_isoMeanDRR04_pf_NeutralHadronEt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isoMeanDRR04_pf_NeutralHadronEt_branch does not exist!\n");
       exit(1);
@@ -16148,7 +16778,8 @@ const vector<float> &CMS3::mus_isoMeanDRR04_pf_NeutralHadronEt() {
 const vector<float> &CMS3::els_scSeedE2x5Left() {
   if (not els_scSeedE2x5Left_isLoaded) {
     if (els_scSeedE2x5Left_branch != 0) {
-      els_scSeedE2x5Left_branch->GetEntry(index);
+      if (els_scSeedE2x5Left_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_scSeedE2x5Left_branch does not exist!\n");
       exit(1);
@@ -16160,7 +16791,8 @@ const vector<float> &CMS3::els_scSeedE2x5Left() {
 const vector<float> &CMS3::mus_miniIso_nh() {
   if (not mus_miniIso_nh_isLoaded) {
     if (mus_miniIso_nh_branch != 0) {
-      mus_miniIso_nh_branch->GetEntry(index);
+      if (mus_miniIso_nh_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_miniIso_nh_branch does not exist!\n");
       exit(1);
@@ -16172,7 +16804,8 @@ const vector<float> &CMS3::mus_miniIso_nh() {
 const vector<TString> &CMS3::sparm_comment() {
   if (not sparm_comment_isLoaded) {
     if (sparm_comment_branch != 0) {
-      sparm_comment_branch->GetEntry(index);
+      if (sparm_comment_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch sparm_comment_branch does not exist!\n");
       exit(1);
@@ -16184,7 +16817,8 @@ const vector<TString> &CMS3::sparm_comment() {
 const vector<float> &CMS3::genps_charge() {
   if (not genps_charge_isLoaded) {
     if (genps_charge_branch != 0) {
-      genps_charge_branch->GetEntry(index);
+      if (genps_charge_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch genps_charge_branch does not exist!\n");
       exit(1);
@@ -16196,7 +16830,8 @@ const vector<float> &CMS3::genps_charge() {
 const vector<float> &CMS3::mus_sta_ptErr() {
   if (not mus_sta_ptErr_isLoaded) {
     if (mus_sta_ptErr_branch != 0) {
-      mus_sta_ptErr_branch->GetEntry(index);
+      if (mus_sta_ptErr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_sta_ptErr_branch does not exist!\n");
       exit(1);
@@ -16208,7 +16843,8 @@ const vector<float> &CMS3::mus_sta_ptErr() {
 const vector<float> &CMS3::els_chi2() {
   if (not els_chi2_isLoaded) {
     if (els_chi2_branch != 0) {
-      els_chi2_branch->GetEntry(index);
+      if (els_chi2_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_chi2_branch does not exist!\n");
       exit(1);
@@ -16220,7 +16856,8 @@ const vector<float> &CMS3::els_chi2() {
 const bool &CMS3::filt_goodVertices() {
   if (not filt_goodVertices_isLoaded) {
     if (filt_goodVertices_branch != 0) {
-      filt_goodVertices_branch->GetEntry(index);
+      if (filt_goodVertices_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch filt_goodVertices_branch does not exist!\n");
       exit(1);
@@ -16232,7 +16869,8 @@ const bool &CMS3::filt_goodVertices() {
 const vector<TString> &CMS3::hlt_trigNames() {
   if (not hlt_trigNames_isLoaded) {
     if (hlt_trigNames_branch != 0) {
-      hlt_trigNames_branch->GetEntry(index);
+      if (hlt_trigNames_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hlt_trigNames_branch does not exist!\n");
       exit(1);
@@ -16244,7 +16882,8 @@ const vector<TString> &CMS3::hlt_trigNames() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::mus_pfp4() {
   if (not mus_pfp4_isLoaded) {
     if (mus_pfp4_branch != 0) {
-      mus_pfp4_branch->GetEntry(index);
+      if (mus_pfp4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_pfp4_branch does not exist!\n");
       exit(1);
@@ -16256,7 +16895,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::m
 const vector<unsigned int> &CMS3::mus_HLT_Mu17_Mu8_L1sL1DoubleMu10MuOpen() {
   if (not mus_HLT_Mu17_Mu8_L1sL1DoubleMu10MuOpen_isLoaded) {
     if (mus_HLT_Mu17_Mu8_L1sL1DoubleMu10MuOpen_branch != 0) {
-      mus_HLT_Mu17_Mu8_L1sL1DoubleMu10MuOpen_branch->GetEntry(index);
+      if (mus_HLT_Mu17_Mu8_L1sL1DoubleMu10MuOpen_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_Mu8_L1sL1DoubleMu10MuOpen_branch does not exist!\n");
       exit(1);
@@ -16268,7 +16908,8 @@ const vector<unsigned int> &CMS3::mus_HLT_Mu17_Mu8_L1sL1DoubleMu10MuOpen() {
 const vector<float> &CMS3::mus_ip2derr() {
   if (not mus_ip2derr_isLoaded) {
     if (mus_ip2derr_branch != 0) {
-      mus_ip2derr_branch->GetEntry(index);
+      if (mus_ip2derr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_ip2derr_branch does not exist!\n");
       exit(1);
@@ -16280,7 +16921,8 @@ const vector<float> &CMS3::mus_ip2derr() {
 const vector<vector<float> > &CMS3::photons_psClusterEta() {
   if (not photons_psClusterEta_isLoaded) {
     if (photons_psClusterEta_branch != 0) {
-      photons_psClusterEta_branch->GetEntry(index);
+      if (photons_psClusterEta_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_psClusterEta_branch does not exist!\n");
       exit(1);
@@ -16292,7 +16934,8 @@ const vector<vector<float> > &CMS3::photons_psClusterEta() {
 const unsigned int &CMS3::mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_TrailingLeg_version() {
   if (not mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_TrailingLeg_version_isLoaded) {
     if (mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_TrailingLeg_version_branch != 0) {
-      mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_TrailingLeg_version_branch->GetEntry(index);
+      if (mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_TrailingLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_TrailingLeg_version_branch does not exist!\n");
       exit(1);
@@ -16304,7 +16947,8 @@ const unsigned int &CMS3::mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_TrailingLeg_ve
 const unsigned int &CMS3::els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_version() {
   if (not els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_version_isLoaded) {
     if (els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_version_branch != 0) {
-      els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_version_branch->GetEntry(index);
+      if (els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_version_branch does not exist!\n");
       exit(1);
@@ -16316,7 +16960,8 @@ const unsigned int &CMS3::els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_
 const vector<float> &CMS3::els_scSeedCryIx() {
   if (not els_scSeedCryIx_isLoaded) {
     if (els_scSeedCryIx_branch != 0) {
-      els_scSeedCryIx_branch->GetEntry(index);
+      if (els_scSeedCryIx_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_scSeedCryIx_branch does not exist!\n");
       exit(1);
@@ -16328,7 +16973,8 @@ const vector<float> &CMS3::els_scSeedCryIx() {
 const vector<int> &CMS3::mus_bfit_nlayersLost() {
   if (not mus_bfit_nlayersLost_isLoaded) {
     if (mus_bfit_nlayersLost_branch != 0) {
-      mus_bfit_nlayersLost_branch->GetEntry(index);
+      if (mus_bfit_nlayersLost_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_bfit_nlayersLost_branch does not exist!\n");
       exit(1);
@@ -16340,7 +16986,8 @@ const vector<int> &CMS3::mus_bfit_nlayersLost() {
 const vector<unsigned int> &CMS3::mus_HLT_Mu17_Mu8_TrailingLeg() {
   if (not mus_HLT_Mu17_Mu8_TrailingLeg_isLoaded) {
     if (mus_HLT_Mu17_Mu8_TrailingLeg_branch != 0) {
-      mus_HLT_Mu17_Mu8_TrailingLeg_branch->GetEntry(index);
+      if (mus_HLT_Mu17_Mu8_TrailingLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_Mu8_TrailingLeg_branch does not exist!\n");
       exit(1);
@@ -16352,7 +16999,8 @@ const vector<unsigned int> &CMS3::mus_HLT_Mu17_Mu8_TrailingLeg() {
 const vector<float> &CMS3::mus_isoMeanDRR03_pf_PhotonEt() {
   if (not mus_isoMeanDRR03_pf_PhotonEt_isLoaded) {
     if (mus_isoMeanDRR03_pf_PhotonEt_branch != 0) {
-      mus_isoMeanDRR03_pf_PhotonEt_branch->GetEntry(index);
+      if (mus_isoMeanDRR03_pf_PhotonEt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isoMeanDRR03_pf_PhotonEt_branch does not exist!\n");
       exit(1);
@@ -16364,7 +17012,8 @@ const vector<float> &CMS3::mus_isoMeanDRR03_pf_PhotonEt() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::hyp_p4() {
   if (not hyp_p4_isLoaded) {
     if (hyp_p4_branch != 0) {
-      hyp_p4_branch->GetEntry(index);
+      if (hyp_p4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hyp_p4_branch does not exist!\n");
       exit(1);
@@ -16376,7 +17025,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::h
 const vector<float> &CMS3::mus_gfit_chi2() {
   if (not mus_gfit_chi2_isLoaded) {
     if (mus_gfit_chi2_branch != 0) {
-      mus_gfit_chi2_branch->GetEntry(index);
+      if (mus_gfit_chi2_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_gfit_chi2_branch does not exist!\n");
       exit(1);
@@ -16388,7 +17038,8 @@ const vector<float> &CMS3::mus_gfit_chi2() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::vtxs_position() {
   if (not vtxs_position_isLoaded) {
     if (vtxs_position_branch != 0) {
-      vtxs_position_branch->GetEntry(index);
+      if (vtxs_position_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch vtxs_position_branch does not exist!\n");
       exit(1);
@@ -16400,7 +17051,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::v
 const vector<float> &CMS3::pfcands_mass() {
   if (not pfcands_mass_isLoaded) {
     if (pfcands_mass_branch != 0) {
-      pfcands_mass_branch->GetEntry(index);
+      if (pfcands_mass_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfcands_mass_branch does not exist!\n");
       exit(1);
@@ -16412,7 +17064,8 @@ const vector<float> &CMS3::pfcands_mass() {
 const vector<float> &CMS3::pfcands_trackIso() {
   if (not pfcands_trackIso_isLoaded) {
     if (pfcands_trackIso_branch != 0) {
-      pfcands_trackIso_branch->GetEntry(index);
+      if (pfcands_trackIso_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfcands_trackIso_branch does not exist!\n");
       exit(1);
@@ -16424,7 +17077,8 @@ const vector<float> &CMS3::pfcands_trackIso() {
 const vector<float> &CMS3::pfcands_miniTrackIso() {
   if (not pfcands_miniTrackIso_isLoaded) {
     if (pfcands_miniTrackIso_branch != 0) {
-      pfcands_miniTrackIso_branch->GetEntry(index);
+      if (pfcands_miniTrackIso_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfcands_miniTrackIso_branch does not exist!\n");
       exit(1);
@@ -16436,7 +17090,8 @@ const vector<float> &CMS3::pfcands_miniTrackIso() {
 const vector<float> &CMS3::photons_phiSC() {
   if (not photons_phiSC_isLoaded) {
     if (photons_phiSC_branch != 0) {
-      photons_phiSC_branch->GetEntry(index);
+      if (photons_phiSC_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_phiSC_branch does not exist!\n");
       exit(1);
@@ -16448,7 +17103,8 @@ const vector<float> &CMS3::photons_phiSC() {
 const vector<float> &CMS3::svs_zError() {
   if (not svs_zError_isLoaded) {
     if (svs_zError_branch != 0) {
-      svs_zError_branch->GetEntry(index);
+      if (svs_zError_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch svs_zError_branch does not exist!\n");
       exit(1);
@@ -16460,7 +17116,8 @@ const vector<float> &CMS3::svs_zError() {
 const vector<float> &CMS3::photons_recoChargedHadronIso() {
   if (not photons_recoChargedHadronIso_isLoaded) {
     if (photons_recoChargedHadronIso_branch != 0) {
-      photons_recoChargedHadronIso_branch->GetEntry(index);
+      if (photons_recoChargedHadronIso_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_recoChargedHadronIso_branch does not exist!\n");
       exit(1);
@@ -16472,7 +17129,8 @@ const vector<float> &CMS3::photons_recoChargedHadronIso() {
 const vector<int> &CMS3::els_trk_charge() {
   if (not els_trk_charge_isLoaded) {
     if (els_trk_charge_branch != 0) {
-      els_trk_charge_branch->GetEntry(index);
+      if (els_trk_charge_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_trk_charge_branch does not exist!\n");
       exit(1);
@@ -16484,7 +17142,8 @@ const vector<int> &CMS3::els_trk_charge() {
 const vector<int> &CMS3::pfjets_puppi_photonMultiplicity() {
   if (not pfjets_puppi_photonMultiplicity_isLoaded) {
     if (pfjets_puppi_photonMultiplicity_branch != 0) {
-      pfjets_puppi_photonMultiplicity_branch->GetEntry(index);
+      if (pfjets_puppi_photonMultiplicity_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_puppi_photonMultiplicity_branch does not exist!\n");
       exit(1);
@@ -16496,7 +17155,8 @@ const vector<int> &CMS3::pfjets_puppi_photonMultiplicity() {
 const vector<int> &CMS3::mus_sta_nlayersLost() {
   if (not mus_sta_nlayersLost_isLoaded) {
     if (mus_sta_nlayersLost_branch != 0) {
-      mus_sta_nlayersLost_branch->GetEntry(index);
+      if (mus_sta_nlayersLost_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_sta_nlayersLost_branch does not exist!\n");
       exit(1);
@@ -16508,7 +17168,8 @@ const vector<int> &CMS3::mus_sta_nlayersLost() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::svs_position() {
   if (not svs_position_isLoaded) {
     if (svs_position_branch != 0) {
-      svs_position_branch->GetEntry(index);
+      if (svs_position_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch svs_position_branch does not exist!\n");
       exit(1);
@@ -16520,7 +17181,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::s
 const unsigned int &CMS3::mus_HLT_Mu17_Mu8_TrailingLeg_version() {
   if (not mus_HLT_Mu17_Mu8_TrailingLeg_version_isLoaded) {
     if (mus_HLT_Mu17_Mu8_TrailingLeg_version_branch != 0) {
-      mus_HLT_Mu17_Mu8_TrailingLeg_version_branch->GetEntry(index);
+      if (mus_HLT_Mu17_Mu8_TrailingLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_Mu8_TrailingLeg_version_branch does not exist!\n");
       exit(1);
@@ -16532,7 +17194,8 @@ const unsigned int &CMS3::mus_HLT_Mu17_Mu8_TrailingLeg_version() {
 const vector<float> &CMS3::mus_isoSumDRR04_pf_ChargedHadronPt() {
   if (not mus_isoSumDRR04_pf_ChargedHadronPt_isLoaded) {
     if (mus_isoSumDRR04_pf_ChargedHadronPt_branch != 0) {
-      mus_isoSumDRR04_pf_ChargedHadronPt_branch->GetEntry(index);
+      if (mus_isoSumDRR04_pf_ChargedHadronPt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isoSumDRR04_pf_ChargedHadronPt_branch does not exist!\n");
       exit(1);
@@ -16544,7 +17207,8 @@ const vector<float> &CMS3::mus_isoSumDRR04_pf_ChargedHadronPt() {
 const vector<int> &CMS3::mus_validPixelHits() {
   if (not mus_validPixelHits_isLoaded) {
     if (mus_validPixelHits_branch != 0) {
-      mus_validPixelHits_branch->GetEntry(index);
+      if (mus_validPixelHits_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_validPixelHits_branch does not exist!\n");
       exit(1);
@@ -16556,7 +17220,8 @@ const vector<int> &CMS3::mus_validPixelHits() {
 const vector<float> &CMS3::els_hcalDepth2TowerSumEt04() {
   if (not els_hcalDepth2TowerSumEt04_isLoaded) {
     if (els_hcalDepth2TowerSumEt04_branch != 0) {
-      els_hcalDepth2TowerSumEt04_branch->GetEntry(index);
+      if (els_hcalDepth2TowerSumEt04_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_hcalDepth2TowerSumEt04_branch does not exist!\n");
       exit(1);
@@ -16568,7 +17233,8 @@ const vector<float> &CMS3::els_hcalDepth2TowerSumEt04() {
 const vector<vector<int> > &CMS3::photons_clusterInMustache() {
   if (not photons_clusterInMustache_isLoaded) {
     if (photons_clusterInMustache_branch != 0) {
-      photons_clusterInMustache_branch->GetEntry(index);
+      if (photons_clusterInMustache_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_clusterInMustache_branch does not exist!\n");
       exit(1);
@@ -16580,7 +17246,8 @@ const vector<vector<int> > &CMS3::photons_clusterInMustache() {
 const unsigned int &CMS3::els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV0p5PF_ElectronLeg_version() {
   if (not els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV0p5PF_ElectronLeg_version_isLoaded) {
     if (els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV0p5PF_ElectronLeg_version_branch != 0) {
-      els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV0p5PF_ElectronLeg_version_branch->GetEntry(index);
+      if (els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV0p5PF_ElectronLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV0p5PF_ElectronLeg_version_branch does not exist!\n");
       exit(1);
@@ -16592,7 +17259,8 @@ const unsigned int &CMS3::els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV0
 const vector<unsigned int> &CMS3::els_HLT_Ele115_CaloIdVT_GsfTrkIdT() {
   if (not els_HLT_Ele115_CaloIdVT_GsfTrkIdT_isLoaded) {
     if (els_HLT_Ele115_CaloIdVT_GsfTrkIdT_branch != 0) {
-      els_HLT_Ele115_CaloIdVT_GsfTrkIdT_branch->GetEntry(index);
+      if (els_HLT_Ele115_CaloIdVT_GsfTrkIdT_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele115_CaloIdVT_GsfTrkIdT_branch does not exist!\n");
       exit(1);
@@ -16604,7 +17272,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele115_CaloIdVT_GsfTrkIdT() {
 const vector<float> &CMS3::mus_isoR03_pf_ChargedParticlePt() {
   if (not mus_isoR03_pf_ChargedParticlePt_isLoaded) {
     if (mus_isoR03_pf_ChargedParticlePt_branch != 0) {
-      mus_isoR03_pf_ChargedParticlePt_branch->GetEntry(index);
+      if (mus_isoR03_pf_ChargedParticlePt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isoR03_pf_ChargedParticlePt_branch does not exist!\n");
       exit(1);
@@ -16616,7 +17285,8 @@ const vector<float> &CMS3::mus_isoR03_pf_ChargedParticlePt() {
 const float &CMS3::hcalnoise_rms25GeVHitTime() {
   if (not hcalnoise_rms25GeVHitTime_isLoaded) {
     if (hcalnoise_rms25GeVHitTime_branch != 0) {
-      hcalnoise_rms25GeVHitTime_branch->GetEntry(index);
+      if (hcalnoise_rms25GeVHitTime_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_rms25GeVHitTime_branch does not exist!\n");
       exit(1);
@@ -16628,7 +17298,8 @@ const float &CMS3::hcalnoise_rms25GeVHitTime() {
 const vector<int> &CMS3::mus_bfit_validPixelHits() {
   if (not mus_bfit_validPixelHits_isLoaded) {
     if (mus_bfit_validPixelHits_branch != 0) {
-      mus_bfit_validPixelHits_branch->GetEntry(index);
+      if (mus_bfit_validPixelHits_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_bfit_validPixelHits_branch does not exist!\n");
       exit(1);
@@ -16640,7 +17311,8 @@ const vector<int> &CMS3::mus_bfit_validPixelHits() {
 const vector<float> &CMS3::photons_scSeedE2x5Bottom() {
   if (not photons_scSeedE2x5Bottom_isLoaded) {
     if (photons_scSeedE2x5Bottom_branch != 0) {
-      photons_scSeedE2x5Bottom_branch->GetEntry(index);
+      if (photons_scSeedE2x5Bottom_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_scSeedE2x5Bottom_branch does not exist!\n");
       exit(1);
@@ -16652,7 +17324,8 @@ const vector<float> &CMS3::photons_scSeedE2x5Bottom() {
 const bool &CMS3::filt_hbheNoiseIso() {
   if (not filt_hbheNoiseIso_isLoaded) {
     if (filt_hbheNoiseIso_branch != 0) {
-      filt_hbheNoiseIso_branch->GetEntry(index);
+      if (filt_hbheNoiseIso_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch filt_hbheNoiseIso_branch does not exist!\n");
       exit(1);
@@ -16664,7 +17337,8 @@ const bool &CMS3::filt_hbheNoiseIso() {
 const vector<float> &CMS3::svs_distXYsig() {
   if (not svs_distXYsig_isLoaded) {
     if (svs_distXYsig_branch != 0) {
-      svs_distXYsig_branch->GetEntry(index);
+      if (svs_distXYsig_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch svs_distXYsig_branch does not exist!\n");
       exit(1);
@@ -16676,7 +17350,8 @@ const vector<float> &CMS3::svs_distXYsig() {
 const vector<int> &CMS3::mus_lostHits() {
   if (not mus_lostHits_isLoaded) {
     if (mus_lostHits_branch != 0) {
-      mus_lostHits_branch->GetEntry(index);
+      if (mus_lostHits_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_lostHits_branch does not exist!\n");
       exit(1);
@@ -16688,7 +17363,8 @@ const vector<int> &CMS3::mus_lostHits() {
 const vector<int> &CMS3::genps_status() {
   if (not genps_status_isLoaded) {
     if (genps_status_branch != 0) {
-      genps_status_branch->GetEntry(index);
+      if (genps_status_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch genps_status_branch does not exist!\n");
       exit(1);
@@ -16700,7 +17376,8 @@ const vector<int> &CMS3::genps_status() {
 const vector<int> &CMS3::mus_gfit_trk_charge() {
   if (not mus_gfit_trk_charge_isLoaded) {
     if (mus_gfit_trk_charge_branch != 0) {
-      mus_gfit_trk_charge_branch->GetEntry(index);
+      if (mus_gfit_trk_charge_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_gfit_trk_charge_branch does not exist!\n");
       exit(1);
@@ -16712,7 +17389,8 @@ const vector<int> &CMS3::mus_gfit_trk_charge() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::pfjets_mc_gp_p4() {
   if (not pfjets_mc_gp_p4_isLoaded) {
     if (pfjets_mc_gp_p4_branch != 0) {
-      pfjets_mc_gp_p4_branch->GetEntry(index);
+      if (pfjets_mc_gp_p4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_mc_gp_p4_branch does not exist!\n");
       exit(1);
@@ -16724,7 +17402,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::p
 const vector<float> &CMS3::els_clusterMaxDR() {
   if (not els_clusterMaxDR_isLoaded) {
     if (els_clusterMaxDR_branch != 0) {
-      els_clusterMaxDR_branch->GetEntry(index);
+      if (els_clusterMaxDR_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_clusterMaxDR_branch does not exist!\n");
       exit(1);
@@ -16736,7 +17415,8 @@ const vector<float> &CMS3::els_clusterMaxDR() {
 const unsigned int &CMS3::mus_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_LeadingLeg_version() {
   if (not mus_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_LeadingLeg_version_isLoaded) {
     if (mus_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_LeadingLeg_version_branch != 0) {
-      mus_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_LeadingLeg_version_branch->GetEntry(index);
+      if (mus_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_LeadingLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_LeadingLeg_version_branch does not exist!\n");
       exit(1);
@@ -16748,7 +17428,8 @@ const unsigned int &CMS3::mus_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_LeadingLeg
 const vector<unsigned int> &CMS3::mus_HLT_Mu8() {
   if (not mus_HLT_Mu8_isLoaded) {
     if (mus_HLT_Mu8_branch != 0) {
-      mus_HLT_Mu8_branch->GetEntry(index);
+      if (mus_HLT_Mu8_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu8_branch does not exist!\n");
       exit(1);
@@ -16760,7 +17441,8 @@ const vector<unsigned int> &CMS3::mus_HLT_Mu8() {
 const vector<float> &CMS3::mus_vertexphi() {
   if (not mus_vertexphi_isLoaded) {
     if (mus_vertexphi_branch != 0) {
-      mus_vertexphi_branch->GetEntry(index);
+      if (mus_vertexphi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_vertexphi_branch does not exist!\n");
       exit(1);
@@ -16772,7 +17454,8 @@ const vector<float> &CMS3::mus_vertexphi() {
 const vector<float> &CMS3::els_trackMomentumError() {
   if (not els_trackMomentumError_isLoaded) {
     if (els_trackMomentumError_branch != 0) {
-      els_trackMomentumError_branch->GetEntry(index);
+      if (els_trackMomentumError_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_trackMomentumError_branch does not exist!\n");
       exit(1);
@@ -16784,7 +17467,8 @@ const vector<float> &CMS3::els_trackMomentumError() {
 const vector<int> &CMS3::mus_sta_exp_innerlayer() {
   if (not mus_sta_exp_innerlayer_isLoaded) {
     if (mus_sta_exp_innerlayer_branch != 0) {
-      mus_sta_exp_innerlayer_branch->GetEntry(index);
+      if (mus_sta_exp_innerlayer_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_sta_exp_innerlayer_branch does not exist!\n");
       exit(1);
@@ -16796,7 +17480,8 @@ const vector<int> &CMS3::mus_sta_exp_innerlayer() {
 const vector<unsigned int> &CMS3::els_HLT_Ele17_Ele8_LeadingLeg() {
   if (not els_HLT_Ele17_Ele8_LeadingLeg_isLoaded) {
     if (els_HLT_Ele17_Ele8_LeadingLeg_branch != 0) {
-      els_HLT_Ele17_Ele8_LeadingLeg_branch->GetEntry(index);
+      if (els_HLT_Ele17_Ele8_LeadingLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele17_Ele8_LeadingLeg_branch does not exist!\n");
       exit(1);
@@ -16808,7 +17493,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele17_Ele8_LeadingLeg() {
 const vector<float> &CMS3::pfjets_METToolbox_mass() {
   if (not pfjets_METToolbox_mass_isLoaded) {
     if (pfjets_METToolbox_mass_branch != 0) {
-      pfjets_METToolbox_mass_branch->GetEntry(index);
+      if (pfjets_METToolbox_mass_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_METToolbox_mass_branch does not exist!\n");
       exit(1);
@@ -16820,7 +17506,8 @@ const vector<float> &CMS3::pfjets_METToolbox_mass() {
 const float &CMS3::evt_bs_XwidthErr() {
   if (not evt_bs_XwidthErr_isLoaded) {
     if (evt_bs_XwidthErr_branch != 0) {
-      evt_bs_XwidthErr_branch->GetEntry(index);
+      if (evt_bs_XwidthErr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_bs_XwidthErr_branch does not exist!\n");
       exit(1);
@@ -16832,7 +17519,8 @@ const float &CMS3::evt_bs_XwidthErr() {
 const vector<float> &CMS3::pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag() {
   if (not pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_isLoaded) {
     if (pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch != 0) {
-      pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch->GetEntry(index);
+      if (pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag_branch does not exist!\n");
       exit(1);
@@ -16844,7 +17532,8 @@ const vector<float> &CMS3::pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag() 
 const vector<float> &CMS3::pfjets_pfDeepCSVJetTagsprobbPlusprobbb() {
   if (not pfjets_pfDeepCSVJetTagsprobbPlusprobbb_isLoaded) {
     if (pfjets_pfDeepCSVJetTagsprobbPlusprobbb_branch != 0) {
-      pfjets_pfDeepCSVJetTagsprobbPlusprobbb_branch->GetEntry(index);
+      if (pfjets_pfDeepCSVJetTagsprobbPlusprobbb_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_pfDeepCSVJetTagsprobbPlusprobbb_branch does not exist!\n");
       exit(1);
@@ -16856,7 +17545,8 @@ const vector<float> &CMS3::pfjets_pfDeepCSVJetTagsprobbPlusprobbb() {
 const vector<float> &CMS3::pfjets_ptDistribution() {
   if (not pfjets_ptDistribution_isLoaded) {
     if (pfjets_ptDistribution_branch != 0) {
-      pfjets_ptDistribution_branch->GetEntry(index);
+      if (pfjets_ptDistribution_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_ptDistribution_branch does not exist!\n");
       exit(1);
@@ -16868,7 +17558,8 @@ const vector<float> &CMS3::pfjets_ptDistribution() {
 const vector<float> &CMS3::pfjets_axis1() {
   if (not pfjets_axis1_isLoaded) {
     if (pfjets_axis1_branch != 0) {
-      pfjets_axis1_branch->GetEntry(index);
+      if (pfjets_axis1_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_axis1_branch does not exist!\n");
       exit(1);
@@ -16880,7 +17571,8 @@ const vector<float> &CMS3::pfjets_axis1() {
 const vector<int> &CMS3::pfjets_totalMultiplicity() {
   if (not pfjets_totalMultiplicity_isLoaded) {
     if (pfjets_totalMultiplicity_branch != 0) {
-      pfjets_totalMultiplicity_branch->GetEntry(index);
+      if (pfjets_totalMultiplicity_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_totalMultiplicity_branch does not exist!\n");
       exit(1);
@@ -16892,7 +17584,8 @@ const vector<int> &CMS3::pfjets_totalMultiplicity() {
 const float &CMS3::evt_pfmetPhi() {
   if (not evt_pfmetPhi_isLoaded) {
     if (evt_pfmetPhi_branch != 0) {
-      evt_pfmetPhi_branch->GetEntry(index);
+      if (evt_pfmetPhi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_pfmetPhi_branch does not exist!\n");
       exit(1);
@@ -16904,7 +17597,8 @@ const float &CMS3::evt_pfmetPhi() {
 const vector<int> &CMS3::pfjets_METToolbox_chargedMultiplicity() {
   if (not pfjets_METToolbox_chargedMultiplicity_isLoaded) {
     if (pfjets_METToolbox_chargedMultiplicity_branch != 0) {
-      pfjets_METToolbox_chargedMultiplicity_branch->GetEntry(index);
+      if (pfjets_METToolbox_chargedMultiplicity_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_METToolbox_chargedMultiplicity_branch does not exist!\n");
       exit(1);
@@ -16916,7 +17610,8 @@ const vector<int> &CMS3::pfjets_METToolbox_chargedMultiplicity() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::els_mc_patMatch_p4() {
   if (not els_mc_patMatch_p4_isLoaded) {
     if (els_mc_patMatch_p4_branch != 0) {
-      els_mc_patMatch_p4_branch->GetEntry(index);
+      if (els_mc_patMatch_p4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_mc_patMatch_p4_branch does not exist!\n");
       exit(1);
@@ -16928,7 +17623,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::e
 const float &CMS3::hcalnoise_min25GeVHitTime() {
   if (not hcalnoise_min25GeVHitTime_isLoaded) {
     if (hcalnoise_min25GeVHitTime_branch != 0) {
-      hcalnoise_min25GeVHitTime_branch->GetEntry(index);
+      if (hcalnoise_min25GeVHitTime_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_min25GeVHitTime_branch does not exist!\n");
       exit(1);
@@ -16940,7 +17636,8 @@ const float &CMS3::hcalnoise_min25GeVHitTime() {
 const unsigned int &CMS3::mus_HLT_Mu17_TrkIsoVVL_version() {
   if (not mus_HLT_Mu17_TrkIsoVVL_version_isLoaded) {
     if (mus_HLT_Mu17_TrkIsoVVL_version_branch != 0) {
-      mus_HLT_Mu17_TrkIsoVVL_version_branch->GetEntry(index);
+      if (mus_HLT_Mu17_TrkIsoVVL_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_TrkIsoVVL_version_branch does not exist!\n");
       exit(1);
@@ -16952,7 +17649,8 @@ const unsigned int &CMS3::mus_HLT_Mu17_TrkIsoVVL_version() {
 const unsigned int &CMS3::mus_HLT_Mu55_version() {
   if (not mus_HLT_Mu55_version_isLoaded) {
     if (mus_HLT_Mu55_version_branch != 0) {
-      mus_HLT_Mu55_version_branch->GetEntry(index);
+      if (mus_HLT_Mu55_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu55_version_branch does not exist!\n");
       exit(1);
@@ -16964,7 +17662,8 @@ const unsigned int &CMS3::mus_HLT_Mu55_version() {
 const int &CMS3::hcalnoise_numIsolatedNoiseChannels() {
   if (not hcalnoise_numIsolatedNoiseChannels_isLoaded) {
     if (hcalnoise_numIsolatedNoiseChannels_branch != 0) {
-      hcalnoise_numIsolatedNoiseChannels_branch->GetEntry(index);
+      if (hcalnoise_numIsolatedNoiseChannels_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_numIsolatedNoiseChannels_branch does not exist!\n");
       exit(1);
@@ -16976,7 +17675,8 @@ const int &CMS3::hcalnoise_numIsolatedNoiseChannels() {
 const unsigned int &CMS3::els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV_p13_ElectronLeg_version() {
   if (not els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV_p13_ElectronLeg_version_isLoaded) {
     if (els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV_p13_ElectronLeg_version_branch != 0) {
-      els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV_p13_ElectronLeg_version_branch->GetEntry(index);
+      if (els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV_p13_ElectronLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV_p13_ElectronLeg_version_branch does not exist!\n");
       exit(1);
@@ -16988,7 +17688,8 @@ const unsigned int &CMS3::els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV_
 const vector<float> &CMS3::photons_scSeedEta() {
   if (not photons_scSeedEta_isLoaded) {
     if (photons_scSeedEta_branch != 0) {
-      photons_scSeedEta_branch->GetEntry(index);
+      if (photons_scSeedEta_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_scSeedEta_branch does not exist!\n");
       exit(1);
@@ -17000,7 +17701,8 @@ const vector<float> &CMS3::photons_scSeedEta() {
 const vector<float> &CMS3::mus_qoverpError() {
   if (not mus_qoverpError_isLoaded) {
     if (mus_qoverpError_branch != 0) {
-      mus_qoverpError_branch->GetEntry(index);
+      if (mus_qoverpError_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_qoverpError_branch does not exist!\n");
       exit(1);
@@ -17012,7 +17714,8 @@ const vector<float> &CMS3::mus_qoverpError() {
 const int &CMS3::evt_storeNumber() {
   if (not evt_storeNumber_isLoaded) {
     if (evt_storeNumber_branch != 0) {
-      evt_storeNumber_branch->GetEntry(index);
+      if (evt_storeNumber_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_storeNumber_branch does not exist!\n");
       exit(1);
@@ -17024,7 +17727,8 @@ const int &CMS3::evt_storeNumber() {
 const vector<float> &CMS3::els_z0() {
   if (not els_z0_isLoaded) {
     if (els_z0_branch != 0) {
-      els_z0_branch->GetEntry(index);
+      if (els_z0_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_z0_branch does not exist!\n");
       exit(1);
@@ -17036,7 +17740,8 @@ const vector<float> &CMS3::els_z0() {
 const vector<float> &CMS3::pfjets_electronE() {
   if (not pfjets_electronE_isLoaded) {
     if (pfjets_electronE_branch != 0) {
-      pfjets_electronE_branch->GetEntry(index);
+      if (pfjets_electronE_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_electronE_branch does not exist!\n");
       exit(1);
@@ -17048,7 +17753,8 @@ const vector<float> &CMS3::pfjets_electronE() {
 const vector<unsigned int> &CMS3::photons_HLT_Photon36_R9Id90_HE10_IsoM() {
   if (not photons_HLT_Photon36_R9Id90_HE10_IsoM_isLoaded) {
     if (photons_HLT_Photon36_R9Id90_HE10_IsoM_branch != 0) {
-      photons_HLT_Photon36_R9Id90_HE10_IsoM_branch->GetEntry(index);
+      if (photons_HLT_Photon36_R9Id90_HE10_IsoM_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_HLT_Photon36_R9Id90_HE10_IsoM_branch does not exist!\n");
       exit(1);
@@ -17060,7 +17766,8 @@ const vector<unsigned int> &CMS3::photons_HLT_Photon36_R9Id90_HE10_IsoM() {
 const vector<int> &CMS3::els_fiduciality() {
   if (not els_fiduciality_isLoaded) {
     if (els_fiduciality_branch != 0) {
-      els_fiduciality_branch->GetEntry(index);
+      if (els_fiduciality_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_fiduciality_branch does not exist!\n");
       exit(1);
@@ -17072,7 +17779,8 @@ const vector<int> &CMS3::els_fiduciality() {
 const vector<float> &CMS3::photons_eSCPresh() {
   if (not photons_eSCPresh_isLoaded) {
     if (photons_eSCPresh_branch != 0) {
-      photons_eSCPresh_branch->GetEntry(index);
+      if (photons_eSCPresh_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_eSCPresh_branch does not exist!\n");
       exit(1);
@@ -17084,7 +17792,8 @@ const vector<float> &CMS3::photons_eSCPresh() {
 const vector<unsigned int> &CMS3::els_HLT_Ele17_Ele8_Mass50_LeadingLeg() {
   if (not els_HLT_Ele17_Ele8_Mass50_LeadingLeg_isLoaded) {
     if (els_HLT_Ele17_Ele8_Mass50_LeadingLeg_branch != 0) {
-      els_HLT_Ele17_Ele8_Mass50_LeadingLeg_branch->GetEntry(index);
+      if (els_HLT_Ele17_Ele8_Mass50_LeadingLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele17_Ele8_Mass50_LeadingLeg_branch does not exist!\n");
       exit(1);
@@ -17096,7 +17805,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele17_Ele8_Mass50_LeadingLeg() {
 const vector<float> &CMS3::els_phiSCwidth() {
   if (not els_phiSCwidth_isLoaded) {
     if (els_phiSCwidth_branch != 0) {
-      els_phiSCwidth_branch->GetEntry(index);
+      if (els_phiSCwidth_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_phiSCwidth_branch does not exist!\n");
       exit(1);
@@ -17108,7 +17818,8 @@ const vector<float> &CMS3::els_phiSCwidth() {
 const float &CMS3::evt_pfmetPhi_MuonEnDown() {
   if (not evt_pfmetPhi_MuonEnDown_isLoaded) {
     if (evt_pfmetPhi_MuonEnDown_branch != 0) {
-      evt_pfmetPhi_MuonEnDown_branch->GetEntry(index);
+      if (evt_pfmetPhi_MuonEnDown_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_pfmetPhi_MuonEnDown_branch does not exist!\n");
       exit(1);
@@ -17120,7 +17831,8 @@ const float &CMS3::evt_pfmetPhi_MuonEnDown() {
 const vector<float> &CMS3::mus_globalDeltaEtaPhi() {
   if (not mus_globalDeltaEtaPhi_isLoaded) {
     if (mus_globalDeltaEtaPhi_branch != 0) {
-      mus_globalDeltaEtaPhi_branch->GetEntry(index);
+      if (mus_globalDeltaEtaPhi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_globalDeltaEtaPhi_branch does not exist!\n");
       exit(1);
@@ -17132,7 +17844,8 @@ const vector<float> &CMS3::mus_globalDeltaEtaPhi() {
 const float &CMS3::evt_puppi_pfmetPhi_JetEnDown() {
   if (not evt_puppi_pfmetPhi_JetEnDown_isLoaded) {
     if (evt_puppi_pfmetPhi_JetEnDown_branch != 0) {
-      evt_puppi_pfmetPhi_JetEnDown_branch->GetEntry(index);
+      if (evt_puppi_pfmetPhi_JetEnDown_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_puppi_pfmetPhi_JetEnDown_branch does not exist!\n");
       exit(1);
@@ -17144,7 +17857,8 @@ const float &CMS3::evt_puppi_pfmetPhi_JetEnDown() {
 const vector<unsigned int> &CMS3::mus_HLT_Mu8_Ele17_TrailingLeg() {
   if (not mus_HLT_Mu8_Ele17_TrailingLeg_isLoaded) {
     if (mus_HLT_Mu8_Ele17_TrailingLeg_branch != 0) {
-      mus_HLT_Mu8_Ele17_TrailingLeg_branch->GetEntry(index);
+      if (mus_HLT_Mu8_Ele17_TrailingLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu8_Ele17_TrailingLeg_branch does not exist!\n");
       exit(1);
@@ -17156,7 +17870,8 @@ const vector<unsigned int> &CMS3::mus_HLT_Mu8_Ele17_TrailingLeg() {
 const vector<float> &CMS3::els_scSeedSigmaIetaIphi() {
   if (not els_scSeedSigmaIetaIphi_isLoaded) {
     if (els_scSeedSigmaIetaIphi_branch != 0) {
-      els_scSeedSigmaIetaIphi_branch->GetEntry(index);
+      if (els_scSeedSigmaIetaIphi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_scSeedSigmaIetaIphi_branch does not exist!\n");
       exit(1);
@@ -17168,7 +17883,8 @@ const vector<float> &CMS3::els_scSeedSigmaIetaIphi() {
 const float &CMS3::evt_METToolboxNoHF_pfmet() {
   if (not evt_METToolboxNoHF_pfmet_isLoaded) {
     if (evt_METToolboxNoHF_pfmet_branch != 0) {
-      evt_METToolboxNoHF_pfmet_branch->GetEntry(index);
+      if (evt_METToolboxNoHF_pfmet_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_METToolboxNoHF_pfmet_branch does not exist!\n");
       exit(1);
@@ -17180,7 +17896,8 @@ const float &CMS3::evt_METToolboxNoHF_pfmet() {
 const vector<float> &CMS3::els_mc_patMatch_dr() {
   if (not els_mc_patMatch_dr_isLoaded) {
     if (els_mc_patMatch_dr_branch != 0) {
-      els_mc_patMatch_dr_branch->GetEntry(index);
+      if (els_mc_patMatch_dr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_mc_patMatch_dr_branch does not exist!\n");
       exit(1);
@@ -17192,7 +17909,8 @@ const vector<float> &CMS3::els_mc_patMatch_dr() {
 const float &CMS3::gen_metPhi() {
   if (not gen_metPhi_isLoaded) {
     if (gen_metPhi_branch != 0) {
-      gen_metPhi_branch->GetEntry(index);
+      if (gen_metPhi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch gen_metPhi_branch does not exist!\n");
       exit(1);
@@ -17204,7 +17922,8 @@ const float &CMS3::gen_metPhi() {
 const vector<float> &CMS3::pfjets_puppi_chargedHadronE() {
   if (not pfjets_puppi_chargedHadronE_isLoaded) {
     if (pfjets_puppi_chargedHadronE_branch != 0) {
-      pfjets_puppi_chargedHadronE_branch->GetEntry(index);
+      if (pfjets_puppi_chargedHadronE_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_puppi_chargedHadronE_branch does not exist!\n");
       exit(1);
@@ -17216,7 +17935,8 @@ const vector<float> &CMS3::pfjets_puppi_chargedHadronE() {
 const vector<unsigned int> &CMS3::mus_HLT_IsoMu24_eta2p1_L1sMu16Eta2p1() {
   if (not mus_HLT_IsoMu24_eta2p1_L1sMu16Eta2p1_isLoaded) {
     if (mus_HLT_IsoMu24_eta2p1_L1sMu16Eta2p1_branch != 0) {
-      mus_HLT_IsoMu24_eta2p1_L1sMu16Eta2p1_branch->GetEntry(index);
+      if (mus_HLT_IsoMu24_eta2p1_L1sMu16Eta2p1_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_IsoMu24_eta2p1_L1sMu16Eta2p1_branch does not exist!\n");
       exit(1);
@@ -17228,7 +17948,8 @@ const vector<unsigned int> &CMS3::mus_HLT_IsoMu24_eta2p1_L1sMu16Eta2p1() {
 const vector<float> &CMS3::mus_gfit_d0Err() {
   if (not mus_gfit_d0Err_isLoaded) {
     if (mus_gfit_d0Err_branch != 0) {
-      mus_gfit_d0Err_branch->GetEntry(index);
+      if (mus_gfit_d0Err_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_gfit_d0Err_branch does not exist!\n");
       exit(1);
@@ -17240,7 +17961,8 @@ const vector<float> &CMS3::mus_gfit_d0Err() {
 const vector<float> &CMS3::photons_e2x5Max() {
   if (not photons_e2x5Max_isLoaded) {
     if (photons_e2x5Max_branch != 0) {
-      photons_e2x5Max_branch->GetEntry(index);
+      if (photons_e2x5Max_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_e2x5Max_branch does not exist!\n");
       exit(1);
@@ -17252,7 +17974,8 @@ const vector<float> &CMS3::photons_e2x5Max() {
 const vector<int> &CMS3::els_passVIDTrigMvaWP80Id() {
   if (not els_passVIDTrigMvaWP80Id_isLoaded) {
     if (els_passVIDTrigMvaWP80Id_branch != 0) {
-      els_passVIDTrigMvaWP80Id_branch->GetEntry(index);
+      if (els_passVIDTrigMvaWP80Id_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_passVIDTrigMvaWP80Id_branch does not exist!\n");
       exit(1);
@@ -17264,7 +17987,8 @@ const vector<int> &CMS3::els_passVIDTrigMvaWP80Id() {
 const vector<float> &CMS3::mus_e_em() {
   if (not mus_e_em_isLoaded) {
     if (mus_e_em_branch != 0) {
-      mus_e_em_branch->GetEntry(index);
+      if (mus_e_em_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_e_em_branch does not exist!\n");
       exit(1);
@@ -17276,7 +18000,8 @@ const vector<float> &CMS3::mus_e_em() {
 const unsigned int &CMS3::mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_version() {
   if (not mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_version_isLoaded) {
     if (mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_version_branch != 0) {
-      mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_version_branch->GetEntry(index);
+      if (mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_version_branch does not exist!\n");
       exit(1);
@@ -17288,7 +18013,8 @@ const unsigned int &CMS3::mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_version() {
 const vector<unsigned int> &CMS3::mus_HLT_Mu17_TkMu8() {
   if (not mus_HLT_Mu17_TkMu8_isLoaded) {
     if (mus_HLT_Mu17_TkMu8_branch != 0) {
-      mus_HLT_Mu17_TkMu8_branch->GetEntry(index);
+      if (mus_HLT_Mu17_TkMu8_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_TkMu8_branch does not exist!\n");
       exit(1);
@@ -17300,7 +18026,8 @@ const vector<unsigned int> &CMS3::mus_HLT_Mu17_TkMu8() {
 const vector<float> &CMS3::photons_hOverE() {
   if (not photons_hOverE_isLoaded) {
     if (photons_hOverE_branch != 0) {
-      photons_hOverE_branch->GetEntry(index);
+      if (photons_hOverE_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_hOverE_branch does not exist!\n");
       exit(1);
@@ -17312,7 +18039,8 @@ const vector<float> &CMS3::photons_hOverE() {
 const vector<int> &CMS3::photons_mc_id() {
   if (not photons_mc_id_isLoaded) {
     if (photons_mc_id_branch != 0) {
-      photons_mc_id_branch->GetEntry(index);
+      if (photons_mc_id_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_mc_id_branch does not exist!\n");
       exit(1);
@@ -17324,7 +18052,8 @@ const vector<int> &CMS3::photons_mc_id() {
 const vector<int> &CMS3::mus_bfit_algo() {
   if (not mus_bfit_algo_isLoaded) {
     if (mus_bfit_algo_branch != 0) {
-      mus_bfit_algo_branch->GetEntry(index);
+      if (mus_bfit_algo_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_bfit_algo_branch does not exist!\n");
       exit(1);
@@ -17336,7 +18065,8 @@ const vector<int> &CMS3::mus_bfit_algo() {
 const float &CMS3::evt_pfmetPhi_TauEnUp() {
   if (not evt_pfmetPhi_TauEnUp_isLoaded) {
     if (evt_pfmetPhi_TauEnUp_branch != 0) {
-      evt_pfmetPhi_TauEnUp_branch->GetEntry(index);
+      if (evt_pfmetPhi_TauEnUp_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_pfmetPhi_TauEnUp_branch does not exist!\n");
       exit(1);
@@ -17348,7 +18078,8 @@ const float &CMS3::evt_pfmetPhi_TauEnUp() {
 const vector<float> &CMS3::els_ckf_chi2() {
   if (not els_ckf_chi2_isLoaded) {
     if (els_ckf_chi2_branch != 0) {
-      els_ckf_chi2_branch->GetEntry(index);
+      if (els_ckf_chi2_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_ckf_chi2_branch does not exist!\n");
       exit(1);
@@ -17360,7 +18091,8 @@ const vector<float> &CMS3::els_ckf_chi2() {
 const vector<float> &CMS3::mus_bs3derr() {
   if (not mus_bs3derr_isLoaded) {
     if (mus_bs3derr_branch != 0) {
-      mus_bs3derr_branch->GetEntry(index);
+      if (mus_bs3derr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_bs3derr_branch does not exist!\n");
       exit(1);
@@ -17372,7 +18104,8 @@ const vector<float> &CMS3::mus_bs3derr() {
 const unsigned int &CMS3::els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_TrailingLeg_version() {
   if (not els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_TrailingLeg_version_isLoaded) {
     if (els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_TrailingLeg_version_branch != 0) {
-      els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_TrailingLeg_version_branch->GetEntry(index);
+      if (els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_TrailingLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_TrailingLeg_version_branch does not exist!\n");
       exit(1);
@@ -17384,7 +18117,8 @@ const unsigned int &CMS3::els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_TrailingLeg
 const vector<vector<int> > &CMS3::hlt_trigObjs_id() {
   if (not hlt_trigObjs_id_isLoaded) {
     if (hlt_trigObjs_id_branch != 0) {
-      hlt_trigObjs_id_branch->GetEntry(index);
+      if (hlt_trigObjs_id_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hlt_trigObjs_id_branch does not exist!\n");
       exit(1);
@@ -17396,7 +18130,8 @@ const vector<vector<int> > &CMS3::hlt_trigObjs_id() {
 const float &CMS3::evt_puppi_pfmetPhi_raw() {
   if (not evt_puppi_pfmetPhi_raw_isLoaded) {
     if (evt_puppi_pfmetPhi_raw_branch != 0) {
-      evt_puppi_pfmetPhi_raw_branch->GetEntry(index);
+      if (evt_puppi_pfmetPhi_raw_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_puppi_pfmetPhi_raw_branch does not exist!\n");
       exit(1);
@@ -17408,7 +18143,8 @@ const float &CMS3::evt_puppi_pfmetPhi_raw() {
 const unsigned int &CMS3::els_HLT_Ele17_Ele8_Mass50_LeadingLeg_version() {
   if (not els_HLT_Ele17_Ele8_Mass50_LeadingLeg_version_isLoaded) {
     if (els_HLT_Ele17_Ele8_Mass50_LeadingLeg_version_branch != 0) {
-      els_HLT_Ele17_Ele8_Mass50_LeadingLeg_version_branch->GetEntry(index);
+      if (els_HLT_Ele17_Ele8_Mass50_LeadingLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele17_Ele8_Mass50_LeadingLeg_version_branch does not exist!\n");
       exit(1);
@@ -17420,7 +18156,8 @@ const unsigned int &CMS3::els_HLT_Ele17_Ele8_Mass50_LeadingLeg_version() {
 const float &CMS3::evt_NoHF_pfmetPhi() {
   if (not evt_NoHF_pfmetPhi_isLoaded) {
     if (evt_NoHF_pfmetPhi_branch != 0) {
-      evt_NoHF_pfmetPhi_branch->GetEntry(index);
+      if (evt_NoHF_pfmetPhi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_NoHF_pfmetPhi_branch does not exist!\n");
       exit(1);
@@ -17432,7 +18169,8 @@ const float &CMS3::evt_NoHF_pfmetPhi() {
 const vector<float> &CMS3::pfjets_photonE() {
   if (not pfjets_photonE_isLoaded) {
     if (pfjets_photonE_branch != 0) {
-      pfjets_photonE_branch->GetEntry(index);
+      if (pfjets_photonE_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_photonE_branch does not exist!\n");
       exit(1);
@@ -17444,7 +18182,8 @@ const vector<float> &CMS3::pfjets_photonE() {
 const vector<unsigned int> &CMS3::els_HLT_Ele33_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg() {
   if (not els_HLT_Ele33_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_isLoaded) {
     if (els_HLT_Ele33_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_branch != 0) {
-      els_HLT_Ele33_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_branch->GetEntry(index);
+      if (els_HLT_Ele33_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele33_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_branch does not exist!\n");
       exit(1);
@@ -17456,7 +18195,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele33_CaloIdL_TrackIdL_IsoVL_PFJet30_E
 const float &CMS3::hcalnoise_spikeNoiseSumE() {
   if (not hcalnoise_spikeNoiseSumE_isLoaded) {
     if (hcalnoise_spikeNoiseSumE_branch != 0) {
-      hcalnoise_spikeNoiseSumE_branch->GetEntry(index);
+      if (hcalnoise_spikeNoiseSumE_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_spikeNoiseSumE_branch does not exist!\n");
       exit(1);
@@ -17468,7 +18208,8 @@ const float &CMS3::hcalnoise_spikeNoiseSumE() {
 const vector<float> &CMS3::photons_e1x5() {
   if (not photons_e1x5_isLoaded) {
     if (photons_e1x5_branch != 0) {
-      photons_e1x5_branch->GetEntry(index);
+      if (photons_e1x5_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_e1x5_branch does not exist!\n");
       exit(1);
@@ -17480,7 +18221,8 @@ const vector<float> &CMS3::photons_e1x5() {
 const unsigned int &CMS3::els_HLT_Ele8_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version() {
   if (not els_HLT_Ele8_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version_isLoaded) {
     if (els_HLT_Ele8_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version_branch != 0) {
-      els_HLT_Ele8_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version_branch->GetEntry(index);
+      if (els_HLT_Ele8_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele8_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version_branch does not exist!\n");
       exit(1);
@@ -17492,7 +18234,8 @@ const unsigned int &CMS3::els_HLT_Ele8_CaloIdM_TrackIdM_PFJet30_ElectronLeg_vers
 const vector<float> &CMS3::mus_isoR03_pf_NeutralHadronEt() {
   if (not mus_isoR03_pf_NeutralHadronEt_isLoaded) {
     if (mus_isoR03_pf_NeutralHadronEt_branch != 0) {
-      mus_isoR03_pf_NeutralHadronEt_branch->GetEntry(index);
+      if (mus_isoR03_pf_NeutralHadronEt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isoR03_pf_NeutralHadronEt_branch does not exist!\n");
       exit(1);
@@ -17504,7 +18247,8 @@ const vector<float> &CMS3::mus_isoR03_pf_NeutralHadronEt() {
 const vector<int> &CMS3::mus_mc3idx() {
   if (not mus_mc3idx_isLoaded) {
     if (mus_mc3idx_branch != 0) {
-      mus_mc3idx_branch->GetEntry(index);
+      if (mus_mc3idx_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_mc3idx_branch does not exist!\n");
       exit(1);
@@ -17516,7 +18260,8 @@ const vector<int> &CMS3::mus_mc3idx() {
 const vector<vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > > &CMS3::taus_pf_isocands_p4() {
   if (not taus_pf_isocands_p4_isLoaded) {
     if (taus_pf_isocands_p4_branch != 0) {
-      taus_pf_isocands_p4_branch->GetEntry(index);
+      if (taus_pf_isocands_p4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch taus_pf_isocands_p4_branch does not exist!\n");
       exit(1);
@@ -17528,7 +18273,8 @@ const vector<vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > >
 const vector<vector<bool> > &CMS3::hlt_trigObjs_passLast() {
   if (not hlt_trigObjs_passLast_isLoaded) {
     if (hlt_trigObjs_passLast_branch != 0) {
-      hlt_trigObjs_passLast_branch->GetEntry(index);
+      if (hlt_trigObjs_passLast_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hlt_trigObjs_passLast_branch does not exist!\n");
       exit(1);
@@ -17540,7 +18286,8 @@ const vector<vector<bool> > &CMS3::hlt_trigObjs_passLast() {
 const vector<float> &CMS3::photons_scSeedPhi() {
   if (not photons_scSeedPhi_isLoaded) {
     if (photons_scSeedPhi_branch != 0) {
-      photons_scSeedPhi_branch->GetEntry(index);
+      if (photons_scSeedPhi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_scSeedPhi_branch does not exist!\n");
       exit(1);
@@ -17552,7 +18299,8 @@ const vector<float> &CMS3::photons_scSeedPhi() {
 const vector<float> &CMS3::mus_bfit_ptErr() {
   if (not mus_bfit_ptErr_isLoaded) {
     if (mus_bfit_ptErr_branch != 0) {
-      mus_bfit_ptErr_branch->GetEntry(index);
+      if (mus_bfit_ptErr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_bfit_ptErr_branch does not exist!\n");
       exit(1);
@@ -17564,7 +18312,8 @@ const vector<float> &CMS3::mus_bfit_ptErr() {
 const vector<float> &CMS3::convs_ndof() {
   if (not convs_ndof_isLoaded) {
     if (convs_ndof_branch != 0) {
-      convs_ndof_branch->GetEntry(index);
+      if (convs_ndof_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch convs_ndof_branch does not exist!\n");
       exit(1);
@@ -17576,7 +18325,8 @@ const vector<float> &CMS3::convs_ndof() {
 const bool &CMS3::filt_hbheNoise() {
   if (not filt_hbheNoise_isLoaded) {
     if (filt_hbheNoise_branch != 0) {
-      filt_hbheNoise_branch->GetEntry(index);
+      if (filt_hbheNoise_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch filt_hbheNoise_branch does not exist!\n");
       exit(1);
@@ -17588,7 +18338,8 @@ const bool &CMS3::filt_hbheNoise() {
 const vector<float> &CMS3::mus_iso05_hoEt() {
   if (not mus_iso05_hoEt_isLoaded) {
     if (mus_iso05_hoEt_branch != 0) {
-      mus_iso05_hoEt_branch->GetEntry(index);
+      if (mus_iso05_hoEt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_iso05_hoEt_branch does not exist!\n");
       exit(1);
@@ -17600,7 +18351,8 @@ const vector<float> &CMS3::mus_iso05_hoEt() {
 const vector<unsigned int> &CMS3::mus_HLT_Mu8_Ele17() {
   if (not mus_HLT_Mu8_Ele17_isLoaded) {
     if (mus_HLT_Mu8_Ele17_branch != 0) {
-      mus_HLT_Mu8_Ele17_branch->GetEntry(index);
+      if (mus_HLT_Mu8_Ele17_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu8_Ele17_branch does not exist!\n");
       exit(1);
@@ -17612,7 +18364,8 @@ const vector<unsigned int> &CMS3::mus_HLT_Mu8_Ele17() {
 const vector<float> &CMS3::photons_hcalDepth1TowerSumEtBcConeDR04() {
   if (not photons_hcalDepth1TowerSumEtBcConeDR04_isLoaded) {
     if (photons_hcalDepth1TowerSumEtBcConeDR04_branch != 0) {
-      photons_hcalDepth1TowerSumEtBcConeDR04_branch->GetEntry(index);
+      if (photons_hcalDepth1TowerSumEtBcConeDR04_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_hcalDepth1TowerSumEtBcConeDR04_branch does not exist!\n");
       exit(1);
@@ -17624,7 +18377,8 @@ const vector<float> &CMS3::photons_hcalDepth1TowerSumEtBcConeDR04() {
 const vector<vector<int> > &CMS3::els_clusterInMustache() {
   if (not els_clusterInMustache_isLoaded) {
     if (els_clusterInMustache_branch != 0) {
-      els_clusterInMustache_branch->GetEntry(index);
+      if (els_clusterInMustache_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_clusterInMustache_branch does not exist!\n");
       exit(1);
@@ -17636,7 +18390,8 @@ const vector<vector<int> > &CMS3::els_clusterInMustache() {
 const vector<float> &CMS3::svs_distXYval() {
   if (not svs_distXYval_isLoaded) {
     if (svs_distXYval_branch != 0) {
-      svs_distXYval_branch->GetEntry(index);
+      if (svs_distXYval_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch svs_distXYval_branch does not exist!\n");
       exit(1);
@@ -17648,7 +18403,8 @@ const vector<float> &CMS3::svs_distXYval() {
 const vector<float> &CMS3::photons_scSeed2x5TopBottomAsym() {
   if (not photons_scSeed2x5TopBottomAsym_isLoaded) {
     if (photons_scSeed2x5TopBottomAsym_branch != 0) {
-      photons_scSeed2x5TopBottomAsym_branch->GetEntry(index);
+      if (photons_scSeed2x5TopBottomAsym_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_scSeed2x5TopBottomAsym_branch does not exist!\n");
       exit(1);
@@ -17660,7 +18416,8 @@ const vector<float> &CMS3::photons_scSeed2x5TopBottomAsym() {
 const vector<float> &CMS3::ak8jets_puppi_mass() {
   if (not ak8jets_puppi_mass_isLoaded) {
     if (ak8jets_puppi_mass_branch != 0) {
-      ak8jets_puppi_mass_branch->GetEntry(index);
+      if (ak8jets_puppi_mass_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_puppi_mass_branch does not exist!\n");
       exit(1);
@@ -17672,7 +18429,8 @@ const vector<float> &CMS3::ak8jets_puppi_mass() {
 const vector<float> &CMS3::els_hcalDepth1TowerSumEt04() {
   if (not els_hcalDepth1TowerSumEt04_isLoaded) {
     if (els_hcalDepth1TowerSumEt04_branch != 0) {
-      els_hcalDepth1TowerSumEt04_branch->GetEntry(index);
+      if (els_hcalDepth1TowerSumEt04_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_hcalDepth1TowerSumEt04_branch does not exist!\n");
       exit(1);
@@ -17684,7 +18442,8 @@ const vector<float> &CMS3::els_hcalDepth1TowerSumEt04() {
 const vector<float> &CMS3::els_hcalDepth1OverEcal() {
   if (not els_hcalDepth1OverEcal_isLoaded) {
     if (els_hcalDepth1OverEcal_branch != 0) {
-      els_hcalDepth1OverEcal_branch->GetEntry(index);
+      if (els_hcalDepth1OverEcal_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_hcalDepth1OverEcal_branch does not exist!\n");
       exit(1);
@@ -17696,7 +18455,8 @@ const vector<float> &CMS3::els_hcalDepth1OverEcal() {
 const vector<int> &CMS3::genps_id_simplemother() {
   if (not genps_id_simplemother_isLoaded) {
     if (genps_id_simplemother_branch != 0) {
-      genps_id_simplemother_branch->GetEntry(index);
+      if (genps_id_simplemother_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch genps_id_simplemother_branch does not exist!\n");
       exit(1);
@@ -17708,7 +18468,8 @@ const vector<int> &CMS3::genps_id_simplemother() {
 const vector<float> &CMS3::mus_isoSumDRR04_pf_ChargedParticlePt() {
   if (not mus_isoSumDRR04_pf_ChargedParticlePt_isLoaded) {
     if (mus_isoSumDRR04_pf_ChargedParticlePt_branch != 0) {
-      mus_isoSumDRR04_pf_ChargedParticlePt_branch->GetEntry(index);
+      if (mus_isoSumDRR04_pf_ChargedParticlePt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isoSumDRR04_pf_ChargedParticlePt_branch does not exist!\n");
       exit(1);
@@ -17720,7 +18481,8 @@ const vector<float> &CMS3::mus_isoSumDRR04_pf_ChargedParticlePt() {
 const vector<unsigned int> &CMS3::els_HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg() {
   if (not els_HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_isLoaded) {
     if (els_HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_branch != 0) {
-      els_HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_branch->GetEntry(index);
+      if (els_HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_branch does not exist!\n");
       exit(1);
@@ -17732,7 +18494,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_E
 const unsigned int &CMS3::els_HLT_Ele25WP60_Ele8_Mass55_version() {
   if (not els_HLT_Ele25WP60_Ele8_Mass55_version_isLoaded) {
     if (els_HLT_Ele25WP60_Ele8_Mass55_version_branch != 0) {
-      els_HLT_Ele25WP60_Ele8_Mass55_version_branch->GetEntry(index);
+      if (els_HLT_Ele25WP60_Ele8_Mass55_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele25WP60_Ele8_Mass55_version_branch does not exist!\n");
       exit(1);
@@ -17744,7 +18507,8 @@ const unsigned int &CMS3::els_HLT_Ele25WP60_Ele8_Mass55_version() {
 const vector<int> &CMS3::mus_gfit_validSTAHits() {
   if (not mus_gfit_validSTAHits_isLoaded) {
     if (mus_gfit_validSTAHits_branch != 0) {
-      mus_gfit_validSTAHits_branch->GetEntry(index);
+      if (mus_gfit_validSTAHits_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_gfit_validSTAHits_branch does not exist!\n");
       exit(1);
@@ -17756,7 +18520,8 @@ const vector<int> &CMS3::mus_gfit_validSTAHits() {
 const float &CMS3::evt_bs_dxdzErr() {
   if (not evt_bs_dxdzErr_isLoaded) {
     if (evt_bs_dxdzErr_branch != 0) {
-      evt_bs_dxdzErr_branch->GetEntry(index);
+      if (evt_bs_dxdzErr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_bs_dxdzErr_branch does not exist!\n");
       exit(1);
@@ -17768,7 +18533,8 @@ const float &CMS3::evt_bs_dxdzErr() {
 const float &CMS3::evt_fixgrid_rho_all() {
   if (not evt_fixgrid_rho_all_isLoaded) {
     if (evt_fixgrid_rho_all_branch != 0) {
-      evt_fixgrid_rho_all_branch->GetEntry(index);
+      if (evt_fixgrid_rho_all_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_fixgrid_rho_all_branch does not exist!\n");
       exit(1);
@@ -17780,7 +18546,8 @@ const float &CMS3::evt_fixgrid_rho_all() {
 const vector<unsigned int> &CMS3::els_HLT_Mu8_Ele17() {
   if (not els_HLT_Mu8_Ele17_isLoaded) {
     if (els_HLT_Mu8_Ele17_branch != 0) {
-      els_HLT_Mu8_Ele17_branch->GetEntry(index);
+      if (els_HLT_Mu8_Ele17_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Mu8_Ele17_branch does not exist!\n");
       exit(1);
@@ -17792,7 +18559,8 @@ const vector<unsigned int> &CMS3::els_HLT_Mu8_Ele17() {
 const float &CMS3::evt_pfmetSignificance() {
   if (not evt_pfmetSignificance_isLoaded) {
     if (evt_pfmetSignificance_branch != 0) {
-      evt_pfmetSignificance_branch->GetEntry(index);
+      if (evt_pfmetSignificance_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_pfmetSignificance_branch does not exist!\n");
       exit(1);
@@ -17804,7 +18572,8 @@ const float &CMS3::evt_pfmetSignificance() {
 const vector<float> &CMS3::els_clustersMeanDRToSeed() {
   if (not els_clustersMeanDRToSeed_isLoaded) {
     if (els_clustersMeanDRToSeed_branch != 0) {
-      els_clustersMeanDRToSeed_branch->GetEntry(index);
+      if (els_clustersMeanDRToSeed_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_clustersMeanDRToSeed_branch does not exist!\n");
       exit(1);
@@ -17816,7 +18585,8 @@ const vector<float> &CMS3::els_clustersMeanDRToSeed() {
 const vector<unsigned int> &CMS3::els_HLT_Ele105_CaloIdVT_GsfTrkIdT() {
   if (not els_HLT_Ele105_CaloIdVT_GsfTrkIdT_isLoaded) {
     if (els_HLT_Ele105_CaloIdVT_GsfTrkIdT_branch != 0) {
-      els_HLT_Ele105_CaloIdVT_GsfTrkIdT_branch->GetEntry(index);
+      if (els_HLT_Ele105_CaloIdVT_GsfTrkIdT_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele105_CaloIdVT_GsfTrkIdT_branch does not exist!\n");
       exit(1);
@@ -17828,7 +18598,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele105_CaloIdVT_GsfTrkIdT() {
 const float &CMS3::hcalnoise_flatNoiseSumE() {
   if (not hcalnoise_flatNoiseSumE_isLoaded) {
     if (hcalnoise_flatNoiseSumE_branch != 0) {
-      hcalnoise_flatNoiseSumE_branch->GetEntry(index);
+      if (hcalnoise_flatNoiseSumE_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_flatNoiseSumE_branch does not exist!\n");
       exit(1);
@@ -17840,7 +18611,8 @@ const float &CMS3::hcalnoise_flatNoiseSumE() {
 const vector<vector<int> > &CMS3::convs_tkidx() {
   if (not convs_tkidx_isLoaded) {
     if (convs_tkidx_branch != 0) {
-      convs_tkidx_branch->GetEntry(index);
+      if (convs_tkidx_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch convs_tkidx_branch does not exist!\n");
       exit(1);
@@ -17852,7 +18624,8 @@ const vector<vector<int> > &CMS3::convs_tkidx() {
 const vector<float> &CMS3::pfjets_puppi_hfEmE() {
   if (not pfjets_puppi_hfEmE_isLoaded) {
     if (pfjets_puppi_hfEmE_branch != 0) {
-      pfjets_puppi_hfEmE_branch->GetEntry(index);
+      if (pfjets_puppi_hfEmE_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_puppi_hfEmE_branch does not exist!\n");
       exit(1);
@@ -17864,7 +18637,8 @@ const vector<float> &CMS3::pfjets_puppi_hfEmE() {
 const vector<int> &CMS3::mus_pid_TMOneStationTight() {
   if (not mus_pid_TMOneStationTight_isLoaded) {
     if (mus_pid_TMOneStationTight_branch != 0) {
-      mus_pid_TMOneStationTight_branch->GetEntry(index);
+      if (mus_pid_TMOneStationTight_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_pid_TMOneStationTight_branch does not exist!\n");
       exit(1);
@@ -17876,7 +18650,8 @@ const vector<int> &CMS3::mus_pid_TMOneStationTight() {
 const bool &CMS3::filt_cscBeamHalo2015() {
   if (not filt_cscBeamHalo2015_isLoaded) {
     if (filt_cscBeamHalo2015_branch != 0) {
-      filt_cscBeamHalo2015_branch->GetEntry(index);
+      if (filt_cscBeamHalo2015_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch filt_cscBeamHalo2015_branch does not exist!\n");
       exit(1);
@@ -17888,7 +18663,8 @@ const bool &CMS3::filt_cscBeamHalo2015() {
 const vector<float> &CMS3::photons_chargedHadronIso() {
   if (not photons_chargedHadronIso_isLoaded) {
     if (photons_chargedHadronIso_branch != 0) {
-      photons_chargedHadronIso_branch->GetEntry(index);
+      if (photons_chargedHadronIso_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_chargedHadronIso_branch does not exist!\n");
       exit(1);
@@ -17900,7 +18676,8 @@ const vector<float> &CMS3::photons_chargedHadronIso() {
 const unsigned int &CMS3::els_HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_version() {
   if (not els_HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_version_isLoaded) {
     if (els_HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_version_branch != 0) {
-      els_HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_version_branch->GetEntry(index);
+      if (els_HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_version_branch does not exist!\n");
       exit(1);
@@ -17912,7 +18689,8 @@ const unsigned int &CMS3::els_HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronL
 const float &CMS3::pdfinfo_x2() {
   if (not pdfinfo_x2_isLoaded) {
     if (pdfinfo_x2_branch != 0) {
-      pdfinfo_x2_branch->GetEntry(index);
+      if (pdfinfo_x2_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pdfinfo_x2_branch does not exist!\n");
       exit(1);
@@ -17924,7 +18702,8 @@ const float &CMS3::pdfinfo_x2() {
 const vector<int> &CMS3::els_passVIDNonTrigMvaWP80Id() {
   if (not els_passVIDNonTrigMvaWP80Id_isLoaded) {
     if (els_passVIDNonTrigMvaWP80Id_branch != 0) {
-      els_passVIDNonTrigMvaWP80Id_branch->GetEntry(index);
+      if (els_passVIDNonTrigMvaWP80Id_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_passVIDNonTrigMvaWP80Id_branch does not exist!\n");
       exit(1);
@@ -17936,7 +18715,8 @@ const vector<int> &CMS3::els_passVIDNonTrigMvaWP80Id() {
 const vector<bool> &CMS3::mus_updatedSta() {
   if (not mus_updatedSta_isLoaded) {
     if (mus_updatedSta_branch != 0) {
-      mus_updatedSta_branch->GetEntry(index);
+      if (mus_updatedSta_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_updatedSta_branch does not exist!\n");
       exit(1);
@@ -17948,7 +18728,8 @@ const vector<bool> &CMS3::mus_updatedSta() {
 const vector<float> &CMS3::els_scSeedLeftRightAsym() {
   if (not els_scSeedLeftRightAsym_isLoaded) {
     if (els_scSeedLeftRightAsym_branch != 0) {
-      els_scSeedLeftRightAsym_branch->GetEntry(index);
+      if (els_scSeedLeftRightAsym_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_scSeedLeftRightAsym_branch does not exist!\n");
       exit(1);
@@ -17960,7 +18741,8 @@ const vector<float> &CMS3::els_scSeedLeftRightAsym() {
 const float &CMS3::evt_puppi_pfmetPhi_UnclusteredEnUp() {
   if (not evt_puppi_pfmetPhi_UnclusteredEnUp_isLoaded) {
     if (evt_puppi_pfmetPhi_UnclusteredEnUp_branch != 0) {
-      evt_puppi_pfmetPhi_UnclusteredEnUp_branch->GetEntry(index);
+      if (evt_puppi_pfmetPhi_UnclusteredEnUp_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_puppi_pfmetPhi_UnclusteredEnUp_branch does not exist!\n");
       exit(1);
@@ -17972,7 +18754,8 @@ const float &CMS3::evt_puppi_pfmetPhi_UnclusteredEnUp() {
 const vector<float> &CMS3::els_scSeedCryEta() {
   if (not els_scSeedCryEta_isLoaded) {
     if (els_scSeedCryEta_branch != 0) {
-      els_scSeedCryEta_branch->GetEntry(index);
+      if (els_scSeedCryEta_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_scSeedCryEta_branch does not exist!\n");
       exit(1);
@@ -17984,7 +18767,8 @@ const vector<float> &CMS3::els_scSeedCryEta() {
 const vector<float> &CMS3::pfjets_METToolbox_chargedHadronE() {
   if (not pfjets_METToolbox_chargedHadronE_isLoaded) {
     if (pfjets_METToolbox_chargedHadronE_branch != 0) {
-      pfjets_METToolbox_chargedHadronE_branch->GetEntry(index);
+      if (pfjets_METToolbox_chargedHadronE_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_METToolbox_chargedHadronE_branch does not exist!\n");
       exit(1);
@@ -17996,7 +18780,8 @@ const vector<float> &CMS3::pfjets_METToolbox_chargedHadronE() {
 const vector<int> &CMS3::convs_algo() {
   if (not convs_algo_isLoaded) {
     if (convs_algo_branch != 0) {
-      convs_algo_branch->GetEntry(index);
+      if (convs_algo_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch convs_algo_branch does not exist!\n");
       exit(1);
@@ -18008,7 +18793,8 @@ const vector<int> &CMS3::convs_algo() {
 const unsigned int &CMS3::els_HLT_Ele33_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_version() {
   if (not els_HLT_Ele33_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_version_isLoaded) {
     if (els_HLT_Ele33_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_version_branch != 0) {
-      els_HLT_Ele33_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_version_branch->GetEntry(index);
+      if (els_HLT_Ele33_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele33_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_version_branch does not exist!\n");
       exit(1);
@@ -18020,7 +18806,8 @@ const unsigned int &CMS3::els_HLT_Ele33_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronL
 const vector<int> &CMS3::pfjets_chargedMultiplicity() {
   if (not pfjets_chargedMultiplicity_isLoaded) {
     if (pfjets_chargedMultiplicity_branch != 0) {
-      pfjets_chargedMultiplicity_branch->GetEntry(index);
+      if (pfjets_chargedMultiplicity_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_chargedMultiplicity_branch does not exist!\n");
       exit(1);
@@ -18032,7 +18819,8 @@ const vector<int> &CMS3::pfjets_chargedMultiplicity() {
 const float &CMS3::evt_lumiFill() {
   if (not evt_lumiFill_isLoaded) {
     if (evt_lumiFill_branch != 0) {
-      evt_lumiFill_branch->GetEntry(index);
+      if (evt_lumiFill_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_lumiFill_branch does not exist!\n");
       exit(1);
@@ -18044,7 +18832,8 @@ const float &CMS3::evt_lumiFill() {
 const unsigned int &CMS3::els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_version() {
   if (not els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_version_isLoaded) {
     if (els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_version_branch != 0) {
-      els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_version_branch->GetEntry(index);
+      if (els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_version_branch does not exist!\n");
       exit(1);
@@ -18056,7 +18845,8 @@ const unsigned int &CMS3::els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_version() {
 const vector<unsigned int> &CMS3::els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV0p5PF_ElectronLeg() {
   if (not els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV0p5PF_ElectronLeg_isLoaded) {
     if (els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV0p5PF_ElectronLeg_branch != 0) {
-      els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV0p5PF_ElectronLeg_branch->GetEntry(index);
+      if (els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV0p5PF_ElectronLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV0p5PF_ElectronLeg_branch does not exist!\n");
       exit(1);
@@ -18068,7 +18858,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_
 const vector<float> &CMS3::mus_isoR03_pf_PUPt() {
   if (not mus_isoR03_pf_PUPt_isLoaded) {
     if (mus_isoR03_pf_PUPt_branch != 0) {
-      mus_isoR03_pf_PUPt_branch->GetEntry(index);
+      if (mus_isoR03_pf_PUPt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isoR03_pf_PUPt_branch does not exist!\n");
       exit(1);
@@ -18080,7 +18871,8 @@ const vector<float> &CMS3::mus_isoR03_pf_PUPt() {
 const vector<float> &CMS3::els_clustersMeanDPhiToSeed() {
   if (not els_clustersMeanDPhiToSeed_isLoaded) {
     if (els_clustersMeanDPhiToSeed_branch != 0) {
-      els_clustersMeanDPhiToSeed_branch->GetEntry(index);
+      if (els_clustersMeanDPhiToSeed_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_clustersMeanDPhiToSeed_branch does not exist!\n");
       exit(1);
@@ -18092,7 +18884,8 @@ const vector<float> &CMS3::els_clustersMeanDPhiToSeed() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::pfjets_mc_p4() {
   if (not pfjets_mc_p4_isLoaded) {
     if (pfjets_mc_p4_branch != 0) {
-      pfjets_mc_p4_branch->GetEntry(index);
+      if (pfjets_mc_p4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_mc_p4_branch does not exist!\n");
       exit(1);
@@ -18104,7 +18897,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::p
 const vector<float> &CMS3::photons_scSeedE2x5Top() {
   if (not photons_scSeedE2x5Top_isLoaded) {
     if (photons_scSeedE2x5Top_branch != 0) {
-      photons_scSeedE2x5Top_branch->GetEntry(index);
+      if (photons_scSeedE2x5Top_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_scSeedE2x5Top_branch does not exist!\n");
       exit(1);
@@ -18116,7 +18910,8 @@ const vector<float> &CMS3::photons_scSeedE2x5Top() {
 const float &CMS3::evt_bs_yErr() {
   if (not evt_bs_yErr_isLoaded) {
     if (evt_bs_yErr_branch != 0) {
-      evt_bs_yErr_branch->GetEntry(index);
+      if (evt_bs_yErr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_bs_yErr_branch does not exist!\n");
       exit(1);
@@ -18128,7 +18923,8 @@ const float &CMS3::evt_bs_yErr() {
 const vector<int> &CMS3::els_sccharge() {
   if (not els_sccharge_isLoaded) {
     if (els_sccharge_branch != 0) {
-      els_sccharge_branch->GetEntry(index);
+      if (els_sccharge_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_sccharge_branch does not exist!\n");
       exit(1);
@@ -18140,7 +18936,8 @@ const vector<int> &CMS3::els_sccharge() {
 const vector<bool> &CMS3::genps_isHardProcess() {
   if (not genps_isHardProcess_isLoaded) {
     if (genps_isHardProcess_branch != 0) {
-      genps_isHardProcess_branch->GetEntry(index);
+      if (genps_isHardProcess_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch genps_isHardProcess_branch does not exist!\n");
       exit(1);
@@ -18152,7 +18949,8 @@ const vector<bool> &CMS3::genps_isHardProcess() {
 const vector<float> &CMS3::mus_segmCompatibility() {
   if (not mus_segmCompatibility_isLoaded) {
     if (mus_segmCompatibility_branch != 0) {
-      mus_segmCompatibility_branch->GetEntry(index);
+      if (mus_segmCompatibility_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_segmCompatibility_branch does not exist!\n");
       exit(1);
@@ -18164,7 +18962,8 @@ const vector<float> &CMS3::mus_segmCompatibility() {
 const vector<int> &CMS3::hyp_ll_index() {
   if (not hyp_ll_index_isLoaded) {
     if (hyp_ll_index_branch != 0) {
-      hyp_ll_index_branch->GetEntry(index);
+      if (hyp_ll_index_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hyp_ll_index_branch does not exist!\n");
       exit(1);
@@ -18176,7 +18975,8 @@ const vector<int> &CMS3::hyp_ll_index() {
 const vector<float> &CMS3::genweights() {
   if (not genweights_isLoaded) {
     if (genweights_branch != 0) {
-      genweights_branch->GetEntry(index);
+      if (genweights_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch genweights_branch does not exist!\n");
       exit(1);
@@ -18188,7 +18988,8 @@ const vector<float> &CMS3::genweights() {
 const float &CMS3::evt_pileupRMS() {
   if (not evt_pileupRMS_isLoaded) {
     if (evt_pileupRMS_branch != 0) {
-      evt_pileupRMS_branch->GetEntry(index);
+      if (evt_pileupRMS_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_pileupRMS_branch does not exist!\n");
       exit(1);
@@ -18200,7 +19001,8 @@ const float &CMS3::evt_pileupRMS() {
 const float &CMS3::evt_puppi_pfmet_MuonEnDown() {
   if (not evt_puppi_pfmet_MuonEnDown_isLoaded) {
     if (evt_puppi_pfmet_MuonEnDown_branch != 0) {
-      evt_puppi_pfmet_MuonEnDown_branch->GetEntry(index);
+      if (evt_puppi_pfmet_MuonEnDown_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_puppi_pfmet_MuonEnDown_branch does not exist!\n");
       exit(1);
@@ -18212,7 +19014,8 @@ const float &CMS3::evt_puppi_pfmet_MuonEnDown() {
 const vector<unsigned int> &CMS3::els_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg() {
   if (not els_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_isLoaded) {
     if (els_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_branch != 0) {
-      els_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_branch->GetEntry(index);
+      if (els_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_branch does not exist!\n");
       exit(1);
@@ -18224,7 +19027,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_E
 const unsigned int &CMS3::els_HLT_Ele105_CaloIdVT_GsfTrkIdT_version() {
   if (not els_HLT_Ele105_CaloIdVT_GsfTrkIdT_version_isLoaded) {
     if (els_HLT_Ele105_CaloIdVT_GsfTrkIdT_version_branch != 0) {
-      els_HLT_Ele105_CaloIdVT_GsfTrkIdT_version_branch->GetEntry(index);
+      if (els_HLT_Ele105_CaloIdVT_GsfTrkIdT_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele105_CaloIdVT_GsfTrkIdT_version_branch does not exist!\n");
       exit(1);
@@ -18236,7 +19040,8 @@ const unsigned int &CMS3::els_HLT_Ele105_CaloIdVT_GsfTrkIdT_version() {
 const vector<bool> &CMS3::genps_isPromptDecayed() {
   if (not genps_isPromptDecayed_isLoaded) {
     if (genps_isPromptDecayed_branch != 0) {
-      genps_isPromptDecayed_branch->GetEntry(index);
+      if (genps_isPromptDecayed_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch genps_isPromptDecayed_branch does not exist!\n");
       exit(1);
@@ -18248,7 +19053,8 @@ const vector<bool> &CMS3::genps_isPromptDecayed() {
 const unsigned int &CMS3::els_HLT_Ele17_Ele8_Mass50_TrailingLeg_version() {
   if (not els_HLT_Ele17_Ele8_Mass50_TrailingLeg_version_isLoaded) {
     if (els_HLT_Ele17_Ele8_Mass50_TrailingLeg_version_branch != 0) {
-      els_HLT_Ele17_Ele8_Mass50_TrailingLeg_version_branch->GetEntry(index);
+      if (els_HLT_Ele17_Ele8_Mass50_TrailingLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele17_Ele8_Mass50_TrailingLeg_version_branch does not exist!\n");
       exit(1);
@@ -18260,7 +19066,8 @@ const unsigned int &CMS3::els_HLT_Ele17_Ele8_Mass50_TrailingLeg_version() {
 const vector<int> &CMS3::genps_idx_mother() {
   if (not genps_idx_mother_isLoaded) {
     if (genps_idx_mother_branch != 0) {
-      genps_idx_mother_branch->GetEntry(index);
+      if (genps_idx_mother_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch genps_idx_mother_branch does not exist!\n");
       exit(1);
@@ -18272,7 +19079,8 @@ const vector<int> &CMS3::genps_idx_mother() {
 const vector<vector<int> > &CMS3::pfjets_METToolbox_pfcandIndicies() {
   if (not pfjets_METToolbox_pfcandIndicies_isLoaded) {
     if (pfjets_METToolbox_pfcandIndicies_branch != 0) {
-      pfjets_METToolbox_pfcandIndicies_branch->GetEntry(index);
+      if (pfjets_METToolbox_pfcandIndicies_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_METToolbox_pfcandIndicies_branch does not exist!\n");
       exit(1);
@@ -18284,7 +19092,8 @@ const vector<vector<int> > &CMS3::pfjets_METToolbox_pfcandIndicies() {
 const vector<int> &CMS3::pfjets_electronMultiplicity() {
   if (not pfjets_electronMultiplicity_isLoaded) {
     if (pfjets_electronMultiplicity_branch != 0) {
-      pfjets_electronMultiplicity_branch->GetEntry(index);
+      if (pfjets_electronMultiplicity_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_electronMultiplicity_branch does not exist!\n");
       exit(1);
@@ -18296,7 +19105,8 @@ const vector<int> &CMS3::pfjets_electronMultiplicity() {
 const vector<float> &CMS3::mus_dxyPV() {
   if (not mus_dxyPV_isLoaded) {
     if (mus_dxyPV_branch != 0) {
-      mus_dxyPV_branch->GetEntry(index);
+      if (mus_dxyPV_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_dxyPV_branch does not exist!\n");
       exit(1);
@@ -18308,7 +19118,8 @@ const vector<float> &CMS3::mus_dxyPV() {
 const vector<int> &CMS3::mus_bfit_ndof() {
   if (not mus_bfit_ndof_isLoaded) {
     if (mus_bfit_ndof_branch != 0) {
-      mus_bfit_ndof_branch->GetEntry(index);
+      if (mus_bfit_ndof_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_bfit_ndof_branch does not exist!\n");
       exit(1);
@@ -18320,7 +19131,8 @@ const vector<int> &CMS3::mus_bfit_ndof() {
 const vector<unsigned int> &CMS3::mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_TrailingLeg() {
   if (not mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_TrailingLeg_isLoaded) {
     if (mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_TrailingLeg_branch != 0) {
-      mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_TrailingLeg_branch->GetEntry(index);
+      if (mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_TrailingLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_TrailingLeg_branch does not exist!\n");
       exit(1);
@@ -18332,7 +19144,8 @@ const vector<unsigned int> &CMS3::mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_Trai
 const float &CMS3::hcalnoise_eventChargeFraction() {
   if (not hcalnoise_eventChargeFraction_isLoaded) {
     if (hcalnoise_eventChargeFraction_branch != 0) {
-      hcalnoise_eventChargeFraction_branch->GetEntry(index);
+      if (hcalnoise_eventChargeFraction_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_eventChargeFraction_branch does not exist!\n");
       exit(1);
@@ -18344,7 +19157,8 @@ const float &CMS3::hcalnoise_eventChargeFraction() {
 const vector<float> &CMS3::svs_dist3Dval() {
   if (not svs_dist3Dval_isLoaded) {
     if (svs_dist3Dval_branch != 0) {
-      svs_dist3Dval_branch->GetEntry(index);
+      if (svs_dist3Dval_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch svs_dist3Dval_branch does not exist!\n");
       exit(1);
@@ -18356,7 +19170,8 @@ const vector<float> &CMS3::svs_dist3Dval() {
 const vector<float> &CMS3::pfcands_puppiWeightNoLep() {
   if (not pfcands_puppiWeightNoLep_isLoaded) {
     if (pfcands_puppiWeightNoLep_branch != 0) {
-      pfcands_puppiWeightNoLep_branch->GetEntry(index);
+      if (pfcands_puppiWeightNoLep_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfcands_puppiWeightNoLep_branch does not exist!\n");
       exit(1);
@@ -18368,7 +19183,8 @@ const vector<float> &CMS3::pfcands_puppiWeightNoLep() {
 const vector<float> &CMS3::pfjets_mc_emEnergy() {
   if (not pfjets_mc_emEnergy_isLoaded) {
     if (pfjets_mc_emEnergy_branch != 0) {
-      pfjets_mc_emEnergy_branch->GetEntry(index);
+      if (pfjets_mc_emEnergy_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_mc_emEnergy_branch does not exist!\n");
       exit(1);
@@ -18380,7 +19196,8 @@ const vector<float> &CMS3::pfjets_mc_emEnergy() {
 const vector<float> &CMS3::convs_chi2() {
   if (not convs_chi2_isLoaded) {
     if (convs_chi2_branch != 0) {
-      convs_chi2_branch->GetEntry(index);
+      if (convs_chi2_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch convs_chi2_branch does not exist!\n");
       exit(1);
@@ -18392,7 +19209,8 @@ const vector<float> &CMS3::convs_chi2() {
 const float &CMS3::hcalnoise_NegativeNoiseSumEt() {
   if (not hcalnoise_NegativeNoiseSumEt_isLoaded) {
     if (hcalnoise_NegativeNoiseSumEt_branch != 0) {
-      hcalnoise_NegativeNoiseSumEt_branch->GetEntry(index);
+      if (hcalnoise_NegativeNoiseSumEt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_NegativeNoiseSumEt_branch does not exist!\n");
       exit(1);
@@ -18404,7 +19222,8 @@ const float &CMS3::hcalnoise_NegativeNoiseSumEt() {
 const vector<unsigned int> &CMS3::mus_HLT_IsoTkMu24() {
   if (not mus_HLT_IsoTkMu24_isLoaded) {
     if (mus_HLT_IsoTkMu24_branch != 0) {
-      mus_HLT_IsoTkMu24_branch->GetEntry(index);
+      if (mus_HLT_IsoTkMu24_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_IsoTkMu24_branch does not exist!\n");
       exit(1);
@@ -18416,7 +19235,8 @@ const vector<unsigned int> &CMS3::mus_HLT_IsoTkMu24() {
 const unsigned int &CMS3::mus_HLT_Mu17_TkMu8_version() {
   if (not mus_HLT_Mu17_TkMu8_version_isLoaded) {
     if (mus_HLT_Mu17_TkMu8_version_branch != 0) {
-      mus_HLT_Mu17_TkMu8_version_branch->GetEntry(index);
+      if (mus_HLT_Mu17_TkMu8_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_TkMu8_version_branch does not exist!\n");
       exit(1);
@@ -18428,7 +19248,8 @@ const unsigned int &CMS3::mus_HLT_Mu17_TkMu8_version() {
 const vector<float> &CMS3::pfjets_muonE() {
   if (not pfjets_muonE_isLoaded) {
     if (pfjets_muonE_branch != 0) {
-      pfjets_muonE_branch->GetEntry(index);
+      if (pfjets_muonE_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_muonE_branch does not exist!\n");
       exit(1);
@@ -18440,7 +19261,8 @@ const vector<float> &CMS3::pfjets_muonE() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::pfjets_METToolbox_p4() {
   if (not pfjets_METToolbox_p4_isLoaded) {
     if (pfjets_METToolbox_p4_branch != 0) {
-      pfjets_METToolbox_p4_branch->GetEntry(index);
+      if (pfjets_METToolbox_p4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_METToolbox_p4_branch does not exist!\n");
       exit(1);
@@ -18452,7 +19274,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::p
 const vector<float> &CMS3::els_d0corrPhi() {
   if (not els_d0corrPhi_isLoaded) {
     if (els_d0corrPhi_branch != 0) {
-      els_d0corrPhi_branch->GetEntry(index);
+      if (els_d0corrPhi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_d0corrPhi_branch does not exist!\n");
       exit(1);
@@ -18464,7 +19287,8 @@ const vector<float> &CMS3::els_d0corrPhi() {
 const vector<float> &CMS3::els_scSeedTopBottomAsym() {
   if (not els_scSeedTopBottomAsym_isLoaded) {
     if (els_scSeedTopBottomAsym_branch != 0) {
-      els_scSeedTopBottomAsym_branch->GetEntry(index);
+      if (els_scSeedTopBottomAsym_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_scSeedTopBottomAsym_branch does not exist!\n");
       exit(1);
@@ -18476,7 +19300,8 @@ const vector<float> &CMS3::els_scSeedTopBottomAsym() {
 const vector<int> &CMS3::mus_sta_validHits() {
   if (not mus_sta_validHits_isLoaded) {
     if (mus_sta_validHits_branch != 0) {
-      mus_sta_validHits_branch->GetEntry(index);
+      if (mus_sta_validHits_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_sta_validHits_branch does not exist!\n");
       exit(1);
@@ -18488,7 +19313,8 @@ const vector<int> &CMS3::mus_sta_validHits() {
 const unsigned int &CMS3::els_HLT_Ele17_Ele8_L1sL1DoubleEG137_version() {
   if (not els_HLT_Ele17_Ele8_L1sL1DoubleEG137_version_isLoaded) {
     if (els_HLT_Ele17_Ele8_L1sL1DoubleEG137_version_branch != 0) {
-      els_HLT_Ele17_Ele8_L1sL1DoubleEG137_version_branch->GetEntry(index);
+      if (els_HLT_Ele17_Ele8_L1sL1DoubleEG137_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele17_Ele8_L1sL1DoubleEG137_version_branch does not exist!\n");
       exit(1);
@@ -18500,7 +19326,8 @@ const unsigned int &CMS3::els_HLT_Ele17_Ele8_L1sL1DoubleEG137_version() {
 const float &CMS3::evt_NoHF_pfsumet() {
   if (not evt_NoHF_pfsumet_isLoaded) {
     if (evt_NoHF_pfsumet_branch != 0) {
-      evt_NoHF_pfsumet_branch->GetEntry(index);
+      if (evt_NoHF_pfsumet_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_NoHF_pfsumet_branch does not exist!\n");
       exit(1);
@@ -18512,7 +19339,8 @@ const float &CMS3::evt_NoHF_pfsumet() {
 const vector<int> &CMS3::els_mc_motherid() {
   if (not els_mc_motherid_isLoaded) {
     if (els_mc_motherid_branch != 0) {
-      els_mc_motherid_branch->GetEntry(index);
+      if (els_mc_motherid_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_mc_motherid_branch does not exist!\n");
       exit(1);
@@ -18524,7 +19352,8 @@ const vector<int> &CMS3::els_mc_motherid() {
 const vector<int> &CMS3::els_isEcalDriven() {
   if (not els_isEcalDriven_isLoaded) {
     if (els_isEcalDriven_branch != 0) {
-      els_isEcalDriven_branch->GetEntry(index);
+      if (els_isEcalDriven_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_isEcalDriven_branch does not exist!\n");
       exit(1);
@@ -18536,7 +19365,8 @@ const vector<int> &CMS3::els_isEcalDriven() {
 const unsigned int &CMS3::mus_HLT_TkMu50_version() {
   if (not mus_HLT_TkMu50_version_isLoaded) {
     if (mus_HLT_TkMu50_version_branch != 0) {
-      mus_HLT_TkMu50_version_branch->GetEntry(index);
+      if (mus_HLT_TkMu50_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_TkMu50_version_branch does not exist!\n");
       exit(1);
@@ -18548,7 +19378,8 @@ const unsigned int &CMS3::mus_HLT_TkMu50_version() {
 const int &CMS3::evt_experimentType() {
   if (not evt_experimentType_isLoaded) {
     if (evt_experimentType_branch != 0) {
-      evt_experimentType_branch->GetEntry(index);
+      if (evt_experimentType_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_experimentType_branch does not exist!\n");
       exit(1);
@@ -18560,7 +19391,8 @@ const int &CMS3::evt_experimentType() {
 const bool &CMS3::filt_ecalTP() {
   if (not filt_ecalTP_isLoaded) {
     if (filt_ecalTP_branch != 0) {
-      filt_ecalTP_branch->GetEntry(index);
+      if (filt_ecalTP_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch filt_ecalTP_branch does not exist!\n");
       exit(1);
@@ -18572,7 +19404,8 @@ const bool &CMS3::filt_ecalTP() {
 const vector<float> &CMS3::els_ecalEnergy() {
   if (not els_ecalEnergy_isLoaded) {
     if (els_ecalEnergy_branch != 0) {
-      els_ecalEnergy_branch->GetEntry(index);
+      if (els_ecalEnergy_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_ecalEnergy_branch does not exist!\n");
       exit(1);
@@ -18584,7 +19417,8 @@ const vector<float> &CMS3::els_ecalEnergy() {
 const float &CMS3::evt_pfmet_JetEnUp() {
   if (not evt_pfmet_JetEnUp_isLoaded) {
     if (evt_pfmet_JetEnUp_branch != 0) {
-      evt_pfmet_JetEnUp_branch->GetEntry(index);
+      if (evt_pfmet_JetEnUp_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_pfmet_JetEnUp_branch does not exist!\n");
       exit(1);
@@ -18596,7 +19430,8 @@ const float &CMS3::evt_pfmet_JetEnUp() {
 const vector<float> &CMS3::els_phiErr() {
   if (not els_phiErr_isLoaded) {
     if (els_phiErr_branch != 0) {
-      els_phiErr_branch->GetEntry(index);
+      if (els_phiErr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_phiErr_branch does not exist!\n");
       exit(1);
@@ -18608,7 +19443,8 @@ const vector<float> &CMS3::els_phiErr() {
 const vector<float> &CMS3::pfjets_puppi_photonE() {
   if (not pfjets_puppi_photonE_isLoaded) {
     if (pfjets_puppi_photonE_branch != 0) {
-      pfjets_puppi_photonE_branch->GetEntry(index);
+      if (pfjets_puppi_photonE_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_puppi_photonE_branch does not exist!\n");
       exit(1);
@@ -18620,7 +19456,8 @@ const vector<float> &CMS3::pfjets_puppi_photonE() {
 const vector<int> &CMS3::mus_bfit_validHits() {
   if (not mus_bfit_validHits_isLoaded) {
     if (mus_bfit_validHits_branch != 0) {
-      mus_bfit_validHits_branch->GetEntry(index);
+      if (mus_bfit_validHits_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_bfit_validHits_branch does not exist!\n");
       exit(1);
@@ -18632,7 +19469,8 @@ const vector<int> &CMS3::mus_bfit_validHits() {
 const vector<float> &CMS3::photons_recoPhotonIso() {
   if (not photons_recoPhotonIso_isLoaded) {
     if (photons_recoPhotonIso_branch != 0) {
-      photons_recoPhotonIso_branch->GetEntry(index);
+      if (photons_recoPhotonIso_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_recoPhotonIso_branch does not exist!\n");
       exit(1);
@@ -18644,7 +19482,8 @@ const vector<float> &CMS3::photons_recoPhotonIso() {
 const float &CMS3::hcalnoise_minRBXEMF() {
   if (not hcalnoise_minRBXEMF_isLoaded) {
     if (hcalnoise_minRBXEMF_branch != 0) {
-      hcalnoise_minRBXEMF_branch->GetEntry(index);
+      if (hcalnoise_minRBXEMF_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_minRBXEMF_branch does not exist!\n");
       exit(1);
@@ -18656,7 +19495,8 @@ const float &CMS3::hcalnoise_minRBXEMF() {
 const int &CMS3::hcalnoise_passHighLevelNoiseFilter() {
   if (not hcalnoise_passHighLevelNoiseFilter_isLoaded) {
     if (hcalnoise_passHighLevelNoiseFilter_branch != 0) {
-      hcalnoise_passHighLevelNoiseFilter_branch->GetEntry(index);
+      if (hcalnoise_passHighLevelNoiseFilter_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_passHighLevelNoiseFilter_branch does not exist!\n");
       exit(1);
@@ -18668,7 +19508,8 @@ const int &CMS3::hcalnoise_passHighLevelNoiseFilter() {
 const vector<float> &CMS3::photons_recoNeutralHadronIso() {
   if (not photons_recoNeutralHadronIso_isLoaded) {
     if (photons_recoNeutralHadronIso_branch != 0) {
-      photons_recoNeutralHadronIso_branch->GetEntry(index);
+      if (photons_recoNeutralHadronIso_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_recoNeutralHadronIso_branch does not exist!\n");
       exit(1);
@@ -18680,7 +19521,8 @@ const vector<float> &CMS3::photons_recoNeutralHadronIso() {
 const vector<float> &CMS3::photons_clustersMeanDPhiToSeed() {
   if (not photons_clustersMeanDPhiToSeed_isLoaded) {
     if (photons_clustersMeanDPhiToSeed_branch != 0) {
-      photons_clustersMeanDPhiToSeed_branch->GetEntry(index);
+      if (photons_clustersMeanDPhiToSeed_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_clustersMeanDPhiToSeed_branch does not exist!\n");
       exit(1);
@@ -18692,7 +19534,8 @@ const vector<float> &CMS3::photons_clustersMeanDPhiToSeed() {
 const unsigned int &CMS3::els_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_ElectronLeg_version() {
   if (not els_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_ElectronLeg_version_isLoaded) {
     if (els_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_ElectronLeg_version_branch != 0) {
-      els_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_ElectronLeg_version_branch->GetEntry(index);
+      if (els_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_ElectronLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_ElectronLeg_version_branch does not exist!\n");
       exit(1);
@@ -18704,7 +19547,8 @@ const unsigned int &CMS3::els_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_El
 const vector<float> &CMS3::genps_mass() {
   if (not genps_mass_isLoaded) {
     if (genps_mass_branch != 0) {
-      genps_mass_branch->GetEntry(index);
+      if (genps_mass_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch genps_mass_branch does not exist!\n");
       exit(1);
@@ -18716,7 +19560,8 @@ const vector<float> &CMS3::genps_mass() {
 const vector<float> &CMS3::els_dzPV() {
   if (not els_dzPV_isLoaded) {
     if (els_dzPV_branch != 0) {
-      els_dzPV_branch->GetEntry(index);
+      if (els_dzPV_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_dzPV_branch does not exist!\n");
       exit(1);
@@ -18728,7 +19573,8 @@ const vector<float> &CMS3::els_dzPV() {
 const vector<float> &CMS3::photons_scSeedELeft() {
   if (not photons_scSeedELeft_isLoaded) {
     if (photons_scSeedELeft_branch != 0) {
-      photons_scSeedELeft_branch->GetEntry(index);
+      if (photons_scSeedELeft_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_scSeedELeft_branch does not exist!\n");
       exit(1);
@@ -18740,7 +19586,8 @@ const vector<float> &CMS3::photons_scSeedELeft() {
 const vector<bool> &CMS3::els_isGsfCtfScPixChargeConsistent() {
   if (not els_isGsfCtfScPixChargeConsistent_isLoaded) {
     if (els_isGsfCtfScPixChargeConsistent_branch != 0) {
-      els_isGsfCtfScPixChargeConsistent_branch->GetEntry(index);
+      if (els_isGsfCtfScPixChargeConsistent_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_isGsfCtfScPixChargeConsistent_branch does not exist!\n");
       exit(1);
@@ -18752,7 +19599,8 @@ const vector<bool> &CMS3::els_isGsfCtfScPixChargeConsistent() {
 const vector<float> &CMS3::els_dEtaOut() {
   if (not els_dEtaOut_isLoaded) {
     if (els_dEtaOut_branch != 0) {
-      els_dEtaOut_branch->GetEntry(index);
+      if (els_dEtaOut_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_dEtaOut_branch does not exist!\n");
       exit(1);
@@ -18764,7 +19612,8 @@ const vector<float> &CMS3::els_dEtaOut() {
 const vector<float> &CMS3::els_scSeedSize() {
   if (not els_scSeedSize_isLoaded) {
     if (els_scSeedSize_branch != 0) {
-      els_scSeedSize_branch->GetEntry(index);
+      if (els_scSeedSize_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_scSeedSize_branch does not exist!\n");
       exit(1);
@@ -18776,7 +19625,8 @@ const vector<float> &CMS3::els_scSeedSize() {
 const vector<float> &CMS3::els_sigmaIEtaIEta() {
   if (not els_sigmaIEtaIEta_isLoaded) {
     if (els_sigmaIEtaIEta_branch != 0) {
-      els_sigmaIEtaIEta_branch->GetEntry(index);
+      if (els_sigmaIEtaIEta_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_sigmaIEtaIEta_branch does not exist!\n");
       exit(1);
@@ -18788,7 +19638,8 @@ const vector<float> &CMS3::els_sigmaIEtaIEta() {
 const vector<float> &CMS3::photons_e3x3() {
   if (not photons_e3x3_isLoaded) {
     if (photons_e3x3_branch != 0) {
-      photons_e3x3_branch->GetEntry(index);
+      if (photons_e3x3_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_e3x3_branch does not exist!\n");
       exit(1);
@@ -18800,7 +19651,8 @@ const vector<float> &CMS3::photons_e3x3() {
 const bool &CMS3::filt_cscBeamHalo() {
   if (not filt_cscBeamHalo_isLoaded) {
     if (filt_cscBeamHalo_branch != 0) {
-      filt_cscBeamHalo_branch->GetEntry(index);
+      if (filt_cscBeamHalo_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch filt_cscBeamHalo_branch does not exist!\n");
       exit(1);
@@ -18812,7 +19664,8 @@ const bool &CMS3::filt_cscBeamHalo() {
 const vector<int> &CMS3::pfjets_METToolbox_neutralMultiplicity() {
   if (not pfjets_METToolbox_neutralMultiplicity_isLoaded) {
     if (pfjets_METToolbox_neutralMultiplicity_branch != 0) {
-      pfjets_METToolbox_neutralMultiplicity_branch->GetEntry(index);
+      if (pfjets_METToolbox_neutralMultiplicity_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_METToolbox_neutralMultiplicity_branch does not exist!\n");
       exit(1);
@@ -18824,7 +19677,8 @@ const vector<int> &CMS3::pfjets_METToolbox_neutralMultiplicity() {
 const vector<float> &CMS3::mus_chi2() {
   if (not mus_chi2_isLoaded) {
     if (mus_chi2_branch != 0) {
-      mus_chi2_branch->GetEntry(index);
+      if (mus_chi2_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_chi2_branch does not exist!\n");
       exit(1);
@@ -18836,7 +19690,8 @@ const vector<float> &CMS3::mus_chi2() {
 const vector<float> &CMS3::pfjets_puppi_pileupJetId() {
   if (not pfjets_puppi_pileupJetId_isLoaded) {
     if (pfjets_puppi_pileupJetId_branch != 0) {
-      pfjets_puppi_pileupJetId_branch->GetEntry(index);
+      if (pfjets_puppi_pileupJetId_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_puppi_pileupJetId_branch does not exist!\n");
       exit(1);
@@ -18848,7 +19703,8 @@ const vector<float> &CMS3::pfjets_puppi_pileupJetId() {
 const vector<float> &CMS3::photons_full5x5_r9() {
   if (not photons_full5x5_r9_isLoaded) {
     if (photons_full5x5_r9_branch != 0) {
-      photons_full5x5_r9_branch->GetEntry(index);
+      if (photons_full5x5_r9_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_full5x5_r9_branch does not exist!\n");
       exit(1);
@@ -18860,7 +19716,8 @@ const vector<float> &CMS3::photons_full5x5_r9() {
 const vector<float> &CMS3::ak8jets_topMass() {
   if (not ak8jets_topMass_isLoaded) {
     if (ak8jets_topMass_branch != 0) {
-      ak8jets_topMass_branch->GetEntry(index);
+      if (ak8jets_topMass_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_topMass_branch does not exist!\n");
       exit(1);
@@ -18872,7 +19729,8 @@ const vector<float> &CMS3::ak8jets_topMass() {
 const unsigned int &CMS3::evt_nvtxs() {
   if (not evt_nvtxs_isLoaded) {
     if (evt_nvtxs_branch != 0) {
-      evt_nvtxs_branch->GetEntry(index);
+      if (evt_nvtxs_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_nvtxs_branch does not exist!\n");
       exit(1);
@@ -18884,7 +19742,8 @@ const unsigned int &CMS3::evt_nvtxs() {
 const float &CMS3::evt_puppi_calometPhi() {
   if (not evt_puppi_calometPhi_isLoaded) {
     if (evt_puppi_calometPhi_branch != 0) {
-      evt_puppi_calometPhi_branch->GetEntry(index);
+      if (evt_puppi_calometPhi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_puppi_calometPhi_branch does not exist!\n");
       exit(1);
@@ -18896,7 +19755,8 @@ const float &CMS3::evt_puppi_calometPhi() {
 const vector<unsigned int> &CMS3::els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL() {
   if (not els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_isLoaded) {
     if (els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_branch != 0) {
-      els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_branch->GetEntry(index);
+      if (els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_branch does not exist!\n");
       exit(1);
@@ -18908,7 +19768,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL() {
 const vector<string> &CMS3::genweightsID() {
   if (not genweightsID_isLoaded) {
     if (genweightsID_branch != 0) {
-      genweightsID_branch->GetEntry(index);
+      if (genweightsID_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch genweightsID_branch does not exist!\n");
       exit(1);
@@ -18920,7 +19781,8 @@ const vector<string> &CMS3::genweightsID() {
 const vector<float> &CMS3::pfjets_METToolbox_hfHadronE() {
   if (not pfjets_METToolbox_hfHadronE_isLoaded) {
     if (pfjets_METToolbox_hfHadronE_branch != 0) {
-      pfjets_METToolbox_hfHadronE_branch->GetEntry(index);
+      if (pfjets_METToolbox_hfHadronE_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_METToolbox_hfHadronE_branch does not exist!\n");
       exit(1);
@@ -18932,7 +19794,8 @@ const vector<float> &CMS3::pfjets_METToolbox_hfHadronE() {
 const vector<unsigned int> &CMS3::els_HLT_Ele17_Ele8_L1sL1DoubleEG137() {
   if (not els_HLT_Ele17_Ele8_L1sL1DoubleEG137_isLoaded) {
     if (els_HLT_Ele17_Ele8_L1sL1DoubleEG137_branch != 0) {
-      els_HLT_Ele17_Ele8_L1sL1DoubleEG137_branch->GetEntry(index);
+      if (els_HLT_Ele17_Ele8_L1sL1DoubleEG137_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele17_Ele8_L1sL1DoubleEG137_branch does not exist!\n");
       exit(1);
@@ -18944,7 +19807,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele17_Ele8_L1sL1DoubleEG137() {
 const vector<int> &CMS3::els_exp_outerlayers() {
   if (not els_exp_outerlayers_isLoaded) {
     if (els_exp_outerlayers_branch != 0) {
-      els_exp_outerlayers_branch->GetEntry(index);
+      if (els_exp_outerlayers_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_exp_outerlayers_branch does not exist!\n");
       exit(1);
@@ -18956,7 +19820,8 @@ const vector<int> &CMS3::els_exp_outerlayers() {
 const vector<float> &CMS3::mus_z0() {
   if (not mus_z0_isLoaded) {
     if (mus_z0_branch != 0) {
-      mus_z0_branch->GetEntry(index);
+      if (mus_z0_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_z0_branch does not exist!\n");
       exit(1);
@@ -18968,7 +19833,8 @@ const vector<float> &CMS3::mus_z0() {
 const vector<int> &CMS3::mus_validHits() {
   if (not mus_validHits_isLoaded) {
     if (mus_validHits_branch != 0) {
-      mus_validHits_branch->GetEntry(index);
+      if (mus_validHits_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_validHits_branch does not exist!\n");
       exit(1);
@@ -18980,7 +19846,8 @@ const vector<int> &CMS3::mus_validHits() {
 const float &CMS3::evt_fixgrid_all_rho() {
   if (not evt_fixgrid_all_rho_isLoaded) {
     if (evt_fixgrid_all_rho_branch != 0) {
-      evt_fixgrid_all_rho_branch->GetEntry(index);
+      if (evt_fixgrid_all_rho_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_fixgrid_all_rho_branch does not exist!\n");
       exit(1);
@@ -18992,7 +19859,8 @@ const float &CMS3::evt_fixgrid_all_rho() {
 const vector<float> &CMS3::els_dPhiInPhiOut() {
   if (not els_dPhiInPhiOut_isLoaded) {
     if (els_dPhiInPhiOut_branch != 0) {
-      els_dPhiInPhiOut_branch->GetEntry(index);
+      if (els_dPhiInPhiOut_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_dPhiInPhiOut_branch does not exist!\n");
       exit(1);
@@ -19004,7 +19872,8 @@ const vector<float> &CMS3::els_dPhiInPhiOut() {
 const vector<int> &CMS3::mus_algo() {
   if (not mus_algo_isLoaded) {
     if (mus_algo_branch != 0) {
-      mus_algo_branch->GetEntry(index);
+      if (mus_algo_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_algo_branch does not exist!\n");
       exit(1);
@@ -19016,7 +19885,8 @@ const vector<int> &CMS3::mus_algo() {
 const vector<unsigned int> &CMS3::els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_TrailingLeg() {
   if (not els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_TrailingLeg_isLoaded) {
     if (els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_TrailingLeg_branch != 0) {
-      els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_TrailingLeg_branch->GetEntry(index);
+      if (els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_TrailingLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_TrailingLeg_branch does not exist!\n");
       exit(1);
@@ -19028,7 +19898,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_Tra
 const vector<int> &CMS3::mus_mc3_id() {
   if (not mus_mc3_id_isLoaded) {
     if (mus_mc3_id_branch != 0) {
-      mus_mc3_id_branch->GetEntry(index);
+      if (mus_mc3_id_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_mc3_id_branch does not exist!\n");
       exit(1);
@@ -19040,7 +19911,8 @@ const vector<int> &CMS3::mus_mc3_id() {
 const unsigned int &CMS3::mus_HLT_Mu17_TkMu8_TrailingLeg_version() {
   if (not mus_HLT_Mu17_TkMu8_TrailingLeg_version_isLoaded) {
     if (mus_HLT_Mu17_TkMu8_TrailingLeg_version_branch != 0) {
-      mus_HLT_Mu17_TkMu8_TrailingLeg_version_branch->GetEntry(index);
+      if (mus_HLT_Mu17_TkMu8_TrailingLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_TkMu8_TrailingLeg_version_branch does not exist!\n");
       exit(1);
@@ -19052,7 +19924,8 @@ const unsigned int &CMS3::mus_HLT_Mu17_TkMu8_TrailingLeg_version() {
 const vector<float> &CMS3::mus_chi2LocalMomentum() {
   if (not mus_chi2LocalMomentum_isLoaded) {
     if (mus_chi2LocalMomentum_branch != 0) {
-      mus_chi2LocalMomentum_branch->GetEntry(index);
+      if (mus_chi2LocalMomentum_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_chi2LocalMomentum_branch does not exist!\n");
       exit(1);
@@ -19064,7 +19937,8 @@ const vector<float> &CMS3::mus_chi2LocalMomentum() {
 const bool &CMS3::filt_globalSuperTightHalo2016() {
   if (not filt_globalSuperTightHalo2016_isLoaded) {
     if (filt_globalSuperTightHalo2016_branch != 0) {
-      filt_globalSuperTightHalo2016_branch->GetEntry(index);
+      if (filt_globalSuperTightHalo2016_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch filt_globalSuperTightHalo2016_branch does not exist!\n");
       exit(1);
@@ -19076,7 +19950,8 @@ const bool &CMS3::filt_globalSuperTightHalo2016() {
 const vector<float> &CMS3::photons_e5x5() {
   if (not photons_e5x5_isLoaded) {
     if (photons_e5x5_branch != 0) {
-      photons_e5x5_branch->GetEntry(index);
+      if (photons_e5x5_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_e5x5_branch does not exist!\n");
       exit(1);
@@ -19088,7 +19963,8 @@ const vector<float> &CMS3::photons_e5x5() {
 const vector<float> &CMS3::els_dxyPV() {
   if (not els_dxyPV_isLoaded) {
     if (els_dxyPV_branch != 0) {
-      els_dxyPV_branch->GetEntry(index);
+      if (els_dxyPV_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_dxyPV_branch does not exist!\n");
       exit(1);
@@ -19100,7 +19976,8 @@ const vector<float> &CMS3::els_dxyPV() {
 const vector<int> &CMS3::mus_bfit_nlayers() {
   if (not mus_bfit_nlayers_isLoaded) {
     if (mus_bfit_nlayers_branch != 0) {
-      mus_bfit_nlayers_branch->GetEntry(index);
+      if (mus_bfit_nlayers_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_bfit_nlayers_branch does not exist!\n");
       exit(1);
@@ -19112,7 +19989,8 @@ const vector<int> &CMS3::mus_bfit_nlayers() {
 const unsigned int &CMS3::photons_HLT_Photon75_R9Id90_HE10_IsoM_version() {
   if (not photons_HLT_Photon75_R9Id90_HE10_IsoM_version_isLoaded) {
     if (photons_HLT_Photon75_R9Id90_HE10_IsoM_version_branch != 0) {
-      photons_HLT_Photon75_R9Id90_HE10_IsoM_version_branch->GetEntry(index);
+      if (photons_HLT_Photon75_R9Id90_HE10_IsoM_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_HLT_Photon75_R9Id90_HE10_IsoM_version_branch does not exist!\n");
       exit(1);
@@ -19124,7 +20002,8 @@ const unsigned int &CMS3::photons_HLT_Photon75_R9Id90_HE10_IsoM_version() {
 const float &CMS3::evt_pfmet_MuonEnDown() {
   if (not evt_pfmet_MuonEnDown_isLoaded) {
     if (evt_pfmet_MuonEnDown_branch != 0) {
-      evt_pfmet_MuonEnDown_branch->GetEntry(index);
+      if (evt_pfmet_MuonEnDown_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_pfmet_MuonEnDown_branch does not exist!\n");
       exit(1);
@@ -19136,7 +20015,8 @@ const float &CMS3::evt_pfmet_MuonEnDown() {
 const int &CMS3::sparm_subProcessId() {
   if (not sparm_subProcessId_isLoaded) {
     if (sparm_subProcessId_branch != 0) {
-      sparm_subProcessId_branch->GetEntry(index);
+      if (sparm_subProcessId_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch sparm_subProcessId_branch does not exist!\n");
       exit(1);
@@ -19148,7 +20028,8 @@ const int &CMS3::sparm_subProcessId() {
 const vector<float> &CMS3::pfjets_METToolbox_neutralHadronE() {
   if (not pfjets_METToolbox_neutralHadronE_isLoaded) {
     if (pfjets_METToolbox_neutralHadronE_branch != 0) {
-      pfjets_METToolbox_neutralHadronE_branch->GetEntry(index);
+      if (pfjets_METToolbox_neutralHadronE_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_METToolbox_neutralHadronE_branch does not exist!\n");
       exit(1);
@@ -19160,7 +20041,8 @@ const vector<float> &CMS3::pfjets_METToolbox_neutralHadronE() {
 const float &CMS3::evt_bs_dydz() {
   if (not evt_bs_dydz_isLoaded) {
     if (evt_bs_dydz_branch != 0) {
-      evt_bs_dydz_branch->GetEntry(index);
+      if (evt_bs_dydz_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_bs_dydz_branch does not exist!\n");
       exit(1);
@@ -19172,7 +20054,8 @@ const float &CMS3::evt_bs_dydz() {
 const float &CMS3::evt_fixgrid_rho_fwd() {
   if (not evt_fixgrid_rho_fwd_isLoaded) {
     if (evt_fixgrid_rho_fwd_branch != 0) {
-      evt_fixgrid_rho_fwd_branch->GetEntry(index);
+      if (evt_fixgrid_rho_fwd_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_fixgrid_rho_fwd_branch does not exist!\n");
       exit(1);
@@ -19184,7 +20067,8 @@ const float &CMS3::evt_fixgrid_rho_fwd() {
 const vector<unsigned int> &CMS3::els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg() {
   if (not els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg_isLoaded) {
     if (els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg_branch != 0) {
-      els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg_branch->GetEntry(index);
+      if (els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg_branch does not exist!\n");
       exit(1);
@@ -19196,7 +20080,8 @@ const vector<unsigned int> &CMS3::els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_I
 const vector<int> &CMS3::mus_bfit_validSiHits() {
   if (not mus_bfit_validSiHits_isLoaded) {
     if (mus_bfit_validSiHits_branch != 0) {
-      mus_bfit_validSiHits_branch->GetEntry(index);
+      if (mus_bfit_validSiHits_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_bfit_validSiHits_branch does not exist!\n");
       exit(1);
@@ -19208,7 +20093,8 @@ const vector<int> &CMS3::mus_bfit_validSiHits() {
 const vector<int> &CMS3::photons_mcidx() {
   if (not photons_mcidx_isLoaded) {
     if (photons_mcidx_branch != 0) {
-      photons_mcidx_branch->GetEntry(index);
+      if (photons_mcidx_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_mcidx_branch does not exist!\n");
       exit(1);
@@ -19220,7 +20106,8 @@ const vector<int> &CMS3::photons_mcidx() {
 const unsigned int &CMS3::mus_HLT_Mu8_TrkIsoVVL_version() {
   if (not mus_HLT_Mu8_TrkIsoVVL_version_isLoaded) {
     if (mus_HLT_Mu8_TrkIsoVVL_version_branch != 0) {
-      mus_HLT_Mu8_TrkIsoVVL_version_branch->GetEntry(index);
+      if (mus_HLT_Mu8_TrkIsoVVL_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu8_TrkIsoVVL_version_branch does not exist!\n");
       exit(1);
@@ -19232,7 +20119,8 @@ const unsigned int &CMS3::mus_HLT_Mu8_TrkIsoVVL_version() {
 const float &CMS3::evt_puppi_pfmet_PhotonEnDown() {
   if (not evt_puppi_pfmet_PhotonEnDown_isLoaded) {
     if (evt_puppi_pfmet_PhotonEnDown_branch != 0) {
-      evt_puppi_pfmet_PhotonEnDown_branch->GetEntry(index);
+      if (evt_puppi_pfmet_PhotonEnDown_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_puppi_pfmet_PhotonEnDown_branch does not exist!\n");
       exit(1);
@@ -19244,7 +20132,8 @@ const float &CMS3::evt_puppi_pfmet_PhotonEnDown() {
 const vector<int> &CMS3::mus_type() {
   if (not mus_type_isLoaded) {
     if (mus_type_branch != 0) {
-      mus_type_branch->GetEntry(index);
+      if (mus_type_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_type_branch does not exist!\n");
       exit(1);
@@ -19256,7 +20145,8 @@ const vector<int> &CMS3::mus_type() {
 const vector<int> &CMS3::pfjets_mcidx() {
   if (not pfjets_mcidx_isLoaded) {
     if (pfjets_mcidx_branch != 0) {
-      pfjets_mcidx_branch->GetEntry(index);
+      if (pfjets_mcidx_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_mcidx_branch does not exist!\n");
       exit(1);
@@ -19268,7 +20158,8 @@ const vector<int> &CMS3::pfjets_mcidx() {
 const float &CMS3::gen_met() {
   if (not gen_met_isLoaded) {
     if (gen_met_branch != 0) {
-      gen_met_branch->GetEntry(index);
+      if (gen_met_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch gen_met_branch does not exist!\n");
       exit(1);
@@ -19280,7 +20171,8 @@ const float &CMS3::gen_met() {
 const vector<float> &CMS3::mus_d0() {
   if (not mus_d0_isLoaded) {
     if (mus_d0_branch != 0) {
-      mus_d0_branch->GetEntry(index);
+      if (mus_d0_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_d0_branch does not exist!\n");
       exit(1);
@@ -19292,7 +20184,8 @@ const vector<float> &CMS3::mus_d0() {
 const vector<float> &CMS3::mus_timeAtIpInOutErr() {
   if (not mus_timeAtIpInOutErr_isLoaded) {
     if (mus_timeAtIpInOutErr_branch != 0) {
-      mus_timeAtIpInOutErr_branch->GetEntry(index);
+      if (mus_timeAtIpInOutErr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_timeAtIpInOutErr_branch does not exist!\n");
       exit(1);
@@ -19304,7 +20197,8 @@ const vector<float> &CMS3::mus_timeAtIpInOutErr() {
 const float &CMS3::sparm_pdfWeight2() {
   if (not sparm_pdfWeight2_isLoaded) {
     if (sparm_pdfWeight2_branch != 0) {
-      sparm_pdfWeight2_branch->GetEntry(index);
+      if (sparm_pdfWeight2_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch sparm_pdfWeight2_branch does not exist!\n");
       exit(1);
@@ -19316,7 +20210,8 @@ const float &CMS3::sparm_pdfWeight2() {
 const vector<float> &CMS3::ak8jets_puppi_nJettinessTau2() {
   if (not ak8jets_puppi_nJettinessTau2_isLoaded) {
     if (ak8jets_puppi_nJettinessTau2_branch != 0) {
-      ak8jets_puppi_nJettinessTau2_branch->GetEntry(index);
+      if (ak8jets_puppi_nJettinessTau2_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_puppi_nJettinessTau2_branch does not exist!\n");
       exit(1);
@@ -19328,7 +20223,8 @@ const vector<float> &CMS3::ak8jets_puppi_nJettinessTau2() {
 const vector<float> &CMS3::mus_isoSumDRR04_pf_PhotonEtHighThreshold() {
   if (not mus_isoSumDRR04_pf_PhotonEtHighThreshold_isLoaded) {
     if (mus_isoSumDRR04_pf_PhotonEtHighThreshold_branch != 0) {
-      mus_isoSumDRR04_pf_PhotonEtHighThreshold_branch->GetEntry(index);
+      if (mus_isoSumDRR04_pf_PhotonEtHighThreshold_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isoSumDRR04_pf_PhotonEtHighThreshold_branch does not exist!\n");
       exit(1);
@@ -19340,7 +20236,8 @@ const vector<float> &CMS3::mus_isoSumDRR04_pf_PhotonEtHighThreshold() {
 const vector<float> &CMS3::mus_isoMeanDRR03_pf_ChargedParticlePt() {
   if (not mus_isoMeanDRR03_pf_ChargedParticlePt_isLoaded) {
     if (mus_isoMeanDRR03_pf_ChargedParticlePt_branch != 0) {
-      mus_isoMeanDRR03_pf_ChargedParticlePt_branch->GetEntry(index);
+      if (mus_isoMeanDRR03_pf_ChargedParticlePt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isoMeanDRR03_pf_ChargedParticlePt_branch does not exist!\n");
       exit(1);
@@ -19352,7 +20249,8 @@ const vector<float> &CMS3::mus_isoMeanDRR03_pf_ChargedParticlePt() {
 const vector<float> &CMS3::els_e1x5_full5x5() {
   if (not els_e1x5_full5x5_isLoaded) {
     if (els_e1x5_full5x5_branch != 0) {
-      els_e1x5_full5x5_branch->GetEntry(index);
+      if (els_e1x5_full5x5_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_e1x5_full5x5_branch does not exist!\n");
       exit(1);
@@ -19364,7 +20262,8 @@ const vector<float> &CMS3::els_e1x5_full5x5() {
 const vector<int> &CMS3::els_VIDTrigMvaCat() {
   if (not els_VIDTrigMvaCat_isLoaded) {
     if (els_VIDTrigMvaCat_branch != 0) {
-      els_VIDTrigMvaCat_branch->GetEntry(index);
+      if (els_VIDTrigMvaCat_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_VIDTrigMvaCat_branch does not exist!\n");
       exit(1);
@@ -19376,7 +20275,8 @@ const vector<int> &CMS3::els_VIDTrigMvaCat() {
 const vector<int> &CMS3::els_nlayersLost() {
   if (not els_nlayersLost_isLoaded) {
     if (els_nlayersLost_branch != 0) {
-      els_nlayersLost_branch->GetEntry(index);
+      if (els_nlayersLost_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_nlayersLost_branch does not exist!\n");
       exit(1);
@@ -19388,7 +20288,8 @@ const vector<int> &CMS3::els_nlayersLost() {
 const float &CMS3::evt_puppi_pfmet_ElectronEnDown() {
   if (not evt_puppi_pfmet_ElectronEnDown_isLoaded) {
     if (evt_puppi_pfmet_ElectronEnDown_branch != 0) {
-      evt_puppi_pfmet_ElectronEnDown_branch->GetEntry(index);
+      if (evt_puppi_pfmet_ElectronEnDown_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_puppi_pfmet_ElectronEnDown_branch does not exist!\n");
       exit(1);
@@ -19400,7 +20301,8 @@ const float &CMS3::evt_puppi_pfmet_ElectronEnDown() {
 const float &CMS3::evt_scale1fb() {
   if (not evt_scale1fb_isLoaded) {
     if (evt_scale1fb_branch != 0) {
-      evt_scale1fb_branch->GetEntry(index);
+      if (evt_scale1fb_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_scale1fb_branch does not exist!\n");
       exit(1);
@@ -19412,7 +20314,8 @@ const float &CMS3::evt_scale1fb() {
 const vector<float> &CMS3::els_bs3d() {
   if (not els_bs3d_isLoaded) {
     if (els_bs3d_branch != 0) {
-      els_bs3d_branch->GetEntry(index);
+      if (els_bs3d_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_bs3d_branch does not exist!\n");
       exit(1);
@@ -19424,7 +20327,8 @@ const vector<float> &CMS3::els_bs3d() {
 const bool &CMS3::filt_trackingFailure() {
   if (not filt_trackingFailure_isLoaded) {
     if (filt_trackingFailure_branch != 0) {
-      filt_trackingFailure_branch->GetEntry(index);
+      if (filt_trackingFailure_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch filt_trackingFailure_branch does not exist!\n");
       exit(1);
@@ -19436,7 +20340,8 @@ const bool &CMS3::filt_trackingFailure() {
 const float &CMS3::evt_kfactor() {
   if (not evt_kfactor_isLoaded) {
     if (evt_kfactor_branch != 0) {
-      evt_kfactor_branch->GetEntry(index);
+      if (evt_kfactor_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_kfactor_branch does not exist!\n");
       exit(1);
@@ -19448,7 +20353,8 @@ const float &CMS3::evt_kfactor() {
 const vector<unsigned int> &CMS3::els_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_ElectronLeg() {
   if (not els_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_ElectronLeg_isLoaded) {
     if (els_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_ElectronLeg_branch != 0) {
-      els_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_ElectronLeg_branch->GetEntry(index);
+      if (els_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_ElectronLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_ElectronLeg_branch does not exist!\n");
       exit(1);
@@ -19460,7 +20366,8 @@ const vector<unsigned int> &CMS3::els_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_
 const vector<vector<float> > &CMS3::els_clusterDEtaToCentroid() {
   if (not els_clusterDEtaToCentroid_isLoaded) {
     if (els_clusterDEtaToCentroid_branch != 0) {
-      els_clusterDEtaToCentroid_branch->GetEntry(index);
+      if (els_clusterDEtaToCentroid_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_clusterDEtaToCentroid_branch does not exist!\n");
       exit(1);
@@ -19472,7 +20379,8 @@ const vector<vector<float> > &CMS3::els_clusterDEtaToCentroid() {
 const float &CMS3::sparm_xsec() {
   if (not sparm_xsec_isLoaded) {
     if (sparm_xsec_branch != 0) {
-      sparm_xsec_branch->GetEntry(index);
+      if (sparm_xsec_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch sparm_xsec_branch does not exist!\n");
       exit(1);
@@ -19484,7 +20392,8 @@ const float &CMS3::sparm_xsec() {
 const float &CMS3::hcalnoise_rms10GeVHitTime() {
   if (not hcalnoise_rms10GeVHitTime_isLoaded) {
     if (hcalnoise_rms10GeVHitTime_branch != 0) {
-      hcalnoise_rms10GeVHitTime_branch->GetEntry(index);
+      if (hcalnoise_rms10GeVHitTime_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_rms10GeVHitTime_branch does not exist!\n");
       exit(1);
@@ -19496,7 +20405,8 @@ const float &CMS3::hcalnoise_rms10GeVHitTime() {
 const vector<float> &CMS3::svs_chi2() {
   if (not svs_chi2_isLoaded) {
     if (svs_chi2_branch != 0) {
-      svs_chi2_branch->GetEntry(index);
+      if (svs_chi2_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch svs_chi2_branch does not exist!\n");
       exit(1);
@@ -19508,7 +20418,8 @@ const vector<float> &CMS3::svs_chi2() {
 const vector<float> &CMS3::els_d0() {
   if (not els_d0_isLoaded) {
     if (els_d0_branch != 0) {
-      els_d0_branch->GetEntry(index);
+      if (els_d0_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_d0_branch does not exist!\n");
       exit(1);
@@ -19520,7 +20431,8 @@ const vector<float> &CMS3::els_d0() {
 const vector<vector<float> > &CMS3::els_clusterDEtaToSeed() {
   if (not els_clusterDEtaToSeed_isLoaded) {
     if (els_clusterDEtaToSeed_branch != 0) {
-      els_clusterDEtaToSeed_branch->GetEntry(index);
+      if (els_clusterDEtaToSeed_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_clusterDEtaToSeed_branch does not exist!\n");
       exit(1);
@@ -19532,7 +20444,8 @@ const vector<vector<float> > &CMS3::els_clusterDEtaToSeed() {
 const vector<float> &CMS3::els_scSeedE2nd() {
   if (not els_scSeedE2nd_isLoaded) {
     if (els_scSeedE2nd_branch != 0) {
-      els_scSeedE2nd_branch->GetEntry(index);
+      if (els_scSeedE2nd_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_scSeedE2nd_branch does not exist!\n");
       exit(1);
@@ -19544,7 +20457,8 @@ const vector<float> &CMS3::els_scSeedE2nd() {
 const unsigned int &CMS3::els_HLT_Mu8_Ele17_version() {
   if (not els_HLT_Mu8_Ele17_version_isLoaded) {
     if (els_HLT_Mu8_Ele17_version_branch != 0) {
-      els_HLT_Mu8_Ele17_version_branch->GetEntry(index);
+      if (els_HLT_Mu8_Ele17_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Mu8_Ele17_version_branch does not exist!\n");
       exit(1);
@@ -19556,7 +20470,8 @@ const unsigned int &CMS3::els_HLT_Mu8_Ele17_version() {
 const vector<float> &CMS3::mus_isoR04_pf_NeutralHadronEt() {
   if (not mus_isoR04_pf_NeutralHadronEt_isLoaded) {
     if (mus_isoR04_pf_NeutralHadronEt_branch != 0) {
-      mus_isoR04_pf_NeutralHadronEt_branch->GetEntry(index);
+      if (mus_isoR04_pf_NeutralHadronEt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isoR04_pf_NeutralHadronEt_branch does not exist!\n");
       exit(1);
@@ -19568,7 +20483,8 @@ const vector<float> &CMS3::mus_isoR04_pf_NeutralHadronEt() {
 const vector<int> &CMS3::mus_bfit_validSTAHits() {
   if (not mus_bfit_validSTAHits_isLoaded) {
     if (mus_bfit_validSTAHits_branch != 0) {
-      mus_bfit_validSTAHits_branch->GetEntry(index);
+      if (mus_bfit_validSTAHits_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_bfit_validSTAHits_branch does not exist!\n");
       exit(1);
@@ -19580,7 +20496,8 @@ const vector<int> &CMS3::mus_bfit_validSTAHits() {
 const float &CMS3::evt_fixgridfastjet_centralchargedpileup_rho() {
   if (not evt_fixgridfastjet_centralchargedpileup_rho_isLoaded) {
     if (evt_fixgridfastjet_centralchargedpileup_rho_branch != 0) {
-      evt_fixgridfastjet_centralchargedpileup_rho_branch->GetEntry(index);
+      if (evt_fixgridfastjet_centralchargedpileup_rho_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_fixgridfastjet_centralchargedpileup_rho_branch does not exist!\n");
       exit(1);
@@ -19592,7 +20509,8 @@ const float &CMS3::evt_fixgridfastjet_centralchargedpileup_rho() {
 const vector<float> &CMS3::photons_full5x5_hOverEtowBC() {
   if (not photons_full5x5_hOverEtowBC_isLoaded) {
     if (photons_full5x5_hOverEtowBC_branch != 0) {
-      photons_full5x5_hOverEtowBC_branch->GetEntry(index);
+      if (photons_full5x5_hOverEtowBC_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_full5x5_hOverEtowBC_branch does not exist!\n");
       exit(1);
@@ -19604,7 +20522,8 @@ const vector<float> &CMS3::photons_full5x5_hOverEtowBC() {
 const vector<float> &CMS3::pfjets_METToolbox_photonE() {
   if (not pfjets_METToolbox_photonE_isLoaded) {
     if (pfjets_METToolbox_photonE_branch != 0) {
-      pfjets_METToolbox_photonE_branch->GetEntry(index);
+      if (pfjets_METToolbox_photonE_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_METToolbox_photonE_branch does not exist!\n");
       exit(1);
@@ -19616,7 +20535,8 @@ const vector<float> &CMS3::pfjets_METToolbox_photonE() {
 const float &CMS3::evt_pfmetPhi_PhotonEnDown() {
   if (not evt_pfmetPhi_PhotonEnDown_isLoaded) {
     if (evt_pfmetPhi_PhotonEnDown_branch != 0) {
-      evt_pfmetPhi_PhotonEnDown_branch->GetEntry(index);
+      if (evt_pfmetPhi_PhotonEnDown_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_pfmetPhi_PhotonEnDown_branch does not exist!\n");
       exit(1);
@@ -19628,7 +20548,8 @@ const float &CMS3::evt_pfmetPhi_PhotonEnDown() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::els_mc_p4() {
   if (not els_mc_p4_isLoaded) {
     if (els_mc_p4_branch != 0) {
-      els_mc_p4_branch->GetEntry(index);
+      if (els_mc_p4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_mc_p4_branch does not exist!\n");
       exit(1);
@@ -19640,7 +20561,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::e
 const vector<float> &CMS3::vtxs_yError() {
   if (not vtxs_yError_isLoaded) {
     if (vtxs_yError_branch != 0) {
-      vtxs_yError_branch->GetEntry(index);
+      if (vtxs_yError_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch vtxs_yError_branch does not exist!\n");
       exit(1);
@@ -19652,7 +20574,8 @@ const vector<float> &CMS3::vtxs_yError() {
 const vector<float> &CMS3::mus_bfit_phiErr() {
   if (not mus_bfit_phiErr_isLoaded) {
     if (mus_bfit_phiErr_branch != 0) {
-      mus_bfit_phiErr_branch->GetEntry(index);
+      if (mus_bfit_phiErr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_bfit_phiErr_branch does not exist!\n");
       exit(1);
@@ -19664,7 +20587,8 @@ const vector<float> &CMS3::mus_bfit_phiErr() {
 const vector<unsigned int> &CMS3::els_HLT_Ele27_eta2p1_WPTight_Gsf() {
   if (not els_HLT_Ele27_eta2p1_WPTight_Gsf_isLoaded) {
     if (els_HLT_Ele27_eta2p1_WPTight_Gsf_branch != 0) {
-      els_HLT_Ele27_eta2p1_WPTight_Gsf_branch->GetEntry(index);
+      if (els_HLT_Ele27_eta2p1_WPTight_Gsf_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele27_eta2p1_WPTight_Gsf_branch does not exist!\n");
       exit(1);
@@ -19676,7 +20600,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele27_eta2p1_WPTight_Gsf() {
 const vector<int> &CMS3::mus_muonBestTrackType() {
   if (not mus_muonBestTrackType_isLoaded) {
     if (mus_muonBestTrackType_branch != 0) {
-      mus_muonBestTrackType_branch->GetEntry(index);
+      if (mus_muonBestTrackType_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_muonBestTrackType_branch does not exist!\n");
       exit(1);
@@ -19688,7 +20613,8 @@ const vector<int> &CMS3::mus_muonBestTrackType() {
 const vector<float> &CMS3::photons_eSCRaw() {
   if (not photons_eSCRaw_isLoaded) {
     if (photons_eSCRaw_branch != 0) {
-      photons_eSCRaw_branch->GetEntry(index);
+      if (photons_eSCRaw_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_eSCRaw_branch does not exist!\n");
       exit(1);
@@ -19700,7 +20626,8 @@ const vector<float> &CMS3::photons_eSCRaw() {
 const vector<float> &CMS3::els_bs2d() {
   if (not els_bs2d_isLoaded) {
     if (els_bs2d_branch != 0) {
-      els_bs2d_branch->GetEntry(index);
+      if (els_bs2d_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_bs2d_branch does not exist!\n");
       exit(1);
@@ -19712,7 +20639,8 @@ const vector<float> &CMS3::els_bs2d() {
 const vector<float> &CMS3::mus_iso03_hadEt() {
   if (not mus_iso03_hadEt_isLoaded) {
     if (mus_iso03_hadEt_branch != 0) {
-      mus_iso03_hadEt_branch->GetEntry(index);
+      if (mus_iso03_hadEt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_iso03_hadEt_branch does not exist!\n");
       exit(1);
@@ -19724,7 +20652,8 @@ const vector<float> &CMS3::mus_iso03_hadEt() {
 const vector<float> &CMS3::pfjets_chargedHadronE() {
   if (not pfjets_chargedHadronE_isLoaded) {
     if (pfjets_chargedHadronE_branch != 0) {
-      pfjets_chargedHadronE_branch->GetEntry(index);
+      if (pfjets_chargedHadronE_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_chargedHadronE_branch does not exist!\n");
       exit(1);
@@ -19736,7 +20665,8 @@ const vector<float> &CMS3::pfjets_chargedHadronE() {
 const float &CMS3::hcalnoise_minE2Over10TS() {
   if (not hcalnoise_minE2Over10TS_isLoaded) {
     if (hcalnoise_minE2Over10TS_branch != 0) {
-      hcalnoise_minE2Over10TS_branch->GetEntry(index);
+      if (hcalnoise_minE2Over10TS_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_minE2Over10TS_branch does not exist!\n");
       exit(1);
@@ -19748,7 +20678,8 @@ const float &CMS3::hcalnoise_minE2Over10TS() {
 const vector<unsigned int> &CMS3::mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ() {
   if (not mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_isLoaded) {
     if (mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_branch != 0) {
-      mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_branch->GetEntry(index);
+      if (mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_branch does not exist!\n");
       exit(1);
@@ -19760,7 +20691,8 @@ const vector<unsigned int> &CMS3::mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ() {
 const vector<float> &CMS3::ak8jets_nJettinessTau3() {
   if (not ak8jets_nJettinessTau3_isLoaded) {
     if (ak8jets_nJettinessTau3_branch != 0) {
-      ak8jets_nJettinessTau3_branch->GetEntry(index);
+      if (ak8jets_nJettinessTau3_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_nJettinessTau3_branch does not exist!\n");
       exit(1);
@@ -19772,7 +20704,8 @@ const vector<float> &CMS3::ak8jets_nJettinessTau3() {
 const vector<int> &CMS3::mus_pid_TM2DCompatibilityLoose() {
   if (not mus_pid_TM2DCompatibilityLoose_isLoaded) {
     if (mus_pid_TM2DCompatibilityLoose_branch != 0) {
-      mus_pid_TM2DCompatibilityLoose_branch->GetEntry(index);
+      if (mus_pid_TM2DCompatibilityLoose_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_pid_TM2DCompatibilityLoose_branch does not exist!\n");
       exit(1);
@@ -19784,7 +20717,8 @@ const vector<int> &CMS3::mus_pid_TM2DCompatibilityLoose() {
 const vector<float> &CMS3::photons_tkIsoSolid03() {
   if (not photons_tkIsoSolid03_isLoaded) {
     if (photons_tkIsoSolid03_branch != 0) {
-      photons_tkIsoSolid03_branch->GetEntry(index);
+      if (photons_tkIsoSolid03_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_tkIsoSolid03_branch does not exist!\n");
       exit(1);
@@ -19796,7 +20730,8 @@ const vector<float> &CMS3::photons_tkIsoSolid03() {
 const vector<float> &CMS3::els_phiSC() {
   if (not els_phiSC_isLoaded) {
     if (els_phiSC_branch != 0) {
-      els_phiSC_branch->GetEntry(index);
+      if (els_phiSC_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_phiSC_branch does not exist!\n");
       exit(1);
@@ -19808,7 +20743,8 @@ const vector<float> &CMS3::els_phiSC() {
 const vector<float> &CMS3::mus_isoR03_pf_ChargedHadronPt() {
   if (not mus_isoR03_pf_ChargedHadronPt_isLoaded) {
     if (mus_isoR03_pf_ChargedHadronPt_branch != 0) {
-      mus_isoR03_pf_ChargedHadronPt_branch->GetEntry(index);
+      if (mus_isoR03_pf_ChargedHadronPt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isoR03_pf_ChargedHadronPt_branch does not exist!\n");
       exit(1);
@@ -19820,7 +20756,8 @@ const vector<float> &CMS3::mus_isoR03_pf_ChargedHadronPt() {
 const unsigned int &CMS3::photons_HLT_Photon90_R9Id90_HE10_IsoM_version() {
   if (not photons_HLT_Photon90_R9Id90_HE10_IsoM_version_isLoaded) {
     if (photons_HLT_Photon90_R9Id90_HE10_IsoM_version_branch != 0) {
-      photons_HLT_Photon90_R9Id90_HE10_IsoM_version_branch->GetEntry(index);
+      if (photons_HLT_Photon90_R9Id90_HE10_IsoM_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_HLT_Photon90_R9Id90_HE10_IsoM_version_branch does not exist!\n");
       exit(1);
@@ -19832,7 +20769,8 @@ const unsigned int &CMS3::photons_HLT_Photon90_R9Id90_HE10_IsoM_version() {
 const vector<int> &CMS3::mus_bfit_lostHits() {
   if (not mus_bfit_lostHits_isLoaded) {
     if (mus_bfit_lostHits_branch != 0) {
-      mus_bfit_lostHits_branch->GetEntry(index);
+      if (mus_bfit_lostHits_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_bfit_lostHits_branch does not exist!\n");
       exit(1);
@@ -19844,7 +20782,8 @@ const vector<int> &CMS3::mus_bfit_lostHits() {
 const vector<float> &CMS3::els_ecalIso() {
   if (not els_ecalIso_isLoaded) {
     if (els_ecalIso_branch != 0) {
-      els_ecalIso_branch->GetEntry(index);
+      if (els_ecalIso_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_ecalIso_branch does not exist!\n");
       exit(1);
@@ -19856,7 +20795,8 @@ const vector<float> &CMS3::els_ecalIso() {
 const vector<float> &CMS3::mus_bs2d() {
   if (not mus_bs2d_isLoaded) {
     if (mus_bs2d_branch != 0) {
-      mus_bs2d_branch->GetEntry(index);
+      if (mus_bs2d_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_bs2d_branch does not exist!\n");
       exit(1);
@@ -19868,7 +20808,8 @@ const vector<float> &CMS3::mus_bs2d() {
 const vector<float> &CMS3::mus_hcal_time() {
   if (not mus_hcal_time_isLoaded) {
     if (mus_hcal_time_branch != 0) {
-      mus_hcal_time_branch->GetEntry(index);
+      if (mus_hcal_time_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_hcal_time_branch does not exist!\n");
       exit(1);
@@ -19880,7 +20821,8 @@ const vector<float> &CMS3::mus_hcal_time() {
 const float &CMS3::hcalnoise_isolatedNoiseSumE() {
   if (not hcalnoise_isolatedNoiseSumE_isLoaded) {
     if (hcalnoise_isolatedNoiseSumE_branch != 0) {
-      hcalnoise_isolatedNoiseSumE_branch->GetEntry(index);
+      if (hcalnoise_isolatedNoiseSumE_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_isolatedNoiseSumE_branch does not exist!\n");
       exit(1);
@@ -19892,7 +20834,8 @@ const float &CMS3::hcalnoise_isolatedNoiseSumE() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::els_trk_p4() {
   if (not els_trk_p4_isLoaded) {
     if (els_trk_p4_branch != 0) {
-      els_trk_p4_branch->GetEntry(index);
+      if (els_trk_p4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_trk_p4_branch does not exist!\n");
       exit(1);
@@ -19904,7 +20847,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::e
 const vector<float> &CMS3::mus_z0corr() {
   if (not mus_z0corr_isLoaded) {
     if (mus_z0corr_branch != 0) {
-      mus_z0corr_branch->GetEntry(index);
+      if (mus_z0corr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_z0corr_branch does not exist!\n");
       exit(1);
@@ -19916,7 +20860,8 @@ const vector<float> &CMS3::mus_z0corr() {
 const vector<float> &CMS3::els_e2x5Max() {
   if (not els_e2x5Max_isLoaded) {
     if (els_e2x5Max_branch != 0) {
-      els_e2x5Max_branch->GetEntry(index);
+      if (els_e2x5Max_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_e2x5Max_branch does not exist!\n");
       exit(1);
@@ -19928,7 +20873,8 @@ const vector<float> &CMS3::els_e2x5Max() {
 const float &CMS3::evt_pfmetPhi_raw() {
   if (not evt_pfmetPhi_raw_isLoaded) {
     if (evt_pfmetPhi_raw_branch != 0) {
-      evt_pfmetPhi_raw_branch->GetEntry(index);
+      if (evt_pfmetPhi_raw_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_pfmetPhi_raw_branch does not exist!\n");
       exit(1);
@@ -19940,7 +20886,8 @@ const float &CMS3::evt_pfmetPhi_raw() {
 const float &CMS3::evt_muegclean_pfmetPhi_raw() {
   if (not evt_muegclean_pfmetPhi_raw_isLoaded) {
     if (evt_muegclean_pfmetPhi_raw_branch != 0) {
-      evt_muegclean_pfmetPhi_raw_branch->GetEntry(index);
+      if (evt_muegclean_pfmetPhi_raw_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_muegclean_pfmetPhi_raw_branch does not exist!\n");
       exit(1);
@@ -19952,7 +20899,8 @@ const float &CMS3::evt_muegclean_pfmetPhi_raw() {
 const float &CMS3::evt_muegclean_pfmetPhi() {
   if (not evt_muegclean_pfmetPhi_isLoaded) {
     if (evt_muegclean_pfmetPhi_branch != 0) {
-      evt_muegclean_pfmetPhi_branch->GetEntry(index);
+      if (evt_muegclean_pfmetPhi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_muegclean_pfmetPhi_branch does not exist!\n");
       exit(1);
@@ -19964,7 +20912,8 @@ const float &CMS3::evt_muegclean_pfmetPhi() {
 const float &CMS3::evt_muegcleanfix_pfmetPhi() {
   if (not evt_muegcleanfix_pfmetPhi_isLoaded) {
     if (evt_muegcleanfix_pfmetPhi_branch != 0) {
-      evt_muegcleanfix_pfmetPhi_branch->GetEntry(index);
+      if (evt_muegcleanfix_pfmetPhi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_muegcleanfix_pfmetPhi_branch does not exist!\n");
       exit(1);
@@ -19976,7 +20925,8 @@ const float &CMS3::evt_muegcleanfix_pfmetPhi() {
 const float &CMS3::evt_egclean_pfmetPhi() {
   if (not evt_egclean_pfmetPhi_isLoaded) {
     if (evt_egclean_pfmetPhi_branch != 0) {
-      evt_egclean_pfmetPhi_branch->GetEntry(index);
+      if (evt_egclean_pfmetPhi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_egclean_pfmetPhi_branch does not exist!\n");
       exit(1);
@@ -19988,7 +20938,8 @@ const float &CMS3::evt_egclean_pfmetPhi() {
 const float &CMS3::evt_uncorr_pfmetPhi() {
   if (not evt_uncorr_pfmetPhi_isLoaded) {
     if (evt_uncorr_pfmetPhi_branch != 0) {
-      evt_uncorr_pfmetPhi_branch->GetEntry(index);
+      if (evt_uncorr_pfmetPhi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_uncorr_pfmetPhi_branch does not exist!\n");
       exit(1);
@@ -20000,7 +20951,8 @@ const float &CMS3::evt_uncorr_pfmetPhi() {
 const unsigned int &CMS3::mus_HLT_Mu17_version() {
   if (not mus_HLT_Mu17_version_isLoaded) {
     if (mus_HLT_Mu17_version_branch != 0) {
-      mus_HLT_Mu17_version_branch->GetEntry(index);
+      if (mus_HLT_Mu17_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_version_branch does not exist!\n");
       exit(1);
@@ -20012,7 +20964,8 @@ const unsigned int &CMS3::mus_HLT_Mu17_version() {
 const float &CMS3::evt_puppi_pfmetSignificance() {
   if (not evt_puppi_pfmetSignificance_isLoaded) {
     if (evt_puppi_pfmetSignificance_branch != 0) {
-      evt_puppi_pfmetSignificance_branch->GetEntry(index);
+      if (evt_puppi_pfmetSignificance_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_puppi_pfmetSignificance_branch does not exist!\n");
       exit(1);
@@ -20024,7 +20977,8 @@ const float &CMS3::evt_puppi_pfmetSignificance() {
 const vector<float> &CMS3::photons_scSeedE2nd() {
   if (not photons_scSeedE2nd_isLoaded) {
     if (photons_scSeedE2nd_branch != 0) {
-      photons_scSeedE2nd_branch->GetEntry(index);
+      if (photons_scSeedE2nd_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_scSeedE2nd_branch does not exist!\n");
       exit(1);
@@ -20036,7 +20990,8 @@ const vector<float> &CMS3::photons_scSeedE2nd() {
 const vector<float> &CMS3::els_e1x5() {
   if (not els_e1x5_isLoaded) {
     if (els_e1x5_branch != 0) {
-      els_e1x5_branch->GetEntry(index);
+      if (els_e1x5_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_e1x5_branch does not exist!\n");
       exit(1);
@@ -20048,7 +21003,8 @@ const vector<float> &CMS3::els_e1x5() {
 const unsigned long long &CMS3::evt_nEvts() {
   if (not evt_nEvts_isLoaded) {
     if (evt_nEvts_branch != 0) {
-      evt_nEvts_branch->GetEntry(index);
+      if (evt_nEvts_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_nEvts_branch does not exist!\n");
       exit(1);
@@ -20060,7 +21016,8 @@ const unsigned long long &CMS3::evt_nEvts() {
 const vector<unsigned int> &CMS3::hlt_l1prescales() {
   if (not hlt_l1prescales_isLoaded) {
     if (hlt_l1prescales_branch != 0) {
-      hlt_l1prescales_branch->GetEntry(index);
+      if (hlt_l1prescales_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hlt_l1prescales_branch does not exist!\n");
       exit(1);
@@ -20072,7 +21029,8 @@ const vector<unsigned int> &CMS3::hlt_l1prescales() {
 const vector<vector<int> > &CMS3::mus_nStationCorrelatedHits() {
   if (not mus_nStationCorrelatedHits_isLoaded) {
     if (mus_nStationCorrelatedHits_branch != 0) {
-      mus_nStationCorrelatedHits_branch->GetEntry(index);
+      if (mus_nStationCorrelatedHits_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_nStationCorrelatedHits_branch does not exist!\n");
       exit(1);
@@ -20084,7 +21042,8 @@ const vector<vector<int> > &CMS3::mus_nStationCorrelatedHits() {
 const float &CMS3::evt_lumiRun() {
   if (not evt_lumiRun_isLoaded) {
     if (evt_lumiRun_branch != 0) {
-      evt_lumiRun_branch->GetEntry(index);
+      if (evt_lumiRun_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_lumiRun_branch does not exist!\n");
       exit(1);
@@ -20096,7 +21055,8 @@ const float &CMS3::evt_lumiRun() {
 const float &CMS3::genps_alphaQCD() {
   if (not genps_alphaQCD_isLoaded) {
     if (genps_alphaQCD_branch != 0) {
-      genps_alphaQCD_branch->GetEntry(index);
+      if (genps_alphaQCD_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch genps_alphaQCD_branch does not exist!\n");
       exit(1);
@@ -20108,7 +21068,8 @@ const float &CMS3::genps_alphaQCD() {
 const vector<float> &CMS3::mus_localDistance() {
   if (not mus_localDistance_isLoaded) {
     if (mus_localDistance_branch != 0) {
-      mus_localDistance_branch->GetEntry(index);
+      if (mus_localDistance_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_localDistance_branch does not exist!\n");
       exit(1);
@@ -20120,7 +21081,8 @@ const vector<float> &CMS3::mus_localDistance() {
 const vector<vector<float> > &CMS3::photons_clusterEta() {
   if (not photons_clusterEta_isLoaded) {
     if (photons_clusterEta_branch != 0) {
-      photons_clusterEta_branch->GetEntry(index);
+      if (photons_clusterEta_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_clusterEta_branch does not exist!\n");
       exit(1);
@@ -20132,7 +21094,8 @@ const vector<vector<float> > &CMS3::photons_clusterEta() {
 const vector<int> &CMS3::pfcands_IdAssociatedPV() {
   if (not pfcands_IdAssociatedPV_isLoaded) {
     if (pfcands_IdAssociatedPV_branch != 0) {
-      pfcands_IdAssociatedPV_branch->GetEntry(index);
+      if (pfcands_IdAssociatedPV_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfcands_IdAssociatedPV_branch does not exist!\n");
       exit(1);
@@ -20144,7 +21107,8 @@ const vector<int> &CMS3::pfcands_IdAssociatedPV() {
 const vector<float> &CMS3::els_VIDSpring16GPMvaValue() {
   if (not els_VIDSpring16GPMvaValue_isLoaded) {
     if (els_VIDSpring16GPMvaValue_branch != 0) {
-      els_VIDSpring16GPMvaValue_branch->GetEntry(index);
+      if (els_VIDSpring16GPMvaValue_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_VIDSpring16GPMvaValue_branch does not exist!\n");
       exit(1);
@@ -20156,7 +21120,8 @@ const vector<float> &CMS3::els_VIDSpring16GPMvaValue() {
 const vector<float> &CMS3::svs_yError() {
   if (not svs_yError_isLoaded) {
     if (svs_yError_branch != 0) {
-      svs_yError_branch->GetEntry(index);
+      if (svs_yError_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch svs_yError_branch does not exist!\n");
       exit(1);
@@ -20168,7 +21133,8 @@ const vector<float> &CMS3::svs_yError() {
 const vector<float> &CMS3::photons_mc3dr() {
   if (not photons_mc3dr_isLoaded) {
     if (photons_mc3dr_branch != 0) {
-      photons_mc3dr_branch->GetEntry(index);
+      if (photons_mc3dr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_mc3dr_branch does not exist!\n");
       exit(1);
@@ -20180,7 +21146,8 @@ const vector<float> &CMS3::photons_mc3dr() {
 const vector<vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > > &CMS3::taus_pf_signalcands_p4() {
   if (not taus_pf_signalcands_p4_isLoaded) {
     if (taus_pf_signalcands_p4_branch != 0) {
-      taus_pf_signalcands_p4_branch->GetEntry(index);
+      if (taus_pf_signalcands_p4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch taus_pf_signalcands_p4_branch does not exist!\n");
       exit(1);
@@ -20192,7 +21159,8 @@ const vector<vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > >
 const vector<float> &CMS3::els_eSeedOverPOut() {
   if (not els_eSeedOverPOut_isLoaded) {
     if (els_eSeedOverPOut_branch != 0) {
-      els_eSeedOverPOut_branch->GetEntry(index);
+      if (els_eSeedOverPOut_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_eSeedOverPOut_branch does not exist!\n");
       exit(1);
@@ -20204,7 +21172,8 @@ const vector<float> &CMS3::els_eSeedOverPOut() {
 const vector<unsigned int> &CMS3::els_HLT_Ele17_CaloIdM_TrackIdM_PFJet30_ElectronLeg() {
   if (not els_HLT_Ele17_CaloIdM_TrackIdM_PFJet30_ElectronLeg_isLoaded) {
     if (els_HLT_Ele17_CaloIdM_TrackIdM_PFJet30_ElectronLeg_branch != 0) {
-      els_HLT_Ele17_CaloIdM_TrackIdM_PFJet30_ElectronLeg_branch->GetEntry(index);
+      if (els_HLT_Ele17_CaloIdM_TrackIdM_PFJet30_ElectronLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele17_CaloIdM_TrackIdM_PFJet30_ElectronLeg_branch does not exist!\n");
       exit(1);
@@ -20216,7 +21185,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele17_CaloIdM_TrackIdM_PFJet30_Electro
 const vector<float> &CMS3::mus_sta_phiErr() {
   if (not mus_sta_phiErr_isLoaded) {
     if (mus_sta_phiErr_branch != 0) {
-      mus_sta_phiErr_branch->GetEntry(index);
+      if (mus_sta_phiErr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_sta_phiErr_branch does not exist!\n");
       exit(1);
@@ -20228,7 +21198,8 @@ const vector<float> &CMS3::mus_sta_phiErr() {
 const float &CMS3::evt_bs_dydzErr() {
   if (not evt_bs_dydzErr_isLoaded) {
     if (evt_bs_dydzErr_branch != 0) {
-      evt_bs_dydzErr_branch->GetEntry(index);
+      if (evt_bs_dydzErr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_bs_dydzErr_branch does not exist!\n");
       exit(1);
@@ -20240,7 +21211,8 @@ const float &CMS3::evt_bs_dydzErr() {
 const float &CMS3::evt_puppi_pfmetPhi_PhotonEnUp() {
   if (not evt_puppi_pfmetPhi_PhotonEnUp_isLoaded) {
     if (evt_puppi_pfmetPhi_PhotonEnUp_branch != 0) {
-      evt_puppi_pfmetPhi_PhotonEnUp_branch->GetEntry(index);
+      if (evt_puppi_pfmetPhi_PhotonEnUp_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_puppi_pfmetPhi_PhotonEnUp_branch does not exist!\n");
       exit(1);
@@ -20252,7 +21224,8 @@ const float &CMS3::evt_puppi_pfmetPhi_PhotonEnUp() {
 const float &CMS3::evt_puppi_pfsumet() {
   if (not evt_puppi_pfsumet_isLoaded) {
     if (evt_puppi_pfsumet_branch != 0) {
-      evt_puppi_pfsumet_branch->GetEntry(index);
+      if (evt_puppi_pfsumet_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_puppi_pfsumet_branch does not exist!\n");
       exit(1);
@@ -20264,7 +21237,8 @@ const float &CMS3::evt_puppi_pfsumet() {
 const float &CMS3::evt_pfmetPhi_MuonEnUp() {
   if (not evt_pfmetPhi_MuonEnUp_isLoaded) {
     if (evt_pfmetPhi_MuonEnUp_branch != 0) {
-      evt_pfmetPhi_MuonEnUp_branch->GetEntry(index);
+      if (evt_pfmetPhi_MuonEnUp_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_pfmetPhi_MuonEnUp_branch does not exist!\n");
       exit(1);
@@ -20276,7 +21250,8 @@ const float &CMS3::evt_pfmetPhi_MuonEnUp() {
 const vector<float> &CMS3::pfcands_dz() {
   if (not pfcands_dz_isLoaded) {
     if (pfcands_dz_branch != 0) {
-      pfcands_dz_branch->GetEntry(index);
+      if (pfcands_dz_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfcands_dz_branch does not exist!\n");
       exit(1);
@@ -20288,7 +21263,8 @@ const vector<float> &CMS3::pfcands_dz() {
 const unsigned int &CMS3::mus_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_version() {
   if (not mus_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_version_isLoaded) {
     if (mus_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_version_branch != 0) {
-      mus_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_version_branch->GetEntry(index);
+      if (mus_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_version_branch does not exist!\n");
       exit(1);
@@ -20300,7 +21276,8 @@ const unsigned int &CMS3::mus_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ
 const vector<unsigned int> &CMS3::els_HLT_Ele20_SC4_Mass50_LeadingLeg() {
   if (not els_HLT_Ele20_SC4_Mass50_LeadingLeg_isLoaded) {
     if (els_HLT_Ele20_SC4_Mass50_LeadingLeg_branch != 0) {
-      els_HLT_Ele20_SC4_Mass50_LeadingLeg_branch->GetEntry(index);
+      if (els_HLT_Ele20_SC4_Mass50_LeadingLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele20_SC4_Mass50_LeadingLeg_branch does not exist!\n");
       exit(1);
@@ -20312,7 +21289,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele20_SC4_Mass50_LeadingLeg() {
 const vector<int> &CMS3::pfjets_mc_id() {
   if (not pfjets_mc_id_isLoaded) {
     if (pfjets_mc_id_branch != 0) {
-      pfjets_mc_id_branch->GetEntry(index);
+      if (pfjets_mc_id_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_mc_id_branch does not exist!\n");
       exit(1);
@@ -20324,7 +21302,8 @@ const vector<int> &CMS3::pfjets_mc_id() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::mus_mc_patMatch_p4() {
   if (not mus_mc_patMatch_p4_isLoaded) {
     if (mus_mc_patMatch_p4_branch != 0) {
-      mus_mc_patMatch_p4_branch->GetEntry(index);
+      if (mus_mc_patMatch_p4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_mc_patMatch_p4_branch does not exist!\n");
       exit(1);
@@ -20336,7 +21315,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::m
 const float &CMS3::hcalnoise_maxE2TS() {
   if (not hcalnoise_maxE2TS_isLoaded) {
     if (hcalnoise_maxE2TS_branch != 0) {
-      hcalnoise_maxE2TS_branch->GetEntry(index);
+      if (hcalnoise_maxE2TS_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_maxE2TS_branch does not exist!\n");
       exit(1);
@@ -20348,7 +21328,8 @@ const float &CMS3::hcalnoise_maxE2TS() {
 const unsigned int &CMS3::mus_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_version() {
   if (not mus_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_version_isLoaded) {
     if (mus_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_version_branch != 0) {
-      mus_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_version_branch->GetEntry(index);
+      if (mus_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_version_branch does not exist!\n");
       exit(1);
@@ -20360,7 +21341,8 @@ const unsigned int &CMS3::mus_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ
 const vector<float> &CMS3::els_ip2d() {
   if (not els_ip2d_isLoaded) {
     if (els_ip2d_branch != 0) {
-      els_ip2d_branch->GetEntry(index);
+      if (els_ip2d_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_ip2d_branch does not exist!\n");
       exit(1);
@@ -20372,7 +21354,8 @@ const vector<float> &CMS3::els_ip2d() {
 const vector<float> &CMS3::els_scSeedCryIeta() {
   if (not els_scSeedCryIeta_isLoaded) {
     if (els_scSeedCryIeta_branch != 0) {
-      els_scSeedCryIeta_branch->GetEntry(index);
+      if (els_scSeedCryIeta_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_scSeedCryIeta_branch does not exist!\n");
       exit(1);
@@ -20384,7 +21367,8 @@ const vector<float> &CMS3::els_scSeedCryIeta() {
 const unsigned int &CMS3::els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_L1OR_version() {
   if (not els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_L1OR_version_isLoaded) {
     if (els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_L1OR_version_branch != 0) {
-      els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_L1OR_version_branch->GetEntry(index);
+      if (els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_L1OR_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_L1OR_version_branch does not exist!\n");
       exit(1);
@@ -20396,7 +21380,8 @@ const unsigned int &CMS3::els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_L1OR_versio
 const unsigned int &CMS3::mus_HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_MuonLeg_version() {
   if (not mus_HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_MuonLeg_version_isLoaded) {
     if (mus_HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_MuonLeg_version_branch != 0) {
-      mus_HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_MuonLeg_version_branch->GetEntry(index);
+      if (mus_HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_MuonLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_MuonLeg_version_branch does not exist!\n");
       exit(1);
@@ -20408,7 +21393,8 @@ const unsigned int &CMS3::mus_HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_Muo
 const unsigned int &CMS3::mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_version() {
   if (not mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_version_isLoaded) {
     if (mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_version_branch != 0) {
-      mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_version_branch->GetEntry(index);
+      if (mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_version_branch does not exist!\n");
       exit(1);
@@ -20420,7 +21406,8 @@ const unsigned int &CMS3::mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_version() {
 const vector<int> &CMS3::mus_gfit_nlayers3D() {
   if (not mus_gfit_nlayers3D_isLoaded) {
     if (mus_gfit_nlayers3D_branch != 0) {
-      mus_gfit_nlayers3D_branch->GetEntry(index);
+      if (mus_gfit_nlayers3D_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_gfit_nlayers3D_branch does not exist!\n");
       exit(1);
@@ -20432,7 +21419,8 @@ const vector<int> &CMS3::mus_gfit_nlayers3D() {
 const unsigned int &CMS3::els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_TrailingLeg_version() {
   if (not els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_TrailingLeg_version_isLoaded) {
     if (els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_TrailingLeg_version_branch != 0) {
-      els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_TrailingLeg_version_branch->GetEntry(index);
+      if (els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_TrailingLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_TrailingLeg_version_branch does not exist!\n");
       exit(1);
@@ -20444,7 +21432,8 @@ const unsigned int &CMS3::els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_TrailingLeg
 const float &CMS3::evt_pfmetSig() {
   if (not evt_pfmetSig_isLoaded) {
     if (evt_pfmetSig_branch != 0) {
-      evt_pfmetSig_branch->GetEntry(index);
+      if (evt_pfmetSig_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_pfmetSig_branch does not exist!\n");
       exit(1);
@@ -20456,7 +21445,8 @@ const float &CMS3::evt_pfmetSig() {
 const vector<unsigned int> &CMS3::els_HLT_Ele17_Ele8_Mass50_TrailingLeg() {
   if (not els_HLT_Ele17_Ele8_Mass50_TrailingLeg_isLoaded) {
     if (els_HLT_Ele17_Ele8_Mass50_TrailingLeg_branch != 0) {
-      els_HLT_Ele17_Ele8_Mass50_TrailingLeg_branch->GetEntry(index);
+      if (els_HLT_Ele17_Ele8_Mass50_TrailingLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele17_Ele8_Mass50_TrailingLeg_branch does not exist!\n");
       exit(1);
@@ -20468,7 +21458,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele17_Ele8_Mass50_TrailingLeg() {
 const vector<float> &CMS3::ak8jets_nJettinessTau1() {
   if (not ak8jets_nJettinessTau1_isLoaded) {
     if (ak8jets_nJettinessTau1_branch != 0) {
-      ak8jets_nJettinessTau1_branch->GetEntry(index);
+      if (ak8jets_nJettinessTau1_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_nJettinessTau1_branch does not exist!\n");
       exit(1);
@@ -20480,7 +21471,8 @@ const vector<float> &CMS3::ak8jets_nJettinessTau1() {
 const unsigned int &CMS3::mus_HLT_IsoMu24_eta2p1_version() {
   if (not mus_HLT_IsoMu24_eta2p1_version_isLoaded) {
     if (mus_HLT_IsoMu24_eta2p1_version_branch != 0) {
-      mus_HLT_IsoMu24_eta2p1_version_branch->GetEntry(index);
+      if (mus_HLT_IsoMu24_eta2p1_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_IsoMu24_eta2p1_version_branch does not exist!\n");
       exit(1);
@@ -20492,7 +21484,8 @@ const unsigned int &CMS3::mus_HLT_IsoMu24_eta2p1_version() {
 const vector<float> &CMS3::mus_d0corr() {
   if (not mus_d0corr_isLoaded) {
     if (mus_d0corr_branch != 0) {
-      mus_d0corr_branch->GetEntry(index);
+      if (mus_d0corr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_d0corr_branch does not exist!\n");
       exit(1);
@@ -20504,7 +21497,8 @@ const vector<float> &CMS3::mus_d0corr() {
 const float &CMS3::evt_bs_sigmaZ() {
   if (not evt_bs_sigmaZ_isLoaded) {
     if (evt_bs_sigmaZ_branch != 0) {
-      evt_bs_sigmaZ_branch->GetEntry(index);
+      if (evt_bs_sigmaZ_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_bs_sigmaZ_branch does not exist!\n");
       exit(1);
@@ -20516,7 +21510,8 @@ const float &CMS3::evt_bs_sigmaZ() {
 const unsigned int &CMS3::evt_nphotons() {
   if (not evt_nphotons_isLoaded) {
     if (evt_nphotons_branch != 0) {
-      evt_nphotons_branch->GetEntry(index);
+      if (evt_nphotons_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_nphotons_branch does not exist!\n");
       exit(1);
@@ -20528,7 +21523,8 @@ const unsigned int &CMS3::evt_nphotons() {
 const vector<vector<int> > &CMS3::photons_clusterInDynDPhi() {
   if (not photons_clusterInDynDPhi_isLoaded) {
     if (photons_clusterInDynDPhi_branch != 0) {
-      photons_clusterInDynDPhi_branch->GetEntry(index);
+      if (photons_clusterInDynDPhi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_clusterInDynDPhi_branch does not exist!\n");
       exit(1);
@@ -20540,7 +21536,8 @@ const vector<vector<int> > &CMS3::photons_clusterInDynDPhi() {
 const float &CMS3::evt_NoHF_pfmetPhi_raw() {
   if (not evt_NoHF_pfmetPhi_raw_isLoaded) {
     if (evt_NoHF_pfmetPhi_raw_branch != 0) {
-      evt_NoHF_pfmetPhi_raw_branch->GetEntry(index);
+      if (evt_NoHF_pfmetPhi_raw_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_NoHF_pfmetPhi_raw_branch does not exist!\n");
       exit(1);
@@ -20552,7 +21549,8 @@ const float &CMS3::evt_NoHF_pfmetPhi_raw() {
 const float &CMS3::evt_pileup() {
   if (not evt_pileup_isLoaded) {
     if (evt_pileup_branch != 0) {
-      evt_pileup_branch->GetEntry(index);
+      if (evt_pileup_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_pileup_branch does not exist!\n");
       exit(1);
@@ -20564,7 +21562,8 @@ const float &CMS3::evt_pileup() {
 const vector<float> &CMS3::els_hOverEBC() {
   if (not els_hOverEBC_isLoaded) {
     if (els_hOverEBC_branch != 0) {
-      els_hOverEBC_branch->GetEntry(index);
+      if (els_hOverEBC_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_hOverEBC_branch does not exist!\n");
       exit(1);
@@ -20576,7 +21575,8 @@ const vector<float> &CMS3::els_hOverEBC() {
 const vector<int> &CMS3::photons_N_ECALClusters() {
   if (not photons_N_ECALClusters_isLoaded) {
     if (photons_N_ECALClusters_branch != 0) {
-      photons_N_ECALClusters_branch->GetEntry(index);
+      if (photons_N_ECALClusters_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_N_ECALClusters_branch does not exist!\n");
       exit(1);
@@ -20588,7 +21588,8 @@ const vector<int> &CMS3::photons_N_ECALClusters() {
 const unsigned int &CMS3::mus_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_version() {
   if (not mus_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_version_isLoaded) {
     if (mus_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_version_branch != 0) {
-      mus_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_version_branch->GetEntry(index);
+      if (mus_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_version_branch does not exist!\n");
       exit(1);
@@ -20600,7 +21601,8 @@ const unsigned int &CMS3::mus_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_version() 
 const unsigned int &CMS3::mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_version() {
   if (not mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_version_isLoaded) {
     if (mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_version_branch != 0) {
-      mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_version_branch->GetEntry(index);
+      if (mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_version_branch does not exist!\n");
       exit(1);
@@ -20612,7 +21614,8 @@ const unsigned int &CMS3::mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_version() {
 const vector<int> &CMS3::mus_nmatches() {
   if (not mus_nmatches_isLoaded) {
     if (mus_nmatches_branch != 0) {
-      mus_nmatches_branch->GetEntry(index);
+      if (mus_nmatches_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_nmatches_branch does not exist!\n");
       exit(1);
@@ -20624,7 +21627,8 @@ const vector<int> &CMS3::mus_nmatches() {
 const vector<float> &CMS3::mus_isoR04_pf_PhotonEtHighThreshold() {
   if (not mus_isoR04_pf_PhotonEtHighThreshold_isLoaded) {
     if (mus_isoR04_pf_PhotonEtHighThreshold_branch != 0) {
-      mus_isoR04_pf_PhotonEtHighThreshold_branch->GetEntry(index);
+      if (mus_isoR04_pf_PhotonEtHighThreshold_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isoR04_pf_PhotonEtHighThreshold_branch does not exist!\n");
       exit(1);
@@ -20636,7 +21640,8 @@ const vector<float> &CMS3::mus_isoR04_pf_PhotonEtHighThreshold() {
 const vector<float> &CMS3::mus_isoSumDRR03_pf_ChargedParticlePt() {
   if (not mus_isoSumDRR03_pf_ChargedParticlePt_isLoaded) {
     if (mus_isoSumDRR03_pf_ChargedParticlePt_branch != 0) {
-      mus_isoSumDRR03_pf_ChargedParticlePt_branch->GetEntry(index);
+      if (mus_isoSumDRR03_pf_ChargedParticlePt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isoSumDRR03_pf_ChargedParticlePt_branch does not exist!\n");
       exit(1);
@@ -20648,7 +21653,8 @@ const vector<float> &CMS3::mus_isoSumDRR03_pf_ChargedParticlePt() {
 const vector<unsigned int> &CMS3::els_HLT_Ele17_Ele8_TrailingLeg() {
   if (not els_HLT_Ele17_Ele8_TrailingLeg_isLoaded) {
     if (els_HLT_Ele17_Ele8_TrailingLeg_branch != 0) {
-      els_HLT_Ele17_Ele8_TrailingLeg_branch->GetEntry(index);
+      if (els_HLT_Ele17_Ele8_TrailingLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele17_Ele8_TrailingLeg_branch does not exist!\n");
       exit(1);
@@ -20660,7 +21666,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele17_Ele8_TrailingLeg() {
 const vector<float> &CMS3::pfjets_METToolbox_muonE() {
   if (not pfjets_METToolbox_muonE_isLoaded) {
     if (pfjets_METToolbox_muonE_branch != 0) {
-      pfjets_METToolbox_muonE_branch->GetEntry(index);
+      if (pfjets_METToolbox_muonE_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_METToolbox_muonE_branch does not exist!\n");
       exit(1);
@@ -20672,7 +21679,8 @@ const vector<float> &CMS3::pfjets_METToolbox_muonE() {
 const vector<float> &CMS3::els_miniIso_nh() {
   if (not els_miniIso_nh_isLoaded) {
     if (els_miniIso_nh_branch != 0) {
-      els_miniIso_nh_branch->GetEntry(index);
+      if (els_miniIso_nh_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_miniIso_nh_branch does not exist!\n");
       exit(1);
@@ -20684,7 +21692,8 @@ const vector<float> &CMS3::els_miniIso_nh() {
 const vector<TString> &CMS3::evt_CMS3tag() {
   if (not evt_CMS3tag_isLoaded) {
     if (evt_CMS3tag_branch != 0) {
-      evt_CMS3tag_branch->GetEntry(index);
+      if (evt_CMS3tag_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_CMS3tag_branch does not exist!\n");
       exit(1);
@@ -20696,7 +21705,8 @@ const vector<TString> &CMS3::evt_CMS3tag() {
 const vector<unsigned int> &CMS3::mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_LeadingLeg() {
   if (not mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_LeadingLeg_isLoaded) {
     if (mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_LeadingLeg_branch != 0) {
-      mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_LeadingLeg_branch->GetEntry(index);
+      if (mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_LeadingLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_LeadingLeg_branch does not exist!\n");
       exit(1);
@@ -20708,7 +21718,8 @@ const vector<unsigned int> &CMS3::mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_Lead
 const float &CMS3::evt_pfmetPhi_TauEnDown() {
   if (not evt_pfmetPhi_TauEnDown_isLoaded) {
     if (evt_pfmetPhi_TauEnDown_branch != 0) {
-      evt_pfmetPhi_TauEnDown_branch->GetEntry(index);
+      if (evt_pfmetPhi_TauEnDown_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_pfmetPhi_TauEnDown_branch does not exist!\n");
       exit(1);
@@ -20720,7 +21731,8 @@ const float &CMS3::evt_pfmetPhi_TauEnDown() {
 const vector<int> &CMS3::ak8jets_partonFlavour() {
   if (not ak8jets_partonFlavour_isLoaded) {
     if (ak8jets_partonFlavour_branch != 0) {
-      ak8jets_partonFlavour_branch->GetEntry(index);
+      if (ak8jets_partonFlavour_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_partonFlavour_branch does not exist!\n");
       exit(1);
@@ -20732,7 +21744,8 @@ const vector<int> &CMS3::ak8jets_partonFlavour() {
 const vector<float> &CMS3::els_ndof() {
   if (not els_ndof_isLoaded) {
     if (els_ndof_branch != 0) {
-      els_ndof_branch->GetEntry(index);
+      if (els_ndof_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_ndof_branch does not exist!\n");
       exit(1);
@@ -20744,7 +21757,8 @@ const vector<float> &CMS3::els_ndof() {
 const int &CMS3::hcalnoise_GetRecHitCount15() {
   if (not hcalnoise_GetRecHitCount15_isLoaded) {
     if (hcalnoise_GetRecHitCount15_branch != 0) {
-      hcalnoise_GetRecHitCount15_branch->GetEntry(index);
+      if (hcalnoise_GetRecHitCount15_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_GetRecHitCount15_branch does not exist!\n");
       exit(1);
@@ -20756,7 +21770,8 @@ const int &CMS3::hcalnoise_GetRecHitCount15() {
 const float &CMS3::evt_fixgridfastjet_centralneutral_rho() {
   if (not evt_fixgridfastjet_centralneutral_rho_isLoaded) {
     if (evt_fixgridfastjet_centralneutral_rho_branch != 0) {
-      evt_fixgridfastjet_centralneutral_rho_branch->GetEntry(index);
+      if (evt_fixgridfastjet_centralneutral_rho_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_fixgridfastjet_centralneutral_rho_branch does not exist!\n");
       exit(1);
@@ -20768,7 +21783,8 @@ const float &CMS3::evt_fixgridfastjet_centralneutral_rho() {
 const vector<float> &CMS3::els_pfPhotonIso() {
   if (not els_pfPhotonIso_isLoaded) {
     if (els_pfPhotonIso_branch != 0) {
-      els_pfPhotonIso_branch->GetEntry(index);
+      if (els_pfPhotonIso_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_pfPhotonIso_branch does not exist!\n");
       exit(1);
@@ -20780,7 +21796,8 @@ const vector<float> &CMS3::els_pfPhotonIso() {
 const vector<unsigned int> &CMS3::els_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg() {
   if (not els_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_isLoaded) {
     if (els_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_branch != 0) {
-      els_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_branch->GetEntry(index);
+      if (els_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_branch does not exist!\n");
       exit(1);
@@ -20792,7 +21809,8 @@ const vector<unsigned int> &CMS3::els_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_
 const vector<int> &CMS3::mus_pid_TMLastStationTight() {
   if (not mus_pid_TMLastStationTight_isLoaded) {
     if (mus_pid_TMLastStationTight_branch != 0) {
-      mus_pid_TMLastStationTight_branch->GetEntry(index);
+      if (mus_pid_TMLastStationTight_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_pid_TMLastStationTight_branch does not exist!\n");
       exit(1);
@@ -20804,7 +21822,8 @@ const vector<int> &CMS3::mus_pid_TMLastStationTight() {
 const vector<float> &CMS3::els_dEtaIn() {
   if (not els_dEtaIn_isLoaded) {
     if (els_dEtaIn_branch != 0) {
-      els_dEtaIn_branch->GetEntry(index);
+      if (els_dEtaIn_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_dEtaIn_branch does not exist!\n");
       exit(1);
@@ -20816,7 +21835,8 @@ const vector<float> &CMS3::els_dEtaIn() {
 const unsigned int &CMS3::els_HLT_Ele18_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version() {
   if (not els_HLT_Ele18_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version_isLoaded) {
     if (els_HLT_Ele18_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version_branch != 0) {
-      els_HLT_Ele18_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version_branch->GetEntry(index);
+      if (els_HLT_Ele18_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele18_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version_branch does not exist!\n");
       exit(1);
@@ -20828,7 +21848,8 @@ const unsigned int &CMS3::els_HLT_Ele18_CaloIdM_TrackIdM_PFJet30_ElectronLeg_ver
 const int &CMS3::hcalnoise_numSpikeNoiseChannels() {
   if (not hcalnoise_numSpikeNoiseChannels_isLoaded) {
     if (hcalnoise_numSpikeNoiseChannels_branch != 0) {
-      hcalnoise_numSpikeNoiseChannels_branch->GetEntry(index);
+      if (hcalnoise_numSpikeNoiseChannels_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_numSpikeNoiseChannels_branch does not exist!\n");
       exit(1);
@@ -20840,7 +21861,8 @@ const int &CMS3::hcalnoise_numSpikeNoiseChannels() {
 const vector<float> &CMS3::photons_hcalIso04() {
   if (not photons_hcalIso04_isLoaded) {
     if (photons_hcalIso04_branch != 0) {
-      photons_hcalIso04_branch->GetEntry(index);
+      if (photons_hcalIso04_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_hcalIso04_branch does not exist!\n");
       exit(1);
@@ -20852,7 +21874,8 @@ const vector<float> &CMS3::photons_hcalIso04() {
 const vector<int> &CMS3::els_passHEEPId() {
   if (not els_passHEEPId_isLoaded) {
     if (els_passHEEPId_branch != 0) {
-      els_passHEEPId_branch->GetEntry(index);
+      if (els_passHEEPId_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_passHEEPId_branch does not exist!\n");
       exit(1);
@@ -20864,7 +21887,8 @@ const vector<int> &CMS3::els_passHEEPId() {
 const vector<unsigned int> &CMS3::els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_LeadingLeg() {
   if (not els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_LeadingLeg_isLoaded) {
     if (els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_LeadingLeg_branch != 0) {
-      els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_LeadingLeg_branch->GetEntry(index);
+      if (els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_LeadingLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_LeadingLeg_branch does not exist!\n");
       exit(1);
@@ -20876,7 +21900,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_Lea
 const float &CMS3::evt_puppi_pfmet_ElectronEnUp() {
   if (not evt_puppi_pfmet_ElectronEnUp_isLoaded) {
     if (evt_puppi_pfmet_ElectronEnUp_branch != 0) {
-      evt_puppi_pfmet_ElectronEnUp_branch->GetEntry(index);
+      if (evt_puppi_pfmet_ElectronEnUp_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_puppi_pfmet_ElectronEnUp_branch does not exist!\n");
       exit(1);
@@ -20888,7 +21913,8 @@ const float &CMS3::evt_puppi_pfmet_ElectronEnUp() {
 const vector<unsigned int> &CMS3::els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_L1OR() {
   if (not els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_L1OR_isLoaded) {
     if (els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_L1OR_branch != 0) {
-      els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_L1OR_branch->GetEntry(index);
+      if (els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_L1OR_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_L1OR_branch does not exist!\n");
       exit(1);
@@ -20900,7 +21926,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_L1O
 const unsigned int &CMS3::mus_HLT_Mu8_Ele17_TrailingLeg_version() {
   if (not mus_HLT_Mu8_Ele17_TrailingLeg_version_isLoaded) {
     if (mus_HLT_Mu8_Ele17_TrailingLeg_version_branch != 0) {
-      mus_HLT_Mu8_Ele17_TrailingLeg_version_branch->GetEntry(index);
+      if (mus_HLT_Mu8_Ele17_TrailingLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu8_Ele17_TrailingLeg_version_branch does not exist!\n");
       exit(1);
@@ -20912,7 +21939,8 @@ const unsigned int &CMS3::mus_HLT_Mu8_Ele17_TrailingLeg_version() {
 const unsigned int &CMS3::els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_version() {
   if (not els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_version_isLoaded) {
     if (els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_version_branch != 0) {
-      els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_version_branch->GetEntry(index);
+      if (els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_version_branch does not exist!\n");
       exit(1);
@@ -20924,7 +21952,8 @@ const unsigned int &CMS3::els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_version() {
 const vector<vector<float> > &CMS3::els_clusterEta() {
   if (not els_clusterEta_isLoaded) {
     if (els_clusterEta_branch != 0) {
-      els_clusterEta_branch->GetEntry(index);
+      if (els_clusterEta_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_clusterEta_branch does not exist!\n");
       exit(1);
@@ -20936,7 +21965,8 @@ const vector<vector<float> > &CMS3::els_clusterEta() {
 const vector<float> &CMS3::els_hcalIso04() {
   if (not els_hcalIso04_isLoaded) {
     if (els_hcalIso04_branch != 0) {
-      els_hcalIso04_branch->GetEntry(index);
+      if (els_hcalIso04_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_hcalIso04_branch does not exist!\n");
       exit(1);
@@ -20948,7 +21978,8 @@ const vector<float> &CMS3::els_hcalIso04() {
 const vector<float> &CMS3::mus_miniIso_em() {
   if (not mus_miniIso_em_isLoaded) {
     if (mus_miniIso_em_branch != 0) {
-      mus_miniIso_em_branch->GetEntry(index);
+      if (mus_miniIso_em_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_miniIso_em_branch does not exist!\n");
       exit(1);
@@ -20960,7 +21991,8 @@ const vector<float> &CMS3::mus_miniIso_em() {
 const unsigned int &CMS3::photons_HLT_Photon120_R9Id90_HE10_IsoM_version() {
   if (not photons_HLT_Photon120_R9Id90_HE10_IsoM_version_isLoaded) {
     if (photons_HLT_Photon120_R9Id90_HE10_IsoM_version_branch != 0) {
-      photons_HLT_Photon120_R9Id90_HE10_IsoM_version_branch->GetEntry(index);
+      if (photons_HLT_Photon120_R9Id90_HE10_IsoM_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_HLT_Photon120_R9Id90_HE10_IsoM_version_branch does not exist!\n");
       exit(1);
@@ -20972,7 +22004,8 @@ const unsigned int &CMS3::photons_HLT_Photon120_R9Id90_HE10_IsoM_version() {
 const vector<unsigned int> &CMS3::els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV0p54PF_ElectronLeg() {
   if (not els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV0p54PF_ElectronLeg_isLoaded) {
     if (els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV0p54PF_ElectronLeg_branch != 0) {
-      els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV0p54PF_ElectronLeg_branch->GetEntry(index);
+      if (els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV0p54PF_ElectronLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV0p54PF_ElectronLeg_branch does not exist!\n");
       exit(1);
@@ -20984,7 +22017,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_
 const vector<float> &CMS3::photons_eSC() {
   if (not photons_eSC_isLoaded) {
     if (photons_eSC_branch != 0) {
-      photons_eSC_branch->GetEntry(index);
+      if (photons_eSC_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_eSC_branch does not exist!\n");
       exit(1);
@@ -20996,7 +22030,8 @@ const vector<float> &CMS3::photons_eSC() {
 const vector<float> &CMS3::mus_e_emS9() {
   if (not mus_e_emS9_isLoaded) {
     if (mus_e_emS9_branch != 0) {
-      mus_e_emS9_branch->GetEntry(index);
+      if (mus_e_emS9_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_e_emS9_branch does not exist!\n");
       exit(1);
@@ -21008,7 +22043,8 @@ const vector<float> &CMS3::mus_e_emS9() {
 const vector<unsigned int> &CMS3::photons_HLT_Photon90_R9Id90_HE10_IsoM() {
   if (not photons_HLT_Photon90_R9Id90_HE10_IsoM_isLoaded) {
     if (photons_HLT_Photon90_R9Id90_HE10_IsoM_branch != 0) {
-      photons_HLT_Photon90_R9Id90_HE10_IsoM_branch->GetEntry(index);
+      if (photons_HLT_Photon90_R9Id90_HE10_IsoM_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_HLT_Photon90_R9Id90_HE10_IsoM_branch does not exist!\n");
       exit(1);
@@ -21020,7 +22056,8 @@ const vector<unsigned int> &CMS3::photons_HLT_Photon90_R9Id90_HE10_IsoM() {
 const vector<float> &CMS3::photons_mcdr() {
   if (not photons_mcdr_isLoaded) {
     if (photons_mcdr_branch != 0) {
-      photons_mcdr_branch->GetEntry(index);
+      if (photons_mcdr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_mcdr_branch does not exist!\n");
       exit(1);
@@ -21032,7 +22069,8 @@ const vector<float> &CMS3::photons_mcdr() {
 const float &CMS3::hcalnoise_maxE10TS() {
   if (not hcalnoise_maxE10TS_isLoaded) {
     if (hcalnoise_maxE10TS_branch != 0) {
-      hcalnoise_maxE10TS_branch->GetEntry(index);
+      if (hcalnoise_maxE10TS_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_maxE10TS_branch does not exist!\n");
       exit(1);
@@ -21044,7 +22082,8 @@ const float &CMS3::hcalnoise_maxE10TS() {
 const unsigned int &CMS3::els_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg_version() {
   if (not els_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg_version_isLoaded) {
     if (els_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg_version_branch != 0) {
-      els_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg_version_branch->GetEntry(index);
+      if (els_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg_version_branch does not exist!\n");
       exit(1);
@@ -21056,7 +22095,8 @@ const unsigned int &CMS3::els_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_El
 const vector<float> &CMS3::mus_isoR03_pf_NeutralHadronEtHighThreshold() {
   if (not mus_isoR03_pf_NeutralHadronEtHighThreshold_isLoaded) {
     if (mus_isoR03_pf_NeutralHadronEtHighThreshold_branch != 0) {
-      mus_isoR03_pf_NeutralHadronEtHighThreshold_branch->GetEntry(index);
+      if (mus_isoR03_pf_NeutralHadronEtHighThreshold_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isoR03_pf_NeutralHadronEtHighThreshold_branch does not exist!\n");
       exit(1);
@@ -21068,7 +22108,8 @@ const vector<float> &CMS3::mus_isoR03_pf_NeutralHadronEtHighThreshold() {
 const float &CMS3::evt_bField() {
   if (not evt_bField_isLoaded) {
     if (evt_bField_branch != 0) {
-      evt_bField_branch->GetEntry(index);
+      if (evt_bField_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_bField_branch does not exist!\n");
       exit(1);
@@ -21080,7 +22121,8 @@ const float &CMS3::evt_bField() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::genps_prod_vtx() {
   if (not genps_prod_vtx_isLoaded) {
     if (genps_prod_vtx_branch != 0) {
-      genps_prod_vtx_branch->GetEntry(index);
+      if (genps_prod_vtx_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch genps_prod_vtx_branch does not exist!\n");
       exit(1);
@@ -21092,7 +22134,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::g
 const vector<float> &CMS3::ak8jets_undoJEC() {
   if (not ak8jets_undoJEC_isLoaded) {
     if (ak8jets_undoJEC_branch != 0) {
-      ak8jets_undoJEC_branch->GetEntry(index);
+      if (ak8jets_undoJEC_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_undoJEC_branch does not exist!\n");
       exit(1);
@@ -21104,7 +22147,8 @@ const vector<float> &CMS3::ak8jets_undoJEC() {
 const vector<float> &CMS3::mus_bfit_qoverpError() {
   if (not mus_bfit_qoverpError_isLoaded) {
     if (mus_bfit_qoverpError_branch != 0) {
-      mus_bfit_qoverpError_branch->GetEntry(index);
+      if (mus_bfit_qoverpError_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_bfit_qoverpError_branch does not exist!\n");
       exit(1);
@@ -21116,7 +22160,8 @@ const vector<float> &CMS3::mus_bfit_qoverpError() {
 const vector<unsigned int> &CMS3::mus_HLT_IsoMu24() {
   if (not mus_HLT_IsoMu24_isLoaded) {
     if (mus_HLT_IsoMu24_branch != 0) {
-      mus_HLT_IsoMu24_branch->GetEntry(index);
+      if (mus_HLT_IsoMu24_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_IsoMu24_branch does not exist!\n");
       exit(1);
@@ -21128,7 +22173,8 @@ const vector<unsigned int> &CMS3::mus_HLT_IsoMu24() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::els_trk_vertex_p4() {
   if (not els_trk_vertex_p4_isLoaded) {
     if (els_trk_vertex_p4_branch != 0) {
-      els_trk_vertex_p4_branch->GetEntry(index);
+      if (els_trk_vertex_p4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_trk_vertex_p4_branch does not exist!\n");
       exit(1);
@@ -21140,7 +22186,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::e
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::genps_p4() {
   if (not genps_p4_isLoaded) {
     if (genps_p4_branch != 0) {
-      genps_p4_branch->GetEntry(index);
+      if (genps_p4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch genps_p4_branch does not exist!\n");
       exit(1);
@@ -21152,7 +22199,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::g
 const vector<float> &CMS3::els_eSC() {
   if (not els_eSC_isLoaded) {
     if (els_eSC_branch != 0) {
-      els_eSC_branch->GetEntry(index);
+      if (els_eSC_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_eSC_branch does not exist!\n");
       exit(1);
@@ -21164,7 +22212,8 @@ const vector<float> &CMS3::els_eSC() {
 const vector<float> &CMS3::photons_scPreshowerEnergyPlane2() {
   if (not photons_scPreshowerEnergyPlane2_isLoaded) {
     if (photons_scPreshowerEnergyPlane2_branch != 0) {
-      photons_scPreshowerEnergyPlane2_branch->GetEntry(index);
+      if (photons_scPreshowerEnergyPlane2_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_scPreshowerEnergyPlane2_branch does not exist!\n");
       exit(1);
@@ -21176,7 +22225,8 @@ const vector<float> &CMS3::photons_scPreshowerEnergyPlane2() {
 const vector<vector<float> > &CMS3::photons_psClusterRawEnergy() {
   if (not photons_psClusterRawEnergy_isLoaded) {
     if (photons_psClusterRawEnergy_branch != 0) {
-      photons_psClusterRawEnergy_branch->GetEntry(index);
+      if (photons_psClusterRawEnergy_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_psClusterRawEnergy_branch does not exist!\n");
       exit(1);
@@ -21188,7 +22238,8 @@ const vector<vector<float> > &CMS3::photons_psClusterRawEnergy() {
 const vector<float> &CMS3::els_pfPUIso() {
   if (not els_pfPUIso_isLoaded) {
     if (els_pfPUIso_branch != 0) {
-      els_pfPUIso_branch->GetEntry(index);
+      if (els_pfPUIso_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_pfPUIso_branch does not exist!\n");
       exit(1);
@@ -21200,7 +22251,8 @@ const vector<float> &CMS3::els_pfPUIso() {
 const vector<float> &CMS3::els_miniIso_ch() {
   if (not els_miniIso_ch_isLoaded) {
     if (els_miniIso_ch_branch != 0) {
-      els_miniIso_ch_branch->GetEntry(index);
+      if (els_miniIso_ch_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_miniIso_ch_branch does not exist!\n");
       exit(1);
@@ -21212,7 +22264,8 @@ const vector<float> &CMS3::els_miniIso_ch() {
 const vector<float> &CMS3::mus_isoSumDRR03_pf_PhotonEt() {
   if (not mus_isoSumDRR03_pf_PhotonEt_isLoaded) {
     if (mus_isoSumDRR03_pf_PhotonEt_branch != 0) {
-      mus_isoSumDRR03_pf_PhotonEt_branch->GetEntry(index);
+      if (mus_isoSumDRR03_pf_PhotonEt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isoSumDRR03_pf_PhotonEt_branch does not exist!\n");
       exit(1);
@@ -21224,7 +22277,8 @@ const vector<float> &CMS3::mus_isoSumDRR03_pf_PhotonEt() {
 const float &CMS3::pdfinfo_x1() {
   if (not pdfinfo_x1_isLoaded) {
     if (pdfinfo_x1_branch != 0) {
-      pdfinfo_x1_branch->GetEntry(index);
+      if (pdfinfo_x1_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pdfinfo_x1_branch does not exist!\n");
       exit(1);
@@ -21236,7 +22290,8 @@ const float &CMS3::pdfinfo_x1() {
 const vector<unsigned int> &CMS3::mus_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_MuonLeg() {
   if (not mus_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_MuonLeg_isLoaded) {
     if (mus_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_MuonLeg_branch != 0) {
-      mus_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_MuonLeg_branch->GetEntry(index);
+      if (mus_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_MuonLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_MuonLeg_branch does not exist!\n");
       exit(1);
@@ -21248,7 +22303,8 @@ const vector<unsigned int> &CMS3::mus_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_
 const float &CMS3::evt_METToolboxNoHF_pfmetPhi_raw() {
   if (not evt_METToolboxNoHF_pfmetPhi_raw_isLoaded) {
     if (evt_METToolboxNoHF_pfmetPhi_raw_branch != 0) {
-      evt_METToolboxNoHF_pfmetPhi_raw_branch->GetEntry(index);
+      if (evt_METToolboxNoHF_pfmetPhi_raw_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_METToolboxNoHF_pfmetPhi_raw_branch does not exist!\n");
       exit(1);
@@ -21260,7 +22316,8 @@ const float &CMS3::evt_METToolboxNoHF_pfmetPhi_raw() {
 const unsigned int &CMS3::photons_HLT_Photon50_R9Id90_HE10_IsoM_version() {
   if (not photons_HLT_Photon50_R9Id90_HE10_IsoM_version_isLoaded) {
     if (photons_HLT_Photon50_R9Id90_HE10_IsoM_version_branch != 0) {
-      photons_HLT_Photon50_R9Id90_HE10_IsoM_version_branch->GetEntry(index);
+      if (photons_HLT_Photon50_R9Id90_HE10_IsoM_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_HLT_Photon50_R9Id90_HE10_IsoM_version_branch does not exist!\n");
       exit(1);
@@ -21272,7 +22329,8 @@ const unsigned int &CMS3::photons_HLT_Photon50_R9Id90_HE10_IsoM_version() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::els_mc_motherp4() {
   if (not els_mc_motherp4_isLoaded) {
     if (els_mc_motherp4_branch != 0) {
-      els_mc_motherp4_branch->GetEntry(index);
+      if (els_mc_motherp4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_mc_motherp4_branch does not exist!\n");
       exit(1);
@@ -21284,7 +22342,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::e
 const vector<float> &CMS3::mus_e_had() {
   if (not mus_e_had_isLoaded) {
     if (mus_e_had_branch != 0) {
-      mus_e_had_branch->GetEntry(index);
+      if (mus_e_had_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_e_had_branch does not exist!\n");
       exit(1);
@@ -21296,7 +22355,8 @@ const vector<float> &CMS3::mus_e_had() {
 const vector<int> &CMS3::genps_id_simplegrandma() {
   if (not genps_id_simplegrandma_isLoaded) {
     if (genps_id_simplegrandma_branch != 0) {
-      genps_id_simplegrandma_branch->GetEntry(index);
+      if (genps_id_simplegrandma_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch genps_id_simplegrandma_branch does not exist!\n");
       exit(1);
@@ -21308,7 +22368,8 @@ const vector<int> &CMS3::genps_id_simplegrandma() {
 const unsigned int &CMS3::els_HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg_version() {
   if (not els_HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg_version_isLoaded) {
     if (els_HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg_version_branch != 0) {
-      els_HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg_version_branch->GetEntry(index);
+      if (els_HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg_version_branch does not exist!\n");
       exit(1);
@@ -21320,7 +22381,8 @@ const unsigned int &CMS3::els_HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT300_Elec
 const unsigned int &CMS3::evt_ngenjetsNoMuNoNu() {
   if (not evt_ngenjetsNoMuNoNu_isLoaded) {
     if (evt_ngenjetsNoMuNoNu_branch != 0) {
-      evt_ngenjetsNoMuNoNu_branch->GetEntry(index);
+      if (evt_ngenjetsNoMuNoNu_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_ngenjetsNoMuNoNu_branch does not exist!\n");
       exit(1);
@@ -21332,7 +22394,8 @@ const unsigned int &CMS3::evt_ngenjetsNoMuNoNu() {
 const vector<unsigned int> &CMS3::mus_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_MuonLeg() {
   if (not mus_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_MuonLeg_isLoaded) {
     if (mus_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_MuonLeg_branch != 0) {
-      mus_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_MuonLeg_branch->GetEntry(index);
+      if (mus_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_MuonLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_MuonLeg_branch does not exist!\n");
       exit(1);
@@ -21344,7 +22407,8 @@ const vector<unsigned int> &CMS3::mus_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_I
 const float &CMS3::evt_NoHF_calometPhi() {
   if (not evt_NoHF_calometPhi_isLoaded) {
     if (evt_NoHF_calometPhi_branch != 0) {
-      evt_NoHF_calometPhi_branch->GetEntry(index);
+      if (evt_NoHF_calometPhi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_NoHF_calometPhi_branch does not exist!\n");
       exit(1);
@@ -21356,7 +22420,8 @@ const float &CMS3::evt_NoHF_calometPhi() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::mus_vertex_p4() {
   if (not mus_vertex_p4_isLoaded) {
     if (mus_vertex_p4_branch != 0) {
-      mus_vertex_p4_branch->GetEntry(index);
+      if (mus_vertex_p4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_vertex_p4_branch does not exist!\n");
       exit(1);
@@ -21368,7 +22433,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::m
 const int &CMS3::hcalnoise_numFlatNoiseChannels() {
   if (not hcalnoise_numFlatNoiseChannels_isLoaded) {
     if (hcalnoise_numFlatNoiseChannels_branch != 0) {
-      hcalnoise_numFlatNoiseChannels_branch->GetEntry(index);
+      if (hcalnoise_numFlatNoiseChannels_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_numFlatNoiseChannels_branch does not exist!\n");
       exit(1);
@@ -21380,7 +22446,8 @@ const int &CMS3::hcalnoise_numFlatNoiseChannels() {
 const vector<int> &CMS3::mus_algoOrig() {
   if (not mus_algoOrig_isLoaded) {
     if (mus_algoOrig_branch != 0) {
-      mus_algoOrig_branch->GetEntry(index);
+      if (mus_algoOrig_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_algoOrig_branch does not exist!\n");
       exit(1);
@@ -21392,7 +22459,8 @@ const vector<int> &CMS3::mus_algoOrig() {
 const float &CMS3::evt_bs_sigmaZErr() {
   if (not evt_bs_sigmaZErr_isLoaded) {
     if (evt_bs_sigmaZErr_branch != 0) {
-      evt_bs_sigmaZErr_branch->GetEntry(index);
+      if (evt_bs_sigmaZErr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_bs_sigmaZErr_branch does not exist!\n");
       exit(1);
@@ -21404,7 +22472,8 @@ const float &CMS3::evt_bs_sigmaZErr() {
 const float &CMS3::evt_pfmet_ElectronEnDown() {
   if (not evt_pfmet_ElectronEnDown_isLoaded) {
     if (evt_pfmet_ElectronEnDown_branch != 0) {
-      evt_pfmet_ElectronEnDown_branch->GetEntry(index);
+      if (evt_pfmet_ElectronEnDown_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_pfmet_ElectronEnDown_branch does not exist!\n");
       exit(1);
@@ -21416,7 +22485,8 @@ const float &CMS3::evt_pfmet_ElectronEnDown() {
 const vector<float> &CMS3::mus_sta_z0Err() {
   if (not mus_sta_z0Err_isLoaded) {
     if (mus_sta_z0Err_branch != 0) {
-      mus_sta_z0Err_branch->GetEntry(index);
+      if (mus_sta_z0Err_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_sta_z0Err_branch does not exist!\n");
       exit(1);
@@ -21428,7 +22498,8 @@ const vector<float> &CMS3::mus_sta_z0Err() {
 const vector<float> &CMS3::els_ip3d() {
   if (not els_ip3d_isLoaded) {
     if (els_ip3d_branch != 0) {
-      els_ip3d_branch->GetEntry(index);
+      if (els_ip3d_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_ip3d_branch does not exist!\n");
       exit(1);
@@ -21440,7 +22511,8 @@ const vector<float> &CMS3::els_ip3d() {
 const vector<float> &CMS3::mus_iso03_hoEt() {
   if (not mus_iso03_hoEt_isLoaded) {
     if (mus_iso03_hoEt_branch != 0) {
-      mus_iso03_hoEt_branch->GetEntry(index);
+      if (mus_iso03_hoEt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_iso03_hoEt_branch does not exist!\n");
       exit(1);
@@ -21452,7 +22524,8 @@ const vector<float> &CMS3::mus_iso03_hoEt() {
 const vector<unsigned int> &CMS3::mus_HLT_Mu55() {
   if (not mus_HLT_Mu55_isLoaded) {
     if (mus_HLT_Mu55_branch != 0) {
-      mus_HLT_Mu55_branch->GetEntry(index);
+      if (mus_HLT_Mu55_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu55_branch does not exist!\n");
       exit(1);
@@ -21464,7 +22537,8 @@ const vector<unsigned int> &CMS3::mus_HLT_Mu55() {
 const vector<unsigned int> &CMS3::mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg() {
   if (not mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg_isLoaded) {
     if (mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg_branch != 0) {
-      mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg_branch->GetEntry(index);
+      if (mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg_branch does not exist!\n");
       exit(1);
@@ -21476,7 +22550,8 @@ const vector<unsigned int> &CMS3::mus_HLT_DoubleMu8_Mass8_PFHT300_MuonLeg() {
 const vector<int> &CMS3::els_ckf_laywithmeas() {
   if (not els_ckf_laywithmeas_isLoaded) {
     if (els_ckf_laywithmeas_branch != 0) {
-      els_ckf_laywithmeas_branch->GetEntry(index);
+      if (els_ckf_laywithmeas_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_ckf_laywithmeas_branch does not exist!\n");
       exit(1);
@@ -21488,7 +22563,8 @@ const vector<int> &CMS3::els_ckf_laywithmeas() {
 const vector<int> &CMS3::mus_sta_trk_charge() {
   if (not mus_sta_trk_charge_isLoaded) {
     if (mus_sta_trk_charge_branch != 0) {
-      mus_sta_trk_charge_branch->GetEntry(index);
+      if (mus_sta_trk_charge_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_sta_trk_charge_branch does not exist!\n");
       exit(1);
@@ -21500,7 +22576,8 @@ const vector<int> &CMS3::mus_sta_trk_charge() {
 const float &CMS3::hcalnoise_eventEMEnergy() {
   if (not hcalnoise_eventEMEnergy_isLoaded) {
     if (hcalnoise_eventEMEnergy_branch != 0) {
-      hcalnoise_eventEMEnergy_branch->GetEntry(index);
+      if (hcalnoise_eventEMEnergy_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_eventEMEnergy_branch does not exist!\n");
       exit(1);
@@ -21512,7 +22589,8 @@ const float &CMS3::hcalnoise_eventEMEnergy() {
 const vector<float> &CMS3::mus_isoMeanDRR03_pf_ChargedHadronPt() {
   if (not mus_isoMeanDRR03_pf_ChargedHadronPt_isLoaded) {
     if (mus_isoMeanDRR03_pf_ChargedHadronPt_branch != 0) {
-      mus_isoMeanDRR03_pf_ChargedHadronPt_branch->GetEntry(index);
+      if (mus_isoMeanDRR03_pf_ChargedHadronPt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isoMeanDRR03_pf_ChargedHadronPt_branch does not exist!\n");
       exit(1);
@@ -21524,7 +22602,8 @@ const vector<float> &CMS3::mus_isoMeanDRR03_pf_ChargedHadronPt() {
 const vector<float> &CMS3::mus_gfit_z0corr() {
   if (not mus_gfit_z0corr_isLoaded) {
     if (mus_gfit_z0corr_branch != 0) {
-      mus_gfit_z0corr_branch->GetEntry(index);
+      if (mus_gfit_z0corr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_gfit_z0corr_branch does not exist!\n");
       exit(1);
@@ -21536,7 +22615,8 @@ const vector<float> &CMS3::mus_gfit_z0corr() {
 const vector<float> &CMS3::mus_sta_d0Err() {
   if (not mus_sta_d0Err_isLoaded) {
     if (mus_sta_d0Err_branch != 0) {
-      mus_sta_d0Err_branch->GetEntry(index);
+      if (mus_sta_d0Err_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_sta_d0Err_branch does not exist!\n");
       exit(1);
@@ -21548,7 +22628,8 @@ const vector<float> &CMS3::mus_sta_d0Err() {
 const vector<float> &CMS3::mus_bfit_d0phiCov() {
   if (not mus_bfit_d0phiCov_isLoaded) {
     if (mus_bfit_d0phiCov_branch != 0) {
-      mus_bfit_d0phiCov_branch->GetEntry(index);
+      if (mus_bfit_d0phiCov_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_bfit_d0phiCov_branch does not exist!\n");
       exit(1);
@@ -21560,7 +22641,8 @@ const vector<float> &CMS3::mus_bfit_d0phiCov() {
 const float &CMS3::evt_instantLumiErr() {
   if (not evt_instantLumiErr_isLoaded) {
     if (evt_instantLumiErr_branch != 0) {
-      evt_instantLumiErr_branch->GetEntry(index);
+      if (evt_instantLumiErr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_instantLumiErr_branch does not exist!\n");
       exit(1);
@@ -21572,7 +22654,8 @@ const float &CMS3::evt_instantLumiErr() {
 const float &CMS3::evt_NoHF_pfsumet_raw() {
   if (not evt_NoHF_pfsumet_raw_isLoaded) {
     if (evt_NoHF_pfsumet_raw_branch != 0) {
-      evt_NoHF_pfsumet_raw_branch->GetEntry(index);
+      if (evt_NoHF_pfsumet_raw_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_NoHF_pfsumet_raw_branch does not exist!\n");
       exit(1);
@@ -21584,7 +22667,8 @@ const float &CMS3::evt_NoHF_pfsumet_raw() {
 const unsigned int &CMS3::mus_HLT_Mu17_Ele8_LeadingLeg_version() {
   if (not mus_HLT_Mu17_Ele8_LeadingLeg_version_isLoaded) {
     if (mus_HLT_Mu17_Ele8_LeadingLeg_version_branch != 0) {
-      mus_HLT_Mu17_Ele8_LeadingLeg_version_branch->GetEntry(index);
+      if (mus_HLT_Mu17_Ele8_LeadingLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_Ele8_LeadingLeg_version_branch does not exist!\n");
       exit(1);
@@ -21596,7 +22680,8 @@ const unsigned int &CMS3::mus_HLT_Mu17_Ele8_LeadingLeg_version() {
 const vector<int> &CMS3::els_mc_patMatch_id() {
   if (not els_mc_patMatch_id_isLoaded) {
     if (els_mc_patMatch_id_branch != 0) {
-      els_mc_patMatch_id_branch->GetEntry(index);
+      if (els_mc_patMatch_id_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_mc_patMatch_id_branch does not exist!\n");
       exit(1);
@@ -21608,7 +22693,8 @@ const vector<int> &CMS3::els_mc_patMatch_id() {
 const vector<float> &CMS3::mus_trkKink() {
   if (not mus_trkKink_isLoaded) {
     if (mus_trkKink_branch != 0) {
-      mus_trkKink_branch->GetEntry(index);
+      if (mus_trkKink_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_trkKink_branch does not exist!\n");
       exit(1);
@@ -21620,7 +22706,8 @@ const vector<float> &CMS3::mus_trkKink() {
 const int &CMS3::hcalnoise_maxZeros() {
   if (not hcalnoise_maxZeros_isLoaded) {
     if (hcalnoise_maxZeros_branch != 0) {
-      hcalnoise_maxZeros_branch->GetEntry(index);
+      if (hcalnoise_maxZeros_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_maxZeros_branch does not exist!\n");
       exit(1);
@@ -21632,7 +22719,8 @@ const int &CMS3::hcalnoise_maxZeros() {
 const vector<int> &CMS3::mus_exp_innerlayers() {
   if (not mus_exp_innerlayers_isLoaded) {
     if (mus_exp_innerlayers_branch != 0) {
-      mus_exp_innerlayers_branch->GetEntry(index);
+      if (mus_exp_innerlayers_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_exp_innerlayers_branch does not exist!\n");
       exit(1);
@@ -21644,7 +22732,8 @@ const vector<int> &CMS3::mus_exp_innerlayers() {
 const vector<float> &CMS3::els_scSeed2x5LeftRightAsym() {
   if (not els_scSeed2x5LeftRightAsym_isLoaded) {
     if (els_scSeed2x5LeftRightAsym_branch != 0) {
-      els_scSeed2x5LeftRightAsym_branch->GetEntry(index);
+      if (els_scSeed2x5LeftRightAsym_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_scSeed2x5LeftRightAsym_branch does not exist!\n");
       exit(1);
@@ -21656,7 +22745,8 @@ const vector<float> &CMS3::els_scSeed2x5LeftRightAsym() {
 const vector<unsigned int> &CMS3::els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_L1OR() {
   if (not els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_L1OR_isLoaded) {
     if (els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_L1OR_branch != 0) {
-      els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_L1OR_branch->GetEntry(index);
+      if (els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_L1OR_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_L1OR_branch does not exist!\n");
       exit(1);
@@ -21668,7 +22758,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_L1O
 const unsigned int &CMS3::evt_run() {
   if (not evt_run_isLoaded) {
     if (evt_run_branch != 0) {
-      evt_run_branch->GetEntry(index);
+      if (evt_run_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_run_branch does not exist!\n");
       exit(1);
@@ -21680,7 +22771,8 @@ const unsigned int &CMS3::evt_run() {
 const bool &CMS3::evt_hbheFilter() {
   if (not evt_hbheFilter_isLoaded) {
     if (evt_hbheFilter_branch != 0) {
-      evt_hbheFilter_branch->GetEntry(index);
+      if (evt_hbheFilter_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_hbheFilter_branch does not exist!\n");
       exit(1);
@@ -21692,7 +22784,8 @@ const bool &CMS3::evt_hbheFilter() {
 const vector<float> &CMS3::photons_clustersMeanDEtaToSeed() {
   if (not photons_clustersMeanDEtaToSeed_isLoaded) {
     if (photons_clustersMeanDEtaToSeed_branch != 0) {
-      photons_clustersMeanDEtaToSeed_branch->GetEntry(index);
+      if (photons_clustersMeanDEtaToSeed_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_clustersMeanDEtaToSeed_branch does not exist!\n");
       exit(1);
@@ -21704,7 +22797,8 @@ const vector<float> &CMS3::photons_clustersMeanDEtaToSeed() {
 const vector<int> &CMS3::pfjets_puppi_muonMultiplicity() {
   if (not pfjets_puppi_muonMultiplicity_isLoaded) {
     if (pfjets_puppi_muonMultiplicity_branch != 0) {
-      pfjets_puppi_muonMultiplicity_branch->GetEntry(index);
+      if (pfjets_puppi_muonMultiplicity_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_puppi_muonMultiplicity_branch does not exist!\n");
       exit(1);
@@ -21716,7 +22810,8 @@ const vector<int> &CMS3::pfjets_puppi_muonMultiplicity() {
 const vector<float> &CMS3::pfjets_area() {
   if (not pfjets_area_isLoaded) {
     if (pfjets_area_branch != 0) {
-      pfjets_area_branch->GetEntry(index);
+      if (pfjets_area_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_area_branch does not exist!\n");
       exit(1);
@@ -21728,7 +22823,8 @@ const vector<float> &CMS3::pfjets_area() {
 const vector<int> &CMS3::mus_hcal_rawId() {
   if (not mus_hcal_rawId_isLoaded) {
     if (mus_hcal_rawId_branch != 0) {
-      mus_hcal_rawId_branch->GetEntry(index);
+      if (mus_hcal_rawId_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_hcal_rawId_branch does not exist!\n");
       exit(1);
@@ -21740,7 +22836,8 @@ const vector<int> &CMS3::mus_hcal_rawId() {
 const vector<float> &CMS3::pfjets_METToolbox_neutralEmE() {
   if (not pfjets_METToolbox_neutralEmE_isLoaded) {
     if (pfjets_METToolbox_neutralEmE_branch != 0) {
-      pfjets_METToolbox_neutralEmE_branch->GetEntry(index);
+      if (pfjets_METToolbox_neutralEmE_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_METToolbox_neutralEmE_branch does not exist!\n");
       exit(1);
@@ -21752,7 +22849,8 @@ const vector<float> &CMS3::pfjets_METToolbox_neutralEmE() {
 const float &CMS3::hcalnoise_spikeNoiseSumEt() {
   if (not hcalnoise_spikeNoiseSumEt_isLoaded) {
     if (hcalnoise_spikeNoiseSumEt_branch != 0) {
-      hcalnoise_spikeNoiseSumEt_branch->GetEntry(index);
+      if (hcalnoise_spikeNoiseSumEt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_spikeNoiseSumEt_branch does not exist!\n");
       exit(1);
@@ -21764,7 +22862,8 @@ const float &CMS3::hcalnoise_spikeNoiseSumEt() {
 const vector<vector<float> > &CMS3::els_clusterRawEnergy() {
   if (not els_clusterRawEnergy_isLoaded) {
     if (els_clusterRawEnergy_branch != 0) {
-      els_clusterRawEnergy_branch->GetEntry(index);
+      if (els_clusterRawEnergy_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_clusterRawEnergy_branch does not exist!\n");
       exit(1);
@@ -21776,7 +22875,8 @@ const vector<vector<float> > &CMS3::els_clusterRawEnergy() {
 const vector<vector<float> > &CMS3::els_clusterCalibEnergy() {
   if (not els_clusterCalibEnergy_isLoaded) {
     if (els_clusterCalibEnergy_branch != 0) {
-      els_clusterCalibEnergy_branch->GetEntry(index);
+      if (els_clusterCalibEnergy_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_clusterCalibEnergy_branch does not exist!\n");
       exit(1);
@@ -21788,7 +22888,8 @@ const vector<vector<float> > &CMS3::els_clusterCalibEnergy() {
 const int &CMS3::hcalnoise_passTightNoiseFilter() {
   if (not hcalnoise_passTightNoiseFilter_isLoaded) {
     if (hcalnoise_passTightNoiseFilter_branch != 0) {
-      hcalnoise_passTightNoiseFilter_branch->GetEntry(index);
+      if (hcalnoise_passTightNoiseFilter_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_passTightNoiseFilter_branch does not exist!\n");
       exit(1);
@@ -21800,7 +22901,8 @@ const int &CMS3::hcalnoise_passTightNoiseFilter() {
 const vector<float> &CMS3::els_deltaPhiEleClusterTrackAtCalo() {
   if (not els_deltaPhiEleClusterTrackAtCalo_isLoaded) {
     if (els_deltaPhiEleClusterTrackAtCalo_branch != 0) {
-      els_deltaPhiEleClusterTrackAtCalo_branch->GetEntry(index);
+      if (els_deltaPhiEleClusterTrackAtCalo_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_deltaPhiEleClusterTrackAtCalo_branch does not exist!\n");
       exit(1);
@@ -21812,7 +22914,8 @@ const vector<float> &CMS3::els_deltaPhiEleClusterTrackAtCalo() {
 const float &CMS3::evt_NoHF_pfmet() {
   if (not evt_NoHF_pfmet_isLoaded) {
     if (evt_NoHF_pfmet_branch != 0) {
-      evt_NoHF_pfmet_branch->GetEntry(index);
+      if (evt_NoHF_pfmet_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_NoHF_pfmet_branch does not exist!\n");
       exit(1);
@@ -21824,7 +22927,8 @@ const float &CMS3::evt_NoHF_pfmet() {
 const vector<int> &CMS3::mus_sta_algo() {
   if (not mus_sta_algo_isLoaded) {
     if (mus_sta_algo_branch != 0) {
-      mus_sta_algo_branch->GetEntry(index);
+      if (mus_sta_algo_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_sta_algo_branch does not exist!\n");
       exit(1);
@@ -21836,7 +22940,8 @@ const vector<int> &CMS3::mus_sta_algo() {
 const vector<float> &CMS3::ak8jets_puppi_nJettinessTau1() {
   if (not ak8jets_puppi_nJettinessTau1_isLoaded) {
     if (ak8jets_puppi_nJettinessTau1_branch != 0) {
-      ak8jets_puppi_nJettinessTau1_branch->GetEntry(index);
+      if (ak8jets_puppi_nJettinessTau1_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_puppi_nJettinessTau1_branch does not exist!\n");
       exit(1);
@@ -21848,7 +22953,8 @@ const vector<float> &CMS3::ak8jets_puppi_nJettinessTau1() {
 const float &CMS3::evt_pfmet() {
   if (not evt_pfmet_isLoaded) {
     if (evt_pfmet_branch != 0) {
-      evt_pfmet_branch->GetEntry(index);
+      if (evt_pfmet_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_pfmet_branch does not exist!\n");
       exit(1);
@@ -21860,7 +22966,8 @@ const float &CMS3::evt_pfmet() {
 const vector<float> &CMS3::pfjets_hfEmE() {
   if (not pfjets_hfEmE_isLoaded) {
     if (pfjets_hfEmE_branch != 0) {
-      pfjets_hfEmE_branch->GetEntry(index);
+      if (pfjets_hfEmE_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_hfEmE_branch does not exist!\n");
       exit(1);
@@ -21872,7 +22979,8 @@ const vector<float> &CMS3::pfjets_hfEmE() {
 const vector<bool> &CMS3::genps_isMostlyLikePythia6Status3() {
   if (not genps_isMostlyLikePythia6Status3_isLoaded) {
     if (genps_isMostlyLikePythia6Status3_branch != 0) {
-      genps_isMostlyLikePythia6Status3_branch->GetEntry(index);
+      if (genps_isMostlyLikePythia6Status3_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch genps_isMostlyLikePythia6Status3_branch does not exist!\n");
       exit(1);
@@ -21884,7 +22992,8 @@ const vector<bool> &CMS3::genps_isMostlyLikePythia6Status3() {
 const vector<int> &CMS3::mus_pfcharge() {
   if (not mus_pfcharge_isLoaded) {
     if (mus_pfcharge_branch != 0) {
-      mus_pfcharge_branch->GetEntry(index);
+      if (mus_pfcharge_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_pfcharge_branch does not exist!\n");
       exit(1);
@@ -21896,7 +23005,8 @@ const vector<int> &CMS3::mus_pfcharge() {
 const vector<int> &CMS3::mus_sta_nlayers() {
   if (not mus_sta_nlayers_isLoaded) {
     if (mus_sta_nlayers_branch != 0) {
-      mus_sta_nlayers_branch->GetEntry(index);
+      if (mus_sta_nlayers_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_sta_nlayers_branch does not exist!\n");
       exit(1);
@@ -21908,7 +23018,8 @@ const vector<int> &CMS3::mus_sta_nlayers() {
 const unsigned int &CMS3::mus_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_MuonLeg_version() {
   if (not mus_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_MuonLeg_version_isLoaded) {
     if (mus_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_MuonLeg_version_branch != 0) {
-      mus_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_MuonLeg_version_branch->GetEntry(index);
+      if (mus_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_MuonLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_MuonLeg_version_branch does not exist!\n");
       exit(1);
@@ -21920,7 +23031,8 @@ const unsigned int &CMS3::mus_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_Mu
 const vector<unsigned int> &CMS3::mus_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_MuonLeg() {
   if (not mus_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_MuonLeg_isLoaded) {
     if (mus_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_MuonLeg_branch != 0) {
-      mus_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_MuonLeg_branch->GetEntry(index);
+      if (mus_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_MuonLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_MuonLeg_branch does not exist!\n");
       exit(1);
@@ -21932,7 +23044,8 @@ const vector<unsigned int> &CMS3::mus_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_
 const vector<float> &CMS3::photons_etaSC() {
   if (not photons_etaSC_isLoaded) {
     if (photons_etaSC_branch != 0) {
-      photons_etaSC_branch->GetEntry(index);
+      if (photons_etaSC_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_etaSC_branch does not exist!\n");
       exit(1);
@@ -21944,7 +23057,8 @@ const vector<float> &CMS3::photons_etaSC() {
 const vector<int> &CMS3::mus_sta_lostHits() {
   if (not mus_sta_lostHits_isLoaded) {
     if (mus_sta_lostHits_branch != 0) {
-      mus_sta_lostHits_branch->GetEntry(index);
+      if (mus_sta_lostHits_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_sta_lostHits_branch does not exist!\n");
       exit(1);
@@ -21956,7 +23070,8 @@ const vector<int> &CMS3::mus_sta_lostHits() {
 const vector<float> &CMS3::els_ptErr() {
   if (not els_ptErr_isLoaded) {
     if (els_ptErr_branch != 0) {
-      els_ptErr_branch->GetEntry(index);
+      if (els_ptErr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_ptErr_branch does not exist!\n");
       exit(1);
@@ -21968,7 +23083,8 @@ const vector<float> &CMS3::els_ptErr() {
 const vector<float> &CMS3::mus_trkRelChi2() {
   if (not mus_trkRelChi2_isLoaded) {
     if (mus_trkRelChi2_branch != 0) {
-      mus_trkRelChi2_branch->GetEntry(index);
+      if (mus_trkRelChi2_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_trkRelChi2_branch does not exist!\n");
       exit(1);
@@ -21980,7 +23096,8 @@ const vector<float> &CMS3::mus_trkRelChi2() {
 const float &CMS3::evt_METToolbox_pfmet_raw() {
   if (not evt_METToolbox_pfmet_raw_isLoaded) {
     if (evt_METToolbox_pfmet_raw_branch != 0) {
-      evt_METToolbox_pfmet_raw_branch->GetEntry(index);
+      if (evt_METToolbox_pfmet_raw_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_METToolbox_pfmet_raw_branch does not exist!\n");
       exit(1);
@@ -21992,7 +23109,8 @@ const float &CMS3::evt_METToolbox_pfmet_raw() {
 const vector<float> &CMS3::pfcands_puppiWeight() {
   if (not pfcands_puppiWeight_isLoaded) {
     if (pfcands_puppiWeight_branch != 0) {
-      pfcands_puppiWeight_branch->GetEntry(index);
+      if (pfcands_puppiWeight_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfcands_puppiWeight_branch does not exist!\n");
       exit(1);
@@ -22004,7 +23122,8 @@ const vector<float> &CMS3::pfcands_puppiWeight() {
 const vector<float> &CMS3::pfjets_mc_hadEnergy() {
   if (not pfjets_mc_hadEnergy_isLoaded) {
     if (pfjets_mc_hadEnergy_branch != 0) {
-      pfjets_mc_hadEnergy_branch->GetEntry(index);
+      if (pfjets_mc_hadEnergy_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_mc_hadEnergy_branch does not exist!\n");
       exit(1);
@@ -22016,7 +23135,8 @@ const vector<float> &CMS3::pfjets_mc_hadEnergy() {
 const vector<int> &CMS3::convs_isConverted() {
   if (not convs_isConverted_isLoaded) {
     if (convs_isConverted_branch != 0) {
-      convs_isConverted_branch->GetEntry(index);
+      if (convs_isConverted_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch convs_isConverted_branch does not exist!\n");
       exit(1);
@@ -22028,7 +23148,8 @@ const vector<int> &CMS3::convs_isConverted() {
 const unsigned int &CMS3::mus_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_MuonLeg_version() {
   if (not mus_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_MuonLeg_version_isLoaded) {
     if (mus_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_MuonLeg_version_branch != 0) {
-      mus_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_MuonLeg_version_branch->GetEntry(index);
+      if (mus_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_MuonLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_MuonLeg_version_branch does not exist!\n");
       exit(1);
@@ -22040,7 +23161,8 @@ const unsigned int &CMS3::mus_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_Muo
 const vector<float> &CMS3::mus_ptErr() {
   if (not mus_ptErr_isLoaded) {
     if (mus_ptErr_branch != 0) {
-      mus_ptErr_branch->GetEntry(index);
+      if (mus_ptErr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_ptErr_branch does not exist!\n");
       exit(1);
@@ -22052,7 +23174,8 @@ const vector<float> &CMS3::mus_ptErr() {
 const vector<ULong64_t> &CMS3::evt_timestamp() {
   if (not evt_timestamp_isLoaded) {
     if (evt_timestamp_branch != 0) {
-      evt_timestamp_branch->GetEntry(index);
+      if (evt_timestamp_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_timestamp_branch does not exist!\n");
       exit(1);
@@ -22064,7 +23187,8 @@ const vector<ULong64_t> &CMS3::evt_timestamp() {
 const vector<int> &CMS3::els_N_ECALClusters() {
   if (not els_N_ECALClusters_isLoaded) {
     if (els_N_ECALClusters_branch != 0) {
-      els_N_ECALClusters_branch->GetEntry(index);
+      if (els_N_ECALClusters_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_N_ECALClusters_branch does not exist!\n");
       exit(1);
@@ -22076,7 +23200,8 @@ const vector<int> &CMS3::els_N_ECALClusters() {
 const float &CMS3::evt_puppi_pfmetPhi_JetResUp() {
   if (not evt_puppi_pfmetPhi_JetResUp_isLoaded) {
     if (evt_puppi_pfmetPhi_JetResUp_branch != 0) {
-      evt_puppi_pfmetPhi_JetResUp_branch->GetEntry(index);
+      if (evt_puppi_pfmetPhi_JetResUp_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_puppi_pfmetPhi_JetResUp_branch does not exist!\n");
       exit(1);
@@ -22088,7 +23213,8 @@ const float &CMS3::evt_puppi_pfmetPhi_JetResUp() {
 const vector<int> &CMS3::mus_bfit_exp_outerlayer() {
   if (not mus_bfit_exp_outerlayer_isLoaded) {
     if (mus_bfit_exp_outerlayer_branch != 0) {
-      mus_bfit_exp_outerlayer_branch->GetEntry(index);
+      if (mus_bfit_exp_outerlayer_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_bfit_exp_outerlayer_branch does not exist!\n");
       exit(1);
@@ -22100,7 +23226,8 @@ const vector<int> &CMS3::mus_bfit_exp_outerlayer() {
 const float &CMS3::hcalnoise_minHPDEMF() {
   if (not hcalnoise_minHPDEMF_isLoaded) {
     if (hcalnoise_minHPDEMF_branch != 0) {
-      hcalnoise_minHPDEMF_branch->GetEntry(index);
+      if (hcalnoise_minHPDEMF_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_minHPDEMF_branch does not exist!\n");
       exit(1);
@@ -22112,7 +23239,8 @@ const float &CMS3::hcalnoise_minHPDEMF() {
 const vector<float> &CMS3::photons_scSeedSize() {
   if (not photons_scSeedSize_isLoaded) {
     if (photons_scSeedSize_branch != 0) {
-      photons_scSeedSize_branch->GetEntry(index);
+      if (photons_scSeedSize_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_scSeedSize_branch does not exist!\n");
       exit(1);
@@ -22124,7 +23252,8 @@ const vector<float> &CMS3::photons_scSeedSize() {
 const vector<int> &CMS3::mus_gfit_qualityMask() {
   if (not mus_gfit_qualityMask_isLoaded) {
     if (mus_gfit_qualityMask_branch != 0) {
-      mus_gfit_qualityMask_branch->GetEntry(index);
+      if (mus_gfit_qualityMask_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_gfit_qualityMask_branch does not exist!\n");
       exit(1);
@@ -22136,7 +23265,8 @@ const vector<int> &CMS3::mus_gfit_qualityMask() {
 const vector<float> &CMS3::els_clusterMaxDRDEta() {
   if (not els_clusterMaxDRDEta_isLoaded) {
     if (els_clusterMaxDRDEta_branch != 0) {
-      els_clusterMaxDRDEta_branch->GetEntry(index);
+      if (els_clusterMaxDRDEta_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_clusterMaxDRDEta_branch does not exist!\n");
       exit(1);
@@ -22148,7 +23278,8 @@ const vector<float> &CMS3::els_clusterMaxDRDEta() {
 const vector<int> &CMS3::pfjets_chargedHadronMultiplicity() {
   if (not pfjets_chargedHadronMultiplicity_isLoaded) {
     if (pfjets_chargedHadronMultiplicity_branch != 0) {
-      pfjets_chargedHadronMultiplicity_branch->GetEntry(index);
+      if (pfjets_chargedHadronMultiplicity_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_chargedHadronMultiplicity_branch does not exist!\n");
       exit(1);
@@ -22160,7 +23291,8 @@ const vector<int> &CMS3::pfjets_chargedHadronMultiplicity() {
 const vector<float> &CMS3::els_scIsEB() {
   if (not els_scIsEB_isLoaded) {
     if (els_scIsEB_branch != 0) {
-      els_scIsEB_branch->GetEntry(index);
+      if (els_scIsEB_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_scIsEB_branch does not exist!\n");
       exit(1);
@@ -22172,7 +23304,8 @@ const vector<float> &CMS3::els_scIsEB() {
 const int &CMS3::hcalnoise_maxHPDHits() {
   if (not hcalnoise_maxHPDHits_isLoaded) {
     if (hcalnoise_maxHPDHits_branch != 0) {
-      hcalnoise_maxHPDHits_branch->GetEntry(index);
+      if (hcalnoise_maxHPDHits_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_maxHPDHits_branch does not exist!\n");
       exit(1);
@@ -22184,7 +23317,8 @@ const int &CMS3::hcalnoise_maxHPDHits() {
 const vector<float> &CMS3::els_deltaEtaEleClusterTrackAtCalo() {
   if (not els_deltaEtaEleClusterTrackAtCalo_isLoaded) {
     if (els_deltaEtaEleClusterTrackAtCalo_branch != 0) {
-      els_deltaEtaEleClusterTrackAtCalo_branch->GetEntry(index);
+      if (els_deltaEtaEleClusterTrackAtCalo_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_deltaEtaEleClusterTrackAtCalo_branch does not exist!\n");
       exit(1);
@@ -22196,7 +23330,8 @@ const vector<float> &CMS3::els_deltaEtaEleClusterTrackAtCalo() {
 const vector<float> &CMS3::mus_iso03_sumPt() {
   if (not mus_iso03_sumPt_isLoaded) {
     if (mus_iso03_sumPt_branch != 0) {
-      mus_iso03_sumPt_branch->GetEntry(index);
+      if (mus_iso03_sumPt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_iso03_sumPt_branch does not exist!\n");
       exit(1);
@@ -22208,7 +23343,8 @@ const vector<float> &CMS3::mus_iso03_sumPt() {
 const unsigned int &CMS3::els_HLT_Ele17_Ele8_version() {
   if (not els_HLT_Ele17_Ele8_version_isLoaded) {
     if (els_HLT_Ele17_Ele8_version_branch != 0) {
-      els_HLT_Ele17_Ele8_version_branch->GetEntry(index);
+      if (els_HLT_Ele17_Ele8_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele17_Ele8_version_branch does not exist!\n");
       exit(1);
@@ -22220,7 +23356,8 @@ const unsigned int &CMS3::els_HLT_Ele17_Ele8_version() {
 const float &CMS3::pdfinfo_pdf1() {
   if (not pdfinfo_pdf1_isLoaded) {
     if (pdfinfo_pdf1_branch != 0) {
-      pdfinfo_pdf1_branch->GetEntry(index);
+      if (pdfinfo_pdf1_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pdfinfo_pdf1_branch does not exist!\n");
       exit(1);
@@ -22232,7 +23369,8 @@ const float &CMS3::pdfinfo_pdf1() {
 const vector<float> &CMS3::mus_staRelChi2() {
   if (not mus_staRelChi2_isLoaded) {
     if (mus_staRelChi2_branch != 0) {
-      mus_staRelChi2_branch->GetEntry(index);
+      if (mus_staRelChi2_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_staRelChi2_branch does not exist!\n");
       exit(1);
@@ -22244,7 +23382,8 @@ const vector<float> &CMS3::mus_staRelChi2() {
 const vector<float> &CMS3::pfjets_mc_invEnergy() {
   if (not pfjets_mc_invEnergy_isLoaded) {
     if (pfjets_mc_invEnergy_branch != 0) {
-      pfjets_mc_invEnergy_branch->GetEntry(index);
+      if (pfjets_mc_invEnergy_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_mc_invEnergy_branch does not exist!\n");
       exit(1);
@@ -22256,7 +23395,8 @@ const vector<float> &CMS3::pfjets_mc_invEnergy() {
 const vector<float> &CMS3::mus_isoMeanDRR03_pf_NeutralHadronEt() {
   if (not mus_isoMeanDRR03_pf_NeutralHadronEt_isLoaded) {
     if (mus_isoMeanDRR03_pf_NeutralHadronEt_branch != 0) {
-      mus_isoMeanDRR03_pf_NeutralHadronEt_branch->GetEntry(index);
+      if (mus_isoMeanDRR03_pf_NeutralHadronEt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isoMeanDRR03_pf_NeutralHadronEt_branch does not exist!\n");
       exit(1);
@@ -22268,7 +23408,8 @@ const vector<float> &CMS3::mus_isoMeanDRR03_pf_NeutralHadronEt() {
 const vector<float> &CMS3::photons_scSeedSigmaIetaIphi() {
   if (not photons_scSeedSigmaIetaIphi_isLoaded) {
     if (photons_scSeedSigmaIetaIphi_branch != 0) {
-      photons_scSeedSigmaIetaIphi_branch->GetEntry(index);
+      if (photons_scSeedSigmaIetaIphi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_scSeedSigmaIetaIphi_branch does not exist!\n");
       exit(1);
@@ -22280,7 +23421,8 @@ const vector<float> &CMS3::photons_scSeedSigmaIetaIphi() {
 const vector<float> &CMS3::photons_hcalPFClusterIso() {
   if (not photons_hcalPFClusterIso_isLoaded) {
     if (photons_hcalPFClusterIso_branch != 0) {
-      photons_hcalPFClusterIso_branch->GetEntry(index);
+      if (photons_hcalPFClusterIso_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_hcalPFClusterIso_branch does not exist!\n");
       exit(1);
@@ -22292,7 +23434,8 @@ const vector<float> &CMS3::photons_hcalPFClusterIso() {
 const float &CMS3::evt_puppi_pfmet_JetResUp() {
   if (not evt_puppi_pfmet_JetResUp_isLoaded) {
     if (evt_puppi_pfmet_JetResUp_branch != 0) {
-      evt_puppi_pfmet_JetResUp_branch->GetEntry(index);
+      if (evt_puppi_pfmet_JetResUp_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_puppi_pfmet_JetResUp_branch does not exist!\n");
       exit(1);
@@ -22304,7 +23447,8 @@ const float &CMS3::evt_puppi_pfmet_JetResUp() {
 const vector<unsigned int> &CMS3::mus_HLT_Mu17() {
   if (not mus_HLT_Mu17_isLoaded) {
     if (mus_HLT_Mu17_branch != 0) {
-      mus_HLT_Mu17_branch->GetEntry(index);
+      if (mus_HLT_Mu17_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_branch does not exist!\n");
       exit(1);
@@ -22316,7 +23460,8 @@ const vector<unsigned int> &CMS3::mus_HLT_Mu17() {
 const vector<int> &CMS3::els_nlayers3D() {
   if (not els_nlayers3D_isLoaded) {
     if (els_nlayers3D_branch != 0) {
-      els_nlayers3D_branch->GetEntry(index);
+      if (els_nlayers3D_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_nlayers3D_branch does not exist!\n");
       exit(1);
@@ -22328,7 +23473,8 @@ const vector<int> &CMS3::els_nlayers3D() {
 const vector<int> &CMS3::mus_iso03_ntrk() {
   if (not mus_iso03_ntrk_isLoaded) {
     if (mus_iso03_ntrk_branch != 0) {
-      mus_iso03_ntrk_branch->GetEntry(index);
+      if (mus_iso03_ntrk_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_iso03_ntrk_branch does not exist!\n");
       exit(1);
@@ -22340,7 +23486,8 @@ const vector<int> &CMS3::mus_iso03_ntrk() {
 const vector<float> &CMS3::photons_scSeedTopBottomAsym() {
   if (not photons_scSeedTopBottomAsym_isLoaded) {
     if (photons_scSeedTopBottomAsym_branch != 0) {
-      photons_scSeedTopBottomAsym_branch->GetEntry(index);
+      if (photons_scSeedTopBottomAsym_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_scSeedTopBottomAsym_branch does not exist!\n");
       exit(1);
@@ -22352,7 +23499,8 @@ const vector<float> &CMS3::photons_scSeedTopBottomAsym() {
 const vector<float> &CMS3::els_eOverPOut() {
   if (not els_eOverPOut_isLoaded) {
     if (els_eOverPOut_branch != 0) {
-      els_eOverPOut_branch->GetEntry(index);
+      if (els_eOverPOut_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_eOverPOut_branch does not exist!\n");
       exit(1);
@@ -22364,7 +23512,8 @@ const vector<float> &CMS3::els_eOverPOut() {
 const vector<unsigned int> &CMS3::els_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg() {
   if (not els_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_isLoaded) {
     if (els_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_branch != 0) {
-      els_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_branch->GetEntry(index);
+      if (els_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_branch does not exist!\n");
       exit(1);
@@ -22376,7 +23525,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_El
 const vector<float> &CMS3::ak8jets_nJettinessTau2() {
   if (not ak8jets_nJettinessTau2_isLoaded) {
     if (ak8jets_nJettinessTau2_branch != 0) {
-      ak8jets_nJettinessTau2_branch->GetEntry(index);
+      if (ak8jets_nJettinessTau2_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_nJettinessTau2_branch does not exist!\n");
       exit(1);
@@ -22388,7 +23538,8 @@ const vector<float> &CMS3::ak8jets_nJettinessTau2() {
 const vector<unsigned int> &CMS3::els_HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg() {
   if (not els_HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_isLoaded) {
     if (els_HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_branch != 0) {
-      els_HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_branch->GetEntry(index);
+      if (els_HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_branch does not exist!\n");
       exit(1);
@@ -22400,7 +23551,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30_E
 const vector<float> &CMS3::mus_caloCompatibility() {
   if (not mus_caloCompatibility_isLoaded) {
     if (mus_caloCompatibility_branch != 0) {
-      mus_caloCompatibility_branch->GetEntry(index);
+      if (mus_caloCompatibility_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_caloCompatibility_branch does not exist!\n");
       exit(1);
@@ -22412,7 +23564,8 @@ const vector<float> &CMS3::mus_caloCompatibility() {
 const vector<int> &CMS3::mus_mc_id() {
   if (not mus_mc_id_isLoaded) {
     if (mus_mc_id_branch != 0) {
-      mus_mc_id_branch->GetEntry(index);
+      if (mus_mc_id_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_mc_id_branch does not exist!\n");
       exit(1);
@@ -22424,7 +23577,8 @@ const vector<int> &CMS3::mus_mc_id() {
 const vector<float> &CMS3::mus_iso_trckvetoDep() {
   if (not mus_iso_trckvetoDep_isLoaded) {
     if (mus_iso_trckvetoDep_branch != 0) {
-      mus_iso_trckvetoDep_branch->GetEntry(index);
+      if (mus_iso_trckvetoDep_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_iso_trckvetoDep_branch does not exist!\n");
       exit(1);
@@ -22436,7 +23590,8 @@ const vector<float> &CMS3::mus_iso_trckvetoDep() {
 const bool &CMS3::hcalnoise_goodJetFoundInLowBVRegion() {
   if (not hcalnoise_goodJetFoundInLowBVRegion_isLoaded) {
     if (hcalnoise_goodJetFoundInLowBVRegion_branch != 0) {
-      hcalnoise_goodJetFoundInLowBVRegion_branch->GetEntry(index);
+      if (hcalnoise_goodJetFoundInLowBVRegion_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_goodJetFoundInLowBVRegion_branch does not exist!\n");
       exit(1);
@@ -22448,7 +23603,8 @@ const bool &CMS3::hcalnoise_goodJetFoundInLowBVRegion() {
 const unsigned int &CMS3::els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_LeadingLeg_version() {
   if (not els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_LeadingLeg_version_isLoaded) {
     if (els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_LeadingLeg_version_branch != 0) {
-      els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_LeadingLeg_version_branch->GetEntry(index);
+      if (els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_LeadingLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_LeadingLeg_version_branch does not exist!\n");
       exit(1);
@@ -22460,7 +23616,8 @@ const unsigned int &CMS3::els_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_LeadingLeg_
 const vector<float> &CMS3::els_mva() {
   if (not els_mva_isLoaded) {
     if (els_mva_branch != 0) {
-      els_mva_branch->GetEntry(index);
+      if (els_mva_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_mva_branch does not exist!\n");
       exit(1);
@@ -22472,7 +23629,8 @@ const vector<float> &CMS3::els_mva() {
 const float &CMS3::hcalnoise_min10GeVHitTime() {
   if (not hcalnoise_min10GeVHitTime_isLoaded) {
     if (hcalnoise_min10GeVHitTime_branch != 0) {
-      hcalnoise_min10GeVHitTime_branch->GetEntry(index);
+      if (hcalnoise_min10GeVHitTime_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_min10GeVHitTime_branch does not exist!\n");
       exit(1);
@@ -22484,7 +23642,8 @@ const float &CMS3::hcalnoise_min10GeVHitTime() {
 const vector<float> &CMS3::photonsscEtaWidth() {
   if (not photonsscEtaWidth_isLoaded) {
     if (photonsscEtaWidth_branch != 0) {
-      photonsscEtaWidth_branch->GetEntry(index);
+      if (photonsscEtaWidth_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photonsscEtaWidth_branch does not exist!\n");
       exit(1);
@@ -22496,7 +23655,8 @@ const vector<float> &CMS3::photonsscEtaWidth() {
 const int &CMS3::hcalnoise_num10GeVHits() {
   if (not hcalnoise_num10GeVHits_isLoaded) {
     if (hcalnoise_num10GeVHits_branch != 0) {
-      hcalnoise_num10GeVHits_branch->GetEntry(index);
+      if (hcalnoise_num10GeVHits_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_num10GeVHits_branch does not exist!\n");
       exit(1);
@@ -22508,7 +23668,8 @@ const int &CMS3::hcalnoise_num10GeVHits() {
 const vector<float> &CMS3::photons_tkIsoSolid04() {
   if (not photons_tkIsoSolid04_isLoaded) {
     if (photons_tkIsoSolid04_branch != 0) {
-      photons_tkIsoSolid04_branch->GetEntry(index);
+      if (photons_tkIsoSolid04_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_tkIsoSolid04_branch does not exist!\n");
       exit(1);
@@ -22520,7 +23681,8 @@ const vector<float> &CMS3::photons_tkIsoSolid04() {
 const vector<float> &CMS3::photons_tkIsoHollow03() {
   if (not photons_tkIsoHollow03_isLoaded) {
     if (photons_tkIsoHollow03_branch != 0) {
-      photons_tkIsoHollow03_branch->GetEntry(index);
+      if (photons_tkIsoHollow03_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_tkIsoHollow03_branch does not exist!\n");
       exit(1);
@@ -22532,7 +23694,8 @@ const vector<float> &CMS3::photons_tkIsoHollow03() {
 const vector<float> &CMS3::photons_clusterMaxDR() {
   if (not photons_clusterMaxDR_isLoaded) {
     if (photons_clusterMaxDR_branch != 0) {
-      photons_clusterMaxDR_branch->GetEntry(index);
+      if (photons_clusterMaxDR_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_clusterMaxDR_branch does not exist!\n");
       exit(1);
@@ -22544,7 +23707,8 @@ const vector<float> &CMS3::photons_clusterMaxDR() {
 const vector<float> &CMS3::els_r9() {
   if (not els_r9_isLoaded) {
     if (els_r9_branch != 0) {
-      els_r9_branch->GetEntry(index);
+      if (els_r9_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_r9_branch does not exist!\n");
       exit(1);
@@ -22556,7 +23720,8 @@ const vector<float> &CMS3::els_r9() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::mus_p4() {
   if (not mus_p4_isLoaded) {
     if (mus_p4_branch != 0) {
-      mus_p4_branch->GetEntry(index);
+      if (mus_p4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_p4_branch does not exist!\n");
       exit(1);
@@ -22568,7 +23733,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::m
 const vector<float> &CMS3::els_scSeedCryIy() {
   if (not els_scSeedCryIy_isLoaded) {
     if (els_scSeedCryIy_branch != 0) {
-      els_scSeedCryIy_branch->GetEntry(index);
+      if (els_scSeedCryIy_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_scSeedCryIy_branch does not exist!\n");
       exit(1);
@@ -22580,7 +23746,8 @@ const vector<float> &CMS3::els_scSeedCryIy() {
 const unsigned int &CMS3::els_HLT_Ele18_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_version() {
   if (not els_HLT_Ele18_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_version_isLoaded) {
     if (els_HLT_Ele18_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_version_branch != 0) {
-      els_HLT_Ele18_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_version_branch->GetEntry(index);
+      if (els_HLT_Ele18_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele18_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronLeg_version_branch does not exist!\n");
       exit(1);
@@ -22592,7 +23759,8 @@ const unsigned int &CMS3::els_HLT_Ele18_CaloIdL_TrackIdL_IsoVL_PFJet30_ElectronL
 const vector<int> &CMS3::mus_mc_patMatch_id() {
   if (not mus_mc_patMatch_id_isLoaded) {
     if (mus_mc_patMatch_id_branch != 0) {
-      mus_mc_patMatch_id_branch->GetEntry(index);
+      if (mus_mc_patMatch_id_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_mc_patMatch_id_branch does not exist!\n");
       exit(1);
@@ -22604,7 +23772,8 @@ const vector<int> &CMS3::mus_mc_patMatch_id() {
 const vector<float> &CMS3::els_scSeedERight() {
   if (not els_scSeedERight_isLoaded) {
     if (els_scSeedERight_branch != 0) {
-      els_scSeedERight_branch->GetEntry(index);
+      if (els_scSeedERight_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_scSeedERight_branch does not exist!\n");
       exit(1);
@@ -22616,7 +23785,8 @@ const vector<float> &CMS3::els_scSeedERight() {
 const vector<int> &CMS3::convs_quality() {
   if (not convs_quality_isLoaded) {
     if (convs_quality_branch != 0) {
-      convs_quality_branch->GetEntry(index);
+      if (convs_quality_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch convs_quality_branch does not exist!\n");
       exit(1);
@@ -22628,7 +23798,8 @@ const vector<int> &CMS3::convs_quality() {
 const vector<float> &CMS3::photons_tkIsoHollow04() {
   if (not photons_tkIsoHollow04_isLoaded) {
     if (photons_tkIsoHollow04_branch != 0) {
-      photons_tkIsoHollow04_branch->GetEntry(index);
+      if (photons_tkIsoHollow04_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_tkIsoHollow04_branch does not exist!\n");
       exit(1);
@@ -22640,7 +23811,8 @@ const vector<float> &CMS3::photons_tkIsoHollow04() {
 const vector<vector<float> > &CMS3::els_psClusterEta() {
   if (not els_psClusterEta_isLoaded) {
     if (els_psClusterEta_branch != 0) {
-      els_psClusterEta_branch->GetEntry(index);
+      if (els_psClusterEta_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_psClusterEta_branch does not exist!\n");
       exit(1);
@@ -22652,7 +23824,8 @@ const vector<vector<float> > &CMS3::els_psClusterEta() {
 const vector<unsigned int> &CMS3::els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg() {
   if (not els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_isLoaded) {
     if (els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_branch != 0) {
-      els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_branch->GetEntry(index);
+      if (els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg_branch does not exist!\n");
       exit(1);
@@ -22664,7 +23837,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele25WP60_SC4_Mass55_LeadingLeg() {
 const vector<float> &CMS3::mus_sta_d0corrPhi() {
   if (not mus_sta_d0corrPhi_isLoaded) {
     if (mus_sta_d0corrPhi_branch != 0) {
-      mus_sta_d0corrPhi_branch->GetEntry(index);
+      if (mus_sta_d0corrPhi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_sta_d0corrPhi_branch does not exist!\n");
       exit(1);
@@ -22676,7 +23850,8 @@ const vector<float> &CMS3::mus_sta_d0corrPhi() {
 const unsigned int &CMS3::mus_HLT_Mu17_Mu8_L1sL1DoubleMu10MuOpen_version() {
   if (not mus_HLT_Mu17_Mu8_L1sL1DoubleMu10MuOpen_version_isLoaded) {
     if (mus_HLT_Mu17_Mu8_L1sL1DoubleMu10MuOpen_version_branch != 0) {
-      mus_HLT_Mu17_Mu8_L1sL1DoubleMu10MuOpen_version_branch->GetEntry(index);
+      if (mus_HLT_Mu17_Mu8_L1sL1DoubleMu10MuOpen_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_Mu8_L1sL1DoubleMu10MuOpen_version_branch does not exist!\n");
       exit(1);
@@ -22688,7 +23863,8 @@ const unsigned int &CMS3::mus_HLT_Mu17_Mu8_L1sL1DoubleMu10MuOpen_version() {
 const vector<float> &CMS3::photons_photonIso() {
   if (not photons_photonIso_isLoaded) {
     if (photons_photonIso_branch != 0) {
-      photons_photonIso_branch->GetEntry(index);
+      if (photons_photonIso_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_photonIso_branch does not exist!\n");
       exit(1);
@@ -22700,7 +23876,8 @@ const vector<float> &CMS3::photons_photonIso() {
 const unsigned int &CMS3::mus_HLT_IsoTkMu24_version() {
   if (not mus_HLT_IsoTkMu24_version_isLoaded) {
     if (mus_HLT_IsoTkMu24_version_branch != 0) {
-      mus_HLT_IsoTkMu24_version_branch->GetEntry(index);
+      if (mus_HLT_IsoTkMu24_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_IsoTkMu24_version_branch does not exist!\n");
       exit(1);
@@ -22712,7 +23889,8 @@ const unsigned int &CMS3::mus_HLT_IsoTkMu24_version() {
 const vector<float> &CMS3::sparm_values() {
   if (not sparm_values_isLoaded) {
     if (sparm_values_branch != 0) {
-      sparm_values_branch->GetEntry(index);
+      if (sparm_values_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch sparm_values_branch does not exist!\n");
       exit(1);
@@ -22724,7 +23902,8 @@ const vector<float> &CMS3::sparm_values() {
 const vector<int> &CMS3::vtxs_isFake() {
   if (not vtxs_isFake_isLoaded) {
     if (vtxs_isFake_branch != 0) {
-      vtxs_isFake_branch->GetEntry(index);
+      if (vtxs_isFake_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch vtxs_isFake_branch does not exist!\n");
       exit(1);
@@ -22736,7 +23915,8 @@ const vector<int> &CMS3::vtxs_isFake() {
 const vector<unsigned int> &CMS3::mus_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg() {
   if (not mus_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_isLoaded) {
     if (mus_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_branch != 0) {
-      mus_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_branch->GetEntry(index);
+      if (mus_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_branch does not exist!\n");
       exit(1);
@@ -22748,7 +23928,8 @@ const vector<unsigned int> &CMS3::mus_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_
 const int &CMS3::hcalnoise_num25GeVHits() {
   if (not hcalnoise_num25GeVHits_isLoaded) {
     if (hcalnoise_num25GeVHits_branch != 0) {
-      hcalnoise_num25GeVHits_branch->GetEntry(index);
+      if (hcalnoise_num25GeVHits_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_num25GeVHits_branch does not exist!\n");
       exit(1);
@@ -22760,7 +23941,8 @@ const int &CMS3::hcalnoise_num25GeVHits() {
 const vector<float> &CMS3::mus_gfit_d0phiCov() {
   if (not mus_gfit_d0phiCov_isLoaded) {
     if (mus_gfit_d0phiCov_branch != 0) {
-      mus_gfit_d0phiCov_branch->GetEntry(index);
+      if (mus_gfit_d0phiCov_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_gfit_d0phiCov_branch does not exist!\n");
       exit(1);
@@ -22772,7 +23954,8 @@ const vector<float> &CMS3::mus_gfit_d0phiCov() {
 const vector<float> &CMS3::els_conv_vtx_prob() {
   if (not els_conv_vtx_prob_isLoaded) {
     if (els_conv_vtx_prob_branch != 0) {
-      els_conv_vtx_prob_branch->GetEntry(index);
+      if (els_conv_vtx_prob_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_conv_vtx_prob_branch does not exist!\n");
       exit(1);
@@ -22784,7 +23967,8 @@ const vector<float> &CMS3::els_conv_vtx_prob() {
 const float &CMS3::evt_pfmetPhi_JetEnUp() {
   if (not evt_pfmetPhi_JetEnUp_isLoaded) {
     if (evt_pfmetPhi_JetEnUp_branch != 0) {
-      evt_pfmetPhi_JetEnUp_branch->GetEntry(index);
+      if (evt_pfmetPhi_JetEnUp_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_pfmetPhi_JetEnUp_branch does not exist!\n");
       exit(1);
@@ -22796,7 +23980,8 @@ const float &CMS3::evt_pfmetPhi_JetEnUp() {
 const vector<float> &CMS3::els_eSeedOverPIn() {
   if (not els_eSeedOverPIn_isLoaded) {
     if (els_eSeedOverPIn_branch != 0) {
-      els_eSeedOverPIn_branch->GetEntry(index);
+      if (els_eSeedOverPIn_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_eSeedOverPIn_branch does not exist!\n");
       exit(1);
@@ -22808,7 +23993,8 @@ const vector<float> &CMS3::els_eSeedOverPIn() {
 const vector<float> &CMS3::ak8jets_puppi_nJettinessTau3() {
   if (not ak8jets_puppi_nJettinessTau3_isLoaded) {
     if (ak8jets_puppi_nJettinessTau3_branch != 0) {
-      ak8jets_puppi_nJettinessTau3_branch->GetEntry(index);
+      if (ak8jets_puppi_nJettinessTau3_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_puppi_nJettinessTau3_branch does not exist!\n");
       exit(1);
@@ -22820,7 +24006,8 @@ const vector<float> &CMS3::ak8jets_puppi_nJettinessTau3() {
 const unsigned int &CMS3::mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_LeadingLeg_version() {
   if (not mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_LeadingLeg_version_isLoaded) {
     if (mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_LeadingLeg_version_branch != 0) {
-      mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_LeadingLeg_version_branch->GetEntry(index);
+      if (mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_LeadingLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_LeadingLeg_version_branch does not exist!\n");
       exit(1);
@@ -22832,7 +24019,8 @@ const unsigned int &CMS3::mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_LeadingLeg_vers
 const vector<vector<float> > &CMS3::mus_stationShowerDeltaR() {
   if (not mus_stationShowerDeltaR_isLoaded) {
     if (mus_stationShowerDeltaR_branch != 0) {
-      mus_stationShowerDeltaR_branch->GetEntry(index);
+      if (mus_stationShowerDeltaR_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_stationShowerDeltaR_branch does not exist!\n");
       exit(1);
@@ -22844,7 +24032,8 @@ const vector<vector<float> > &CMS3::mus_stationShowerDeltaR() {
 const vector<int> &CMS3::hyp_ll_id() {
   if (not hyp_ll_id_isLoaded) {
     if (hyp_ll_id_branch != 0) {
-      hyp_ll_id_branch->GetEntry(index);
+      if (hyp_ll_id_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hyp_ll_id_branch does not exist!\n");
       exit(1);
@@ -22856,7 +24045,8 @@ const vector<int> &CMS3::hyp_ll_id() {
 const vector<unsigned int> &CMS3::mus_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg() {
   if (not mus_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_isLoaded) {
     if (mus_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_branch != 0) {
-      mus_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_branch->GetEntry(index);
+      if (mus_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_MuonLeg_branch does not exist!\n");
       exit(1);
@@ -22868,7 +24058,8 @@ const vector<unsigned int> &CMS3::mus_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_
 const vector<unsigned int> &CMS3::mus_HLT_Mu17_Ele8_LeadingLeg() {
   if (not mus_HLT_Mu17_Ele8_LeadingLeg_isLoaded) {
     if (mus_HLT_Mu17_Ele8_LeadingLeg_branch != 0) {
-      mus_HLT_Mu17_Ele8_LeadingLeg_branch->GetEntry(index);
+      if (mus_HLT_Mu17_Ele8_LeadingLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_Ele8_LeadingLeg_branch does not exist!\n");
       exit(1);
@@ -22880,7 +24071,8 @@ const vector<unsigned int> &CMS3::mus_HLT_Mu17_Ele8_LeadingLeg() {
 const vector<float> &CMS3::els_clustersMeanRawEnergy() {
   if (not els_clustersMeanRawEnergy_isLoaded) {
     if (els_clustersMeanRawEnergy_branch != 0) {
-      els_clustersMeanRawEnergy_branch->GetEntry(index);
+      if (els_clustersMeanRawEnergy_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_clustersMeanRawEnergy_branch does not exist!\n");
       exit(1);
@@ -22892,7 +24084,8 @@ const vector<float> &CMS3::els_clustersMeanRawEnergy() {
 const unsigned int &CMS3::els_HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_ElectronLeg_version() {
   if (not els_HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_ElectronLeg_version_isLoaded) {
     if (els_HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_ElectronLeg_version_branch != 0) {
-      els_HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_ElectronLeg_version_branch->GetEntry(index);
+      if (els_HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_ElectronLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_ElectronLeg_version_branch does not exist!\n");
       exit(1);
@@ -22904,7 +24097,8 @@ const unsigned int &CMS3::els_HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_Ele
 const vector<float> &CMS3::els_scSeedETop() {
   if (not els_scSeedETop_isLoaded) {
     if (els_scSeedETop_branch != 0) {
-      els_scSeedETop_branch->GetEntry(index);
+      if (els_scSeedETop_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_scSeedETop_branch does not exist!\n");
       exit(1);
@@ -22916,7 +24110,8 @@ const vector<float> &CMS3::els_scSeedETop() {
 const bool &CMS3::hcalnoise_HasBadRBXRechitR45Loose() {
   if (not hcalnoise_HasBadRBXRechitR45Loose_isLoaded) {
     if (hcalnoise_HasBadRBXRechitR45Loose_branch != 0) {
-      hcalnoise_HasBadRBXRechitR45Loose_branch->GetEntry(index);
+      if (hcalnoise_HasBadRBXRechitR45Loose_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_HasBadRBXRechitR45Loose_branch does not exist!\n");
       exit(1);
@@ -22928,7 +24123,8 @@ const bool &CMS3::hcalnoise_HasBadRBXRechitR45Loose() {
 const vector<bool> &CMS3::genps_fromHardProcessDecayed() {
   if (not genps_fromHardProcessDecayed_isLoaded) {
     if (genps_fromHardProcessDecayed_branch != 0) {
-      genps_fromHardProcessDecayed_branch->GetEntry(index);
+      if (genps_fromHardProcessDecayed_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch genps_fromHardProcessDecayed_branch does not exist!\n");
       exit(1);
@@ -22940,7 +24136,8 @@ const vector<bool> &CMS3::genps_fromHardProcessDecayed() {
 const int &CMS3::hcalnoise_passLooseNoiseFilter() {
   if (not hcalnoise_passLooseNoiseFilter_isLoaded) {
     if (hcalnoise_passLooseNoiseFilter_branch != 0) {
-      hcalnoise_passLooseNoiseFilter_branch->GetEntry(index);
+      if (hcalnoise_passLooseNoiseFilter_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_passLooseNoiseFilter_branch does not exist!\n");
       exit(1);
@@ -22952,7 +24149,8 @@ const int &CMS3::hcalnoise_passLooseNoiseFilter() {
 const float &CMS3::evt_puppi_pfmetPhi_MuonEnDown() {
   if (not evt_puppi_pfmetPhi_MuonEnDown_isLoaded) {
     if (evt_puppi_pfmetPhi_MuonEnDown_branch != 0) {
-      evt_puppi_pfmetPhi_MuonEnDown_branch->GetEntry(index);
+      if (evt_puppi_pfmetPhi_MuonEnDown_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_puppi_pfmetPhi_MuonEnDown_branch does not exist!\n");
       exit(1);
@@ -22964,7 +24162,8 @@ const float &CMS3::evt_puppi_pfmetPhi_MuonEnDown() {
 const vector<unsigned int> &CMS3::mus_HLT_Mu17_TkMu8_TrailingLegTrkFiltered() {
   if (not mus_HLT_Mu17_TkMu8_TrailingLegTrkFiltered_isLoaded) {
     if (mus_HLT_Mu17_TkMu8_TrailingLegTrkFiltered_branch != 0) {
-      mus_HLT_Mu17_TkMu8_TrailingLegTrkFiltered_branch->GetEntry(index);
+      if (mus_HLT_Mu17_TkMu8_TrailingLegTrkFiltered_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_TkMu8_TrailingLegTrkFiltered_branch does not exist!\n");
       exit(1);
@@ -22976,7 +24175,8 @@ const vector<unsigned int> &CMS3::mus_HLT_Mu17_TkMu8_TrailingLegTrkFiltered() {
 const vector<bool> &CMS3::genps_isLastCopyBeforeFSR() {
   if (not genps_isLastCopyBeforeFSR_isLoaded) {
     if (genps_isLastCopyBeforeFSR_branch != 0) {
-      genps_isLastCopyBeforeFSR_branch->GetEntry(index);
+      if (genps_isLastCopyBeforeFSR_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch genps_isLastCopyBeforeFSR_branch does not exist!\n");
       exit(1);
@@ -22988,7 +24188,8 @@ const vector<bool> &CMS3::genps_isLastCopyBeforeFSR() {
 const vector<float> &CMS3::mus_iso03_emEt() {
   if (not mus_iso03_emEt_isLoaded) {
     if (mus_iso03_emEt_branch != 0) {
-      mus_iso03_emEt_branch->GetEntry(index);
+      if (mus_iso03_emEt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_iso03_emEt_branch does not exist!\n");
       exit(1);
@@ -23000,7 +24201,8 @@ const vector<float> &CMS3::mus_iso03_emEt() {
 const vector<float> &CMS3::mus_isoSumDRR03_pf_ChargedHadronPt() {
   if (not mus_isoSumDRR03_pf_ChargedHadronPt_isLoaded) {
     if (mus_isoSumDRR03_pf_ChargedHadronPt_branch != 0) {
-      mus_isoSumDRR03_pf_ChargedHadronPt_branch->GetEntry(index);
+      if (mus_isoSumDRR03_pf_ChargedHadronPt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isoSumDRR03_pf_ChargedHadronPt_branch does not exist!\n");
       exit(1);
@@ -23012,7 +24214,8 @@ const vector<float> &CMS3::mus_isoSumDRR03_pf_ChargedHadronPt() {
 const vector<int> &CMS3::els_ckf_charge() {
   if (not els_ckf_charge_isLoaded) {
     if (els_ckf_charge_branch != 0) {
-      els_ckf_charge_branch->GetEntry(index);
+      if (els_ckf_charge_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_ckf_charge_branch does not exist!\n");
       exit(1);
@@ -23024,7 +24227,8 @@ const vector<int> &CMS3::els_ckf_charge() {
 const float &CMS3::evt_pfmet_TauEnDown() {
   if (not evt_pfmet_TauEnDown_isLoaded) {
     if (evt_pfmet_TauEnDown_branch != 0) {
-      evt_pfmet_TauEnDown_branch->GetEntry(index);
+      if (evt_pfmet_TauEnDown_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_pfmet_TauEnDown_branch does not exist!\n");
       exit(1);
@@ -23036,7 +24240,8 @@ const float &CMS3::evt_pfmet_TauEnDown() {
 const vector<float> &CMS3::els_scR() {
   if (not els_scR_isLoaded) {
     if (els_scR_branch != 0) {
-      els_scR_branch->GetEntry(index);
+      if (els_scR_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_scR_branch does not exist!\n");
       exit(1);
@@ -23048,7 +24253,8 @@ const vector<float> &CMS3::els_scR() {
 const int &CMS3::evt_bunchCrossing() {
   if (not evt_bunchCrossing_isLoaded) {
     if (evt_bunchCrossing_branch != 0) {
-      evt_bunchCrossing_branch->GetEntry(index);
+      if (evt_bunchCrossing_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_bunchCrossing_branch does not exist!\n");
       exit(1);
@@ -23060,7 +24266,8 @@ const int &CMS3::evt_bunchCrossing() {
 const float &CMS3::genps_qScale() {
   if (not genps_qScale_isLoaded) {
     if (genps_qScale_branch != 0) {
-      genps_qScale_branch->GetEntry(index);
+      if (genps_qScale_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch genps_qScale_branch does not exist!\n");
       exit(1);
@@ -23072,7 +24279,8 @@ const float &CMS3::genps_qScale() {
 const vector<float> &CMS3::taus_pf_mass() {
   if (not taus_pf_mass_isLoaded) {
     if (taus_pf_mass_branch != 0) {
-      taus_pf_mass_branch->GetEntry(index);
+      if (taus_pf_mass_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch taus_pf_mass_branch does not exist!\n");
       exit(1);
@@ -23084,7 +24292,8 @@ const vector<float> &CMS3::taus_pf_mass() {
 const unsigned int &CMS3::els_HLT_Mu17_Ele8_TrailingLeg_version() {
   if (not els_HLT_Mu17_Ele8_TrailingLeg_version_isLoaded) {
     if (els_HLT_Mu17_Ele8_TrailingLeg_version_branch != 0) {
-      els_HLT_Mu17_Ele8_TrailingLeg_version_branch->GetEntry(index);
+      if (els_HLT_Mu17_Ele8_TrailingLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Mu17_Ele8_TrailingLeg_version_branch does not exist!\n");
       exit(1);
@@ -23096,7 +24305,8 @@ const unsigned int &CMS3::els_HLT_Mu17_Ele8_TrailingLeg_version() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::mus_sta_p4() {
   if (not mus_sta_p4_isLoaded) {
     if (mus_sta_p4_branch != 0) {
-      mus_sta_p4_branch->GetEntry(index);
+      if (mus_sta_p4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_sta_p4_branch does not exist!\n");
       exit(1);
@@ -23108,7 +24318,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::m
 const vector<float> &CMS3::photons_scSeedEmax() {
   if (not photons_scSeedEmax_isLoaded) {
     if (photons_scSeedEmax_branch != 0) {
-      photons_scSeedEmax_branch->GetEntry(index);
+      if (photons_scSeedEmax_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_scSeedEmax_branch does not exist!\n");
       exit(1);
@@ -23120,7 +24331,8 @@ const vector<float> &CMS3::photons_scSeedEmax() {
 const float &CMS3::evt_pfmetPhi_JetResUp() {
   if (not evt_pfmetPhi_JetResUp_isLoaded) {
     if (evt_pfmetPhi_JetResUp_branch != 0) {
-      evt_pfmetPhi_JetResUp_branch->GetEntry(index);
+      if (evt_pfmetPhi_JetResUp_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_pfmetPhi_JetResUp_branch does not exist!\n");
       exit(1);
@@ -23132,7 +24344,8 @@ const float &CMS3::evt_pfmetPhi_JetResUp() {
 const unsigned int &CMS3::mus_HLT_IsoMu24_eta2p1_L1sMu16Eta2p1_version() {
   if (not mus_HLT_IsoMu24_eta2p1_L1sMu16Eta2p1_version_isLoaded) {
     if (mus_HLT_IsoMu24_eta2p1_L1sMu16Eta2p1_version_branch != 0) {
-      mus_HLT_IsoMu24_eta2p1_L1sMu16Eta2p1_version_branch->GetEntry(index);
+      if (mus_HLT_IsoMu24_eta2p1_L1sMu16Eta2p1_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_IsoMu24_eta2p1_L1sMu16Eta2p1_version_branch does not exist!\n");
       exit(1);
@@ -23144,7 +24357,8 @@ const unsigned int &CMS3::mus_HLT_IsoMu24_eta2p1_L1sMu16Eta2p1_version() {
 const vector<float> &CMS3::els_eSeed() {
   if (not els_eSeed_isLoaded) {
     if (els_eSeed_branch != 0) {
-      els_eSeed_branch->GetEntry(index);
+      if (els_eSeed_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_eSeed_branch does not exist!\n");
       exit(1);
@@ -23156,7 +24370,8 @@ const vector<float> &CMS3::els_eSeed() {
 const vector<float> &CMS3::photons_full5x5_e5x5() {
   if (not photons_full5x5_e5x5_isLoaded) {
     if (photons_full5x5_e5x5_branch != 0) {
-      photons_full5x5_e5x5_branch->GetEntry(index);
+      if (photons_full5x5_e5x5_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_full5x5_e5x5_branch does not exist!\n");
       exit(1);
@@ -23168,7 +24383,8 @@ const vector<float> &CMS3::photons_full5x5_e5x5() {
 const vector<float> &CMS3::els_clusterMaxDRDPhi() {
   if (not els_clusterMaxDRDPhi_isLoaded) {
     if (els_clusterMaxDRDPhi_branch != 0) {
-      els_clusterMaxDRDPhi_branch->GetEntry(index);
+      if (els_clusterMaxDRDPhi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_clusterMaxDRDPhi_branch does not exist!\n");
       exit(1);
@@ -23180,7 +24396,8 @@ const vector<float> &CMS3::els_clusterMaxDRDPhi() {
 const vector<float> &CMS3::els_hcalIso() {
   if (not els_hcalIso_isLoaded) {
     if (els_hcalIso_branch != 0) {
-      els_hcalIso_branch->GetEntry(index);
+      if (els_hcalIso_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_hcalIso_branch does not exist!\n");
       exit(1);
@@ -23192,7 +24409,8 @@ const vector<float> &CMS3::els_hcalIso() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::ak8jets_mc_p4() {
   if (not ak8jets_mc_p4_isLoaded) {
     if (ak8jets_mc_p4_branch != 0) {
-      ak8jets_mc_p4_branch->GetEntry(index);
+      if (ak8jets_mc_p4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_mc_p4_branch does not exist!\n");
       exit(1);
@@ -23204,7 +24422,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::a
 const vector<vector<float> > &CMS3::els_clusterDPhiToCentroid() {
   if (not els_clusterDPhiToCentroid_isLoaded) {
     if (els_clusterDPhiToCentroid_branch != 0) {
-      els_clusterDPhiToCentroid_branch->GetEntry(index);
+      if (els_clusterDPhiToCentroid_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_clusterDPhiToCentroid_branch does not exist!\n");
       exit(1);
@@ -23216,7 +24435,8 @@ const vector<vector<float> > &CMS3::els_clusterDPhiToCentroid() {
 const vector<unsigned int> &CMS3::els_HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg() {
   if (not els_HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg_isLoaded) {
     if (els_HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg_branch != 0) {
-      els_HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg_branch->GetEntry(index);
+      if (els_HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg_branch does not exist!\n");
       exit(1);
@@ -23228,7 +24448,8 @@ const vector<unsigned int> &CMS3::els_HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT
 const vector<float> &CMS3::els_eOverPIn() {
   if (not els_eOverPIn_isLoaded) {
     if (els_eOverPIn_branch != 0) {
-      els_eOverPIn_branch->GetEntry(index);
+      if (els_eOverPIn_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_eOverPIn_branch does not exist!\n");
       exit(1);
@@ -23240,7 +24461,8 @@ const vector<float> &CMS3::els_eOverPIn() {
 const vector<float> &CMS3::mus_isoMeanDRR04_pf_ChargedParticlePt() {
   if (not mus_isoMeanDRR04_pf_ChargedParticlePt_isLoaded) {
     if (mus_isoMeanDRR04_pf_ChargedParticlePt_branch != 0) {
-      mus_isoMeanDRR04_pf_ChargedParticlePt_branch->GetEntry(index);
+      if (mus_isoMeanDRR04_pf_ChargedParticlePt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isoMeanDRR04_pf_ChargedParticlePt_branch does not exist!\n");
       exit(1);
@@ -23252,7 +24474,8 @@ const vector<float> &CMS3::mus_isoMeanDRR04_pf_ChargedParticlePt() {
 const vector<vector<TString> > &CMS3::hlt_trigObjs_filters() {
   if (not hlt_trigObjs_filters_isLoaded) {
     if (hlt_trigObjs_filters_branch != 0) {
-      hlt_trigObjs_filters_branch->GetEntry(index);
+      if (hlt_trigObjs_filters_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hlt_trigObjs_filters_branch does not exist!\n");
       exit(1);
@@ -23264,7 +24487,8 @@ const vector<vector<TString> > &CMS3::hlt_trigObjs_filters() {
 const vector<unsigned int> &CMS3::els_HLT_Ele25WP60_SC4_Mass55() {
   if (not els_HLT_Ele25WP60_SC4_Mass55_isLoaded) {
     if (els_HLT_Ele25WP60_SC4_Mass55_branch != 0) {
-      els_HLT_Ele25WP60_SC4_Mass55_branch->GetEntry(index);
+      if (els_HLT_Ele25WP60_SC4_Mass55_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele25WP60_SC4_Mass55_branch does not exist!\n");
       exit(1);
@@ -23276,7 +24500,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele25WP60_SC4_Mass55() {
 const vector<float> &CMS3::mus_emS25() {
   if (not mus_emS25_isLoaded) {
     if (mus_emS25_branch != 0) {
-      mus_emS25_branch->GetEntry(index);
+      if (mus_emS25_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_emS25_branch does not exist!\n");
       exit(1);
@@ -23288,7 +24513,8 @@ const vector<float> &CMS3::mus_emS25() {
 const vector<float> &CMS3::mus_phiErr() {
   if (not mus_phiErr_isLoaded) {
     if (mus_phiErr_branch != 0) {
-      mus_phiErr_branch->GetEntry(index);
+      if (mus_phiErr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_phiErr_branch does not exist!\n");
       exit(1);
@@ -23300,7 +24526,8 @@ const vector<float> &CMS3::mus_phiErr() {
 const vector<float> &CMS3::mus_mc_patMatch_dr() {
   if (not mus_mc_patMatch_dr_isLoaded) {
     if (mus_mc_patMatch_dr_branch != 0) {
-      mus_mc_patMatch_dr_branch->GetEntry(index);
+      if (mus_mc_patMatch_dr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_mc_patMatch_dr_branch does not exist!\n");
       exit(1);
@@ -23312,7 +24539,8 @@ const vector<float> &CMS3::mus_mc_patMatch_dr() {
 const bool &CMS3::filt_trkPOG_manystripclus53X() {
   if (not filt_trkPOG_manystripclus53X_isLoaded) {
     if (filt_trkPOG_manystripclus53X_branch != 0) {
-      filt_trkPOG_manystripclus53X_branch->GetEntry(index);
+      if (filt_trkPOG_manystripclus53X_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch filt_trkPOG_manystripclus53X_branch does not exist!\n");
       exit(1);
@@ -23324,7 +24552,8 @@ const bool &CMS3::filt_trkPOG_manystripclus53X() {
 const float &CMS3::evt_pfmetPhi_ElectronEnDown() {
   if (not evt_pfmetPhi_ElectronEnDown_isLoaded) {
     if (evt_pfmetPhi_ElectronEnDown_branch != 0) {
-      evt_pfmetPhi_ElectronEnDown_branch->GetEntry(index);
+      if (evt_pfmetPhi_ElectronEnDown_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_pfmetPhi_ElectronEnDown_branch does not exist!\n");
       exit(1);
@@ -23336,7 +24565,8 @@ const float &CMS3::evt_pfmetPhi_ElectronEnDown() {
 const vector<int> &CMS3::genps_id() {
   if (not genps_id_isLoaded) {
     if (genps_id_branch != 0) {
-      genps_id_branch->GetEntry(index);
+      if (genps_id_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch genps_id_branch does not exist!\n");
       exit(1);
@@ -23348,7 +24578,8 @@ const vector<int> &CMS3::genps_id() {
 const vector<float> &CMS3::mus_d0corrPhi() {
   if (not mus_d0corrPhi_isLoaded) {
     if (mus_d0corrPhi_branch != 0) {
-      mus_d0corrPhi_branch->GetEntry(index);
+      if (mus_d0corrPhi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_d0corrPhi_branch does not exist!\n");
       exit(1);
@@ -23360,7 +24591,8 @@ const vector<float> &CMS3::mus_d0corrPhi() {
 const vector<float> &CMS3::mus_d0Err() {
   if (not mus_d0Err_isLoaded) {
     if (mus_d0Err_branch != 0) {
-      mus_d0Err_branch->GetEntry(index);
+      if (mus_d0Err_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_d0Err_branch does not exist!\n");
       exit(1);
@@ -23372,7 +24604,8 @@ const vector<float> &CMS3::mus_d0Err() {
 const unsigned int &CMS3::mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_LeadingLeg_version() {
   if (not mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_LeadingLeg_version_isLoaded) {
     if (mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_LeadingLeg_version_branch != 0) {
-      mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_LeadingLeg_version_branch->GetEntry(index);
+      if (mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_LeadingLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_LeadingLeg_version_branch does not exist!\n");
       exit(1);
@@ -23384,7 +24617,8 @@ const unsigned int &CMS3::mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_LeadingLeg_ver
 const vector<unsigned int> &CMS3::mus_HLT_TkMu50() {
   if (not mus_HLT_TkMu50_isLoaded) {
     if (mus_HLT_TkMu50_branch != 0) {
-      mus_HLT_TkMu50_branch->GetEntry(index);
+      if (mus_HLT_TkMu50_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_TkMu50_branch does not exist!\n");
       exit(1);
@@ -23396,7 +24630,8 @@ const vector<unsigned int> &CMS3::mus_HLT_TkMu50() {
 const vector<float> &CMS3::pfjets_puppi_area() {
   if (not pfjets_puppi_area_isLoaded) {
     if (pfjets_puppi_area_branch != 0) {
-      pfjets_puppi_area_branch->GetEntry(index);
+      if (pfjets_puppi_area_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_puppi_area_branch does not exist!\n");
       exit(1);
@@ -23408,7 +24643,8 @@ const vector<float> &CMS3::pfjets_puppi_area() {
 const vector<int> &CMS3::els_VIDSpring16HZZMvaCat() {
   if (not els_VIDSpring16HZZMvaCat_isLoaded) {
     if (els_VIDSpring16HZZMvaCat_branch != 0) {
-      els_VIDSpring16HZZMvaCat_branch->GetEntry(index);
+      if (els_VIDSpring16HZZMvaCat_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_VIDSpring16HZZMvaCat_branch does not exist!\n");
       exit(1);
@@ -23420,7 +24656,8 @@ const vector<int> &CMS3::els_VIDSpring16HZZMvaCat() {
 const vector<float> &CMS3::mus_iso_hovetoDep() {
   if (not mus_iso_hovetoDep_isLoaded) {
     if (mus_iso_hovetoDep_branch != 0) {
-      mus_iso_hovetoDep_branch->GetEntry(index);
+      if (mus_iso_hovetoDep_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_iso_hovetoDep_branch does not exist!\n");
       exit(1);
@@ -23432,7 +24669,8 @@ const vector<float> &CMS3::mus_iso_hovetoDep() {
 const unsigned int &CMS3::mus_HLT_Mu17_Mu8_LeadingLeg_version() {
   if (not mus_HLT_Mu17_Mu8_LeadingLeg_version_isLoaded) {
     if (mus_HLT_Mu17_Mu8_LeadingLeg_version_branch != 0) {
-      mus_HLT_Mu17_Mu8_LeadingLeg_version_branch->GetEntry(index);
+      if (mus_HLT_Mu17_Mu8_LeadingLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_Mu8_LeadingLeg_version_branch does not exist!\n");
       exit(1);
@@ -23444,7 +24682,8 @@ const unsigned int &CMS3::mus_HLT_Mu17_Mu8_LeadingLeg_version() {
 const vector<unsigned int> &CMS3::hlt_prescales() {
   if (not hlt_prescales_isLoaded) {
     if (hlt_prescales_branch != 0) {
-      hlt_prescales_branch->GetEntry(index);
+      if (hlt_prescales_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hlt_prescales_branch does not exist!\n");
       exit(1);
@@ -23456,7 +24695,8 @@ const vector<unsigned int> &CMS3::hlt_prescales() {
 const vector<int> &CMS3::mus_gfit_validSiHits() {
   if (not mus_gfit_validSiHits_isLoaded) {
     if (mus_gfit_validSiHits_branch != 0) {
-      mus_gfit_validSiHits_branch->GetEntry(index);
+      if (mus_gfit_validSiHits_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_gfit_validSiHits_branch does not exist!\n");
       exit(1);
@@ -23468,7 +24708,8 @@ const vector<int> &CMS3::mus_gfit_validSiHits() {
 const vector<float> &CMS3::els_fbrem() {
   if (not els_fbrem_isLoaded) {
     if (els_fbrem_branch != 0) {
-      els_fbrem_branch->GetEntry(index);
+      if (els_fbrem_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_fbrem_branch does not exist!\n");
       exit(1);
@@ -23480,7 +24721,8 @@ const vector<float> &CMS3::els_fbrem() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::pfcands_p4() {
   if (not pfcands_p4_isLoaded) {
     if (pfcands_p4_branch != 0) {
-      pfcands_p4_branch->GetEntry(index);
+      if (pfcands_p4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfcands_p4_branch does not exist!\n");
       exit(1);
@@ -23492,7 +24734,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::p
 const vector<int> &CMS3::pfjets_mc_motherid() {
   if (not pfjets_mc_motherid_isLoaded) {
     if (pfjets_mc_motherid_branch != 0) {
-      pfjets_mc_motherid_branch->GetEntry(index);
+      if (pfjets_mc_motherid_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_mc_motherid_branch does not exist!\n");
       exit(1);
@@ -23504,7 +24747,8 @@ const vector<int> &CMS3::pfjets_mc_motherid() {
 const vector<vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > >> &CMS3::pfjets_pfcandmup4() {
   if (not pfjets_pfcandmup4_isLoaded) {
     if (pfjets_pfcandmup4_branch != 0) {
-      pfjets_pfcandmup4_branch->GetEntry(index);
+      if (pfjets_pfcandmup4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_pfcandmup4_branch does not exist!\n");
       exit(1);
@@ -23516,7 +24760,8 @@ const vector<vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > >> 
 const vector<vector<int> > &CMS3::pfjets_pfcandIndicies() {
   if (not pfjets_pfcandIndicies_isLoaded) {
     if (pfjets_pfcandIndicies_branch != 0) {
-      pfjets_pfcandIndicies_branch->GetEntry(index);
+      if (pfjets_pfcandIndicies_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_pfcandIndicies_branch does not exist!\n");
       exit(1);
@@ -23528,7 +24773,8 @@ const vector<vector<int> > &CMS3::pfjets_pfcandIndicies() {
 const vector<vector<float> > &CMS3::photons_clusterPhi() {
   if (not photons_clusterPhi_isLoaded) {
     if (photons_clusterPhi_branch != 0) {
-      photons_clusterPhi_branch->GetEntry(index);
+      if (photons_clusterPhi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_clusterPhi_branch does not exist!\n");
       exit(1);
@@ -23540,7 +24786,8 @@ const vector<vector<float> > &CMS3::photons_clusterPhi() {
 const vector<float> &CMS3::mus_bfit_d0corrPhi() {
   if (not mus_bfit_d0corrPhi_isLoaded) {
     if (mus_bfit_d0corrPhi_branch != 0) {
-      mus_bfit_d0corrPhi_branch->GetEntry(index);
+      if (mus_bfit_d0corrPhi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_bfit_d0corrPhi_branch does not exist!\n");
       exit(1);
@@ -23552,7 +24799,8 @@ const vector<float> &CMS3::mus_bfit_d0corrPhi() {
 const vector<float> &CMS3::els_miniIso_em() {
   if (not els_miniIso_em_isLoaded) {
     if (els_miniIso_em_branch != 0) {
-      els_miniIso_em_branch->GetEntry(index);
+      if (els_miniIso_em_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_miniIso_em_branch does not exist!\n");
       exit(1);
@@ -23564,7 +24812,8 @@ const vector<float> &CMS3::els_miniIso_em() {
 const vector<float> &CMS3::photons_ecalIso03() {
   if (not photons_ecalIso03_isLoaded) {
     if (photons_ecalIso03_branch != 0) {
-      photons_ecalIso03_branch->GetEntry(index);
+      if (photons_ecalIso03_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_ecalIso03_branch does not exist!\n");
       exit(1);
@@ -23576,7 +24825,8 @@ const vector<float> &CMS3::photons_ecalIso03() {
 const vector<vector<float> > &CMS3::els_psClusterPhi() {
   if (not els_psClusterPhi_isLoaded) {
     if (els_psClusterPhi_branch != 0) {
-      els_psClusterPhi_branch->GetEntry(index);
+      if (els_psClusterPhi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_psClusterPhi_branch does not exist!\n");
       exit(1);
@@ -23588,7 +24838,8 @@ const vector<vector<float> > &CMS3::els_psClusterPhi() {
 const unsigned int &CMS3::evt_lumiBlock() {
   if (not evt_lumiBlock_isLoaded) {
     if (evt_lumiBlock_branch != 0) {
-      evt_lumiBlock_branch->GetEntry(index);
+      if (evt_lumiBlock_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_lumiBlock_branch does not exist!\n");
       exit(1);
@@ -23600,7 +24851,8 @@ const unsigned int &CMS3::evt_lumiBlock() {
 const vector<unsigned int> &CMS3::photons_HLT_Photon30_R9Id90_HE10_IsoM() {
   if (not photons_HLT_Photon30_R9Id90_HE10_IsoM_isLoaded) {
     if (photons_HLT_Photon30_R9Id90_HE10_IsoM_branch != 0) {
-      photons_HLT_Photon30_R9Id90_HE10_IsoM_branch->GetEntry(index);
+      if (photons_HLT_Photon30_R9Id90_HE10_IsoM_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_HLT_Photon30_R9Id90_HE10_IsoM_branch does not exist!\n");
       exit(1);
@@ -23612,7 +24864,8 @@ const vector<unsigned int> &CMS3::photons_HLT_Photon30_R9Id90_HE10_IsoM() {
 const unsigned int &CMS3::mus_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_MuonLeg_version() {
   if (not mus_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_MuonLeg_version_isLoaded) {
     if (mus_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_MuonLeg_version_branch != 0) {
-      mus_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_MuonLeg_version_branch->GetEntry(index);
+      if (mus_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_MuonLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_MuonLeg_version_branch does not exist!\n");
       exit(1);
@@ -23624,7 +24877,8 @@ const unsigned int &CMS3::mus_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_MuonLe
 const int &CMS3::hcalnoise_numNegativeNoiseChannels() {
   if (not hcalnoise_numNegativeNoiseChannels_isLoaded) {
     if (hcalnoise_numNegativeNoiseChannels_branch != 0) {
-      hcalnoise_numNegativeNoiseChannels_branch->GetEntry(index);
+      if (hcalnoise_numNegativeNoiseChannels_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_numNegativeNoiseChannels_branch does not exist!\n");
       exit(1);
@@ -23636,7 +24890,8 @@ const int &CMS3::hcalnoise_numNegativeNoiseChannels() {
 const vector<float> &CMS3::photons_clustersMeanDRToSeed() {
   if (not photons_clustersMeanDRToSeed_isLoaded) {
     if (photons_clustersMeanDRToSeed_branch != 0) {
-      photons_clustersMeanDRToSeed_branch->GetEntry(index);
+      if (photons_clustersMeanDRToSeed_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_clustersMeanDRToSeed_branch does not exist!\n");
       exit(1);
@@ -23648,7 +24903,8 @@ const vector<float> &CMS3::photons_clustersMeanDRToSeed() {
 const vector<unsigned int> &CMS3::els_HLT_Ele32_eta2p1_WPTight_Gsf() {
   if (not els_HLT_Ele32_eta2p1_WPTight_Gsf_isLoaded) {
     if (els_HLT_Ele32_eta2p1_WPTight_Gsf_branch != 0) {
-      els_HLT_Ele32_eta2p1_WPTight_Gsf_branch->GetEntry(index);
+      if (els_HLT_Ele32_eta2p1_WPTight_Gsf_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele32_eta2p1_WPTight_Gsf_branch does not exist!\n");
       exit(1);
@@ -23660,7 +24916,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele32_eta2p1_WPTight_Gsf() {
 const unsigned int &CMS3::els_HLT_Ele33_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version() {
   if (not els_HLT_Ele33_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version_isLoaded) {
     if (els_HLT_Ele33_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version_branch != 0) {
-      els_HLT_Ele33_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version_branch->GetEntry(index);
+      if (els_HLT_Ele33_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele33_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version_branch does not exist!\n");
       exit(1);
@@ -23672,7 +24929,8 @@ const unsigned int &CMS3::els_HLT_Ele33_CaloIdM_TrackIdM_PFJet30_ElectronLeg_ver
 const bool &CMS3::filt_trkPOG_toomanystripclus53X() {
   if (not filt_trkPOG_toomanystripclus53X_isLoaded) {
     if (filt_trkPOG_toomanystripclus53X_branch != 0) {
-      filt_trkPOG_toomanystripclus53X_branch->GetEntry(index);
+      if (filt_trkPOG_toomanystripclus53X_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch filt_trkPOG_toomanystripclus53X_branch does not exist!\n");
       exit(1);
@@ -23684,7 +24942,8 @@ const bool &CMS3::filt_trkPOG_toomanystripclus53X() {
 const bool &CMS3::filt_eeBadSc() {
   if (not filt_eeBadSc_isLoaded) {
     if (filt_eeBadSc_branch != 0) {
-      filt_eeBadSc_branch->GetEntry(index);
+      if (filt_eeBadSc_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch filt_eeBadSc_branch does not exist!\n");
       exit(1);
@@ -23696,7 +24955,8 @@ const bool &CMS3::filt_eeBadSc() {
 const float &CMS3::evt_filt_eff() {
   if (not evt_filt_eff_isLoaded) {
     if (evt_filt_eff_branch != 0) {
-      evt_filt_eff_branch->GetEntry(index);
+      if (evt_filt_eff_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_filt_eff_branch does not exist!\n");
       exit(1);
@@ -23708,7 +24968,8 @@ const float &CMS3::evt_filt_eff() {
 const vector<vector<int> > &CMS3::convs_nHitsBeforeVtx() {
   if (not convs_nHitsBeforeVtx_isLoaded) {
     if (convs_nHitsBeforeVtx_branch != 0) {
-      convs_nHitsBeforeVtx_branch->GetEntry(index);
+      if (convs_nHitsBeforeVtx_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch convs_nHitsBeforeVtx_branch does not exist!\n");
       exit(1);
@@ -23720,7 +24981,8 @@ const vector<vector<int> > &CMS3::convs_nHitsBeforeVtx() {
 const float &CMS3::evt_pfmet_TauEnUp() {
   if (not evt_pfmet_TauEnUp_isLoaded) {
     if (evt_pfmet_TauEnUp_branch != 0) {
-      evt_pfmet_TauEnUp_branch->GetEntry(index);
+      if (evt_pfmet_TauEnUp_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_pfmet_TauEnUp_branch does not exist!\n");
       exit(1);
@@ -23732,7 +24994,8 @@ const float &CMS3::evt_pfmet_TauEnUp() {
 const vector<float> &CMS3::mus_isoR04_pf_ChargedHadronPt() {
   if (not mus_isoR04_pf_ChargedHadronPt_isLoaded) {
     if (mus_isoR04_pf_ChargedHadronPt_branch != 0) {
-      mus_isoR04_pf_ChargedHadronPt_branch->GetEntry(index);
+      if (mus_isoR04_pf_ChargedHadronPt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isoR04_pf_ChargedHadronPt_branch does not exist!\n");
       exit(1);
@@ -23744,7 +25007,8 @@ const vector<float> &CMS3::mus_isoR04_pf_ChargedHadronPt() {
 const vector<float> &CMS3::mus_d0phiCov() {
   if (not mus_d0phiCov_isLoaded) {
     if (mus_d0phiCov_branch != 0) {
-      mus_d0phiCov_branch->GetEntry(index);
+      if (mus_d0phiCov_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_d0phiCov_branch does not exist!\n");
       exit(1);
@@ -23756,7 +25020,8 @@ const vector<float> &CMS3::mus_d0phiCov() {
 const vector<float> &CMS3::mus_bfit_d0corr() {
   if (not mus_bfit_d0corr_isLoaded) {
     if (mus_bfit_d0corr_branch != 0) {
-      mus_bfit_d0corr_branch->GetEntry(index);
+      if (mus_bfit_d0corr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_bfit_d0corr_branch does not exist!\n");
       exit(1);
@@ -23768,7 +25033,8 @@ const vector<float> &CMS3::mus_bfit_d0corr() {
 const vector<TString> &CMS3::pfjets_bDiscriminatorNames() {
   if (not pfjets_bDiscriminatorNames_isLoaded) {
     if (pfjets_bDiscriminatorNames_branch != 0) {
-      pfjets_bDiscriminatorNames_branch->GetEntry(index);
+      if (pfjets_bDiscriminatorNames_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_bDiscriminatorNames_branch does not exist!\n");
       exit(1);
@@ -23780,7 +25046,8 @@ const vector<TString> &CMS3::pfjets_bDiscriminatorNames() {
 const vector<float> &CMS3::els_bs3derr() {
   if (not els_bs3derr_isLoaded) {
     if (els_bs3derr_branch != 0) {
-      els_bs3derr_branch->GetEntry(index);
+      if (els_bs3derr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_bs3derr_branch does not exist!\n");
       exit(1);
@@ -23792,7 +25059,8 @@ const vector<float> &CMS3::els_bs3derr() {
 const vector<float> &CMS3::photons_sigmaEtaEta() {
   if (not photons_sigmaEtaEta_isLoaded) {
     if (photons_sigmaEtaEta_branch != 0) {
-      photons_sigmaEtaEta_branch->GetEntry(index);
+      if (photons_sigmaEtaEta_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_sigmaEtaEta_branch does not exist!\n");
       exit(1);
@@ -23804,7 +25072,8 @@ const vector<float> &CMS3::photons_sigmaEtaEta() {
 const float &CMS3::evt_pfmet_JetResDown() {
   if (not evt_pfmet_JetResDown_isLoaded) {
     if (evt_pfmet_JetResDown_branch != 0) {
-      evt_pfmet_JetResDown_branch->GetEntry(index);
+      if (evt_pfmet_JetResDown_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_pfmet_JetResDown_branch does not exist!\n");
       exit(1);
@@ -23816,7 +25085,8 @@ const float &CMS3::evt_pfmet_JetResDown() {
 const vector<float> &CMS3::els_z0corr() {
   if (not els_z0corr_isLoaded) {
     if (els_z0corr_branch != 0) {
-      els_z0corr_branch->GetEntry(index);
+      if (els_z0corr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_z0corr_branch does not exist!\n");
       exit(1);
@@ -23828,7 +25098,8 @@ const vector<float> &CMS3::els_z0corr() {
 const float &CMS3::evt_bs_zErr() {
   if (not evt_bs_zErr_isLoaded) {
     if (evt_bs_zErr_branch != 0) {
-      evt_bs_zErr_branch->GetEntry(index);
+      if (evt_bs_zErr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_bs_zErr_branch does not exist!\n");
       exit(1);
@@ -23840,7 +25111,8 @@ const float &CMS3::evt_bs_zErr() {
 const vector<float> &CMS3::els_eSCRaw() {
   if (not els_eSCRaw_isLoaded) {
     if (els_eSCRaw_branch != 0) {
-      els_eSCRaw_branch->GetEntry(index);
+      if (els_eSCRaw_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_eSCRaw_branch does not exist!\n");
       exit(1);
@@ -23852,7 +25124,8 @@ const vector<float> &CMS3::els_eSCRaw() {
 const unsigned int &CMS3::photons_HLT_Photon22_R9Id90_HE10_IsoM_version() {
   if (not photons_HLT_Photon22_R9Id90_HE10_IsoM_version_isLoaded) {
     if (photons_HLT_Photon22_R9Id90_HE10_IsoM_version_branch != 0) {
-      photons_HLT_Photon22_R9Id90_HE10_IsoM_version_branch->GetEntry(index);
+      if (photons_HLT_Photon22_R9Id90_HE10_IsoM_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_HLT_Photon22_R9Id90_HE10_IsoM_version_branch does not exist!\n");
       exit(1);
@@ -23864,7 +25137,8 @@ const unsigned int &CMS3::photons_HLT_Photon22_R9Id90_HE10_IsoM_version() {
 const vector<float> &CMS3::pfjets_pileupJetId() {
   if (not pfjets_pileupJetId_isLoaded) {
     if (pfjets_pileupJetId_branch != 0) {
-      pfjets_pileupJetId_branch->GetEntry(index);
+      if (pfjets_pileupJetId_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_pileupJetId_branch does not exist!\n");
       exit(1);
@@ -23876,7 +25150,8 @@ const vector<float> &CMS3::pfjets_pileupJetId() {
 const vector<unsigned int> &CMS3::els_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg() {
   if (not els_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_isLoaded) {
     if (els_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_branch != 0) {
-      els_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_branch->GetEntry(index);
+      if (els_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_branch does not exist!\n");
       exit(1);
@@ -23888,7 +25163,8 @@ const vector<unsigned int> &CMS3::els_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_I
 const vector<unsigned int> &CMS3::mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_TrailingLeg() {
   if (not mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_TrailingLeg_isLoaded) {
     if (mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_TrailingLeg_branch != 0) {
-      mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_TrailingLeg_branch->GetEntry(index);
+      if (mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_TrailingLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_TrailingLeg_branch does not exist!\n");
       exit(1);
@@ -23900,7 +25176,8 @@ const vector<unsigned int> &CMS3::mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_TrailingL
 const vector<float> &CMS3::mus_e_hoS9() {
   if (not mus_e_hoS9_isLoaded) {
     if (mus_e_hoS9_branch != 0) {
-      mus_e_hoS9_branch->GetEntry(index);
+      if (mus_e_hoS9_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_e_hoS9_branch does not exist!\n");
       exit(1);
@@ -23912,7 +25189,8 @@ const vector<float> &CMS3::mus_e_hoS9() {
 const vector<int> &CMS3::mus_nlayersLost() {
   if (not mus_nlayersLost_isLoaded) {
     if (mus_nlayersLost_branch != 0) {
-      mus_nlayersLost_branch->GetEntry(index);
+      if (mus_nlayersLost_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_nlayersLost_branch does not exist!\n");
       exit(1);
@@ -23924,7 +25202,8 @@ const vector<int> &CMS3::mus_nlayersLost() {
 const vector<float> &CMS3::mus_timeAtIpOutIn() {
   if (not mus_timeAtIpOutIn_isLoaded) {
     if (mus_timeAtIpOutIn_branch != 0) {
-      mus_timeAtIpOutIn_branch->GetEntry(index);
+      if (mus_timeAtIpOutIn_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_timeAtIpOutIn_branch does not exist!\n");
       exit(1);
@@ -23936,7 +25215,8 @@ const vector<float> &CMS3::mus_timeAtIpOutIn() {
 const vector<int> &CMS3::els_charge() {
   if (not els_charge_isLoaded) {
     if (els_charge_branch != 0) {
-      els_charge_branch->GetEntry(index);
+      if (els_charge_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_charge_branch does not exist!\n");
       exit(1);
@@ -23948,7 +25228,8 @@ const vector<int> &CMS3::els_charge() {
 const int &CMS3::hcalnoise_noiseType() {
   if (not hcalnoise_noiseType_isLoaded) {
     if (hcalnoise_noiseType_branch != 0) {
-      hcalnoise_noiseType_branch->GetEntry(index);
+      if (hcalnoise_noiseType_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_noiseType_branch does not exist!\n");
       exit(1);
@@ -23960,7 +25241,8 @@ const int &CMS3::hcalnoise_noiseType() {
 const vector<float> &CMS3::svs_anglePV() {
   if (not svs_anglePV_isLoaded) {
     if (svs_anglePV_branch != 0) {
-      svs_anglePV_branch->GetEntry(index);
+      if (svs_anglePV_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch svs_anglePV_branch does not exist!\n");
       exit(1);
@@ -23972,7 +25254,8 @@ const vector<float> &CMS3::svs_anglePV() {
 const float &CMS3::sparm_weight() {
   if (not sparm_weight_isLoaded) {
     if (sparm_weight_branch != 0) {
-      sparm_weight_branch->GetEntry(index);
+      if (sparm_weight_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch sparm_weight_branch does not exist!\n");
       exit(1);
@@ -23984,7 +25267,8 @@ const float &CMS3::sparm_weight() {
 const vector<float> &CMS3::mus_bfit_d0Err() {
   if (not mus_bfit_d0Err_isLoaded) {
     if (mus_bfit_d0Err_branch != 0) {
-      mus_bfit_d0Err_branch->GetEntry(index);
+      if (mus_bfit_d0Err_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_bfit_d0Err_branch does not exist!\n");
       exit(1);
@@ -23996,7 +25280,8 @@ const vector<float> &CMS3::mus_bfit_d0Err() {
 const vector<float> &CMS3::els_hcalDepth2TowerSumEt() {
   if (not els_hcalDepth2TowerSumEt_isLoaded) {
     if (els_hcalDepth2TowerSumEt_branch != 0) {
-      els_hcalDepth2TowerSumEt_branch->GetEntry(index);
+      if (els_hcalDepth2TowerSumEt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_hcalDepth2TowerSumEt_branch does not exist!\n");
       exit(1);
@@ -24008,7 +25293,8 @@ const vector<float> &CMS3::els_hcalDepth2TowerSumEt() {
 const vector<float> &CMS3::mus_isoSumDRR03_pf_NeutralHadronEt() {
   if (not mus_isoSumDRR03_pf_NeutralHadronEt_isLoaded) {
     if (mus_isoSumDRR03_pf_NeutralHadronEt_branch != 0) {
-      mus_isoSumDRR03_pf_NeutralHadronEt_branch->GetEntry(index);
+      if (mus_isoSumDRR03_pf_NeutralHadronEt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isoSumDRR03_pf_NeutralHadronEt_branch does not exist!\n");
       exit(1);
@@ -24020,7 +25306,8 @@ const vector<float> &CMS3::mus_isoSumDRR03_pf_NeutralHadronEt() {
 const vector<float> &CMS3::vtxs_chi2() {
   if (not vtxs_chi2_isLoaded) {
     if (vtxs_chi2_branch != 0) {
-      vtxs_chi2_branch->GetEntry(index);
+      if (vtxs_chi2_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch vtxs_chi2_branch does not exist!\n");
       exit(1);
@@ -24032,7 +25319,8 @@ const vector<float> &CMS3::vtxs_chi2() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::mus_gfit_vertex_p4() {
   if (not mus_gfit_vertex_p4_isLoaded) {
     if (mus_gfit_vertex_p4_branch != 0) {
-      mus_gfit_vertex_p4_branch->GetEntry(index);
+      if (mus_gfit_vertex_p4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_gfit_vertex_p4_branch does not exist!\n");
       exit(1);
@@ -24044,7 +25332,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::m
 const vector<float> &CMS3::els_scSeedE2x5Bottom() {
   if (not els_scSeedE2x5Bottom_isLoaded) {
     if (els_scSeedE2x5Bottom_branch != 0) {
-      els_scSeedE2x5Bottom_branch->GetEntry(index);
+      if (els_scSeedE2x5Bottom_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_scSeedE2x5Bottom_branch does not exist!\n");
       exit(1);
@@ -24056,7 +25345,8 @@ const vector<float> &CMS3::els_scSeedE2x5Bottom() {
 const vector<int> &CMS3::mus_pfidx() {
   if (not mus_pfidx_isLoaded) {
     if (mus_pfidx_branch != 0) {
-      mus_pfidx_branch->GetEntry(index);
+      if (mus_pfidx_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_pfidx_branch does not exist!\n");
       exit(1);
@@ -24068,7 +25358,8 @@ const vector<int> &CMS3::mus_pfidx() {
 const unsigned int &CMS3::els_HLT_Ele115_CaloIdVT_GsfTrkIdT_version() {
   if (not els_HLT_Ele115_CaloIdVT_GsfTrkIdT_version_isLoaded) {
     if (els_HLT_Ele115_CaloIdVT_GsfTrkIdT_version_branch != 0) {
-      els_HLT_Ele115_CaloIdVT_GsfTrkIdT_version_branch->GetEntry(index);
+      if (els_HLT_Ele115_CaloIdVT_GsfTrkIdT_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele115_CaloIdVT_GsfTrkIdT_version_branch does not exist!\n");
       exit(1);
@@ -24080,7 +25371,8 @@ const unsigned int &CMS3::els_HLT_Ele115_CaloIdVT_GsfTrkIdT_version() {
 const unsigned int &CMS3::mus_HLT_Mu17_TkMu8_TrailingLegTrkFiltered_version() {
   if (not mus_HLT_Mu17_TkMu8_TrailingLegTrkFiltered_version_isLoaded) {
     if (mus_HLT_Mu17_TkMu8_TrailingLegTrkFiltered_version_branch != 0) {
-      mus_HLT_Mu17_TkMu8_TrailingLegTrkFiltered_version_branch->GetEntry(index);
+      if (mus_HLT_Mu17_TkMu8_TrailingLegTrkFiltered_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_TkMu8_TrailingLegTrkFiltered_version_branch does not exist!\n");
       exit(1);
@@ -24092,7 +25384,8 @@ const unsigned int &CMS3::mus_HLT_Mu17_TkMu8_TrailingLegTrkFiltered_version() {
 const vector<int> &CMS3::pfjets_mc3_id() {
   if (not pfjets_mc3_id_isLoaded) {
     if (pfjets_mc3_id_branch != 0) {
-      pfjets_mc3_id_branch->GetEntry(index);
+      if (pfjets_mc3_id_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_mc3_id_branch does not exist!\n");
       exit(1);
@@ -24104,7 +25397,8 @@ const vector<int> &CMS3::pfjets_mc3_id() {
 const float &CMS3::evt_puppi_pfmet_MuonEnUp() {
   if (not evt_puppi_pfmet_MuonEnUp_isLoaded) {
     if (evt_puppi_pfmet_MuonEnUp_branch != 0) {
-      evt_puppi_pfmet_MuonEnUp_branch->GetEntry(index);
+      if (evt_puppi_pfmet_MuonEnUp_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_puppi_pfmet_MuonEnUp_branch does not exist!\n");
       exit(1);
@@ -24116,7 +25410,8 @@ const float &CMS3::evt_puppi_pfmet_MuonEnUp() {
 const vector<unsigned int> &CMS3::els_HLT_Ele23_CaloIdM_TrackIdM_PFJet30_ElectronLeg() {
   if (not els_HLT_Ele23_CaloIdM_TrackIdM_PFJet30_ElectronLeg_isLoaded) {
     if (els_HLT_Ele23_CaloIdM_TrackIdM_PFJet30_ElectronLeg_branch != 0) {
-      els_HLT_Ele23_CaloIdM_TrackIdM_PFJet30_ElectronLeg_branch->GetEntry(index);
+      if (els_HLT_Ele23_CaloIdM_TrackIdM_PFJet30_ElectronLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele23_CaloIdM_TrackIdM_PFJet30_ElectronLeg_branch does not exist!\n");
       exit(1);
@@ -24128,7 +25423,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele23_CaloIdM_TrackIdM_PFJet30_Electro
 const float &CMS3::evt_pfmetPhi_JetResDown() {
   if (not evt_pfmetPhi_JetResDown_isLoaded) {
     if (evt_pfmetPhi_JetResDown_branch != 0) {
-      evt_pfmetPhi_JetResDown_branch->GetEntry(index);
+      if (evt_pfmetPhi_JetResDown_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_pfmetPhi_JetResDown_branch does not exist!\n");
       exit(1);
@@ -24140,7 +25436,8 @@ const float &CMS3::evt_pfmetPhi_JetResDown() {
 const vector<bool> &CMS3::genps_isDirectPromptTauDecayProductFinalState() {
   if (not genps_isDirectPromptTauDecayProductFinalState_isLoaded) {
     if (genps_isDirectPromptTauDecayProductFinalState_branch != 0) {
-      genps_isDirectPromptTauDecayProductFinalState_branch->GetEntry(index);
+      if (genps_isDirectPromptTauDecayProductFinalState_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch genps_isDirectPromptTauDecayProductFinalState_branch does not exist!\n");
       exit(1);
@@ -24152,7 +25449,8 @@ const vector<bool> &CMS3::genps_isDirectPromptTauDecayProductFinalState() {
 const unsigned int &CMS3::evt_nels() {
   if (not evt_nels_isLoaded) {
     if (evt_nels_branch != 0) {
-      evt_nels_branch->GetEntry(index);
+      if (evt_nels_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_nels_branch does not exist!\n");
       exit(1);
@@ -24164,7 +25462,8 @@ const unsigned int &CMS3::evt_nels() {
 const vector<vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > > &CMS3::genps_lepdaughter_p4() {
   if (not genps_lepdaughter_p4_isLoaded) {
     if (genps_lepdaughter_p4_branch != 0) {
-      genps_lepdaughter_p4_branch->GetEntry(index);
+      if (genps_lepdaughter_p4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch genps_lepdaughter_p4_branch does not exist!\n");
       exit(1);
@@ -24176,7 +25475,8 @@ const vector<vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > >
 const vector<float> &CMS3::photons_hcalTowerSumEtBcConeDR03() {
   if (not photons_hcalTowerSumEtBcConeDR03_isLoaded) {
     if (photons_hcalTowerSumEtBcConeDR03_branch != 0) {
-      photons_hcalTowerSumEtBcConeDR03_branch->GetEntry(index);
+      if (photons_hcalTowerSumEtBcConeDR03_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_hcalTowerSumEtBcConeDR03_branch does not exist!\n");
       exit(1);
@@ -24188,7 +25488,8 @@ const vector<float> &CMS3::photons_hcalTowerSumEtBcConeDR03() {
 const vector<float> &CMS3::photons_scSeed2x5LeftRightAsym() {
   if (not photons_scSeed2x5LeftRightAsym_isLoaded) {
     if (photons_scSeed2x5LeftRightAsym_branch != 0) {
-      photons_scSeed2x5LeftRightAsym_branch->GetEntry(index);
+      if (photons_scSeed2x5LeftRightAsym_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_scSeed2x5LeftRightAsym_branch does not exist!\n");
       exit(1);
@@ -24200,7 +25501,8 @@ const vector<float> &CMS3::photons_scSeed2x5LeftRightAsym() {
 const float &CMS3::hcalnoise_minE2TS() {
   if (not hcalnoise_minE2TS_isLoaded) {
     if (hcalnoise_minE2TS_branch != 0) {
-      hcalnoise_minE2TS_branch->GetEntry(index);
+      if (hcalnoise_minE2TS_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_minE2TS_branch does not exist!\n");
       exit(1);
@@ -24212,7 +25514,8 @@ const float &CMS3::hcalnoise_minE2TS() {
 const int &CMS3::pdfinfo_id1() {
   if (not pdfinfo_id1_isLoaded) {
     if (pdfinfo_id1_branch != 0) {
-      pdfinfo_id1_branch->GetEntry(index);
+      if (pdfinfo_id1_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pdfinfo_id1_branch does not exist!\n");
       exit(1);
@@ -24224,7 +25527,8 @@ const int &CMS3::pdfinfo_id1() {
 const vector<float> &CMS3::mus_bs3d() {
   if (not mus_bs3d_isLoaded) {
     if (mus_bs3d_branch != 0) {
-      mus_bs3d_branch->GetEntry(index);
+      if (mus_bs3d_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_bs3d_branch does not exist!\n");
       exit(1);
@@ -24236,7 +25540,8 @@ const vector<float> &CMS3::mus_bs3d() {
 const vector<float> &CMS3::pfjets_puppi_neutralHadronE() {
   if (not pfjets_puppi_neutralHadronE_isLoaded) {
     if (pfjets_puppi_neutralHadronE_branch != 0) {
-      pfjets_puppi_neutralHadronE_branch->GetEntry(index);
+      if (pfjets_puppi_neutralHadronE_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_puppi_neutralHadronE_branch does not exist!\n");
       exit(1);
@@ -24248,7 +25553,8 @@ const vector<float> &CMS3::pfjets_puppi_neutralHadronE() {
 const int &CMS3::evt_bsType() {
   if (not evt_bsType_isLoaded) {
     if (evt_bsType_branch != 0) {
-      evt_bsType_branch->GetEntry(index);
+      if (evt_bsType_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_bsType_branch does not exist!\n");
       exit(1);
@@ -24260,7 +25566,8 @@ const int &CMS3::evt_bsType() {
 const vector<float> &CMS3::mus_ndof() {
   if (not mus_ndof_isLoaded) {
     if (mus_ndof_branch != 0) {
-      mus_ndof_branch->GetEntry(index);
+      if (mus_ndof_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_ndof_branch does not exist!\n");
       exit(1);
@@ -24272,7 +25579,8 @@ const vector<float> &CMS3::mus_ndof() {
 const vector<float> &CMS3::photons_scSeedCryIx() {
   if (not photons_scSeedCryIx_isLoaded) {
     if (photons_scSeedCryIx_branch != 0) {
-      photons_scSeedCryIx_branch->GetEntry(index);
+      if (photons_scSeedCryIx_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_scSeedCryIx_branch does not exist!\n");
       exit(1);
@@ -24284,7 +25592,8 @@ const vector<float> &CMS3::photons_scSeedCryIx() {
 const vector<float> &CMS3::mus_miniIso_uncor() {
   if (not mus_miniIso_uncor_isLoaded) {
     if (mus_miniIso_uncor_branch != 0) {
-      mus_miniIso_uncor_branch->GetEntry(index);
+      if (mus_miniIso_uncor_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_miniIso_uncor_branch does not exist!\n");
       exit(1);
@@ -24296,7 +25605,8 @@ const vector<float> &CMS3::mus_miniIso_uncor() {
 const vector<float> &CMS3::photons_scSeedCryEta() {
   if (not photons_scSeedCryEta_isLoaded) {
     if (photons_scSeedCryEta_branch != 0) {
-      photons_scSeedCryEta_branch->GetEntry(index);
+      if (photons_scSeedCryEta_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_scSeedCryEta_branch does not exist!\n");
       exit(1);
@@ -24308,7 +25618,8 @@ const vector<float> &CMS3::photons_scSeedCryEta() {
 const vector<float> &CMS3::els_scSeedCryX() {
   if (not els_scSeedCryX_isLoaded) {
     if (els_scSeedCryX_branch != 0) {
-      els_scSeedCryX_branch->GetEntry(index);
+      if (els_scSeedCryX_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_scSeedCryX_branch does not exist!\n");
       exit(1);
@@ -24320,7 +25631,8 @@ const vector<float> &CMS3::els_scSeedCryX() {
 const vector<float> &CMS3::photons_scR() {
   if (not photons_scR_isLoaded) {
     if (photons_scR_branch != 0) {
-      photons_scR_branch->GetEntry(index);
+      if (photons_scR_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_scR_branch does not exist!\n");
       exit(1);
@@ -24332,7 +25644,8 @@ const vector<float> &CMS3::photons_scR() {
 const vector<float> &CMS3::photons_ecalPFClusterIso() {
   if (not photons_ecalPFClusterIso_isLoaded) {
     if (photons_ecalPFClusterIso_branch != 0) {
-      photons_ecalPFClusterIso_branch->GetEntry(index);
+      if (photons_ecalPFClusterIso_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_ecalPFClusterIso_branch does not exist!\n");
       exit(1);
@@ -24344,7 +25657,8 @@ const vector<float> &CMS3::photons_ecalPFClusterIso() {
 const vector<float> &CMS3::els_sigmaEtaEta_full5x5() {
   if (not els_sigmaEtaEta_full5x5_isLoaded) {
     if (els_sigmaEtaEta_full5x5_branch != 0) {
-      els_sigmaEtaEta_full5x5_branch->GetEntry(index);
+      if (els_sigmaEtaEta_full5x5_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_sigmaEtaEta_full5x5_branch does not exist!\n");
       exit(1);
@@ -24356,7 +25670,8 @@ const vector<float> &CMS3::els_sigmaEtaEta_full5x5() {
 const vector<int> &CMS3::pfjets_photonMultiplicity() {
   if (not pfjets_photonMultiplicity_isLoaded) {
     if (pfjets_photonMultiplicity_branch != 0) {
-      pfjets_photonMultiplicity_branch->GetEntry(index);
+      if (pfjets_photonMultiplicity_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_photonMultiplicity_branch does not exist!\n");
       exit(1);
@@ -24368,7 +25683,8 @@ const vector<int> &CMS3::pfjets_photonMultiplicity() {
 const vector<float> &CMS3::els_scSeedCryIphi() {
   if (not els_scSeedCryIphi_isLoaded) {
     if (els_scSeedCryIphi_branch != 0) {
-      els_scSeedCryIphi_branch->GetEntry(index);
+      if (els_scSeedCryIphi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_scSeedCryIphi_branch does not exist!\n");
       exit(1);
@@ -24380,7 +25696,8 @@ const vector<float> &CMS3::els_scSeedCryIphi() {
 const unsigned int &CMS3::mus_HLT_Mu10_CentralPFJet30_BTagCSV0p5PF_MuonLeg_version() {
   if (not mus_HLT_Mu10_CentralPFJet30_BTagCSV0p5PF_MuonLeg_version_isLoaded) {
     if (mus_HLT_Mu10_CentralPFJet30_BTagCSV0p5PF_MuonLeg_version_branch != 0) {
-      mus_HLT_Mu10_CentralPFJet30_BTagCSV0p5PF_MuonLeg_version_branch->GetEntry(index);
+      if (mus_HLT_Mu10_CentralPFJet30_BTagCSV0p5PF_MuonLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu10_CentralPFJet30_BTagCSV0p5PF_MuonLeg_version_branch does not exist!\n");
       exit(1);
@@ -24392,7 +25709,8 @@ const unsigned int &CMS3::mus_HLT_Mu10_CentralPFJet30_BTagCSV0p5PF_MuonLeg_versi
 const vector<vector<float> > &CMS3::photons_clusterRawEnergy() {
   if (not photons_clusterRawEnergy_isLoaded) {
     if (photons_clusterRawEnergy_branch != 0) {
-      photons_clusterRawEnergy_branch->GetEntry(index);
+      if (photons_clusterRawEnergy_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_clusterRawEnergy_branch does not exist!\n");
       exit(1);
@@ -24404,7 +25722,8 @@ const vector<vector<float> > &CMS3::photons_clusterRawEnergy() {
 const vector<int> &CMS3::mus_pid_PFMuon() {
   if (not mus_pid_PFMuon_isLoaded) {
     if (mus_pid_PFMuon_branch != 0) {
-      mus_pid_PFMuon_branch->GetEntry(index);
+      if (mus_pid_PFMuon_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_pid_PFMuon_branch does not exist!\n");
       exit(1);
@@ -24416,7 +25735,8 @@ const vector<int> &CMS3::mus_pid_PFMuon() {
 const vector<float> &CMS3::mus_isoR03_pf_PhotonEt() {
   if (not mus_isoR03_pf_PhotonEt_isLoaded) {
     if (mus_isoR03_pf_PhotonEt_branch != 0) {
-      mus_isoR03_pf_PhotonEt_branch->GetEntry(index);
+      if (mus_isoR03_pf_PhotonEt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isoR03_pf_PhotonEt_branch does not exist!\n");
       exit(1);
@@ -24428,7 +25748,8 @@ const vector<float> &CMS3::mus_isoR03_pf_PhotonEt() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::taus_pf_lead_chargecand_p4() {
   if (not taus_pf_lead_chargecand_p4_isLoaded) {
     if (taus_pf_lead_chargecand_p4_branch != 0) {
-      taus_pf_lead_chargecand_p4_branch->GetEntry(index);
+      if (taus_pf_lead_chargecand_p4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch taus_pf_lead_chargecand_p4_branch does not exist!\n");
       exit(1);
@@ -24440,7 +25761,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::t
 const vector<int> &CMS3::pfjets_METToolbox_electronMultiplicity() {
   if (not pfjets_METToolbox_electronMultiplicity_isLoaded) {
     if (pfjets_METToolbox_electronMultiplicity_branch != 0) {
-      pfjets_METToolbox_electronMultiplicity_branch->GetEntry(index);
+      if (pfjets_METToolbox_electronMultiplicity_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_METToolbox_electronMultiplicity_branch does not exist!\n");
       exit(1);
@@ -24452,7 +25774,8 @@ const vector<int> &CMS3::pfjets_METToolbox_electronMultiplicity() {
 const vector<float> &CMS3::mus_sta_qoverp() {
   if (not mus_sta_qoverp_isLoaded) {
     if (mus_sta_qoverp_branch != 0) {
-      mus_sta_qoverp_branch->GetEntry(index);
+      if (mus_sta_qoverp_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_sta_qoverp_branch does not exist!\n");
       exit(1);
@@ -24464,7 +25787,8 @@ const vector<float> &CMS3::mus_sta_qoverp() {
 const vector<float> &CMS3::photons_scSeedE2x5Left() {
   if (not photons_scSeedE2x5Left_isLoaded) {
     if (photons_scSeedE2x5Left_branch != 0) {
-      photons_scSeedE2x5Left_branch->GetEntry(index);
+      if (photons_scSeedE2x5Left_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_scSeedE2x5Left_branch does not exist!\n");
       exit(1);
@@ -24476,7 +25800,8 @@ const vector<float> &CMS3::photons_scSeedE2x5Left() {
 const unsigned int &CMS3::els_HLT_Mu17_Ele8_version() {
   if (not els_HLT_Mu17_Ele8_version_isLoaded) {
     if (els_HLT_Mu17_Ele8_version_branch != 0) {
-      els_HLT_Mu17_Ele8_version_branch->GetEntry(index);
+      if (els_HLT_Mu17_Ele8_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Mu17_Ele8_version_branch does not exist!\n");
       exit(1);
@@ -24488,7 +25813,8 @@ const unsigned int &CMS3::els_HLT_Mu17_Ele8_version() {
 const vector<int> &CMS3::mus_nlayers() {
   if (not mus_nlayers_isLoaded) {
     if (mus_nlayers_branch != 0) {
-      mus_nlayers_branch->GetEntry(index);
+      if (mus_nlayers_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_nlayers_branch does not exist!\n");
       exit(1);
@@ -24500,7 +25826,8 @@ const vector<int> &CMS3::mus_nlayers() {
 const vector<int> &CMS3::els_valid_pixelhits() {
   if (not els_valid_pixelhits_isLoaded) {
     if (els_valid_pixelhits_branch != 0) {
-      els_valid_pixelhits_branch->GetEntry(index);
+      if (els_valid_pixelhits_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_valid_pixelhits_branch does not exist!\n");
       exit(1);
@@ -24512,7 +25839,8 @@ const vector<int> &CMS3::els_valid_pixelhits() {
 const vector<unsigned int> &CMS3::mus_HLT_Mu17_Mu8() {
   if (not mus_HLT_Mu17_Mu8_isLoaded) {
     if (mus_HLT_Mu17_Mu8_branch != 0) {
-      mus_HLT_Mu17_Mu8_branch->GetEntry(index);
+      if (mus_HLT_Mu17_Mu8_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_Mu8_branch does not exist!\n");
       exit(1);
@@ -24524,7 +25852,8 @@ const vector<unsigned int> &CMS3::mus_HLT_Mu17_Mu8() {
 const vector<int> &CMS3::mus_sta_exp_outerlayer() {
   if (not mus_sta_exp_outerlayer_isLoaded) {
     if (mus_sta_exp_outerlayer_branch != 0) {
-      mus_sta_exp_outerlayer_branch->GetEntry(index);
+      if (mus_sta_exp_outerlayer_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_sta_exp_outerlayer_branch does not exist!\n");
       exit(1);
@@ -24536,7 +25865,8 @@ const vector<int> &CMS3::mus_sta_exp_outerlayer() {
 const vector<unsigned int> &CMS3::mus_HLT_Mu10_CentralPFJet30_BTagCSV_p13_MuonLeg() {
   if (not mus_HLT_Mu10_CentralPFJet30_BTagCSV_p13_MuonLeg_isLoaded) {
     if (mus_HLT_Mu10_CentralPFJet30_BTagCSV_p13_MuonLeg_branch != 0) {
-      mus_HLT_Mu10_CentralPFJet30_BTagCSV_p13_MuonLeg_branch->GetEntry(index);
+      if (mus_HLT_Mu10_CentralPFJet30_BTagCSV_p13_MuonLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu10_CentralPFJet30_BTagCSV_p13_MuonLeg_branch does not exist!\n");
       exit(1);
@@ -24548,7 +25878,8 @@ const vector<unsigned int> &CMS3::mus_HLT_Mu10_CentralPFJet30_BTagCSV_p13_MuonLe
 const float &CMS3::hcalnoise_maxE2Over10TS() {
   if (not hcalnoise_maxE2Over10TS_isLoaded) {
     if (hcalnoise_maxE2Over10TS_branch != 0) {
-      hcalnoise_maxE2Over10TS_branch->GetEntry(index);
+      if (hcalnoise_maxE2Over10TS_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_maxE2Over10TS_branch does not exist!\n");
       exit(1);
@@ -24560,7 +25891,8 @@ const float &CMS3::hcalnoise_maxE2Over10TS() {
 const vector<int> &CMS3::mus_pid_TMLastStationLoose() {
   if (not mus_pid_TMLastStationLoose_isLoaded) {
     if (mus_pid_TMLastStationLoose_branch != 0) {
-      mus_pid_TMLastStationLoose_branch->GetEntry(index);
+      if (mus_pid_TMLastStationLoose_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_pid_TMLastStationLoose_branch does not exist!\n");
       exit(1);
@@ -24572,7 +25904,8 @@ const vector<int> &CMS3::mus_pid_TMLastStationLoose() {
 const vector<float> &CMS3::photons_ntkIsoHollow04() {
   if (not photons_ntkIsoHollow04_isLoaded) {
     if (photons_ntkIsoHollow04_branch != 0) {
-      photons_ntkIsoHollow04_branch->GetEntry(index);
+      if (photons_ntkIsoHollow04_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_ntkIsoHollow04_branch does not exist!\n");
       exit(1);
@@ -24584,7 +25917,8 @@ const vector<float> &CMS3::photons_ntkIsoHollow04() {
 const vector<unsigned int> &CMS3::mus_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_MuonLeg() {
   if (not mus_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_MuonLeg_isLoaded) {
     if (mus_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_MuonLeg_branch != 0) {
-      mus_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_MuonLeg_branch->GetEntry(index);
+      if (mus_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_MuonLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_MuonLeg_branch does not exist!\n");
       exit(1);
@@ -24596,7 +25930,8 @@ const vector<unsigned int> &CMS3::mus_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT30
 const vector<float> &CMS3::puInfo_trueNumInteractions() {
   if (not puInfo_trueNumInteractions_isLoaded) {
     if (puInfo_trueNumInteractions_branch != 0) {
-      puInfo_trueNumInteractions_branch->GetEntry(index);
+      if (puInfo_trueNumInteractions_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch puInfo_trueNumInteractions_branch does not exist!\n");
       exit(1);
@@ -24608,7 +25943,8 @@ const vector<float> &CMS3::puInfo_trueNumInteractions() {
 const vector<unsigned int> &CMS3::els_HLT_Ele27_WP80() {
   if (not els_HLT_Ele27_WP80_isLoaded) {
     if (els_HLT_Ele27_WP80_branch != 0) {
-      els_HLT_Ele27_WP80_branch->GetEntry(index);
+      if (els_HLT_Ele27_WP80_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele27_WP80_branch does not exist!\n");
       exit(1);
@@ -24620,7 +25956,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele27_WP80() {
 const vector<TString> &CMS3::pfjets_puppi_bDiscriminatorNames() {
   if (not pfjets_puppi_bDiscriminatorNames_isLoaded) {
     if (pfjets_puppi_bDiscriminatorNames_branch != 0) {
-      pfjets_puppi_bDiscriminatorNames_branch->GetEntry(index);
+      if (pfjets_puppi_bDiscriminatorNames_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_puppi_bDiscriminatorNames_branch does not exist!\n");
       exit(1);
@@ -24632,7 +25969,8 @@ const vector<TString> &CMS3::pfjets_puppi_bDiscriminatorNames() {
 const vector<float> &CMS3::mus_iso05_emEt() {
   if (not mus_iso05_emEt_isLoaded) {
     if (mus_iso05_emEt_branch != 0) {
-      mus_iso05_emEt_branch->GetEntry(index);
+      if (mus_iso05_emEt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_iso05_emEt_branch does not exist!\n");
       exit(1);
@@ -24644,7 +25982,8 @@ const vector<float> &CMS3::mus_iso05_emEt() {
 const vector<unsigned int> &CMS3::els_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg() {
   if (not els_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_isLoaded) {
     if (els_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_branch != 0) {
-      els_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_branch->GetEntry(index);
+      if (els_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_ElectronLeg_branch does not exist!\n");
       exit(1);
@@ -24656,7 +25995,8 @@ const vector<unsigned int> &CMS3::els_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_
 const vector<int> &CMS3::els_VIDNonTrigMvaCat() {
   if (not els_VIDNonTrigMvaCat_isLoaded) {
     if (els_VIDNonTrigMvaCat_branch != 0) {
-      els_VIDNonTrigMvaCat_branch->GetEntry(index);
+      if (els_VIDNonTrigMvaCat_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_VIDNonTrigMvaCat_branch does not exist!\n");
       exit(1);
@@ -24668,7 +26008,8 @@ const vector<int> &CMS3::els_VIDNonTrigMvaCat() {
 const int &CMS3::evt_orbitNumber() {
   if (not evt_orbitNumber_isLoaded) {
     if (evt_orbitNumber_branch != 0) {
-      evt_orbitNumber_branch->GetEntry(index);
+      if (evt_orbitNumber_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_orbitNumber_branch does not exist!\n");
       exit(1);
@@ -24680,7 +26021,8 @@ const int &CMS3::evt_orbitNumber() {
 const vector<int> &CMS3::hyp_lt_id() {
   if (not hyp_lt_id_isLoaded) {
     if (hyp_lt_id_branch != 0) {
-      hyp_lt_id_branch->GetEntry(index);
+      if (hyp_lt_id_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hyp_lt_id_branch does not exist!\n");
       exit(1);
@@ -24692,7 +26034,8 @@ const vector<int> &CMS3::hyp_lt_id() {
 const float &CMS3::evt_puppi_pfmet_PhotonEnUp() {
   if (not evt_puppi_pfmet_PhotonEnUp_isLoaded) {
     if (evt_puppi_pfmet_PhotonEnUp_branch != 0) {
-      evt_puppi_pfmet_PhotonEnUp_branch->GetEntry(index);
+      if (evt_puppi_pfmet_PhotonEnUp_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_puppi_pfmet_PhotonEnUp_branch does not exist!\n");
       exit(1);
@@ -24704,7 +26047,8 @@ const float &CMS3::evt_puppi_pfmet_PhotonEnUp() {
 const vector<vector<float> > &CMS3::puInfo_instLumi() {
   if (not puInfo_instLumi_isLoaded) {
     if (puInfo_instLumi_branch != 0) {
-      puInfo_instLumi_branch->GetEntry(index);
+      if (puInfo_instLumi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch puInfo_instLumi_branch does not exist!\n");
       exit(1);
@@ -24716,7 +26060,8 @@ const vector<vector<float> > &CMS3::puInfo_instLumi() {
 const int &CMS3::evt_isRealData() {
   if (not evt_isRealData_isLoaded) {
     if (evt_isRealData_branch != 0) {
-      evt_isRealData_branch->GetEntry(index);
+      if (evt_isRealData_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_isRealData_branch does not exist!\n");
       exit(1);
@@ -24728,7 +26073,8 @@ const int &CMS3::evt_isRealData() {
 const vector<float> &CMS3::svs_xError() {
   if (not svs_xError_isLoaded) {
     if (svs_xError_branch != 0) {
-      svs_xError_branch->GetEntry(index);
+      if (svs_xError_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch svs_xError_branch does not exist!\n");
       exit(1);
@@ -24740,7 +26086,8 @@ const vector<float> &CMS3::svs_xError() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::els_p4Out() {
   if (not els_p4Out_isLoaded) {
     if (els_p4Out_branch != 0) {
-      els_p4Out_branch->GetEntry(index);
+      if (els_p4Out_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_p4Out_branch does not exist!\n");
       exit(1);
@@ -24752,7 +26099,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::e
 const float &CMS3::evt_fixgridfastjet_allcalo_rho() {
   if (not evt_fixgridfastjet_allcalo_rho_isLoaded) {
     if (evt_fixgridfastjet_allcalo_rho_branch != 0) {
-      evt_fixgridfastjet_allcalo_rho_branch->GetEntry(index);
+      if (evt_fixgridfastjet_allcalo_rho_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_fixgridfastjet_allcalo_rho_branch does not exist!\n");
       exit(1);
@@ -24764,7 +26112,8 @@ const float &CMS3::evt_fixgridfastjet_allcalo_rho() {
 const vector<float> &CMS3::mus_isoMeanDRR04_pf_ChargedHadronPt() {
   if (not mus_isoMeanDRR04_pf_ChargedHadronPt_isLoaded) {
     if (mus_isoMeanDRR04_pf_ChargedHadronPt_branch != 0) {
-      mus_isoMeanDRR04_pf_ChargedHadronPt_branch->GetEntry(index);
+      if (mus_isoMeanDRR04_pf_ChargedHadronPt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isoMeanDRR04_pf_ChargedHadronPt_branch does not exist!\n");
       exit(1);
@@ -24776,7 +26125,8 @@ const vector<float> &CMS3::mus_isoMeanDRR04_pf_ChargedHadronPt() {
 const float &CMS3::evt_puppi_pfmetPhi_JetResDown() {
   if (not evt_puppi_pfmetPhi_JetResDown_isLoaded) {
     if (evt_puppi_pfmetPhi_JetResDown_branch != 0) {
-      evt_puppi_pfmetPhi_JetResDown_branch->GetEntry(index);
+      if (evt_puppi_pfmetPhi_JetResDown_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_puppi_pfmetPhi_JetResDown_branch does not exist!\n");
       exit(1);
@@ -24788,7 +26138,8 @@ const float &CMS3::evt_puppi_pfmetPhi_JetResDown() {
 const float &CMS3::evt_xsec_excl() {
   if (not evt_xsec_excl_isLoaded) {
     if (evt_xsec_excl_branch != 0) {
-      evt_xsec_excl_branch->GetEntry(index);
+      if (evt_xsec_excl_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_xsec_excl_branch does not exist!\n");
       exit(1);
@@ -24800,7 +26151,8 @@ const float &CMS3::evt_xsec_excl() {
 const vector<float> &CMS3::photons_clusterMaxDRRawEnergy() {
   if (not photons_clusterMaxDRRawEnergy_isLoaded) {
     if (photons_clusterMaxDRRawEnergy_branch != 0) {
-      photons_clusterMaxDRRawEnergy_branch->GetEntry(index);
+      if (photons_clusterMaxDRRawEnergy_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_clusterMaxDRRawEnergy_branch does not exist!\n");
       exit(1);
@@ -24812,7 +26164,8 @@ const vector<float> &CMS3::photons_clusterMaxDRRawEnergy() {
 const vector<float> &CMS3::photons_scSeedERight() {
   if (not photons_scSeedERight_isLoaded) {
     if (photons_scSeedERight_branch != 0) {
-      photons_scSeedERight_branch->GetEntry(index);
+      if (photons_scSeedERight_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_scSeedERight_branch does not exist!\n");
       exit(1);
@@ -24824,7 +26177,8 @@ const vector<float> &CMS3::photons_scSeedERight() {
 const vector<int> &CMS3::photons_photonID_tight() {
   if (not photons_photonID_tight_isLoaded) {
     if (photons_photonID_tight_branch != 0) {
-      photons_photonID_tight_branch->GetEntry(index);
+      if (photons_photonID_tight_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_photonID_tight_branch does not exist!\n");
       exit(1);
@@ -24836,7 +26190,8 @@ const vector<int> &CMS3::photons_photonID_tight() {
 const vector<float> &CMS3::mus_gfit_phiErr() {
   if (not mus_gfit_phiErr_isLoaded) {
     if (mus_gfit_phiErr_branch != 0) {
-      mus_gfit_phiErr_branch->GetEntry(index);
+      if (mus_gfit_phiErr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_gfit_phiErr_branch does not exist!\n");
       exit(1);
@@ -24848,7 +26203,8 @@ const vector<float> &CMS3::mus_gfit_phiErr() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::hyp_ll_p4() {
   if (not hyp_ll_p4_isLoaded) {
     if (hyp_ll_p4_branch != 0) {
-      hyp_ll_p4_branch->GetEntry(index);
+      if (hyp_ll_p4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hyp_ll_p4_branch does not exist!\n");
       exit(1);
@@ -24860,7 +26216,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::h
 const vector<unsigned int> &CMS3::photons_HLT_Photon165_R9Id90_HE10_IsoM() {
   if (not photons_HLT_Photon165_R9Id90_HE10_IsoM_isLoaded) {
     if (photons_HLT_Photon165_R9Id90_HE10_IsoM_branch != 0) {
-      photons_HLT_Photon165_R9Id90_HE10_IsoM_branch->GetEntry(index);
+      if (photons_HLT_Photon165_R9Id90_HE10_IsoM_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_HLT_Photon165_R9Id90_HE10_IsoM_branch does not exist!\n");
       exit(1);
@@ -24872,7 +26229,8 @@ const vector<unsigned int> &CMS3::photons_HLT_Photon165_R9Id90_HE10_IsoM() {
 const vector<float> &CMS3::mus_isoMeanDRR04_pf_NeutralHadronEtHighThreshold() {
   if (not mus_isoMeanDRR04_pf_NeutralHadronEtHighThreshold_isLoaded) {
     if (mus_isoMeanDRR04_pf_NeutralHadronEtHighThreshold_branch != 0) {
-      mus_isoMeanDRR04_pf_NeutralHadronEtHighThreshold_branch->GetEntry(index);
+      if (mus_isoMeanDRR04_pf_NeutralHadronEtHighThreshold_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isoMeanDRR04_pf_NeutralHadronEtHighThreshold_branch does not exist!\n");
       exit(1);
@@ -24884,7 +26242,8 @@ const vector<float> &CMS3::mus_isoMeanDRR04_pf_NeutralHadronEtHighThreshold() {
 const vector<int> &CMS3::mus_gfit_exp_innerlayer() {
   if (not mus_gfit_exp_innerlayer_isLoaded) {
     if (mus_gfit_exp_innerlayer_branch != 0) {
-      mus_gfit_exp_innerlayer_branch->GetEntry(index);
+      if (mus_gfit_exp_innerlayer_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_gfit_exp_innerlayer_branch does not exist!\n");
       exit(1);
@@ -24896,7 +26255,8 @@ const vector<int> &CMS3::mus_gfit_exp_innerlayer() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::ak8jets_softdropPuppiSubjet2() {
   if (not ak8jets_softdropPuppiSubjet2_isLoaded) {
     if (ak8jets_softdropPuppiSubjet2_branch != 0) {
-      ak8jets_softdropPuppiSubjet2_branch->GetEntry(index);
+      if (ak8jets_softdropPuppiSubjet2_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_softdropPuppiSubjet2_branch does not exist!\n");
       exit(1);
@@ -24908,7 +26268,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::a
 const vector<float> &CMS3::mus_isoR04_pf_PUPt() {
   if (not mus_isoR04_pf_PUPt_isLoaded) {
     if (mus_isoR04_pf_PUPt_branch != 0) {
-      mus_isoR04_pf_PUPt_branch->GetEntry(index);
+      if (mus_isoR04_pf_PUPt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isoR04_pf_PUPt_branch does not exist!\n");
       exit(1);
@@ -24920,7 +26281,8 @@ const vector<float> &CMS3::mus_isoR04_pf_PUPt() {
 const vector<int> &CMS3::els_type() {
   if (not els_type_isLoaded) {
     if (els_type_branch != 0) {
-      els_type_branch->GetEntry(index);
+      if (els_type_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_type_branch does not exist!\n");
       exit(1);
@@ -24932,7 +26294,8 @@ const vector<int> &CMS3::els_type() {
 const vector<float> &CMS3::mus_isoR04_pf_NeutralHadronEtHighThreshold() {
   if (not mus_isoR04_pf_NeutralHadronEtHighThreshold_isLoaded) {
     if (mus_isoR04_pf_NeutralHadronEtHighThreshold_branch != 0) {
-      mus_isoR04_pf_NeutralHadronEtHighThreshold_branch->GetEntry(index);
+      if (mus_isoR04_pf_NeutralHadronEtHighThreshold_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isoR04_pf_NeutralHadronEtHighThreshold_branch does not exist!\n");
       exit(1);
@@ -24944,7 +26307,8 @@ const vector<float> &CMS3::mus_isoR04_pf_NeutralHadronEtHighThreshold() {
 const unsigned int &CMS3::els_HLT_Ele32_eta2p1_WPTight_Gsf_version() {
   if (not els_HLT_Ele32_eta2p1_WPTight_Gsf_version_isLoaded) {
     if (els_HLT_Ele32_eta2p1_WPTight_Gsf_version_branch != 0) {
-      els_HLT_Ele32_eta2p1_WPTight_Gsf_version_branch->GetEntry(index);
+      if (els_HLT_Ele32_eta2p1_WPTight_Gsf_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele32_eta2p1_WPTight_Gsf_version_branch does not exist!\n");
       exit(1);
@@ -24956,7 +26320,8 @@ const unsigned int &CMS3::els_HLT_Ele32_eta2p1_WPTight_Gsf_version() {
 const vector<unsigned int> &CMS3::els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg() {
   if (not els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_isLoaded) {
     if (els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_branch != 0) {
-      els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_branch->GetEntry(index);
+      if (els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg_branch does not exist!\n");
       exit(1);
@@ -24968,7 +26333,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele25WP60_Ele8_Mass55_LeadingLeg() {
 const vector<float> &CMS3::ak8jets_softdropMass() {
   if (not ak8jets_softdropMass_isLoaded) {
     if (ak8jets_softdropMass_branch != 0) {
-      ak8jets_softdropMass_branch->GetEntry(index);
+      if (ak8jets_softdropMass_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_softdropMass_branch does not exist!\n");
       exit(1);
@@ -24980,7 +26346,8 @@ const vector<float> &CMS3::ak8jets_softdropMass() {
 const vector<bool> &CMS3::els_passingPflowPreselection() {
   if (not els_passingPflowPreselection_isLoaded) {
     if (els_passingPflowPreselection_branch != 0) {
-      els_passingPflowPreselection_branch->GetEntry(index);
+      if (els_passingPflowPreselection_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_passingPflowPreselection_branch does not exist!\n");
       exit(1);
@@ -24992,7 +26359,8 @@ const vector<bool> &CMS3::els_passingPflowPreselection() {
 const vector<float> &CMS3::els_dPhiIn() {
   if (not els_dPhiIn_isLoaded) {
     if (els_dPhiIn_branch != 0) {
-      els_dPhiIn_branch->GetEntry(index);
+      if (els_dPhiIn_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_dPhiIn_branch does not exist!\n");
       exit(1);
@@ -25004,7 +26372,8 @@ const vector<float> &CMS3::els_dPhiIn() {
 const vector<float> &CMS3::mus_ecal_time() {
   if (not mus_ecal_time_isLoaded) {
     if (mus_ecal_time_branch != 0) {
-      mus_ecal_time_branch->GetEntry(index);
+      if (mus_ecal_time_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_ecal_time_branch does not exist!\n");
       exit(1);
@@ -25016,7 +26385,8 @@ const vector<float> &CMS3::mus_ecal_time() {
 const vector<float> &CMS3::photons_scSeedEBottom() {
   if (not photons_scSeedEBottom_isLoaded) {
     if (photons_scSeedEBottom_branch != 0) {
-      photons_scSeedEBottom_branch->GetEntry(index);
+      if (photons_scSeedEBottom_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_scSeedEBottom_branch does not exist!\n");
       exit(1);
@@ -25028,7 +26398,8 @@ const vector<float> &CMS3::photons_scSeedEBottom() {
 const vector<float> &CMS3::mus_isoR04_pf_PhotonEt() {
   if (not mus_isoR04_pf_PhotonEt_isLoaded) {
     if (mus_isoR04_pf_PhotonEt_branch != 0) {
-      mus_isoR04_pf_PhotonEt_branch->GetEntry(index);
+      if (mus_isoR04_pf_PhotonEt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_isoR04_pf_PhotonEt_branch does not exist!\n");
       exit(1);
@@ -25040,7 +26411,8 @@ const vector<float> &CMS3::mus_isoR04_pf_PhotonEt() {
 const TBits &CMS3::hlt_bits() {
   if (not hlt_bits_isLoaded) {
     if (hlt_bits_branch != 0) {
-      hlt_bits_branch->GetEntry(index);
+      if (hlt_bits_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hlt_bits_branch does not exist!\n");
       exit(1);
@@ -25052,7 +26424,8 @@ const TBits &CMS3::hlt_bits() {
 const vector<int> &CMS3::pfjets_puppi_chargedMultiplicity() {
   if (not pfjets_puppi_chargedMultiplicity_isLoaded) {
     if (pfjets_puppi_chargedMultiplicity_branch != 0) {
-      pfjets_puppi_chargedMultiplicity_branch->GetEntry(index);
+      if (pfjets_puppi_chargedMultiplicity_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_puppi_chargedMultiplicity_branch does not exist!\n");
       exit(1);
@@ -25064,7 +26437,8 @@ const vector<int> &CMS3::pfjets_puppi_chargedMultiplicity() {
 const int &CMS3::hcalnoise_numTriangleNoiseChannels() {
   if (not hcalnoise_numTriangleNoiseChannels_isLoaded) {
     if (hcalnoise_numTriangleNoiseChannels_branch != 0) {
-      hcalnoise_numTriangleNoiseChannels_branch->GetEntry(index);
+      if (hcalnoise_numTriangleNoiseChannels_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_numTriangleNoiseChannels_branch does not exist!\n");
       exit(1);
@@ -25076,7 +26450,8 @@ const int &CMS3::hcalnoise_numTriangleNoiseChannels() {
 const vector<float> &CMS3::mus_sta_z0() {
   if (not mus_sta_z0_isLoaded) {
     if (mus_sta_z0_branch != 0) {
-      mus_sta_z0_branch->GetEntry(index);
+      if (mus_sta_z0_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_sta_z0_branch does not exist!\n");
       exit(1);
@@ -25088,7 +26463,8 @@ const vector<float> &CMS3::mus_sta_z0() {
 const vector<float> &CMS3::mus_e_hadS9() {
   if (not mus_e_hadS9_isLoaded) {
     if (mus_e_hadS9_branch != 0) {
-      mus_e_hadS9_branch->GetEntry(index);
+      if (mus_e_hadS9_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_e_hadS9_branch does not exist!\n");
       exit(1);
@@ -25100,7 +26476,8 @@ const vector<float> &CMS3::mus_e_hadS9() {
 const vector<int> &CMS3::els_N_PSClusters() {
   if (not els_N_PSClusters_isLoaded) {
     if (els_N_PSClusters_branch != 0) {
-      els_N_PSClusters_branch->GetEntry(index);
+      if (els_N_PSClusters_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_N_PSClusters_branch does not exist!\n");
       exit(1);
@@ -25112,7 +26489,8 @@ const vector<int> &CMS3::els_N_PSClusters() {
 const vector<float> &CMS3::mus_gfit_ptErr() {
   if (not mus_gfit_ptErr_isLoaded) {
     if (mus_gfit_ptErr_branch != 0) {
-      mus_gfit_ptErr_branch->GetEntry(index);
+      if (mus_gfit_ptErr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_gfit_ptErr_branch does not exist!\n");
       exit(1);
@@ -25124,7 +26502,8 @@ const vector<float> &CMS3::mus_gfit_ptErr() {
 const vector<int> &CMS3::els_nlayers() {
   if (not els_nlayers_isLoaded) {
     if (els_nlayers_branch != 0) {
-      els_nlayers_branch->GetEntry(index);
+      if (els_nlayers_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_nlayers_branch does not exist!\n");
       exit(1);
@@ -25136,7 +26515,8 @@ const vector<int> &CMS3::els_nlayers() {
 const float &CMS3::hcalnoise_GetRecHitEnergy() {
   if (not hcalnoise_GetRecHitEnergy_isLoaded) {
     if (hcalnoise_GetRecHitEnergy_branch != 0) {
-      hcalnoise_GetRecHitEnergy_branch->GetEntry(index);
+      if (hcalnoise_GetRecHitEnergy_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_GetRecHitEnergy_branch does not exist!\n");
       exit(1);
@@ -25148,7 +26528,8 @@ const float &CMS3::hcalnoise_GetRecHitEnergy() {
 const int &CMS3::hcalnoise_maxHPDNoOtherHits() {
   if (not hcalnoise_maxHPDNoOtherHits_isLoaded) {
     if (hcalnoise_maxHPDNoOtherHits_branch != 0) {
-      hcalnoise_maxHPDNoOtherHits_branch->GetEntry(index);
+      if (hcalnoise_maxHPDNoOtherHits_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_maxHPDNoOtherHits_branch does not exist!\n");
       exit(1);
@@ -25160,7 +26541,8 @@ const int &CMS3::hcalnoise_maxHPDNoOtherHits() {
 const vector<float> &CMS3::els_VIDTrigMvaValue() {
   if (not els_VIDTrigMvaValue_isLoaded) {
     if (els_VIDTrigMvaValue_branch != 0) {
-      els_VIDTrigMvaValue_branch->GetEntry(index);
+      if (els_VIDTrigMvaValue_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_VIDTrigMvaValue_branch does not exist!\n");
       exit(1);
@@ -25172,7 +26554,8 @@ const vector<float> &CMS3::els_VIDTrigMvaValue() {
 const vector<vector<float> > &CMS3::mus_stationShowerSizeT() {
   if (not mus_stationShowerSizeT_isLoaded) {
     if (mus_stationShowerSizeT_branch != 0) {
-      mus_stationShowerSizeT_branch->GetEntry(index);
+      if (mus_stationShowerSizeT_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_stationShowerSizeT_branch does not exist!\n");
       exit(1);
@@ -25184,7 +26567,8 @@ const vector<vector<float> > &CMS3::mus_stationShowerSizeT() {
 const vector<vector<int> > &CMS3::els_clusterInDynDPhi() {
   if (not els_clusterInDynDPhi_isLoaded) {
     if (els_clusterInDynDPhi_branch != 0) {
-      els_clusterInDynDPhi_branch->GetEntry(index);
+      if (els_clusterInDynDPhi_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_clusterInDynDPhi_branch does not exist!\n");
       exit(1);
@@ -25196,7 +26580,8 @@ const vector<vector<int> > &CMS3::els_clusterInDynDPhi() {
 const vector<float> &CMS3::els_d0Err() {
   if (not els_d0Err_isLoaded) {
     if (els_d0Err_branch != 0) {
-      els_d0Err_branch->GetEntry(index);
+      if (els_d0Err_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_d0Err_branch does not exist!\n");
       exit(1);
@@ -25208,7 +26593,8 @@ const vector<float> &CMS3::els_d0Err() {
 const float &CMS3::evt_pfmet_PhotonEnDown() {
   if (not evt_pfmet_PhotonEnDown_isLoaded) {
     if (evt_pfmet_PhotonEnDown_branch != 0) {
-      evt_pfmet_PhotonEnDown_branch->GetEntry(index);
+      if (evt_pfmet_PhotonEnDown_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_pfmet_PhotonEnDown_branch does not exist!\n");
       exit(1);
@@ -25220,7 +26606,8 @@ const float &CMS3::evt_pfmet_PhotonEnDown() {
 const vector<int> &CMS3::pfjets_puppi_chargedHadronMultiplicity() {
   if (not pfjets_puppi_chargedHadronMultiplicity_isLoaded) {
     if (pfjets_puppi_chargedHadronMultiplicity_branch != 0) {
-      pfjets_puppi_chargedHadronMultiplicity_branch->GetEntry(index);
+      if (pfjets_puppi_chargedHadronMultiplicity_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_puppi_chargedHadronMultiplicity_branch does not exist!\n");
       exit(1);
@@ -25232,7 +26619,8 @@ const vector<int> &CMS3::pfjets_puppi_chargedHadronMultiplicity() {
 const vector<int> &CMS3::mus_goodmask() {
   if (not mus_goodmask_isLoaded) {
     if (mus_goodmask_branch != 0) {
-      mus_goodmask_branch->GetEntry(index);
+      if (mus_goodmask_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_goodmask_branch does not exist!\n");
       exit(1);
@@ -25244,7 +26632,8 @@ const vector<int> &CMS3::mus_goodmask() {
 const vector<float> &CMS3::els_VIDNonTrigMvaValue() {
   if (not els_VIDNonTrigMvaValue_isLoaded) {
     if (els_VIDNonTrigMvaValue_branch != 0) {
-      els_VIDNonTrigMvaValue_branch->GetEntry(index);
+      if (els_VIDNonTrigMvaValue_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_VIDNonTrigMvaValue_branch does not exist!\n");
       exit(1);
@@ -25256,7 +26645,8 @@ const vector<float> &CMS3::els_VIDNonTrigMvaValue() {
 const float &CMS3::evt_pfmetPhi_UnclusteredEnDown() {
   if (not evt_pfmetPhi_UnclusteredEnDown_isLoaded) {
     if (evt_pfmetPhi_UnclusteredEnDown_branch != 0) {
-      evt_pfmetPhi_UnclusteredEnDown_branch->GetEntry(index);
+      if (evt_pfmetPhi_UnclusteredEnDown_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_pfmetPhi_UnclusteredEnDown_branch does not exist!\n");
       exit(1);
@@ -25268,7 +26658,8 @@ const float &CMS3::evt_pfmetPhi_UnclusteredEnDown() {
 const float &CMS3::genps_weight() {
   if (not genps_weight_isLoaded) {
     if (genps_weight_branch != 0) {
-      genps_weight_branch->GetEntry(index);
+      if (genps_weight_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch genps_weight_branch does not exist!\n");
       exit(1);
@@ -25280,7 +26671,8 @@ const float &CMS3::genps_weight() {
 const float &CMS3::evt_pfmet_PhotonEnUp() {
   if (not evt_pfmet_PhotonEnUp_isLoaded) {
     if (evt_pfmet_PhotonEnUp_branch != 0) {
-      evt_pfmet_PhotonEnUp_branch->GetEntry(index);
+      if (evt_pfmet_PhotonEnUp_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_pfmet_PhotonEnUp_branch does not exist!\n");
       exit(1);
@@ -25292,7 +26684,8 @@ const float &CMS3::evt_pfmet_PhotonEnUp() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::photons_p4() {
   if (not photons_p4_isLoaded) {
     if (photons_p4_branch != 0) {
-      photons_p4_branch->GetEntry(index);
+      if (photons_p4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_p4_branch does not exist!\n");
       exit(1);
@@ -25304,7 +26697,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::p
 const vector<unsigned int> &CMS3::els_HLT_Ele5_SC5_JPsi_Mass2to4p5() {
   if (not els_HLT_Ele5_SC5_JPsi_Mass2to4p5_isLoaded) {
     if (els_HLT_Ele5_SC5_JPsi_Mass2to4p5_branch != 0) {
-      els_HLT_Ele5_SC5_JPsi_Mass2to4p5_branch->GetEntry(index);
+      if (els_HLT_Ele5_SC5_JPsi_Mass2to4p5_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele5_SC5_JPsi_Mass2to4p5_branch does not exist!\n");
       exit(1);
@@ -25316,7 +26710,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele5_SC5_JPsi_Mass2to4p5() {
 const vector<int> &CMS3::puInfo_nPUvertices() {
   if (not puInfo_nPUvertices_isLoaded) {
     if (puInfo_nPUvertices_branch != 0) {
-      puInfo_nPUvertices_branch->GetEntry(index);
+      if (puInfo_nPUvertices_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch puInfo_nPUvertices_branch does not exist!\n");
       exit(1);
@@ -25328,7 +26723,8 @@ const vector<int> &CMS3::puInfo_nPUvertices() {
 const float &CMS3::evt_pfmetPhi_JetEnDown() {
   if (not evt_pfmetPhi_JetEnDown_isLoaded) {
     if (evt_pfmetPhi_JetEnDown_branch != 0) {
-      evt_pfmetPhi_JetEnDown_branch->GetEntry(index);
+      if (evt_pfmetPhi_JetEnDown_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_pfmetPhi_JetEnDown_branch does not exist!\n");
       exit(1);
@@ -25340,7 +26736,8 @@ const float &CMS3::evt_pfmetPhi_JetEnDown() {
 const float &CMS3::evt_fixgrid_rho_ctr() {
   if (not evt_fixgrid_rho_ctr_isLoaded) {
     if (evt_fixgrid_rho_ctr_branch != 0) {
-      evt_fixgrid_rho_ctr_branch->GetEntry(index);
+      if (evt_fixgrid_rho_ctr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_fixgrid_rho_ctr_branch does not exist!\n");
       exit(1);
@@ -25352,7 +26749,8 @@ const float &CMS3::evt_fixgrid_rho_ctr() {
 const vector<float> &CMS3::els_tkIso04() {
   if (not els_tkIso04_isLoaded) {
     if (els_tkIso04_branch != 0) {
-      els_tkIso04_branch->GetEntry(index);
+      if (els_tkIso04_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_tkIso04_branch does not exist!\n");
       exit(1);
@@ -25364,7 +26762,8 @@ const vector<float> &CMS3::els_tkIso04() {
 const float &CMS3::evt_bs_YwidthErr() {
   if (not evt_bs_YwidthErr_isLoaded) {
     if (evt_bs_YwidthErr_branch != 0) {
-      evt_bs_YwidthErr_branch->GetEntry(index);
+      if (evt_bs_YwidthErr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_bs_YwidthErr_branch does not exist!\n");
       exit(1);
@@ -25376,7 +26775,8 @@ const float &CMS3::evt_bs_YwidthErr() {
 const vector<unsigned char> &CMS3::pfcands_fromPV() {
   if (not pfcands_fromPV_isLoaded) {
     if (pfcands_fromPV_branch != 0) {
-      pfcands_fromPV_branch->GetEntry(index);
+      if (pfcands_fromPV_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfcands_fromPV_branch does not exist!\n");
       exit(1);
@@ -25388,7 +26788,8 @@ const vector<unsigned char> &CMS3::pfcands_fromPV() {
 const vector<unsigned int> &CMS3::photons_HLT_Photon120_R9Id90_HE10_IsoM() {
   if (not photons_HLT_Photon120_R9Id90_HE10_IsoM_isLoaded) {
     if (photons_HLT_Photon120_R9Id90_HE10_IsoM_branch != 0) {
-      photons_HLT_Photon120_R9Id90_HE10_IsoM_branch->GetEntry(index);
+      if (photons_HLT_Photon120_R9Id90_HE10_IsoM_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_HLT_Photon120_R9Id90_HE10_IsoM_branch does not exist!\n");
       exit(1);
@@ -25400,7 +26801,8 @@ const vector<unsigned int> &CMS3::photons_HLT_Photon120_R9Id90_HE10_IsoM() {
 const vector<vector<int> > &CMS3::photons_PFCand_idx() {
   if (not photons_PFCand_idx_isLoaded) {
     if (photons_PFCand_idx_branch != 0) {
-      photons_PFCand_idx_branch->GetEntry(index);
+      if (photons_PFCand_idx_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_PFCand_idx_branch does not exist!\n");
       exit(1);
@@ -25412,7 +26814,8 @@ const vector<vector<int> > &CMS3::photons_PFCand_idx() {
 const int &CMS3::hcalnoise_noiseFilterStatus() {
   if (not hcalnoise_noiseFilterStatus_isLoaded) {
     if (hcalnoise_noiseFilterStatus_branch != 0) {
-      hcalnoise_noiseFilterStatus_branch->GetEntry(index);
+      if (hcalnoise_noiseFilterStatus_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_noiseFilterStatus_branch does not exist!\n");
       exit(1);
@@ -25424,7 +26827,8 @@ const int &CMS3::hcalnoise_noiseFilterStatus() {
 const vector<int> &CMS3::pfjets_puppi_electronMultiplicity() {
   if (not pfjets_puppi_electronMultiplicity_isLoaded) {
     if (pfjets_puppi_electronMultiplicity_branch != 0) {
-      pfjets_puppi_electronMultiplicity_branch->GetEntry(index);
+      if (pfjets_puppi_electronMultiplicity_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_puppi_electronMultiplicity_branch does not exist!\n");
       exit(1);
@@ -25436,7 +26840,8 @@ const vector<int> &CMS3::pfjets_puppi_electronMultiplicity() {
 const vector<int> &CMS3::mus_nOverlaps() {
   if (not mus_nOverlaps_isLoaded) {
     if (mus_nOverlaps_branch != 0) {
-      mus_nOverlaps_branch->GetEntry(index);
+      if (mus_nOverlaps_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_nOverlaps_branch does not exist!\n");
       exit(1);
@@ -25448,7 +26853,8 @@ const vector<int> &CMS3::mus_nOverlaps() {
 const vector<float> &CMS3::els_scSeedELeft() {
   if (not els_scSeedELeft_isLoaded) {
     if (els_scSeedELeft_branch != 0) {
-      els_scSeedELeft_branch->GetEntry(index);
+      if (els_scSeedELeft_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_scSeedELeft_branch does not exist!\n");
       exit(1);
@@ -25460,7 +26866,8 @@ const vector<float> &CMS3::els_scSeedELeft() {
 const float &CMS3::evt_puppi_pfmetPhi_UnclusteredEnDown() {
   if (not evt_puppi_pfmetPhi_UnclusteredEnDown_isLoaded) {
     if (evt_puppi_pfmetPhi_UnclusteredEnDown_branch != 0) {
-      evt_puppi_pfmetPhi_UnclusteredEnDown_branch->GetEntry(index);
+      if (evt_puppi_pfmetPhi_UnclusteredEnDown_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_puppi_pfmetPhi_UnclusteredEnDown_branch does not exist!\n");
       exit(1);
@@ -25472,7 +26879,8 @@ const float &CMS3::evt_puppi_pfmetPhi_UnclusteredEnDown() {
 const vector<float> &CMS3::photons_full5x5_e2x5Max() {
   if (not photons_full5x5_e2x5Max_isLoaded) {
     if (photons_full5x5_e2x5Max_branch != 0) {
-      photons_full5x5_e2x5Max_branch->GetEntry(index);
+      if (photons_full5x5_e2x5Max_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_full5x5_e2x5Max_branch does not exist!\n");
       exit(1);
@@ -25484,7 +26892,8 @@ const vector<float> &CMS3::photons_full5x5_e2x5Max() {
 const vector<vector<float> > &CMS3::taus_pf_IDs() {
   if (not taus_pf_IDs_isLoaded) {
     if (taus_pf_IDs_branch != 0) {
-      taus_pf_IDs_branch->GetEntry(index);
+      if (taus_pf_IDs_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch taus_pf_IDs_branch does not exist!\n");
       exit(1);
@@ -25496,7 +26905,8 @@ const vector<vector<float> > &CMS3::taus_pf_IDs() {
 const unsigned int &CMS3::els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg_version() {
   if (not els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg_version_isLoaded) {
     if (els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg_version_branch != 0) {
-      els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg_version_branch->GetEntry(index);
+      if (els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_ElectronLeg_version_branch does not exist!\n");
       exit(1);
@@ -25508,7 +26918,8 @@ const unsigned int &CMS3::els_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_Ele
 const vector<int> &CMS3::els_lostHits() {
   if (not els_lostHits_isLoaded) {
     if (els_lostHits_branch != 0) {
-      els_lostHits_branch->GetEntry(index);
+      if (els_lostHits_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_lostHits_branch does not exist!\n");
       exit(1);
@@ -25520,7 +26931,8 @@ const vector<int> &CMS3::els_lostHits() {
 const vector<int> &CMS3::pfcands_particleId() {
   if (not pfcands_particleId_isLoaded) {
     if (pfcands_particleId_branch != 0) {
-      pfcands_particleId_branch->GetEntry(index);
+      if (pfcands_particleId_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfcands_particleId_branch does not exist!\n");
       exit(1);
@@ -25532,7 +26944,8 @@ const vector<int> &CMS3::pfcands_particleId() {
 const vector<int> &CMS3::mus_timeDirection() {
   if (not mus_timeDirection_isLoaded) {
     if (mus_timeDirection_branch != 0) {
-      mus_timeDirection_branch->GetEntry(index);
+      if (mus_timeDirection_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_timeDirection_branch does not exist!\n");
       exit(1);
@@ -25544,7 +26957,8 @@ const vector<int> &CMS3::mus_timeDirection() {
 const vector<float> &CMS3::els_ip2derr() {
   if (not els_ip2derr_isLoaded) {
     if (els_ip2derr_branch != 0) {
-      els_ip2derr_branch->GetEntry(index);
+      if (els_ip2derr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_ip2derr_branch does not exist!\n");
       exit(1);
@@ -25556,7 +26970,8 @@ const vector<float> &CMS3::els_ip2derr() {
 const vector<int> &CMS3::pfjets_mc3idx() {
   if (not pfjets_mc3idx_isLoaded) {
     if (pfjets_mc3idx_branch != 0) {
-      pfjets_mc3idx_branch->GetEntry(index);
+      if (pfjets_mc3idx_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_mc3idx_branch does not exist!\n");
       exit(1);
@@ -25568,7 +26983,8 @@ const vector<int> &CMS3::pfjets_mc3idx() {
 const vector<unsigned int> &CMS3::els_HLT_Ele27_WP80_L1sL1SingleEG20ORL1SingleEG22() {
   if (not els_HLT_Ele27_WP80_L1sL1SingleEG20ORL1SingleEG22_isLoaded) {
     if (els_HLT_Ele27_WP80_L1sL1SingleEG20ORL1SingleEG22_branch != 0) {
-      els_HLT_Ele27_WP80_L1sL1SingleEG20ORL1SingleEG22_branch->GetEntry(index);
+      if (els_HLT_Ele27_WP80_L1sL1SingleEG20ORL1SingleEG22_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele27_WP80_L1sL1SingleEG20ORL1SingleEG22_branch does not exist!\n");
       exit(1);
@@ -25580,7 +26996,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele27_WP80_L1sL1SingleEG20ORL1SingleEG
 const vector<int> &CMS3::mus_sta_validPixelHits() {
   if (not mus_sta_validPixelHits_isLoaded) {
     if (mus_sta_validPixelHits_branch != 0) {
-      mus_sta_validPixelHits_branch->GetEntry(index);
+      if (mus_sta_validPixelHits_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_sta_validPixelHits_branch does not exist!\n");
       exit(1);
@@ -25592,7 +27009,8 @@ const vector<int> &CMS3::mus_sta_validPixelHits() {
 const float &CMS3::hcalnoise_minE10TS() {
   if (not hcalnoise_minE10TS_isLoaded) {
     if (hcalnoise_minE10TS_branch != 0) {
-      hcalnoise_minE10TS_branch->GetEntry(index);
+      if (hcalnoise_minE10TS_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_minE10TS_branch does not exist!\n");
       exit(1);
@@ -25604,7 +27022,8 @@ const float &CMS3::hcalnoise_minE10TS() {
 const vector<float> &CMS3::photons_full5x5_hOverE() {
   if (not photons_full5x5_hOverE_isLoaded) {
     if (photons_full5x5_hOverE_branch != 0) {
-      photons_full5x5_hOverE_branch->GetEntry(index);
+      if (photons_full5x5_hOverE_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_full5x5_hOverE_branch does not exist!\n");
       exit(1);
@@ -25616,7 +27035,8 @@ const vector<float> &CMS3::photons_full5x5_hOverE() {
 const unsigned int &CMS3::els_HLT_Ele32_SC17_Mass50_LeadingLeg_version() {
   if (not els_HLT_Ele32_SC17_Mass50_LeadingLeg_version_isLoaded) {
     if (els_HLT_Ele32_SC17_Mass50_LeadingLeg_version_branch != 0) {
-      els_HLT_Ele32_SC17_Mass50_LeadingLeg_version_branch->GetEntry(index);
+      if (els_HLT_Ele32_SC17_Mass50_LeadingLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele32_SC17_Mass50_LeadingLeg_version_branch does not exist!\n");
       exit(1);
@@ -25628,7 +27048,8 @@ const unsigned int &CMS3::els_HLT_Ele32_SC17_Mass50_LeadingLeg_version() {
 const vector<int> &CMS3::photons_mc3_id() {
   if (not photons_mc3_id_isLoaded) {
     if (photons_mc3_id_branch != 0) {
-      photons_mc3_id_branch->GetEntry(index);
+      if (photons_mc3_id_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_mc3_id_branch does not exist!\n");
       exit(1);
@@ -25640,7 +27061,8 @@ const vector<int> &CMS3::photons_mc3_id() {
 const vector<float> &CMS3::mus_sta_d0phiCov() {
   if (not mus_sta_d0phiCov_isLoaded) {
     if (mus_sta_d0phiCov_branch != 0) {
-      mus_sta_d0phiCov_branch->GetEntry(index);
+      if (mus_sta_d0phiCov_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_sta_d0phiCov_branch does not exist!\n");
       exit(1);
@@ -25652,7 +27074,8 @@ const vector<float> &CMS3::mus_sta_d0phiCov() {
 const vector<float> &CMS3::photons_neutralHadronIso() {
   if (not photons_neutralHadronIso_isLoaded) {
     if (photons_neutralHadronIso_branch != 0) {
-      photons_neutralHadronIso_branch->GetEntry(index);
+      if (photons_neutralHadronIso_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_neutralHadronIso_branch does not exist!\n");
       exit(1);
@@ -25664,7 +27087,8 @@ const vector<float> &CMS3::photons_neutralHadronIso() {
 const unsigned int &CMS3::els_HLT_Ele27_WP80_L1sL1SingleEG20ORL1SingleEG22_version() {
   if (not els_HLT_Ele27_WP80_L1sL1SingleEG20ORL1SingleEG22_version_isLoaded) {
     if (els_HLT_Ele27_WP80_L1sL1SingleEG20ORL1SingleEG22_version_branch != 0) {
-      els_HLT_Ele27_WP80_L1sL1SingleEG20ORL1SingleEG22_version_branch->GetEntry(index);
+      if (els_HLT_Ele27_WP80_L1sL1SingleEG20ORL1SingleEG22_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele27_WP80_L1sL1SingleEG20ORL1SingleEG22_version_branch does not exist!\n");
       exit(1);
@@ -25676,7 +27100,8 @@ const unsigned int &CMS3::els_HLT_Ele27_WP80_L1sL1SingleEG20ORL1SingleEG22_versi
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::els_vertex_p4() {
   if (not els_vertex_p4_isLoaded) {
     if (els_vertex_p4_branch != 0) {
-      els_vertex_p4_branch->GetEntry(index);
+      if (els_vertex_p4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_vertex_p4_branch does not exist!\n");
       exit(1);
@@ -25688,7 +27113,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::e
 const vector<int> &CMS3::mus_timeNumStationsUsed() {
   if (not mus_timeNumStationsUsed_isLoaded) {
     if (mus_timeNumStationsUsed_branch != 0) {
-      mus_timeNumStationsUsed_branch->GetEntry(index);
+      if (mus_timeNumStationsUsed_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_timeNumStationsUsed_branch does not exist!\n");
       exit(1);
@@ -25700,7 +27126,8 @@ const vector<int> &CMS3::mus_timeNumStationsUsed() {
 const unsigned int &CMS3::els_HLT_Ele27_eta2p1_WPTight_Gsf_version() {
   if (not els_HLT_Ele27_eta2p1_WPTight_Gsf_version_isLoaded) {
     if (els_HLT_Ele27_eta2p1_WPTight_Gsf_version_branch != 0) {
-      els_HLT_Ele27_eta2p1_WPTight_Gsf_version_branch->GetEntry(index);
+      if (els_HLT_Ele27_eta2p1_WPTight_Gsf_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele27_eta2p1_WPTight_Gsf_version_branch does not exist!\n");
       exit(1);
@@ -25712,7 +27139,8 @@ const unsigned int &CMS3::els_HLT_Ele27_eta2p1_WPTight_Gsf_version() {
 const vector<int> &CMS3::els_mc3_motherid() {
   if (not els_mc3_motherid_isLoaded) {
     if (els_mc3_motherid_branch != 0) {
-      els_mc3_motherid_branch->GetEntry(index);
+      if (els_mc3_motherid_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_mc3_motherid_branch does not exist!\n");
       exit(1);
@@ -25724,7 +27152,8 @@ const vector<int> &CMS3::els_mc3_motherid() {
 const float &CMS3::evt_pfmet_ElectronEnUp() {
   if (not evt_pfmet_ElectronEnUp_isLoaded) {
     if (evt_pfmet_ElectronEnUp_branch != 0) {
-      evt_pfmet_ElectronEnUp_branch->GetEntry(index);
+      if (evt_pfmet_ElectronEnUp_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_pfmet_ElectronEnUp_branch does not exist!\n");
       exit(1);
@@ -25736,7 +27165,8 @@ const float &CMS3::evt_pfmet_ElectronEnUp() {
 const float &CMS3::evt_pfmet_raw() {
   if (not evt_pfmet_raw_isLoaded) {
     if (evt_pfmet_raw_branch != 0) {
-      evt_pfmet_raw_branch->GetEntry(index);
+      if (evt_pfmet_raw_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_pfmet_raw_branch does not exist!\n");
       exit(1);
@@ -25748,7 +27178,8 @@ const float &CMS3::evt_pfmet_raw() {
 const float &CMS3::evt_muegclean_pfmet_raw() {
   if (not evt_muegclean_pfmet_raw_isLoaded) {
     if (evt_muegclean_pfmet_raw_branch != 0) {
-      evt_muegclean_pfmet_raw_branch->GetEntry(index);
+      if (evt_muegclean_pfmet_raw_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_muegclean_pfmet_raw_branch does not exist!\n");
       exit(1);
@@ -25760,7 +27191,8 @@ const float &CMS3::evt_muegclean_pfmet_raw() {
 const float &CMS3::evt_muegclean_pfmet() {
   if (not evt_muegclean_pfmet_isLoaded) {
     if (evt_muegclean_pfmet_branch != 0) {
-      evt_muegclean_pfmet_branch->GetEntry(index);
+      if (evt_muegclean_pfmet_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_muegclean_pfmet_branch does not exist!\n");
       exit(1);
@@ -25772,7 +27204,8 @@ const float &CMS3::evt_muegclean_pfmet() {
 const float &CMS3::evt_muegcleanfix_pfmet() {
   if (not evt_muegcleanfix_pfmet_isLoaded) {
     if (evt_muegcleanfix_pfmet_branch != 0) {
-      evt_muegcleanfix_pfmet_branch->GetEntry(index);
+      if (evt_muegcleanfix_pfmet_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_muegcleanfix_pfmet_branch does not exist!\n");
       exit(1);
@@ -25784,7 +27217,8 @@ const float &CMS3::evt_muegcleanfix_pfmet() {
 const float &CMS3::evt_egclean_pfmet() {
   if (not evt_egclean_pfmet_isLoaded) {
     if (evt_egclean_pfmet_branch != 0) {
-      evt_egclean_pfmet_branch->GetEntry(index);
+      if (evt_egclean_pfmet_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_egclean_pfmet_branch does not exist!\n");
       exit(1);
@@ -25796,7 +27230,8 @@ const float &CMS3::evt_egclean_pfmet() {
 const float &CMS3::evt_uncorr_pfmet() {
   if (not evt_uncorr_pfmet_isLoaded) {
     if (evt_uncorr_pfmet_branch != 0) {
-      evt_uncorr_pfmet_branch->GetEntry(index);
+      if (evt_uncorr_pfmet_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_uncorr_pfmet_branch does not exist!\n");
       exit(1);
@@ -25808,7 +27243,8 @@ const float &CMS3::evt_uncorr_pfmet() {
 const vector<int> &CMS3::pfjets_neutralHadronMultiplicity() {
   if (not pfjets_neutralHadronMultiplicity_isLoaded) {
     if (pfjets_neutralHadronMultiplicity_branch != 0) {
-      pfjets_neutralHadronMultiplicity_branch->GetEntry(index);
+      if (pfjets_neutralHadronMultiplicity_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_neutralHadronMultiplicity_branch does not exist!\n");
       exit(1);
@@ -25820,7 +27256,8 @@ const vector<int> &CMS3::pfjets_neutralHadronMultiplicity() {
 const float &CMS3::hcalnoise_TS4TS5NoiseSumE() {
   if (not hcalnoise_TS4TS5NoiseSumE_isLoaded) {
     if (hcalnoise_TS4TS5NoiseSumE_branch != 0) {
-      hcalnoise_TS4TS5NoiseSumE_branch->GetEntry(index);
+      if (hcalnoise_TS4TS5NoiseSumE_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_TS4TS5NoiseSumE_branch does not exist!\n");
       exit(1);
@@ -25832,7 +27269,8 @@ const float &CMS3::hcalnoise_TS4TS5NoiseSumE() {
 const vector<int> &CMS3::mus_overlap1() {
   if (not mus_overlap1_isLoaded) {
     if (mus_overlap1_branch != 0) {
-      mus_overlap1_branch->GetEntry(index);
+      if (mus_overlap1_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_overlap1_branch does not exist!\n");
       exit(1);
@@ -25844,7 +27282,8 @@ const vector<int> &CMS3::mus_overlap1() {
 const vector<float> &CMS3::svs_dist3Dsig() {
   if (not svs_dist3Dsig_isLoaded) {
     if (svs_dist3Dsig_branch != 0) {
-      svs_dist3Dsig_branch->GetEntry(index);
+      if (svs_dist3Dsig_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch svs_dist3Dsig_branch does not exist!\n");
       exit(1);
@@ -25856,7 +27295,8 @@ const vector<float> &CMS3::svs_dist3Dsig() {
 const unsigned int &CMS3::els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_LeadingLeg_version() {
   if (not els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_LeadingLeg_version_isLoaded) {
     if (els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_LeadingLeg_version_branch != 0) {
-      els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_LeadingLeg_version_branch->GetEntry(index);
+      if (els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_LeadingLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_LeadingLeg_version_branch does not exist!\n");
       exit(1);
@@ -25868,7 +27308,8 @@ const unsigned int &CMS3::els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_LeadingLeg_
 const vector<float> &CMS3::mus_ip3d() {
   if (not mus_ip3d_isLoaded) {
     if (mus_ip3d_branch != 0) {
-      mus_ip3d_branch->GetEntry(index);
+      if (mus_ip3d_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_ip3d_branch does not exist!\n");
       exit(1);
@@ -25880,7 +27321,8 @@ const vector<float> &CMS3::mus_ip3d() {
 const float &CMS3::evt_puppi_pfmet_JetEnUp() {
   if (not evt_puppi_pfmet_JetEnUp_isLoaded) {
     if (evt_puppi_pfmet_JetEnUp_branch != 0) {
-      evt_puppi_pfmet_JetEnUp_branch->GetEntry(index);
+      if (evt_puppi_pfmet_JetEnUp_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_puppi_pfmet_JetEnUp_branch does not exist!\n");
       exit(1);
@@ -25892,7 +27334,8 @@ const float &CMS3::evt_puppi_pfmet_JetEnUp() {
 const unsigned int &CMS3::els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_version() {
   if (not els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_version_isLoaded) {
     if (els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_version_branch != 0) {
-      els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_version_branch->GetEntry(index);
+      if (els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_version_branch does not exist!\n");
       exit(1);
@@ -25904,7 +27347,8 @@ const unsigned int &CMS3::els_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_version() {
 const vector<float> &CMS3::mus_gfit_etaErr() {
   if (not mus_gfit_etaErr_isLoaded) {
     if (mus_gfit_etaErr_branch != 0) {
-      mus_gfit_etaErr_branch->GetEntry(index);
+      if (mus_gfit_etaErr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_gfit_etaErr_branch does not exist!\n");
       exit(1);
@@ -25916,7 +27360,8 @@ const vector<float> &CMS3::mus_gfit_etaErr() {
 const vector<float> &CMS3::photons_scSeedETop() {
   if (not photons_scSeedETop_isLoaded) {
     if (photons_scSeedETop_branch != 0) {
-      photons_scSeedETop_branch->GetEntry(index);
+      if (photons_scSeedETop_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_scSeedETop_branch does not exist!\n");
       exit(1);
@@ -25928,7 +27373,8 @@ const vector<float> &CMS3::photons_scSeedETop() {
 const float &CMS3::evt_pfmet_JetResUp() {
   if (not evt_pfmet_JetResUp_isLoaded) {
     if (evt_pfmet_JetResUp_branch != 0) {
-      evt_pfmet_JetResUp_branch->GetEntry(index);
+      if (evt_pfmet_JetResUp_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_pfmet_JetResUp_branch does not exist!\n");
       exit(1);
@@ -25940,7 +27386,8 @@ const float &CMS3::evt_pfmet_JetResUp() {
 const vector<int> &CMS3::els_passVIDTrigMvaWP90Id() {
   if (not els_passVIDTrigMvaWP90Id_isLoaded) {
     if (els_passVIDTrigMvaWP90Id_branch != 0) {
-      els_passVIDTrigMvaWP90Id_branch->GetEntry(index);
+      if (els_passVIDTrigMvaWP90Id_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_passVIDTrigMvaWP90Id_branch does not exist!\n");
       exit(1);
@@ -25952,7 +27399,8 @@ const vector<int> &CMS3::els_passVIDTrigMvaWP90Id() {
 const vector<unsigned int> &CMS3::els_HLT_Ele18_CaloIdM_TrackIdM_PFJet30_ElectronLeg() {
   if (not els_HLT_Ele18_CaloIdM_TrackIdM_PFJet30_ElectronLeg_isLoaded) {
     if (els_HLT_Ele18_CaloIdM_TrackIdM_PFJet30_ElectronLeg_branch != 0) {
-      els_HLT_Ele18_CaloIdM_TrackIdM_PFJet30_ElectronLeg_branch->GetEntry(index);
+      if (els_HLT_Ele18_CaloIdM_TrackIdM_PFJet30_ElectronLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele18_CaloIdM_TrackIdM_PFJet30_ElectronLeg_branch does not exist!\n");
       exit(1);
@@ -25964,7 +27412,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele18_CaloIdM_TrackIdM_PFJet30_Electro
 const vector<int> &CMS3::els_class() {
   if (not els_class_isLoaded) {
     if (els_class_branch != 0) {
-      els_class_branch->GetEntry(index);
+      if (els_class_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_class_branch does not exist!\n");
       exit(1);
@@ -25976,7 +27425,8 @@ const vector<int> &CMS3::els_class() {
 const float &CMS3::evt_pfmet_MuonEnUp() {
   if (not evt_pfmet_MuonEnUp_isLoaded) {
     if (evt_pfmet_MuonEnUp_branch != 0) {
-      evt_pfmet_MuonEnUp_branch->GetEntry(index);
+      if (evt_pfmet_MuonEnUp_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_pfmet_MuonEnUp_branch does not exist!\n");
       exit(1);
@@ -25988,7 +27438,8 @@ const float &CMS3::evt_pfmet_MuonEnUp() {
 const vector<float> &CMS3::evt_bs_covMatrix() {
   if (not evt_bs_covMatrix_isLoaded) {
     if (evt_bs_covMatrix_branch != 0) {
-      evt_bs_covMatrix_branch->GetEntry(index);
+      if (evt_bs_covMatrix_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_bs_covMatrix_branch does not exist!\n");
       exit(1);
@@ -26000,7 +27451,8 @@ const vector<float> &CMS3::evt_bs_covMatrix() {
 const vector<float> &CMS3::mus_timeAtIpOutInErr() {
   if (not mus_timeAtIpOutInErr_isLoaded) {
     if (mus_timeAtIpOutInErr_branch != 0) {
-      mus_timeAtIpOutInErr_branch->GetEntry(index);
+      if (mus_timeAtIpOutInErr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_timeAtIpOutInErr_branch does not exist!\n");
       exit(1);
@@ -26012,7 +27464,8 @@ const vector<float> &CMS3::mus_timeAtIpOutInErr() {
 const vector<int> &CMS3::els_VIDSpring16GPMvaCat() {
   if (not els_VIDSpring16GPMvaCat_isLoaded) {
     if (els_VIDSpring16GPMvaCat_branch != 0) {
-      els_VIDSpring16GPMvaCat_branch->GetEntry(index);
+      if (els_VIDSpring16GPMvaCat_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_VIDSpring16GPMvaCat_branch does not exist!\n");
       exit(1);
@@ -26024,7 +27477,8 @@ const vector<int> &CMS3::els_VIDSpring16GPMvaCat() {
 const unsigned int &CMS3::els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV0p54PF_ElectronLeg_version() {
   if (not els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV0p54PF_ElectronLeg_version_isLoaded) {
     if (els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV0p54PF_ElectronLeg_version_branch != 0) {
-      els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV0p54PF_ElectronLeg_version_branch->GetEntry(index);
+      if (els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV0p54PF_ElectronLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV0p54PF_ElectronLeg_version_branch does not exist!\n");
       exit(1);
@@ -26036,7 +27490,8 @@ const unsigned int &CMS3::els_HLT_Ele10_CaloIdM_TrackIdM_CentralPFJet30_BTagCSV0
 const vector<bool> &CMS3::photons_haspixelSeed() {
   if (not photons_haspixelSeed_isLoaded) {
     if (photons_haspixelSeed_branch != 0) {
-      photons_haspixelSeed_branch->GetEntry(index);
+      if (photons_haspixelSeed_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_haspixelSeed_branch does not exist!\n");
       exit(1);
@@ -26048,7 +27503,8 @@ const vector<bool> &CMS3::photons_haspixelSeed() {
 const vector<float> &CMS3::els_sigmaIPhiIPhi_full5x5() {
   if (not els_sigmaIPhiIPhi_full5x5_isLoaded) {
     if (els_sigmaIPhiIPhi_full5x5_branch != 0) {
-      els_sigmaIPhiIPhi_full5x5_branch->GetEntry(index);
+      if (els_sigmaIPhiIPhi_full5x5_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_sigmaIPhiIPhi_full5x5_branch does not exist!\n");
       exit(1);
@@ -26060,7 +27516,8 @@ const vector<float> &CMS3::els_sigmaIPhiIPhi_full5x5() {
 const bool &CMS3::hcalnoise_HasBadRBXTS4TS5() {
   if (not hcalnoise_HasBadRBXTS4TS5_isLoaded) {
     if (hcalnoise_HasBadRBXTS4TS5_branch != 0) {
-      hcalnoise_HasBadRBXTS4TS5_branch->GetEntry(index);
+      if (hcalnoise_HasBadRBXTS4TS5_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_HasBadRBXTS4TS5_branch does not exist!\n");
       exit(1);
@@ -26072,7 +27529,8 @@ const bool &CMS3::hcalnoise_HasBadRBXTS4TS5() {
 const vector<float> &CMS3::genps_iso() {
   if (not genps_iso_isLoaded) {
     if (genps_iso_branch != 0) {
-      genps_iso_branch->GetEntry(index);
+      if (genps_iso_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch genps_iso_branch does not exist!\n");
       exit(1);
@@ -26084,7 +27542,8 @@ const vector<float> &CMS3::genps_iso() {
 const vector<float> &CMS3::mus_hadMax() {
   if (not mus_hadMax_isLoaded) {
     if (mus_hadMax_branch != 0) {
-      mus_hadMax_branch->GetEntry(index);
+      if (mus_hadMax_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_hadMax_branch does not exist!\n");
       exit(1);
@@ -26096,7 +27555,8 @@ const vector<float> &CMS3::mus_hadMax() {
 const bool &CMS3::filt_trkPOG_logErrorTooManyClusters() {
   if (not filt_trkPOG_logErrorTooManyClusters_isLoaded) {
     if (filt_trkPOG_logErrorTooManyClusters_branch != 0) {
-      filt_trkPOG_logErrorTooManyClusters_branch->GetEntry(index);
+      if (filt_trkPOG_logErrorTooManyClusters_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch filt_trkPOG_logErrorTooManyClusters_branch does not exist!\n");
       exit(1);
@@ -26108,7 +27568,8 @@ const bool &CMS3::filt_trkPOG_logErrorTooManyClusters() {
 const vector<float> &CMS3::photons_full3x3_e3x3() {
   if (not photons_full3x3_e3x3_isLoaded) {
     if (photons_full3x3_e3x3_branch != 0) {
-      photons_full3x3_e3x3_branch->GetEntry(index);
+      if (photons_full3x3_e3x3_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_full3x3_e3x3_branch does not exist!\n");
       exit(1);
@@ -26120,7 +27581,8 @@ const vector<float> &CMS3::photons_full3x3_e3x3() {
 const vector<int> &CMS3::mus_mc3_motherid() {
   if (not mus_mc3_motherid_isLoaded) {
     if (mus_mc3_motherid_branch != 0) {
-      mus_mc3_motherid_branch->GetEntry(index);
+      if (mus_mc3_motherid_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_mc3_motherid_branch does not exist!\n");
       exit(1);
@@ -26132,7 +27594,8 @@ const vector<int> &CMS3::mus_mc3_motherid() {
 const vector<unsigned int> &CMS3::mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_LeadingLeg() {
   if (not mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_LeadingLeg_isLoaded) {
     if (mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_LeadingLeg_branch != 0) {
-      mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_LeadingLeg_branch->GetEntry(index);
+      if (mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_LeadingLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_LeadingLeg_branch does not exist!\n");
       exit(1);
@@ -26144,7 +27607,8 @@ const vector<unsigned int> &CMS3::mus_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_LeadingLe
 const vector<int> &CMS3::els_mc3_id() {
   if (not els_mc3_id_isLoaded) {
     if (els_mc3_id_branch != 0) {
-      els_mc3_id_branch->GetEntry(index);
+      if (els_mc3_id_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_mc3_id_branch does not exist!\n");
       exit(1);
@@ -26156,7 +27620,8 @@ const vector<int> &CMS3::els_mc3_id() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::els_p4In() {
   if (not els_p4In_isLoaded) {
     if (els_p4In_branch != 0) {
-      els_p4In_branch->GetEntry(index);
+      if (els_p4In_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_p4In_branch does not exist!\n");
       exit(1);
@@ -26168,7 +27633,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::e
 const vector<float> &CMS3::els_hcalPFClusterIso() {
   if (not els_hcalPFClusterIso_isLoaded) {
     if (els_hcalPFClusterIso_branch != 0) {
-      els_hcalPFClusterIso_branch->GetEntry(index);
+      if (els_hcalPFClusterIso_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_hcalPFClusterIso_branch does not exist!\n");
       exit(1);
@@ -26180,7 +27646,8 @@ const vector<float> &CMS3::els_hcalPFClusterIso() {
 const unsigned int &CMS3::mus_HLT_Mu10_CentralPFJet30_BTagCSV_p13_MuonLeg_version() {
   if (not mus_HLT_Mu10_CentralPFJet30_BTagCSV_p13_MuonLeg_version_isLoaded) {
     if (mus_HLT_Mu10_CentralPFJet30_BTagCSV_p13_MuonLeg_version_branch != 0) {
-      mus_HLT_Mu10_CentralPFJet30_BTagCSV_p13_MuonLeg_version_branch->GetEntry(index);
+      if (mus_HLT_Mu10_CentralPFJet30_BTagCSV_p13_MuonLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu10_CentralPFJet30_BTagCSV_p13_MuonLeg_version_branch does not exist!\n");
       exit(1);
@@ -26192,7 +27659,8 @@ const unsigned int &CMS3::mus_HLT_Mu10_CentralPFJet30_BTagCSV_p13_MuonLeg_versio
 const unsigned int &CMS3::els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_version() {
   if (not els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_version_isLoaded) {
     if (els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_version_branch != 0) {
-      els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_version_branch->GetEntry(index);
+      if (els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_version_branch does not exist!\n");
       exit(1);
@@ -26204,7 +27672,8 @@ const unsigned int &CMS3::els_HLT_Ele5_SC5_JPsi_Mass2to4p5_LeadingLeg_version() 
 const vector<int> &CMS3::mus_gfit_nlayers() {
   if (not mus_gfit_nlayers_isLoaded) {
     if (mus_gfit_nlayers_branch != 0) {
-      mus_gfit_nlayers_branch->GetEntry(index);
+      if (mus_gfit_nlayers_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_gfit_nlayers_branch does not exist!\n");
       exit(1);
@@ -26216,7 +27685,8 @@ const vector<int> &CMS3::mus_gfit_nlayers() {
 const bool &CMS3::filt_muonBadTrack() {
   if (not filt_muonBadTrack_isLoaded) {
     if (filt_muonBadTrack_branch != 0) {
-      filt_muonBadTrack_branch->GetEntry(index);
+      if (filt_muonBadTrack_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch filt_muonBadTrack_branch does not exist!\n");
       exit(1);
@@ -26228,7 +27698,8 @@ const bool &CMS3::filt_muonBadTrack() {
 const vector<float> &CMS3::ak8jets_filteredMass() {
   if (not ak8jets_filteredMass_isLoaded) {
     if (ak8jets_filteredMass_branch != 0) {
-      ak8jets_filteredMass_branch->GetEntry(index);
+      if (ak8jets_filteredMass_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_filteredMass_branch does not exist!\n");
       exit(1);
@@ -26240,7 +27711,8 @@ const vector<float> &CMS3::ak8jets_filteredMass() {
 const float &CMS3::evt_bs_Xwidth() {
   if (not evt_bs_Xwidth_isLoaded) {
     if (evt_bs_Xwidth_branch != 0) {
-      evt_bs_Xwidth_branch->GetEntry(index);
+      if (evt_bs_Xwidth_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_bs_Xwidth_branch does not exist!\n");
       exit(1);
@@ -26252,7 +27724,8 @@ const float &CMS3::evt_bs_Xwidth() {
 const vector<float> &CMS3::mus_sta_z0corr() {
   if (not mus_sta_z0corr_isLoaded) {
     if (mus_sta_z0corr_branch != 0) {
-      mus_sta_z0corr_branch->GetEntry(index);
+      if (mus_sta_z0corr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_sta_z0corr_branch does not exist!\n");
       exit(1);
@@ -26264,7 +27737,8 @@ const vector<float> &CMS3::mus_sta_z0corr() {
 const unsigned long long &CMS3::evt_nEvts_effective() {
   if (not evt_nEvts_effective_isLoaded) {
     if (evt_nEvts_effective_branch != 0) {
-      evt_nEvts_effective_branch->GetEntry(index);
+      if (evt_nEvts_effective_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_nEvts_effective_branch does not exist!\n");
       exit(1);
@@ -26276,7 +27750,8 @@ const unsigned long long &CMS3::evt_nEvts_effective() {
 const vector<float> &CMS3::els_etaSCwidth() {
   if (not els_etaSCwidth_isLoaded) {
     if (els_etaSCwidth_branch != 0) {
-      els_etaSCwidth_branch->GetEntry(index);
+      if (els_etaSCwidth_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_etaSCwidth_branch does not exist!\n");
       exit(1);
@@ -26288,7 +27763,8 @@ const vector<float> &CMS3::els_etaSCwidth() {
 const int &CMS3::hcalnoise_GetRecHitCount() {
   if (not hcalnoise_GetRecHitCount_isLoaded) {
     if (hcalnoise_GetRecHitCount_branch != 0) {
-      hcalnoise_GetRecHitCount_branch->GetEntry(index);
+      if (hcalnoise_GetRecHitCount_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_GetRecHitCount_branch does not exist!\n");
       exit(1);
@@ -26300,7 +27776,8 @@ const int &CMS3::hcalnoise_GetRecHitCount() {
 const vector<unsigned int> &CMS3::els_HLT_Ele12_CaloIdM_TrackIdM_PFJet30_ElectronLeg() {
   if (not els_HLT_Ele12_CaloIdM_TrackIdM_PFJet30_ElectronLeg_isLoaded) {
     if (els_HLT_Ele12_CaloIdM_TrackIdM_PFJet30_ElectronLeg_branch != 0) {
-      els_HLT_Ele12_CaloIdM_TrackIdM_PFJet30_ElectronLeg_branch->GetEntry(index);
+      if (els_HLT_Ele12_CaloIdM_TrackIdM_PFJet30_ElectronLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele12_CaloIdM_TrackIdM_PFJet30_ElectronLeg_branch does not exist!\n");
       exit(1);
@@ -26312,7 +27789,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele12_CaloIdM_TrackIdM_PFJet30_Electro
 const vector<unsigned int> &CMS3::mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL() {
   if (not mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_isLoaded) {
     if (mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_branch != 0) {
-      mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_branch->GetEntry(index);
+      if (mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_branch does not exist!\n");
       exit(1);
@@ -26324,7 +27802,8 @@ const vector<unsigned int> &CMS3::mus_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL() {
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::mus_trk_p4() {
   if (not mus_trk_p4_isLoaded) {
     if (mus_trk_p4_branch != 0) {
-      mus_trk_p4_branch->GetEntry(index);
+      if (mus_trk_p4_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_trk_p4_branch does not exist!\n");
       exit(1);
@@ -26336,7 +27815,8 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::m
 const unsigned int &CMS3::els_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg_version() {
   if (not els_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg_version_isLoaded) {
     if (els_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg_version_branch != 0) {
-      els_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg_version_branch->GetEntry(index);
+      if (els_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_ElectronLeg_version_branch does not exist!\n");
       exit(1);
@@ -26348,7 +27828,8 @@ const unsigned int &CMS3::els_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_Electr
 const unsigned int &CMS3::mus_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_TrailingLeg_version() {
   if (not mus_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_TrailingLeg_version_isLoaded) {
     if (mus_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_TrailingLeg_version_branch != 0) {
-      mus_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_TrailingLeg_version_branch->GetEntry(index);
+      if (mus_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_TrailingLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_TrailingLeg_version_branch does not exist!\n");
       exit(1);
@@ -26360,7 +27841,8 @@ const unsigned int &CMS3::mus_HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_TrailingLe
 const vector<int> &CMS3::els_isEB() {
   if (not els_isEB_isLoaded) {
     if (els_isEB_branch != 0) {
-      els_isEB_branch->GetEntry(index);
+      if (els_isEB_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_isEB_branch does not exist!\n");
       exit(1);
@@ -26372,7 +27854,8 @@ const vector<int> &CMS3::els_isEB() {
 const vector<int> &CMS3::els_passTightId() {
   if (not els_passTightId_isLoaded) {
     if (els_passTightId_branch != 0) {
-      els_passTightId_branch->GetEntry(index);
+      if (els_passTightId_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_passTightId_branch does not exist!\n");
       exit(1);
@@ -26384,7 +27867,8 @@ const vector<int> &CMS3::els_passTightId() {
 const float &CMS3::evt_fixgridfastjet_centralcalo_rho() {
   if (not evt_fixgridfastjet_centralcalo_rho_isLoaded) {
     if (evt_fixgridfastjet_centralcalo_rho_branch != 0) {
-      evt_fixgridfastjet_centralcalo_rho_branch->GetEntry(index);
+      if (evt_fixgridfastjet_centralcalo_rho_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_fixgridfastjet_centralcalo_rho_branch does not exist!\n");
       exit(1);
@@ -26396,7 +27880,8 @@ const float &CMS3::evt_fixgridfastjet_centralcalo_rho() {
 const vector<float> &CMS3::els_scSeedE2x5Top() {
   if (not els_scSeedE2x5Top_isLoaded) {
     if (els_scSeedE2x5Top_branch != 0) {
-      els_scSeedE2x5Top_branch->GetEntry(index);
+      if (els_scSeedE2x5Top_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_scSeedE2x5Top_branch does not exist!\n");
       exit(1);
@@ -26408,7 +27893,8 @@ const vector<float> &CMS3::els_scSeedE2x5Top() {
 const vector<float> &CMS3::els_clusterMaxDRRawEnergy() {
   if (not els_clusterMaxDRRawEnergy_isLoaded) {
     if (els_clusterMaxDRRawEnergy_branch != 0) {
-      els_clusterMaxDRRawEnergy_branch->GetEntry(index);
+      if (els_clusterMaxDRRawEnergy_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_clusterMaxDRRawEnergy_branch does not exist!\n");
       exit(1);
@@ -26420,7 +27906,8 @@ const vector<float> &CMS3::els_clusterMaxDRRawEnergy() {
 const vector<float> &CMS3::els_sigmaIEtaIEta_full5x5() {
   if (not els_sigmaIEtaIEta_full5x5_isLoaded) {
     if (els_sigmaIEtaIEta_full5x5_branch != 0) {
-      els_sigmaIEtaIEta_full5x5_branch->GetEntry(index);
+      if (els_sigmaIEtaIEta_full5x5_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_sigmaIEtaIEta_full5x5_branch does not exist!\n");
       exit(1);
@@ -26432,7 +27919,8 @@ const vector<float> &CMS3::els_sigmaIEtaIEta_full5x5() {
 const vector<float> &CMS3::mus_sta_d0() {
   if (not mus_sta_d0_isLoaded) {
     if (mus_sta_d0_branch != 0) {
-      mus_sta_d0_branch->GetEntry(index);
+      if (mus_sta_d0_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_sta_d0_branch does not exist!\n");
       exit(1);
@@ -26444,7 +27932,8 @@ const vector<float> &CMS3::mus_sta_d0() {
 const vector<float> &CMS3::mus_gfit_d0() {
   if (not mus_gfit_d0_isLoaded) {
     if (mus_gfit_d0_branch != 0) {
-      mus_gfit_d0_branch->GetEntry(index);
+      if (mus_gfit_d0_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_gfit_d0_branch does not exist!\n");
       exit(1);
@@ -26456,7 +27945,8 @@ const vector<float> &CMS3::mus_gfit_d0() {
 const vector<int> &CMS3::mus_numberOfMatchedStations() {
   if (not mus_numberOfMatchedStations_isLoaded) {
     if (mus_numberOfMatchedStations_branch != 0) {
-      mus_numberOfMatchedStations_branch->GetEntry(index);
+      if (mus_numberOfMatchedStations_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_numberOfMatchedStations_branch does not exist!\n");
       exit(1);
@@ -26468,7 +27958,8 @@ const vector<int> &CMS3::mus_numberOfMatchedStations() {
 const vector<float> &CMS3::mus_gfit_z0() {
   if (not mus_gfit_z0_isLoaded) {
     if (mus_gfit_z0_branch != 0) {
-      mus_gfit_z0_branch->GetEntry(index);
+      if (mus_gfit_z0_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_gfit_z0_branch does not exist!\n");
       exit(1);
@@ -26480,7 +27971,8 @@ const vector<float> &CMS3::mus_gfit_z0() {
 const vector<float> &CMS3::els_scPreshowerEnergyPlane1() {
   if (not els_scPreshowerEnergyPlane1_isLoaded) {
     if (els_scPreshowerEnergyPlane1_branch != 0) {
-      els_scPreshowerEnergyPlane1_branch->GetEntry(index);
+      if (els_scPreshowerEnergyPlane1_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_scPreshowerEnergyPlane1_branch does not exist!\n");
       exit(1);
@@ -26492,7 +27984,8 @@ const vector<float> &CMS3::els_scPreshowerEnergyPlane1() {
 const vector<float> &CMS3::photons_clusterMaxDRDEta() {
   if (not photons_clusterMaxDRDEta_isLoaded) {
     if (photons_clusterMaxDRDEta_branch != 0) {
-      photons_clusterMaxDRDEta_branch->GetEntry(index);
+      if (photons_clusterMaxDRDEta_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch photons_clusterMaxDRDEta_branch does not exist!\n");
       exit(1);
@@ -26504,7 +27997,8 @@ const vector<float> &CMS3::photons_clusterMaxDRDEta() {
 const vector<unsigned int> &CMS3::mus_HLT_Mu17_Ele8() {
   if (not mus_HLT_Mu17_Ele8_isLoaded) {
     if (mus_HLT_Mu17_Ele8_branch != 0) {
-      mus_HLT_Mu17_Ele8_branch->GetEntry(index);
+      if (mus_HLT_Mu17_Ele8_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_Ele8_branch does not exist!\n");
       exit(1);
@@ -26516,7 +28010,8 @@ const vector<unsigned int> &CMS3::mus_HLT_Mu17_Ele8() {
 const float &CMS3::evt_puppi_pfmetPhi_TauEnDown() {
   if (not evt_puppi_pfmetPhi_TauEnDown_isLoaded) {
     if (evt_puppi_pfmetPhi_TauEnDown_branch != 0) {
-      evt_puppi_pfmetPhi_TauEnDown_branch->GetEntry(index);
+      if (evt_puppi_pfmetPhi_TauEnDown_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_puppi_pfmetPhi_TauEnDown_branch does not exist!\n");
       exit(1);
@@ -26528,7 +28023,8 @@ const float &CMS3::evt_puppi_pfmetPhi_TauEnDown() {
 const vector<unsigned int> &CMS3::els_HLT_Ele32_SC17_Mass50_TrailingLeg() {
   if (not els_HLT_Ele32_SC17_Mass50_TrailingLeg_isLoaded) {
     if (els_HLT_Ele32_SC17_Mass50_TrailingLeg_branch != 0) {
-      els_HLT_Ele32_SC17_Mass50_TrailingLeg_branch->GetEntry(index);
+      if (els_HLT_Ele32_SC17_Mass50_TrailingLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele32_SC17_Mass50_TrailingLeg_branch does not exist!\n");
       exit(1);
@@ -26540,7 +28036,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele32_SC17_Mass50_TrailingLeg() {
 const vector<bool> &CMS3::genps_fromHardProcessFinalState() {
   if (not genps_fromHardProcessFinalState_isLoaded) {
     if (genps_fromHardProcessFinalState_branch != 0) {
-      genps_fromHardProcessFinalState_branch->GetEntry(index);
+      if (genps_fromHardProcessFinalState_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch genps_fromHardProcessFinalState_branch does not exist!\n");
       exit(1);
@@ -26552,7 +28049,8 @@ const vector<bool> &CMS3::genps_fromHardProcessFinalState() {
 const vector<unsigned int> &CMS3::els_HLT_Ele17_Ele8() {
   if (not els_HLT_Ele17_Ele8_isLoaded) {
     if (els_HLT_Ele17_Ele8_branch != 0) {
-      els_HLT_Ele17_Ele8_branch->GetEntry(index);
+      if (els_HLT_Ele17_Ele8_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele17_Ele8_branch does not exist!\n");
       exit(1);
@@ -26564,7 +28062,8 @@ const vector<unsigned int> &CMS3::els_HLT_Ele17_Ele8() {
 const vector<int> &CMS3::mus_mc3_motheridx() {
   if (not mus_mc3_motheridx_isLoaded) {
     if (mus_mc3_motheridx_branch != 0) {
-      mus_mc3_motheridx_branch->GetEntry(index);
+      if (mus_mc3_motheridx_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_mc3_motheridx_branch does not exist!\n");
       exit(1);
@@ -26576,7 +28075,8 @@ const vector<int> &CMS3::mus_mc3_motheridx() {
 const vector<int> &CMS3::els_mc_id() {
   if (not els_mc_id_isLoaded) {
     if (els_mc_id_branch != 0) {
-      els_mc_id_branch->GetEntry(index);
+      if (els_mc_id_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_mc_id_branch does not exist!\n");
       exit(1);
@@ -26588,7 +28088,8 @@ const vector<int> &CMS3::els_mc_id() {
 const bool &CMS3::filt_globalTightHalo2016() {
   if (not filt_globalTightHalo2016_isLoaded) {
     if (filt_globalTightHalo2016_branch != 0) {
-      filt_globalTightHalo2016_branch->GetEntry(index);
+      if (filt_globalTightHalo2016_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch filt_globalTightHalo2016_branch does not exist!\n");
       exit(1);
@@ -26600,7 +28101,8 @@ const bool &CMS3::filt_globalTightHalo2016() {
 const unsigned int &CMS3::mus_HLT_Mu17_Ele8_version() {
   if (not mus_HLT_Mu17_Ele8_version_isLoaded) {
     if (mus_HLT_Mu17_Ele8_version_branch != 0) {
-      mus_HLT_Mu17_Ele8_version_branch->GetEntry(index);
+      if (mus_HLT_Mu17_Ele8_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_Ele8_version_branch does not exist!\n");
       exit(1);
@@ -26612,7 +28114,8 @@ const unsigned int &CMS3::mus_HLT_Mu17_Ele8_version() {
 const vector<float> &CMS3::els_ckf_ndof() {
   if (not els_ckf_ndof_isLoaded) {
     if (els_ckf_ndof_branch != 0) {
-      els_ckf_ndof_branch->GetEntry(index);
+      if (els_ckf_ndof_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_ckf_ndof_branch does not exist!\n");
       exit(1);
@@ -26624,7 +28127,8 @@ const vector<float> &CMS3::els_ckf_ndof() {
 const float &CMS3::hcalnoise_flatNoiseSumEt() {
   if (not hcalnoise_flatNoiseSumEt_isLoaded) {
     if (hcalnoise_flatNoiseSumEt_branch != 0) {
-      hcalnoise_flatNoiseSumEt_branch->GetEntry(index);
+      if (hcalnoise_flatNoiseSumEt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_flatNoiseSumEt_branch does not exist!\n");
       exit(1);
@@ -26636,7 +28140,8 @@ const float &CMS3::hcalnoise_flatNoiseSumEt() {
 const vector<float> &CMS3::mus_e_ho() {
   if (not mus_e_ho_isLoaded) {
     if (mus_e_ho_branch != 0) {
-      mus_e_ho_branch->GetEntry(index);
+      if (mus_e_ho_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_e_ho_branch does not exist!\n");
       exit(1);
@@ -26648,7 +28153,8 @@ const vector<float> &CMS3::mus_e_ho() {
 const vector<unsigned int> &CMS3::mus_HLT_Mu17_TkMu8_TrailingLeg() {
   if (not mus_HLT_Mu17_TkMu8_TrailingLeg_isLoaded) {
     if (mus_HLT_Mu17_TkMu8_TrailingLeg_branch != 0) {
-      mus_HLT_Mu17_TkMu8_TrailingLeg_branch->GetEntry(index);
+      if (mus_HLT_Mu17_TkMu8_TrailingLeg_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_HLT_Mu17_TkMu8_TrailingLeg_branch does not exist!\n");
       exit(1);
@@ -26660,7 +28166,8 @@ const vector<unsigned int> &CMS3::mus_HLT_Mu17_TkMu8_TrailingLeg() {
 const vector<int> &CMS3::hyp_ll_charge() {
   if (not hyp_ll_charge_isLoaded) {
     if (hyp_ll_charge_branch != 0) {
-      hyp_ll_charge_branch->GetEntry(index);
+      if (hyp_ll_charge_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hyp_ll_charge_branch does not exist!\n");
       exit(1);
@@ -26672,7 +28179,8 @@ const vector<int> &CMS3::hyp_ll_charge() {
 const vector<float> &CMS3::els_ecalPFClusterIso() {
   if (not els_ecalPFClusterIso_isLoaded) {
     if (els_ecalPFClusterIso_branch != 0) {
-      els_ecalPFClusterIso_branch->GetEntry(index);
+      if (els_ecalPFClusterIso_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_ecalPFClusterIso_branch does not exist!\n");
       exit(1);
@@ -26684,7 +28192,8 @@ const vector<float> &CMS3::els_ecalPFClusterIso() {
 const float &CMS3::evt_NoHF_pfmetSig() {
   if (not evt_NoHF_pfmetSig_isLoaded) {
     if (evt_NoHF_pfmetSig_branch != 0) {
-      evt_NoHF_pfmetSig_branch->GetEntry(index);
+      if (evt_NoHF_pfmetSig_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_NoHF_pfmetSig_branch does not exist!\n");
       exit(1);
@@ -26696,7 +28205,8 @@ const float &CMS3::evt_NoHF_pfmetSig() {
 const vector<float> &CMS3::els_dPhiOut() {
   if (not els_dPhiOut_isLoaded) {
     if (els_dPhiOut_branch != 0) {
-      els_dPhiOut_branch->GetEntry(index);
+      if (els_dPhiOut_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_dPhiOut_branch does not exist!\n");
       exit(1);
@@ -26708,7 +28218,8 @@ const vector<float> &CMS3::els_dPhiOut() {
 const vector<int> &CMS3::hyp_type() {
   if (not hyp_type_isLoaded) {
     if (hyp_type_branch != 0) {
-      hyp_type_branch->GetEntry(index);
+      if (hyp_type_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hyp_type_branch does not exist!\n");
       exit(1);
@@ -26720,7 +28231,8 @@ const vector<int> &CMS3::hyp_type() {
 const unsigned int &CMS3::els_HLT_Ele20_SC4_Mass50_LeadingLeg_version() {
   if (not els_HLT_Ele20_SC4_Mass50_LeadingLeg_version_isLoaded) {
     if (els_HLT_Ele20_SC4_Mass50_LeadingLeg_version_branch != 0) {
-      els_HLT_Ele20_SC4_Mass50_LeadingLeg_version_branch->GetEntry(index);
+      if (els_HLT_Ele20_SC4_Mass50_LeadingLeg_version_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_HLT_Ele20_SC4_Mass50_LeadingLeg_version_branch does not exist!\n");
       exit(1);
@@ -26732,7 +28244,8 @@ const unsigned int &CMS3::els_HLT_Ele20_SC4_Mass50_LeadingLeg_version() {
 const vector<float> &CMS3::ak8jets_prunedMass() {
   if (not ak8jets_prunedMass_isLoaded) {
     if (ak8jets_prunedMass_branch != 0) {
-      ak8jets_prunedMass_branch->GetEntry(index);
+      if (ak8jets_prunedMass_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch ak8jets_prunedMass_branch does not exist!\n");
       exit(1);
@@ -26744,7 +28257,8 @@ const vector<float> &CMS3::ak8jets_prunedMass() {
 const vector<float> &CMS3::els_pfNeutralHadronIso() {
   if (not els_pfNeutralHadronIso_isLoaded) {
     if (els_pfNeutralHadronIso_branch != 0) {
-      els_pfNeutralHadronIso_branch->GetEntry(index);
+      if (els_pfNeutralHadronIso_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_pfNeutralHadronIso_branch does not exist!\n");
       exit(1);
@@ -26756,7 +28270,8 @@ const vector<float> &CMS3::els_pfNeutralHadronIso() {
 const float &CMS3::hcalnoise_eventHadEnergy() {
   if (not hcalnoise_eventHadEnergy_isLoaded) {
     if (hcalnoise_eventHadEnergy_branch != 0) {
-      hcalnoise_eventHadEnergy_branch->GetEntry(index);
+      if (hcalnoise_eventHadEnergy_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch hcalnoise_eventHadEnergy_branch does not exist!\n");
       exit(1);
@@ -26768,7 +28283,8 @@ const float &CMS3::hcalnoise_eventHadEnergy() {
 const float &CMS3::evt_NoHF_calomet() {
   if (not evt_NoHF_calomet_isLoaded) {
     if (evt_NoHF_calomet_branch != 0) {
-      evt_NoHF_calomet_branch->GetEntry(index);
+      if (evt_NoHF_calomet_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_NoHF_calomet_branch does not exist!\n");
       exit(1);
@@ -26780,7 +28296,8 @@ const float &CMS3::evt_NoHF_calomet() {
 const float &CMS3::evt_pfsumet() {
   if (not evt_pfsumet_isLoaded) {
     if (evt_pfsumet_branch != 0) {
-      evt_pfsumet_branch->GetEntry(index);
+      if (evt_pfsumet_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_pfsumet_branch does not exist!\n");
       exit(1);
@@ -26792,7 +28309,8 @@ const float &CMS3::evt_pfsumet() {
 const vector<float> &CMS3::els_miniIso_db() {
   if (not els_miniIso_db_isLoaded) {
     if (els_miniIso_db_branch != 0) {
-      els_miniIso_db_branch->GetEntry(index);
+      if (els_miniIso_db_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch els_miniIso_db_branch does not exist!\n");
       exit(1);
@@ -26804,7 +28322,8 @@ const vector<float> &CMS3::els_miniIso_db() {
 const vector<int> &CMS3::genps_idx_simplemother() {
   if (not genps_idx_simplemother_isLoaded) {
     if (genps_idx_simplemother_branch != 0) {
-      genps_idx_simplemother_branch->GetEntry(index);
+      if (genps_idx_simplemother_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch genps_idx_simplemother_branch does not exist!\n");
       exit(1);
@@ -26816,7 +28335,8 @@ const vector<int> &CMS3::genps_idx_simplemother() {
 const vector<int> &CMS3::pfjets_hadronFlavour() {
   if (not pfjets_hadronFlavour_isLoaded) {
     if (pfjets_hadronFlavour_branch != 0) {
-      pfjets_hadronFlavour_branch->GetEntry(index);
+      if (pfjets_hadronFlavour_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch pfjets_hadronFlavour_branch does not exist!\n");
       exit(1);
@@ -26828,7 +28348,8 @@ const vector<int> &CMS3::pfjets_hadronFlavour() {
 const vector<float> &CMS3::svs_prob() {
   if (not svs_prob_isLoaded) {
     if (svs_prob_branch != 0) {
-      svs_prob_branch->GetEntry(index);
+      if (svs_prob_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch svs_prob_branch does not exist!\n");
       exit(1);
@@ -26840,7 +28361,8 @@ const vector<float> &CMS3::svs_prob() {
 const float &CMS3::evt_puppi_calomet() {
   if (not evt_puppi_calomet_isLoaded) {
     if (evt_puppi_calomet_branch != 0) {
-      evt_puppi_calomet_branch->GetEntry(index);
+      if (evt_puppi_calomet_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch evt_puppi_calomet_branch does not exist!\n");
       exit(1);
@@ -26852,7 +28374,8 @@ const float &CMS3::evt_puppi_calomet() {
 const vector<vector<int> > &CMS3::mus_nStationHits() {
   if (not mus_nStationHits_isLoaded) {
     if (mus_nStationHits_branch != 0) {
-      mus_nStationHits_branch->GetEntry(index);
+      if (mus_nStationHits_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
     } else {
       printf("branch mus_nStationHits_branch does not exist!\n");
       exit(1);
@@ -26905,6 +28428,25 @@ float CMS3::getbtagvalue(TString bDiscriminatorName, unsigned int jetIndex) {
   }
   if (jetIndex < pfjets_bDiscriminators().size())
     return pfjets_bDiscriminators().at(jetIndex).at(bDiscriminatorIndex);
+  else {
+    std::cout << "Cannot find jet # " << jetIndex << std::endl;
+    return 0;
+  }
+}
+
+float CMS3::getbtagvalueAK8(TString bDiscriminatorName, unsigned int jetIndex) {
+  size_t bDiscriminatorIndex;
+  std::vector<TString>::const_iterator begin_it = ak8jets_bDiscriminatorNames().begin();
+  std::vector<TString>::const_iterator end_it = ak8jets_bDiscriminatorNames().end();
+  std::vector<TString>::const_iterator found_it = std::find(begin_it, end_it, bDiscriminatorName);
+  if (found_it != end_it)
+    bDiscriminatorIndex = found_it - begin_it;
+  else {
+    std::cout << "Cannot find b-discriminator " << bDiscriminatorName << std::endl;
+    return 0;
+  }
+  if (jetIndex < ak8jets_bDiscriminators().size())
+    return ak8jets_bDiscriminators().at(jetIndex).at(bDiscriminatorIndex);
   else {
     std::cout << "Cannot find jet # " << jetIndex << std::endl;
     return 0;
@@ -27074,6 +28616,12 @@ namespace tas {
   const bool &filt_hcalLaser() { return cms3.filt_hcalLaser(); }
   const unsigned int &els_HLT_Ele17_Ele8_LeadingLeg_version() { return cms3.els_HLT_Ele17_Ele8_LeadingLeg_version(); }
   const vector<float> &ak8jets_area() { return cms3.ak8jets_area(); }
+  const vector<float> &ak8jets_chs_pt() { return cms3.ak8jets_chs_pt(); }
+  const vector<float> &ak8jets_chs_eta() { return cms3.ak8jets_chs_eta(); }
+  const vector<float> &ak8jets_chs_phi() { return cms3.ak8jets_chs_phi(); }
+  const vector<float> &ak8jets_chs_mass() { return cms3.ak8jets_chs_mass(); }
+  const vector<TString> &ak8jets_bDiscriminatorNames() { return cms3.ak8jets_bDiscriminatorNames(); }
+  const vector<vector<float>> &ak8jets_bDiscriminators() { return cms3.ak8jets_bDiscriminators(); }
   const vector<float> &ak8jets_deep_bindisc_top() { return cms3.ak8jets_deep_bindisc_top(); }
   const vector<float> &ak8jets_deep_bindisc_w() { return cms3.ak8jets_deep_bindisc_w(); }
   const vector<float> &ak8jets_deep_bindisc_z() { return cms3.ak8jets_deep_bindisc_z(); }
@@ -28346,4 +29894,5 @@ namespace tas {
   bool passHLTTrigger(TString trigName) { return cms3.passHLTTrigger(trigName); }
   float passTauID(TString idName, unsigned int tauIndex) { return cms3.passTauID(idName, tauIndex); }
   float getbtagvalue(TString bDiscriminatorName, unsigned int jetIndex) { return cms3.getbtagvalue(bDiscriminatorName, jetIndex); }
+  float getbtagvalueAK8(TString bDiscriminatorName, unsigned int jetIndex) { return cms3.getbtagvalueAK8(bDiscriminatorName, jetIndex); }
 }

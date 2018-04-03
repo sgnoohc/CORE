@@ -192,7 +192,27 @@ enum id_level_t {
   VVV_cutbased_tight,
   VVV_MVAbased_tight_noiso,
   VVV_MVAbased_tight,
-  VVV_baseline
+  VVV_baseline,
+  VVV_cutbased_veto_v2,
+  VVV_cutbased_veto_noiso_v2,
+  VVV_cutbased_fo_v2,
+  VVV_cutbased_fo_noiso_v2,
+  VVV_cutbased_tight_v2,
+  VVV_cutbased_tight_noiso_v2,
+  VVV_cutbased_3l_fo_v2,
+  VVV_cutbased_3l_fo_noiso_v2,
+  VVV_cutbased_3l_tight_v2,
+  VVV_cutbased_3l_tight_noiso_v2,
+  VVV_cutbased_veto_v3,
+  VVV_cutbased_veto_noiso_v3,
+  VVV_cutbased_fo_v3,
+  VVV_cutbased_fo_noiso_v3,
+  VVV_cutbased_tight_v3,
+  VVV_cutbased_tight_noiso_v3,
+  VVV_cutbased_3l_fo_v3,
+  VVV_cutbased_3l_fo_noiso_v3,
+  VVV_cutbased_3l_tight_v3,
+  VVV_cutbased_3l_tight_noiso_v3
 
 };
 
