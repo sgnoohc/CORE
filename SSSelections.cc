@@ -7,7 +7,7 @@ using namespace tas;
   //Note: these functions are currently only for the SS analysis!
   //Be careful that IDs, etc. are OK before stealing for other analyses
 
-Lep getFourthLepton(int iHyp){
+Lep getFourthLepton(int iHyp, int lep3id, int lep3idx){
 
   std::vector<unsigned int> ele_idx;
   std::vector<unsigned int> mu_idx;
@@ -22,9 +22,10 @@ Lep getFourthLepton(int iHyp){
 
   (abs(lt_id) == 11) ? ele_idx.push_back(lt_idx) : mu_idx.push_back(lt_idx);
   (abs(ll_id) == 11) ? ele_idx.push_back(ll_idx) : mu_idx.push_back(ll_idx);
+  (abs(lep3id) == 11) ? ele_idx.push_back(lep3idx) : mu_idx.push_back(lep3idx);
 
-  if (ele_idx.size() + mu_idx.size() != 2) {
-    std::cout << "ERROR: don't have 2 leptons in hypothesis!!!  Exiting..." << std::endl;
+  if (ele_idx.size() + mu_idx.size() != 3) {
+    std::cout << "ERROR: don't have 3 leptons for fourth lep!!!  Exiting..." << std::endl;
     return fourthLepton;
   }
       
@@ -36,18 +37,11 @@ Lep getFourthLepton(int iHyp){
       }
       if (is_hyp_lep) continue;
       if (fabs(tas::els_p4().at(eidx).eta()) > 2.4) continue;
-      if (tas::els_p4().at(eidx).pt() < 7.0) continue;
+      if (tas::els_p4().at(eidx).pt() < 15.0) continue;
       if (!isGoodVetoElectron(eidx)) continue;
 
-      for (unsigned int vidx = 0; vidx < ele_idx.size(); vidx++) {
-          if (tas::els_charge().at(eidx) * tas::els_charge().at(ele_idx.at(vidx)) > 0) continue;
-          LorentzVector gamma_p4 = tas::els_p4().at(eidx) + tas::els_p4().at(ele_idx.at(vidx));
-          float gammacandmass = sqrt(fabs(gamma_p4.mass2()));
-          if (gammacandmass < min){
-            min = gammacandmass; 
-            fourthLepton = Lep(-11*els_charge().at(eidx), eidx);
-          }
-      }
+      fourthLepton = Lep(-11*els_charge().at(eidx), eidx);
+
     } 
   }
 
@@ -60,18 +54,11 @@ Lep getFourthLepton(int iHyp){
 
       if (is_hyp_lep) continue;
       if (fabs(tas::mus_p4().at(midx).eta()) > 2.4) continue;
-      if (tas::mus_p4().at(midx).pt() < 5.0) continue;
+      if (tas::mus_p4().at(midx).pt() < 10.0) continue;
       if (!isGoodVetoMuon(midx)) continue;
 
-      for (unsigned int vidx = 0; vidx < mu_idx.size(); vidx++) {
-          if (tas::mus_charge().at(midx) * tas::mus_charge().at(mu_idx.at(vidx)) > 0) continue;
-          LorentzVector gamma_p4 = tas::mus_p4().at(midx) + tas::mus_p4().at(mu_idx.at(vidx));
-          float gammacandmass = sqrt(fabs(gamma_p4.mass2()));
-          if (gammacandmass < min){
-            min = gammacandmass; 
-            fourthLepton = Lep(-13*mus_charge().at(midx), midx);
-          }
-      }
+      fourthLepton = Lep(-13*mus_charge().at(midx), midx);
+
     }
   }
 
@@ -243,14 +230,15 @@ std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector*
     if (doCorr == 2) pt = jet.pt()*tas::pfjets_undoJEC().at(i);
     
     //Kinematic jet cuts
-    if (pt < 25.) continue;
+    if (pt < bjetMinPt) continue;
     if (fabs(jet.eta()) > 2.4) continue;
 
     //Require loose jet ID
     if (!isFastsim && !isLoosePFJet_50nsV1(i)) continue;
     
     //Get discriminator
-    float disc = tas::getbtagvalue("pfDeepCSVDiscriminatorsJetTags:BvsAll", i);
+    // float disc = tas::getbtagvalue("pfDeepCSVDiscriminatorsJetTags:BvsAll", i);
+    float disc = tas::getbtagvalue("pfDeepCSVJetTags:probb",i) + tas::getbtagvalue("pfDeepCSVJetTags:probbb",i);
 
     result_jets.push_back(Jet(i, JEC));
     result_disc.push_back(disc);
@@ -280,7 +268,7 @@ std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector*
   // Only retain high pt jets if not saving all pts
   vector<Jet> result_jets_cut;
   for (unsigned int i = 0; i < result_jets.size(); i++){
-      if(!saveAllPt && (result_corrpt.at(i) < 40)) continue;
+      if(!saveAllPt && (result_corrpt.at(i) < jetMinPt)) continue;
       result_jets_cut.push_back(result_jets.at(i));
   }
 
@@ -1269,8 +1257,14 @@ int isGoodHyp(int iHyp, bool verbose){
   if (!passed_id_inSituFR_ll && !passed_id_denom_ll && !passed_id_numer_ll) return 0;
   if (!passed_id_inSituFR_lt && !passed_id_denom_lt && !passed_id_numer_lt) return 0;
 
-  //Other cuts
-  if ((tas::hyp_ll_p4().at(iHyp) + tas::hyp_lt_p4().at(iHyp)).M() < 8) return 0; 
+  //Other cuts - veto SS ee or any OSSF, with mll<12
+  if (isss && abs(id_ll) == 11 && abs(id_lt) == 11) {
+      if ((tas::hyp_ll_p4().at(iHyp) + tas::hyp_lt_p4().at(iHyp)).M() < 12) return 0; 
+  }
+  if (abs(id_ll) == -abs(id_lt)) {
+      if ((tas::hyp_ll_p4().at(iHyp) + tas::hyp_lt_p4().at(iHyp)).M() < 12) return 0; 
+  }
+
   if (!hypsFromFirstGoodVertex(iHyp)) return 0;
 
   //Finished for events that fail z veto
@@ -1548,7 +1542,7 @@ pair<Lep, int> getThirdLepton_RA7(int hyp){
   return pair<Lep, int>(result, quality);
 
 }
-pair<Lep, int> getThirdLepton(int hyp){
+pair<Lep, int> getThirdLepton(int hyp, int ignore_id, int ignore_idx){
 
   //If hyp_class == 6, save the lepton that triggered the Z veto (so long as it is veto or higher)
   Z_result_t Zresult = makesExtraZ(hyp);
@@ -1581,6 +1575,7 @@ pair<Lep, int> getThirdLepton(int hyp){
     //Remove electrons already selected
     if (abs(ll_id) == 11 && ll_idx == i) continue; 
     if (abs(lt_id) == 11 && lt_idx == i) continue; 
+    if (abs(ignore_id) == 11 && ignore_idx == i) continue;
 
     //Remove electrons that fail kinematically
     if (tas::els_p4().at(i).pt() < 20) continue;
@@ -1607,6 +1602,7 @@ pair<Lep, int> getThirdLepton(int hyp){
     //Remove electrons already selected
     if (abs(ll_id) == 13 && ll_idx == i) continue; 
     if (abs(lt_id) == 13 && lt_idx == i) continue; 
+    if (abs(ignore_id) == 13 && ignore_idx == i) continue;
    
     //Remove electrons that fail kinematically
     if (tas::mus_p4().at(i).pt() < 20) continue;
