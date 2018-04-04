@@ -17,6 +17,8 @@ const static float ptCutHigh = 25.;
 const static int   ssWhichCorr = 2;
 const static int   ssEAversion = 1;
 const static float btagCut = 0.4941; // CSVv2M https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation80XReReco
+const static float jetMinPt = 40.;
+const static float bjetMinPt = 25.;
 
 float ptCutLowAG(int id);
 
@@ -31,9 +33,9 @@ enum LeptonCategories { Prompt = 0, PromptWS = 1, PromptWF = 2, PromptFSR = 2,
 			Other = 11, End = 12};
 
 //Structs
+struct Lep;
 struct hyp_result_t { int best_hyp; int hyp_class; };
 struct particle_t { int id; LorentzVector p4; int idx; };
-struct Lep;
 struct DilepHyp;
 struct Jet;
 struct Z_result_t { bool result; int id; int idx; }; 
@@ -56,9 +58,9 @@ int isGoodHyp(int iHyp, bool verbose=false);
 bool makesExtraGammaStar(int iHyp);
 Z_result_t makesExtraZ(int iHyp);
 bool hypsFromFirstGoodVertex(size_t hypIdx, float dz_cut = 1.0);
-std::pair<Lep, int> getThirdLepton(int hyp);
+std::pair<Lep, int> getThirdLepton(int hyp, int ignore_id=-1, int ignore_idx=-1);
 std::pair<Lep, int> getThirdLepton_RA7(int hyp);
-Lep getFourthLepton(int hyp);
+Lep getFourthLepton(int hyp, int lep3id=-1, int lep3idx=-1);
 std::vector<particle_t> getGenPair(bool verbose=false);
 
 //Signal region selections
@@ -157,7 +159,8 @@ struct Jet {
     float pt() {return p4().pt();}
     float eta() {return p4().eta();}
     float phi() {return p4().phi();}
-    float csv() {return tas::getbtagvalue("pfDeepCSVDiscriminatorsJetTags:BvsAll",idx_);}
+    // float csv() {return tas::getbtagvalue("pfDeepCSVDiscriminatorsJetTags:BvsAll",idx_);}
+    float csv() {return tas::getbtagvalue("pfDeepCSVJetTags:probb",idx_) + tas::getbtagvalue("pfDeepCSVJetTags:probbb",idx_);}
     float csvivf() {return tas::getbtagvalue("pfCombinedInclusiveSecondaryVertexV2BJetTags",idx_);}
     float csvmva() {return tas::getbtagvalue("pfCombinedMVAV2BJetTags",idx_);}
     // float csvivf() {return cms3.pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag()[idx_];}
