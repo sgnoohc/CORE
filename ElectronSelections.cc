@@ -1773,7 +1773,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
     break;
 
   case(VVV_cutbased_veto_v3):
-    if (!( eleRelIso03EA(elIdx, 2) < 0.4                 )) return false;
+    if (!( elPtRatio(elIdx) > 0.58                       )) return false;
     if (!( electronID(elIdx, VVV_cutbased_veto_noiso_v3) )) return false;
     return true;
     break;
@@ -1799,7 +1799,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
     break;
 
   case(VVV_cutbased_fo_v3):
-    if (!( eleRelIso03EA(elIdx, 2) < 0.4                 )) return false;
+    if (!( elPtRatio(elIdx) > 0.65                       )) return false;
     if (!( isTriggerSafe_v1(elIdx)                     )) return false;
     if (!( electronID(elIdx, VVV_cutbased_fo_noiso_v3) )) return false;
     return true;
@@ -1820,7 +1820,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
     }
     else
     {
-        if (!( eleRelIso03EA(elIdx, 2) < 0.03          )) return false;
+        if (!( elPtRatio(elIdx) > 0.8                  )) return false;
     }
     if (!( isTriggerSafe_v1(elIdx)                        )) return false;
     if (!( electronID(elIdx, VVV_cutbased_tight_noiso_v3) )) return false;
@@ -1846,7 +1846,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
     break;
 
   case(VVV_cutbased_3l_fo_v3):
-    if (!( eleRelIso03EA(elIdx, 2) < 0.4                  )) return false;
+    if (!( elPtRatio(elIdx) > 0.65                        )) return false;
     if (!( isTriggerSafe_v1(elIdx)                        )) return false;
     if (!( electronID(elIdx, VVV_cutbased_3l_fo_noiso_v3) )) return false;
     return true;
@@ -1867,7 +1867,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
     }
     else
     {
-        if (!( eleRelIso03EA(elIdx, 2) < 0.03          )) return false;
+        if (!( elPtRatio(elIdx) > 0.8                  )) return false;
     }
     if (!( isTriggerSafe_v1(elIdx)                           )) return false;
     if (!( electronID(elIdx, VVV_cutbased_3l_tight_noiso_v3) )) return false;

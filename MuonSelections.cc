@@ -992,7 +992,7 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
     break;
 
   case(VVV_cutbased_veto_v3):
-    if (!( muRelIso03EA(muIdx, 2) < 0.4              )) return false;
+    if (!( muPtRatio(muIdx) > 0.58                   )) return false;
     if (!( muonID(muIdx, VVV_cutbased_veto_noiso_v3) )) return false;
     return true;
     break;
@@ -1011,7 +1011,7 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
     break;
 
   case(VVV_cutbased_fo_v3):
-    if (!( muRelIso03EA(muIdx, 2) < 0.4            )) return false;
+    if (!( muPtRatio(muIdx) > 0.65                 )) return false;
     if (!( muonID(muIdx, VVV_cutbased_fo_noiso_v3) )) return false;
     return true;
     break;
@@ -1031,7 +1031,7 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
     }
     else
     {
-        if (!( muRelIso03EA(muIdx, 2) < 0.03          )) return false;
+        if (!( muPtRatio(muIdx) > 0.88                )) return false;
     }
     if (!( muonID(muIdx, VVV_cutbased_tight_noiso_v3) )) return false;
     return true;
@@ -1050,7 +1050,7 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
     break;
 
   case(VVV_cutbased_3l_fo_v3):
-    if (!( muRelIso03EA(muIdx, 2) < 0.4               )) return false;
+    if (!( muPtRatio(muIdx) > 0.65                    )) return false;
     if (!( muonID(muIdx, VVV_cutbased_3l_fo_noiso_v3) )) return false;
     return true;
     break;
@@ -1070,7 +1070,7 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
     }
     else
     {
-        if (!( muRelIso03EA(muIdx, 2) < 0.03          )) return false;
+        if (!( muPtRatio(muIdx) > 0.88                )) return false;
     }
     if (!( muonID(muIdx, VVV_cutbased_3l_tight_noiso_v3) )) return false;
     return true;
