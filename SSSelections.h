@@ -16,8 +16,7 @@
 const static float ptCutHigh = 25.;
 const static int   ssWhichCorr = 2;
 const static int   ssEAversion = 1;
-const static float btagCut = 0.8484; // CSVv2M https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation80XReReco
-// const static float btagCut = 0.6324; // https://twiki.cern.ch/twiki/bin/view/CMS/BtagRecommendation80XReReco // FIXME
+const static float btagCut = 0.4941; // CSVv2M https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation80XReReco
 
 float ptCutLowAG(int id);
 
@@ -158,8 +157,7 @@ struct Jet {
     float pt() {return p4().pt();}
     float eta() {return p4().eta();}
     float phi() {return p4().phi();}
-    float csv() {return tas::getbtagvalue("pfCombinedSecondaryVertexV2BJetTags",idx_);}
-    // float csv() {return tas::getbtagvalue("deepFlavourJetTags:probb",idx_)+tas::getbtagvalue("deepFlavourJetTags:probbb",idx_);} // FIXME
+    float csv() {return tas::getbtagvalue("pfDeepCSVDiscriminatorsJetTags:BvsAll",idx_);}
     float csvivf() {return tas::getbtagvalue("pfCombinedInclusiveSecondaryVertexV2BJetTags",idx_);}
     float csvmva() {return tas::getbtagvalue("pfCombinedMVAV2BJetTags",idx_);}
     // float csvivf() {return cms3.pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag()[idx_];}
