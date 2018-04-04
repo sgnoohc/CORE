@@ -37,6 +37,7 @@ bool passesMETfilter(bool is25 = 1);
 bool passesMETfilterv2();
 bool passesMETfilters2016(bool isData);
 bool passesMETfiltersMoriond17(bool isData);
+bool passesMETfiltersMoriond18(bool isData);
 pair <float, float> getT1CHSMET3p0( FactorizedJetCorrector * jet_corrector );
 
 [[deprecated("This function may not be correct in cms4 (needs all PFCands)!")]]
