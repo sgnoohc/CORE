@@ -1064,14 +1064,7 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
     break;
 
   case(VVV_cutbased_3l_tight_v3):
-    if (fabs(cms3.mus_p4()[muIdx].eta()) <= 1.6)
-    {
-        if (!( muPtRatio(muIdx) > 0.84                 )) return false;
-    }
-    else
-    {
-        if (!( muPtRatio(muIdx) > 0.88                )) return false;
-    }
+    if (!( muPtRatio(muIdx) > 0.84                 )) return false;
     if (!( muonID(muIdx, VVV_cutbased_3l_tight_noiso_v3) )) return false;
     return true;
     break;

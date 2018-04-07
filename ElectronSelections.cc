@@ -1814,7 +1814,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
     break;
 
   case(VVV_cutbased_tight_v3):
-    if (fabs(cms3.els_etaSC()[elIdx]) <= 1.6)
+    if (fabs(cms3.els_p4()[elIdx].eta()) <= 1.6)
     {
         if (!( elPtRatio(elIdx) > 0.9                  )) return false;
     }
@@ -1861,7 +1861,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
     break;
 
   case(VVV_cutbased_3l_tight_v3):
-    if (fabs(cms3.els_etaSC()[elIdx]) <= 1.6)
+    if (fabs(cms3.els_p4()[elIdx].eta()) <= 1.6)
     {
         if (!( elPtRatio(elIdx) > 0.84                 )) return false;
     }
