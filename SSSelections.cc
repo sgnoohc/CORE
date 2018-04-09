@@ -1036,49 +1036,49 @@ int signalRegionRed(int njets, int nbtags, float met, float ht, float mt_min, in
 
 bool isGoodVetoElectronNoIso(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 7.) return false;
-  if (!electronID(elidx, SS_veto_noiso_v5)) return false;
+  if (!electronID(elidx, SS_veto_noiso_v6)) return false;
   return true;
 }
 
 bool isGoodVetoElectron(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 7.) return false;
-  if (!electronID(elidx, SS_veto_v5)) return false;
+  if (!electronID(elidx, SS_veto_v6)) return false;
   return true;
 }
 
 bool isFakableElectronNoIso(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 10.) return false;
-  if (!electronID(elidx, SS_fo_looseMVA_noiso_v5)) return false;
+  if (!electronID(elidx, SS_fo_looseMVA_noiso_v6)) return false;
   return true;
 }
 
 bool isFakableElectron(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 10.) return false;
-  if (!electronID(elidx, SS_fo_looseMVA_v5)) return false;
+  if (!electronID(elidx, SS_fo_looseMVA_v6)) return false;
   return true;
 }
 
 bool isFakableElectron_no3chg(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 10.) return false;
-  if (!electronID(elidx, SS_fo_looseMVA_no3chg_v5)) return false;
+  if (!electronID(elidx, SS_fo_looseMVA_no3chg_v6)) return false;
   return true;
 }
 
 bool isGoodElectronNoIso(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 10.) return false;
-  if (!electronID(elidx, SS_medium_noiso_v5)) return false;
+  if (!electronID(elidx, SS_medium_noiso_v6)) return false;
   return true;
 }
 
 bool isGoodElectron(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 10.) return false;
-  if (!electronID(elidx, SS_medium_v5)) return false;
+  if (!electronID(elidx, SS_medium_v6)) return false;
   return true;
 }
 
 bool isGoodElectron_no3chg(unsigned int elidx){
   if (els_p4().at(elidx).pt() < 10.) return false;
-  if (!electronID(elidx, SS_medium_no3chg_v5)) return false;
+  if (!electronID(elidx, SS_medium_no3chg_v6)) return false;
   return true;
 }
 
