@@ -3093,9 +3093,9 @@ bool readMVA::passesElectronMVAid(unsigned int index, id_level_t id_level){
   auto mvacut = [ptmin,ptmax](float A, float B, float C, float pt_) {
       return pt_>10 ? std::min(A, std::max(B,A + (B-A)/(ptmax-ptmin)*(pt_-ptmin))) : C; 
   };
-  // A if pT<=10, B if pt>=25
-  auto mvacut2017 = [](float A, float B, float pt_) {
-      if (pt_ < 10) return A;
+  // C if pT<10, A if pT=10, B if pt>=25, lerp between A,B for pT in [10,25]
+  auto mvacut2017 = [](float A, float B, float C, float pt_) {
+      if (pt_ < 10) return C;
       else if (pt_ > 25) return B;
       else {
           return A + (B-A)/15.0f*(pt_-10.0f);
@@ -3157,6 +3157,8 @@ bool readMVA::passesElectronMVAid(unsigned int index, id_level_t id_level){
     break;
 
 
+    // following numbers taken from
+    // https://indico.cern.ch/event/719317/contributions/2963816/attachments/1630110/2598062/MVAidSUSY_10Apr18_SUSYMeeting.pdf
   case (SS_fo_looseMVA_no3chg_v6):
   case (SS_fo_looseMVA_noiso_no3chg_v6):
   case(SS_fo_looseMVA_noiso_v6):
@@ -3164,9 +3166,9 @@ bool readMVA::passesElectronMVAid(unsigned int index, id_level_t id_level){
     // if (aeta < 0.8) return disc > mvacut(-0.86,-0.96,-0.3,pt);
     // if ((aeta >= 0.8 && aeta <= 1.479)) return disc > mvacut(-0.85,-0.96,-0.36,pt);
     // if (aeta > 1.479) return disc > mvacut(-0.81,-0.95,-0.63,pt);
-    if (aeta < 0.8) return disc > mvacut2017(-0.93,-0.887,pt);
-    if ((aeta >= 0.8 && aeta <= 1.479)) return disc > mvacut2017(-0.93,-0.89,pt);
-    if (aeta > 1.479) return disc > mvacut2017(-0.942,-0.91,pt);
+    if (aeta < 0.8) return disc > mvacut2017(-0.93,-0.887,-0.135,pt);
+    if ((aeta >= 0.8 && aeta <= 1.479)) return disc > mvacut2017(-0.93,-0.89,-0.417,pt);
+    if (aeta > 1.479) return disc > mvacut2017(-0.942,-0.91,-0.470,pt);
     break;
 
 
@@ -3175,9 +3177,9 @@ bool readMVA::passesElectronMVAid(unsigned int index, id_level_t id_level){
     // if (aeta < 0.8) return disc > mvacut(-0.48,-0.85,-0.46,pt);
     // if ((aeta >= 0.8 && aeta <= 1.479)) return disc > mvacut(-0.67,-0.91,-0.03,pt);
     // if (aeta > 1.479) return disc > mvacut(-0.49,-0.83,-0.01,pt);
-    if (aeta < 0.8) return disc > mvacut2017(-0.788,-0.64,pt);
-    if ((aeta >= 0.8 && aeta <= 1.479)) return disc > mvacut2017(-0.85,-0.775,pt);
-    if (aeta > 1.479) return disc > mvacut2017(-0.81,-0.733,pt);
+    if (aeta < 0.8) return disc > mvacut2017(-0.788,-0.64,0.488,pt);
+    if ((aeta >= 0.8 && aeta <= 1.479)) return disc > mvacut2017(-0.85,-0.775,-0.045,pt);
+    if (aeta > 1.479) return disc > mvacut2017(-0.81,-0.733,0.176,pt);
     break;
 
   case (SS_medium_noiso_v6):
@@ -3185,9 +3187,9 @@ bool readMVA::passesElectronMVAid(unsigned int index, id_level_t id_level){
     // if (aeta < 0.8) return disc > mvacut(0.77,0.52,0.77,pt);
     // if ((aeta >= 0.8 && aeta <= 1.479)) return disc > mvacut(0.56,0.11,0.56,pt);
     // if (aeta > 1.479) return disc > mvacut(0.48,-0.01,0.48,pt);
-    if (aeta < 0.8) return disc > mvacut2017(0.2,0.68,pt);
-    if ((aeta >= 0.8 && aeta <= 1.479)) return disc > mvacut2017(0.1,0.475,pt);
-    if (aeta > 1.479) return disc > mvacut2017(-0.1,0.32,pt);
+    if (aeta < 0.8) return disc > mvacut2017(0.2,0.68,0.2,pt);
+    if ((aeta >= 0.8 && aeta <= 1.479)) return disc > mvacut2017(0.1,0.475,0.1,pt);
+    if (aeta > 1.479) return disc > mvacut2017(-0.1,0.32,-0.1,pt);
     break;
 
   case (SS_fo_noiso_v4):
