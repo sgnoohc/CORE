@@ -761,6 +761,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
    /// SS FO v6 /// same as medium, but looser iso and option for looser MVA cut
    ///////////////////
 
+
     case(SS_fo_noiso_v6):
       if (electronID(elIdx, SS_veto_noiso_v6)==0) return false;//make sure it's tighter than veto
       if (globalEleMVAreader==0){
@@ -775,6 +776,12 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       if (fabs(els_ip3d().at(elIdx))/els_ip3derr().at(elIdx) >= 4) return false;
       if (fabs(els_dzPV().at(elIdx)) >= 0.1) return false;
       return globalEleMVAreader->passesElectronMVAid(elIdx, id_level);
+      break;
+      
+    case(SS_fo_v6):
+      if (electronID(elIdx, SS_fo_noiso_v6)==0) return false; 
+      if (elMiniRelIsoCMS3_EA(elIdx,1) >= 0.40) return false;
+      return true;
       break;
 
     case(SS_fo_looseMVA_noiso_v6):
@@ -3288,6 +3295,7 @@ bool readMVA::passesElectronMVAid(unsigned int index, id_level_t id_level){
     if (aeta > 1.479) return disc > mvacut2017(-0.81,-0.733,0.176,pt);
     break;
 
+  case (SS_fo_v6):
   case (SS_medium_noiso_v6):
   case (SS_fo_noiso_v6): // Tight
     // if (aeta < 0.8) return disc > mvacut(0.77,0.52,0.77,pt);
