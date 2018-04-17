@@ -13,6 +13,8 @@ bool isLoosePFJet(unsigned int pfJetIdx);
 bool isMediumPFJet(unsigned int pfJetIdx);
 bool isTightPFJet(unsigned int pfJetIdx);
 
+bool isTightPFJet2017(unsigned int pfJetIdx);
+
 bool isLoosePFJetV2(unsigned int pfJetIdx);
 bool isTightPFJetV2(unsigned int pfJetIdx);
 
