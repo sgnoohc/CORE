@@ -234,7 +234,8 @@ std::pair <vector <Jet>, vector <Jet> > SSJetsCalculator(FactorizedJetCorrector*
     if (fabs(jet.eta()) > 2.4) continue;
 
     //Require loose jet ID
-    if (!isFastsim && !isLoosePFJet_50nsV1(i)) continue;
+    // if (!isFastsim && !isLoosePFJet_50nsV1(i)) continue;
+    if (!isFastsim && !isTightPFJet2017(i)) continue;
     
     //Get discriminator
     // float disc = tas::getbtagvalue("pfDeepCSVDiscriminatorsJetTags:BvsAll", i);
