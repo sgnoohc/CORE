@@ -280,7 +280,8 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       if (!isTriggerSafenoIso_v1(elIdx)) return false;
       if (fabs(els_etaSC().at(elIdx)) > 2.5) return false;
       if (els_conv_vtx_flag().at(elIdx)) return false;
-      if (els_exp_innerlayers().at(elIdx) > 1) return false;
+      // if (els_exp_innerlayers().at(elIdx) > 1) return false;
+      if (els_exp_innerlayers().at(elIdx) > 1) return false; // FIXME
       if (fabs(els_dxyPV().at(elIdx)) >= 0.05) return false;
       if (fabs(els_dzPV().at(elIdx)) >= 0.1) return false; 
       if (globalEleMVAreader==0){
@@ -660,7 +661,8 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       }
       if (fabs(els_etaSC().at(elIdx)) > 2.5) return false;
       if (els_conv_vtx_flag().at(elIdx)) return false;
-      if (els_exp_innerlayers().at(elIdx) > 0) return false;
+      // if (els_exp_innerlayers().at(elIdx) > 0) return false;
+      if (els_exp_innerlayers().at(elIdx) > 1) return false; // FIXME
       if (threeChargeAgree(elIdx)==0) return false;
       if (fabs(els_dxyPV().at(elIdx)) > 0.05) return false;
       if (fabs(els_ip3d().at(elIdx))/els_ip3derr().at(elIdx) >= 4) return false;
@@ -706,7 +708,8 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       }
       if (fabs(els_etaSC().at(elIdx)) > 2.5) return false;
       if (els_conv_vtx_flag().at(elIdx)) return false;
-      if (els_exp_innerlayers().at(elIdx) > 0) return false;
+      // if (els_exp_innerlayers().at(elIdx) > 0) return false;
+      if (els_exp_innerlayers().at(elIdx) > 1) return false; // FIXME
       if (threeChargeAgree(elIdx)==0) return false;
       if (fabs(els_dxyPV().at(elIdx)) > 0.05) return false;
       if (fabs(els_ip3d().at(elIdx))/els_ip3derr().at(elIdx) >= 4) return false;
@@ -1285,7 +1288,8 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
       }
       if (fabs(els_etaSC().at(elIdx)) > 2.5) return false;
       if (els_conv_vtx_flag().at(elIdx)) return false;
-      if (els_exp_innerlayers().at(elIdx) > 0) return false;
+      // if (els_exp_innerlayers().at(elIdx) > 0) return false;
+      if (els_exp_innerlayers().at(elIdx) > 1) return false; // FIXME
       if (threeChargeAgree(elIdx)==0) return false;
       if (fabs(els_dzPV().at(elIdx)) >= 0.1) return false;
       if (fabs(els_ip3d().at(elIdx))/els_ip3derr().at(elIdx) >= 4) return false;
