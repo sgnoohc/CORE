@@ -15,7 +15,7 @@
 
 const static float ptCutHigh = 25.;
 const static int   ssWhichCorr = 2;
-const static int   ssEAversion = 1;
+const static int   ssEAversion = 3;
 const static float btagCut = 0.4941; // CSVv2M https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation80XReReco
 const static float jetMinPt = 40.;
 const static float bjetMinPt = 25.;

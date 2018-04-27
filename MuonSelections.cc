@@ -184,7 +184,7 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
 
     case(SS_veto_v5):
       if (muonID(muIdx, SS_veto_noiso_v5)==0) return false;
-      if (muMiniRelIsoCMS3_EA(muIdx,1) > 0.40) return false;
+      if (muMiniRelIsoCMS3_EA(muIdx,3) > 0.40) return false;
       return true;
       break;
 
@@ -408,7 +408,7 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
 
    case(SS_fo_v5):
       if (!muonID(muIdx, SS_fo_noiso_v5)) return false;
-      if (muMiniRelIsoCMS3_EA(muIdx,1) > 0.40) return false;
+      if (muMiniRelIsoCMS3_EA(muIdx,3) > 0.40) return false;
       return true;
       break;
 
@@ -562,7 +562,7 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
    case(SS_tight_v5):
       if (muonID(muIdx, SS_tight_noiso_v5)==0) return false;
       if (muIDCacheSet) return passMultiIsoCuts(0.16, 0.76, 7.2, muID_cache.getMiniiso(muIdx), muID_cache.getPtratio(muIdx), muID_cache.getPtrel(muIdx) );
-      else return passMultiIso(13, muIdx, 0.16, 0.76, 7.2, 1, 2);
+      else return passMultiIso(13, muIdx, 0.16, 0.76, 7.2, 3, 2);
       break;
 
    ////////////////////
