@@ -524,7 +524,6 @@ undefined         V02-00-05      100   100     100     1.0
 /TTHH_TuneCP5_13TeV-madgraph-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM                                            CMS4_V09-04-13        200000     199374  0.000757  3.7969e-06
 /TTJets_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM                                      CMS4_V09-04-13     153531390   57305718    831.76    0.014514
 /TTTJ_TuneCP5_13TeV-madgraph-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM                                            CMS4_V09-04-13        200000     198546  0.000474  2.3874e-06
-/TTTT_TuneCP5_13TeV-amcatnlo-pythia8/RunIIFall17MiniAODv2-PU2017_pilot_94X_mc2017_realistic_v14-v1/MINIAODSIM                                                CMS4_V09-04-13        993804     371504     9.103    0.024503
 /TTTW_TuneCP5_13TeV-madgraph-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM                                            CMS4_V09-04-13        200000     199704  0.000788  3.9458e-06
 /TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM                        CMS4_V09-04-13     111325048  110424244    365.34   0.0033086
 /TTWJetsToLNu_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM                        CMS4_V09-04-13       4925829    2678775    0.2043  7.6266e-05
@@ -548,3 +547,4 @@ undefined         V02-00-05      100   100     100     1.0
 /ST_tW_antitop_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM        CMS4_V09-04-13       7993682    7932626    35.599   0.0044877
 /ST_tW_top_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM            CMS4_V09-04-13       7660001    7601399    35.599   0.0046832
 /TTWH_TuneCP5_13TeV-madgraph-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM                                            CMS4_V09-04-13        200000     198982  0.001582  7.9505e-06
+/TTTT_TuneCP5_13TeV-amcatnlo-pythia8/RunIIFall17MiniAODv2-PU2017_pilot_94X_mc2017_realistic_v14-v1/MINIAODSIM                                                CMS4_V09-04-13        993804     371504  0.009103  2.4503e-05
