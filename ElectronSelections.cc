@@ -3092,7 +3092,7 @@ float readMVA::MVA(unsigned int index){
 }
 
 bool readMVA::passesElectronMVAid(unsigned int index, id_level_t id_level){
-  float disc = use_miniaod_ ?  els_VIDNonTrigMvaValue().at(index) : MVA(index);
+  float disc = use_miniaod_ ?  els_VIDFall17NoIsoMvaValue().at(index) : MVA(index);
   // careful, the MVA(index) call sets value of scl_eta_, so we must directly use the branch here in case use_miniaod_ is true
   float aeta = fabs(tas::els_etaSC().at(index));
   float pt = tas::els_p4().at(index).pt();
@@ -3270,7 +3270,7 @@ float getMVAoutput(unsigned int index, bool use_miniaod){
     cout << "readMVA=0, please create and init it (e.g with createAndInitMVA function)" << endl;
     return -999.;
   }
-  return use_miniaod ?  els_VIDNonTrigMvaValue().at(index) : globalEleMVAreader->MVA(index);
+  return use_miniaod ?  els_VIDFall17NoIsoMvaValue().at(index) : globalEleMVAreader->MVA(index);
 }
 
 bool isTriggerSafenoIso_v1(unsigned int elIdx) {
