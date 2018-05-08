@@ -170,11 +170,14 @@ float muEA03(unsigned int muIdx, int version){
   return ea;
 }
 
-float muRelIso03EA(unsigned int muIdx, int eaversion){
+float muRelIso03EA(unsigned int muIdx, int eaversion, bool include_leptons){
   float chiso     = mus_isoR03_pf_ChargedHadronPt().at(muIdx);
   float nhiso     = mus_isoR03_pf_NeutralHadronEt().at(muIdx);
   float emiso     = mus_isoR03_pf_PhotonEt().at(muIdx);
   float ea = muEA03(muIdx, eaversion);
+  if (include_leptons){
+    chiso = mus_isoR03_pf_ChargedParticlePt().at(muIdx);
+  }
   float absiso = chiso + std::max(float(0.0), nhiso + emiso - evt_fixgridfastjet_all_rho() * ea);
   return absiso/(mus_p4().at(muIdx).pt());
 }
@@ -320,12 +323,26 @@ float el90ContEA03(unsigned int elIdx) {
   return ea;
 }
 
-float eleRelIso03EA(unsigned int elIdx, int eaversion){
+float eleRelIso03EA(unsigned int elIdx, int eaversion, bool include_leptons){
   float chiso = els_pfChargedHadronIso().at(elIdx);
   float nhiso = els_pfNeutralHadronIso().at(elIdx);
   float emiso = els_pfPhotonIso().at(elIdx);
   float ea    = elEA03(elIdx, eaversion);
-  float absiso = chiso + std::max(float(0.0), nhiso + emiso - evt_fixgridfastjet_all_rho() * ea);
+  float lepiso = 0;
+  if (include_leptons){
+    for (unsigned int i=0; i<pfcands_particleId().size(); ++i){
+      float thisDR = fabs(ROOT::Math::VectorUtil::DeltaR(pfcands_p4().at(i),els_p4().at(elIdx)));
+      if (thisDR<0.3)
+        continue;
+      if (fabs(pfcands_particleId().at(i))==11){
+        lepiso += pfcands_p4().at(i).pt();
+      }
+      if (fabs(pfcands_particleId().at(i))==13){
+        lepiso += pfcands_p4().at(i).pt();
+      }
+    }
+  }
+  float absiso = chiso + std::max(float(0.0), nhiso + emiso - evt_fixgridfastjet_all_rho() * ea) + lepiso;
   return absiso/(els_p4().at(elIdx).pt());
 }
 
