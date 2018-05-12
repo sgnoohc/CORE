@@ -1081,7 +1081,7 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
     break;
 
   case(VVV_cutbased_veto_v4):
-    if (!( muRelIso03EA(muIdx, 2, true) < 1.4        )) return false;
+    if (!( muRelIso03EA(muIdx, 2, true) < 0.4        )) return false;
     if (!( muonID(muIdx, VVV_cutbased_veto_noiso_v4) )) return false;
     return true;
     break;
@@ -1100,7 +1100,7 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
     break;
 
   case(VVV_cutbased_fo_v4):
-    if (!( muRelIso03EA(muIdx, 2, true) < 1.4      )) return false;
+    if (!( muRelIso03EA(muIdx, 2, true) < 0.4      )) return false;
     if (!( muonID(muIdx, VVV_cutbased_fo_noiso_v4) )) return false;
     return true;
     break;
@@ -1114,14 +1114,7 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
     break;
 
   case(VVV_cutbased_tight_v4):
-    if (fabs(cms3.mus_p4()[muIdx].eta()) <= 1.6)
-    {
-        if (!( muRelIso03EA(muIdx, 2, true) < 1.032   )) return false;
-    }
-    else
-    {
-        if (!( muRelIso03EA(muIdx, 2, true) < 1.032   )) return false;
-    }
+    if (!( muRelIso03EA(muIdx, 2, true) < 0.03     )) return false;
     if (!( muonID(muIdx, VVV_cutbased_tight_noiso_v4) )) return false;
     return true;
     break;
@@ -1139,7 +1132,7 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
     break;
 
   case(VVV_cutbased_3l_fo_v4):
-    if (!( muRelIso03EA(muIdx, 2, true) < 1.4         )) return false;
+    if (!( muRelIso03EA(muIdx, 2, true) < 0.4         )) return false;
     if (!( muonID(muIdx, VVV_cutbased_3l_fo_noiso_v4) )) return false;
     return true;
     break;
@@ -1153,7 +1146,7 @@ bool muonID(unsigned int muIdx, id_level_t id_level){
     break;
 
   case(VVV_cutbased_3l_tight_v4):
-    if (!( muRelIso03EA(muIdx, 2, true) < 1.032    )) return false;
+    if (!( muRelIso03EA(muIdx, 2, true) < 0.07     )) return false;
     if (!( muonID(muIdx, VVV_cutbased_3l_tight_noiso_v4) )) return false;
     return true;
     break;

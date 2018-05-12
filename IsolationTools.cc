@@ -332,12 +332,12 @@ float eleRelIso03EA(unsigned int elIdx, int eaversion, bool include_leptons){
   if (include_leptons){
     for (unsigned int i=0; i<pfcands_particleId().size(); ++i){
       float thisDR = fabs(ROOT::Math::VectorUtil::DeltaR(pfcands_p4().at(i),els_p4().at(elIdx)));
-      if (thisDR<0.3)
+      if (thisDR>0.3 || thisDR<0.0005) // To avoid adding itself
         continue;
-      if (fabs(pfcands_particleId().at(i))==11){
+      if (fabs(pfcands_particleId().at(i))==11 && pfcands_fromPV().at(i) > 1){
         lepiso += pfcands_p4().at(i).pt();
       }
-      if (fabs(pfcands_particleId().at(i))==13){
+      if (fabs(pfcands_particleId().at(i))==13 && pfcands_fromPV().at(i) > 1){
         lepiso += pfcands_p4().at(i).pt();
       }
     }

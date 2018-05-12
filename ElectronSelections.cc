@@ -1893,7 +1893,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
     break;
 
   case(VVV_cutbased_veto_v4):
-    if (!( eleRelIso03EA(elIdx, 2, true) < 1.4           )) return false;
+    if (!( eleRelIso03EA(elIdx, 2, true) < 0.4           )) return false;
     if (!( electronID(elIdx, VVV_cutbased_veto_noiso_v4) )) return false;
     return true;
     break;
@@ -1919,7 +1919,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
     break;
 
   case(VVV_cutbased_fo_v4):
-    if (!( eleRelIso03EA(elIdx, 2, true) < 1.4           )) return false;
+    if (!( eleRelIso03EA(elIdx, 2, true) < 0.4         )) return false;
     if (!( isTriggerSafe_v1(elIdx)                     )) return false;
     if (!( electronID(elIdx, VVV_cutbased_fo_noiso_v4) )) return false;
     return true;
@@ -1934,14 +1934,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
     break;
 
   case(VVV_cutbased_tight_v4):
-    if (fabs(cms3.els_p4()[elIdx].eta()) <= 1.6)
-    {
-        if (!( eleRelIso03EA(elIdx, 2, true) < 1.022   )) return false;
-    }
-    else
-    {
-        if (!( eleRelIso03EA(elIdx, 2, true) < 1.022   )) return false;
-    }
+    if (!( eleRelIso03EA(elIdx, 2, true) < 0.03           )) return false;
     if (!( isTriggerSafe_v1(elIdx)                        )) return false;
     if (!( electronID(elIdx, VVV_cutbased_tight_noiso_v4) )) return false;
     return true;
@@ -1966,7 +1959,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
     break;
 
   case(VVV_cutbased_3l_fo_v4):
-    if (!( eleRelIso03EA(elIdx, 2, true) < 1.4            )) return false;
+    if (!( eleRelIso03EA(elIdx, 2, true) < 0.4            )) return false;
     if (!( isTriggerSafe_v1(elIdx)                        )) return false;
     if (!( electronID(elIdx, VVV_cutbased_3l_fo_noiso_v4) )) return false;
     return true;
@@ -1981,14 +1974,7 @@ bool electronID(unsigned int elIdx, id_level_t id_level){
     break;
 
   case(VVV_cutbased_3l_tight_v4):
-    if (fabs(cms3.els_p4()[elIdx].eta()) <= 1.6)
-    {
-        if (!( eleRelIso03EA(elIdx, 2, true) < 1.022   )) return false;
-    }
-    else
-    {
-        if (!( eleRelIso03EA(elIdx, 2, true) < 1.022   )) return false;
-    }
+    if (!( eleRelIso03EA(elIdx, 2, true) < 0.05              )) return false;
     if (!( isTriggerSafe_v1(elIdx)                           )) return false;
     if (!( electronID(elIdx, VVV_cutbased_3l_tight_noiso_v4) )) return false;
     return true;
