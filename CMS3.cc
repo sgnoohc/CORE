@@ -397,7 +397,22 @@ void CMS3::Init(TTree *tree) {
   if (tree->GetAlias("isotracks_isPFCand") != 0) {
     isotracks_isPFCand_branch = tree->GetBranch(tree->GetAlias("isotracks_isPFCand"));
     if (isotracks_isPFCand_branch) { isotracks_isPFCand_branch->SetAddress(&isotracks_isPFCand_); }
+  }  
+  isotracks_isLostTrack_branch = 0;
+  if (tree->GetAlias("isotracks_isLostTrack") != 0) {
+    isotracks_isLostTrack_branch = tree->GetBranch(tree->GetAlias("isotracks_isLostTrack"));
+    if (isotracks_isLostTrack_branch) { isotracks_isLostTrack_branch->SetAddress(&isotracks_isLostTrack_); }
   }
+  isotracks_lepOverlap_branch = 0;
+  if (tree->GetAlias("isotracks_lepOverlap") != 0) {
+    isotracks_lepOverlap_branch = tree->GetBranch(tree->GetAlias("isotracks_lepOverlap"));
+    if (isotracks_lepOverlap_branch) { isotracks_lepOverlap_branch->SetAddress(&isotracks_lepOverlap_); }
+  }
+  isotracks_pfNeutralSum_branch = 0;
+  if (tree->GetAlias("isotracks_pfNeutralSum") != 0) {
+    isotracks_pfNeutralSum_branch = tree->GetBranch(tree->GetAlias("isotracks_pfNeutralSum"));
+    if (isotracks_pfNeutralSum_branch) { isotracks_pfNeutralSum_branch->SetAddress(&isotracks_pfNeutralSum_); }
+  }  
   isotracks_isHighPurityTrack_branch = 0;
   if (tree->GetAlias("isotracks_isHighPurityTrack") != 0) {
     isotracks_isHighPurityTrack_branch = tree->GetBranch(tree->GetAlias("isotracks_isHighPurityTrack"));
@@ -407,6 +422,11 @@ void CMS3::Init(TTree *tree) {
   if (tree->GetAlias("isotracks_isTightTrack") != 0) {
     isotracks_isTightTrack_branch = tree->GetBranch(tree->GetAlias("isotracks_isTightTrack"));
     if (isotracks_isTightTrack_branch) { isotracks_isTightTrack_branch->SetAddress(&isotracks_isTightTrack_); }
+  }
+  isotracks_pterr_branch = 0;
+  if(tree->GetAlias("isotracks_pterr")){
+      isotracks_pterr_branch = tree->GetBranch(tree->GetAlias("isotracks_pterr"));
+      if (isotracks_pterr_branch) { isotracks_pterr_branch->SetAddress(&isotracks_pterr_); }
   }
   isotracks_dEdxPixel_branch = 0;
   if (tree->GetAlias("isotracks_dEdxPixel") != 0) {
@@ -542,6 +562,26 @@ void CMS3::Init(TTree *tree) {
   if (tree->GetAlias("isotracks_trackerLayersWithMeasurement") != 0) {
     isotracks_trackerLayersWithMeasurement_branch = tree->GetBranch(tree->GetAlias("isotracks_trackerLayersWithMeasurement"));
     if (isotracks_trackerLayersWithMeasurement_branch) { isotracks_trackerLayersWithMeasurement_branch->SetAddress(&isotracks_trackerLayersWithMeasurement_); }
+  }
+  isotracks_HitSignature_branch = 0;
+  if (tree->GetAlias("isotracks_HitSignature") != 0) {
+    isotracks_HitSignature_branch = tree->GetBranch(tree->GetAlias("isotracks_HitSignature"));
+    if (isotracks_HitSignature_branch) { isotracks_HitSignature_branch->SetAddress(&isotracks_HitSignature_); }
+  }
+  isotracks_nearestPF_id_branch = 0;
+  if (tree->GetAlias("isotracks_nearestPF_id") != 0) {
+    isotracks_nearestPF_id_branch = tree->GetBranch(tree->GetAlias("isotracks_nearestPF_id"));
+    if (isotracks_nearestPF_id_branch) { isotracks_nearestPF_id_branch->SetAddress(&isotracks_nearestPF_id_); }
+  }
+  isotracks_nearestPF_pt_branch = 0;
+  if (tree->GetAlias("isotracks_nearestPF_pt") != 0) {
+    isotracks_nearestPF_pt_branch = tree->GetBranch(tree->GetAlias("isotracks_nearestPF_pt"));
+    if (isotracks_nearestPF_pt_branch) { isotracks_nearestPF_pt_branch->SetAddress(&isotracks_nearestPF_pt_); }
+  }
+  isotracks_nearestPF_DR_branch = 0;
+  if (tree->GetAlias("isotracks_nearestPF_DR") != 0) {
+    isotracks_nearestPF_DR_branch = tree->GetBranch(tree->GetAlias("isotracks_nearestPF_DR"));
+    if (isotracks_nearestPF_DR_branch) { isotracks_nearestPF_DR_branch->SetAddress(&isotracks_nearestPF_DR_); }
   }
   isotracks_crossedHcalStatus_branch = 0;
   if (tree->GetAlias("isotracks_crossedHcalStatus") != 0) {
@@ -8215,8 +8255,12 @@ void CMS3::GetEntry(unsigned int idx) {
   mus_d0corrPhi_isLoaded = false;
   isotracks_isHighPurityTrack_isLoaded = false;
   isotracks_isPFCand_isLoaded = false;
+  isotracks_isLostTrack_isLoaded = false;
+  isotracks_lepOverlap_isLoaded = false;
+  isotracks_pfNeutralSum_isLoaded = false;
   isotracks_isTightTrack_isLoaded = false;
   isotracks_p4_isLoaded = false;
+  isotracks_pterr_isLoaded = false;
   isotracks_dEdxPixel_isLoaded = false;
   isotracks_dEdxStrip_isLoaded = false;
   isotracks_deltaEta_isLoaded = false;
@@ -8244,6 +8288,10 @@ void CMS3::GetEntry(unsigned int idx) {
   isotracks_particleId_isLoaded = false;
   isotracks_pixelLayersWithMeasurement_isLoaded = false;
   isotracks_trackerLayersWithMeasurement_isLoaded = false;
+  isotracks_HitSignature_isLoaded = false;
+  isotracks_nearestPF_id_isLoaded = false;
+  isotracks_nearestPF_pt_isLoaded = false;
+  isotracks_nearestPF_DR_isLoaded = false;
   isotracks_crossedHcalStatus_isLoaded = false;
   isotracks_crossedEcalStatus_isLoaded = false;
   mus_d0Err_isLoaded = false;
@@ -9666,8 +9714,12 @@ void CMS3::LoadAllBranches() {
   if (mus_d0phiCov_branch != 0) mus_d0phiCov();
   if (isotracks_isHighPurityTrack_branch != 0) isotracks_isHighPurityTrack();
   if (isotracks_isPFCand_branch != 0) isotracks_isPFCand();
+  if (isotracks_isLostTrack_branch != 0) isotracks_isLostTrack();
+  if (isotracks_lepOverlap_branch != 0) isotracks_lepOverlap();
+  if (isotracks_pfNeutralSum_branch != 0) isotracks_pfNeutralSum();
   if (isotracks_isTightTrack_branch != 0) isotracks_isTightTrack();
   if (isotracks_p4_branch != 0) isotracks_p4();
+  if (isotracks_pterr_branch != 0) isotracks_pterr();
   if (isotracks_dEdxPixel_branch != 0) isotracks_dEdxPixel();
   if (isotracks_dEdxStrip_branch != 0) isotracks_dEdxStrip();
   if (isotracks_deltaEta_branch != 0) isotracks_deltaEta();
@@ -9695,6 +9747,10 @@ void CMS3::LoadAllBranches() {
   if (isotracks_particleId_branch != 0) isotracks_particleId();
   if (isotracks_pixelLayersWithMeasurement_branch != 0) isotracks_pixelLayersWithMeasurement();
   if (isotracks_trackerLayersWithMeasurement_branch != 0) isotracks_trackerLayersWithMeasurement();
+  if (isotracks_HitSignature_branch != 0) isotracks_HitSignature();
+  if (isotracks_nearestPF_id_branch != 0) isotracks_nearestPF_id();
+  if (isotracks_nearestPF_pt_branch != 0) isotracks_nearestPF_pt();
+  if (isotracks_nearestPF_DR_branch != 0) isotracks_nearestPF_DR();
   if (isotracks_crossedHcalStatus_branch != 0) isotracks_crossedHcalStatus();
   if (isotracks_crossedEcalStatus_branch != 0) isotracks_crossedHcalStatus();
   if (mus_bfit_d0corr_branch != 0) mus_bfit_d0corr();
@@ -10894,7 +10950,45 @@ const vector<bool> &CMS3::isotracks_isPFCand() {
   }
   return isotracks_isPFCand_;
 }
-
+const vector<bool> &CMS3::isotracks_isLostTrack() {
+  if (not isotracks_isLostTrack_isLoaded) {
+    if (isotracks_isLostTrack_branch != 0) {
+      if (isotracks_isLostTrack_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
+    } else {
+      printf("branch isotracks_isLostTrack_branch does not exist!\n");
+      exit(1);
+    }
+    isotracks_isLostTrack_isLoaded = true;
+  }
+  return isotracks_isLostTrack_;
+}
+const vector<bool> &CMS3::isotracks_lepOverlap() {
+  if (not isotracks_lepOverlap_isLoaded) {
+    if (isotracks_lepOverlap_branch != 0) {
+      if (isotracks_lepOverlap_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
+    } else {
+      printf("branch isotracks_lepOverlap_branch does not exist!\n");
+      exit(1);
+    }
+    isotracks_lepOverlap_isLoaded = true;
+  }
+  return isotracks_lepOverlap_;
+}
+const vector<float> &CMS3::isotracks_pfNeutralSum() {
+  if (not isotracks_pfNeutralSum_isLoaded) {
+    if (isotracks_pfNeutralSum_branch != 0) {
+      if (isotracks_pfNeutralSum_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
+    } else {
+      printf("branch isotracks_pfNeutralSum_branch does not exist!\n");
+      exit(1);
+    }
+    isotracks_pfNeutralSum_isLoaded = true;
+  }
+  return isotracks_pfNeutralSum_;
+}
 const vector<bool> &CMS3::isotracks_isTightTrack() {
   if (not isotracks_isTightTrack_isLoaded) {
     if (isotracks_isTightTrack_branch != 0) {
@@ -10921,6 +11015,19 @@ const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &CMS3::i
   }
   return isotracks_p4_;
 }
+const vector<float> &CMS3::isotracks_pterr() {
+  if (not isotracks_pterr_isLoaded) {
+    if (isotracks_pterr_branch != 0) {
+      if (isotracks_pterr_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
+    } else {
+      printf("branch isotracks_pterr_branch does not exist!\n");
+      exit(1);
+    }
+    isotracks_pterr_isLoaded = true;
+  }
+  return isotracks_pterr_;
+}
 const vector<float> &CMS3::isotracks_dEdxPixel() {
   if (not isotracks_dEdxPixel_isLoaded) {
     if (isotracks_dEdxPixel_branch != 0) {
@@ -10934,7 +11041,6 @@ const vector<float> &CMS3::isotracks_dEdxPixel() {
   }
   return isotracks_dEdxPixel_;
 }
-
 const vector<float> &CMS3::isotracks_dEdxStrip() {
   if (not isotracks_dEdxStrip_isLoaded) {
     if (isotracks_dEdxStrip_branch != 0) {
@@ -11283,7 +11389,6 @@ const vector<int> &CMS3::isotracks_pixelLayersWithMeasurement() {
   }
   return isotracks_pixelLayersWithMeasurement_;
 }
-
 const vector<int> &CMS3::isotracks_trackerLayersWithMeasurement() {
   if (not isotracks_trackerLayersWithMeasurement_isLoaded) {
     if (isotracks_trackerLayersWithMeasurement_branch != 0) {
@@ -11296,6 +11401,58 @@ const vector<int> &CMS3::isotracks_trackerLayersWithMeasurement() {
     isotracks_trackerLayersWithMeasurement_isLoaded = true;
   }
   return isotracks_trackerLayersWithMeasurement_;
+}
+const vector<int> &CMS3::isotracks_HitSignature() {
+  if (not isotracks_HitSignature_isLoaded) {
+    if (isotracks_HitSignature_branch != 0) {
+      if (isotracks_HitSignature_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
+    } else {
+      printf("branch isotracks_HitSignature_branch does not exist!\n");
+      exit(1);
+    }
+    isotracks_HitSignature_isLoaded = true;
+  }
+  return isotracks_HitSignature_;
+}
+const vector<int> &CMS3::isotracks_nearestPF_id() {
+  if (not isotracks_nearestPF_id_isLoaded) {
+    if (isotracks_nearestPF_id_branch != 0) {
+      if (isotracks_nearestPF_id_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
+    } else {
+      printf("branch isotracks_nearestPF_id_branch does not exist!\n");
+      exit(1);
+    }
+    isotracks_nearestPF_id_isLoaded = true;
+  }
+  return isotracks_nearestPF_id_;
+}
+const vector<float> &CMS3::isotracks_nearestPF_pt() {
+  if (not isotracks_nearestPF_pt_isLoaded) {
+    if (isotracks_nearestPF_pt_branch != 0) {
+      if (isotracks_nearestPF_pt_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
+    } else {
+      printf("branch isotracks_nearestPF_pt_branch does not exist!\n");
+      exit(1);
+    }
+    isotracks_nearestPF_pt_isLoaded = true;
+  }
+  return isotracks_nearestPF_pt_;
+}
+const vector<float> &CMS3::isotracks_nearestPF_DR() {
+  if (not isotracks_nearestPF_DR_isLoaded) {
+    if (isotracks_nearestPF_DR_branch != 0) {
+      if (isotracks_nearestPF_DR_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
+    } else {
+      printf("branch isotracks_nearestPF_DR_branch does not exist!\n");
+      exit(1);
+    }
+    isotracks_nearestPF_DR_isLoaded = true;
+  }
+  return isotracks_nearestPF_DR_;
 }
 const vector<vector<unsigned int> > &CMS3::isotracks_crossedHcalStatus() {
   if (not isotracks_crossedHcalStatus_isLoaded) {
@@ -28510,8 +28667,12 @@ namespace tas {
   const vector<float> &pfjets_mc_gpdr() { return cms3.pfjets_mc_gpdr(); }
   const vector<bool> &isotracks_isHighPurityTrack() { return cms3.isotracks_isHighPurityTrack(); }
   const vector<bool> &isotracks_isPFCand() { return cms3.isotracks_isPFCand(); }
+  const vector<bool> &isotracks_isLostTrack() { return cms3.isotracks_isLostTrack(); }
+  const vector<bool> &isotracks_lepOverlap() { return cms3.isotracks_lepOverlap(); }
+  const vector<float> &isotracks_pfNeutralSum() { return cms3.isotracks_pfNeutralSum(); }
   const vector<bool> &isotracks_isTightTrack() { return cms3.isotracks_isTightTrack(); }
   const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &isotracks_p4() { return cms3.isotracks_p4(); }
+  const vector<float> &isotracks_pterr() { return cms3.isotracks_pterr(); }
   const vector<float> &isotracks_dEdxPixel() { return cms3.isotracks_dEdxPixel(); }
   const vector<float> &isotracks_dEdxStrip() { return cms3.isotracks_dEdxStrip(); }
   const vector<float> &isotracks_deltaEta() { return cms3.isotracks_deltaEta(); }
@@ -28539,6 +28700,10 @@ namespace tas {
   const vector<int> &isotracks_particleId() { return cms3.isotracks_particleId(); }
   const vector<int> &isotracks_pixelLayersWithMeasurement() { return cms3.isotracks_pixelLayersWithMeasurement(); }
   const vector<int> &isotracks_trackerLayersWithMeasurement() { return cms3.isotracks_trackerLayersWithMeasurement(); }
+  const vector<int> &isotracks_HitSignature() { return cms3.isotracks_HitSignature(); }
+  const vector<int> &isotracks_nearestPF_id() { return cms3.isotracks_nearestPF_id(); }
+  const vector<float> &isotracks_nearestPF_pt() { return cms3.isotracks_nearestPF_pt(); }
+  const vector<float> &isotracks_nearestPF_DR() { return cms3.isotracks_nearestPF_DR(); }
   const vector<vector<unsigned int> > &isotracks_crossedEcalStatus() { return cms3.isotracks_crossedHcalStatus(); }
   const vector<vector<float> > &els_clusterDPhiToSeed() { return cms3.els_clusterDPhiToSeed(); }
   const float &evt_puppi_pfmet_JetEnDown() { return cms3.evt_puppi_pfmet_JetEnDown(); }
