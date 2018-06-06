@@ -882,6 +882,12 @@ protected:
   bool filt_badMuons_;
   TBranch *filt_badMuons_branch;
   bool filt_badMuons_isLoaded;
+  bool filt_BadPFMuonFilter_;
+  TBranch *filt_BadPFMuonFilter_branch;
+  bool filt_BadPFMuonFilter_isLoaded;
+  bool filt_BadChargedCandidateFilter_;
+  TBranch *filt_BadChargedCandidateFilter_branch;
+  bool filt_BadChargedCandidateFilter_isLoaded;
   bool filt_duplicateMuons_;
   TBranch *filt_duplicateMuons_branch;
   bool filt_duplicateMuons_isLoaded;
@@ -4621,6 +4627,8 @@ public:
   const vector<float> &photonsscSeedSigmaIphiIphi();
   const bool &filt_metfilter();
   const bool &filt_badMuons();
+  const bool &filt_BadPFMuonFilter();
+  const bool &filt_BadChargedCandidateFilter();
   const bool &filt_duplicateMuons();
   const bool &filt_noBadMuons();
   const vector<float> &photonsscPhiWidth();
@@ -6057,6 +6065,8 @@ namespace tas {
   const vector<float> &photonsscSeedSigmaIphiIphi();
   const bool &filt_metfilter();
   const bool &filt_badMuons();
+  const bool &filt_BadPFMuonFilter();
+  const bool &filt_BadChargedCandidateFilter();
   const bool &filt_duplicateMuons();
   const bool &filt_noBadMuons();
   const vector<float> &photonsscPhiWidth();

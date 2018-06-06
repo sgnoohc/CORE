@@ -1849,6 +1849,16 @@ void CMS3::Init(TTree *tree) {
     filt_badMuons_branch = tree->GetBranch(tree->GetAlias("filt_badMuons"));
     if (filt_badMuons_branch) { filt_badMuons_branch->SetAddress(&filt_badMuons_); }
   }
+  filt_BadPFMuonFilter_branch = 0;
+  if (tree->GetAlias("filt_BadPFMuonFilter") != 0) {
+    filt_BadPFMuonFilter_branch = tree->GetBranch(tree->GetAlias("filt_BadPFMuonFilter"));
+    if (filt_BadPFMuonFilter_branch) { filt_BadPFMuonFilter_branch->SetAddress(&filt_BadPFMuonFilter_); }
+  }
+  filt_BadChargedCandidateFilter_branch = 0;
+  if (tree->GetAlias("filt_BadChargedCandidateFilter") != 0) {
+    filt_BadChargedCandidateFilter_branch = tree->GetBranch(tree->GetAlias("filt_BadChargedCandidateFilter"));
+    if (filt_BadChargedCandidateFilter_branch) { filt_BadChargedCandidateFilter_branch->SetAddress(&filt_BadChargedCandidateFilter_); }
+  }
   filt_duplicateMuons_branch = 0;
   if (tree->GetAlias("filt_duplicateMuons") != 0) {
     filt_duplicateMuons_branch = tree->GetBranch(tree->GetAlias("filt_duplicateMuons"));
@@ -7439,6 +7449,8 @@ void CMS3::GetEntry(unsigned int idx) {
   photonsscSeedSigmaIphiIphi_isLoaded = false;
   filt_metfilter_isLoaded = false;
   filt_badMuons_isLoaded = false;
+  filt_BadPFMuonFilter_isLoaded = false;
+  filt_BadChargedCandidateFilter_isLoaded = false;
   filt_duplicateMuons_isLoaded = false;
   filt_noBadMuons_isLoaded = false;
   photonsscPhiWidth_isLoaded = false;
@@ -8864,6 +8876,8 @@ void CMS3::LoadAllBranches() {
   if (photonsscSeedSigmaIphiIphi_branch != 0) photonsscSeedSigmaIphiIphi();
   if (filt_metfilter_branch != 0) filt_metfilter();
   if (filt_badMuons_branch != 0) filt_badMuons();
+  if (filt_BadPFMuonFilter_branch != 0) filt_BadPFMuonFilter();
+  if (filt_BadChargedCandidateFilter_branch != 0) filt_BadChargedCandidateFilter();
   if (filt_duplicateMuons_branch != 0) filt_duplicateMuons();
   if (filt_noBadMuons_branch != 0) filt_noBadMuons();
   if (photonsscPhiWidth_branch != 0) photonsscPhiWidth();
@@ -14253,6 +14267,32 @@ const bool &CMS3::filt_badMuons() {
     filt_badMuons_isLoaded = true;
   }
   return filt_badMuons_;
+}
+const bool &CMS3::filt_BadPFMuonFilter() {
+  if (not filt_BadPFMuonFilter_isLoaded) {
+    if (filt_BadPFMuonFilter_branch != 0) {
+      if (filt_BadPFMuonFilter_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
+    } else {
+      printf("branch filt_BadPFMuonFilter_branch does not exist!\n");
+      exit(1);
+    }
+    filt_BadPFMuonFilter_isLoaded = true;
+  }
+  return filt_BadPFMuonFilter_;
+}
+const bool &CMS3::filt_BadChargedCandidateFilter() {
+  if (not filt_BadChargedCandidateFilter_isLoaded) {
+    if (filt_BadChargedCandidateFilter_branch != 0) {
+      if (filt_BadChargedCandidateFilter_branch->GetEntry(index) < 0)
+          throw std::ios_base::failure(Form("I/O failure reading %s", __FUNCTION__));
+    } else {
+      printf("branch filt_BadChargedCandidateFilter_branch does not exist!\n");
+      exit(1);
+    }
+    filt_BadChargedCandidateFilter_isLoaded = true;
+  }
+  return filt_BadChargedCandidateFilter_;
 }
 const bool &CMS3::filt_duplicateMuons() {
   if (not filt_duplicateMuons_isLoaded) {
@@ -28957,6 +28997,8 @@ namespace tas {
   const vector<float> &photonsscSeedSigmaIphiIphi() { return cms3.photonsscSeedSigmaIphiIphi(); }
   const bool &filt_metfilter() { return cms3.filt_metfilter(); }
   const bool &filt_badMuons() { return cms3.filt_badMuons(); }
+  const bool &filt_BadPFMuonFilter() { return cms3.filt_BadPFMuonFilter(); }
+  const bool &filt_BadChargedCandidateFilter() { return cms3.filt_BadChargedCandidateFilter(); }
   const bool &filt_duplicateMuons() { return cms3.filt_duplicateMuons(); }
   const bool &filt_noBadMuons() { return cms3.filt_noBadMuons(); }
   const vector<float> &photonsscPhiWidth() { return cms3.photonsscPhiWidth(); }
