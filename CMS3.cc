@@ -3811,6 +3811,12 @@ void CMS3::Init(TTree *tree) {
     evt_experimentType_branch = tree->GetBranch(tree->GetAlias("evt_experimentType"));
     if (evt_experimentType_branch) { evt_experimentType_branch->SetAddress(&evt_experimentType_); }
   }
+
+  filt_ecalBadCalibFilter_branch = 0;
+  if (tree->GetAlias("filt_ecalBadCalibFilter") != 0) {
+    filt_ecalBadCalibFilter_branch = tree->GetBranch(tree->GetAlias("filt_ecalBadCalibFilter"));
+    if (filt_ecalBadCalibFilter_branch) { filt_ecalBadCalibFilter_branch->SetAddress(&filt_ecalBadCalibFilter_); }
+  }
   filt_ecalTP_branch = 0;
   if (tree->GetAlias("filt_ecalTP") != 0) {
     filt_ecalTP_branch = tree->GetBranch(tree->GetAlias("filt_ecalTP"));
@@ -7859,6 +7865,7 @@ void CMS3::GetEntry(unsigned int idx) {
   mus_HLT_TkMu50_version_isLoaded = false;
   evt_experimentType_isLoaded = false;
   filt_ecalTP_isLoaded = false;
+  filt_ecalBadCalibFilter_isLoaded = false;
   els_ecalEnergy_isLoaded = false;
   evt_pfmet_JetEnUp_isLoaded = false;
   els_phiErr_isLoaded = false;
@@ -9286,6 +9293,7 @@ void CMS3::LoadAllBranches() {
   if (mus_HLT_TkMu50_version_branch != 0) mus_HLT_TkMu50_version();
   if (evt_experimentType_branch != 0) evt_experimentType();
   if (filt_ecalTP_branch != 0) filt_ecalTP();
+  if (filt_ecalBadCalibFilter_branch != 0) filt_ecalBadCalibFilter();
   if (els_ecalEnergy_branch != 0) els_ecalEnergy();
   if (evt_pfmet_JetEnUp_branch != 0) evt_pfmet_JetEnUp();
   if (els_phiErr_branch != 0) els_phiErr();
@@ -19585,6 +19593,19 @@ const int &CMS3::evt_experimentType() {
   }
   return evt_experimentType_;
 }
+
+const bool &CMS3::filt_ecalBadCalibFilter() {
+  if (not filt_ecalBadCalibFilter_isLoaded) {
+    if (filt_ecalBadCalibFilter_branch != 0) {
+      filt_ecalBadCalibFilter_branch->GetEntry(index);
+    } else {
+      printf("branch filt_ecalBadCalibFilter_branch does not exist!\n");
+      exit(1);
+    }
+    filt_ecalBadCalibFilter_isLoaded = true;
+  }
+  return filt_ecalBadCalibFilter_;
+}
 const bool &CMS3::filt_ecalTP() {
   if (not filt_ecalTP_isLoaded) {
     if (filt_ecalTP_branch != 0) {
@@ -29407,6 +29428,7 @@ namespace tas {
   const unsigned int &mus_HLT_TkMu50_version() { return cms3.mus_HLT_TkMu50_version(); }
   const int &evt_experimentType() { return cms3.evt_experimentType(); }
   const bool &filt_ecalTP() { return cms3.filt_ecalTP(); }
+  const bool &filt_ecalBadCalibFilter() { return cms3.filt_ecalBadCalibFilter(); }
   const vector<float> &els_ecalEnergy() { return cms3.els_ecalEnergy(); }
   const float &evt_pfmet_JetEnUp() { return cms3.evt_pfmet_JetEnUp(); }
   const vector<float> &els_phiErr() { return cms3.els_phiErr(); }
