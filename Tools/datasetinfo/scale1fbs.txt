@@ -553,3 +553,5 @@ undefined         V02-00-05      100   100     100     1.0
 /W4JetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM                                  CMS4_V09-04-13      11333705   11303425     524.2    0.046375
 /WZTo3LNu_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v2/MINIAODSIM                                                       CMS4_V09-04-13      10751052    6738866    4.4297  0.00065734
 /WW_TuneCP5_13TeV-pythia8/RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1/MINIAODSIM                                                                          CMS4_V09-04-13       7547722    7547722    118.71    0.015728
+/PrivateWWW/www-cms4-Private80X-v1/MINIAODSIM                                                                                                      CMS4_V00-00-02_2017Sep27         92200      80870  0.051854  0.00064122
+/PrivateWWW/wwwext-cms4-Private80X-v1/MINIAODSIM                                                                                                   CMS4_V00-00-02_2017Sep27        159500     139804  0.051854  0.00037091
