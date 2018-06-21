@@ -2226,9 +2226,6 @@ protected:
   bool filt_ecalTP_;
   TBranch *filt_ecalTP_branch;
   bool filt_ecalTP_isLoaded;
-  bool filt_ecalBadCalibFilter_;
-  TBranch *filt_ecalBadCalibFilter_branch;
-  bool filt_ecalBadCalibFilter_isLoaded;
   vector<float> els_ecalEnergy_;
   TBranch *els_ecalEnergy_branch;
   bool els_ecalEnergy_isLoaded;
@@ -5043,7 +5040,6 @@ public:
   const unsigned int &mus_HLT_TkMu50_version();
   const int &evt_experimentType();
   const bool &filt_ecalTP();
-  const bool &filt_ecalBadCalibFilter();
   const vector<float> &els_ecalEnergy();
   const float &evt_pfmet_JetEnUp();
   const vector<float> &els_phiErr();
@@ -6483,7 +6479,6 @@ namespace tas {
   const unsigned int &mus_HLT_TkMu50_version();
   const int &evt_experimentType();
   const bool &filt_ecalTP();
-  const bool &filt_ecalBadCalibFilter();
   const vector<float> &els_ecalEnergy();
   const float &evt_pfmet_JetEnUp();
   const vector<float> &els_phiErr();
