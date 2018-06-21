@@ -3507,6 +3507,9 @@ protected:
   bool filt_eeBadSc_;
   TBranch *filt_eeBadSc_branch;
   bool filt_eeBadSc_isLoaded;
+  bool filt_ecalBadCalibFilter_;
+  TBranch *filt_ecalBadCalibFilter_branch;
+  bool filt_ecalBadCalibFilter_isLoaded;
   float evt_filt_eff_;
   TBranch *evt_filt_eff_branch;
   bool evt_filt_eff_isLoaded;
@@ -5464,6 +5467,7 @@ public:
   const unsigned int &els_HLT_Ele33_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version();
   const bool &filt_trkPOG_toomanystripclus53X();
   const bool &filt_eeBadSc();
+  const bool &filt_ecalBadCalibFilter();
   const float &evt_filt_eff();
   const vector<vector<int> > &convs_nHitsBeforeVtx();
   const float &evt_pfmet_TauEnUp();
@@ -6902,6 +6906,7 @@ namespace tas {
   const unsigned int &els_HLT_Ele33_CaloIdM_TrackIdM_PFJet30_ElectronLeg_version();
   const bool &filt_trkPOG_toomanystripclus53X();
   const bool &filt_eeBadSc();
+  const bool &filt_ecalBadCalibFilter();
   const float &evt_filt_eff();
   const vector<vector<int> > &convs_nHitsBeforeVtx();
   const float &evt_pfmet_TauEnUp();
